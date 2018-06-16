@@ -1,0 +1,82 @@
+﻿<Window x:Class="sw_en_GUI.WindowStart"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New File" Width="475" Height="402">
+    <Grid Width="455" Height="358">
+        <TabControl  TabStripPlacement="Top" Margin="0,0,5,0">
+            <TabItem Header="General">
+                <Grid Width="441">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50px"></RowDefinition>
+                        <RowDefinition Height="2*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="40px"></RowDefinition>
+                        <RowDefinition Height="40px"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" Width="210">
+                        <Label >Model Name</Label>
+                        <TextBox Width="197"></TextBox>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Margin="217,0,0,0" Width="212">
+                        <Label >Description</Label>
+                        <TextBox Width="199"></TextBox>
+                    </StackPanel>
+                    <GroupBox Grid.Row="1" Header="Type of Model" Margin="0,0,11,0" Width="430">
+                        <StackPanel Orientation="Horizontal" Width="412">
+                            <StackPanel Orientation="Vertical" Width="197">
+                                <RadioButton IsChecked="True" >1D - X</RadioButton>
+                                <RadioButton >2D - XY</RadioButton>
+                                <RadioButton >2D - XZ</RadioButton>
+                                <RadioButton >2D - XY</RadioButton>
+                                <RadioButton IsChecked="True" >3D</RadioButton>
+                                <RadioButton IsChecked="False" >4D (3D + time)</RadioButton>
+                            </StackPanel>
+                            <Image x:Name="image1"></Image>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Grid.Row="2" Header="Coordinate system" Margin="0,0,11,0" Width="430">
+                        <StackPanel Orientation="Vertical" Width="413">
+                            <RadioButton IsChecked="True" >Left-handed</RadioButton>
+                            <RadioButton >Right-handed</RadioButton>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Grid.Row="3" Header="Comment" Margin="0,0,11,0" Width="430">
+                        <StackPanel Orientation="Horizontal" Width="413">
+                            <TextBox Width="197"></TextBox>
+                            <!--
+                            <ComboBox MinWidth="150px"></ComboBox>
+                            -->
+                            <Button MinWidth="30px">
+                                <Image x:Name="imgFiles" ></Image>
+                            </Button>
+                        </StackPanel>
+                    </GroupBox>
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,12,0">
+                        <Button x:Name="btnOK" Width="60px" Height="25px" Margin="6px">OK</Button>
+                        <Button x:Name="btnCancel" Width="60px" Height="25px" Margin="6px" Click="btnCancel_Click">Cancel</Button>
+                    </StackPanel>
+                </Grid>
+
+
+            </TabItem>
+            <TabItem Header="Activities">
+
+            </TabItem>
+            <TabItem Header="History">
+
+            </TabItem>
+            <TabItem Header="Project">
+
+            </TabItem>
+            <TabItem Header="Solver">
+
+            </TabItem>
+            <TabItem Header="Codes">
+
+            </TabItem>
+            <TabItem Header="Protocol">
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

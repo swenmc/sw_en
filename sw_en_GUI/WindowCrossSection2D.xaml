@@ -1,0 +1,25 @@
+﻿<Window x:Class="sw_en_GUI.WindowCrossSection2D"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cross Section 2D" Height="1200" Width="1600" KeyDown="Window_KeyDown">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20px"></RowDefinition>
+            <RowDefinition Height="1145*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Grid.Column="0" Margin="0,0,0,0">
+            <MenuItem Header="Display">
+                <MenuItem Header="Nodes"></MenuItem>
+                <MenuItem Header="Lines"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="GCS"></MenuItem>
+            <MenuItem Header="Test">
+                <MenuItem Name="menuItemTest1" Header="Draw test" Click="menuItemTest1_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Canvas Name="canvasForImage" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">
+            <!--<Line X1="50" Y1="50" X2="200" Y2="200" Stroke="Green"/> -->
+        </Canvas>
+    </Grid>
+</Window>

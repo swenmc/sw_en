@@ -1,0 +1,82 @@
+﻿<Window x:Class="PFD.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="1200" Width="1800">
+    <Grid>
+        <Frame Name ="Frame1" Content="Portal Frame 3D Preview" HorizontalAlignment="Left" Height="1130" Margin="910,0,0,0" VerticalAlignment="Top" Width="870" NavigationUIVisibility="Hidden"/>
+        <Button Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="1708,1141,0,0" Click="Calculate_Click"/>
+        <DataGrid Name ="Results_GridView" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="900" Margin="5,530,0,0" SelectionChanged="Results_GridView_SelectionChanged" IsReadOnly="True">
+        </DataGrid>
+
+        <TextBlock Text="Model:" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
+        <ComboBox Name ="Combobox_Models" HorizontalAlignment="Left" Height="20" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>
+
+        <TextBlock Text="Gable With:" HorizontalAlignment="Left" Height="20" Margin="10,35,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Height="20" Margin="115,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Gable_Width_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="25" Margin="220,35,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Length:" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Height="20" Width="100"/>
+        <TextBox Name ="TextBox_Length" HorizontalAlignment="Left" Height="20" Margin="115,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Length_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,60,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Wall Height:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,85,0,0"/>
+        <TextBox Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Height="20" Margin="115,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Wall_Height_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,85,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Roof Pitch:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,110,0,0"/>
+        <TextBox Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Height="20" Margin="115,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Roof_Pitch_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,110,0,0" TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Frames:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,135,0,0"/>
+        <TextBox Name ="TextBox_Frames_No" HorizontalAlignment="Left" Height="20" Margin="115,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Frames_No_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,135,0,0" TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Girt Distance:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,160,0,0"/>
+        <TextBox Name ="TextBox_Girt_Distance" HorizontalAlignment="Left" Height="20" Margin="115,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Girt_Distance_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,160,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Purlin Distance:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,185,0,0"/>
+        <TextBox Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Height="20" Margin="115,185,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Purlin_Distance_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,185,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
+
+        <TextBlock Text="Column Distance:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,210,0,0"/>
+        <TextBox Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Height="20" Margin="115,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Column_Distance_TextChanged"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,210,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
+        
+        <DataGrid Name ="Components" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="260" Margin="5,240,0,0" VerticalAlignment="Top" Width="900">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Status}" Header="Component" Width="200"/>
+                <DataGridTemplateColumn Header="Cross-Section" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Status}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Material" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Status}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Text="Location:" HorizontalAlignment="Left" Height="20" Margin="285,10,0,0" VerticalAlignment="Top" Width="100"/>
+        <ComboBox Name ="Combobox_Location" HorizontalAlignment="Left" Height="20" Margin="390,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_Location_SelectionChanged" SelectedIndex="11"/>
+    </Grid>
+</Window>

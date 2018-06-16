@@ -1,0 +1,356 @@
+﻿<Window x:Class="sw_en_GUI.WindowMain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:mdi="clr-namespace:WPF.MDI;assembly=WPF.MDI"
+        Title="WindowMain" Height="700" Width="1024" Closed="Window_Closed">
+	<Window.Resources>
+		<ControlTemplate x:Key="HorizontalScrollBarTemplate" TargetType="{x:Type ScrollBar}">
+			<Grid x:Name="Bg" SnapsToDevicePixels="True" Background="Black">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+					<ColumnDefinition Width="1E-05*"/>
+					<ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+				</Grid.ColumnDefinitions>
+				<RepeatButton IsEnabled="{TemplateBinding IsMouseOver}" Command="ScrollBar.PageLeftCommand">
+					<RepeatButton.Style>
+						<Style TargetType="{x:Type RepeatButton}">
+							<Setter Property="OverridesDefaultStyle" Value="True"/>
+							<Setter Property="Focusable" Value="False"/>
+							<Setter Property="IsTabStop" Value="False"/>
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="{x:Type RepeatButton}">
+										<Border Background="{x:Null}" Height="18" Width="18" >
+											<Path Data=" M 8 15 L 8 3 L 2 9 Z" Fill="White" />
+										</Border>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</RepeatButton.Style>
+				</RepeatButton>
+				<RepeatButton IsEnabled="{TemplateBinding IsMouseOver}" Command="ScrollBar.PageRightCommand" Grid.Column="2" >
+					<RepeatButton.Style>
+						<Style TargetType="{x:Type RepeatButton}">
+							<Setter Property="OverridesDefaultStyle" Value="True"/>
+							<Setter Property="Focusable" Value="False"/>
+							<Setter Property="IsTabStop" Value="False"/>
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="{x:Type RepeatButton}">
+										<Border Background="{x:Null}" Height="18" Width="18" >
+											<Path Data=" M 9 15 L 9 3 L 15 9 Z" Fill="White" />
+										</Border>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</RepeatButton.Style>
+				</RepeatButton>
+			</Grid>
+			<ControlTemplate.Triggers>
+				<Trigger Property="IsEnabled" Value="False">
+					<Setter Property="Background" TargetName="Bg" Value="#FFF4F4F4"/>
+				</Trigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+		
+	</Window.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20px"></RowDefinition>
+			<RowDefinition Height="25px"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
+		<Menu Height="20" VerticalAlignment="Top">
+			<MenuItem Header="File">
+				<MenuItem x:Name="menuItemNew" Header="New" Icon="" Click="menuItemNew_Click"></MenuItem>
+				<MenuItem x:Name="menuItemOpen" Header="Open" Click="menuItemOpen_Click"></MenuItem>
+				<Separator/>
+				<MenuItem x:Name="menuItemSave" Header="Save" Click="menuItemSave_Click"></MenuItem>
+				<MenuItem x:Name="menuItemSaveAs" Header="Save as..."></MenuItem>
+				<Separator/>
+				<MenuItem Header="Print"></MenuItem>
+				<MenuItem Header="Print preview"></MenuItem>
+                <MenuItem Header="Import" Click="ButtonImport_Click"></MenuItem>
+                <MenuItem Header="Export" Click="ButtonExport_Click"></MenuItem>
+                <Separator/>
+				<MenuItem Header="Exit"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="Edit">
+				<MenuItem Header="Undo"></MenuItem>
+				<MenuItem Header="Redo"></MenuItem>
+				<Separator/>
+				<MenuItem Header="Cut"></MenuItem>
+				<MenuItem Header="Copy"></MenuItem>
+				<MenuItem Header="Paste"></MenuItem>
+				<Separator/>
+				<MenuItem Header="Select All"></MenuItem>
+			</MenuItem>
+			<MenuItem Header="View">
+                <MenuItem x:Name="menuItemToolbars" Header="Toolbars"></MenuItem>
+				<MenuItem x:Name="menuItemView3Dview" Header="3D view" Click="menuItemView3Dview_Click"></MenuItem>
+				<MenuItem x:Name="menuItemView2Dview" Header="2D Paint" Click="menuItemView2Dview_Click"></MenuItem>
+				<MenuItem x:Name="menuItemViewShowModel" Header="Show model" Click="menuItemViewShowModel_Click" ></MenuItem>
+                <MenuItem x:Name="menuItemViewCrSc" Header="Show cross-section" Click="menuItemViewCrSc_Click" ></MenuItem>
+            </MenuItem>
+			<MenuItem Header="Model">
+                <MenuItem x:Name="menuItemStructure" Header="Structure">
+                    <MenuItem x:Name="menuItemNode" Header="Node"></MenuItem>
+                    <MenuItem x:Name="menuItemMember" Header="Member"></MenuItem>
+                    <MenuItem x:Name="menuItemRelease" Header="Hinge / Release"></MenuItem>
+                    <MenuItem x:Name="menuItemNSupport" Header="Nodal Support"></MenuItem>
+                    <!--<MenuItem x:Name="menuItemWall" Header="Wall"></MenuItem>
+                    <MenuItem x:Name="menuItemSlab" Header="Slab"></MenuItem>
+                    <MenuItem x:Name="menuItemShell" Header="Shell"></MenuItem>
+                    <MenuItem x:Name="menuItemSolid" Header="Solid"></MenuItem> -->
+                </MenuItem>
+                <MenuItem x:Name="menuItemObject" Header="Object">
+                    <MenuItem x:Name="menuItemPoint" Header="Point"></MenuItem>
+                    <MenuItem x:Name="menuItemLine" Header="Line"></MenuItem>
+                    <MenuItem x:Name="menuItemArea" Header="Area"></MenuItem>
+                    <MenuItem x:Name="menuItemVolume" Header="Volume"></MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="menuItemGroup" Header="Group">
+                    
+                </MenuItem>
+            </MenuItem>
+			<MenuItem Header="Loading">
+                <MenuItem x:Name="menuItemLoad" Header="Load">
+                    <MenuItem x:Name="menuItemNLoadonNode" Header="Nodal Load - on node"></MenuItem>
+                    <MenuItem x:Name="menuItemNLoadonMember" Header="Nodal Load - on node"></MenuItem>
+                    <MenuItem x:Name="menuItemLLoadUniform" Header="Line Load - uniform"></MenuItem>
+                    <MenuItem x:Name="menuItemLLoadTriangular" Header="Line Load - triangular"></MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="menuItemLoadCase" Header="Load Case"></MenuItem>
+                <MenuItem x:Name="menuItemLoadGroup" Header="Load Case Group"></MenuItem>   <!-- groups of load case similar properties -->
+                    <MenuItem x:Name="menuItemLoadCombination" Header="Load Combination"></MenuItem>
+            </MenuItem>
+			<MenuItem Header="Database">
+                <MenuItem x:Name="menuItemDatabaseMaterials" Header="Materials" Click="menuItemDB_Materials_Click"></MenuItem>
+                <MenuItem x:Name="menuItemDatabaseCrossSections" Header="Cross-sections" Click="menuItemDB_CrossSections_Click"></MenuItem>
+                <MenuItem x:Name="menuItemDatabaseLoads" Header="Load Tables"></MenuItem> <!-- Tables of loads (dead load, permanent load - layers, live loads -->
+            </MenuItem>
+			<MenuItem Header="Modules">
+                <MenuItem x:Name="menuItemLoadGenerators" Header="Load Generators"></MenuItem>
+                <MenuItem x:Name="menuItemModuleConcrete" Header="Concrete"></MenuItem>
+                <MenuItem x:Name="menuItemModulSteel" Header="Steel" Click="menuItemModuleSteel_Click"></MenuItem>
+                <MenuItem x:Name="menuItemModulComposite" Header="Composite"></MenuItem>
+                <MenuItem x:Name="menuItemModulTimber" Header="Timber"></MenuItem>
+                <MenuItem x:Name="menuItemModulMansonry" Header="Mansonry"></MenuItem>
+                <MenuItem x:Name="menuItemModulGeotechnic" Header="Geotechnic"></MenuItem>
+                <MenuItem x:Name="menuItemModulEarthquake" Header="Earthquake"></MenuItem>
+                <MenuItem x:Name="menuItemModulAluminium" Header="Aluminium"></MenuItem>
+            </MenuItem>
+			<MenuItem Header="Calculation">
+                <MenuItem x:Name="menuItemSolverSettings" Header="Solver Settings"></MenuItem>
+                <MenuItem x:Name="menuItemCalculate" Header="Calculate" Click="menuItemCalculate_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Printout Report">
+            <!-- Printout Report-->
+            </MenuItem>
+            <MenuItem Header="Settings">
+                <MenuItem x:Name="menuItemDisplay" Header="Display">
+                    <MenuItem x:Name="menuItemEnvironment" Header="Environment">
+                        <MenuItem x:Name="menuItemEnvFonts" Header="Fonts"></MenuItem>
+                        <MenuItem x:Name="menuItemEnvColors" Header="Colors"></MenuItem>
+                    </MenuItem>
+                    <MenuItem x:Name="menuItemPrintoutReport" Header="Printout Report">
+                        <MenuItem x:Name="menuItemPrintRFonts" Header="Fonts"></MenuItem>
+                        <MenuItem x:Name="menuItemPrintRColors" Header="Colors"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="menuItemUnits" Header="Units and decimal places"></MenuItem>
+                <MenuItem x:Name="menuItemProgram" Header="Program">
+                    
+                    
+                </MenuItem>
+            </MenuItem>
+			<MenuItem Header="Windows" x:Name="WindowsMenu" x:FieldModifier="private"></MenuItem>
+			<MenuItem Header="Help">
+                <MenuItem x:Name="menuItemHelpContents" Header="Help Contents"></MenuItem>
+                <MenuItem x:Name="menuItemHelpIndex" Header="Help Index"></MenuItem>
+                <MenuItem x:Name="menuItemHelpSearch" Header="Help Search"></MenuItem>
+                <MenuItem x:Name="menuItemManageHelp" Header="Manage Help Settings"></MenuItem>
+                <MenuItem x:Name="menuItemForum" Header="Forum"></MenuItem>
+                <MenuItem x:Name="menuItemOnlineSupport" Header="Online Support"></MenuItem>
+                <MenuItem x:Name="menuItemSampleFiles" Header="Sample Files">
+                    <MenuItem x:Name="menuItemExample2D" Header="Examples 2D">
+                        <MenuItem x:Name="menuItemExample2D_01" Header="Example 01" Click="menuItemExample2D_01_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample2D_02" Header="Example 02" Click="menuItemExample2D_02_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample2D_03" Header="Example 03" Click="menuItemExample2D_03_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample2D_04" Header="Example 04" Click="menuItemExample2D_04_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample2D_11" Header="Example 11" Click="menuItemExample2D_11_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample2D_12" Header="Example 12" Click="menuItemExample2D_12_Click"></MenuItem>
+                    </MenuItem>
+                    <MenuItem x:Name="menuItemExample3D" Header="Examples 3D">
+                        <MenuItem x:Name="menuItemExample3D_01" Header="Example 01" Click="menuItemExample3D_01_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_02" Header="Example 02" Click="menuItemExample3D_02_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_03" Header="Example 03" Click="menuItemExample3D_03_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_04" Header="Example 04" Click="menuItemExample3D_04_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_05" Header="Example 05" Click="menuItemExample3D_05_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_06" Header="Example 06" Click="menuItemExample3D_06_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_07" Header="Example 07" Click="menuItemExample3D_07_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_08" Header="Example 08" Click="menuItemExample3D_08_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_09" Header="Example 09" Click="menuItemExample3D_09_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_10" Header="Example 10" Click="menuItemExample3D_10_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_11" Header="Example 11" Click="menuItemExample3D_11_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_21" Header="Example 21" Click="menuItemExample3D_21_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_50" Header="Example 50 - One Member" Click="menuItemExample3D_50_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_80" Header="Example 80 - House" Click="menuItemExample3D_80_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_90" Header="Example 90 - Cube" Click="menuItemExample3D_90_Click"></MenuItem>
+						<MenuItem x:Name="menuItemExample3D_Ondro" Header="Example - Ondro" Click="menuItemExample3D_Ondro_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_901_PF" Header="Example - PF" Click="menuItemExample3D_901_PF_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemExample3D_902_OM" Header="Example - OM" Click="menuItemExample3D_902_OM_Click"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="menuItemSystem" Header="System Properties"></MenuItem>
+                <MenuItem x:Name="menuItemCheckUpdate" Header="Check for Updates"></MenuItem>
+                <MenuItem x:Name="menuItemAbout" Header="About"></MenuItem>
+                <MenuItem x:Name="menuItemLicense" Header="License"></MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="menuItemDevelopment" Header="Development">
+                <MenuItem x:Name="menuItemTestWindow_3" Header="Test Window" Click="menuItemTestWindow_Click"></MenuItem>
+					<MenuItem x:Name="menuItemTestDXFImport" Header="DXF Import" Click="menuItemTestDXFImport_Click"></MenuItem>
+			</MenuItem>
+        </Menu>
+		<ToolBar Grid.Column="0" Grid.Row="1">
+			<Button x:Name="tbrIzometric" ToolTip="Isometric" VerticalAlignment="Center">
+				<Image Width="25px" Height="25px"  x:Name="ImageIzometric"></Image>
+			</Button>
+			<Button x:Name="tbrPerspective" ToolTip="Perspective" VerticalAlignment="Center" VerticalContentAlignment="Center">
+				<Image Width="25px" Height="25px" x:Name="ImagePerspective"></Image>
+			</Button>
+			<Button x:Name="tbrViewX" ToolTip="view X" VerticalAlignment="Center">
+				<Image Width="25px" Height="25px" x:Name="ImageViewX"></Image>
+			</Button>
+			<Button x:Name="tbrViewY" ToolTip="view Y" VerticalAlignment="Center" VerticalContentAlignment="Center">
+				<Image Width="25px" Height="25px" x:Name="ImageViewY"></Image>
+			</Button>
+			<Button x:Name="tbrViewZ" ToolTip="view Z" VerticalAlignment="Center">
+				<Image Width="25px" Height="25px" x:Name="ImageViewZ"></Image>
+			</Button>
+			
+
+		</ToolBar>
+
+		<Grid Grid.Column="0" Grid.Row="2" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="4*"></RowDefinition>
+				<RowDefinition Height="auto"></RowDefinition>
+				<RowDefinition Height="*"></RowDefinition>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"></ColumnDefinition>
+				<ColumnDefinition Width="auto"></ColumnDefinition>
+				<ColumnDefinition Width="4*"></ColumnDefinition>
+			</Grid.ColumnDefinitions>
+			<GridSplitter HorizontalAlignment="Right" 
+                  VerticalAlignment="Stretch" 
+                  Grid.Column="1"  Grid.RowSpan="3" ResizeBehavior="PreviousAndNext"
+                  Width="5" Background="#FFBCBCBC"/>
+			<GridSplitter HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Bottom" 
+                  Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" ResizeBehavior="PreviousAndNext"
+                  Height="5" Background="#FFBCBCBC"/>
+
+			<TreeView Grid.RowSpan="3" Grid.Column="0">
+				<TreeViewItem Header="Model Name">
+                    <TreeViewItem Header="Basic Data">
+                        <TreeViewItem Header="General"></TreeViewItem>
+                        <TreeViewItem Header="Activities"></TreeViewItem>
+                        <TreeViewItem Header="History"></TreeViewItem>
+                        <TreeViewItem Header="Project"></TreeViewItem>
+                        <TreeViewItem Header="Solver"></TreeViewItem>
+                        <TreeViewItem Header="Codes"></TreeViewItem>
+                        <TreeViewItem Header="Printout Report"></TreeViewItem>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Structure Data">
+						<TreeViewItem Header="Nodes"></TreeViewItem>
+						<TreeViewItem Header="Materials"></TreeViewItem>
+                        <TreeViewItem Header="Cross-sections"></TreeViewItem>
+                        <TreeViewItem Header="Member Releases"></TreeViewItem>
+                        <TreeViewItem Header="Members"></TreeViewItem>
+                        <TreeViewItem Header="Nodal Supports"></TreeViewItem>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Groups">
+                        <TreeViewItem Header="General"></TreeViewItem>
+                        <TreeViewItem Header="Nodes"></TreeViewItem>
+                        <TreeViewItem Header="Members"></TreeViewItem>
+                        <TreeViewItem Header="Nodal Supports"></TreeViewItem>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Loads">
+                        
+                        
+					</TreeViewItem>
+					<TreeViewItem Header="Results">
+                        
+                        
+					</TreeViewItem>
+                    <TreeViewItem Header="Printout Reports">
+
+
+                    </TreeViewItem>
+                    <TreeViewItem Header="Database">
+                        <TreeViewItem Header="Materials"></TreeViewItem>
+                        <TreeViewItem Header="Cross-sections"></TreeViewItem>
+                        <TreeViewItem Header="Loads"></TreeViewItem>
+                    </TreeViewItem>
+                </TreeViewItem>
+			</TreeView>
+
+			<!--This is MDI CONTAINER-->
+			<mdi:MdiContainer Theme="Aero" Grid.Column="2" Grid.Row="0" Name="Container" KeyUp="Container_KeyUp" KeyDown="Container_KeyDown">
+			</mdi:MdiContainer>
+			<Grid Grid.Column="2" Grid.Row="2">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="20px"></RowDefinition>
+					<RowDefinition Height="*"></RowDefinition>
+				</Grid.RowDefinitions>
+			
+			<StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"   Orientation="Horizontal">
+				<Button x:Name="ButtonExport" Click="ButtonExport_Click">Export</Button>
+				<Button x:Name="ButtonImport" Click="ButtonImport_Click">Import</Button>
+			</StackPanel>
+			<ScrollViewer SnapsToDevicePixels="True"
+              HorizontalScrollBarVisibility="Auto" 
+              VerticalScrollBarVisibility="Disabled" Grid.Column="0" Grid.Row="1">
+				<TabControl  TabStripPlacement="Bottom" >
+					<TabItem Header="Nodes">
+						<DataGrid x:Name="dataGridNodes"></DataGrid>
+					</TabItem>
+					<TabItem Header="Materials">
+						<DataGrid x:Name="dataGridMaterials"></DataGrid>
+					</TabItem>
+					<TabItem Header="Cross Sections">
+						<DataGrid x:Name="dataGridCrossSections"></DataGrid>
+					</TabItem>
+					<TabItem Header="Member Releases">
+						<DataGrid x:Name="dataGridMemberReleases"></DataGrid>
+					</TabItem>
+					<TabItem Header="Member Eccentricities">
+						<DataGrid x:Name="dataGridMemberEccentricities"></DataGrid>
+					</TabItem>
+					<TabItem Header="Members Divisions">
+						<DataGrid x:Name="dataGridMemberDivisions"></DataGrid>
+					</TabItem>
+					<TabItem Header="Nodal Support">
+						<DataGrid x:Name="dataGridNodalSupport"></DataGrid>
+					</TabItem>
+					<TabItem Header="Members Elastic Foundations">
+						<DataGrid x:Name="dataGridMemberElasticFoundations"></DataGrid>
+					</TabItem>
+
+
+				</TabControl>
+			</ScrollViewer>
+			</Grid>
+
+		</Grid>
+
+
+	</Grid>
+</Window>

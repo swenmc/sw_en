@@ -1,0 +1,762 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D8A9215-1A12-4970-9CAB-09762D182642}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CENEX</RootNamespace>
+    <AssemblyName>CENEX</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <ApplicationIcon>pin_r2.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CheckBoxComboBox">
+      <HintPath>bin\CheckBoxComboBox.dll</HintPath>
+    </Reference>
+    <Reference Include="MagicLibrary">
+      <HintPath>bin\MagicLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Excel\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Tools.v9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.Office.Tools.v9.0\9.0.0.0__b03f5f7f11d50a3a\Microsoft.Office.Tools.v9.0.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DGVSpecial.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DXFImport.cs" />
+    <Compile Include="DXFImportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GRAPHICS\PAINT\CLine.cs" />
+    <Compile Include="GRAPHICS\PAINT\CMembRelease.cs" />
+    <Compile Include="GRAPHICS\PAINT\CNForce.cs" />
+    <Compile Include="GRAPHICS\PAINT\CNode.cs" />
+    <Compile Include="GRAPHICS\PAINT\CNSupport.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest10.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest9.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest8.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest7.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest6.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest5.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest3.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest1.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest2.cs" />
+    <Compile Include="GRAPHICS\PAINT\CTest4.cs" />
+    <Compile Include="GRAPHICS\PAINT\Paint.cs" />
+    <Compile Include="GRAPHICS\PAINT\PaintForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GRAPHICS\PAINT\PaintForm.Designer.cs">
+      <DependentUpon>PaintForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GRAPHICS\PAINT\PaintForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GRAPHICS\PAINT\PaintForm2.Designer.cs">
+      <DependentUpon>PaintForm2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1KcForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1KcForm.Designer.cs">
+      <DependentUpon>EN1993-1-1KcForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-8Form_PIN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-8Form_PIN.Designer.cs">
+      <DependentUpon>EN1993-1-8Form_PIN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Class1.cs" />
+    <Compile Include="TEMPORARY\BIN\Class2.cs" />
+    <Compile Include="TEMPORARY\BIN\Class3.cs" />
+    <Compile Include="TEMPORARY\BIN\Class4.cs" />
+    <Compile Include="TEMPORARY\BIN\Class5.cs" />
+    <Compile Include="TEMPORARY\BIN\Class6.cs" />
+    <Compile Include="TEMPORARY\BIN\Class7.cs" />
+    <Compile Include="TEMPORARY\BIN\Form1_Specimen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form1_Specimen.designer.cs">
+      <DependentUpon>Form1_Specimen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form10.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form10.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form11.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form11.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form12.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form12.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form13.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form13.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form14.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form14.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form15.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form15.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form16.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form16.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form2.designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form3.designer.cs">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form4.designer.cs">
+      <DependentUpon>Form4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form5.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form6.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form6.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form7.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form7.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form8.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form8.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\Form9.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\BIN\Form9.Designer.cs" />
+    <Compile Include="TEMPORARY\BIN\ProcessStart.cs" />
+    <Compile Include="TEMPORARY\DataGrid_Ukazky.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\DataGrid_Ukazky.Designer.cs">
+      <DependentUpon>DataGrid_Ukazky.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\DataSet1.cs">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1AnnexForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1AnnexForm.Designer.cs">
+      <DependentUpon>EN1993-1-1AnnexForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1CheckedListInfo.cs" />
+    <Compile Include="TEMPORARY\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1DataSet.cs">
+      <DependentUpon>EN1993-1-1DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EN1993-1-1DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1DataTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1DataTableForm.Designer.cs">
+      <DependentUpon>EN1993-1-1DataTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1.cs" />
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1Form.Designer.cs">
+      <DependentUpon>EN1993-1-1Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1MessageBoxes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1MessageBoxes.Designer.cs">
+      <DependentUpon>EN1993-1-1MessageBoxes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1.cs" />
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Annex_I.cs" />
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Annex_I_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Annex_I_Form.Designer.cs">
+      <DependentUpon>EN1999-1-1Annex_I_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Form.Designer.cs">
+      <DependentUpon>EN1999-1-1Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1MessageBoxes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1MessageBoxes.Designer.cs">
+      <DependentUpon>EN1999-1-1MessageBoxes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\FontListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\Form1_specimens.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\Form1_specimens.Designer.cs">
+      <DependentUpon>Form1_specimens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1CSPictureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-1CSPictureForm.Designer.cs">
+      <DependentUpon>EN1993-1-1CSPictureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DXFImportForm.resx">
+      <DependentUpon>DXFImportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GRAPHICS\PAINT\PaintForm.resx">
+      <DependentUpon>PaintForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GRAPHICS\PAINT\PaintForm2.resx">
+      <DependentUpon>PaintForm2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-1KcForm.resx">
+      <DependentUpon>EN1993-1-1KcForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-1AnnexForm.resx">
+      <DependentUpon>EN1993-1-1AnnexForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-1DataTableForm.resx">
+      <DependentUpon>EN1993-1-1DataTableForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-1Form.resx">
+      <DependentUpon>EN1993-1-1Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-1MessageBoxes.resx">
+      <DependentUpon>EN1993-1-1MessageBoxes.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-8Form_PIN.resx">
+      <DependentUpon>EN1993-1-8Form_PIN.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Annex_I_Form.resx">
+      <DependentUpon>EN1999-1-1Annex_I_Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1Form.resx">
+      <DependentUpon>EN1999-1-1Form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1MessageBoxes.resx">
+      <DependentUpon>EN1999-1-1MessageBoxes.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form1_Specimen.resx">
+      <DependentUpon>Form1_Specimen.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form10.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form12.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form13.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form14.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form15.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form16.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form3.resx">
+      <DependentUpon>Form3.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form4.resx">
+      <DependentUpon>Form4.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form5.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form6.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form7.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form8.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\BIN\Form9.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\DataGrid_Ukazky.resx">
+      <DependentUpon>DataGrid_Ukazky.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\Form1_specimens.resx">
+      <DependentUpon>Form1_specimens.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MODULES\03_STEEL\EC3\EN1993-1-1CSPictureForm.resx">
+      <DependentUpon>EN1993-1-1CSPictureForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TreeForm.resx">
+      <DependentUpon>TreeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TEMPORARY\TZBForm.resx">
+      <DependentUpon>TZBForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="MODULES\03_STEEL\EC3\EN1993-1-1DataSet.xsc">
+      <DependentUpon>EN1993-1-1DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="MODULES\03_STEEL\EC3\EN1993-1-1DataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>EN1993-1-1DataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="MODULES\03_STEEL\EC3\EN1993-1-1DataSet.xss">
+      <DependentUpon>EN1993-1-1DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="TreeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TreeForm.Designer.cs">
+      <DependentUpon>TreeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TEMPORARY\TZBclass.cs" />
+    <Compile Include="TEMPORARY\TZBForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TEMPORARY\TZBForm.Designer.cs">
+      <DependentUpon>TZBForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="TEMPORARY\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="TEMPORARY\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="TEMPORARY\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\biely.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_04.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_05.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_06.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_07.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_08.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I1_M_09.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I2_M_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I2_M_02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I2_M_03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I2_M_04.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I2_M_05.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_04.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_05.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_06.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_07.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_08.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kw_09.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_02.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_04.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_05.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_06.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_07.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_08.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ky_kz_09.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I3_M_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\I4_M_01.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pin1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\pin2.jpg" />
+    <None Include="TEMPORARY\BIN\app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.jpeg" />
+    <None Include="Resources\pin_21_h.jpg" />
+    <None Include="Resources\pin_21_s.jpg" />
+    <None Include="Resources\pin_32_h.jpg" />
+    <None Include="Resources\pin_32_s.jpg" />
+    <Content Include="pin_r2.ico" />
+    <Content Include="TEMPORARY\BIN\WindowsFormsApplication1.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3DTools-1.0-src\Samples\ModelViewer\ModelViewer.csproj">
+      <Project>{0231FAF0-6A94-4211-8C62-82043BD747AD}</Project>
+      <Name>ModelViewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
+      <Name>BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CRSC\CRSC.csproj">
+      <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
+      <Name>CRSC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DATABASE\DATABASE.csproj">
+      <Project>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXPIMP\EXPIMP.csproj">
+      <Project>{22C05C80-D91F-424F-97B0-860C475FFD76}</Project>
+      <Name>EXPIMP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
+      <Project>{602C8862-99F4-4595-A033-84194DDFE00A}</Project>
+      <Name>FEM_CALC_1Din2D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\FEM_CALC_1Din3D\FEM_CALC_1Din3D.csproj">
+      <Project>{C027BE8A-6935-4525-BB39-A1A2F2F8C0D7}</Project>
+      <Name>FEM_CALC_1Din3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
+      <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
+      <Name>MATERIAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MATH\MATH.csproj">
+      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC1\M_EC1.csproj">
+      <Project>{9764D1BF-A2B3-45D6-AB93-050DCE30830C}</Project>
+      <Name>M_EC1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC2\M_EC2.csproj">
+      <Project>{5F7F75F6-D383-4B86-9406-EC68C75090C6}</Project>
+      <Name>M_EC2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC3\M_EC3.csproj">
+      <Project>{515CE0E4-0E37-453D-869E-2A651557389E}</Project>
+      <Name>M_EC3</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC4\M_EC4.csproj">
+      <Project>{B18D348E-0355-4CFD-91A9-FD8D30FE2B74}</Project>
+      <Name>M_EC4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC5\M_EC5.csproj">
+      <Project>{62C43A87-8703-4264-B7CF-46F7A1A9F918}</Project>
+      <Name>M_EC5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC6\M_EC6.csproj">
+      <Project>{88087731-387C-4A65-9644-9E17339AB10C}</Project>
+      <Name>M_EC6</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC7\M_EC7.csproj">
+      <Project>{A18F3BFB-3A2B-4191-9AC6-B52958367616}</Project>
+      <Name>M_EC7</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC8\M_EC8.csproj">
+      <Project>{6FE7FFA4-0A03-4891-B796-878EF414AC28}</Project>
+      <Name>M_EC8</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC9\M_EC9.csproj">
+      <Project>{B37DD6B9-7A5E-412B-A45B-05AD0ABF573E}</Project>
+      <Name>M_EC9</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ACTIVEXLib">
+      <Guid>{012F24C1-35B0-11D0-BF2D-0000E8D0D146}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Access.Dao">
+      <Guid>{4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}</Guid>
+      <VersionMajor>12</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel1">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

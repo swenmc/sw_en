@@ -1,0 +1,534 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{76F7949B-0055-4004-BF34-BDED850AE842}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>sw_en_GUI</RootNamespace>
+    <AssemblyName>sw_en_GUI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>pin_r2.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HelixToolkit.Wpf, Version=2014.2.37.1, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.74.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WPF.MDI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WPF.MDI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="CUIHelper.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_01.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_02.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_03.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_04.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_11.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_12.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_01.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_02.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_03.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_04.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_902_OM.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_901_PF.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_05.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_06.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_07.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_08.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_09.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_10.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_11.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_21.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_80.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_50.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_90.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_Ondro.cs" />
+    <Compile Include="EXAMPLES\CExample.cs" />
+    <Compile Include="Viewer3D.xaml.cs">
+      <DependentUpon>Viewer3D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Window3.xaml.cs">
+      <DependentUpon>Window3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowCrScFromDB.xaml.cs">
+      <DependentUpon>WindowCrScFromDB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowCrScParam.xaml.cs">
+      <DependentUpon>WindowCrScParam.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowCrossSectionDB.xaml.cs">
+      <DependentUpon>WindowCrossSectionDB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowDXFImport.xaml.cs">
+      <DependentUpon>WindowDXFImport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowHelixTrial.xaml.cs">
+      <DependentUpon>WindowHelixTrial.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMain.xaml.cs">
+      <DependentUpon>WindowMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMaterialDB.xaml.cs">
+      <DependentUpon>WindowMaterialDB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMenu.xaml.cs">
+      <DependentUpon>WindowMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowCrossSection2D.xaml.cs">
+      <DependentUpon>WindowCrossSection2D.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPaint.xaml.cs">
+      <DependentUpon>WindowPaint.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowStart.xaml.cs">
+      <DependentUpon>WindowStart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WireFrame.xaml.cs">
+      <DependentUpon>WireFrame.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Object.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Viewer3D.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Window3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowCrScFromDB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowCrScParam.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowCrossSectionDB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowDXFImport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowHelixTrial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMaterialDB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowCrossSection2D.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowPaint.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowStart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WireFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CConsoleHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Window2.xaml.cs">
+      <DependentUpon>Window2.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Resources\test.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3DTools-1.0-src\3DTools\3DTools.csproj">
+      <Project>{5F603892-DE40-4246-A969-1C6717AFE35D}</Project>
+      <Name>3DTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
+      <Name>BaseClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CRSC\CRSC.csproj">
+      <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
+      <Name>CRSC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
+      <Project>{602C8862-99F4-4595-A033-84194DDFE00A}</Project>
+      <Name>FEM_CALC_1Din2D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\FEM_CALC_1Din3D\FEM_CALC_1Din3D.csproj">
+      <Project>{C027BE8A-6935-4525-BB39-A1A2F2F8C0D7}</Project>
+      <Name>FEM_CALC_1Din3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM_CALC_BASE\FEM_CALC_BASE.csproj">
+      <Project>{1AD8C2C0-40CF-4C23-A715-43214CD8DB89}</Project>
+      <Name>FEM_CALC_BASE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
+      <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
+      <Name>MATERIAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MATH\MATH.csproj">
+      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedLibraries\SharedLibraries\SharedLibraries.csproj">
+      <Project>{28044445-E8DD-4041-B534-3FEE5C07237F}</Project>
+      <Name>SharedLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sw_en\SW_EN.csproj">
+      <Project>{8D8A9215-1A12-4970-9CAB-09762D182642}</Project>
+      <Name>SW_EN</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\3_STE_F\3_97.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\0_GEN_F\0_00.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_01.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_02.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_03.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_04.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_05.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_06.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_07.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_08.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_20.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_21.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_22.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_23.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_24.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_25.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_26.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_27.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_28.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_50.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_51.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_52.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_53.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_54.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_55.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_56.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_57.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_58.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_59.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_60.png" />
+    <Resource Include="Resources\Images\0_GEN_F\0_61.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_00.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_01.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_02.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_03.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_04.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_05.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_06.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_07.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_20.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_21.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_22.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_23.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_24.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_25.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_26.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_27.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_28.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_40.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_41.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_42.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_43.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_44.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_45.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_46.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_47.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_48.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_49.png" />
+    <Resource Include="Resources\Images\2_CON_F\2_50.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_00.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_01.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_02.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_03.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_04.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_05.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_06.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_07.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_08.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_09.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_10.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_100.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_110.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_120.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_20.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_21.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_22.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_23.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_24.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_25.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_26.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_27.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_28.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_29.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_30.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_31.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_32.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_33.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_34.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_40.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_41.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_42.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_43.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_44.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_45.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_46.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_47.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_48.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_49.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_50.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_70.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_71.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_72.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_73.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_74.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_75.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_76.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_77.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_78.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_79.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_80.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_81.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_82.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_83.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_84.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_85.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_86.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_87.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_88.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_89.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_90.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_91.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_92.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_93.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_94.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_95.png" />
+    <Resource Include="Resources\Images\3_STE_F\3_96.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_00.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_01.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_02.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_03.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_04.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_20.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_21.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_30.png" />
+    <Resource Include="Resources\Images\4_COM_F\4_31.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_00.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_01.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_02.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_20.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_21.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_22.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_40.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_41.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_60.png" />
+    <Resource Include="Resources\Images\5_TIM_F\5_61.png" />
+    <Resource Include="Resources\Images\SW\0_MASS.png" />
+    <Resource Include="Resources\Images\SW\0_THIN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Images\Textures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\xyz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\files.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\HelixToolkit.Wpf.dll" />
+    <Resource Include="pin_r2.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

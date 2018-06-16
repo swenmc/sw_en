@@ -1,0 +1,11 @@
+﻿<Window x:Class="sw_en_GUI.WindowDXFImport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DXF Import" Height="300" Width="300">
+	<StackPanel HorizontalAlignment="Left">
+		<Button x:Name="OpenFileBtn" Width="60px" Margin="15px" Click="ButtonOpenFile_Click">Open file
+			
+		</Button>
+		
+	</StackPanel>
+</Window>

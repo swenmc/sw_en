@@ -1,0 +1,18 @@
+﻿<Window x:Class="sw_en_GUI.Window3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Tools3D="clr-namespace:_3DTools;assembly=3DTools"
+    Title="Window3" Height="600" Width="800" MaxHeight="2400" MaxWidth="3200">
+    <Grid x:Name="gridForTrackport">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border Background="Black" Grid.Row="0" Grid.Column="0">
+            <!-- Default background is black -->
+            <Tools3D:Trackport3D x:Name="_trackport" Background="Black" />
+        </Border>
+    </Grid>
+</Window>
