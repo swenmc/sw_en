@@ -144,8 +144,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             int iFrontIntermediateColumnNodesForGirtsOneRafterNo = 0;
             int iFrontIntermediateColumnNodesForGirtsOneFrameNo = 0;
             iFrontGirtsNoInOneFrame = 0;
+            int[] iArrNumberOfNodesPerFrontColumn = new int[iOneRafterFrontColumnNo];
 
-            bool bGenerateFrontGirts = false; // TEMP TODO
+            bool bGenerateFrontGirts = true;
             if (bGenerateFrontGirts)
             {
                 iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterFrontColumnNo, fBottomGirdPosition, fDist_FrontColumns);
@@ -155,20 +156,18 @@ namespace sw_en_GUI.EXAMPLES._3D
                 iOneColumnGridNo = (int)((fH1_frame - fBottomGirdPosition) / fDist_Girt) + 1;
 
                 iFrontGirtsNoInOneFrame = iOneColumnGridNo;
-                int iNumber_of_Girts_Middle = 0;
 
                 // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                 for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
-                    iFrontGirtsNoInOneFrame += GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirdPosition, fDist_FrontColumns, i);
-
-                    if(i == (iOneRafterFrontColumnNo-1))
-                        iNumber_of_Girts_Middle = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirdPosition, fDist_FrontColumns, i);
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirdPosition, fDist_FrontColumns, i);
+                    iFrontGirtsNoInOneFrame += temp;
+                    iArrNumberOfNodesPerFrontColumn[i] = temp;
                 }
 
                 iFrontGirtsNoInOneFrame *= 2;
                 // Girts in the middle are considered twice - remove one set
-                iFrontGirtsNoInOneFrame -= iNumber_of_Girts_Middle;
+                iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo-1];
             }
 
             // Number of Nodes - Back Girts
@@ -203,7 +202,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fBackColumnEnd = 0f;
 
             m_arrNodes = new BaseClasses.CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirdNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirdNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirdNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame];
             m_arrMat = new CMat_00[1];
             m_arrCrSc = new CRSC.CCrSc[6];
             m_arrNSupports = new BaseClasses.CNSupport[2 * iFrameNo];
@@ -290,7 +289,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             }
 
             // Nodes - Purlins
-            i_temp_numberofNodes += bGenerateGirts ? iGirdNoInOneFrame * iFrameNo : 0;
+            i_temp_numberofNodes += bGenerateGirts ? (iGirdNoInOneFrame * iFrameNo) : 0;
             if (bGeneratePurlins)
             {
                 for (int i = 0; i < iFrameNo; i++)
@@ -314,7 +313,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             }
 
             // Members - Purlins
-            i_temp_numberofMembers += bGenerateGirts ? iGirdNoInOneFrame * (iFrameNo - 1) : 0;
+            i_temp_numberofMembers += bGenerateGirts ? (iGirdNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGeneratePurlins)
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
@@ -333,14 +332,14 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Front Columns
             // Nodes - Front Columns
-            i_temp_numberofNodes += bGeneratePurlins ? iPurlinNoInOneFrame * iFrameNo : 0;
+            i_temp_numberofNodes += bGeneratePurlins ? (iPurlinNoInOneFrame * iFrameNo) : 0;
             if (bGenerateFrontColumns)
             {
                 AddColumnsNodes(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterFrontColumnNo, iFrontColumnNoInOneFrame, fDist_FrontColumns, 0);
             }
 
             // Members - Front Columns
-            i_temp_numberofMembers += bGeneratePurlins ? iPurlinNoInOneFrame * (iFrameNo - 1) : 0;
+            i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGenerateFrontColumns)
             {
                 AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iFrontColumnNoInOneFrame, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[5]);
@@ -364,21 +363,60 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Front Girts Columns
             // Nodes - Front Girts
-            i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
+            i_temp_numberofNodes += bGenerateBackColumns ? iBackColumninOneFrameNodesNo : 0;
             if (bGenerateFrontGirts)
             {
+                int iTemp = 0;
+
                 for (int j = 0; j < iOneRafterFrontColumnNo; j++)
                 {
                     float z_glob;
                     CalcColumnNodeCoord_Z((j + 1) * fDist_FrontColumns, out z_glob);
-                    m_arrNodes[i_temp_numberofNodes + j] = new CNode(i_temp_numberofNodes + j + 1, (j + 1) * fDist_FrontColumns, (j + 1) * fDist_FrontColumns, 0, 0);
+
+                    for (int k = 0; k < iArrNumberOfNodesPerFrontColumn[j]; k++)
+                    {
+                        m_arrNodes[i_temp_numberofNodes + iTemp + k] = new CNode(i_temp_numberofNodes + iTemp + k, (j + 1) * fDist_FrontColumns, 0, fBottomGirdPosition + k * fDist_FrontGirt, 0);
+                    }
+
+                    iTemp += iArrNumberOfNodesPerFrontColumn[j];
                 }
 
-                // TODO
+                iTemp = 0;
 
+                for (int j = 0; j < iOneRafterFrontColumnNo; j++)
+                {
+                    float z_glob;
+                    CalcColumnNodeCoord_Z((j + 1) * fDist_FrontColumns, out z_glob);
 
+                    for (int k = 0; k < iArrNumberOfNodesPerFrontColumn[j]; k++)
+                    {
+                        m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp + k] = new CNode(i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp + k + 1, fW_frame - (j + 1) * fDist_FrontColumns, 0, fBottomGirdPosition + k * fDist_FrontGirt, 0);
+                    }
 
+                    iTemp += iArrNumberOfNodesPerFrontColumn[j];
+                }
             }
+
+            // Front Girts Columns
+            // Members - Front Girts
+            // In work TODO
+            /*
+            i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
+            if (bGenerateFrontGirts)
+            {
+                for (int i = 0; i < iOneRafterFrontColumnNo + 1; i++)
+                {
+                    for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[j]; j++)
+                    {
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[4], fPurlinStart, fPurlinEnd, 0f, 0);
+                    }
+
+                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                    {
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[4], fPurlinStart, fPurlinEnd, 0f, 0);
+                    }
+                }
+            }*/
 
 
 
