@@ -50,6 +50,7 @@ namespace PFD
         float fdist_girt;
         float fdist_purlin;
         float fdist_frontcolumn;
+        float fdist_girt_bottom;
 
         List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
@@ -84,7 +85,7 @@ namespace PFD
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
 
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn);
+            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom);
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -122,6 +123,9 @@ namespace PFD
             fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci) / 1000f;
             fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci) / 1000f;
             fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci) / 1000f;
+
+            // Temporary
+            fdist_girt_bottom = dmodels.fdist_girt_bottom_mm / 1000f;
         }
 
         private void DeleteCalculationResults()
@@ -135,7 +139,7 @@ namespace PFD
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn); // create calculation model // TODO - set purlin distances
+            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom); // create calculation model // TODO - set purlin distances
 
             // Clear results of previous calculation
             DeleteCalculationResults();
@@ -459,7 +463,7 @@ namespace PFD
 
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn);
+            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn,fdist_girt_bottom);
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -473,7 +477,7 @@ namespace PFD
         {
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn);
+            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn, fdist_girt_bottom);
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);

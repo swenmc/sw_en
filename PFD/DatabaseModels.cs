@@ -17,6 +17,7 @@ namespace PFD
         public float fdist_girt_mm;
         public float fdist_purlin_mm;
         public float fdist_frontcolumn_mm;
+        public float fdist_girt_bottom_mm;
 
         public DatabaseModels()
         { }
@@ -32,6 +33,7 @@ namespace PFD
             fdist_girt_mm = 0.25f * fL1_mm;
             fdist_purlin_mm = 0.25f * fL1_mm;
             fdist_frontcolumn_mm = 0.5f * fL1_mm;
+            fdist_girt_bottom_mm = 300f; // Distance from concrete foundation to the centerline
         }
 
         //MODEL GABLE WIDTH (MM) LENGTH (MM) WALL HEIGHT(MM)

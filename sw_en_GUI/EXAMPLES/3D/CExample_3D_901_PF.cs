@@ -23,7 +23,8 @@ namespace sw_en_GUI.EXAMPLES._3D
         public float fDist_Purlin;
         public float fDist_FrontColumns;
         public float fDist_BackColumns;
-        public float fDist_FrontGirt;
+        public float fBottomGirdPosition;
+        public float fDist_FrontGirts;
         public float fDist_BackGirts;
 
         int iMainColumnNo;
@@ -36,7 +37,7 @@ namespace sw_en_GUI.EXAMPLES._3D
         int iFrontGirtsNoInOneFrame;
         int iBackGirtsNoInOneFrame;
 
-        public CExample_3D_901_PF(float fH1_temp, float fW_temp, float fL1_temp, int iFrameNo_temp, float fH2_temp, float fDist_Gird_temp, float fDist_Purlin_temp, float fDist_FrontColumns_temp)
+        public CExample_3D_901_PF(float fH1_temp, float fW_temp, float fL1_temp, int iFrameNo_temp, float fH2_temp, float fDist_Gird_temp, float fDist_Purlin_temp, float fDist_FrontColumns_temp, float fBottomGirdPosition_temp)
         {
             // Todo asi prepracovat na zoznam tried objektov
 
@@ -56,19 +57,17 @@ namespace sw_en_GUI.EXAMPLES._3D
             fH1_frame = fH1_temp;
             fW_frame = fW_temp;
             fL1_frame = fL1_temp;
-
             iFrameNo = iFrameNo_temp;
-
             fH2_frame = fH2_temp;
-            //Temp
-            fH2_frame = 7;
 
             fL_tot = (iFrameNo - 1) * fL1_frame;
 
             fDist_Girt = fDist_Gird_temp;
             fDist_Purlin = fDist_Purlin_temp;
-
             fDist_FrontColumns = fDist_FrontColumns_temp;
+            fBottomGirdPosition = fBottomGirdPosition_temp;
+            fDist_FrontGirts = fDist_Gird_temp; // Ak nie je rovnake ako pozdlzne tak su koncove pruty sikmo pretoze sa uvazuje jeden uzol na stlpe pre pozdlzny aj priecny smer nosnikov
+            fDist_BackGirts = fDist_Gird_temp;
 
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
@@ -82,8 +81,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             iMainColumnNo = iFrameNo * 2;
             iRafterNo = iFrameNo * 2;
 
-            const float fBottomGirdPosition = 0.3f;
-            int iOneColumnGridNo = 0;
+             int iOneColumnGridNo = 0;
             iGirdNoInOneFrame = 0;
 
             bool bGenerateGirts = true;
@@ -200,11 +198,20 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fFrontColumnEnd = 0f;
             float fBackColumnStart = 0f;
             float fBackColumnEnd = 0f;
+            float fFrontGirtStart = 0f;
+            float fFrontGirtEnd = 0f;
+            float fBackGirtStart = 0f;
+            float fBackGirtEnd = 0f;
+            float fFrontGirtStart_MC = 0f; // Connection to the main frame column
+            float fFrontGirtEnd_MC = 0f; // Connection to the main frame column
+            float fBackGirtStart_MC = 0f; // Connection to the main frame column
+            float fBackGirtEnd_MC = 0f; // Connection to the main frame column
+
 
             m_arrNodes = new BaseClasses.CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirdNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo];
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirdNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame];
             m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[6];
+            m_arrCrSc = new CRSC.CCrSc[8];
             m_arrNSupports = new BaseClasses.CNSupport[2 * iFrameNo];
 
             // Materials
@@ -218,7 +225,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrCrSc[2] = new CCrSc_3_51_C_LIP2_FS50020(0.5f, 0.1f, 0.02f, 0.05f, 0.01f, Colors.Thistle);  // Eaves Purlin
             m_arrCrSc[3] = new CCrSc_3_51_C_LIP2_FS50020(0.3f, 0.08f, 0.02f, 0.05f, 0.01f, Colors.Orange);  // Girt Purlin
             m_arrCrSc[4] = new CCrSc_3_51_C_LIP2_FS50020(0.35f, 0.10f, 0.015f, 0.065f, 0.001f, Colors.SlateBlue); // Purlin
-            m_arrCrSc[5] = new CCrSc_3_51_C_LIP2_FS50020(0.45f, 0.10f, 0.015f, 0.065f, 0.001f, Colors.Beige); // FrontColumn
+            m_arrCrSc[5] = new CCrSc_3_51_C_LIP2_FS50020(0.45f, 0.10f, 0.015f, 0.065f, 0.001f, Colors.Beige); // Front Column
+            m_arrCrSc[6] = new CCrSc_3_51_C_LIP2_FS50020(0.45f, 0.10f, 0.015f, 0.065f, 0.001f, Colors.Beige); // Back Column
+            m_arrCrSc[7] = new CCrSc_3_51_C_LIP2_FS50020(0.25f, 0.08f, 0.015f, 0.065f, 0.001f, Colors.Aquamarine); // Front Girt
 
             // Nodes Automatic Generation
             // Nodes List - Nodes Array
@@ -358,7 +367,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
             if (bGenerateBackColumns)
             {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fBackColumnStart, fBackColumnEnd, m_arrCrSc[5]);
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fBackColumnStart, fBackColumnEnd, m_arrCrSc[6]);
             }
 
             // Front Girts Columns
@@ -368,62 +377,112 @@ namespace sw_en_GUI.EXAMPLES._3D
             {
                 int iTemp = 0;
 
-                for (int j = 0; j < iOneRafterFrontColumnNo; j++)
+                for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
                     float z_glob;
-                    CalcColumnNodeCoord_Z((j + 1) * fDist_FrontColumns, out z_glob);
+                    CalcColumnNodeCoord_Z((i + 1) * fDist_FrontColumns, out z_glob);
 
-                    for (int k = 0; k < iArrNumberOfNodesPerFrontColumn[j]; k++)
+                    for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[i]; j++)
                     {
-                        m_arrNodes[i_temp_numberofNodes + iTemp + k] = new CNode(i_temp_numberofNodes + iTemp + k, (j + 1) * fDist_FrontColumns, 0, fBottomGirdPosition + k * fDist_FrontGirt, 0);
+                        m_arrNodes[i_temp_numberofNodes + iTemp + j] = new CNode(i_temp_numberofNodes + iTemp + j, (i + 1) * fDist_FrontColumns, 0, fBottomGirdPosition + j * fDist_FrontGirts, 0);
                     }
 
-                    iTemp += iArrNumberOfNodesPerFrontColumn[j];
+                    iTemp += iArrNumberOfNodesPerFrontColumn[i];
                 }
 
                 iTemp = 0;
 
-                for (int j = 0; j < iOneRafterFrontColumnNo; j++)
+                for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
                     float z_glob;
-                    CalcColumnNodeCoord_Z((j + 1) * fDist_FrontColumns, out z_glob);
+                    CalcColumnNodeCoord_Z((i + 1) * fDist_FrontColumns, out z_glob);
 
-                    for (int k = 0; k < iArrNumberOfNodesPerFrontColumn[j]; k++)
+                    for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[i]; j++)
                     {
-                        m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp + k] = new CNode(i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp + k + 1, fW_frame - (j + 1) * fDist_FrontColumns, 0, fBottomGirdPosition + k * fDist_FrontGirt, 0);
+                        m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j] = new CNode(i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j + 1, fW_frame - (i + 1) * fDist_FrontColumns, 0, fBottomGirdPosition + j * fDist_FrontGirts, 0);
                     }
 
-                    iTemp += iArrNumberOfNodesPerFrontColumn[j];
+                    iTemp += iArrNumberOfNodesPerFrontColumn[i];
                 }
             }
 
-            // Front Girts Columns
+            // Front Girts
             // Members - Front Girts
-            // In work TODO
-            /*
+            // TODO - doplnit riesenie pre maly rozpon ked neexistuju mezilahle stlpiky, prepojenie mezi hlavnymi stplmi ramu na celu sirku budovy
+            // TODO - toto riesenie plati len ak existuju girts v pozdlznom smere, ak budu deaktivovane a nevytvoria sa uzly na stlpoch tak sa musia pruty na celnych stenach generovat uplne inak, musia sa vygenerovat aj uzly na stlpoch ....
+
             i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
             if (bGenerateFrontGirts)
             {
+                int iTemp = 0;
+                int iTemp2 = 0;
+                int iOneColumnGridNo_temp = (int)((fH1_frame - fBottomGirdPosition) / fDist_Girt) + 1;
+
                 for (int i = 0; i < iOneRafterFrontColumnNo + 1; i++)
                 {
-                    for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[j]; j++)
+                    if (i == 0) // First session depends on number of girts at main frame column
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[4], fPurlinStart, fPurlinEnd, 0f, 0);
-                    }
+                        for (int j = 0; j < iOneColumnGridNo_temp; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + j] = new CMember(i_temp_numberofMembers + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + j], m_arrNodes[i_temp_numberofNodes + j], m_arrCrSc[7], fFrontGirtStart_MC, fFrontGirtEnd, 0f, 0);
+                        }
 
-                    for (int j = 0; j < iOneRafterPurlinNo; j++)
+                        iTemp += iOneColumnGridNo_temp;
+                    }
+                    else if (i < iOneRafterFrontColumnNo) // Other sessions
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[4], fPurlinStart, fPurlinEnd, 0f, 0);
+                        for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[i-1]; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iArrNumberOfNodesPerFrontColumn[i-1] + iTemp2 + j], m_arrCrSc[7], fFrontGirtStart, fFrontGirtEnd, 0f, 0);
+                        }
+
+                        iTemp2 += iArrNumberOfNodesPerFrontColumn[i - 1];
+                        iTemp += iArrNumberOfNodesPerFrontColumn[i-1];
+                    }
+                    else // Last session - prechadza cez stred budovy
+                    {
+                        for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[i-1]; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneFrameNo - iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1] + j], m_arrCrSc[7], fFrontGirtStart, fFrontGirtEnd, 0f, 0);
+                        }
+
+                        iTemp += iArrNumberOfNodesPerFrontColumn[i-1];
                     }
                 }
-            }*/
 
+                iTemp = 0;
+                iTemp2 = 0;
 
+                for (int i = 0; i < iOneRafterFrontColumnNo; i++)
+                {
+                    int iNumberOfMembers_temp = iOneColumnGridNo_temp + iFrontIntermediateColumnNodesForGirtsOneRafterNo;
 
-                // Nodal Supports - fill values
+                    if (i == 0) // First session depends on number of girts at main frame column
+                    {
+                        for (int j = 0; j < iOneColumnGridNo_temp; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iOneColumnGridNo_temp + j], m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + j], m_arrCrSc[7], fFrontGirtStart_MC, fFrontGirtEnd, 0f, 0);
+                        }
 
-                // Set values
-                bool[] bSupport1 = { true, false, true, true, false, false };
+                        iTemp += iOneColumnGridNo_temp;
+                    }
+                    else // Other sessions (not in the middle)
+                    {
+                        for (int j = 0; j < iArrNumberOfNodesPerFrontColumn[i-1]; j++)
+                        {
+                            m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iFrontIntermediateColumnNodesForGirtsOneRafterNo + iArrNumberOfNodesPerFrontColumn[i-1] + iTemp2 + j], m_arrCrSc[7], fFrontGirtStart, fFrontGirtEnd, 0f, 0);
+                        }
+
+                        iTemp2 += iArrNumberOfNodesPerFrontColumn[i - 1];
+                        iTemp += iArrNumberOfNodesPerFrontColumn[i-1];
+                    }
+                }
+            }
+
+            // Nodal Supports - fill values
+
+            // Set values
+            bool[] bSupport1 = { true, false, true, true, false, false };
             bool[] bSupport2 = { false, false, true, true, false, false };
 
             // Create Support Objects
@@ -496,45 +555,45 @@ namespace sw_en_GUI.EXAMPLES._3D
             float z_glob;
 
             // Bottom nodes
-            for (int j = 0; j < iOneRafterColumnNo; j++)
+            for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                CalcColumnNodeCoord_Z((j + 1) * fDist_Columns, out z_glob);
-                m_arrNodes[i_temp_numberofNodes + j] = new CNode(i_temp_numberofNodes + j + 1, (j + 1) * fDist_Columns, fy_Global_Coord, 0, 0);
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                m_arrNodes[i_temp_numberofNodes + i] = new CNode(i_temp_numberofNodes + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, 0, 0);
             }
 
             // Bottom nodes
-            for (int j = 0; j < iOneRafterColumnNo; j++)
+            for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                CalcColumnNodeCoord_Z((j + 1) * fDist_Columns, out z_glob);
-                m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + j] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + j + 1, fW_frame - ((j + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + iOneRafterColumnNo + i + 1, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, 0, 0);
             }
 
             // Top nodes
-            for (int j = 0; j < iOneRafterColumnNo; j++)
+            for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                CalcColumnNodeCoord_Z((j + 1) * fDist_Columns, out z_glob);
-                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + j] = new CNode(i_temp_numberofNodes + 2 * iOneRafterColumnNo + j + 1, (j + 1) * fDist_Columns, fy_Global_Coord, z_glob, 0);
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i] = new CNode(i_temp_numberofNodes + 2 * iOneRafterColumnNo + i + 1, (i + 1) * fDist_Columns, fy_Global_Coord, z_glob, 0);
             }
 
             // Top nodes
-            for (int j = 0; j < iOneRafterColumnNo; j++)
+            for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                CalcColumnNodeCoord_Z((j + 1) * fDist_Columns, out z_glob);
-                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + j] = new CNode(i_temp_numberofNodes + 3 * iOneRafterColumnNo + j + 2, fW_frame - ((j + 1) * fDist_Columns), fy_Global_Coord, z_glob, 0);
+                CalcColumnNodeCoord_Z((i + 1) * fDist_Columns, out z_glob);
+                m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i] = new CNode(i_temp_numberofNodes + 3 * iOneRafterColumnNo + i + 2, fW_frame - ((i + 1) * fDist_Columns), fy_Global_Coord, z_glob, 0);
             }
         }
 
         public void AddColumnsMembers(int i_temp_numberofNodes, int i_temp_numberofMembers, int iOneRafterColumnNo, int iColumnNoInOneFrame, float fColumnAlignmentStart, float fColumnAlignmentEnd, CCrSc section)
         {
             // Members - Columns
-            for (int j = 0; j < iOneRafterColumnNo; j++)
+            for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                m_arrMembers[i_temp_numberofMembers + j] = new CMember(i_temp_numberofMembers + j + 1, m_arrNodes[i_temp_numberofNodes + j], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + j], section, fColumnAlignmentStart, fColumnAlignmentEnd, 0f, 0);
+                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, fColumnAlignmentStart, fColumnAlignmentEnd, 0f, 0);
             }
 
-            for (int j = 0; j < iOneRafterColumnNo; j++)
+            for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + j] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + j + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + j], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + j], section, fColumnAlignmentStart, fColumnAlignmentEnd, 0f, 0);
+                m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, fColumnAlignmentStart, fColumnAlignmentEnd, 0f, 0);
             }
         }
 
