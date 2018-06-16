@@ -9,6 +9,7 @@
     
     <Grid>        
         <StackPanel Name="myStackPanel" Background="AliceBlue" Width="300" Height="100" VerticalAlignment="Top" Margin="330,0,0,0" HorizontalAlignment="Left">
+            <TextBlock>ta neznam co na tym take tazke,ked ja som tu za minutu</TextBlock>
         </StackPanel>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="12,25,0,0" TextWrapping="Wrap" Text="AAC component" VerticalAlignment="Top" Width="95"/>
         <ComboBox Name ="ComboBox_AAC_Component" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Margin="155,25,0,0" SelectionChanged="ComboBox_AAC_Component_SelectionChanged" Height="20" SelectedIndex="3">
