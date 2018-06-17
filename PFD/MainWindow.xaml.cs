@@ -40,17 +40,17 @@ namespace PFD
         public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
 
         int selected_Model_Index;
-        float fb;
-        float fL;
-        float fh;
+        float fb; // 3000 - 100000 mm
+        float fL; // 3000 - 100000 mm
+        float fh; // 2000 -  50000 mm (h1)
         float fL1;
-        int iFrNo;
-        float fRoofPitch_radians;
+        int iFrNo; // 2 - 20
+        float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
         float fh2;
-        float fdist_girt;
-        float fdist_purlin;
-        float fdist_frontcolumn;
-        float fdist_girt_bottom;
+        float fdist_girt; // 500 - 5000 mm
+        float fdist_purlin; // 500 - 5000 mm
+        float fdist_frontcolumn; // 1000 - 10000 mm
+        float fdist_girt_bottom; // 1000 - 10000 mm
 
         List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
