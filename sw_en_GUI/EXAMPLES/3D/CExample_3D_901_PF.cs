@@ -23,21 +23,21 @@ namespace sw_en_GUI.EXAMPLES._3D
         public float fDist_Purlin;
         public float fDist_FrontColumns;
         public float fDist_BackColumns;
-        public float fBottomGirdPosition;
+        public float fBottomGirtPosition;
         public float fDist_FrontGirts;
         public float fDist_BackGirts;
 
         int iMainColumnNo;
         int iRafterNo;
         int iEavesPurlinNo;
-        int iGirdNoInOneFrame;
+        int iGirtNoInOneFrame;
         int iPurlinNoInOneFrame;
         int iFrontColumnNoInOneFrame;
         int iBackColumnNoInOneFrame;
         int iFrontGirtsNoInOneFrame;
         int iBackGirtsNoInOneFrame;
 
-        public CExample_3D_901_PF(float fH1_temp, float fW_temp, float fL1_temp, int iFrameNo_temp, float fH2_temp, float fDist_Gird_temp, float fDist_Purlin_temp, float fDist_FrontColumns_temp, float fBottomGirdPosition_temp)
+        public CExample_3D_901_PF(float fH1_temp, float fW_temp, float fL1_temp, int iFrameNo_temp, float fH2_temp, float fDist_Girt_temp, float fDist_Purlin_temp, float fDist_FrontColumns_temp, float fBottomGirtPosition_temp)
         {
             // Todo asi prepracovat na zoznam tried objektov
 
@@ -48,8 +48,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                 {"Eaves Purlin","2x50020",""},
                 {"Purlin","2x50020",""},
                 {"Purlin Brace","2x50020",""},
-                {"Gird","2x50020",""},
-                {"Gird Brace","2x50020",""},
+                {"Girt","2x50020",""},
+                {"Girt Brace","2x50020",""},
                 {"Roofing","2x50020",""},
                 {"Wall Cladding","2x50020",""}
             };
@@ -62,12 +62,12 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             fL_tot = (iFrameNo - 1) * fL1_frame;
 
-            fDist_Girt = fDist_Gird_temp;
+            fDist_Girt = fDist_Girt_temp;
             fDist_Purlin = fDist_Purlin_temp;
             fDist_FrontColumns = fDist_FrontColumns_temp;
-            fBottomGirdPosition = fBottomGirdPosition_temp;
-            fDist_FrontGirts = fDist_Gird_temp; // Ak nie je rovnake ako pozdlzne tak su koncove pruty sikmo pretoze sa uvazuje jeden uzol na stlpe pre pozdlzny aj priecny smer nosnikov
-            fDist_BackGirts = fDist_Gird_temp;
+            fBottomGirtPosition = fBottomGirtPosition_temp;
+            fDist_FrontGirts = fDist_Girt_temp; // Ak nie je rovnake ako pozdlzne tak su koncove pruty sikmo pretoze sa uvazuje jeden uzol na stlpe pre pozdlzny aj priecny smer nosnikov
+            fDist_BackGirts = fDist_Girt_temp;
 
             m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
@@ -82,13 +82,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             iRafterNo = iFrameNo * 2;
 
             int iOneColumnGridNo = 0;
-            iGirdNoInOneFrame = 0;
+            iGirtNoInOneFrame = 0;
 
             bool bGenerateGirts = true;
             if (bGenerateGirts)
             {
-                iOneColumnGridNo = (int)((fH1_frame - fBottomGirdPosition) / fDist_Girt) + 1;
-                iGirdNoInOneFrame = 2 * iOneColumnGridNo;
+                iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
+                iGirtNoInOneFrame = 2 * iOneColumnGridNo;
             }
 
             float fFirstPurlinPosition = fDist_Purlin;
@@ -147,18 +147,18 @@ namespace sw_en_GUI.EXAMPLES._3D
             bool bGenerateFrontGirts = true;
             if (bGenerateFrontGirts)
             {
-                iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterFrontColumnNo, fBottomGirdPosition, fDist_FrontColumns);
+                iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterFrontColumnNo, fBottomGirtPosition, fDist_FrontColumns);
                 iFrontIntermediateColumnNodesForGirtsOneFrameNo = 2 * iFrontIntermediateColumnNodesForGirtsOneRafterNo;
 
                 // Number of Girts - Main Frame Column
-                iOneColumnGridNo = (int)((fH1_frame - fBottomGirdPosition) / fDist_Girt) + 1;
+                iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
 
                 iFrontGirtsNoInOneFrame = iOneColumnGridNo;
 
                 // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                 for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
-                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirdPosition, fDist_FrontColumns, i);
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_FrontColumns, i);
                     iFrontGirtsNoInOneFrame += temp;
                     iArrNumberOfNodesPerFrontColumn[i] = temp;
                 }
@@ -177,18 +177,18 @@ namespace sw_en_GUI.EXAMPLES._3D
             bool bGenerateBackGirts = true;
             if (bGenerateBackGirts)
             {
-                iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterBackColumnNo, fBottomGirdPosition, fDist_BackColumns);
+                iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterBackColumnNo, fBottomGirtPosition, fDist_BackColumns);
                 iBackIntermediateColumnNodesForGirtsOneFrameNo = 2 * iBackIntermediateColumnNodesForGirtsOneRafterNo;
 
                 // Number of Girts - Main Frame Column
-                iOneColumnGridNo = (int)((fH1_frame - fBottomGirdPosition) / fDist_Girt) + 1;
+                iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
 
                 iBackGirtsNoInOneFrame = iOneColumnGridNo;
 
                 // Number of girts under one rafter at the frontside of building - middle girts are considered twice
                 for (int i = 0; i < iOneRafterBackColumnNo; i++)
                 {
-                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirdPosition, fDist_BackColumns, i);
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_BackColumns, i);
                     iBackGirtsNoInOneFrame += temp;
                     iArrNumberOfNodesPerBackColumn[i] = temp;
                 }
@@ -198,7 +198,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
             }
 
-            // Alligments
+            // Alignments
             float fMainColumnStart = 0f;
             float fMainColumnEnd = 0f;
             float fRafterStart = 0f;
@@ -223,8 +223,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fBackGirtEnd_MC = 0f; // Connection to the main frame column
 
 
-            m_arrNodes = new BaseClasses.CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirdNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo];
-            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirdNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame];
+            m_arrNodes = new BaseClasses.CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo];
+            m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame];
             m_arrMat = new CMat_00[1];
             m_arrCrSc = new CRSC.CCrSc[9];
             m_arrNSupports = new BaseClasses.CNSupport[2 * iFrameNo];
@@ -243,7 +243,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrCrSc[5] = new CCrSc_3_51_C_LIP2_FS50020(0.45f, 0.10f, 0.015f, 0.065f, 0.001f, Colors.Beige); // Front Column
             m_arrCrSc[6] = new CCrSc_3_51_C_LIP2_FS50020(0.45f, 0.10f, 0.015f, 0.065f, 0.001f, Colors.BlueViolet); // Back Column
             m_arrCrSc[7] = new CCrSc_3_51_C_LIP2_FS50020(0.25f, 0.08f, 0.015f, 0.065f, 0.001f, Colors.Aquamarine); // Front Girt
-            m_arrCrSc[8] = new CCrSc_3_51_C_LIP2_FS50020(0.15f, 0.06f, 0.012f, 0.065f, 0.00095f, Colors.DarkMagenta); // Back Girt
+            m_arrCrSc[8] = new CCrSc_3_51_C_LIP2_FS50020(0.15f, 0.06f, 0.012f, 0.065f, 0.00095f, Colors.YellowGreen); // Back Girt
 
             // Nodes Automatic Generation
             // Nodes List - Nodes Array
@@ -285,12 +285,12 @@ namespace sw_en_GUI.EXAMPLES._3D
                 {
                     for (int j = 0; j < iOneColumnGridNo; j++)
                     {
-                        m_arrNodes[i_temp_numberofNodes + i * iGirdNoInOneFrame + j] = new CNode(i_temp_numberofNodes + i * iGirdNoInOneFrame + j + 1, 000000, i * fL1_frame, fBottomGirdPosition + j * fDist_Girt, 0);
+                        m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j] = new CNode(i_temp_numberofNodes + i * iGirtNoInOneFrame + j + 1, 000000, i * fL1_frame, fBottomGirtPosition + j * fDist_Girt, 0);
                     }
 
                     for (int j = 0; j < iOneColumnGridNo; j++)
                     {
-                        m_arrNodes[i_temp_numberofNodes + i * iGirdNoInOneFrame + iOneColumnGridNo + j] = new CNode(i_temp_numberofNodes + i * iGirdNoInOneFrame + iOneColumnGridNo + j + 1, fW_frame, i * fL1_frame, fBottomGirdPosition + j * fDist_Girt, 0);
+                        m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGridNo + j] = new CNode(i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGridNo + j + 1, fW_frame, i * fL1_frame, fBottomGirtPosition + j * fDist_Girt, 0);
                     }
                 }
             }
@@ -303,18 +303,18 @@ namespace sw_en_GUI.EXAMPLES._3D
                 {
                     for (int j = 0; j < iOneColumnGridNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirdNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirdNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirdNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirdNoInOneFrame + j], m_arrCrSc[3], fGirtStart, fGirtEnd, 0f, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[3], fGirtStart, fGirtEnd, 0f, 0);
                     }
 
                     for (int j = 0; j < iOneColumnGridNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirdNoInOneFrame + iOneColumnGridNo + j] = new CMember(i_temp_numberofMembers + i * iGirdNoInOneFrame + iOneColumnGridNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirdNoInOneFrame + iOneColumnGridNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirdNoInOneFrame + iOneColumnGridNo + j], m_arrCrSc[3], fGirtStart, fGirtEnd, 0f, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGridNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGridNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGridNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGridNo + j], m_arrCrSc[3], fGirtStart, fGirtEnd, 0f, 0);
                     }
                 }
             }
 
             // Nodes - Purlins
-            i_temp_numberofNodes += bGenerateGirts ? (iGirdNoInOneFrame * iFrameNo) : 0;
+            i_temp_numberofNodes += bGenerateGirts ? (iGirtNoInOneFrame * iFrameNo) : 0;
             if (bGeneratePurlins)
             {
                 for (int i = 0; i < iFrameNo; i++)
@@ -338,7 +338,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             }
 
             // Members - Purlins
-            i_temp_numberofMembers += bGenerateGirts ? (iGirdNoInOneFrame * (iFrameNo - 1)) : 0;
+            i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGeneratePurlins)
             {
                 for (int i = 0; i < (iFrameNo - 1); i++)
@@ -421,7 +421,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             i_temp_numberofMembers += bGenerateFrontGirts ? iFrontGirtsNoInOneFrame : 0;
             if (bGenerateBackGirts)
             {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirdNoInOneFrame * (iFrameNo - 1), fDist_Girt, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[8]);
+                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[8]);
             }
 
             // Nodal Supports - fill values
@@ -542,20 +542,20 @@ namespace sw_en_GUI.EXAMPLES._3D
             }
         }
 
-        public int GetNumberofIntermediateNodesInOneColumnForGirts(float fBottomGirdPosition_temp, float fDistBetweenColumns, int iColumnIndex)
+        public int GetNumberofIntermediateNodesInOneColumnForGirts(float fBottomGirtPosition_temp, float fDistBetweenColumns, int iColumnIndex)
         {
             float fz_gcs_column_temp;
             CalcColumnNodeCoord_Z((iColumnIndex + 1) * fDistBetweenColumns, out fz_gcs_column_temp);
-            int iNumber_of_segments = (int)((fz_gcs_column_temp - fBottomGirdPosition_temp) / fDist_Girt);
+            int iNumber_of_segments = (int)((fz_gcs_column_temp - fBottomGirtPosition_temp) / fDist_Girt);
             return iNumber_of_segments + 1;
         }
 
-        public int GetNumberofIntermediateNodesInColumnsForOneFrame(int iOneRafterColumnNo, float fBottomGirdPosition_temp, float fDistBetweenColumns)
+        public int GetNumberofIntermediateNodesInColumnsForOneFrame(int iOneRafterColumnNo, float fBottomGirtPosition_temp, float fDistBetweenColumns)
         {
             int iNo_temp = 0;
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                iNo_temp += GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirdPosition_temp, fDistBetweenColumns, i);
+                iNo_temp += GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition_temp, fDistBetweenColumns, i);
             }
 
             return iNo_temp;
@@ -572,7 +572,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                 for (int j = 0; j < iArrNumberOfNodesPerColumn[i]; j++)
                 {
-                    m_arrNodes[i_temp_numberofNodes + iTemp + j] = new CNode(i_temp_numberofNodes + iTemp + j, (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirdPosition + j * fDist_Girts, 0);
+                    m_arrNodes[i_temp_numberofNodes + iTemp + j] = new CNode(i_temp_numberofNodes + iTemp + j, (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirtPosition + j * fDist_Girts, 0);
                 }
 
                 iTemp += iArrNumberOfNodesPerColumn[i];
@@ -587,7 +587,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                 for (int j = 0; j < iArrNumberOfNodesPerColumn[i]; j++)
                 {
-                    m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j] = new CNode(i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j + 1, fW_frame - (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirdPosition + j * fDist_Girts, 0);
+                    m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j] = new CNode(i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp + j + 1, fW_frame - (i + 1) * fDist_Columns, fy_Global_Coord, fBottomGirtPosition + j * fDist_Girts, 0);
                 }
 
                 iTemp += iArrNumberOfNodesPerColumn[i];
@@ -598,7 +598,7 @@ namespace sw_en_GUI.EXAMPLES._3D
         {
             int iTemp = 0;
             int iTemp2 = 0;
-            int iOneColumnGridNo_temp = (int)((fH1_frame - fBottomGirdPosition) / fDist_Girt) + 1;
+            int iOneColumnGridNo_temp = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
 
             for (int i = 0; i < iOneRafterColumnNo + 1; i++)
             {
