@@ -29,10 +29,10 @@ namespace PFD
             fh_mm = arr_Models_Dimensions[iSelectedIndex, 2];
             iFrNo = (int)arr_Models_Dimensions[iSelectedIndex, 3];
             fL1_mm = fL_mm / (iFrNo - 1);
-            fRoof_Pitch_deg = 10;
+            fRoof_Pitch_deg = 15;
             fdist_girt_mm = 0.25f * fL1_mm;
             fdist_purlin_mm = 0.25f * fL1_mm;
-            fdist_frontcolumn_mm = 0.5f * fL1_mm;
+            fdist_frontcolumn_mm = 0.50f * fL1_mm;
             fdist_girt_bottom_mm = 300f; // Distance from concrete foundation to the centerline
         }
 
