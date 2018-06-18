@@ -665,5 +665,49 @@ namespace PFD
             }
             viewPort.Children.Clear();
         }
+
+        
+        //float fb; // 3000 - 100000 mm
+        //float fL; // 3000 - 150000 mm
+        //float fh; // 2000 -  50000 mm (h1)
+        //float fL1;
+        //int iFrNo; // 2 - 30
+        //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
+        //float fh2;
+        //float fdist_girt; // 500 - 5000 mm
+        //float fdist_purlin; // 500 - 5000 mm
+        //float fdist_frontcolumn; // 1000 - 10000 mm
+        //float fdist_girt_bottom; // 1000 - 10000 mm
+
+        private void TextBox_Gable_Width_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsValidCableWidth(((TextBox)sender).Text + e.Text);
+        }        
+        private static bool IsValidCableWidth(string str)
+        {
+            int i;
+            return int.TryParse(str, out i) && i >= 3000 && i <= 100000;
+        }
+
+        private void TextBox_Length_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsValidCableLength(((TextBox)sender).Text + e.Text);
+        }
+        private static bool IsValidCableLength(string str)
+        {
+            int i;
+            return int.TryParse(str, out i) && i >= 3000 && i <= 150000;
+        }
+
+        private void TextBox_Rangetextbox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            bool valid = IsValidMyRange(((TextBox)sender).Text);
+            e.Handled = !valid;
+        }
+        private static bool IsValidMyRange(string str)
+        {
+            int i;
+            return int.TryParse(str, out i) && i >= 5 && i <= 100;
+        }
     }
 }
