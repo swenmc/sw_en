@@ -23,6 +23,7 @@ using sw_en_GUI;
 using sw_en_GUI.EXAMPLES._3D;
 using M_AS4600;
 using M_EC1.AS_NZS;
+using System.Windows.Media.Media3D;
 
 namespace PFD
 {
@@ -639,6 +640,30 @@ namespace PFD
                 catch
                 { }
             }
+        }
+        
+        private void Clear3DModel_Click(object sender, RoutedEventArgs e)
+        {
+            Page3Dmodel page3D = (Page3Dmodel) Frame1.Content;
+            ClearViewPort(page3D._trackport.ViewPort);            
+        }
+
+        private void ClearViewPort(Viewport3D viewPort)
+        {
+            if (viewPort == null) return;
+            if (viewPort.Children.Count == 0) return;
+
+            Visual3DCollection.Enumerator myEnumer = viewPort.Children.GetEnumerator();
+            myEnumer.Reset();
+            while (myEnumer.MoveNext())
+            {
+                if (myEnumer.Current is _3DTools.ScreenSpaceLines3D)
+                {
+                    _3DTools.ScreenSpaceLines3D curLine = myEnumer.Current as _3DTools.ScreenSpaceLines3D;
+                    curLine.Points.Clear(); //important
+                }
+            }
+            viewPort.Children.Clear();
         }
     }
 }

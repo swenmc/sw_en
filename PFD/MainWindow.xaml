@@ -147,6 +147,8 @@
         </DataGrid>
         <Button Grid.Row="3" Grid.Column="0" Content="Calculate" HorizontalAlignment="Right" 
                 VerticalAlignment="Center" Width="75" Margin="0 0 20 0" Click="Calculate_Click"/>
+        <Button Name="Clear3DModel" Grid.Row="3" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
+                VerticalAlignment="Center" Width="75" Margin="20 0 20 0" Click="Clear3DModel_Click" />
 
         <Frame Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Name ="Frame1" Content="Portal Frame 3D Preview" 
                HorizontalContentAlignment="Stretch" 
