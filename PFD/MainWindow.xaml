@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1200" Width="1800">
+        Title="MainWindow" Height="1250" Width="2500">
     <Grid>
-        <Frame Name ="Frame1" Content="Portal Frame 3D Preview" HorizontalAlignment="Left" Height="1130" Margin="910,0,0,0" VerticalAlignment="Top" Width="870" NavigationUIVisibility="Hidden"/>
-        <Button Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="1708,1141,0,0" Click="Calculate_Click"/>
+        <Frame Name ="Frame1" Content="Portal Frame 3D Preview" HorizontalAlignment="Left" Height="1130" Margin="910,0,0,0" VerticalAlignment="Top" Width="1573" NavigationUIVisibility="Hidden"/>
+        <Button Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="830,1174,0,0" Click="Calculate_Click"/>
         <DataGrid Name ="Results_GridView" HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="900" Margin="5,530,0,0" SelectionChanged="Results_GridView_SelectionChanged" IsReadOnly="True">
         </DataGrid>
 

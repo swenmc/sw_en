@@ -236,10 +236,18 @@ namespace BaseClasses
     public enum EWindowShapeType
     {
         eClassic = 0, // Rectangular Window - many segments
-        eRound = 1,   // Round
+        eRound = 1    // Round
     }
 
-
+    //----------------------------------------------------------------------------
+    // Define connection component type
+    //----------------------------------------------------------------------------
+    public enum EConnectionComponentType
+    {
+        ePlate = 0, // Plate
+        eBolt = 1,  // Bolt
+        eScrew = 2
+    }
 
 
 

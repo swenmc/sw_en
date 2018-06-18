@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using BaseClasses;
+using BaseClasses.GraphObj;
 using MATH;
 using MATERIAL;
 using CRSC;
@@ -221,7 +222,6 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fFrontGirtEnd_MC = 0f; // Connection to the main frame column
             float fBackGirtStart_MC = 0f; // Connection to the main frame column
             float fBackGirtEnd_MC = 0f; // Connection to the main frame column
-
 
             m_arrNodes = new BaseClasses.CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo];
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame];
@@ -447,6 +447,44 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Create Release / Hinge Objects
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
+
+            // Connection Joints
+            m_arrConnectionJointsTypes = new CConnectionJointTypes[3];
+
+            // Roof Pitch Joints
+            m_arrConnectionJointsTypes[0] = new CConnectionJointTypes(iFrameNo, 2, 0, 0); // Two plates in Joint
+            m_arrConnectionJointsTypes[0].m_arrAssignedNodesWithJointType = new CNode[5];
+            m_arrConnectionJointsTypes[0] = new CConnectionJoint_A001(m_arrNodes[2], m_arrMembers[1], m_arrMembers[2], fRoofPitch_rad, fH1_frame * 0.2f, 0.003f, true);
+
+            // Create Joints
+            m_arrConnectionJointsGroup = new CConnectionJointTypes[3, iFrameNo];
+
+
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                m_arrConnectionJointsGroup[0, i] = new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, fH1_frame * 0.2f, 0.003f, true);
+            }
+
+            m_arrConnectionJointsTypes[1] = new CConnectionJointTypes(iFrameNo, 2, 0, 0); // Two plates in Joint
+            m_arrConnectionJointsTypes[1].m_arrAssignedNodesWithJointType = new CNode[5];
+            m_arrConnectionJointsTypes[1] = new CConnectionJoint_B001(m_arrNodes[1], m_arrMembers[0], m_arrMembers[1], fRoofPitch_rad, fH1_frame * 0.15f, fH1_frame * 0.2f, 0.003f, true);
+
+
+            // Create Joints
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                m_arrConnectionJointsGroup[1, i] = new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, fH1_frame * 0.15f, fH1_frame * 0.2f, 0.003f, true);
+            }
+
+            m_arrConnectionJointsTypes[2] = new CConnectionJointTypes(iFrameNo, 2, 0, 0); // Two plates in Joint
+            m_arrConnectionJointsTypes[2].m_arrAssignedNodesWithJointType = new CNode[5];
+            m_arrConnectionJointsTypes[2] = new CConnectionJoint_B001(m_arrNodes[3], m_arrMembers[3], m_arrMembers[2], fRoofPitch_rad, fH1_frame * 0.15f, fH1_frame * 0.20f, 0.003f, true);
+
+            // Create Joints
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                m_arrConnectionJointsGroup[2, i] = new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, fH1_frame * 0.15f, fH1_frame * 0.20f, 0.003f, true);
+            }
 
             // Loading
 

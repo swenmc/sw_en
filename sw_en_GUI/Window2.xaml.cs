@@ -242,6 +242,68 @@ namespace sw_en_GUI
                         }
                     }
 
+                    if (cmodel.m_arrConnectionJointsTypes != null) // Some joints exist
+                    {
+                        for (int i = 0; i < cmodel.m_arrConnectionJointsTypes.Length; i++) // Joint Type
+                        {
+                            // Brushes
+
+                            SolidColorBrush bPlates = new SolidColorBrush(Colors.Gray);
+                            SolidColorBrush bBolts = new SolidColorBrush(Colors.Red);
+                            SolidColorBrush bWelds = new SolidColorBrush(Colors.Orange);
+
+                            // Models3D or ModelGroups Components
+                            if (cmodel.m_arrConnectionJointsGroup != null) // Some joints exist
+                            {
+                                for (int j = 0; j < (cmodel.m_arrConnectionJointsGroup.Length / cmodel.m_arrConnectionJointsTypes.Length); j++) // Particular joint
+                                {
+                                    // Plates
+                                    if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates != null)
+                                    {
+                                        for (int l = 0; l < cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates.Length; l++)
+                                        {
+                                            if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l] != null &&
+                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l].m_pControlPoint != null &&
+                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
+                                            {
+                                                gr.Children.Add(cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l].CreateGeomModel3D(bPlates)); // Add plate 3D model to the model group
+                                            }
+                                        }
+                                    }
+
+                                    // Bolts
+                                    if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts != null)
+                                    {
+                                        for (int l = 0; l < cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts.Length; l++)
+                                        {
+                                            if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l] != null &&
+                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l].m_pControlPoint != null &&
+                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
+                                            {
+                                                gr.Children.Add(cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l].CreateGeomModel3D(bBolts)); // Add bolt 3D model to the model group
+                                            }
+                                        }
+                                    }
+
+
+                                    // Welds
+                                    if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds != null)
+                                    {
+                                        for (int l = 0; l < cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds.Length; l++)
+                                        {
+                                            if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l] != null &&
+                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l].m_pControlPoint != null &&
+                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
+                                            {
+                                                gr.Children.Add(cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l].CreateGeomModel3D(bWelds)); // Add weld 3D model to the model group
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     if (cmodel.m_arrGOStrWindows != null) // Some windows exist
                     {
                         // Model Groups of Windows
@@ -544,6 +606,69 @@ namespace sw_en_GUI
                             _trackport.ViewPort.Children.Add(wireFrame_FrontSide);
                             _trackport.ViewPort.Children.Add(wireFrame_BackSide);
                             _trackport.ViewPort.Children.Add(wireFrame_Lateral);
+                        }
+                    }
+                }
+
+                bool bDisplayConnectionJointsWireFrame = true;
+
+                if (bDisplayConnectionJointsWireFrame && cmodel.m_arrConnectionJointsTypes != null)
+                {
+                    for (int i = 0; i < cmodel.m_arrConnectionJointsTypes.Length; i++)
+                    {
+                        if (cmodel.m_arrConnectionJointsTypes[i] != null) // Joint object is valid (not empty)
+                        {
+                            // Plates
+                            if (cmodel.m_arrConnectionJointsTypes[i].m_arrPlates != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrConnectionJointsTypes[i].m_arrPlates.Length; j++)
+                                {
+                                    // Create WireFrame in LCS
+                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJointsTypes[i].m_arrPlates[j].CreateWireFrameModel();
+
+                                    // Rotate from LCS to GCS
+
+                                    // TODO
+
+                                    // Add Wireframe Lines to the trackport
+                                    _trackport.ViewPort.Children.Add(wireFrame);
+                                }
+                            }
+
+                            // Bolts
+                            if (cmodel.m_arrConnectionJointsTypes[i].m_arrBolts != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrConnectionJointsTypes[i].m_arrBolts.Length; j++)
+                                {
+                                    // Create WireFrame in LCS
+                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJointsTypes[i].m_arrBolts[j].CreateWireFrameModel();
+
+                                    // Rotate from LCS to GCS
+
+                                    // TODO
+
+                                    // Add Wireframe Lines to the trackport
+                                    _trackport.ViewPort.Children.Add(wireFrame);
+                                }
+                            }
+
+                            // Plates
+                            if (cmodel.m_arrConnectionJointsTypes[i].m_arrWelds != null)
+                            {
+                                for (int j = 0; j < cmodel.m_arrConnectionJointsTypes[i].m_arrWelds.Length; j++)
+                                {
+                                    // Create WireFrame in LCS
+                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJointsTypes[i].m_arrWelds[j].CreateWireFrameModel();
+
+                                    // Rotate from LCS to GCS
+
+                                    // TODO
+
+                                    // Add Wireframe Lines to the trackport
+                                    _trackport.ViewPort.Children.Add(wireFrame);
+                                }
+                            }
+
                         }
                     }
                 }

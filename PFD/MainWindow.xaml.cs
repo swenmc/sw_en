@@ -41,10 +41,10 @@ namespace PFD
 
         int selected_Model_Index;
         float fb; // 3000 - 100000 mm
-        float fL; // 3000 - 100000 mm
+        float fL; // 3000 - 150000 mm
         float fh; // 2000 -  50000 mm (h1)
         float fL1;
-        int iFrNo; // 2 - 20
+        int iFrNo; // 2 - 30
         float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
         float fh2;
         float fdist_girt; // 500 - 5000 mm

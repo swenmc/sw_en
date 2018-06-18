@@ -129,7 +129,7 @@ namespace CRSC
         // !!! Pre FEM vypocet nepotrebujeme vsetky charakteristiky, len Ag, Avy, Avz, Iy, Iz, It !!!!
         // !!! Ostatne charakteristiky postaci nacitavat az pri posudeni
 
-        // Gross- corss-section area Ag
+        // Gross cross-section area Ag
         // Shear effective area A_y_v (A_2_v, A_u_v) - optional
         // Shear effective area A_z_v (A_3_v, A_v_v) - optional
         // Moment of inertia - major principal axis Iy (I2, Iu)

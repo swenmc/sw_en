@@ -77,6 +77,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CConnectionJointTypes.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate_B1.cs" />
+    <Compile Include="Model\ConnectionComponents\CWeld.cs" />
+    <Compile Include="Model\ConnectionComponents\CBolt.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate.cs" />
+    <Compile Include="CConnectionComponentEntity3D.cs" />
     <Compile Include="CEntity.cs" />
     <Compile Include="CEntity3D.cs" />
     <Compile Include="GraphObj\CLine.cs" />
@@ -121,6 +127,9 @@
     <Compile Include="Model\CNRelease.cs" />
     <Compile Include="Model\CNSupport.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate_A1.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_B001.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_A001.cs" />
     <Compile Include="Model\CSegment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -162,6 +171,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
