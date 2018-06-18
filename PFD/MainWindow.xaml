@@ -46,7 +46,7 @@
         <TextBlock Text="Column Distance:" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" Height="20" Width="100" Margin="10,210,0,0"/>
         <TextBox Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Height="20" Margin="115,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" TextChanged="TextBox_Column_Distance_TextChanged"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="220,210,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="40"/>
-
+        
         <DataGrid Name ="Components" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="260" Margin="5,240,0,0" VerticalAlignment="Top" Width="900">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Status}" Header="Component" Width="200"/>
@@ -78,6 +78,5 @@
         </DataGrid>
         <TextBlock Text="Location:" HorizontalAlignment="Left" Height="20" Margin="285,10,0,0" VerticalAlignment="Top" Width="100"/>
         <ComboBox Name ="Combobox_Location" HorizontalAlignment="Left" Height="20" Margin="390,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_Location_SelectionChanged" SelectedIndex="11"/>
-        <Button Name ="Button_Viewer" Content="Component Viewer" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Margin="708,1174,0,0" Click="Button_Viewer_Click"/>
     </Grid>
 </Window>
