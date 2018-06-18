@@ -640,5 +640,11 @@ namespace PFD
                 { }
             }
         }
+
+        private void Button_Viewer_Click(object sender, RoutedEventArgs e)
+        {
+            SystemComponentViewer viewerwin = new SystemComponentViewer();
+            viewerwin.Show();
+        }
     }
 }
