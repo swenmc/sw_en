@@ -117,7 +117,7 @@ namespace PFD
                 }
             }
 
-            _trackport.SetupScene();
+            _trackport.SetupScene();            
         }
     }
 }

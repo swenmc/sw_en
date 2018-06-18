@@ -224,6 +224,7 @@ namespace _3DTools
         {
             success = false;
             Matrix3D result = Matrix3D.Identity;
+            if (visual == null) return result;
 
             Camera camera = visual.Camera;
 
