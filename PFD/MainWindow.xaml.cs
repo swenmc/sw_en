@@ -69,6 +69,7 @@ namespace PFD
             dlocations = new DatabaseLocations();
 
             InitializeComponent();
+            this.DataContext = new CPFDViewModel();
 
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
