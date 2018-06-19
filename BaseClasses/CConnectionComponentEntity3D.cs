@@ -18,6 +18,9 @@ namespace BaseClasses
             set { m_TriangleIndices = value; }
         }
 
+        public float[,] PointsOut2D;
+        public Point3D[] arrPoints3D;
+
         public EConnectionComponentType eConnComponentType;
 
         public CConnectionComponentEntity3D() { }

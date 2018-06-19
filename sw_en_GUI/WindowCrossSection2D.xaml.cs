@@ -31,12 +31,34 @@ namespace sw_en_GUI
 
         bool bDrawPointNumbers = true;
 
+        float[,] PointsOut;
+        float[,] PointsIn;
+
+        int INoPointsOut;
+        int INoPointsIn;
+
         public WindowCrossSection2D()
         {
             InitializeComponent();
             // Temporary
             //Point p = new Point(10, 10);
             //DrawPoint(p, Brushes.Red, Brushes.Red, 4, canvasForImage);
+
+
+        }
+
+        public WindowCrossSection2D(CPlate component)
+        {
+            InitializeComponent();
+            canvasForImage.Children.Clear();
+            DrawPlate(component);
+        }
+
+        public WindowCrossSection2D(CCrSc_TW crsc)
+        {
+            InitializeComponent();
+            canvasForImage.Children.Clear();
+            DrawCrSc(crsc);
         }
 
         public void SaveImage(Visual visual, int width, int height, string filePath)
@@ -62,69 +84,112 @@ namespace sw_en_GUI
             DrawCrSc(crsc_temp);
         }
 
+        public void DrawPlate(CPlate component)
+        {
+            INoPointsOut = component.PointsOut2D.Length / 2;
+            INoPointsIn = 0;
+
+            PointsOut = new float [INoPointsOut, 2];
+            PointsIn = null;
+
+            PointsOut = component.PointsOut2D;
+            PointsIn = null;
+
+            // Definition Points
+            DrawPoints();
+
+            // Outlines
+            DrawOutlines();
+
+            // Definition Point Numbers
+            DrawPointNumbers();
+        }
+
         public void DrawCrSc(CCrSc_TW crsc)
         {
+            INoPointsOut = crsc.CrScPointsOut.Length / 2;
+            INoPointsIn = crsc.CrScPointsIn.Length / 2;
+
+            PointsOut = new float[INoPointsOut, 2];
+            PointsIn = new float[INoPointsIn, 2];
+
+            PointsOut = crsc.CrScPointsOut;
+            PointsIn = crsc.CrScPointsIn;
+
             // Definition Points
+            DrawPoints();
+
+            // Outlines
+            DrawOutlines();
+
+            // Definition Point Numbers
+            DrawPointNumbers();
+        }
+
+        public void DrawPoints()
+        {
             if (bDrawPoints)
             {
                 // Outer outline points
-                if (crsc.CrScPointsOut != null) // If is array of points not empty
+                if (PointsOut != null) // If is array of points not empty
                 {
-                    for (int i = 0; i < crsc.INoPointsOut; i++)
+                    for (int i = 0; i < INoPointsOut; i++)
                     {
-                        DrawPoint(new Point(modelposition_x + scale_unit * crsc.CrScPointsOut[i, 0], modelposition_y + scale_unit * crsc.CrScPointsOut[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
+                        DrawPoint(new Point(modelposition_x + scale_unit * PointsOut[i, 0], modelposition_y + scale_unit * PointsOut[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
                     }
                 }
 
                 // Internal outline points
-                if (crsc.CrScPointsIn != null) // If is array of points not empty
+                if (PointsIn != null) // If is array of points not empty
                 {
-                    for (int i = 0; i < crsc.INoPointsIn; i++)
+                    for (int i = 0; i < INoPointsIn; i++)
                     {
-                        DrawPoint(new Point(modelposition_x + scale_unit * crsc.CrScPointsIn[i, 0], modelposition_y + scale_unit * crsc.CrScPointsIn[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
+                        DrawPoint(new Point(modelposition_x + scale_unit * PointsIn[i, 0], modelposition_y + scale_unit * PointsIn[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
                     }
                 }
             }
+        }
 
-            // Outlines
+        public void DrawOutlines()
+        {
             if (bDrawOutLine)
             {
                 if (bUsePolylineforDrawing)
                 {
                     // Outer outline lines
-                    if (crsc.CrScPointsOut != null) // If is array of points not empty
+                    if (PointsOut != null) // If is array of points not empty
                     {
-                        DrawPolyLine(crsc.CrScPointsOut, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                        DrawPolyLine(PointsOut, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
                     }
 
                     // Internal outline lines
-                    if (crsc.CrScPointsIn != null) // If is array of points not empty
+                    if (PointsIn != null) // If is array of points not empty
                     {
-                        DrawPolyLine(crsc.CrScPointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                        DrawPolyLine(PointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
                     }
                 }
                 else
                 {
                     // Outer outline lines
-                    if (crsc.CrScPointsOut != null) // If is array of points not empty
+                    if (PointsOut != null) // If is array of points not empty
                     {
-                        for (int i = 0; i < crsc.INoPointsOut; i++)
+                        for (int i = 0; i < INoPointsOut; i++)
                         {
                             // Add a Line
                             Line l = new Line();
 
-                            l.X1 = modelposition_x + scale_unit * crsc.CrScPointsOut[i, 0];
-                            l.Y1 = modelposition_y + scale_unit * crsc.CrScPointsOut[i, 1];
+                            l.X1 = modelposition_x + scale_unit * PointsOut[i, 0];
+                            l.Y1 = modelposition_y + scale_unit * PointsOut[i, 1];
 
-                            if (i < (crsc.INoPointsOut - 1))
+                            if (i < (INoPointsOut - 1))
                             {
-                                l.X2 = modelposition_x + scale_unit * crsc.CrScPointsOut[i + 1, 0];
-                                l.Y2 = modelposition_y + scale_unit * crsc.CrScPointsOut[i + 1, 1];
+                                l.X2 = modelposition_x + scale_unit * PointsOut[i + 1, 0];
+                                l.Y2 = modelposition_y + scale_unit * PointsOut[i + 1, 1];
                             }
                             else
                             {
-                                l.X2 = modelposition_x + scale_unit * crsc.CrScPointsOut[0, 0];
-                                l.Y2 = modelposition_y + scale_unit * crsc.CrScPointsOut[0, 1];
+                                l.X2 = modelposition_x + scale_unit * PointsOut[0, 0];
+                                l.Y2 = modelposition_y + scale_unit * PointsOut[0, 1];
                             }
 
                             DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
@@ -132,24 +197,24 @@ namespace sw_en_GUI
                     }
 
                     // Internal outline lines
-                    if (crsc.CrScPointsIn != null) // If is array of points not empty
+                    if (PointsIn != null) // If is array of points not empty
                     {
-                        for (int i = 0; i < crsc.INoPointsIn; i++)
+                        for (int i = 0; i < INoPointsIn; i++)
                         {
                             // Add a Line
                             Line l = new Line();
-                            l.X1 = modelposition_x + scale_unit * crsc.CrScPointsIn[i, 0];
-                            l.Y1 = modelposition_y + scale_unit * crsc.CrScPointsIn[i, 1];
+                            l.X1 = modelposition_x + scale_unit * PointsIn[i, 0];
+                            l.Y1 = modelposition_y + scale_unit * PointsIn[i, 1];
 
-                            if (i < (crsc.INoPointsIn - 1))
+                            if (i < (INoPointsIn - 1))
                             {
-                                l.X2 = modelposition_x + scale_unit * crsc.CrScPointsIn[i + 1, 0];
-                                l.Y2 = modelposition_y + scale_unit * crsc.CrScPointsIn[i + 1, 1];
+                                l.X2 = modelposition_x + scale_unit * PointsIn[i + 1, 0];
+                                l.Y2 = modelposition_y + scale_unit * PointsIn[i + 1, 1];
                             }
                             else
                             {
-                                l.X2 = modelposition_x + scale_unit * crsc.CrScPointsIn[0, 0];
-                                l.Y2 = modelposition_y + scale_unit * crsc.CrScPointsIn[0, 1];
+                                l.X2 = modelposition_x + scale_unit * PointsIn[0, 0];
+                                l.Y2 = modelposition_y + scale_unit * PointsIn[0, 1];
                             }
 
                             DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
@@ -157,29 +222,33 @@ namespace sw_en_GUI
                     }
                 }
             }
+        }
 
-            // Definition Point Numbers
+        public void DrawPointNumbers()
+        {
             if (bDrawPointNumbers)
             {
                 // Outer outline points
-                if (crsc.CrScPointsOut != null) // If is array of points not empty
+                if (PointsOut != null) // If is array of points not empty
                 {
-                    for (int i = 0; i < crsc.INoPointsOut; i++)
+                    for (int i = 0; i < INoPointsOut; i++)
                     {
-                        DrawText((i + 1).ToString(), modelposition_x + scale_unit * crsc.CrScPointsOut[i, 0], modelposition_x + scale_unit * crsc.CrScPointsOut[i, 1], Brushes.Blue, canvasForImage);
+                        DrawText((i + 1).ToString(), modelposition_x + scale_unit * PointsOut[i, 0], modelposition_x + scale_unit * PointsOut[i, 1], Brushes.Blue, canvasForImage);
                     }
                 }
 
                 // Internal outline points
-                if (crsc.CrScPointsIn != null && crsc.CrScPointsOut != null) // If is array of points not empty
+                if (PointsIn != null && PointsOut != null) // If is array of points not empty
                 {
-                    for (int i = 0; i < crsc.INoPointsIn; i++)
+                    for (int i = 0; i < INoPointsIn; i++)
                     {
-                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelposition_x + scale_unit * crsc.CrScPointsIn[i,0], modelposition_x + scale_unit * crsc.CrScPointsIn[i, 1], Brushes.Green, canvasForImage);
+                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelposition_x + scale_unit * PointsIn[i, 0], modelposition_x + scale_unit * PointsIn[i, 1], Brushes.Green, canvasForImage);
                     }
                 }
             }
         }
+
+
 
         public void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
 		{

@@ -17,13 +17,28 @@ namespace PFD
         public DatabaseComponents()
         { }
 
-        public DatabaseComponents(int iSerie, int iSelectedIndex)
+        public DatabaseComponents(int iSerieIndex, int iComponentIndex)
         {
-            fbX_mm = arr_Serie_B_Dimension[iSelectedIndex, 0];
-            fhY_mm = arr_Serie_B_Dimension[iSelectedIndex, 1];
-            flZ_mm = arr_Serie_B_Dimension[iSelectedIndex, 2];
-            ft_mm = arr_Serie_B_Dimension[iSelectedIndex, 3];
-            iHolesNoumber = (int)arr_Serie_B_Dimension[iSelectedIndex, 4];
+            if (iSerieIndex == 0)
+            {
+                fbX_mm = arr_Serie_B_Dimension[iComponentIndex, 0];
+                fhY_mm = arr_Serie_B_Dimension[iComponentIndex, 1];
+                flZ_mm = arr_Serie_B_Dimension[iComponentIndex, 2];
+                ft_mm = arr_Serie_B_Dimension[iComponentIndex, 3];
+                iHolesNoumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
+            }
+            else if (iSerieIndex == 1)
+            {
+                fbX_mm = arr_Serie_L_Dimension[iComponentIndex, 0];
+                fhY_mm = arr_Serie_L_Dimension[iComponentIndex, 1];
+                flZ_mm = arr_Serie_L_Dimension[iComponentIndex, 2];
+                ft_mm = arr_Serie_L_Dimension[iComponentIndex, 3];
+                iHolesNoumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
+            }
+            else
+            {
+                // Exception - not implemented
+            }
         }
 
         public string[] arr_SeriesNames = new string[9]

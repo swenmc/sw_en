@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DatabaseComponents.cs" />
     <Compile Include="SystemComponentViewer.xaml.cs">
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>

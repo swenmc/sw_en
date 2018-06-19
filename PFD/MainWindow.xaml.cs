@@ -713,7 +713,7 @@ namespace PFD
         private void SystemComponentViewer_Click(object sender, RoutedEventArgs e)
         {
             SystemComponentViewer win = new SystemComponentViewer();
-            win.Show(); 
+            win.Show();
         }
     }
 }
