@@ -22,6 +22,14 @@ namespace BaseClasses
         protected override void loadIndices()
         { }
 
+        public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
+        public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
+        public float[,] PointsOut2D; // Array of points coordinates of plate outline in 2D used for DXF
+        public int IHolesNumber;   // Number of holes
+        public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
+        public float FHoleDiameter;
+        public int INumberOfPointsOfHole = 6; // Have to be Even
+        public int INoPoints2Dfor3D; // Number of points in one surface used for 3D model (holes lines are divided to the straight segments)
 
         // TODO - zjednotit funkcie s triedou CCRSC
 
@@ -236,6 +244,29 @@ namespace BaseClasses
                 else
                     AddRectangleIndices_CCW_1234(Indices, iAuxNum + i, 2 * iAuxNum + secNum + i, 2 * iAuxNum + secNum, iAuxNum + 0); // Last Element
             }
+        }
+
+        public void TransformPlateCoord(GeometryModel3D model, float fRotationX_deg, float fRotationY_deg, float fRotationZ_deg)
+        {
+            // Rotate Plate from its cs to joint cs system in GCS
+            RotateTransform3D RotateTrans3D_AUX_X = new RotateTransform3D();
+            RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
+            RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
+
+            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), fRotationX_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), fRotationY_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZ_deg); // Rotation in degrees
+
+            // Move 0,0,0 to control point in GCS
+            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+
+            Transform3DGroup Trans3DGroup = new Transform3DGroup();
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_X);
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Y);
+            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
+            Trans3DGroup.Children.Add(Translate3D_AUX);
+
+            model.Transform = Trans3DGroup;
         }
     }
 }

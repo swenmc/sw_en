@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.IO;
 using BaseClasses;
 using CRSC;
+using BaseClasses.GraphObj;
 
 namespace sw_en_GUI
 {
@@ -28,14 +29,18 @@ namespace sw_en_GUI
         bool bDrawPoints = true;
         bool bDrawOutLine = true;
         bool bUsePolylineforDrawing = true;
-
         bool bDrawPointNumbers = true;
+        bool bDrawHoles = true;
 
         float[,] PointsOut;
         float[,] PointsIn;
+        float[,] HolesCoord;
 
         int INoPointsOut;
         int INoPointsIn;
+        int INoHoles;
+
+        double DHolesDiameter;
 
         public WindowCrossSection2D()
         {
@@ -77,23 +82,30 @@ namespace sw_en_GUI
 
         private void menuItemTest1_Click(object sender, RoutedEventArgs e)
         {
+            canvasForImage.Children.Clear();
             CCrSc_3_51_BOX_TEMP crsc_temp = new CCrSc_3_51_BOX_TEMP(0.5f, 0.4f, 0.01f, Colors.LawnGreen);
             //CCrSc_3_51_TRIANGLE_TEMP crsc_temp = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.5f, 0.5f, 0.01f);
-            canvasForImage.Children.Clear();
+            //DrawCrSc(crsc_temp);
 
-            DrawCrSc(crsc_temp);
+            CConCom_Plate_BB_BG component_temp = new CConCom_Plate_BB_BG(new CPoint(0, 0, 0, 0, 0), 0.072f, 0.29f, 0.18f, 0.003f, 2, 0.012f, true);
+            DrawPlate(component_temp);
         }
 
         public void DrawPlate(CPlate component)
         {
             INoPointsOut = component.PointsOut2D.Length / 2;
             INoPointsIn = 0;
+            INoHoles = component.HolesCentersPoints2D.Length / 2;
 
             PointsOut = new float [INoPointsOut, 2];
             PointsIn = null;
+            HolesCoord = new float[INoHoles, 2];
 
             PointsOut = component.PointsOut2D;
             PointsIn = null;
+            HolesCoord = component.HolesCentersPoints2D;
+
+            DHolesDiameter = component.FHoleDiameter;
 
             // Definition Points
             DrawPoints();
@@ -103,6 +115,9 @@ namespace sw_en_GUI
 
             // Definition Point Numbers
             DrawPointNumbers();
+
+            // Holes
+            DrawHoles();
         }
 
         public void DrawCrSc(CCrSc_TW crsc)
@@ -254,7 +269,20 @@ namespace sw_en_GUI
             }
         }
 
-
+        public void DrawHoles()
+        {
+            if (bDrawHoles)
+            {
+                // Holes
+                if (HolesCoord != null) // If is array of holes centers is not empty
+                {
+                    for (int i = 0; i < INoHoles; i++)
+                    {
+                        DrawCircle(new Point(modelposition_x + scale_unit * HolesCoord[i, 0], modelposition_y + scale_unit * HolesCoord[i, 1]), DHolesDiameter, Brushes.Red, 4, canvasForImage);
+                    }
+                }
+            }
+        }
 
         public void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
 		{
@@ -317,6 +345,21 @@ namespace sw_en_GUI
             textBlock.Margin = new Thickness(5, -200, 0, 0);
             textBlock.FontSize = 30;
             imageCanvas.Children.Add(textBlock);
+        }
+
+        public void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
+        {
+            Ellipse circle = new Ellipse();
+            circle.Height = diameter;
+            circle.Width = diameter;
+            circle.StrokeThickness = thickness;
+            circle.Stroke = color;
+
+            double left = center.X - (diameter / 2);
+            double top = center.Y - (diameter / 2);
+            Canvas.SetLeft(circle, left);
+            Canvas.SetTop(circle, top);
+            imageCanvas.Children.Add(circle);
         }
 
         /// <summary>

@@ -18,9 +18,6 @@ namespace BaseClasses
         float m_fSlope_rad;
         public float m_fRotationZ;
 
-        int ITotNoPoints;
-        float[,] PointsOut;
-
         public CConCom_Plate_B1()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -32,7 +29,7 @@ namespace BaseClasses
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
 
-            ITotNoPoints = 4;
+            ITotNoPointsin2D = 4;
 
             m_pControlPoint = controlpoint;
             m_fb_1 = fb_1_temp;
@@ -44,7 +41,7 @@ namespace BaseClasses
             m_fRotationZ = fPlateRotation;
 
             // Create Array - allocate memory
-            PointsOut = new float[ITotNoPoints, 2];
+            PointsOut2D = new float[ITotNoPointsin2D, 2];
 
             // Calculate point positions
             Calc_Coord();
@@ -58,7 +55,7 @@ namespace BaseClasses
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
 
-            ITotNoPoints = 5;
+            ITotNoPointsin2D = 4;
 
             m_pControlPoint = controlpoint;
             m_fb_1 = fb_1_temp;
@@ -70,7 +67,7 @@ namespace BaseClasses
             m_fRotationZ = fPlateRotation;
 
             // Create Array - allocate memory
-            PointsOut = new float[ITotNoPoints, 2];
+            PointsOut2D = new float[ITotNoPointsin2D, 2];
 
             // Fill Array Data
             Calc_Coord();
@@ -82,17 +79,17 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         void Calc_Coord()
         {
-            PointsOut[0, 0] = 0;
-            PointsOut[0, 1] = m_fh_1;
+            PointsOut2D[0, 0] = 0;
+            PointsOut2D[0, 1] = m_fh_1;
 
-            PointsOut[1, 0] = m_fb_2;
-            PointsOut[1, 1] = m_fh_2;
+            PointsOut2D[1, 0] = m_fb_2;
+            PointsOut2D[1, 1] = m_fh_2;
 
-            PointsOut[2, 0] = m_fb_1;
-            PointsOut[2, 1] = 0;
+            PointsOut2D[2, 0] = m_fb_1;
+            PointsOut2D[2, 1] = 0;
 
-            PointsOut[3, 0] = 0;
-            PointsOut[3, 1] = 0;
+            PointsOut2D[3, 0] = 0;
+            PointsOut2D[3, 1] = 0;
         }
 
         protected override void loadIndices()
@@ -117,9 +114,9 @@ namespace BaseClasses
             for (int i = 0; i < 2; i++) // 2 cycles - front and back surface
             {
                 // One Side
-                for (int j = 0; j < ITotNoPoints; j++)
+                for (int j = 0; j < ITotNoPointsin2D; j++)
                 {
-                    pMeshPositions.Add(new Point3D((i-1) * 0.5f * m_ft, PointsOut[j, 0], PointsOut[j, 1])); // x1 = - 0.5 t and x2 = 0.5 * t
+                    pMeshPositions.Add(new Point3D((i-1) * 0.5f * m_ft, PointsOut2D[j, 0], PointsOut2D[j, 1])); // x1 = - 0.5 t and x2 = 0.5 * t
                 }
             }
 
@@ -156,20 +153,20 @@ namespace BaseClasses
             wireFrame.Thickness = 1.0;
 
             // Front Side
-            for (int i = 0; i < PointsOut.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length / 2; i++)
             {
                 Point3D pi = new Point3D();
                 Point3D pj = new Point3D();
 
-                if (i < (PointsOut.Length / 2) - 1)
+                if (i < (PointsOut2D.Length / 2) - 1)
                 {
-                    pi = new Point3D(0, PointsOut[i, 0], PointsOut[i, 1]);
-                    pj = new Point3D(0, PointsOut[i + 1, 0], PointsOut[i + 1, 1]);
+                    pi = new Point3D(0, PointsOut2D[i, 0], PointsOut2D[i, 1]);
+                    pj = new Point3D(0, PointsOut2D[i + 1, 0], PointsOut2D[i + 1, 1]);
                 }
                 else // Last line
                 {
-                    pi = new Point3D(0, PointsOut[i, 0], PointsOut[i, 1]);
-                    pj = new Point3D(0, PointsOut[0, 0], PointsOut[0, 1]);
+                    pi = new Point3D(0, PointsOut2D[i, 0], PointsOut2D[i, 1]);
+                    pj = new Point3D(0, PointsOut2D[0, 0], PointsOut2D[0, 1]);
                 }
 
                 // Add points
@@ -178,20 +175,20 @@ namespace BaseClasses
             }
 
             // BackSide
-            for (int i = 0; i < PointsOut.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length / 2; i++)
             {
                 Point3D pi = new Point3D();
                 Point3D pj = new Point3D();
 
-                if (i < (PointsOut.Length / 2) - 1)
+                if (i < (PointsOut2D.Length / 2) - 1)
                 {
-                    pi = new Point3D(m_ft, PointsOut[i, 0], PointsOut[i, 1]);
-                    pj = new Point3D(m_ft, PointsOut[i + 1, 0], PointsOut[i + 1, 1]);
+                    pi = new Point3D(m_ft, PointsOut2D[i, 0], PointsOut2D[i, 1]);
+                    pj = new Point3D(m_ft, PointsOut2D[i + 1, 0], PointsOut2D[i + 1, 1]);
                 }
                 else // Last line
                 {
-                    pi = new Point3D(m_ft, PointsOut[i, 0], PointsOut[i, 1]);
-                    pj = new Point3D(m_ft, PointsOut[0, 0], PointsOut[0, 1]);
+                    pi = new Point3D(m_ft, PointsOut2D[i, 0], PointsOut2D[i, 1]);
+                    pj = new Point3D(m_ft, PointsOut2D[0, 0], PointsOut2D[0, 1]);
                 }
 
                 // Add points
@@ -200,13 +197,13 @@ namespace BaseClasses
             }
 
             // Lateral
-            for (int i = 0; i < PointsOut.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length / 2; i++)
             {
                 Point3D pi = new Point3D();
                 Point3D pj = new Point3D();
 
-                pi = new Point3D(0, PointsOut[i, 0], PointsOut[i, 1]);
-                pj = new Point3D(m_ft, PointsOut[i, 0], PointsOut[i, 1]);
+                pi = new Point3D(0, PointsOut2D[i, 0], PointsOut2D[i, 1]);
+                pj = new Point3D(m_ft, PointsOut2D[i, 0], PointsOut2D[i, 1]);
 
                 // Add points
                 wireFrame.Points.Add(pi);

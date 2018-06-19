@@ -8,76 +8,53 @@ using _3DTools;
 
 namespace BaseClasses
 {
-    public class CConCom_Plate_F_or_L : CPlate
+    public class CConCom_Plate_BB_BG : CPlate
     {
-        public float m_fbX1;
-        public float m_fbX2;
+        public float m_fbX;
         public float m_fhY;
         public float m_flZ; // Not used in 2D model
         public float m_ft; // Not used in 2D model
-        public int m_iHolesNumber = 0;
 
         float m_fRotationX_deg = 0;
         float m_fRotationY_deg = 0;
         float m_fRotationZ_deg = 0;
 
-        public CConCom_Plate_F_or_L()
+        float m_fDistanceBetweenHoles;
+
+        public CConCom_Plate_BB_BG()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_BB_BG(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber_temp, float fHoleDiameter_temp, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
 
-            ITotNoPointsin2D = 6;
-            ITotNoPointsin3D = 12;
-
             m_pControlPoint = controlpoint;
-            m_fbX1 = fbX_temp;
-            m_fbX2 = m_fbX1; // L Series - without slope
+            m_fbX = fbX_temp;
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
-            m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
+            IHolesNumber = iHolesNumber_temp = 2;
+            FHoleDiameter = fHoleDiameter_temp;
+
+            m_fDistanceBetweenHoles = 0.5f * m_fhY;
+            ITotNoPointsin2D = 8;
+
+            int iNoPoints2Dfor3D  = ITotNoPointsin2D + IHolesNumber * 4 + IHolesNumber * INumberOfPointsOfHole;
+            ITotNoPointsin3D = 2 * iNoPoints2Dfor3D;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[IHolesNumber, 2];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-        }
-
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
-        {
-            eConnComponentType = EConnectionComponentType.ePlate;
-            BIsDisplayed = bIsDisplayed;
-
-            ITotNoPointsin2D = 6;
-            ITotNoPointsin3D = 12;
-
-            m_pControlPoint = controlpoint;
-            m_fbX1 = fbX1_temp;
-            m_fbX2 = fbX2_temp;
-            m_fhY = fhY_temp;
-            m_flZ = fl_Z_temp;
-            m_ft = ft_platethickness;
-            m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
-
-            // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            // Calculate point positions
-            Calc_Coord2D();
-            Calc_Coord3D();
+            Calc_HolesCentersCoord2D();
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -92,17 +69,23 @@ namespace BaseClasses
             PointsOut2D[1, 0] = m_flZ;
             PointsOut2D[1, 1] = 0;
 
-            PointsOut2D[2, 0] = PointsOut2D[1, 0] + m_fbX1;
+            PointsOut2D[2, 0] = PointsOut2D[1, 0] + m_fbX;
             PointsOut2D[2, 1] = 0;
 
-            PointsOut2D[3, 0] = PointsOut2D[1, 0] + m_fbX2;
-            PointsOut2D[3, 1] = m_fhY;
+            PointsOut2D[3, 0] = PointsOut2D[2, 0] + m_flZ;
+            PointsOut2D[3, 1] = 0;
 
-            PointsOut2D[4, 0] = PointsOut2D[1, 0];
+            PointsOut2D[4, 0] = PointsOut2D[3, 0];
             PointsOut2D[4, 1] = m_fhY;
 
-            PointsOut2D[5, 0] = PointsOut2D[0, 0];
+            PointsOut2D[5, 0] = PointsOut2D[2, 0];
             PointsOut2D[5, 1] = m_fhY;
+
+            PointsOut2D[6, 0] = PointsOut2D[1, 0];
+            PointsOut2D[6, 1] = m_fhY;
+
+            PointsOut2D[7, 0] = PointsOut2D[0, 0];
+            PointsOut2D[7, 1] = m_fhY;
         }
 
         void Calc_Coord3D()
@@ -115,11 +98,11 @@ namespace BaseClasses
             arrPoints3D[1].Y = 0;
             arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = m_fbX1;
+            arrPoints3D[2].X = m_fbX;
             arrPoints3D[2].Y = 0;
             arrPoints3D[2].Z = 0;
 
-            arrPoints3D[3].X = m_fbX2;
+            arrPoints3D[3].X = m_fbX;
             arrPoints3D[3].Y = m_fhY;
             arrPoints3D[3].Z = arrPoints3D[2].Z;
 
@@ -154,6 +137,40 @@ namespace BaseClasses
             arrPoints3D[11].X = arrPoints3D[6].X;
             arrPoints3D[11].Y = arrPoints3D[6].Y + m_fhY;
             arrPoints3D[11].Z = arrPoints3D[6].Z;
+
+            int iRadiusAngle = 360; // Angle
+
+            /*
+            // 1st radius - centre "1" (90-270 degrees)
+            for (short i = 0; i < m_iNumOfArcPoints; i++)
+            {
+                CrScPointsOut[INoAuxPoints + i + 2, 0] = CrScPointsOut[1, 0] + m_fr_1 + Geom2D.GetPositionX(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[INoAuxPoints + i + 2, 1] = CrScPointsOut[1, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+            }
+
+            // Point No. 7
+            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 2, 0] = CrScPointsOut[5, 0];      // y
+            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 2, 1] = 0;                        // z
+
+            // Point No. 8
+            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 3, 0] = 0;                        // y
+            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 3, 1] = 0;                        // z
+
+            // 2nd radius - centre "2" (180-270 degrees)
+            for (short i = 0; i < m_iNumOfArcPoints; i++)
+            {
+                CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + i + 4, 0] = CrScPointsOut[0, 0] - m_fr_1 + Geom2D.GetPositionX(m_fr_1, 270 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + i + 4, 1] = CrScPointsOut[0, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 270 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+            }*/
+        }
+
+        void Calc_HolesCentersCoord2D()
+        {
+            HolesCentersPoints2D[0, 0] = m_flZ + 0.5f * m_fbX;
+            HolesCentersPoints2D[0, 1] = 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles;
+
+            HolesCentersPoints2D[1, 0] = HolesCentersPoints2D[0, 0];
+            HolesCentersPoints2D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
         }
 
         protected override void loadIndices()
