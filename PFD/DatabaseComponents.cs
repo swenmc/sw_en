@@ -159,11 +159,11 @@ namespace PFD
              "C-single",
              "C-back to back",
              "C-nested",
-             "SmartDek,",
+             "SmartDek",
              "PurlinDek"};
 
         public string[] arr_Serie_Box_FormSteel_Names = new string[1]
-            {"10075"};
+                {"10075"};
 
         public float[,] arr_Serie_Box_FormSteel_Dimension = new float[1, 3]
                 {
