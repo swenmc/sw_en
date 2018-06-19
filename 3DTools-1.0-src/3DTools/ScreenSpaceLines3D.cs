@@ -126,8 +126,9 @@ namespace _3DTools
 
         private void OnRender(object sender, EventArgs e)
         {
-            if (Points.Count == 0 && _mesh.Positions.Count == 0)
+            if (Points.Count == 0 && (_mesh.Positions == null || _mesh.Positions.Count == 0))
             {
+                // TODO - Ondrej skontroluj podmienku v if - po CLEAR to padalo pretoze mesh.Positions = null, pridal som podmienku, aby to doslo k return
                 return;
             }
 

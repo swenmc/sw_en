@@ -709,5 +709,11 @@ namespace PFD
             int i;
             return int.TryParse(str, out i) && i >= 5 && i <= 100;
         }
+
+        private void SystemComponentViewer_Click(object sender, RoutedEventArgs e)
+        {
+            SystemComponentViewer win = new SystemComponentViewer();
+            win.Show(); 
+        }
     }
 }
