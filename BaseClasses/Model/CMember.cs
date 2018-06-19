@@ -537,20 +537,23 @@ namespace BaseClasses
 
         private void ChangeIndices(Int32Collection TriangleIndices)
         {
-            int iSecond = 1;
-            int iThird = 2;
-
-            int iTIcount = TriangleIndices.Count;
-            for (int i = 0; i < iTIcount / 3; i++)
+            if (TriangleIndices != null && TriangleIndices.Count > 0)
             {
-                int iTI_2 = TriangleIndices[iSecond];
-                int iTI_3 = TriangleIndices[iThird];
+                int iSecond = 1;
+                int iThird = 2;
 
-                TriangleIndices[iThird] = iTI_2;
-                TriangleIndices[iSecond] = iTI_3;
+                int iTIcount = TriangleIndices.Count;
+                for (int i = 0; i < iTIcount / 3; i++)
+                {
+                    int iTI_2 = TriangleIndices[iSecond];
+                    int iTI_3 = TriangleIndices[iThird];
 
-                iSecond += 3;
-                iThird += 3;
+                    TriangleIndices[iThird] = iTI_2;
+                    TriangleIndices[iSecond] = iTI_3;
+
+                    iSecond += 3;
+                    iThird += 3;
+                }
             }
         }
 

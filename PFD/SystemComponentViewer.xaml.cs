@@ -73,7 +73,7 @@ namespace PFD
             Combobox_Type.Items.Add("Plate");
             Combobox_Type.Items.Add("Screw");
 
-            Combobox_Type.SelectedIndex = 1;
+            Combobox_Type.SelectedIndex = 0;
 
             Combobox_Series.Items.Clear();
             Combobox_Component.Items.Clear();

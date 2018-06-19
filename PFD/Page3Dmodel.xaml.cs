@@ -126,7 +126,7 @@ namespace PFD
             InitializeComponent();
 
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.LightYellow);
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
 
             // Component Model
             GeometryModel3D ComponentGeomModel = new GeometryModel3D();
@@ -180,11 +180,12 @@ namespace PFD
             InitializeComponent();
 
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.LightYellow);
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
 
             // Component Model
             Model3DGroup ComponentGeomModel = new Model3DGroup();
 
+            bool bDisplay_WireFrame = true;
             float fTempMax_X;
             float fTempMin_X;
             float fTempMax_Y;
@@ -211,23 +212,32 @@ namespace PFD
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
                 _trackport.Model = (Model3D)ComponentGeomModel;
-            }
 
-            // Add WireFrame Model
-            // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
+                // Add WireFrame Model
+                // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
 
-            bool bDisplay_WireFrame = true;
+                // Members - Wire Frame
+                if (bDisplay_WireFrame)
+                {
+                    // Create WireFrime in LCS
+                    //wireFrame = model.CreateWireFrameModel(); // TODO dopracovat funkcie pre zobrazenie, implementovat v objekte pruta a nie na urovni cmodelu
 
-            // Members - Wire Frame
-            if (bDisplay_WireFrame && crsc != null)
-            {
-                // Create WireFrime in LCS
-                ScreenSpaceLines3D wireFrame;
+                    ScreenSpaceLines3D wireFrame_FrontSide = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D wireFrame_BackSide = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D wireFrame_Lateral = new ScreenSpaceLines3D();
 
-                //wireFrame = model.CreateWireFrameModel();
+                    Window2 wtemp = new Window2(); // ToDo - odstranit
 
-                // Add Wireframe Lines to the trackport
-                //_trackport.ViewPort.Children.Add(wireFrame);
+                    wireFrame_FrontSide = wtemp.wireFrame(member_temp,0f);
+                    wireFrame_BackSide = wtemp.wireFrame(member_temp, 0f);
+                    wireFrame_Lateral = wtemp.wireFrame(member_temp, 0f);
+
+                    // Add Wireframe Lines to the trackport
+                    //_trackport.ViewPort.Children.Add(wireFrame);
+                    _trackport.ViewPort.Children.Add(wireFrame_FrontSide);
+                    _trackport.ViewPort.Children.Add(wireFrame_BackSide);
+                    _trackport.ViewPort.Children.Add(wireFrame_Lateral);
+                }
             }
 
             _trackport.SetupScene();
@@ -242,6 +252,9 @@ namespace PFD
      out float fTempMin_Z
      )
         {
+            // TODO upravit tak aby sme vedeli ziskat obecne rozmery z modelu, z pruta, z plechu, telesa atd
+            // Pripadne riesit vsetko ako cmodel, ale to je pre preview jedneho dielcieho objektu neumerne velke
+
             fTempMax_X = float.MinValue;
             fTempMin_X = float.MaxValue;
             fTempMax_Y = float.MinValue;
@@ -296,36 +309,37 @@ namespace PFD
             fTempMax_Z = float.MinValue;
             fTempMin_Z = float.MaxValue;
 
-            /*
-            if (member.m_arrNodes != null) // Some nodes exist
+            // TODO upravit tak aby sme vedeli ziskat obecne rozmery z modelu, z pruta, z plechu atd
+            // Pripadne riesit vsetko ako cmodel, ale to je pre preview jedneho dielcieho objektu neumerne velke
+
+
+            if (member.CrScStart.CrScPointsOut != null) // Some cross-section points exist
             {
-                for (int i = 0; i < cmodel.m_arrNodes.Length; i++)
+                // Maximum X - coordinate
+                fTempMax_X = member.NodeStart.X;
+
+                // Minimum X - coordinate
+                fTempMin_X = member.NodeEnd.X;
+
+                for (int i = 0; i < member.CrScStart.CrScPointsOut.Length/2; i++)
                 {
-                    // Maximum X - coordinate
-                    if (cmodel.m_arrNodes[i].X > fTempMax_X)
-                        fTempMax_X = cmodel.m_arrNodes[i].X;
-
-                    // Minimum X - coordinate
-                    if (cmodel.m_arrNodes[i].X < fTempMin_X)
-                        fTempMin_X = cmodel.m_arrNodes[i].X;
-
                     // Maximum Y - coordinate
-                    if (cmodel.m_arrNodes[i].Y > fTempMax_Y)
-                        fTempMax_Y = cmodel.m_arrNodes[i].Y;
+                    if (member.CrScStart.CrScPointsOut[i,0] > fTempMax_Y)
+                        fTempMax_Y = member.CrScStart.CrScPointsOut[i, 0];
 
                     // Minimum Y - coordinate
-                    if (cmodel.m_arrNodes[i].Y < fTempMin_Y)
-                        fTempMin_Y = cmodel.m_arrNodes[i].Y;
+                    if (member.CrScStart.CrScPointsOut[i, 0] < fTempMin_Y)
+                        fTempMin_Y = member.CrScStart.CrScPointsOut[i, 0];
 
                     // Maximum Z - coordinate
-                    if (cmodel.m_arrNodes[i].Z > fTempMax_Z)
-                        fTempMax_Z = cmodel.m_arrNodes[i].Z;
+                    if (member.CrScStart.CrScPointsOut[i, 1] > fTempMax_Z)
+                        fTempMax_Z = member.CrScStart.CrScPointsOut[i, 1];
 
                     // Minimum Z - coordinate
-                    if (cmodel.m_arrNodes[i].Z < fTempMin_Z)
-                        fTempMin_Z = cmodel.m_arrNodes[i].Z;
+                    if (member.CrScStart.CrScPointsOut[i, 1] < fTempMin_Z)
+                        fTempMin_Z = member.CrScStart.CrScPointsOut[i, 1];
                 }
-            }*/
+            }
         }
     }
 }
