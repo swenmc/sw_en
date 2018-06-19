@@ -8,9 +8,10 @@ using _3DTools;
 
 namespace BaseClasses
 {
-    public class CConCom_Plate_L : CPlate
+    public class CConCom_Plate_F_or_L : CPlate
     {
-        public float m_fbX;
+        public float m_fbX1;
+        public float m_fbX2;
         public float m_fhY;
         public float m_flZ; // Not used in 2D model
         public float m_ft; // Not used in 2D model
@@ -22,13 +23,13 @@ namespace BaseClasses
         float m_fRotationY_deg;
         float m_fRotationZ_deg;
 
-        public CConCom_Plate_L()
+        public CConCom_Plate_F_or_L()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_L(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -36,7 +37,35 @@ namespace BaseClasses
             ITotNoPoints = 12;
 
             m_pControlPoint = controlpoint;
-            m_fbX = fbX_temp;
+            m_fbX1 = fbX_temp;
+            m_fbX2 = m_fbX1; // L Series - without slope
+            m_fhY = fhY_temp;
+            m_flZ = fl_Z_temp;
+            m_ft = ft_platethickness;
+            m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
+
+            // Create Array - allocate memory
+            PointsOut2D = new float[ITotNoPoints / 2, 2];
+            arrPoints3D = new Point3D[ITotNoPoints];
+
+            // Calculate point positions
+            Calc_Coord2D();
+            Calc_Coord3D();
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+        }
+
+        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        {
+            eConnComponentType = EConnectionComponentType.ePlate;
+            BIsDisplayed = bIsDisplayed;
+
+            ITotNoPoints = 12;
+
+            m_pControlPoint = controlpoint;
+            m_fbX1 = fbX1_temp;
+            m_fbX2 = fbX2_temp;
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
@@ -63,10 +92,10 @@ namespace BaseClasses
             PointsOut2D[1, 0] = m_flZ;
             PointsOut2D[1, 1] = 0;
 
-            PointsOut2D[2, 0] = PointsOut2D[1, 0] + m_fbX;
+            PointsOut2D[2, 0] = PointsOut2D[1, 0] + m_fbX1;
             PointsOut2D[2, 1] = 0;
 
-            PointsOut2D[3, 0] = PointsOut2D[1, 0] + m_fbX;
+            PointsOut2D[3, 0] = PointsOut2D[1, 0] + m_fbX2;
             PointsOut2D[3, 1] = m_fhY;
 
             PointsOut2D[4, 0] = PointsOut2D[1, 0];
@@ -84,13 +113,13 @@ namespace BaseClasses
 
             arrPoints3D[1].X = 0;
             arrPoints3D[1].Y = 0;
-            arrPoints3D[1].Z = m_flZ;
+            arrPoints3D[1].Z = 0;
 
-            arrPoints3D[2].X = m_fbX;
+            arrPoints3D[2].X = m_fbX1;
             arrPoints3D[2].Y = 0;
-            arrPoints3D[2].Z = m_flZ;
+            arrPoints3D[2].Z = 0;
 
-            arrPoints3D[3].X = arrPoints3D[2].X;
+            arrPoints3D[3].X = m_fbX2;
             arrPoints3D[3].Y = m_fhY;
             arrPoints3D[3].Z = arrPoints3D[2].Z;
 
@@ -114,9 +143,9 @@ namespace BaseClasses
             arrPoints3D[8].Y = arrPoints3D[2].Y;
             arrPoints3D[8].Z = arrPoints3D[2].Z + m_ft;
 
-            arrPoints3D[9].X = arrPoints3D[8].X;
-            arrPoints3D[9].Y = arrPoints3D[8].Y + m_fhY;
-            arrPoints3D[9].Z = arrPoints3D[8].Z;
+            arrPoints3D[9].X = arrPoints3D[3].X;
+            arrPoints3D[9].Y = arrPoints3D[3].Y;
+            arrPoints3D[9].Z = arrPoints3D[3].Z + m_ft;
 
             arrPoints3D[10].X = arrPoints3D[7].X;
             arrPoints3D[10].Y = arrPoints3D[7].Y + m_fhY;
@@ -132,21 +161,21 @@ namespace BaseClasses
             int secNum = 6;
             TriangleIndices = new Int32Collection();
 
-            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 1, 4, 5);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 5, 4, 1);
             AddRectangleIndices_CCW_1234(TriangleIndices, 1, 2, 3, 4);
-            AddRectangleIndices_CW_1234(TriangleIndices, 6, 7, 10, 11);
-            AddRectangleIndices_CW_1234(TriangleIndices, 7, 8, 9, 10);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 10, 11);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 7, 8, 9, 10);
 
             // Shell Surface
-            DrawCaraLaterals_CCW(secNum, TriangleIndices);
+            DrawCaraLaterals_CW(secNum, TriangleIndices);
         }
 
         protected override Point3DCollection GetDefinitionPoints()
         {
             Point3DCollection pMeshPositions = new Point3DCollection();
 
-
-            //pMeshPositions.Add();
+            foreach (Point3D point in arrPoints3D)
+                pMeshPositions.Add(point);
 
             return pMeshPositions;
         }
@@ -180,8 +209,6 @@ namespace BaseClasses
             wireFrame.Color = Color.FromRgb(250, 250, 60);
             wireFrame.Thickness = 1.0;
 
-            int secNum = 6;
-
             // y = 0
             wireFrame.Points.Add(arrPoints3D[0]);
             wireFrame.Points.Add(arrPoints3D[1]);
@@ -200,6 +227,12 @@ namespace BaseClasses
 
             wireFrame.Points.Add(arrPoints3D[6]);
             wireFrame.Points.Add(arrPoints3D[0]);
+
+            wireFrame.Points.Add(arrPoints3D[0]);
+            wireFrame.Points.Add(arrPoints3D[6]);
+
+            wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[8]);
 
             // y = m_fhY
             wireFrame.Points.Add(arrPoints3D[5]);
@@ -220,13 +253,30 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[11]);
             wireFrame.Points.Add(arrPoints3D[5]);
 
+            wireFrame.Points.Add(arrPoints3D[3]);
+            wireFrame.Points.Add(arrPoints3D[9]);
+
+            wireFrame.Points.Add(arrPoints3D[5]);
+            wireFrame.Points.Add(arrPoints3D[11]);
+
             // Lateral
-            for (int i = 0; i < secNum; i++)
-            {
-                // Add points
-                wireFrame.Points.Add(arrPoints3D[i]);
-                wireFrame.Points.Add(arrPoints3D[i + secNum]);
-            }
+            wireFrame.Points.Add(arrPoints3D[0]);
+            wireFrame.Points.Add(arrPoints3D[5]);
+
+            wireFrame.Points.Add(arrPoints3D[6]);
+            wireFrame.Points.Add(arrPoints3D[11]);
+
+            wireFrame.Points.Add(arrPoints3D[7]);
+            wireFrame.Points.Add(arrPoints3D[10]);
+
+            wireFrame.Points.Add(arrPoints3D[8]);
+            wireFrame.Points.Add(arrPoints3D[9]);
+
+            wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[3]);
+
+            wireFrame.Points.Add(arrPoints3D[1]);
+            wireFrame.Points.Add(arrPoints3D[4]);
 
             return wireFrame;
         }

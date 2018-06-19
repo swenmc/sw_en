@@ -22,11 +22,11 @@ namespace sw_en_GUI
     public partial class WindowCrossSection2D : Window
     {
         int scale_unit = 1000; // mm
-        int modelposition_x = 700;
-        int modelposition_y = 500;
+        int modelposition_x = 300;
+        int modelposition_y = 150;
 
         bool bDrawPoints = true;
-        bool bDrawOutLine = false;
+        bool bDrawOutLine = true;
         bool bUsePolylineforDrawing = true;
 
         bool bDrawPointNumbers = true;
@@ -43,22 +43,22 @@ namespace sw_en_GUI
             // Temporary
             //Point p = new Point(10, 10);
             //DrawPoint(p, Brushes.Red, Brushes.Red, 4, canvasForImage);
-
-
         }
 
         public WindowCrossSection2D(CPlate component)
         {
             InitializeComponent();
             canvasForImage.Children.Clear();
-            DrawPlate(component);
+            if (component != null)
+                DrawPlate(component);
         }
 
         public WindowCrossSection2D(CCrSc_TW crsc)
         {
             InitializeComponent();
             canvasForImage.Children.Clear();
-            DrawCrSc(crsc);
+            if (crsc != null)
+                DrawCrSc(crsc);
         }
 
         public void SaveImage(Visual visual, int width, int height, string filePath)
@@ -108,13 +108,15 @@ namespace sw_en_GUI
         public void DrawCrSc(CCrSc_TW crsc)
         {
             INoPointsOut = crsc.CrScPointsOut.Length / 2;
-            INoPointsIn = crsc.CrScPointsIn.Length / 2;
-
             PointsOut = new float[INoPointsOut, 2];
-            PointsIn = new float[INoPointsIn, 2];
-
             PointsOut = crsc.CrScPointsOut;
-            PointsIn = crsc.CrScPointsIn;
+
+            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
+            {
+                INoPointsIn = crsc.CrScPointsIn.Length / 2;
+                PointsIn = new float[INoPointsIn, 2];
+                PointsIn = crsc.CrScPointsIn;
+            }
 
             // Definition Points
             DrawPoints();
@@ -168,8 +170,12 @@ namespace sw_en_GUI
                         DrawPolyLine(PointsIn, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
                     }
                 }
-                else
+                else 
                 {
+                    // ToDo kreslenie po liniach nefunguje spravne, asi je problem s tymito canvas vo funkcii DrawLine
+                    // Canvas.SetTop(myLine, line.Y1);
+                    // Canvas.SetLeft(myLine, line.X1);
+
                     // Outer outline lines
                     if (PointsOut != null) // If is array of points not empty
                     {
@@ -278,9 +284,9 @@ namespace sw_en_GUI
         {
             PointCollection points = new PointCollection();
 
-            for (int i = 0; i < arrPoints.Length / 2; i++)
+            for (int i = 0; i < arrPoints.Length / 2 + 1; i++)
             {
-                if(i < ((arrPoints.Length / 2)-1))
+                if(i < ((arrPoints.Length / 2)))
                    points.Add(new Point(modelposition_x + scale_unit * arrPoints[i, 0], modelposition_y + scale_unit * arrPoints[i, 1]));
                 else
                     points.Add(new Point(modelposition_x + scale_unit * arrPoints[0, 0], modelposition_y + scale_unit * arrPoints[0, 1])); // Last point is same as first one

@@ -136,5 +136,54 @@ namespace PFD
                 {050, 100, 050, 3, 8},
                 {050, 288, 050, 3, 16}
             };
+
+        public float[,] arr_Serie_F_Dimension = new float[10, 6]
+            {
+                {120, 035, 600, 065, 2, 0},
+                {120, 035, 600, 065, 2, 0},
+                {110, 035, 545, 065, 2, 0},
+                {110, 035, 545, 065, 2, 0},
+                {110, 035, 490, 065, 2, 0},
+                {110, 035, 490, 065, 2, 0},
+                {200, 035, 545, 050, 2, 0},
+                {200, 035, 545, 050, 2, 0},
+                {200, 035, 490, 050, 2, 0},
+                {200, 035, 490, 050, 2, 0}
+            };
+
+
+        // Cross-section - len docasne, mali by byt v samostatnej databaze
+        public string[] arr_Serie_CrSc_FormSteel_Names = new string[7]
+            {"Box",
+             "Z",
+             "C-single",
+             "C-back to back",
+             "C-nested",
+             "SmartDek,",
+             "PurlinDek"};
+
+        public string[] arr_Serie_Box_FormSteel_Names = new string[1]
+            {"10075"};
+
+        public float[,] arr_Serie_Box_FormSteel_Dimension = new float[1, 3]
+                {
+                {100, 100, 0.75f}
+                };
+
+        public string[] arr_Serie_C_FormSteel_Names = new string[4]
+                {
+                "27095",
+                "270115",
+                "27055",
+                "50020"
+                };
+
+        public float[,] arr_Serie_C_FormSteel_Dimension = new float[4, 3]
+        {
+                {70,270,0.95f},
+                {70,270,1.15f},
+                {70,270,0.55f},
+                {100,500,1.95f}
+        };
     }
 }

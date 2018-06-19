@@ -645,7 +645,7 @@ namespace PFD
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel) Frame1.Content;
-            ClearViewPort(page3D._trackport.ViewPort);            
+            ClearViewPort(page3D._trackport.ViewPort);
         }
 
         private void ClearViewPort(Viewport3D viewPort)

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BaseClasses;
 using sw_en_GUI;
+using CRSC;
 using System.Windows.Media.Media3D;
 using _3DTools;
 
@@ -82,7 +83,7 @@ namespace PFD
                 float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
                 Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 1, pModelGeomCentre.Y - 25, pModelGeomCentre.Z + 10);
+                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 1, pModelGeomCentre.Y - (2 * fModel_Length_Y), pModelGeomCentre.Z + (2 * fModel_Length_Z));
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
@@ -125,7 +126,7 @@ namespace PFD
             InitializeComponent();
 
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Red);
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.LightYellow);
 
             // Component Model
             GeometryModel3D ComponentGeomModel = new GeometryModel3D();
@@ -149,7 +150,7 @@ namespace PFD
                 float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
                 Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 1, pModelGeomCentre.Y - 25, pModelGeomCentre.Z + 10);
+                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 0.1 * fModel_Length_X, pModelGeomCentre.Y - (2 * fModel_Length_Y), pModelGeomCentre.Z + (2 * fModel_Length_Z));
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
@@ -169,6 +170,64 @@ namespace PFD
 
                 // Add Wireframe Lines to the trackport
                 _trackport.ViewPort.Children.Add(wireFrame);
+            }
+
+            _trackport.SetupScene();
+        }
+
+        public Page3Dmodel(CCrSc_TW crsc)
+        {
+            InitializeComponent();
+
+            // Default color
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.LightYellow);
+
+            // Component Model
+            Model3DGroup ComponentGeomModel = new Model3DGroup();
+
+            float fTempMax_X;
+            float fTempMin_X;
+            float fTempMax_Y;
+            float fTempMin_Y;
+            float fTempMax_Z;
+            float fTempMin_Z;
+
+            if (crsc != null)
+            {
+                CMember member_temp = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0.5f, 0, 0, 0), crsc, 0);
+
+                ComponentGeomModel = member_temp.getM_3D_G_Member(EGCS.eGCSLeftHanded, brushDefault, brushDefault, brushDefault);
+
+                // Get model centre
+                CalculateModelLimits(member_temp, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+                float fModel_Length_X = fTempMax_X - fTempMin_X;
+                float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+                float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+                Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 0.1 * fModel_Length_X, pModelGeomCentre.Y - (2 * fModel_Length_Y), pModelGeomCentre.Z + (2 * fModel_Length_Z));
+
+                _trackport.PerspectiveCamera.Position = cameraPosition;
+                _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+                _trackport.Model = (Model3D)ComponentGeomModel;
+            }
+
+            // Add WireFrame Model
+            // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
+
+            bool bDisplay_WireFrame = true;
+
+            // Members - Wire Frame
+            if (bDisplay_WireFrame && crsc != null)
+            {
+                // Create WireFrime in LCS
+                ScreenSpaceLines3D wireFrame;
+
+                //wireFrame = model.CreateWireFrameModel();
+
+                // Add Wireframe Lines to the trackport
+                //_trackport.ViewPort.Children.Add(wireFrame);
             }
 
             _trackport.SetupScene();
@@ -219,6 +278,54 @@ namespace PFD
                         fTempMin_Z = (float)componentmodel.arrPoints3D[i].Z;
                 }
             }
+        }
+
+        public void CalculateModelLimits(CMember member,
+    out float fTempMax_X,
+    out float fTempMin_X,
+    out float fTempMax_Y,
+    out float fTempMin_Y,
+    out float fTempMax_Z,
+    out float fTempMin_Z
+    )
+        {
+            fTempMax_X = float.MinValue;
+            fTempMin_X = float.MaxValue;
+            fTempMax_Y = float.MinValue;
+            fTempMin_Y = float.MaxValue;
+            fTempMax_Z = float.MinValue;
+            fTempMin_Z = float.MaxValue;
+
+            /*
+            if (member.m_arrNodes != null) // Some nodes exist
+            {
+                for (int i = 0; i < cmodel.m_arrNodes.Length; i++)
+                {
+                    // Maximum X - coordinate
+                    if (cmodel.m_arrNodes[i].X > fTempMax_X)
+                        fTempMax_X = cmodel.m_arrNodes[i].X;
+
+                    // Minimum X - coordinate
+                    if (cmodel.m_arrNodes[i].X < fTempMin_X)
+                        fTempMin_X = cmodel.m_arrNodes[i].X;
+
+                    // Maximum Y - coordinate
+                    if (cmodel.m_arrNodes[i].Y > fTempMax_Y)
+                        fTempMax_Y = cmodel.m_arrNodes[i].Y;
+
+                    // Minimum Y - coordinate
+                    if (cmodel.m_arrNodes[i].Y < fTempMin_Y)
+                        fTempMin_Y = cmodel.m_arrNodes[i].Y;
+
+                    // Maximum Z - coordinate
+                    if (cmodel.m_arrNodes[i].Z > fTempMax_Z)
+                        fTempMax_Z = cmodel.m_arrNodes[i].Z;
+
+                    // Minimum Z - coordinate
+                    if (cmodel.m_arrNodes[i].Z < fTempMin_Z)
+                        fTempMin_Z = cmodel.m_arrNodes[i].Z;
+                }
+            }*/
         }
     }
 }
