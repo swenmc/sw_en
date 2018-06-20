@@ -112,7 +112,7 @@ namespace PFD
 
             set
             {
-                if (value < 500 || value > 500)
+                if (value < 500 || value > 5000)
                     throw new ArgumentException("Girt distance must be between 500 and 5000 [mm]");
                 MGirtDistance = value;
             }
@@ -148,12 +148,12 @@ namespace PFD
             }
         }
 
-        
-
         public CPFDViewModel()
         {
+            // Todo - Ondrej - toto by sa malo nacitat podla defaultnej hodnoty indexu nastavenej v comboboxe
+
             /* Set default values */
-            MCableWidth = 8000;            
+            MCableWidth = 8000;
             MLength = 12000;
             MWallHeight = 3600;
             MRoofPitch = 15;
@@ -162,8 +162,5 @@ namespace PFD
             MPurlinDistance = 1000;
             MColumnDistance = 2000;
         }
-
-        
-
     }
 }
