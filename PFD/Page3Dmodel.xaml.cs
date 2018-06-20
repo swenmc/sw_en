@@ -126,10 +126,17 @@ namespace PFD
             InitializeComponent();
 
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.LightGreen);
 
-            // Component Model
-            GeometryModel3D ComponentGeomModel = new GeometryModel3D();
+            bool bDisplay_SurfaceModel = true;
+            GeometryModel3D ComponentGeomModel;
+
+            // Surface Model (Solid / Transparent (depends on material opacity)
+            if (bDisplay_SurfaceModel && model != null)
+            {
+                // Component Model
+                ComponentGeomModel = new GeometryModel3D();
+            }
 
             float fTempMax_X;
             float fTempMin_X;
@@ -162,7 +169,7 @@ namespace PFD
 
             bool bDisplay_WireFrame = true;
 
-            // Members - Wire Frame
+            // Wire Frame
             if (bDisplay_WireFrame && model != null)
             {
                 // Create WireFrime in LCS

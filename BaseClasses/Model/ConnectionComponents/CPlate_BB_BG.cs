@@ -104,6 +104,7 @@ namespace BaseClasses
             float fradius = 0.5f * FHoleDiameter;
             int iRadiusAngle = 360; // Angle
 
+            // First layer
 
             arrPoints3D[0].X = 0;
             arrPoints3D[0].Y = 0;
@@ -171,7 +172,7 @@ namespace BaseClasses
             arrPoints3D[15].Y = holesCentersPointsfor3D[1, 1] + fradius;
             arrPoints3D[15].Z = 0;
 
-            // Holes 1
+            // Hole 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
                 arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
@@ -179,7 +180,7 @@ namespace BaseClasses
                 arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Z = 0;
             }
 
-            // Hole 2
+            // Hole 2 - upper
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
                 arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
@@ -187,87 +188,88 @@ namespace BaseClasses
                 arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
             }
 
+            // Second layer
 
-            arrPoints3D[iNoPoints2Dfor3D + 0].X = 0;
-            arrPoints3D[0].Y = 0;
-            arrPoints3D[0].Z = m_flZ;
+            arrPoints3D[iNoPoints2Dfor3D + 0].X = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 0].Y = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 0].Z = m_flZ;
 
-            arrPoints3D[1].X = arrPoints3D[0].X;
-            arrPoints3D[1].Y = arrPoints3D[0].Y;
-            arrPoints3D[1].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 1].X = arrPoints3D[iNoPoints2Dfor3D + 0].X;
+            arrPoints3D[iNoPoints2Dfor3D + 1].Y = arrPoints3D[0].Y;
+            arrPoints3D[iNoPoints2Dfor3D + 1].Z = m_ft;
 
-            arrPoints3D[2].X = m_fbX;
-            arrPoints3D[2].Y = arrPoints3D[0].Y;
-            arrPoints3D[2].Z = arrPoints3D[1].Z;
+            arrPoints3D[iNoPoints2Dfor3D + 2].X = m_fbX - m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 2].Y = arrPoints3D[iNoPoints2Dfor3D + 0].Y;
+            arrPoints3D[iNoPoints2Dfor3D + 2].Z = arrPoints3D[iNoPoints2Dfor3D + 1].Z;
 
-            arrPoints3D[3].X = arrPoints3D[2].X;
-            arrPoints3D[3].Y = arrPoints3D[0].Y;
-            arrPoints3D[3].Z = arrPoints3D[0].Z;
+            arrPoints3D[iNoPoints2Dfor3D + 3].X = arrPoints3D[iNoPoints2Dfor3D + 2].X;
+            arrPoints3D[iNoPoints2Dfor3D + 3].Y = arrPoints3D[iNoPoints2Dfor3D + 0].Y;
+            arrPoints3D[iNoPoints2Dfor3D + 3].Z = arrPoints3D[iNoPoints2Dfor3D + 0].Z;
 
-            arrPoints3D[4].X = arrPoints3D[3].X;
-            arrPoints3D[4].Y = m_fhY;
-            arrPoints3D[4].Z = arrPoints3D[3].Z;
+            arrPoints3D[iNoPoints2Dfor3D + 4].X = arrPoints3D[iNoPoints2Dfor3D + 3].X;
+            arrPoints3D[iNoPoints2Dfor3D + 4].Y = m_fhY;
+            arrPoints3D[iNoPoints2Dfor3D + 4].Z = arrPoints3D[iNoPoints2Dfor3D + 3].Z;
 
-            arrPoints3D[5].X = arrPoints3D[2].X;
-            arrPoints3D[5].Y = arrPoints3D[4].Y;
-            arrPoints3D[5].Z = arrPoints3D[2].Z;
+            arrPoints3D[iNoPoints2Dfor3D + 5].X = arrPoints3D[iNoPoints2Dfor3D + 2].X;
+            arrPoints3D[iNoPoints2Dfor3D + 5].Y = arrPoints3D[iNoPoints2Dfor3D + 4].Y;
+            arrPoints3D[iNoPoints2Dfor3D + 5].Z = arrPoints3D[iNoPoints2Dfor3D + 2].Z;
 
-            arrPoints3D[6].X = arrPoints3D[1].X;
-            arrPoints3D[6].Y = arrPoints3D[4].Y;
-            arrPoints3D[6].Z = arrPoints3D[1].Z;
+            arrPoints3D[iNoPoints2Dfor3D + 6].X = arrPoints3D[iNoPoints2Dfor3D + 1].X;
+            arrPoints3D[iNoPoints2Dfor3D + 6].Y = arrPoints3D[iNoPoints2Dfor3D + 4].Y;
+            arrPoints3D[iNoPoints2Dfor3D + 6].Z = arrPoints3D[iNoPoints2Dfor3D + 1].Z;
 
-            arrPoints3D[7].X = arrPoints3D[0].X;
-            arrPoints3D[7].Y = arrPoints3D[4].Y;
-            arrPoints3D[7].Z = arrPoints3D[0].Z;
+            arrPoints3D[iNoPoints2Dfor3D + 7].X = arrPoints3D[iNoPoints2Dfor3D + 0].X;
+            arrPoints3D[iNoPoints2Dfor3D + 7].Y = arrPoints3D[iNoPoints2Dfor3D + 4].Y;
+            arrPoints3D[iNoPoints2Dfor3D + 7].Z = arrPoints3D[iNoPoints2Dfor3D + 0].Z;
 
             // Points in holes square edges
 
-            arrPoints3D[8].X = holesCentersPointsfor3D[0, 0] - fradius;
-            arrPoints3D[8].Y = holesCentersPointsfor3D[0, 1] + fradius;
-            arrPoints3D[8].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 8].X = holesCentersPointsfor3D[0, 0] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 8].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 8].Z = m_ft;
 
-            arrPoints3D[9].X = holesCentersPointsfor3D[0, 0] - fradius;
-            arrPoints3D[9].Y = holesCentersPointsfor3D[0, 1] - fradius;
-            arrPoints3D[9].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 9].X = holesCentersPointsfor3D[0, 0] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 9].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 9].Z = m_ft;
 
-            arrPoints3D[10].X = holesCentersPointsfor3D[0, 0] + fradius;
-            arrPoints3D[10].Y = holesCentersPointsfor3D[0, 1] - fradius;
-            arrPoints3D[10].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 10].X = holesCentersPointsfor3D[0, 0] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 10].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 10].Z = m_ft;
 
-            arrPoints3D[11].X = holesCentersPointsfor3D[0, 0] + fradius;
-            arrPoints3D[11].Y = holesCentersPointsfor3D[0, 1] + fradius;
-            arrPoints3D[11].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 11].X = holesCentersPointsfor3D[0, 0] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 11].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 11].Z = m_ft;
 
-            arrPoints3D[12].X = holesCentersPointsfor3D[1, 0] - fradius;
-            arrPoints3D[12].Y = holesCentersPointsfor3D[1, 1] + fradius;
-            arrPoints3D[12].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 12].X = holesCentersPointsfor3D[1, 0] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 12].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 12].Z = m_ft;
 
-            arrPoints3D[13].X = holesCentersPointsfor3D[1, 0] - fradius;
-            arrPoints3D[13].Y = holesCentersPointsfor3D[1, 1] - fradius;
-            arrPoints3D[13].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 13].X = holesCentersPointsfor3D[1, 0] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 13].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 13].Z = m_ft;
 
-            arrPoints3D[14].X = holesCentersPointsfor3D[1, 0] + fradius;
-            arrPoints3D[14].Y = holesCentersPointsfor3D[1, 1] - fradius;
-            arrPoints3D[14].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 14].X = holesCentersPointsfor3D[1, 0] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 14].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 14].Z = m_ft;
 
-            arrPoints3D[15].X = holesCentersPointsfor3D[1, 0] + fradius;
-            arrPoints3D[15].Y = holesCentersPointsfor3D[1, 1] + fradius;
-            arrPoints3D[15].Z = 0;
+            arrPoints3D[iNoPoints2Dfor3D + 15].X = holesCentersPointsfor3D[1, 0] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 15].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 15].Z = m_ft;
 
-            // Holes 1
+            // Holes 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Z = 0;
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Z = m_ft;
             }
 
-            // Hole 2
+            // Hole 2 - upper
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = m_ft;
             }
         }
 
@@ -282,16 +284,107 @@ namespace BaseClasses
 
         protected override void loadIndices()
         {
-            int secNum = 6;
+            int iNumber_of_quaters = 4;
+            int iNumber_of_hole_points = 12;
+            int iNoTrianglesInquater = iNumber_of_hole_points / iNumber_of_quaters;
+
             TriangleIndices = new Int32Collection();
 
-            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 5, 4, 1);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 2, 3, 4);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 10, 11);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 7, 8, 9, 10);
+            // First layer
+            AddRectangleIndices_CCW_1234(TriangleIndices, 0, 7, 6, 1);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 2, 5, 4, 3);
 
-            // Shell Surface
-            DrawCaraLaterals_CW(secNum, TriangleIndices);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 6, 12, 9);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 2, 10, 15, 5);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 9, 10, 2);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 5, 15, 12, 6);
+
+            // Middle
+            AddRectangleIndices_CCW_1234(TriangleIndices, 8, 13, 14, 11);
+
+            // Hole 1 - bottom
+            for (short i = 0; i < iNumber_of_quaters; i++)
+            {
+                for (short j = 0; j < INumberOfPointsOfHole / iNumber_of_quaters; j++)
+                {
+                    if (((i + 1) * (j + 1)) < iNumber_of_hole_points)
+                    {
+                        AddTriangleIndices_CCW_123(TriangleIndices, i + ITotNoPointsin2D, ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                    }
+                    else // Last triangle
+                    {
+                        AddTriangleIndices_CCW_123(TriangleIndices, i + ITotNoPointsin2D, ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, ITotNoPointsin2D + IHolesNumber * 4);
+                    }
+                }
+            }
+
+            // Hole 2 - upper
+            for (short i = 0; i < iNumber_of_quaters; i++)
+            {
+                for (short j = 0; j < INumberOfPointsOfHole / iNumber_of_quaters; j++)
+                {
+                    if (((i+1) * (j+1)) < iNumber_of_hole_points)
+                    {
+                        AddTriangleIndices_CCW_123(TriangleIndices, 4 + i + ITotNoPointsin2D, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                    }
+                    else // Last triangle
+                    {
+                        AddTriangleIndices_CCW_123(TriangleIndices, 4 + i + ITotNoPointsin2D, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4);
+                    }
+                }
+            }
+
+            // Second layer
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D + 0, iNoPoints2Dfor3D + 7, iNoPoints2Dfor3D + 6, iNoPoints2Dfor3D + 1);
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D + 2, iNoPoints2Dfor3D + 5, iNoPoints2Dfor3D + 4, iNoPoints2Dfor3D + 3);
+
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D +1, iNoPoints2Dfor3D + 6, iNoPoints2Dfor3D + 12, iNoPoints2Dfor3D + 9);
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D +2, iNoPoints2Dfor3D + 10, iNoPoints2Dfor3D + 15, iNoPoints2Dfor3D + 5);
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D +1, iNoPoints2Dfor3D + 9, iNoPoints2Dfor3D + 10, iNoPoints2Dfor3D + 2);
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D + 5, iNoPoints2Dfor3D + 15, iNoPoints2Dfor3D + 12, iNoPoints2Dfor3D + 6);
+
+            // Middle
+            AddRectangleIndices_CW_1234(TriangleIndices, iNoPoints2Dfor3D + 8, iNoPoints2Dfor3D + 13, iNoPoints2Dfor3D + 14, iNoPoints2Dfor3D + 11);
+
+            // Hole 1 - bottom
+            for (short i = 0; i < iNumber_of_quaters; i++)
+            {
+                for (short j = 0; j < INumberOfPointsOfHole / iNumber_of_quaters; j++)
+                {
+                    if (((i + 1) * (j + 1)) < iNumber_of_hole_points)
+                    {
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + i + ITotNoPointsin2D, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                    }
+                    else // Last triangle
+                    {
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + i + ITotNoPointsin2D, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4);
+                    }
+                }
+            }
+
+            // Hole 2 - upper
+            for (short i = 0; i < iNumber_of_quaters; i++)
+            {
+                for (short j = 0; j < INumberOfPointsOfHole / iNumber_of_quaters; j++)
+                {
+                    if (((i + 1) * (j + 1)) < iNumber_of_hole_points)
+                    {
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + 4 + i + ITotNoPointsin2D, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                    }
+                    else // Last triangle
+                    {
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + 4 + i + ITotNoPointsin2D, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4);
+                    }
+                }
+            }
+
+            for (int i = 0; i < ITotNoPointsin2D; i++)
+            {
+                if (i < (ITotNoPointsin2D - 1))
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, i + 1, iNoPoints2Dfor3D + i + 1, iNoPoints2Dfor3D + i);
+                else
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 0, iNoPoints2Dfor3D, iNoPoints2Dfor3D + i);
+            }
         }
 
         protected override Point3DCollection GetDefinitionPoints()
@@ -319,7 +412,16 @@ namespace BaseClasses
 
             model.Geometry = mesh;
 
-            model.Material = new DiffuseMaterial(brush);  // Set Model Material
+            brush.Opacity = 0.4;
+
+            DiffuseMaterial qDiffTrans = new DiffuseMaterial(brush);
+            SpecularMaterial qSpecTrans = new SpecularMaterial(brush, 90.0);
+
+            MaterialGroup qOuterMaterial = new MaterialGroup();
+            qOuterMaterial.Children.Add(qDiffTrans);
+            qOuterMaterial.Children.Add(qSpecTrans);
+
+            model.Material = qOuterMaterial;  // Set Model Material
 
             TransformPlateCoord(model, m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg); // Not used now
 
@@ -330,8 +432,8 @@ namespace BaseClasses
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
 
-            wireFrame.Color = Color.FromRgb(250, 250, 60);
-            wireFrame.Thickness = 1.0;
+            wireFrame.Color = Colors.Yellow;
+            wireFrame.Thickness = 1;
 
             // y = 0
             wireFrame.Points.Add(arrPoints3D[0]);
@@ -341,66 +443,150 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[2]);
 
             wireFrame.Points.Add(arrPoints3D[2]);
-            wireFrame.Points.Add(arrPoints3D[8]);
+            wireFrame.Points.Add(arrPoints3D[3]);
 
-            wireFrame.Points.Add(arrPoints3D[8]);
-            wireFrame.Points.Add(arrPoints3D[7]);
+            wireFrame.Points.Add(arrPoints3D[3]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 3]);
 
-            wireFrame.Points.Add(arrPoints3D[7]);
-            wireFrame.Points.Add(arrPoints3D[6]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 3]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 2]);
 
-            wireFrame.Points.Add(arrPoints3D[6]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 2]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 1]);
+
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 1]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 0]);
+
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 0]);
             wireFrame.Points.Add(arrPoints3D[0]);
-
-            wireFrame.Points.Add(arrPoints3D[0]);
-            wireFrame.Points.Add(arrPoints3D[6]);
-
-            wireFrame.Points.Add(arrPoints3D[2]);
-            wireFrame.Points.Add(arrPoints3D[8]);
 
             // y = m_fhY
+            wireFrame.Points.Add(arrPoints3D[7]);
+            wireFrame.Points.Add(arrPoints3D[6]);
+
+            wireFrame.Points.Add(arrPoints3D[6]);
+            wireFrame.Points.Add(arrPoints3D[5]);
+
             wireFrame.Points.Add(arrPoints3D[5]);
             wireFrame.Points.Add(arrPoints3D[4]);
 
             wireFrame.Points.Add(arrPoints3D[4]);
-            wireFrame.Points.Add(arrPoints3D[3]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 4]);
 
-            wireFrame.Points.Add(arrPoints3D[3]);
-            wireFrame.Points.Add(arrPoints3D[9]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 4]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 5]);
 
-            wireFrame.Points.Add(arrPoints3D[9]);
-            wireFrame.Points.Add(arrPoints3D[10]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 5]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 6]);
 
-            wireFrame.Points.Add(arrPoints3D[10]);
-            wireFrame.Points.Add(arrPoints3D[11]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 6]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 7]);
 
-            wireFrame.Points.Add(arrPoints3D[11]);
-            wireFrame.Points.Add(arrPoints3D[5]);
-
-            wireFrame.Points.Add(arrPoints3D[3]);
-            wireFrame.Points.Add(arrPoints3D[9]);
-
-            wireFrame.Points.Add(arrPoints3D[5]);
-            wireFrame.Points.Add(arrPoints3D[11]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 7]);
+            wireFrame.Points.Add(arrPoints3D[7]);
 
             // Lateral
             wireFrame.Points.Add(arrPoints3D[0]);
-            wireFrame.Points.Add(arrPoints3D[5]);
-
-            wireFrame.Points.Add(arrPoints3D[6]);
-            wireFrame.Points.Add(arrPoints3D[11]);
-
             wireFrame.Points.Add(arrPoints3D[7]);
-            wireFrame.Points.Add(arrPoints3D[10]);
-
-            wireFrame.Points.Add(arrPoints3D[8]);
-            wireFrame.Points.Add(arrPoints3D[9]);
-
-            wireFrame.Points.Add(arrPoints3D[2]);
-            wireFrame.Points.Add(arrPoints3D[3]);
 
             wireFrame.Points.Add(arrPoints3D[1]);
+            wireFrame.Points.Add(arrPoints3D[6]);
+
+            wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[5]);
+
+            wireFrame.Points.Add(arrPoints3D[3]);
             wireFrame.Points.Add(arrPoints3D[4]);
+
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 0]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 7]);
+
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 1]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 6]);
+
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 2]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 5]);
+
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 3]);
+            wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + 4]);
+
+            // Holes
+
+            // Bottom
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                if (i < INumberOfPointsOfHole - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i + 1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4]);
+                }
+            }
+
+            // Upper
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                if (i < INumberOfPointsOfHole - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i + 1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole]);
+                }
+            }
+
+            // Bottom
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                if (i < INumberOfPointsOfHole - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i+1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4]);
+                }
+            }
+
+            // Upper
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                if (i < INumberOfPointsOfHole - 1)
+                {
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i+1]);
+                }
+                else
+                {
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole]);
+                }
+            }
+
+            // Lateral holes
+
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i]);
+                wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i]);
+            }
+
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+
+                wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+
+            }
 
             return wireFrame;
         }

@@ -28,7 +28,8 @@ namespace BaseClasses
         public int IHolesNumber;   // Number of holes
         public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
         public float FHoleDiameter;
-        public int INumberOfPointsOfHole = 12; // Have to be Even
+        public int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
+
         public int INoPoints2Dfor3D; // Number of points in one surface used for 3D model (holes lines are divided to the straight segments)
 
         // TODO - zjednotit funkcie s triedou CCRSC

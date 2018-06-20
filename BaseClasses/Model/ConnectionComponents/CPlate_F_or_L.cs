@@ -162,7 +162,7 @@ namespace BaseClasses
             TriangleIndices = new Int32Collection();
 
             AddRectangleIndices_CCW_1234(TriangleIndices, 0, 5, 4, 1);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 2, 3, 4);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 1, 4, 3, 2);
             AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 10, 11);
             AddRectangleIndices_CCW_1234(TriangleIndices, 7, 8, 9, 10);
 
