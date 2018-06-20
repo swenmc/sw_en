@@ -23,38 +23,15 @@ namespace PFD
     /// </summary>
     public partial class SystemComponentViewer : Window
     {
-        enum ESerieTypePlate
-        {
-            eSerie_B,
-            eSerie_L,
-            eSerie_LL,
-            eSerie_F,
-            eSerie_Q,
-            eSerie_S,
-            eSerie_T,
-            eSerie_X,
-            eSerie_Y
-        };
-
-        enum ESerieTypeCrSc_FormSteel
-        {
-            eSerie_Box,
-            eSerie_Z,
-            eSerie_C_single,
-            eSerie_C_back_to_back,
-            eSerie_C_nested,
-            eSerie_SmartDek,
-            eSerie_PurlinDek
-        };
-
         public DatabaseComponents dcomponents; // Todo nahradit databazov component
         CCrSc_TW crsc;
         CPlate component;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
-        float fb;
-        float fb2;
-        float fh;
-        float fl;
+        float fb; // in plane XY -X coord
+        float fb2; // in plane XY - X coord
+        float fh; // in plane XY - Y coord
+        float fl; // out of plane - Z coord
+        float fl2; // out of plane - Z coord
         float ft;
         int iNumberofHoles;
 
@@ -122,9 +99,45 @@ namespace PFD
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
+                    case ESerieTypePlate.eSerie_LL:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_LL_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_F:
                         {
                             foreach (string name in dcomponents.arr_Serie_F_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Q:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_Q_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_S:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_S_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_T:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_T_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_X:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_X_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Y:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_Y_Names)
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
@@ -175,7 +188,7 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles,0.02f, true); // B - TODO pridat vsetky typy
+                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -183,9 +196,25 @@ namespace PFD
                             component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // L
                             break;
                         }
+                    case ESerieTypePlate.eSerie_LL:
+                        {
+                           //LL
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_F:
                         {
                             component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Q:
+                    case ESerieTypePlate.eSerie_T:
+                        {
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q, T
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Y:
+                        {
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); //  Y
                             break;
                         }
                     default:
@@ -296,6 +325,11 @@ namespace PFD
                                 iNumberofHoles = (int)dcomponents.arr_Serie_L_Dimension[selected_Component_Index, 4];
                                 break;
                             }
+                        case ESerieTypePlate.eSerie_LL:
+                            {
+                                //LL
+                                break;
+                            }
                         case ESerieTypePlate.eSerie_F:
                             {
                                 fb = dcomponents.arr_Serie_F_Dimension[selected_Component_Index, 0] / 1000f;
@@ -304,6 +338,34 @@ namespace PFD
                                 fl = dcomponents.arr_Serie_F_Dimension[selected_Component_Index, 3] / 1000f;
                                 ft = dcomponents.arr_Serie_F_Dimension[selected_Component_Index, 4] / 1000f;
                                 iNumberofHoles = (int)dcomponents.arr_Serie_F_Dimension[selected_Component_Index, 5];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_Q:
+                            {
+                                fb = dcomponents.arr_Serie_Q_Dimension[selected_Component_Index, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_Q_Dimension[selected_Component_Index, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_Q_Dimension[selected_Component_Index, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_Q_Dimension[selected_Component_Index, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_Q_Dimension[selected_Component_Index, 4];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_T:
+                            {
+                                fb = dcomponents.arr_Serie_T_Dimension[selected_Component_Index, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_T_Dimension[selected_Component_Index, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_T_Dimension[selected_Component_Index, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_T_Dimension[selected_Component_Index, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_T_Dimension[selected_Component_Index, 4];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_Y:
+                            {
+                                fb = dcomponents.arr_Serie_Y_Dimension[selected_Component_Index, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_Y_Dimension[selected_Component_Index, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_Y_Dimension[selected_Component_Index, 2] / 1000f;
+                                fl2 = dcomponents.arr_Serie_Y_Dimension[selected_Component_Index, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_Y_Dimension[selected_Component_Index, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_Y_Dimension[selected_Component_Index, 5];
                                 break;
                             }
                         default:
@@ -369,9 +431,25 @@ namespace PFD
                             component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // L
                             break;
                         }
+                    case ESerieTypePlate.eSerie_LL:
+                        {
+                            //LL
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_F:
                         {
                             component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Q:
+                    case ESerieTypePlate.eSerie_T:
+                        {
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // F
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Y:
+                        {
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // F
                             break;
                         }
                     default:
@@ -476,9 +554,45 @@ namespace PFD
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
+                    case ESerieTypePlate.eSerie_LL:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_LL_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_F:
                         {
                             foreach (string name in dcomponents.arr_Serie_F_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Q:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_Q_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_S:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_S_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_T:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_T_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_X:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_X_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_Y:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_Y_Names)
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }

@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BaseClasses;
 
 namespace PFD
 {
     public class DatabaseComponents
     {
         public float fbX_mm;
+        public float fbX2_mm;
         public float fhY_mm;
         public float flZ_mm; // Not used in 2D model
+        public float flZ2_mm;
         public float ft_mm; // Not used in 2D model
         public int iHolesNoumber;
 
@@ -19,25 +22,77 @@ namespace PFD
 
         public DatabaseComponents(int iSerieIndex, int iComponentIndex)
         {
-            if (iSerieIndex == 0)
+            ESerieTypePlate eSerieIndex = (ESerieTypePlate)iSerieIndex;
+
+            switch (eSerieIndex)
             {
-                fbX_mm = arr_Serie_B_Dimension[iComponentIndex, 0];
-                fhY_mm = arr_Serie_B_Dimension[iComponentIndex, 1];
-                flZ_mm = arr_Serie_B_Dimension[iComponentIndex, 2];
-                ft_mm = arr_Serie_B_Dimension[iComponentIndex, 3];
-                iHolesNoumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
-            }
-            else if (iSerieIndex == 1)
-            {
-                fbX_mm = arr_Serie_L_Dimension[iComponentIndex, 0];
-                fhY_mm = arr_Serie_L_Dimension[iComponentIndex, 1];
-                flZ_mm = arr_Serie_L_Dimension[iComponentIndex, 2];
-                ft_mm = arr_Serie_L_Dimension[iComponentIndex, 3];
-                iHolesNoumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
-            }
-            else
-            {
-                // Exception - not implemented
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        fbX_mm = arr_Serie_B_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_B_Dimension[iComponentIndex, 1];
+                        flZ_mm = arr_Serie_B_Dimension[iComponentIndex, 2];
+                        ft_mm = arr_Serie_B_Dimension[iComponentIndex, 3];
+                        iHolesNoumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_F:
+                    {
+                        fbX_mm = arr_Serie_F_Dimension[iComponentIndex, 0];
+                        fbX2_mm = arr_Serie_F_Dimension[iComponentIndex, 1];
+                        fhY_mm = arr_Serie_F_Dimension[iComponentIndex, 2];
+                        flZ_mm = arr_Serie_F_Dimension[iComponentIndex, 3];
+                        ft_mm = arr_Serie_F_Dimension[iComponentIndex, 4];
+                        iHolesNoumber = (int)arr_Serie_L_Dimension[iComponentIndex, 5];
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_L:
+                    {
+                        fbX_mm = arr_Serie_L_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_L_Dimension[iComponentIndex, 1];
+                        flZ_mm = arr_Serie_L_Dimension[iComponentIndex, 2];
+                        ft_mm = arr_Serie_L_Dimension[iComponentIndex, 3];
+                        iHolesNoumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_Q:
+                    {
+                        fbX_mm = arr_Serie_Q_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_Q_Dimension[iComponentIndex, 1];
+                        flZ_mm = arr_Serie_Q_Dimension[iComponentIndex, 2];
+                        ft_mm = arr_Serie_Q_Dimension[iComponentIndex, 3];
+                        iHolesNoumber = (int)arr_Serie_Q_Dimension[iComponentIndex, 4];
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_T:
+                    {
+                        fbX_mm = arr_Serie_T_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_T_Dimension[iComponentIndex, 1];
+                        flZ_mm = arr_Serie_T_Dimension[iComponentIndex, 2];
+                        ft_mm = arr_Serie_T_Dimension[iComponentIndex, 3];
+                        iHolesNoumber = (int)arr_Serie_T_Dimension[iComponentIndex, 4];
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_Y:
+                    {
+                        fbX_mm = arr_Serie_Y_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_Y_Dimension[iComponentIndex, 1];
+                        flZ_mm = arr_Serie_Y_Dimension[iComponentIndex, 2];
+                        flZ2_mm = arr_Serie_Y_Dimension[iComponentIndex, 3];
+                        ft_mm = arr_Serie_Y_Dimension[iComponentIndex, 4];
+                        iHolesNoumber = (int)arr_Serie_Y_Dimension[iComponentIndex, 5];
+
+                        break;
+                    }
+                default:
+                    {
+                        // Not implemented
+                        break;
+                    }
             }
         }
 
@@ -150,6 +205,31 @@ namespace PFD
                 {200, 035, 490, 050, 2, 0},
                 {200, 035, 490, 050, 2, 0}
             };
+
+        public float[,] arr_Serie_Q_Dimension = new float[1, 5]
+        {
+                {272, 200, 70, 2, 0}
+        };
+
+        public float[,] arr_Serie_S_Dimension = new float[1, 4]
+        {
+                {270, 270, 1, 0}
+        };
+
+        public float[,] arr_Serie_T_Dimension = new float[1, 5]
+        {
+                {72, 495, 49, 2, 0}
+        };
+
+        public float[,] arr_Serie_X_Dimension = new float[1, 6]
+        {
+                {195, 490, 25, 2, 0, 400}
+        };
+
+        public float[,] arr_Serie_Y_Dimension = new float[1, 6]
+        {
+                {140, 600, 270, 40, 3, 0}
+        };
 
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze

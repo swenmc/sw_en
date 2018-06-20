@@ -249,6 +249,30 @@ namespace BaseClasses
         eScrew = 2
     }
 
+    public enum ESerieTypePlate
+    {
+        eSerie_B,
+        eSerie_L,
+        eSerie_LL,
+        eSerie_F,
+        eSerie_Q,
+        eSerie_S,
+        eSerie_T,
+        eSerie_X,
+        eSerie_Y
+    };
+
+    public enum ESerieTypeCrSc_FormSteel
+    {
+        eSerie_Box,
+        eSerie_Z,
+        eSerie_C_single,
+        eSerie_C_back_to_back,
+        eSerie_C_nested,
+        eSerie_SmartDek,
+        eSerie_PurlinDek
+    };
+
 
 
 
