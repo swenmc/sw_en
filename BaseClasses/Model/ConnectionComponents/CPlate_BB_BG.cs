@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using _3DTools;
+using MATH;
 
 namespace BaseClasses
 {
@@ -20,6 +21,8 @@ namespace BaseClasses
         float m_fRotationZ_deg = 0;
 
         float m_fDistanceBetweenHoles;
+
+        int iNoPoints2Dfor3D;
 
         public CConCom_Plate_BB_BG()
         {
@@ -43,7 +46,7 @@ namespace BaseClasses
             m_fDistanceBetweenHoles = 0.5f * m_fhY;
             ITotNoPointsin2D = 8;
 
-            int iNoPoints2Dfor3D  = ITotNoPointsin2D + IHolesNumber * 4 + IHolesNumber * INumberOfPointsOfHole;
+            iNoPoints2Dfor3D = ITotNoPointsin2D + IHolesNumber * 4 + IHolesNumber * INumberOfPointsOfHole;
             ITotNoPointsin3D = 2 * iNoPoints2Dfor3D;
 
             // Create Array - allocate memory
@@ -90,78 +93,182 @@ namespace BaseClasses
 
         void Calc_Coord3D()
         {
+            float[,] holesCentersPointsfor3D = new float[IHolesNumber, 2];
+
+            holesCentersPointsfor3D[0, 0] = 0.5f * m_fbX;
+            holesCentersPointsfor3D[0, 1] = 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles;
+
+            holesCentersPointsfor3D[1, 0] = 0.5f * m_fbX;
+            holesCentersPointsfor3D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
+
+            float fradius = 0.5f * FHoleDiameter;
+            int iRadiusAngle = 360; // Angle
+
+
             arrPoints3D[0].X = 0;
             arrPoints3D[0].Y = 0;
             arrPoints3D[0].Z = m_flZ;
 
-            arrPoints3D[1].X = 0;
-            arrPoints3D[1].Y = 0;
+            arrPoints3D[1].X = arrPoints3D[0].X;
+            arrPoints3D[1].Y = arrPoints3D[0].Y;
             arrPoints3D[1].Z = 0;
 
             arrPoints3D[2].X = m_fbX;
-            arrPoints3D[2].Y = 0;
-            arrPoints3D[2].Z = 0;
+            arrPoints3D[2].Y = arrPoints3D[0].Y;
+            arrPoints3D[2].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[3].X = m_fbX;
-            arrPoints3D[3].Y = m_fhY;
-            arrPoints3D[3].Z = arrPoints3D[2].Z;
+            arrPoints3D[3].X = arrPoints3D[2].X;
+            arrPoints3D[3].Y = arrPoints3D[0].Y;
+            arrPoints3D[3].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[4].X = arrPoints3D[1].X;
+            arrPoints3D[4].X = arrPoints3D[3].X;
             arrPoints3D[4].Y = m_fhY;
-            arrPoints3D[4].Z = arrPoints3D[1].Z;
+            arrPoints3D[4].Z = arrPoints3D[3].Z;
 
-            arrPoints3D[5].X = arrPoints3D[0].X;
-            arrPoints3D[5].Y = m_fhY;
-            arrPoints3D[5].Z = arrPoints3D[0].Z;
+            arrPoints3D[5].X = arrPoints3D[2].X;
+            arrPoints3D[5].Y = arrPoints3D[4].Y;
+            arrPoints3D[5].Z = arrPoints3D[2].Z;
 
-            arrPoints3D[6].X = arrPoints3D[0].X + m_ft;
-            arrPoints3D[6].Y = arrPoints3D[0].Y;
-            arrPoints3D[6].Z = arrPoints3D[0].Z;
+            arrPoints3D[6].X = arrPoints3D[1].X;
+            arrPoints3D[6].Y = arrPoints3D[4].Y;
+            arrPoints3D[6].Z = arrPoints3D[1].Z;
 
-            arrPoints3D[7].X = arrPoints3D[1].X + +m_ft;
-            arrPoints3D[7].Y = arrPoints3D[1].Y;
-            arrPoints3D[7].Z = arrPoints3D[1].Z + m_ft;
+            arrPoints3D[7].X = arrPoints3D[0].X;
+            arrPoints3D[7].Y = arrPoints3D[4].Y;
+            arrPoints3D[7].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[8].X = arrPoints3D[2].X;
-            arrPoints3D[8].Y = arrPoints3D[2].Y;
-            arrPoints3D[8].Z = arrPoints3D[2].Z + m_ft;
+            // Points in holes square edges
 
-            arrPoints3D[9].X = arrPoints3D[3].X;
-            arrPoints3D[9].Y = arrPoints3D[3].Y;
-            arrPoints3D[9].Z = arrPoints3D[3].Z + m_ft;
+            arrPoints3D[8].X = holesCentersPointsfor3D[0, 0] - fradius;
+            arrPoints3D[8].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[8].Z = 0;
 
-            arrPoints3D[10].X = arrPoints3D[7].X;
-            arrPoints3D[10].Y = arrPoints3D[7].Y + m_fhY;
-            arrPoints3D[10].Z = arrPoints3D[7].Z;
+            arrPoints3D[9].X = holesCentersPointsfor3D[0, 0] - fradius;
+            arrPoints3D[9].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[9].Z = 0;
 
-            arrPoints3D[11].X = arrPoints3D[6].X;
-            arrPoints3D[11].Y = arrPoints3D[6].Y + m_fhY;
-            arrPoints3D[11].Z = arrPoints3D[6].Z;
+            arrPoints3D[10].X = holesCentersPointsfor3D[0, 0] + fradius;
+            arrPoints3D[10].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[10].Z = 0;
 
-            int iRadiusAngle = 360; // Angle
+            arrPoints3D[11].X = holesCentersPointsfor3D[0, 0] + fradius;
+            arrPoints3D[11].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[11].Z = 0;
 
-            /*
-            // 1st radius - centre "1" (90-270 degrees)
-            for (short i = 0; i < m_iNumOfArcPoints; i++)
+            arrPoints3D[12].X = holesCentersPointsfor3D[1, 0] - fradius;
+            arrPoints3D[12].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[12].Z = 0;
+
+            arrPoints3D[13].X = holesCentersPointsfor3D[1, 0] - fradius;
+            arrPoints3D[13].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[13].Z = 0;
+
+            arrPoints3D[14].X = holesCentersPointsfor3D[1, 0] + fradius;
+            arrPoints3D[14].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[14].Z = 0;
+
+            arrPoints3D[15].X = holesCentersPointsfor3D[1, 0] + fradius;
+            arrPoints3D[15].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[15].Z = 0;
+
+            // Holes 1
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                CrScPointsOut[INoAuxPoints + i + 2, 0] = CrScPointsOut[1, 0] + m_fr_1 + Geom2D.GetPositionX(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[INoAuxPoints + i + 2, 1] = CrScPointsOut[1, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Z = 0;
             }
 
-            // Point No. 7
-            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 2, 0] = CrScPointsOut[5, 0];      // y
-            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 2, 1] = 0;                        // z
-
-            // Point No. 8
-            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 3, 0] = 0;                        // y
-            CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + 3, 1] = 0;                        // z
-
-            // 2nd radius - centre "2" (180-270 degrees)
-            for (short i = 0; i < m_iNumOfArcPoints; i++)
+            // Hole 2
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + i + 4, 0] = CrScPointsOut[0, 0] - m_fr_1 + Geom2D.GetPositionX(m_fr_1, 270 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[INoAuxPoints + m_iNumOfArcPoints + i + 4, 1] = CrScPointsOut[0, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 270 + i * iRadiusAngle / m_iNumOfArcSegment); // z
-            }*/
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
+            }
+
+
+            arrPoints3D[iNoPoints2Dfor3D + 0].X = 0;
+            arrPoints3D[0].Y = 0;
+            arrPoints3D[0].Z = m_flZ;
+
+            arrPoints3D[1].X = arrPoints3D[0].X;
+            arrPoints3D[1].Y = arrPoints3D[0].Y;
+            arrPoints3D[1].Z = 0;
+
+            arrPoints3D[2].X = m_fbX;
+            arrPoints3D[2].Y = arrPoints3D[0].Y;
+            arrPoints3D[2].Z = arrPoints3D[1].Z;
+
+            arrPoints3D[3].X = arrPoints3D[2].X;
+            arrPoints3D[3].Y = arrPoints3D[0].Y;
+            arrPoints3D[3].Z = arrPoints3D[0].Z;
+
+            arrPoints3D[4].X = arrPoints3D[3].X;
+            arrPoints3D[4].Y = m_fhY;
+            arrPoints3D[4].Z = arrPoints3D[3].Z;
+
+            arrPoints3D[5].X = arrPoints3D[2].X;
+            arrPoints3D[5].Y = arrPoints3D[4].Y;
+            arrPoints3D[5].Z = arrPoints3D[2].Z;
+
+            arrPoints3D[6].X = arrPoints3D[1].X;
+            arrPoints3D[6].Y = arrPoints3D[4].Y;
+            arrPoints3D[6].Z = arrPoints3D[1].Z;
+
+            arrPoints3D[7].X = arrPoints3D[0].X;
+            arrPoints3D[7].Y = arrPoints3D[4].Y;
+            arrPoints3D[7].Z = arrPoints3D[0].Z;
+
+            // Points in holes square edges
+
+            arrPoints3D[8].X = holesCentersPointsfor3D[0, 0] - fradius;
+            arrPoints3D[8].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[8].Z = 0;
+
+            arrPoints3D[9].X = holesCentersPointsfor3D[0, 0] - fradius;
+            arrPoints3D[9].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[9].Z = 0;
+
+            arrPoints3D[10].X = holesCentersPointsfor3D[0, 0] + fradius;
+            arrPoints3D[10].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[10].Z = 0;
+
+            arrPoints3D[11].X = holesCentersPointsfor3D[0, 0] + fradius;
+            arrPoints3D[11].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[11].Z = 0;
+
+            arrPoints3D[12].X = holesCentersPointsfor3D[1, 0] - fradius;
+            arrPoints3D[12].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[12].Z = 0;
+
+            arrPoints3D[13].X = holesCentersPointsfor3D[1, 0] - fradius;
+            arrPoints3D[13].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[13].Z = 0;
+
+            arrPoints3D[14].X = holesCentersPointsfor3D[1, 0] + fradius;
+            arrPoints3D[14].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[14].Z = 0;
+
+            arrPoints3D[15].X = holesCentersPointsfor3D[1, 0] + fradius;
+            arrPoints3D[15].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[15].Z = 0;
+
+            // Holes 1
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Z = 0;
+            }
+
+            // Hole 2
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
+            }
         }
 
         void Calc_HolesCentersCoord2D()

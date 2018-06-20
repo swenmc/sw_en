@@ -486,7 +486,7 @@ namespace PFD
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
-            this.UpdateLayout();
+            Frame1.UpdateLayout();
         }
 
         private void Results_GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -667,7 +667,6 @@ namespace PFD
             viewPort.Children.Clear();
         }
 
-        
         //float fb; // 3000 - 100000 mm
         //float fL; // 3000 - 150000 mm
         //float fh; // 2000 -  50000 mm (h1)
@@ -682,9 +681,9 @@ namespace PFD
 
         private void TextBox_Gable_Width_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !IsValidCableWidth(((TextBox)sender).Text + e.Text);
-        }        
-        private static bool IsValidCableWidth(string str)
+            e.Handled = !IsValidGableWidth(((TextBox)sender).Text + e.Text);
+        }
+        private static bool IsValidGableWidth(string str)
         {
             int i;
             return int.TryParse(str, out i) && i >= 3000 && i <= 100000;
@@ -692,9 +691,9 @@ namespace PFD
 
         private void TextBox_Length_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !IsValidCableLength(((TextBox)sender).Text + e.Text);
+            e.Handled = !IsValidLength(((TextBox)sender).Text + e.Text);
         }
-        private static bool IsValidCableLength(string str)
+        private static bool IsValidLength(string str)
         {
             int i;
             return int.TryParse(str, out i) && i >= 3000 && i <= 150000;

@@ -24,11 +24,11 @@ namespace BaseClasses
 
         public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
         public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
-        public float[,] PointsOut2D; // Array of points coordinates of plate outline in 2D used for DXF
+        //public float[,] PointsOut2D; // Array of points coordinates of plate outline in 2D used for DXF
         public int IHolesNumber;   // Number of holes
         public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
         public float FHoleDiameter;
-        public int INumberOfPointsOfHole = 6; // Have to be Even
+        public int INumberOfPointsOfHole = 12; // Have to be Even
         public int INoPoints2Dfor3D; // Number of points in one surface used for 3D model (holes lines are divided to the straight segments)
 
         // TODO - zjednotit funkcie s triedou CCRSC

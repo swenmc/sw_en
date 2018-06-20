@@ -73,11 +73,6 @@ namespace PFD
             Combobox_Type.Items.Add("Plate");
             Combobox_Type.Items.Add("Screw");
 
-            Combobox_Type.SelectedIndex = 0;
-
-            Combobox_Series.Items.Clear();
-            Combobox_Component.Items.Clear();
-
             if (Combobox_Type.SelectedIndex == 0) // Cross-sections
             {
                 foreach (string seriename in dcomponents.arr_Serie_CrSc_FormSteel_Names) // Plates
@@ -178,6 +173,11 @@ namespace PFD
             {
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
+                    case ESerieTypePlate.eSerie_B:
+                        {
+                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles,0.02f, true); // B - TODO pridat vsetky typy
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_L:
                         {
                             component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // L
@@ -359,6 +359,11 @@ namespace PFD
             {
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
+                    case ESerieTypePlate.eSerie_B:
+                        {
+                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, true); // L
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_L:
                         {
                             component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // L
@@ -459,6 +464,12 @@ namespace PFD
             {
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
+                    case ESerieTypePlate.eSerie_B:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_B_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_L:
                         {
                             foreach (string name in dcomponents.arr_Serie_L_Names)

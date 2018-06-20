@@ -21,30 +21,30 @@ namespace PFD
         //float fdist_frontcolumn; // 1000 - 10000 mm
         //float fdist_girt_bottom; // 1000 - 10000 mm
 
-        private int MCableWidth;
-        private int MLength;
-        private int MWallHeight;
-        private int MRoofPitch;
+        private double MGableWidth;
+        private double MLength;
+        private double MWallHeight;
+        private double MRoofPitch;
         private int MFrames;
-        private int MGirtDistance;
-        private int MPurlinDistance;
-        private int MColumnDistance;
-        
-        public int CableWidth
+        private double MGirtDistance;
+        private double MPurlinDistance;
+        private double MColumnDistance;
+
+        public double GableWidth
         {
             get
             {
-                return MCableWidth;
+                return MGableWidth;
             }
             set
             {
                 if (value < 3000 || value > 100000)
                     throw new ArgumentException("Cable Width must be between 3000 and 100000 [mm]");
-                MCableWidth = value;
+                MGableWidth = value;
             }
         }
 
-        public int Length
+        public double Length
         {
             get
             {
@@ -58,7 +58,8 @@ namespace PFD
                 MLength = value;
             }
         }
-        public int WallHeight
+
+        public double WallHeight
         {
             get
             {
@@ -73,7 +74,7 @@ namespace PFD
             }
         }
 
-        public int RoofPitch
+        public double RoofPitch
         {
             get
             {
@@ -103,7 +104,7 @@ namespace PFD
             }
         }
 
-        public int GirtDistance
+        public double GirtDistance
         {
             get
             {
@@ -118,7 +119,7 @@ namespace PFD
             }
         }
 
-        public int PurlinDistance
+        public double PurlinDistance
         {
             get
             {
@@ -133,7 +134,7 @@ namespace PFD
             }
         }
 
-        public int ColumnDistance
+        public double ColumnDistance
         {
             get
             {
@@ -153,7 +154,7 @@ namespace PFD
             // Todo - Ondrej - toto by sa malo nacitat podla defaultnej hodnoty indexu nastavenej v comboboxe
 
             /* Set default values */
-            MCableWidth = 8000;
+            MGableWidth = 8000;
             MLength = 12000;
             MWallHeight = 3600;
             MRoofPitch = 15;

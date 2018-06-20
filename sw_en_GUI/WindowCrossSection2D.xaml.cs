@@ -23,7 +23,7 @@ namespace sw_en_GUI
     public partial class WindowCrossSection2D : Window
     {
         int scale_unit = 1000; // mm
-        int modelposition_x = 300;
+        int modelposition_x = 200;
         int modelposition_y = 150;
 
         bool bDrawPoints = true;
@@ -95,17 +95,22 @@ namespace sw_en_GUI
         {
             INoPointsOut = component.PointsOut2D.Length / 2;
             INoPointsIn = 0;
-            INoHoles = component.HolesCentersPoints2D.Length / 2;
+
 
             PointsOut = new float [INoPointsOut, 2];
             PointsIn = null;
-            HolesCoord = new float[INoHoles, 2];
 
             PointsOut = component.PointsOut2D;
             PointsIn = null;
-            HolesCoord = component.HolesCentersPoints2D;
 
-            DHolesDiameter = component.FHoleDiameter;
+            if (component.HolesCentersPoints2D != null)
+            {
+                INoHoles = component.HolesCentersPoints2D.Length / 2;
+                HolesCoord = new float[INoHoles, 2];
+                HolesCoord = component.HolesCentersPoints2D;
+                DHolesDiameter = component.FHoleDiameter;
+            }
+
 
             // Definition Points
             DrawPoints();
@@ -117,7 +122,10 @@ namespace sw_en_GUI
             DrawPointNumbers();
 
             // Holes
-            DrawHoles();
+            if (component.HolesCentersPoints2D != null)
+            {
+                DrawHoles();
+            }
         }
 
         public void DrawCrSc(CCrSc_TW crsc)
@@ -278,7 +286,10 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoHoles; i++)
                     {
-                        DrawCircle(new Point(modelposition_x + scale_unit * HolesCoord[i, 0], modelposition_y + scale_unit * HolesCoord[i, 1]), DHolesDiameter, Brushes.Red, 4, canvasForImage);
+                        // Draw Hole
+                        DrawCircle(new Point(modelposition_x + scale_unit * HolesCoord[i, 0], modelposition_y + scale_unit * HolesCoord[i, 1]), scale_unit * DHolesDiameter, Brushes.Black, 2, canvasForImage);
+                        // Draw Symbol of Center
+                        DrawSymbol_Cross(new Point(modelposition_x + scale_unit * HolesCoord[i, 0], modelposition_y + scale_unit * HolesCoord[i, 1]), scale_unit * DHolesDiameter + 10, Brushes.Red, 2, canvasForImage);
                     }
                 }
             }
@@ -342,8 +353,8 @@ namespace sw_en_GUI
             Canvas.SetLeft(textBlock, posx);
             Canvas.SetTop(textBlock, posy);
             //textBlock.RenderTransform = new RotateTransform(0, 0, 0);
-            textBlock.Margin = new Thickness(5, -200, 0, 0);
-            textBlock.FontSize = 30;
+            textBlock.Margin = new Thickness(5, -50, 0, 0);
+            textBlock.FontSize = 20;
             imageCanvas.Children.Add(textBlock);
         }
 
@@ -362,6 +373,29 @@ namespace sw_en_GUI
             imageCanvas.Children.Add(circle);
         }
 
+        public void DrawSymbol_Cross(Point center, double size, SolidColorBrush color, double thickness, Canvas imageCanvas)
+        {
+            Line l = new Line();
+
+            double fSideLength = 0.5f * size;
+
+            // Horizontal
+            l.X1 = center.X - fSideLength;
+            l.Y1 = center.Y;
+
+            l.X2 = center.X + fSideLength;
+            l.Y2 = center.Y;
+
+            DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+
+            l.X1 = center.X;
+            l.Y1 = center.Y - fSideLength;
+
+            l.X2 = center.X;
+            l.Y2 = center.Y + fSideLength;
+
+            DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+        }
         /// <summary>
         /// Draw methods for each Draw Element Type
         /// </summary>
