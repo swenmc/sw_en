@@ -99,6 +99,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFD", "PFD\PFD.csproj", "{F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PFD", "PFD", "{F2584B6B-5FDD-4F8C-8FD8-23E0A348DF13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netDxf", "SharedLibraries\netDxf\netDxf.csproj", "{785380E0-CEB9-4C34-82E5-60D0E33E848E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDxfDocument", "SharedLibraries\TestDxfDocument\TestDxfDocument.csproj", "{65B33B00-93CE-484A-8023-7A9BA972D4D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -386,6 +390,30 @@ Global
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Release|x86.ActiveCfg = Release|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Release|x86.Build.0 = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|x86.Build.0 = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|x86.ActiveCfg = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|x86.Build.0 = Release|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Debug|x86.Build.0 = Debug|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -419,10 +447,12 @@ Global
 		{D046772D-CE7A-4245-B490-EC805829837A} = {93773F05-D757-4272-8510-486E919C2018}
 		{209738F7-CDB3-4C11-98A3-E345299D9191} = {7239374F-E8CD-4AB3-B6FC-181D1525AF71}
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1} = {F2584B6B-5FDD-4F8C-8FD8-23E0A348DF13}
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E} = {912C220B-4C7E-4D26-B181-8023F3E884AA}
+		{65B33B00-93CE-484A-8023-7A9BA972D4D1} = {912C220B-4C7E-4D26-B181-8023F3E884AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
