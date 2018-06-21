@@ -9,7 +9,7 @@ namespace CRSC
 {
     public class CCrSc_3_51_BOX_TEMP : CCrSc_TW
     {
-        // Thin-walled mono-symmetrical C-section with lips
+        // Thin-walled box section - monosymmetrical or double symmetrical
 
         private float m_ft_f; // Flange Thickness / Hrubka pasnice
         private float m_ft_w; // Web Thickness  / Hrubka steny/stojiny
@@ -51,11 +51,11 @@ namespace CRSC
 
             m_fd = fh - 2 * ft;
 
-            fz_stif1 = 0.04f;
-            fy_stif1 = 0.12f;
+            fz_stif1 = 0.004f;
+            fy_stif1 = 0.012f;
 
-            fz_stif2 = 0.20f;
-            fy_stif2 = 0.06f;
+            fz_stif2 = 0.020f;
+            fy_stif2 = 0.006f;
 
             // Create Array - allocate memory
             CrScPointsOut = new float[INoPointsOut, 2];

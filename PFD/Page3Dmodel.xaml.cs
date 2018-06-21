@@ -193,6 +193,7 @@ namespace PFD
             Model3DGroup ComponentGeomModel = new Model3DGroup();
 
             bool bDisplay_WireFrame = true;
+            bool bDisplay_SurfaceModel = true;
             float fTempMax_X;
             float fTempMin_X;
             float fTempMax_Y;
@@ -214,11 +215,15 @@ namespace PFD
                 float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
                 Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 0.1 * fModel_Length_X, pModelGeomCentre.Y - (2 * fModel_Length_Y), pModelGeomCentre.Z + (2 * fModel_Length_Z));
+                Point3D cameraPosition = new Point3D(pModelGeomCentre.X - 0.2f, pModelGeomCentre.Y + 0.005f, pModelGeomCentre.Z + 0.05f);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
-                _trackport.Model = (Model3D)ComponentGeomModel;
+
+                if (bDisplay_SurfaceModel)
+                {
+                    _trackport.Model = (Model3D)ComponentGeomModel;
+                }
 
                 // Add WireFrame Model
                 // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
@@ -236,8 +241,8 @@ namespace PFD
                     Window2 wtemp = new Window2(); // ToDo - odstranit
 
                     wireFrame_FrontSide = wtemp.wireFrame(member_temp,0f);
-                    wireFrame_BackSide = wtemp.wireFrame(member_temp, 0f);
-                    wireFrame_Lateral = wtemp.wireFrame(member_temp, 0f);
+                    wireFrame_BackSide = wtemp.wireFrame(member_temp, 0.5f);
+                    wireFrame_Lateral = wtemp.wireFrameLateral(member_temp);
 
                     // Add Wireframe Lines to the trackport
                     //_trackport.ViewPort.Children.Add(wireFrame);

@@ -790,6 +790,30 @@ namespace sw_en_GUI
                 wireFrame.Points.Add(pj);
             }
 
+            if(member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
+            {
+                for (int i = 0; i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
+
+                    if (i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints - 1)
+                    {
+                        pi = new Point3D(x, member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1]);
+                        pj = new Point3D(x, member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i + 1, 1]);
+                    }
+                    else // Last line
+                    {
+                        pi = new Point3D(x, member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1]);
+                        pj = new Point3D(x, member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 1]);
+                    }
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
+            }
+
             // Transform coordinates from LCS to GCS
             member.TransformMember_LCStoGCS(eGCS, member.PointStart, member.Delta_X, member.Delta_Y, member.Delta_Z, member.m_dTheta_x, wireFrame.Points);
 
@@ -816,6 +840,22 @@ namespace sw_en_GUI
                 // Add points
                 wireFrame.Points.Add(pi);
                 wireFrame.Points.Add(pj);
+            }
+
+            if (member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
+            {
+                for (int i = 0; i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
+
+                    pi = new Point3D(-member.FAlignment_Start, member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1]);
+                    pj = new Point3D(member.FLength + member.FAlignment_End, member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1]);
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
             }
 
             // Transform node to point

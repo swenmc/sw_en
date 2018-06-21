@@ -7,7 +7,7 @@ using MATH;
 
 namespace CRSC
 {
-    public class CCrSc_3_51_C_LIP2_FS50020 : CCrSc_TW
+    public class CCrSc_3_50020_C : CCrSc_TW
     {
         // Thin-walled mono-symmetrical C-section with lips
 
@@ -47,7 +47,7 @@ namespace CRSC
             set { m_fc_lip2 = value; }
         }
 
-        public CCrSc_3_51_C_LIP2_FS50020(float fh, float fb, float fc_lip1, float fc_lip2, float ft, Color color_temp)
+        public CCrSc_3_50020_C(float fh, float fb, float fc_lip1, float fc_lip2, float ft, Color color_temp)
       {
             //ITotNoPoints = 22;
             IsShapeSolid = true;

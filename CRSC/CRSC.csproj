@@ -119,10 +119,12 @@
     <Compile Include="CrSc_3\CCrSc_3_07.cs" />
     <Compile Include="CrSc_3\CCrSc_3_08.cs" />
     <Compile Include="CrSc_3\CCrSc_3_09.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_63020_BOX.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_10075_BOX.cs" />
     <Compile Include="CrSc_3\CCrSc_3_51_TRIANGLE_TEMP.cs" />
     <Compile Include="CrSc_3\CCrSc_3_51_BOX_TEMP.cs" />
-    <Compile Include="CrSc_3\CCrSc_3_51_C_LIP2_FS50020.cs" />
-    <Compile Include="CrSc_3\CCrSc_3_51_C_LIP.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_50020_C.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_270XX_C.cs" />
     <Compile Include="CrSc_3\CCrSc_3_10.cs" />
     <Compile Include="CrSc_3\CCrSc_3_01.cs" />
     <Compile Include="CrSc_5\CCrSc_5_00.cs" />

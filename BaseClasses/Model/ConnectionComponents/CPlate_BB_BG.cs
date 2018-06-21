@@ -378,6 +378,40 @@ namespace BaseClasses
                 }
             }
 
+            // Between first and second layer
+
+            // Holes
+
+            // Bottom
+
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                if (i < (INumberOfPointsOfHole-1))
+                {
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + i +1, ITotNoPointsin2D + 4 * IHolesNumber + i + 1);
+                }
+                else // Last rectangle
+                {
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber, ITotNoPointsin2D + 4 * IHolesNumber);
+                }
+            }
+
+            // Upper
+
+
+            for (short i = 0; i < INumberOfPointsOfHole; i++)
+            {
+                if (i < (INumberOfPointsOfHole - 1))
+                {
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i +1, ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i + 1);
+                }
+                else // Last rectangle
+                {
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber +  INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole, ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole);
+                }
+            }
+
+
             for (int i = 0; i < ITotNoPointsin2D; i++)
             {
                 if (i < (ITotNoPointsin2D - 1))

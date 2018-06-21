@@ -233,12 +233,13 @@ namespace PFD
 
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
-        public string[] arr_Serie_CrSc_FormSteel_Names = new string[7]
-            {"Box",
+        public string[] arr_Serie_CrSc_FormSteel_Names = new string[8]
+            {"Box-10075",
              "Z",
              "C-single",
              "C-back to back",
              "C-nested",
+             "Box-63020",
              "SmartDek",
              "PurlinDek"};
 
@@ -264,6 +265,18 @@ namespace PFD
                 {70,270,1.15f},
                 {70,270,0.55f},
                 {100,500,1.95f}
+        };
+
+        public string[] arr_Serie_Box63020_FormSteel_Names = new string[3]
+        {"63020-Without Stiffener",
+         "63020-Single Stiffened",
+         "63020-Double Stiffened" };
+
+        public float[,] arr_Serie_Box63020_FormSteel_Dimension = new float[3, 4]
+        {
+                {180, 630, 1.95f, 1.95f},
+                {180, 630, 1.95f, 4.95f},
+                {180, 630, 1.95f, 7.95f}
         };
     }
 }

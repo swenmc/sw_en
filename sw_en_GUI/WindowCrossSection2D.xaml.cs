@@ -83,12 +83,12 @@ namespace sw_en_GUI
         private void menuItemTest1_Click(object sender, RoutedEventArgs e)
         {
             canvasForImage.Children.Clear();
-            CCrSc_3_51_BOX_TEMP crsc_temp = new CCrSc_3_51_BOX_TEMP(0.5f, 0.4f, 0.01f, Colors.LawnGreen);
+            CCrSc_3_10075_BOX crsc_temp = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.0075f, Colors.LawnGreen);
             //CCrSc_3_51_TRIANGLE_TEMP crsc_temp = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.5f, 0.5f, 0.01f);
-            //DrawCrSc(crsc_temp);
+            DrawCrSc(crsc_temp);
 
-            CConCom_Plate_BB_BG component_temp = new CConCom_Plate_BB_BG(new CPoint(0, 0, 0, 0, 0), 0.072f, 0.29f, 0.18f, 0.003f, 2, 0.012f, true);
-            DrawPlate(component_temp);
+            //CConCom_Plate_BB_BG component_temp = new CConCom_Plate_BB_BG(new CPoint(0, 0, 0, 0, 0), 0.072f, 0.29f, 0.18f, 0.003f, 2, 0.012f, true);
+            //DrawPlate(component_temp);
         }
 
         public void DrawPlate(CPlate component)

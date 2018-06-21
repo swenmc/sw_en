@@ -264,21 +264,13 @@ namespace BaseClasses
 
     public enum ESerieTypeCrSc_FormSteel
     {
-        eSerie_Box,
+        eSerie_Box_10075,
         eSerie_Z,
         eSerie_C_single,
         eSerie_C_back_to_back,
         eSerie_C_nested,
+        eSerie_Box_63020,
         eSerie_SmartDek,
         eSerie_PurlinDek
     };
-
-
-
-
-
-
-
-
-
 }
