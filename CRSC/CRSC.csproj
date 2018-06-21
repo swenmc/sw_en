@@ -119,6 +119,11 @@
     <Compile Include="CrSc_3\CCrSc_3_07.cs" />
     <Compile Include="CrSc_3\CCrSc_3_08.cs" />
     <Compile Include="CrSc_3\CCrSc_3_09.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_Z.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_TR_PURLINDEK.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_TR_SMARTDEK.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_270XX_C_NESTED.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_270XX_C_BACK_TO_BACK.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_63020_BOX.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_10075_BOX.cs" />
     <Compile Include="CrSc_3\CCrSc_3_51_TRIANGLE_TEMP.cs" />

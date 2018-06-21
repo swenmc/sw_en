@@ -130,25 +130,28 @@ namespace sw_en_GUI
 
         public void DrawCrSc(CCrSc_TW crsc)
         {
-            INoPointsOut = crsc.CrScPointsOut.Length / 2;
-            PointsOut = new float[INoPointsOut, 2];
-            PointsOut = crsc.CrScPointsOut;
-
-            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
+            if (crsc.CrScPointsOut != null) // Draw just in case that crsc is valid
             {
-                INoPointsIn = crsc.CrScPointsIn.Length / 2;
-                PointsIn = new float[INoPointsIn, 2];
-                PointsIn = crsc.CrScPointsIn;
+                INoPointsOut = crsc.CrScPointsOut.Length / 2;
+                PointsOut = new float[INoPointsOut, 2];
+                PointsOut = crsc.CrScPointsOut;
+
+                if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
+                {
+                    INoPointsIn = crsc.CrScPointsIn.Length / 2;
+                    PointsIn = new float[INoPointsIn, 2];
+                    PointsIn = crsc.CrScPointsIn;
+                }
+
+                // Definition Points
+                DrawPoints();
+
+                // Outlines
+                DrawOutlines();
+
+                // Definition Point Numbers
+                DrawPointNumbers();
             }
-
-            // Definition Points
-            DrawPoints();
-
-            // Outlines
-            DrawOutlines();
-
-            // Definition Point Numbers
-            DrawPointNumbers();
         }
 
         public void DrawPoints()

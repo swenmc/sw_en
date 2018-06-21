@@ -87,6 +87,14 @@ namespace CRSC
             CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
             CalcCrSc_Coord();
+
+            // Fill list of indices for drawing of surface - triangles edges
+
+            // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
+            loadCrScIndicesFrontSide();
+            loadCrScIndicesShell();
+            loadCrScIndicesBackSide();
+
         }
 
       public void CalcCrSc_Coord()

@@ -769,25 +769,28 @@ namespace sw_en_GUI
             // Todo Prepracovat pre vnutornu a vonkajsiu outline
             // Zjednotit s AAC panel
 
-            for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+            if (member.CrScStart.CrScPointsOut != null && member.CrScStart.CrScPointsOut.Length > 0)
             {
-                Point3D pi = new Point3D();
-                Point3D pj = new Point3D();
-
-                if (i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints - 1)
+                for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
                 {
-                    pi = new Point3D(x, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
-                    pj = new Point3D(x, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i + 1, 1]);
-                }
-                else // Last line
-                {
-                    pi = new Point3D(x, member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
-                    pj = new Point3D(x, member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 1]);
-                }
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
 
-                // Add points
-                wireFrame.Points.Add(pi);
-                wireFrame.Points.Add(pj);
+                    if (i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints - 1)
+                    {
+                        pi = new Point3D(x, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
+                        pj = new Point3D(x, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i + 1, 1]);
+                    }
+                    else // Last line
+                    {
+                        pi = new Point3D(x, member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
+                        pj = new Point3D(x, member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 1]);
+                    }
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
             }
 
             if(member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
@@ -828,18 +831,20 @@ namespace sw_en_GUI
 
             // Todo Prepracovat pre vnutornu a vonkajsiu outline
             // Zjednotit s AAC panel
-
-            for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+            if (member.CrScStart.CrScPointsOut != null && member.CrScStart.CrScPointsOut.Length > 0)
             {
-                Point3D pi = new Point3D();
-                Point3D pj = new Point3D();
+                for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
 
-                pi = new Point3D(-member.FAlignment_Start, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
-                pj = new Point3D(member.FLength + member.FAlignment_End, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
+                    pi = new Point3D(-member.FAlignment_Start, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
+                    pj = new Point3D(member.FLength + member.FAlignment_End, member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1]);
 
-                // Add points
-                wireFrame.Points.Add(pi);
-                wireFrame.Points.Add(pj);
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
             }
 
             if (member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)

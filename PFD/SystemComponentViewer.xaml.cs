@@ -235,6 +235,18 @@ namespace PFD
                                 ft_f = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
                                 break;
                             }
+                        case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                        case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                        case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
+                        case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
+                        case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                            {
+                                // TODO TEMP
+                                fb = 0.1f;
+                                fh = 0.2f;
+                                ft = 0.001f;
+                                break;
+                            }
                         default:
                             {
                                 break;
@@ -339,12 +351,41 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            crsc = new CCrSc_3_270XX_C(fh, fb, ft, Colors.Aquamarine);
+                            if(Combobox_Component.SelectedIndex < 3) // C270
+                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, Colors.Aquamarine);
+                            else
+                                crsc = new CCrSc_3_50020_C(fh, fb, ft, Colors.Aquamarine);
+
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                        {
+                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(fh, fb, ft, Colors.Aquamarine);
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                        {
+                            crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, Colors.Aquamarine);
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                        {
+                            crsc = new CCrSc_3_Z(fh, fb, ft, Colors.Aquamarine);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
                             crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, Colors.Aquamarine); // BOX
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
+                        {
+                            crsc = new CCrSc_3_TR_SMARTDEK(fh, fb, ft, Colors.Aquamarine); // BOX
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
+                        {
+                            crsc = new CCrSc_3_TR_PURLINDEK(fh, fb, ft, Colors.Aquamarine); // BOX
                             break;
                         }
                     default:
@@ -465,7 +506,10 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            crsc = new CCrSc_3_270XX_C(fh, fb, ft, Colors.Aquamarine); // C with lip - TODO POKUS
+                            if (Combobox_Component.SelectedIndex < 3) // C270
+                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, Colors.Aquamarine);
+                            else
+                                crsc = new CCrSc_3_50020_C(fh, fb, ft, Colors.Aquamarine);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
