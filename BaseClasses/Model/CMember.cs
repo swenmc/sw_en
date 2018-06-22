@@ -557,7 +557,7 @@ namespace BaseClasses
                 System.Console.Write(sOutput); // Write in console window
 
             // Transform coordinates
-            TransformMember_LCStoGCS(eGCS, m_PointStart, dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, mesh.Positions);
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, mesh.Positions);
 
             // Mesh Triangles - various cross-sections shapes defined
             mesh.TriangleIndices = obj_CrScA.TriangleIndices;
@@ -804,9 +804,9 @@ namespace BaseClasses
             }
 
             // Transform coordinates
-            TransformMember_LCStoGCS(eGCS, m_PointStart, dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshFrontSide.Positions);
-            TransformMember_LCStoGCS(eGCS, m_PointStart, dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshShell.Positions);
-            TransformMember_LCStoGCS(eGCS, m_PointStart, dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshBackSide.Positions);
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y,NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshFrontSide.Positions); // Posun voci povodnemu definicnemu uzlu pruta
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshShell.Positions);
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshBackSide.Positions);
 
             // Mesh Triangles - various cross-sections shapes defined
             //mesh.TriangleIndices = obj_CrScA.TriangleIndices;
@@ -816,7 +816,7 @@ namespace BaseClasses
 
             // Change mesh triangle indices
             // Change orientation of normals
-            bool bIndicesCW = true; // Clockwise or counter-clockwise system
+            bool bIndicesCW = false; // Clockwise or counter-clockwise system
 
             if(bIndicesCW)
             {

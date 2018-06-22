@@ -36,7 +36,7 @@ namespace PFD
 
             // Global Axis System
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Azure);
 
             EGCS eGCS = EGCS.eGCSLeftHanded;
             //EGCS eGCS = EGCS.eGCSRightHanded;
@@ -106,8 +106,8 @@ namespace PFD
                         model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
                     {
                         // Create WireFrime in LCS
-                        ScreenSpaceLines3D wireFrame_FrontSide = win1.wireFrame(model.m_arrMembers[i], 0);
-                        ScreenSpaceLines3D wireFrame_BackSide = win1.wireFrame(model.m_arrMembers[i], model.m_arrMembers[i].FLength);
+                        ScreenSpaceLines3D wireFrame_FrontSide = win1.wireFrame(model.m_arrMembers[i], - model.m_arrMembers[i].FAlignment_Start);
+                        ScreenSpaceLines3D wireFrame_BackSide = win1.wireFrame(model.m_arrMembers[i], model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End);
                         ScreenSpaceLines3D wireFrame_Lateral = win1.wireFrameLateral(model.m_arrMembers[i]);
 
                         // Add Wireframe Lines to the trackport
