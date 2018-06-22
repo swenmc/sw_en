@@ -240,7 +240,7 @@ namespace PFD
 
                     Window2 wtemp = new Window2(); // ToDo - odstranit
 
-                    wireFrame_FrontSide = wtemp.wireFrame(member_temp,0f);
+                    wireFrame_FrontSide = wtemp.wireFrame(member_temp, 0f);
                     wireFrame_BackSide = wtemp.wireFrame(member_temp, 0.5f);
                     wireFrame_Lateral = wtemp.wireFrameLateral(member_temp);
 

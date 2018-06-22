@@ -276,12 +276,12 @@ namespace BaseClasses
             FLength = (float)Math.Sqrt((float)Math.Pow(m_NodeEnd.X - m_NodeStart.X, 2f) + (float)Math.Pow(m_NodeEnd.Y - m_NodeStart.Y, 2f) + (float)Math.Pow(m_NodeEnd.Z - m_NodeStart.Z, 2f));
             FLength_real = FAlignment_Start + FLength + FAlignment_End; // Real length of member
 
+            Delta_X = m_NodeEnd.X - m_NodeStart.X;
+            Delta_Y = m_NodeEnd.Y - m_NodeStart.Y;
+            Delta_Z = m_NodeEnd.Z - m_NodeStart.Z;
+
             SetStartPoint3DCoord();
             SetEndPoint3DCoord();
-
-            Delta_X = m_PointEnd.X - m_PointStart.X;
-            Delta_Y = m_PointEnd.Y - m_PointStart.Y;
-            Delta_Z = m_PointEnd.Z - m_PointStart.Z;
         }
 
         public void SetStartPoint3DCoord()
@@ -289,12 +289,28 @@ namespace BaseClasses
             m_PointStart.X = m_NodeStart.X;
             m_PointStart.Y = m_NodeStart.Y;
             m_PointStart.Z = m_NodeStart.Z;
+
+            Point3DCollection temp = new Point3DCollection();
+            Point3D tempPoint = new Point3D(-m_fAlignment_Start,0,0);
+            temp.Add(tempPoint);
+
+            TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, m_PointStart, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, temp);
+
+            m_PointStart = temp[0];
         }
         public void SetEndPoint3DCoord()
         {
             m_PointEnd.X = m_NodeEnd.X;
             m_PointEnd.Y = m_NodeEnd.Y;
             m_PointEnd.Z = m_NodeEnd.Z;
+
+            Point3DCollection temp = new Point3DCollection();
+            Point3D tempPoint = new Point3D(m_fAlignment_End, 0, 0);
+            temp.Add(tempPoint);
+
+            TransformMember_LCStoGCS(EGCS.eGCSLeftHanded, m_PointEnd, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, temp);
+
+            m_PointEnd = temp[0];
         }
 
         public Model3DGroup getM_3D_G_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide)
@@ -362,6 +378,7 @@ namespace BaseClasses
 
             // Number of Points per section
             short iNoCrScPoints2D;
+            float fy, fz;
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
             {
@@ -373,15 +390,30 @@ namespace BaseClasses
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
                         // X - start, Y, Z
-                        mesh.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                        mesh.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1])); // Constant size member
+                        {
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                        }
                         else
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1])); // Tapered member
+                        {
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+
+                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                        }
                     }
                 }
                 else
@@ -404,7 +436,11 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsOut; j++)
                     {
                         // X - start, Y, Z
-                        mesh.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                        mesh.Positions.Add(new Point3D(-FAlignment_Start,fy, fz));
                     }
                 }
                 else
@@ -418,7 +454,11 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsIn; j++)
                     {
                         // X - start, Y, Z
-                        mesh.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1]));
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                        mesh.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                 }
                 else
@@ -434,9 +474,21 @@ namespace BaseClasses
                     {
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1])); // Constant size member
+                        {
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                        }
                         else
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1])); // Tapered member
+                        {
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+
+                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                        }
                     }
                 }
                 else
@@ -451,9 +503,21 @@ namespace BaseClasses
                     {
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1])); // Constant size member
+                        {
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                        }
                         else
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1])); // Tapered member
+                        {
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
+
+                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                        }
                     }
                 }
                 else
@@ -571,6 +635,7 @@ namespace BaseClasses
 
             // Number of Points per section
             short iNoCrScPoints2D;
+            float fy, fz;
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
             {
@@ -579,11 +644,17 @@ namespace BaseClasses
 
                 if (obj_CrScA.CrScPointsOut != null) // Check that data are available
                 {
+                    // Rotate local y and z coordinates
+
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
                         // X - start, Y, Z
-                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
-                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
 
                     for (int j = 0; j < iNoCrScPoints2D; j++)
@@ -591,13 +662,21 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1])); // Constant size member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End,fy, fz)); // Constant size member
+                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1])); // Tapered member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+
+                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                     }
                 }
@@ -621,8 +700,12 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsOut; j++)
                     {
                         // X - start, Y, Z
-                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
-                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                 }
                 else
@@ -636,8 +719,12 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsIn; j++)
                     {
                         // X - start, Y, Z
-                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1]));
-                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1]));
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                 }
                 else
@@ -654,13 +741,21 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1])); // Constant size member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1])); // Tapered member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1]));
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+
+                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                     }
                 }
@@ -677,13 +772,21 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1])); // Constant size member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1]));
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1])); // Tapered member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, obj_CrScB.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1]));
+                            // Rotate about local x-axis
+                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
+                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
+
+                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                     }
                 }
@@ -891,6 +994,8 @@ namespace BaseClasses
             Point3D pTemp1 = new Point3D();
             Point3D pTemp2 = new Point3D();
 
+            theta_x = 0.0f; // TODO - otocenie pruta okolo lokalnej osi v GCS nefunguje spravne ??? 
+
             if (eGCS == EGCS.eGCSLeftHanded)
             {
                 // Left-handed
@@ -962,7 +1067,6 @@ namespace BaseClasses
                     p3Drotated.Y = (t * dDeltaX * dDeltaY - s * dDeltaZ) * pTemp1.X + (t * Math.Pow(dDeltaY, 2) + c) * pTemp1.Y + (t * dDeltaY * dDeltaZ + s * dDeltaX) * pTemp1.Z;
                     p3Drotated.Z = (t * dDeltaX * dDeltaZ + s * dDeltaY) * pTemp1.X + (t * dDeltaY * dDeltaZ - s * dDeltaX) * pTemp1.Y + (t * Math.Pow(dDeltaZ, 2) + c) * pTemp1.Z;
                 }
-
             }
 
             return p3Drotated;

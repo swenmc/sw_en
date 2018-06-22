@@ -28,6 +28,26 @@ namespace MATH
             return - GetPositionY_CW(radius, theta);
         }
 
+        // Get rotated position of point
+        public static float GetRotatedPosition_x_CCW(float x, float y, double theta)
+        {
+            return (float)(x * Math.Cos(theta) - y * Math.Sin(theta));
+        }
+
+        public static float GetRotatedPosition_y_CCW(float x, float y, double theta)
+        {
+            return (float)(x * Math.Sin(theta) + y * Math.Cos(theta));
+        }
+
+        public static float GetRotatedPosition_x_CW(float x, float y, double theta)
+        {
+            return (float)(x * Math.Cos(theta) + y * Math.Sin(theta));
+        }
+
+        public static float GetRotatedPosition_y_CW(float x, float y, double theta)
+        {
+            return (float)(x * - Math.Sin(theta) + y * Math.Cos(theta));
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Get Basic 2D Shapes Coordinates
@@ -56,7 +76,7 @@ namespace MATH
         // empty semicircle shape, 
         // right trapezium shape
 
-        
+
         #region Circle
         // Circle
         // Get Points Coordinates
