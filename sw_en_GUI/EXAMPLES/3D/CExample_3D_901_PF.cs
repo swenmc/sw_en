@@ -211,10 +211,10 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.5f, 0.2f, 0.00195f, 0.00195f, Colors.Violet); // Main Column
-            m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.4f, 0.2f, 0.00195f, 0.00195f, Colors.Green); // Rafter
-            m_arrCrSc[2] = new CCrSc_3_50020_C(0.28f, 0.1f, 0.01f, Colors.Thistle);  // Eaves Purlin
-            m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.01f, Colors.Orange);  // Girt - Wall
+            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Violet); // Main Column
+            m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green); // Rafter
+            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.001f, Colors.Thistle);  // Eaves Purlin
+            m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);  // Girt - Wall
             m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.00095f, Colors.SlateBlue); // Purlin
             m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.25f, 0.25f, 0.001f, Colors.Beige); // Front Column
             m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.25f, 0.10f, 0.001f, Colors.BlueViolet); // Back Column
@@ -223,8 +223,8 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Alignments
             float fMainColumnStart = 0.0f;
-            float fMainColumnEnd = -(float)m_arrCrSc[1].h; // ???
-            float fRafterStart = -0.50f * (float)m_arrCrSc[0].h;
+            float fMainColumnEnd = -0.20f * (float)m_arrCrSc[1].h; // ??? // TODO - dopocitat
+            float fRafterStart = -0.50f * (float)m_arrCrSc[0].h;     // TODO - dopocitat
             float fRafterEnd = -0.25f * (float)m_arrCrSc[1].h;       // TODO - Calculate according to h of rafter and roof pitch
             float fEavesPurlinStart = -0.5f *(float)m_arrCrSc[1].b;  // Just in case that cross-section of rafter is symmetric about z-z
             float fEavesPurlinEnd = -0.5f * (float)m_arrCrSc[1].b;   // Just in case that cross-section of rafter is symmetric about z-z

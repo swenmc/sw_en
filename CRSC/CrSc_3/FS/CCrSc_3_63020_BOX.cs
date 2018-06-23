@@ -53,6 +53,8 @@ namespace CRSC
 
         public CCrSc_3_63020_BOX(float fh, float fb, float ft, float ft_flange, Color color_temp)
         {
+            CSColor = color_temp;  // Set cross-section color
+
             //ITotNoPoints = 40;
             IsShapeSolid = false;
             INoPointsIn = INoPointsOut = 40; // vykreslujeme ako n-uholnik, pocet bodov n

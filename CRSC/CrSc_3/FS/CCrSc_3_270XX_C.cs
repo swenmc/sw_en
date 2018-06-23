@@ -53,6 +53,7 @@ namespace CRSC
 
         public CCrSc_3_270XX_C(float fh, float fb, float ft, Color color_temp)
       {
+            CSColor = color_temp;  // Set cross-section color
             //ITotNoPoints = 56;
             IsShapeSolid = true;
             ITotNoPoints = 56;

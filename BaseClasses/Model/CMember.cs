@@ -816,7 +816,7 @@ namespace BaseClasses
 
             // Change mesh triangle indices
             // Change orientation of normals
-            bool bIndicesCW = true; // Clockwise or counter-clockwise system
+            bool bIndicesCW = false; // Clockwise or counter-clockwise system
 
             if(bIndicesCW)
             {
