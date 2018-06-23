@@ -192,6 +192,12 @@ namespace PFD
                 {050, 288, 050, 3, 16}
             };
 
+        public float[,] arr_Serie_LL_Dimension = new float[2, 6]
+    {
+                {050, 072, 268, 050, 2, 0},
+                {050, 072, 288, 050, 2, 0}
+    };
+
         public float[,] arr_Serie_F_Dimension = new float[10, 6]
             {
                 {120, 035, 600, 065, 2, 0},

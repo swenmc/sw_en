@@ -78,7 +78,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CConnectionJointTypes.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate_AA.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate_AB.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_BB_BG.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate_LL.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_Q_T_Y.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_F_or_L.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_B1.cs" />

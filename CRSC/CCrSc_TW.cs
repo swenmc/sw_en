@@ -224,7 +224,7 @@ namespace CRSC
             if (IsShapeSolid)
             {
                 for (int i = 0; i < (ITotNoPoints - 2) / 2; i++)
-                    AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, i, i + 1, ITotNoPoints - i - 2, ITotNoPoints - i - 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, i, i + 1, ITotNoPoints - i - 2, ITotNoPoints - i - 1);
             }
             else
             {

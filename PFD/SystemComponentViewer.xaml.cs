@@ -279,7 +279,12 @@ namespace PFD
                             }
                         case ESerieTypePlate.eSerie_LL:
                             {
-                                //LL
+                                fb = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fb2 = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fh = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                fl = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 5];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_F:
@@ -411,7 +416,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            //LL
+                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -540,7 +545,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            //LL
+                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
