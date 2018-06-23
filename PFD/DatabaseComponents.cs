@@ -96,7 +96,7 @@ namespace PFD
             }
         }
 
-        public string[] arr_SeriesNames = new string[9]
+        public string[] arr_SeriesNames = new string[11]
             {"Serie B",
              "Serie L",
              "Serie LL",
@@ -105,7 +105,9 @@ namespace PFD
              "Serie S",
              "Serie T",
              "Serie X",
-             "Serie Y"};
+             "Serie Y",
+             "Serie J",
+             "Serie K"};
 
         public string[] arr_Serie_B_Names = new string[10]
             {"BA",
@@ -162,6 +164,12 @@ namespace PFD
 
         public string[] arr_Serie_Y_Names = new string[1]
             {"Y"};
+
+        public string[] arr_Serie_J_Names = new string[1]
+        {"JA"};
+
+        public string[] arr_Serie_K_Names = new string[1]
+        {"KA"};
 
         public float[,] arr_Serie_B_Dimension = new float[10, 5]
             {
@@ -237,33 +245,49 @@ namespace PFD
                 {140, 600, 270, 40, 3, 0}
         };
 
+        public float[,] arr_Serie_J_Dimension = new float[1, 5]
+        {
+                // b, h1, h2, t, iHoles
+                {500, 300, 500, 3, 0}
+        };
+
+        public float[,] arr_Serie_K_Dimension = new float[1, 6]
+        {
+                // b, h, b2, h2, t, iHoles
+                {300, 700, 500, 1000, 3, 0}
+        };
+
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
         public string[] arr_Serie_CrSc_FormSteel_Names = new string[8]
-            {"Box-10075",
-             "Z",
-             "C-single",
-             "C-back to back",
-             "C-nested",
-             "Box-63020",
-             "SmartDek",
-             "PurlinDek"};
+        {
+                "Box-10075",
+                "Z",
+                "C-single",
+                "C-back to back",
+                "C-nested",
+                "Box-63020",
+                "SmartDek",
+                "PurlinDek"
+        };
 
         public string[] arr_Serie_Box_FormSteel_Names = new string[1]
-                {"10075"};
+        {
+                "10075"
+        };
 
         public float[,] arr_Serie_Box_FormSteel_Dimension = new float[1, 3]
-                {
-                {100, 100, 0.75f}
-                };
+        {
+        {100, 100, 0.75f}
+        };
 
         public string[] arr_Serie_C_FormSteel_Names = new string[4]
-                {
+        {
                 "27095",
                 "270115",
                 "27055",
                 "50020"
-                };
+        };
 
         public float[,] arr_Serie_C_FormSteel_Dimension = new float[4, 3]
         {
@@ -274,9 +298,11 @@ namespace PFD
         };
 
         public string[] arr_Serie_Box63020_FormSteel_Names = new string[3]
-        {"63020-Without Stiffener",
-         "63020-Single Stiffened",
-         "63020-Double Stiffened" };
+        {
+                "63020-Without Stiffener",
+                "63020-Single Stiffened",
+                "63020-Double Stiffened"
+        };
 
         public float[,] arr_Serie_Box63020_FormSteel_Dimension = new float[3, 4]
         {

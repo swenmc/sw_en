@@ -30,6 +30,7 @@ namespace PFD
         float fb; // in plane XY -X coord
         float fb2; // in plane XY - X coord
         float fh; // in plane XY - Y coord
+        float fh2; // in plane XY - Y coord
         float fl; // out of plane - Z coord
         float fl2; // out of plane - Z coord
         float ft;
@@ -192,6 +193,18 @@ namespace PFD
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
+                    case ESerieTypePlate.eSerie_J:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_J_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_K:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_K_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
                     default:
                         {
                             // Not implemented
@@ -325,6 +338,25 @@ namespace PFD
                                 iNumberofHoles = (int)dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 5];
                                 break;
                             }
+                        case ESerieTypePlate.eSerie_J:
+                            {
+                                fb = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fh2 = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 4];
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_K:
+                            {
+                                fb = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fb2 = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                fh2 = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5];
+                                break;
+                            }
                         default:
                             {
                                 // Not implemented
@@ -433,6 +465,16 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Y:
                         {
                             component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // F
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_J:
+                        {
+                            component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_K:
+                        {
+                            component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
                             break;
                         }
                     default:
@@ -564,6 +606,16 @@ namespace PFD
                             component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); //  Y
                             break;
                         }
+                    case ESerieTypePlate.eSerie_J:
+                        {
+                            component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_K:
+                        {
+                            component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                            break;
+                        }
                     default:
                         {
                             // Not implemented
@@ -666,6 +718,18 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Y:
                         {
                             foreach (string name in dcomponents.arr_Serie_Y_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_J:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_J_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_K:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_K_Names)
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }

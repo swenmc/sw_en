@@ -32,6 +32,10 @@ namespace PFD
     /// </summary>
     public partial class MainWindow : Window
     {
+        ////////////////////////////////////////////////////////////////////////
+        // PORTAL FRAME DESIGNER
+        ////////////////////////////////////////////////////////////////////////
+
         SqlConnection cn;
         SqlDataAdapter da;
         DataSet ds;

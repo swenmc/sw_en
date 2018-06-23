@@ -8,7 +8,7 @@ using _3DTools;
 
 namespace BaseClasses
 {
-    public class CConCom_Plate_AB : CPlate
+    public class CConCom_Plate_KA : CPlate
     {
         float m_fb_1;
         float m_fh_1;
@@ -18,13 +18,13 @@ namespace BaseClasses
         float m_fSlope_rad;
         public float m_fRotationZ;
 
-        public CConCom_Plate_AB()
+        public CConCom_Plate_KA()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_AB(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float ft_platethickness, float fPlateRotation, bool bIsDisplayed)
+        public CConCom_Plate_KA(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float ft_platethickness, float fPlateRotation, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -50,7 +50,7 @@ namespace BaseClasses
             loadIndices();
         }
 
-        public CConCom_Plate_AB(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fPlateRotation, bool bIsDisplayed)
+        public CConCom_Plate_KA(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fPlateRotation, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;

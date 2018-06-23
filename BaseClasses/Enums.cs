@@ -259,7 +259,9 @@ namespace BaseClasses
         eSerie_S,
         eSerie_T,
         eSerie_X,
-        eSerie_Y
+        eSerie_Y,
+        eSerie_J,
+        eSerie_K
     };
 
     public enum ESerieTypeCrSc_FormSteel

@@ -8,7 +8,7 @@ using _3DTools;
 
 namespace BaseClasses
 {
-    public class CConCom_Plate_AA : CPlate
+    public class CConCom_Plate_JA : CPlate
     {
         float m_fb;
         float m_fh_1;
@@ -17,13 +17,13 @@ namespace BaseClasses
         float m_fSlope_rad;
         public float m_fRotationZ;
 
-        public CConCom_Plate_AA()
+        public CConCom_Plate_JA()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_AA(GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float ft_platethickness, float fPlateRotation, bool bIsDisplayed)
+        public CConCom_Plate_JA(GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float ft_platethickness, float fPlateRotation, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -50,12 +50,13 @@ namespace BaseClasses
             loadIndices();
         }
 
-        public CConCom_Plate_AA(GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fPlateRotation, bool bIsDisplayed)
+        public CConCom_Plate_JA(GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fPlateRotation, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 5;
+            ITotNoPointsin3D = 10;
 
             m_pControlPoint = controlpoint;
             m_fb = fb_temp;
@@ -118,7 +119,7 @@ namespace BaseClasses
                 // One Side
                 for (int j = 0; j < ITotNoPointsin2D; j++)
                 {
-                    pMeshPositions.Add(new Point3D((i-1) * 0.5f * m_ft, PointsOut2D[j, 0], PointsOut2D[j, 1])); // x1 = - 0.5 t and x2 = 0.5 * t
+                    pMeshPositions.Add(new Point3D(PointsOut2D[j, 0], PointsOut2D[j, 1], i * m_ft));
                 }
             }
 
