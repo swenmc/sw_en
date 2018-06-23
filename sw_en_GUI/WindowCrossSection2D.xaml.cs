@@ -26,6 +26,11 @@ namespace sw_en_GUI
         int modelposition_x = 200;
         int modelposition_y = 150;
 
+        //temp test
+        //int scale_unit = 6000; // mm
+        //int modelposition_x = 0;
+        //int modelposition_y = 0;
+
         bool bDrawPoints = true;
         bool bDrawOutLine = true;
         bool bUsePolylineforDrawing = true;
@@ -95,10 +100,9 @@ namespace sw_en_GUI
         {
             INoPointsOut = component.PointsOut2D.Length / 2;
             INoPointsIn = 0;
-
-
-            PointsOut = new float [INoPointsOut, 2];
-            PointsIn = null;
+            
+            PointsOut = new float [INoPointsOut, 2];   //naco to tu je???  zbytocny riadok
+            PointsIn = null;   //netreba vymazat nahodou????   - zbytocny riadok
 
             PointsOut = component.PointsOut2D;
             PointsIn = null;
@@ -106,7 +110,7 @@ namespace sw_en_GUI
             if (component.HolesCentersPoints2D != null)
             {
                 INoHoles = component.HolesCentersPoints2D.Length / 2;
-                HolesCoord = new float[INoHoles, 2];
+                HolesCoord = new float[INoHoles, 2];   //tento riadok je predsa absolutne zbytocny
                 HolesCoord = component.HolesCentersPoints2D;
                 DHolesDiameter = component.FHoleDiameter;
             }
@@ -133,13 +137,13 @@ namespace sw_en_GUI
             if (crsc.CrScPointsOut != null) // Draw just in case that crsc is valid
             {
                 INoPointsOut = crsc.CrScPointsOut.Length / 2;
-                PointsOut = new float[INoPointsOut, 2];
+                PointsOut = new float[INoPointsOut, 2];  //zbytocny riadok
                 PointsOut = crsc.CrScPointsOut;
 
                 if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
                 {
                     INoPointsIn = crsc.CrScPointsIn.Length / 2;
-                    PointsIn = new float[INoPointsIn, 2];
+                    PointsIn = new float[INoPointsIn, 2];   //zbytocny riadok
                     PointsIn = crsc.CrScPointsIn;
                 }
 
@@ -265,7 +269,7 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoPointsOut; i++)
                     {
-                        DrawText((i + 1).ToString(), modelposition_x + scale_unit * PointsOut[i, 0], modelposition_x + scale_unit * PointsOut[i, 1], Brushes.Blue, canvasForImage);
+                        DrawText((i + 1).ToString(), modelposition_x + scale_unit * PointsOut[i, 0], modelposition_x + scale_unit * PointsOut[i, 1], 10, Brushes.Blue, canvasForImage);
                     }
                 }
 
@@ -274,7 +278,7 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoPointsIn; i++)
                     {
-                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelposition_x + scale_unit * PointsIn[i, 0], modelposition_x + scale_unit * PointsIn[i, 1], Brushes.Green, canvasForImage);
+                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelposition_x + scale_unit * PointsIn[i, 0], modelposition_x + scale_unit * PointsIn[i, 1], 10, Brushes.Green, canvasForImage);
                     }
                 }
             }
@@ -343,12 +347,12 @@ namespace sw_en_GUI
             myLine.StrokeEndLineCap = endCap;
             myLine.HorizontalAlignment = HorizontalAlignment.Left;
             myLine.VerticalAlignment = VerticalAlignment.Center;
-            Canvas.SetTop(myLine, myLine.Points[0].Y);
-            Canvas.SetLeft(myLine, myLine.Points[0].X);
+            Canvas.SetTop(myLine, myLine.Points[0].Y - modelposition_y / 2);
+            Canvas.SetLeft(myLine, myLine.Points[0].X - modelposition_x / 2);
             imageCanvas.Children.Add(myLine);
         }
 
-        public void DrawText(string text, double posx, double posy, SolidColorBrush color, Canvas imageCanvas)
+        public void DrawText(string text, double posx, double posy, double fontSize, SolidColorBrush color, Canvas imageCanvas)
         {
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
@@ -357,7 +361,7 @@ namespace sw_en_GUI
             Canvas.SetTop(textBlock, posy);
             //textBlock.RenderTransform = new RotateTransform(0, 0, 0);
             textBlock.Margin = new Thickness(5, -50, 0, 0);
-            textBlock.FontSize = 20;
+            textBlock.FontSize = fontSize;
             imageCanvas.Children.Add(textBlock);
         }
 

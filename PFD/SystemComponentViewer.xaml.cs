@@ -216,6 +216,8 @@ namespace PFD
             {
                 // TODO not implemented
             }
+
+            if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedIndex = 0;
         }
 
         private void LoadDataFromDatabase()
@@ -383,6 +385,9 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
+                            //temp test 
+                            //crsc = new CCrSc_3_10075_BOX(fh * 3 , fb * 3, ft * 3, Colors.Red); 
+
                             crsc = new CCrSc_3_10075_BOX(fh, fb, ft, Colors.Aquamarine); // BOX
                             break;
                         }
@@ -629,7 +634,7 @@ namespace PFD
             }
         }
 
-        private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Combobox_Series_DropDownClosed(object sender, EventArgs e)
         {
             // Change Component Items Combobox
             Combobox_Component.Items.Clear();
@@ -748,11 +753,142 @@ namespace PFD
 
             // Set default
             Combobox_Component.SelectedIndex = 0;
+            if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedItem = Combobox_Component.Items[0];
 
             UpdateAll();
         }
 
+        private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //// Change Component Items Combobox
+            //Combobox_Component.Items.Clear();
+
+            //if (Combobox_Type.SelectedIndex == 0) // Cross-section
+            //{
+            //    switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
+            //    {
+            //        case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_Box_FormSteel_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypeCrSc_FormSteel.eSerie_C_single:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_Box63020_FormSteel_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        default:
+            //            {
+            //                // Not implemented
+            //                break;
+            //            }
+            //    }
+            //}
+            //else if (Combobox_Type.SelectedIndex == 1)
+            //{
+            //    switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
+            //    {
+            //        case ESerieTypePlate.eSerie_B:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_B_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_L:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_L_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_LL:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_LL_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_F:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_F_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_Q:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_Q_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_S:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_S_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_T:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_T_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_X:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_X_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_Y:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_Y_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_J:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_J_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        case ESerieTypePlate.eSerie_K:
+            //            {
+            //                foreach (string name in dcomponents.arr_Serie_K_Names)
+            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
+            //                break;
+            //            }
+            //        default:
+            //            {
+            //                // Not implemented
+            //                break;
+            //            }
+            //    }
+            //}
+            //else
+            //{
+            //    // Not implemented
+            //}
+
+
+            //// Set default
+            //Combobox_Component.SelectedIndex = 0;
+
+            //UpdateAll();
+        }
+
         private void Combobox_Component_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            //ani nahodou, sak sa to vola po kazdom pridani prvku do comboboxu
+            //UpdateAll();
+        }
+        
+        private void Combobox_Component_DropDownClosed(object sender, EventArgs e)
         {
             UpdateAll();
         }

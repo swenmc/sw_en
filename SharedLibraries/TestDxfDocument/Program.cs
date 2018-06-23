@@ -28,11 +28,13 @@ namespace TestDxfDocument
         public static void Main()
         {
 
-            DxfDocument doc = Test(@"sample.dxf");
+            //DxfDocument doc = Test(@"sample.dxf");
+
+
 
             #region Samples for new and modified features 2.0.1
 
-            //DimensionUserTextWithTwoLines();
+            DimensionUserTextWithTwoLines();
 
             #endregion
 

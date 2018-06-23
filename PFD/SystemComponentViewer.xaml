@@ -8,15 +8,32 @@
         Title="FormSteel System Component Viewer" Height="1200" Width="1600">
     <Grid>
         <TextBlock Text="Type:" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
-        <ComboBox Name ="Combobox_Type" HorizontalAlignment="Left" Height="20" Margin="115,10,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" SelectionChanged="Combobox_Type_SelectionChanged"/>
+        <ComboBox Name ="Combobox_Type" HorizontalAlignment="Left" Height="20" 
+                  Margin="115,10,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
+                  SelectionChanged="Combobox_Type_SelectionChanged"/>
 
         <TextBlock Text="Serie:" HorizontalAlignment="Left" Height="20" Margin="10,35,0,0" VerticalAlignment="Top" Width="100"/>
-        <ComboBox Name ="Combobox_Series" HorizontalAlignment="Left" Height="20" Margin="115,35,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" SelectionChanged="Combobox_Series_SelectionChanged"/>
+        <ComboBox Name ="Combobox_Series" HorizontalAlignment="Left" Height="20" 
+                  Margin="115,35,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
+                  SelectionChanged="Combobox_Series_SelectionChanged"                   
+                  DropDownClosed="Combobox_Series_DropDownClosed"/>
 
         <TextBlock Text="Component:" HorizontalAlignment="Left" Height="20" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
-        <ComboBox Name ="Combobox_Component" HorizontalAlignment="Left" Height="20" Margin="115,60,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" SelectionChanged="Combobox_Component_SelectionChanged"/>
+        <ComboBox Name ="Combobox_Component" HorizontalAlignment="Left" Height="20" 
+                  Margin="115,60,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
+                  SelectionChanged="Combobox_Component_SelectionChanged"                   
+                  DropDownClosed="Combobox_Component_DropDownClosed"/>
 
-        <Frame Name ="Frame2D" Content="2D Preview" HorizontalAlignment="Left" Height="1000" Margin="10,100,0,0" VerticalAlignment="Top" Width="780" NavigationUIVisibility="Hidden"/>
+        <Frame Name ="Frame2D" Content="2D Preview" HorizontalAlignment="Left" 
+               Height="780" Margin="10,100,0,0" VerticalAlignment="Top" 
+               Width="780" NavigationUIVisibility="Hidden"/>
+        
+        <!--Treba asi vyskusat kreslit priamo na Canvas
+        <Canvas Name="Canvas2D">            
+        </Canvas>
+        -->
+            
+        
         <Frame Name ="Frame3D" Content="3D Preview" HorizontalAlignment="Left" Height="1000" Margin="805,100,0,0" VerticalAlignment="Top" Width="780" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

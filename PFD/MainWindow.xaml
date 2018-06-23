@@ -162,7 +162,7 @@
                HorizontalContentAlignment="Stretch" 
                VerticalContentAlignment="Stretch" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
-        <Button Grid.Row="3" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" 
-            VerticalAlignment="Center" Width="124" Margin="0,26,100,25" Click="SystemComponentViewer_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
+            VerticalAlignment="Center" Width="124" Margin="0 0 120 0" Click="SystemComponentViewer_Click"/>
     </Grid>
 </Window>
