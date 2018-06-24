@@ -61,7 +61,7 @@ namespace TestDxfDocument
 
             #region Samples for new and modified features 1.1.0
 
-            //WipeoutEntity();
+            WipeoutEntity();
             //ToleranceEntity();
             //LeaderEntity();
             //UnderlayEntity();
@@ -199,7 +199,7 @@ namespace TestDxfDocument
             //Solid();
             //Face3d();
             //LwPolyline();
-            //Polyline();
+            Polyline();
             //Dxf2000();
             //SpeedTest();
             //WritePolyline3d();

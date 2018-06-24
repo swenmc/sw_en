@@ -11,6 +11,8 @@
         <ComboBox Name ="Combobox_Type" HorizontalAlignment="Left" Height="20" 
                   Margin="115,10,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
                   SelectionChanged="Combobox_Type_SelectionChanged"/>
+        <Button Height="20" Width="100" Name="BtnExportDXF" Content="Export to DXF"
+                Margin="400 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
 
         <TextBlock Text="Serie:" HorizontalAlignment="Left" Height="20" Margin="10,35,0,0" VerticalAlignment="Top" Width="100"/>
         <ComboBox Name ="Combobox_Series" HorizontalAlignment="Left" Height="20" 

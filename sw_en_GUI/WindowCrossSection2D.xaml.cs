@@ -23,6 +23,7 @@ namespace sw_en_GUI
     /// </summary>
     public partial class WindowCrossSection2D : Window
     {
+        public Canvas CanvasSection2D = null;
         int scale_unit = 1000; // mm
 
         double modelMarginLeft_x;
@@ -65,6 +66,7 @@ namespace sw_en_GUI
         public WindowCrossSection2D()
         {
             InitializeComponent();
+            CanvasSection2D = canvasForImage;
         }
 
         public WindowCrossSection2D(CPlate plate, double dPageWidth_temp, double dPageHeight_temp)
@@ -99,6 +101,8 @@ namespace sw_en_GUI
             canvasForImage.Children.Clear();
             if (plate != null)
                 DrawComponent();
+
+            CanvasSection2D = canvasForImage;
         }
 
         public WindowCrossSection2D(CCrSc_TW crsc, double dPageWidth_temp, double dPageHeight_temp)
@@ -139,6 +143,8 @@ namespace sw_en_GUI
             canvasForImage.Children.Clear();
             if (crsc != null)
                 DrawComponent();
+
+            CanvasSection2D = canvasForImage;
         }
 
         public void SaveImage(Visual visual, int width, int height, string filePath)
@@ -203,7 +209,7 @@ namespace sw_en_GUI
         }
 
         public void DrawPoints()
-        {
+        {   
             if (bDrawPoints)
             {
                 // Outer outline points

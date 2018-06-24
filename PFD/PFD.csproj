@@ -181,6 +181,10 @@
       <Project>{209738f7-cdb3-4c11-98a3-e345299d9191}</Project>
       <Name>M_AS4600</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharedLibraries\netDxf\netDxf.csproj">
+      <Project>{785380E0-CEB9-4C34-82E5-60D0E33E848E}</Project>
+      <Name>netDxf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharedLibraries\SharedLibraries\SharedLibraries.csproj">
       <Project>{28044445-e8dd-4041-b534-3fee5c07237f}</Project>
       <Name>SharedLibraries</Name>
