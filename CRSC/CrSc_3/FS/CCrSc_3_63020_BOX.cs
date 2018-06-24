@@ -159,7 +159,7 @@ namespace CRSC
 
             // Point No. 4
             CrScPointsIn[3, 0] = 0.5f * (float)b - m_ft_w;               // y
-            CrScPointsIn[3, 1] = CrScPointsIn[2, 1] - fr_1_out;          // z
+            CrScPointsIn[3, 1] = CrScPointsOut[3, 1];                    // z
 
             // Point No. 5
             CrScPointsIn[4, 0] = CrScPointsIn[3, 0];                     // y

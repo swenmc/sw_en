@@ -53,7 +53,7 @@ namespace CRSC
 
             //ITotNoPoints = 34;
             IsShapeSolid = true;
-            ITotNoPoints = 34;
+            ITotNoPoints = INoPointsOut = 34;
 
             h = fh;
             b = fb;
@@ -107,7 +107,7 @@ namespace CRSC
 
             // Point No. 5
             CrScPointsOut[4, 0] = (float)b - fr_1_out;                             // y
-            CrScPointsOut[4, 1] = (float)h / 2f - -m_ft_f;                         // z
+            CrScPointsOut[4, 1] = (float)h / 2f - m_ft_f;                         // z
 
             // Point No. 6
             CrScPointsOut[5, 0] = fr_1_out;                                        // y

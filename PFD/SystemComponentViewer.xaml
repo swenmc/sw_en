@@ -25,15 +25,10 @@
                   DropDownClosed="Combobox_Component_DropDownClosed"/>
 
         <Frame Name ="Frame2D" Content="2D Preview" HorizontalAlignment="Left" 
-               Height="780" Margin="10,100,0,0" VerticalAlignment="Top" 
+               Height="1000" Margin="10,100,0,0" VerticalAlignment="Top" 
                Width="780" NavigationUIVisibility="Hidden"/>
-        
-        <!--Treba asi vyskusat kreslit priamo na Canvas
-        <Canvas Name="Canvas2D">            
-        </Canvas>
-        -->
-            
-        
-        <Frame Name ="Frame3D" Content="3D Preview" HorizontalAlignment="Left" Height="1000" Margin="805,100,0,0" VerticalAlignment="Top" Width="780" NavigationUIVisibility="Hidden"/>
+        <Frame Name ="Frame3D" Content="3D Preview" HorizontalAlignment="Left"
+               Height="1000" Margin="805,100,0,0" VerticalAlignment="Top"
+               Width="780" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

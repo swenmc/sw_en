@@ -58,13 +58,16 @@ namespace PFD
             // Create 2D page
             WindowCrossSection2D page2D = null;
 
+            double dWidth = Frame2D.Width;
+            double dHeight = Frame2D.Height;
+
             if (Combobox_Type.SelectedIndex == 0)
             {
-               page2D = new WindowCrossSection2D(crsc);
+               page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
             }
             else if (Combobox_Type.SelectedIndex == 1)
             {
-                page2D = new WindowCrossSection2D(component);
+                page2D = new WindowCrossSection2D(component, dWidth, dHeight);
             }
             else
             {
@@ -499,11 +502,11 @@ namespace PFD
 
             if (Combobox_Type.SelectedIndex == 0)
             {
-                page2D = new WindowCrossSection2D(crsc);
+                page2D = new WindowCrossSection2D(crsc, Frame2D.Width, Frame2D.Height);
             }
             else if (Combobox_Type.SelectedIndex == 1)
             {
-                page2D = new WindowCrossSection2D(component);
+                page2D = new WindowCrossSection2D(component, Frame2D.Width, Frame2D.Height);
             }
             else
             {
@@ -750,7 +753,6 @@ namespace PFD
                 // Not implemented
             }
 
-
             // Set default
             Combobox_Component.SelectedIndex = 0;
             if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedItem = Combobox_Component.Items[0];
@@ -760,6 +762,9 @@ namespace PFD
 
         private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // To Ondrej; OK, ale teraz to nefunguje pokial nad comboboxom pouzijem wheel, preview sa nepregeneruje
+            // Takze musime zakazat wheel alebo to update / SelectionChanged oddelit od pridania poloziek do comboboxu, aby sa to nevolalo opakovane
+
             //// Change Component Items Combobox
             //Combobox_Component.Items.Clear();
 
@@ -886,8 +891,11 @@ namespace PFD
 
             //ani nahodou, sak sa to vola po kazdom pridani prvku do comboboxu
             //UpdateAll();
+
+            // To Ondrej; OK, ale teraz to nefunguje pokial nad comboboxom pouzijem wheel, preview sa nepregeneruje
+            // Takze musime zakazat wheel alebo to updateall / SelectionChanged oddelit od pridania poloziek do comboboxu, aby sa to nevolalo opakovane
         }
-        
+
         private void Combobox_Component_DropDownClosed(object sender, EventArgs e)
         {
             UpdateAll();
