@@ -55,7 +55,7 @@ namespace BaseClasses
             loadIndices();
         }
 
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, int iLeftRightIndex, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -81,6 +81,22 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            if (iLeftRightIndex % 2 != 0) // Change y-coordinates for odd index (RH)
+            {
+                for (int i = 0; i < ITotNoPointsin2D; i++)
+                {
+                    PointsOut2D[i, 0] *= -1;
+                }
+
+                for (int i = 0; i < ITotNoPointsin3D; i++)
+                {
+                    arrPoints3D[i].X *= -1;
+                }
+
+                // Change indices
+                ChangeIndices(TriangleIndices); // Todo - takto to nefunguje :-)
+            }
         }
 
         //----------------------------------------------------------------------------
@@ -279,6 +295,28 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[4]);
 
             return wireFrame;
+        }
+
+        private void ChangeIndices(Int32Collection TriangleIndices)
+        {
+            if (TriangleIndices != null && TriangleIndices.Count > 0)
+            {
+                int iSecond = 1;
+                int iThird = 2;
+
+                int iTIcount = TriangleIndices.Count;
+                for (int i = 0; i < iTIcount / 3; i++)
+                {
+                    int iTI_2 = TriangleIndices[iSecond];
+                    int iTI_3 = TriangleIndices[iThird];
+
+                    TriangleIndices[iThird] = iTI_2;
+                    TriangleIndices[iSecond] = iTI_3;
+
+                    iSecond += 3;
+                    iThird += 3;
+                }
+            }
         }
     }
 }

@@ -461,7 +461,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
+                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
@@ -600,7 +600,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
+                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
