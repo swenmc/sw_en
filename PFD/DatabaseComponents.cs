@@ -12,6 +12,7 @@ namespace PFD
         public float fbX_mm;
         public float fbX2_mm;
         public float fhY_mm;
+        public float fhY2_mm;
         public float flZ_mm; // Not used in 2D model
         public float flZ2_mm;
         public float ft_mm; // Not used in 2D model
@@ -88,6 +89,28 @@ namespace PFD
 
                         break;
                     }
+                case ESerieTypePlate.eSerie_J:
+                    {
+                        fbX_mm = arr_Serie_J_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_J_Dimension[iComponentIndex, 1];
+                        fhY2_mm = arr_Serie_J_Dimension[iComponentIndex, 2];
+                        ft_mm = arr_Serie_J_Dimension[iComponentIndex, 3];
+                        iHolesNoumber = (int)arr_Serie_J_Dimension[iComponentIndex, 4];
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_K:
+                    {
+                        fbX_mm = arr_Serie_K_Dimension[iComponentIndex, 0];
+                        fhY_mm = arr_Serie_K_Dimension[iComponentIndex, 1];
+                        fbX2_mm = arr_Serie_K_Dimension[iComponentIndex, 2];
+                        fhY2_mm = arr_Serie_K_Dimension[iComponentIndex, 3];
+                        ft_mm = arr_Serie_K_Dimension[iComponentIndex, 4];
+                        iHolesNoumber = (int)arr_Serie_K_Dimension[iComponentIndex, 5];
+
+                        break;
+                    }
+
                 default:
                     {
                         // Not implemented
@@ -248,7 +271,7 @@ namespace PFD
         public float[,] arr_Serie_J_Dimension = new float[1, 5]
         {
                 // b, h1, h2, t, iHoles
-                {500, 300, 500, 3, 0}
+                {500, 300, 350, 3, 0}
         };
 
         public float[,] arr_Serie_K_Dimension = new float[1, 6]

@@ -30,6 +30,7 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 4;
+            ITotNoPointsin3D = 8;
 
             m_pControlPoint = controlpoint;
             m_fb_1 = fb_1_temp;
@@ -42,9 +43,11 @@ namespace BaseClasses
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             // Calculate point positions
-            Calc_Coord();
+            Calc_Coord2D();
+            Calc_Coord3D();
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -56,6 +59,7 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 4;
+            ITotNoPointsin3D = 8;
 
             m_pControlPoint = controlpoint;
             m_fb_1 = fb_1_temp;
@@ -71,31 +75,46 @@ namespace BaseClasses
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             // Fill Array Data
-            Calc_Coord();
+            Calc_Coord2D();
+            Calc_Coord3D();
 
             // Fill list of indices for drawing of surface
             loadIndices();
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord()
+        void Calc_Coord2D()
         {
             PointsOut2D[0, 0] = 0;
-            PointsOut2D[0, 1] = m_fh_1;
+            PointsOut2D[0, 1] = 0;
 
-            PointsOut2D[1, 0] = m_fb_2;
-            PointsOut2D[1, 1] = m_fh_2;
+            PointsOut2D[1, 0] = m_fb_1;
+            PointsOut2D[1, 1] = 0;
 
-            PointsOut2D[2, 0] = m_fb_1;
-            PointsOut2D[2, 1] = 0;
+            PointsOut2D[2, 0] = m_fb_2;
+            PointsOut2D[2, 1] = m_fh_2;
 
             PointsOut2D[3, 0] = 0;
-            PointsOut2D[3, 1] = 0;
+            PointsOut2D[3, 1] = m_fh_1;
+        }
+
+        void Calc_Coord3D()
+        {
+            for (int i = 0; i < 2; i++) // 2 cycles - front and back surface
+            {
+                // One Side
+                for (int j = 0; j < ITotNoPointsin2D; j++)
+                {
+                    arrPoints3D[(i * ITotNoPointsin2D) + j].X = PointsOut2D[j, 0];
+                    arrPoints3D[(i * ITotNoPointsin2D) + j].Y = PointsOut2D[j, 1];
+                    arrPoints3D[(i * ITotNoPointsin2D) + j].Z = i * m_ft;
+                }
+            }
         }
 
         protected override void loadIndices()
         {
-            int secNum = 5;
+            int secNum = 4;
             TriangleIndices = new Int32Collection();
 
             // Front Side / Forehead
@@ -108,44 +127,6 @@ namespace BaseClasses
             DrawCaraLaterals_CCW(secNum, TriangleIndices);
         }
 
-        protected override Point3DCollection GetDefinitionPoints()
-        {
-            Point3DCollection pMeshPositions = new Point3DCollection();
-
-            for (int i = 0; i < 2; i++) // 2 cycles - front and back surface
-            {
-                // One Side
-                for (int j = 0; j < ITotNoPointsin2D; j++)
-                {
-                    pMeshPositions.Add(new Point3D((i-1) * 0.5f * m_ft, PointsOut2D[j, 0], PointsOut2D[j, 1])); // x1 = - 0.5 t and x2 = 0.5 * t
-                }
-            }
-
-            return pMeshPositions;
-        }
-
-        public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
-        {
-            GeometryModel3D model = new GeometryModel3D();
-
-            // All in one mesh
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions = new Point3DCollection();
-            mesh.Positions = GetDefinitionPoints();
-
-            // Add Positions of plate edge nodes
-            loadIndices();
-            mesh.TriangleIndices = TriangleIndices;
-
-            model.Geometry = mesh;
-
-            model.Material = new DiffuseMaterial(brush);  // Set Model Material
-
-            TransformPlateCoord(model);
-
-            return model;
-        }
-
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
@@ -153,21 +134,21 @@ namespace BaseClasses
             wireFrame.Color = Color.FromRgb(250, 250, 60);
             wireFrame.Thickness = 1.0;
 
+            Point3D pi = new Point3D();
+            Point3D pj = new Point3D();
+
             // Front Side
             for (int i = 0; i < PointsOut2D.Length / 2; i++)
             {
-                Point3D pi = new Point3D();
-                Point3D pj = new Point3D();
-
                 if (i < (PointsOut2D.Length / 2) - 1)
                 {
-                    pi = new Point3D(0, PointsOut2D[i, 0], PointsOut2D[i, 1]);
-                    pj = new Point3D(0, PointsOut2D[i + 1, 0], PointsOut2D[i + 1, 1]);
+                    pi = arrPoints3D[i];
+                    pj = arrPoints3D[i + 1];
                 }
                 else // Last line
                 {
-                    pi = new Point3D(0, PointsOut2D[i, 0], PointsOut2D[i, 1]);
-                    pj = new Point3D(0, PointsOut2D[0, 0], PointsOut2D[0, 1]);
+                    pi = arrPoints3D[i];
+                    pj = arrPoints3D[0];
                 }
 
                 // Add points
@@ -178,18 +159,15 @@ namespace BaseClasses
             // BackSide
             for (int i = 0; i < PointsOut2D.Length / 2; i++)
             {
-                Point3D pi = new Point3D();
-                Point3D pj = new Point3D();
-
                 if (i < (PointsOut2D.Length / 2) - 1)
                 {
-                    pi = new Point3D(m_ft, PointsOut2D[i, 0], PointsOut2D[i, 1]);
-                    pj = new Point3D(m_ft, PointsOut2D[i + 1, 0], PointsOut2D[i + 1, 1]);
+                    pi = arrPoints3D[ITotNoPointsin2D + i];
+                    pj = arrPoints3D[ITotNoPointsin2D + 1];
                 }
                 else // Last line
                 {
-                    pi = new Point3D(m_ft, PointsOut2D[i, 0], PointsOut2D[i, 1]);
-                    pj = new Point3D(m_ft, PointsOut2D[0, 0], PointsOut2D[0, 1]);
+                    pi = arrPoints3D[ITotNoPointsin2D + i];
+                    pj = arrPoints3D[ITotNoPointsin2D + 0];
                 }
 
                 // Add points
@@ -200,11 +178,8 @@ namespace BaseClasses
             // Lateral
             for (int i = 0; i < PointsOut2D.Length / 2; i++)
             {
-                Point3D pi = new Point3D();
-                Point3D pj = new Point3D();
-
-                pi = new Point3D(0, PointsOut2D[i, 0], PointsOut2D[i, 1]);
-                pj = new Point3D(m_ft, PointsOut2D[i, 0], PointsOut2D[i, 1]);
+                pi = arrPoints3D[i];
+                pj = arrPoints3D[ITotNoPointsin2D + i];
 
                 // Add points
                 wireFrame.Points.Add(pi);
@@ -212,23 +187,6 @@ namespace BaseClasses
             }
 
             return wireFrame;
-        }
-
-        public void TransformPlateCoord(GeometryModel3D model)
-        {
-            // Rotate Plate from its cs to joint cs system in GCS about z
-            RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
-
-            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ); // Rotation in degrees
-
-            // Move 0,0,0 to control point in GCS
-            TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
-
-            Transform3DGroup Trans3DGroup = new Transform3DGroup();
-            Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
-            Trans3DGroup.Children.Add(Translate3D_AUX);
-
-            model.Transform = Trans3DGroup;
         }
     }
 }

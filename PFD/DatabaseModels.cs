@@ -8,114 +8,160 @@ namespace PFD
 {
     public class DatabaseModels
     {
-        public float fb_mm;
-        public float fL_mm;
-        public float fL1_mm;
-        public float fh_mm;
+        public float fb;
+        public float fL;
+        public float fL1;
+        public float fh;
         public int iFrNo;
         public float fRoof_Pitch_deg;
-        public float fdist_girt_mm;
-        public float fdist_purlin_mm;
-        public float fdist_frontcolumn_mm;
-        public float fdist_girt_bottom_mm;
+        public float fdist_girt;
+        public float fdist_purlin;
+        public float fdist_frontcolumn;
+        public float fdist_girt_bottom;
 
         public DatabaseModels()
         { }
 
         public DatabaseModels(int iSelectedIndex)
         {
-            fb_mm = arr_Models_Dimensions[iSelectedIndex, 0];
-            fL_mm = arr_Models_Dimensions[iSelectedIndex, 1];
-            fh_mm = arr_Models_Dimensions[iSelectedIndex, 2];
+            fb = arr_Models_Dimensions[iSelectedIndex, 0];
+            fL = arr_Models_Dimensions[iSelectedIndex, 1];
+            fh = arr_Models_Dimensions[iSelectedIndex, 2];
             iFrNo = (int)arr_Models_Dimensions[iSelectedIndex, 3];
-            fL1_mm = fL_mm / (iFrNo - 1);
+            fL1 = fL / (iFrNo - 1);
             fRoof_Pitch_deg = 15;
-            fdist_girt_mm = 0.25f * fL1_mm;
-            fdist_purlin_mm = 0.25f * fL1_mm;
-            fdist_frontcolumn_mm = 0.50f * fL1_mm;
-            fdist_girt_bottom_mm = 300f; // Distance from concrete foundation to the centerline
+            fdist_girt = 0.25f * fL1;
+            fdist_purlin = 0.25f * fL1;
+            fdist_frontcolumn = 0.5f * fL1;
+            fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
         }
 
-        //MODEL GABLE WIDTH (MM) LENGTH (MM) WALL HEIGHT(MM)
-        /*
-        GB0810L 8000 10000 3600
-        GB0812L 8000 12000 3600
-        GB0812M 8000 12000 4200
-        GB1012L 10000 12000 3600
-        GB1012M 10000 12000 4200
-        GB1212L 12000 12000 3600
-        GB1212M 12000 12000 4200
-        GB1215M 12000 15000 4200
-        GB1218M 12000 18000 4200
-        GB1218H 12000 18000 4800
-        GB1518M 15000 18000 4200
-        GB1518H 15000 18000 4800
-        GB1820M 18000 20000 4200
-        GB1820H 18000 20000 4800
-        GB1824H 18000 24000 4800
-        GB1824XH 18000 24000 6000
-        GB2024H 20000 24000 4800
-        GB2024XH 20000 24000 6000
-        GB2430H 24000 30000 4800
-        GB2430XH 24000 30000 6000
-        GB3036H 30000 36000 4800
-        GB3036XH 30000 36000 6000
-        GB3042H 30000 42000 4800
-        GB3042XH 30000 42000 6000
-        */
+        //MODEL GABLE WIDTH (M) LENGTH (M) WALL HEIGHT(M) PORTAL SPACING(M)
+        public string []arr_ModelNames = new string[33]
+            {"GB0810L3",
+             "GB0810L4",
+             "GB0812L3",
+             "GB0812M3",
+             "GB0812M4",
+             "GB1012L3",
+             "GB1012M3",
+             "GB1012M4",
+             "GB1212L3",
+             "GB1212L4",
+             "GB1212M3",
+             "GB1212M4",
+             "GB1215M4",
+             "GB1218M6",
+             "GB1218M5",
+             "GB1218L4",
+             "GB1518M4",
+             "GB1218H4",
+             "GB1818M6",
+             "GB1818M5",
+             "GB1820H5",
+             "GB1820H4",
+             "GB1824H5",
+             "GB1824XH5",
+             "GB2024H5",
+             "GB2024XH5",
+             "GB2430H6",
+             "GB2430H7",
+             "GB2430XH6",
+             "GB3036H7",
+             "GB3036XH7",
+             "GB3042H8",
+             "GB3042XH8"};
 
-        public string []arr_ModelNames = new string[24]
-            {"GB0810L ",
-             "GB0812L ",
-             "GB0812M ",
-             "GB1012L ",
-             "GB1012M ",
-             "GB1212L ",
-             "GB1212M ",
-             "GB1215M ",
-             "GB1218M ",
-             "GB1218H ",
-             "GB1518M ",
-             "GB1518H ",
-             "GB1820M ",
-             "GB1820H ",
-             "GB1824H ",
-             "GB1824XH",
-             "GB2024H ",
-             "GB2024XH",
-             "GB2430H ",
-             "GB2430XH",
-             "GB3036H ",
-             "GB3036XH",
-             "GB3042H ",
-             "GB3042XH"};
-
-        public float[,] arr_Models_Dimensions = new float[24, 4]
+        public float[,] arr_Models_Dimensions = new float[33, 4]
             {
-                {08000, 10000, 3600, 3},
-                {08000, 12000, 3600, 4},
-                {08000, 12000, 4200, 4},
-                {10000, 12000, 3600, 4},
-                {10000, 12000, 4200, 4},
-                {12000, 12000, 3600, 4},
-                {12000, 12000, 4200, 4},
-                {12000, 15000, 4200, 5},
-                {12000, 18000, 4200, 4},
-                {12000, 18000, 4800, 4},
-                {15000, 18000, 4200, 4},
-                {15000, 18000, 4800, 4},
-                {18000, 20000, 4200, 5},
-                {18000, 20000, 4800, 5},
-                {18000, 24000, 4800, 6},
-                {18000, 24000, 6000, 6},
-                {20000, 24000, 4800, 6},
-                {20000, 24000, 6000, 6},
-                {24000, 30000, 4800, 7},
-                {24000, 30000, 6000, 7},
-                {30000, 36000, 4800, 7},
-                {30000, 36000, 6000, 7},
-                {30000, 42000, 4800, 8},
-                {30000, 42000, 6000, 8}
+            {08, 10, 3.6f, 3},
+            {08, 10, 3.6f, 4},
+            {08, 12, 3.6f, 3},
+            {08, 12, 4.2f, 3},
+            {08, 12, 4.2f, 4},
+            {10, 12, 3.6f, 3},
+            {10, 12, 4.2f, 3},
+            {10, 12, 4.2f, 4},
+            {12, 12, 3.6f, 3},
+            {12, 12, 3.6f, 4},
+            {12, 12, 4.2f, 3},
+            {12, 12, 4.2f, 4},
+            {12, 15, 4.2f, 4},
+            {12, 18, 4.2f, 4},
+            {12, 18, 4.2f, 5},
+            {12, 18, 4.8f, 4},
+            {15, 18, 4.2f, 4},
+            {15, 18, 4.8f, 4},
+            {18, 20, 4.2f, 6},
+            {18, 20, 4.2f, 5},
+            {18, 20, 4.8f, 5},
+            {18, 20, 4.8f, 4},
+            {18, 24, 4.8f, 5},
+            {18, 24, 6.0f, 5},
+            {20, 24, 4.8f, 5},
+            {20, 24, 6.0f, 5},
+            {24, 30, 4.8f, 6},
+            {24, 30, 4.8f, 7},
+            {24, 30, 6.0f, 6},
+            {30, 36, 4.8f, 7},
+            {30, 36, 6.0f, 7},
+            {30, 42, 4.8f, 8},
+            {30, 42, 6.0f, 8}
             };
      }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -126,18 +126,13 @@ namespace PFD
             InitializeComponent();
 
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.LightGreen);
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
 
-            bool bDisplay_SurfaceModel = true;
+            // Cross-section Model
             GeometryModel3D ComponentGeomModel;
 
-            // Surface Model (Solid / Transparent (depends on material opacity)
-            if (bDisplay_SurfaceModel && model != null)
-            {
-                // Component Model
-                ComponentGeomModel = new GeometryModel3D();
-            }
-
+            bool bDisplay_WireFrame = true;
+            bool bDisplay_SurfaceModel = true;
             float fTempMax_X;
             float fTempMin_X;
             float fTempMax_Y;
@@ -149,7 +144,7 @@ namespace PFD
             {
                 ComponentGeomModel = model.CreateGeomModel3D(brushDefault);
 
-                // Get model centre
+                // Get model limits
                 CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 float fModel_Length_X = fTempMax_X - fTempMin_X;
@@ -157,26 +152,28 @@ namespace PFD
                 float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
                 Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 0.1 * fModel_Length_X, pModelGeomCentre.Y - (2 * fModel_Length_Y), pModelGeomCentre.Z + (2 * fModel_Length_Z));
+                Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 0.1, pModelGeomCentre.Z + 1);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
-                _trackport.Model = (Model3D)ComponentGeomModel;
-            }
 
-            // Add WireFrame Model
-            // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
+                if (bDisplay_SurfaceModel)
+                {
+                    _trackport.Model = (Model3D)ComponentGeomModel;
+                }
 
-            bool bDisplay_WireFrame = true;
+                // Add WireFrame Model
+                // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME (PAGE3D)
 
-            // Wire Frame
-            if (bDisplay_WireFrame && model != null)
-            {
-                // Create WireFrime in LCS
-                ScreenSpaceLines3D wireFrame = model.CreateWireFrameModel();
+                // Component - Wire Frame
+                if (bDisplay_WireFrame && model != null)
+                {
+                    // Create WireFrime in LCS
+                    ScreenSpaceLines3D wireFrame = model.CreateWireFrameModel();
 
-                // Add Wireframe Lines to the trackport
-                _trackport.ViewPort.Children.Add(wireFrame);
+                    // Add Wireframe Lines to the trackport
+                    _trackport.ViewPort.Children.Add(wireFrame);
+                }
             }
 
             _trackport.SetupScene();
@@ -189,7 +186,7 @@ namespace PFD
             // Default color
             SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
 
-            // Component Model
+            // Cross-section Model
             Model3DGroup ComponentGeomModel = new Model3DGroup();
 
             bool bDisplay_WireFrame = true;
@@ -203,11 +200,12 @@ namespace PFD
 
             if (crsc != null)
             {
-                CMember member_temp = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0.5f, 0, 0, 0), crsc, 0);
+                float fLengthMember = 0.2f;
+                CMember member_temp = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, fLengthMember, 0, 0, 0), crsc, 0);
 
                 ComponentGeomModel = member_temp.getM_3D_G_Member(EGCS.eGCSLeftHanded, brushDefault, brushDefault, brushDefault);
 
-                // Get model centre
+                // Get model limits
                 CalculateModelLimits(member_temp, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
                 float fModel_Length_X = fTempMax_X - fTempMin_X;
@@ -226,7 +224,7 @@ namespace PFD
                 }
 
                 // Add WireFrame Model
-                // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
+                // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME (PAGE3D)
 
                 // Members - Wire Frame
                 if (bDisplay_WireFrame)
@@ -238,10 +236,10 @@ namespace PFD
                     ScreenSpaceLines3D wireFrame_BackSide = new ScreenSpaceLines3D();
                     ScreenSpaceLines3D wireFrame_Lateral = new ScreenSpaceLines3D();
 
-                    Window2 wtemp = new Window2(); // ToDo - odstranit
+                    Window2 wtemp = new Window2(); // ToDo - odstranit po zjednoteni vykreslovacich funkcii z viacerych okien a projektov AAC / PFD / SW_EN_GUI - WINDOW2
 
                     wireFrame_FrontSide = wtemp.wireFrame(member_temp, 0f);
-                    wireFrame_BackSide = wtemp.wireFrame(member_temp, 0.5f);
+                    wireFrame_BackSide = wtemp.wireFrame(member_temp, fLengthMember);
                     wireFrame_Lateral = wtemp.wireFrameLateral(member_temp);
 
                     // Add Wireframe Lines to the trackport

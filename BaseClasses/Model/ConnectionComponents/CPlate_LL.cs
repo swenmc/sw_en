@@ -17,10 +17,6 @@ namespace BaseClasses
         public float m_ft; // Not used in 2D model
         public int m_iHolesNumber = 0;
 
-        float m_fRotationX_deg = 0;
-        float m_fRotationY_deg = 0;
-        float m_fRotationZ_deg = 0;
-
         public CConCom_Plate_LL()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -218,7 +214,7 @@ namespace BaseClasses
             AddRectangleIndices_CCW_1234(TriangleIndices, 2, 3, 13, 12);
             AddRectangleIndices_CCW_1234(TriangleIndices, 11, 12, 19, 18);
 
-            AddRectangleIndices_CCW_1234(TriangleIndices, 6, 22, 23, 7);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 23, 22);
 
             // Top
             AddRectangleIndices_CCW_1234(TriangleIndices, 9, 17, 16, 8);
@@ -247,38 +243,6 @@ namespace BaseClasses
             AddRectangleIndices_CCW_1234(TriangleIndices, 5, 6, 22, 21);
             AddRectangleIndices_CCW_1234(TriangleIndices, 20, 19, 12, 15);
             AddRectangleIndices_CCW_1234(TriangleIndices, 3, 4, 14, 13);
-        }
-
-        protected override Point3DCollection GetDefinitionPoints()
-        {
-            Point3DCollection pMeshPositions = new Point3DCollection();
-
-            foreach (Point3D point in arrPoints3D)
-                pMeshPositions.Add(point);
-
-            return pMeshPositions;
-        }
-
-        public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
-        {
-            GeometryModel3D model = new GeometryModel3D();
-
-            // All in one mesh
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions = new Point3DCollection();
-            mesh.Positions = GetDefinitionPoints();
-
-            // Add Positions of plate edge nodes
-            loadIndices();
-            mesh.TriangleIndices = TriangleIndices;
-
-            model.Geometry = mesh;
-
-            model.Material = new DiffuseMaterial(brush);  // Set Model Material
-
-            TransformPlateCoord(model, m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg); // Not used now
-
-            return model;
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()

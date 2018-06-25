@@ -186,38 +186,6 @@ namespace BaseClasses
             DrawCaraLaterals_CW(secNum, TriangleIndices);
         }
 
-        protected override Point3DCollection GetDefinitionPoints()
-        {
-            Point3DCollection pMeshPositions = new Point3DCollection();
-
-            foreach (Point3D point in arrPoints3D)
-                pMeshPositions.Add(point);
-
-            return pMeshPositions;
-        }
-
-        public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
-        {
-            GeometryModel3D model = new GeometryModel3D();
-
-            // All in one mesh
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions = new Point3DCollection();
-            mesh.Positions = GetDefinitionPoints();
-
-            // Add Positions of plate edge nodes
-            loadIndices();
-            mesh.TriangleIndices = TriangleIndices;
-
-            model.Geometry = mesh;
-
-            model.Material = new DiffuseMaterial(brush);  // Set Model Material
-
-            TransformPlateCoord(model, m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg); // Not used now
-
-            return model;
-        }
-
         public override ScreenSpaceLines3D CreateWireFrameModel()
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
@@ -297,26 +265,6 @@ namespace BaseClasses
             return wireFrame;
         }
 
-        private void ChangeIndices(Int32Collection TriangleIndices)
-        {
-            if (TriangleIndices != null && TriangleIndices.Count > 0)
-            {
-                int iSecond = 1;
-                int iThird = 2;
 
-                int iTIcount = TriangleIndices.Count;
-                for (int i = 0; i < iTIcount / 3; i++)
-                {
-                    int iTI_2 = TriangleIndices[iSecond];
-                    int iTI_3 = TriangleIndices[iThird];
-
-                    TriangleIndices[iThird] = iTI_2;
-                    TriangleIndices[iSecond] = iTI_3;
-
-                    iSecond += 3;
-                    iThird += 3;
-                }
-            }
-        }
     }
 }

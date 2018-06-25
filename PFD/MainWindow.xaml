@@ -52,7 +52,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="TextBox_Gable_Width_TextChanged"  
                          Text="{Binding Path=CableWidth, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"  
-                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" />
+                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
                          VerticalAlignment="Top" />
@@ -60,7 +60,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="TextBox_Length_TextChanged" 
                          Text="{Binding Path=Length, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" />
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" VerticalAlignment="Top"  />
@@ -68,7 +68,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"  TextChanged="TextBox_Wall_Height_TextChanged"
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" 
-                           TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" />
+                           TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -93,7 +93,7 @@
                          TextChanged="TextBox_Girt_Distance_TextChanged"
                          Text="{Binding Path=GirtDistance, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" />
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 
                 <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -101,7 +101,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="TextBox_Purlin_Distance_TextChanged"
                          Text="{Binding Path=PurlinDistance, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" />
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 
                 <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -109,7 +109,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="TextBox_Column_Distance_TextChanged"
                          Text="{Binding Path=ColumDistance, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" />
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 
                 <TextBlock Grid.Row="0" Grid.Column="4" Text="Location:" HorizontalAlignment="Left" 
                            VerticalAlignment="Top" />

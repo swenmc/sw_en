@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sw_en", "sw_en", "{2103852C-828A-4D0B-AEB7-0BCE9168AF35}"
 EndProject
@@ -98,6 +98,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFD", "PFD\PFD.csproj", "{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PFD", "PFD", "{F2584B6B-5FDD-4F8C-8FD8-23E0A348DF13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netDxf", "SharedLibraries\netDxf\netDxf.csproj", "{785380E0-CEB9-4C34-82E5-60D0E33E848E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -385,6 +387,18 @@ Global
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Release|x86.ActiveCfg = Release|Any CPU
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1}.Release|x86.Build.0 = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Debug|x86.Build.0 = Debug|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|x86.ActiveCfg = Release|Any CPU
+		{785380E0-CEB9-4C34-82E5-60D0E33E848E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -420,8 +434,8 @@ Global
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1} = {F2584B6B-5FDD-4F8C-8FD8-23E0A348DF13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

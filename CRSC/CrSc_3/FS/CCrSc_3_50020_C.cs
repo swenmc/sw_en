@@ -90,7 +90,7 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Point No. 1
-            CrScPointsOut[0, 0] = (float)b - m_fc_lip1 - fr_1_out;                   // y
+            CrScPointsOut[0, 0] = (float)b - m_fc_lip1 - fr_1_out;                  // y
             CrScPointsOut[0, 1] = (float)h / 2f - m_fc_lip2 - fr_1_out - fr_1_in;   // z
 
             // Point No. 2
@@ -106,8 +106,8 @@ namespace CRSC
             CrScPointsOut[3, 1] = CrScPointsOut[2, 1] + m_fc_lip2;                  // z
 
             // Point No. 5
-            CrScPointsOut[4, 0] = (float)b - fr_1_out;                             // y
-            CrScPointsOut[4, 1] = (float)h / 2f - m_ft_f;                         // z
+            CrScPointsOut[4, 0] = (float)b - fr_1_out;                              // y
+            CrScPointsOut[4, 1] = (float)h / 2f - m_ft_f;                           // z
 
             // Point No. 6
             CrScPointsOut[5, 0] = fr_1_out;                                        // y
@@ -139,7 +139,7 @@ namespace CRSC
             CrScPointsOut[31, 1] = CrScPointsOut[2, 1];                            // z
 
             // Point No. 31
-            CrScPointsOut[30, 0] = CrScPointsOut[31, 0];                            // y
+            CrScPointsOut[30, 0] = CrScPointsOut[31, 0];                           // y
             CrScPointsOut[30, 1] = CrScPointsOut[3, 1];                            // z
 
             // Point No. 30

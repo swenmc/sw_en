@@ -351,20 +351,20 @@ namespace PFD
                             }
                         case ESerieTypePlate.eSerie_J:
                             {
-                                fb = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fh2 = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                fb = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fh2 = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
                                 iNumberofHoles = (int)dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 4];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_K:
                             {
-                                fb = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fb2 = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fh2 = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                ft = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
+                                fb = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fb2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                fh2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
                                 iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5];
                                 break;
                             }
@@ -473,12 +473,12 @@ namespace PFD
                     case ESerieTypePlate.eSerie_Q:
                     case ESerieTypePlate.eSerie_T:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // F
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q T
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // F
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
@@ -617,7 +617,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); //  Y
+                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
@@ -933,7 +933,7 @@ namespace PFD
                     //wip.Color = AciColor.Red;
                     //wip.Lineweight = Lineweight.W200;
                     
-                    doc.AddEntity(wip);                    
+                    doc.AddEntity(wip);
                 }
                 else if (o is WindowsShapes.Polyline)
                 {
@@ -990,7 +990,7 @@ namespace PFD
 
                     //Takto sa da spravit zlozitejsi text, napr. Bold atd..
                     /*TextStyle style = new TextStyle("Times.ttf");
-                    //TextStyle style = TextStyle.Default;                    
+                    //TextStyle style = TextStyle.Default;
                     MText mText = new MText(new Vector2(x, y), fontSize, 100.0f, style);
                     mText.Layer = new Layer("Multiline Text");
                     //mText.Layer.Color.Index = 8;
@@ -1009,7 +1009,6 @@ namespace PFD
 
 
             }
-
 
             DateTime d = DateTime.Now;
             string fileName = string.Format("ExportDXF_{0}{1}{2}T{3}{4}{5}.dxf", 

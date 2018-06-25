@@ -9,17 +9,17 @@ namespace PFD
     public class CPFDViewModel
     {
 
-        //float fb; // 3000 - 100000 mm
-        //float fL; // 3000 - 150000 mm
-        //float fh; // 2000 -  50000 mm (h1)
+        //float fb; // 3 - 100 m
+        //float fL; // 3 - 150 m
+        //float fh; // 2 -  50 m (h1)
         //float fL1;
-        //int iFrNo; // 2 - 30
+        //int iFrNo; // 2 - 50
         //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
         //float fh2;
-        //float fdist_girt; // 500 - 5000 mm
-        //float fdist_purlin; // 500 - 5000 mm
-        //float fdist_frontcolumn; // 1000 - 10000 mm
-        //float fdist_girt_bottom; // 1000 - 10000 mm
+        //float fdist_girt; // 0.5 - 5 m
+        //float fdist_purlin; // 0.5 - 5 m
+        //float fdist_frontcolumn; // 1 - 10 m
+        //float fdist_girt_bottom; // 1 - 10 m
 
         private double MGableWidth;
         private double MLength;
@@ -38,8 +38,8 @@ namespace PFD
             }
             set
             {
-                if (value < 3000 || value > 100000)
-                    throw new ArgumentException("Cable Width must be between 3000 and 100000 [mm]");
+                if (value < 3 || value > 100)
+                    throw new ArgumentException("Cable Width must be between 3 and 100 [m]");
                 MGableWidth = value;
             }
         }
@@ -53,8 +53,8 @@ namespace PFD
 
             set
             {
-                if (value < 3000 || value > 150000)
-                    throw new ArgumentException("Length must be between 3000 and 150000 [mm]");
+                if (value < 3 || value > 150)
+                    throw new ArgumentException("Length must be between 3 and 150 [m]");
                 MLength = value;
             }
         }
@@ -68,8 +68,8 @@ namespace PFD
 
             set
             {
-                if (value < 2000 || value > 50000)
-                    throw new ArgumentException("Wall Height must be between 2000 and 50000 [mm]");
+                if (value < 2 || value > 50)
+                    throw new ArgumentException("Wall Height must be between 2 and 50 [m]");
                 MWallHeight = value;
             }
         }
@@ -83,8 +83,10 @@ namespace PFD
 
             set
             {
-                if (value < 3 || value > 50)
-                    throw new ArgumentException("Roof Pitch must be between 2 and 50 degrees");
+                // Todo - Ondrej - pada ak zadam napr 60 stupnov, tato kontrola ma prebehnut len ak je hodnota zadana do text boxu uzivatelsky, ak sa prepocita z inych hodnot (napr. b), tak by sa mala zobrazit
+                // aj ked je nevalidna a malo by vypisat nizsie uvedene varovanie, model by sa nemal prekreslit kym nie su vsetky hodnoty validne
+                //if (value < 3 || value > 50)
+                //    throw new ArgumentException("Roof Pitch must be between 2 and 50 degrees");
                 MRoofPitch = value;
             }
         }
@@ -98,8 +100,8 @@ namespace PFD
 
             set
             {
-                if (value < 2 || value > 30)
-                    throw new ArgumentException("Frames must be between 2 and 30");
+                if (value < 2 || value > 50)
+                    throw new ArgumentException("Number of frames must be between 2 and 50");
                 MFrames = value;
             }
         }
@@ -113,8 +115,8 @@ namespace PFD
 
             set
             {
-                if (value < 500 || value > 5000)
-                    throw new ArgumentException("Girt distance must be between 500 and 5000 [mm]");
+                if (value < 0.5 || value > 5)
+                    throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
                 MGirtDistance = value;
             }
         }
@@ -128,8 +130,8 @@ namespace PFD
 
             set
             {
-                if (value < 500 || value > 5000)
-                    throw new ArgumentException("Purlin distance must be between 500 and 5000 [mm]");
+                if (value < 0.5 || value > 5)
+                    throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
                 MPurlinDistance = value;
             }
         }
@@ -143,8 +145,8 @@ namespace PFD
 
             set
             {
-                if (value < 1000 || value > 10000)
-                    throw new ArgumentException("Column distance must be between 1000 and 10000 [mm]");
+                if (value < 1 || value > 10)
+                    throw new ArgumentException("Column distance must be between 1 and 10 [m]");
                 MColumnDistance = value;
             }
         }
@@ -154,14 +156,14 @@ namespace PFD
             // Todo - Ondrej - toto by sa malo nacitat podla defaultnej hodnoty indexu nastavenej v comboboxe
 
             /* Set default values */
-            MGableWidth = 8000;
-            MLength = 12000;
-            MWallHeight = 3600;
-            MRoofPitch = 15;
+            MGableWidth = 8;
+            MLength = 12;
+            MWallHeight = 3.6f;
+            MRoofPitch = 11;
             MFrames = 4;
-            MGirtDistance = 1000;
-            MPurlinDistance = 1000;
-            MColumnDistance = 2000;
+            MGirtDistance = 1;
+            MPurlinDistance = 1;
+            MColumnDistance = 2;
         }
     }
 }

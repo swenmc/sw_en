@@ -45,17 +45,17 @@ namespace PFD
         public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
 
         int selected_Model_Index;
-        float fb; // 3000 - 100000 mm
-        float fL; // 3000 - 150000 mm
-        float fh; // 2000 -  50000 mm (h1)
+        float fb; // 3 - 100 m
+        float fL; // 3 - 150 m
+        float fh; // 2 -  50 m (h1)
         float fL1;
-        int iFrNo; // 2 - 30
+        int iFrNo; // 2 - 50
         float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
         float fh2;
-        float fdist_girt; // 500 - 5000 mm
-        float fdist_purlin; // 500 - 5000 mm
-        float fdist_frontcolumn; // 1000 - 10000 mm
-        float fdist_girt_bottom; // 1000 - 10000 mm
+        float fdist_girt; // 0.5 - 5 m
+        float fdist_purlin; // 0.5 - 5 m
+        float fdist_frontcolumn; // 1 - 10 m
+        float fdist_girt_bottom; // 1 - 10 m
 
         List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
@@ -105,34 +105,33 @@ namespace PFD
         {
             DatabaseModels dmodel = new DatabaseModels(Combobox_Models.SelectedIndex);
 
-            TextBox_Gable_Width.Text = dmodel.fb_mm.ToString();
-            TextBox_Length.Text = dmodel.fL_mm.ToString();
-            TextBox_Wall_Height.Text = dmodel.fh_mm.ToString();
+            TextBox_Gable_Width.Text = dmodel.fb.ToString();
+            TextBox_Length.Text = dmodel.fL.ToString();
+            TextBox_Wall_Height.Text = dmodel.fh.ToString();
             TextBox_Frames_No.Text = dmodel.iFrNo.ToString();
             TextBox_Roof_Pitch.Text = dmodel.fRoof_Pitch_deg.ToString();
-            TextBox_Girt_Distance.Text = dmodel.fdist_girt_mm.ToString();
-            TextBox_Purlin_Distance.Text = dmodel.fdist_purlin_mm.ToString();
-            TextBox_Column_Distance.Text = dmodel.fdist_frontcolumn_mm.ToString();
+            TextBox_Girt_Distance.Text = dmodel.fdist_girt.ToString();
+            TextBox_Purlin_Distance.Text = dmodel.fdist_purlin.ToString();
+            TextBox_Column_Distance.Text = dmodel.fdist_frontcolumn.ToString();
         }
 
         private void LoadDataFromWindow()
         {
             selected_Model_Index = Combobox_Models.SelectedIndex;
 
-            fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci) / 1000f; // From milimeters to meters
-            fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci) / 1000f;
-            fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci) / 1000f;
+            fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci);
+            fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci);
+            fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci);
             iFrNo = (int)Convert.ToInt64(TextBox_Frames_No.Text, ci);
             fL1 = fL / (iFrNo - 1);
             fRoofPitch_radians = (float)Convert.ToDecimal(TextBox_Roof_Pitch.Text, ci) * MathF.fPI / 180f;
             fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
-
-            fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci) / 1000f;
-            fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci) / 1000f;
-            fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci) / 1000f;
+            fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci);
+            fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci);
+            fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci);
 
             // Temporary
-            fdist_girt_bottom = dmodels.fdist_girt_bottom_mm / 1000f;
+            fdist_girt_bottom = dmodels.fdist_girt_bottom;
         }
 
         private void DeleteCalculationResults()
@@ -505,7 +504,7 @@ namespace PFD
             {
                 try
                 {
-                    fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci) / 1000f;
+                    fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci);
                     // Recalculate roof pitch
                     fRoofPitch_radians = (float)Math.Atan((fh2 - fh) / (0.5f * fb));
                     // Set new value in GUI
@@ -525,7 +524,7 @@ namespace PFD
             {
                 try
                 {
-                    fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci) / 1000f;
+                    fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci);
                     // Recalculate fL1
                     fL1 = fL / (iFrNo - 1);
                     DeleteCalculationResults();
@@ -542,7 +541,7 @@ namespace PFD
             {
                 try
                 {
-                    fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci) / 1000f;
+                    fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci);
                     // Recalculate roof heigth
                     fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
                     DeleteCalculationResults();
@@ -598,7 +597,7 @@ namespace PFD
             {
                 try
                 {
-                    fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci) / 1000f;
+                    fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci);
                     DeleteCalculationResults();
                     UpdateAll();
                 }
@@ -613,7 +612,7 @@ namespace PFD
             {
                 try
                 {
-                    fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci) / 1000f;
+                    fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci);
                     DeleteCalculationResults();
                     UpdateAll();
                 }
@@ -628,7 +627,7 @@ namespace PFD
             {
                 try
                 {
-                    fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci) / 1000f;
+                    fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci);
                     DeleteCalculationResults();
 
                     // Re-calculate value of distance between columns (number of columns per frame is always even
@@ -636,10 +635,8 @@ namespace PFD
                     int iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     // Update value of distance between columns
                     fdist_frontcolumn = (fb / (iFrontColumnNoInOneFrame + 1));
-                    //Calculate value in displayed units
-                    float fdist_frontcolumn_mm = 1000f * fdist_frontcolumn;
                     // Set value in textbox
-                    TextBox_Column_Distance.Text = fdist_frontcolumn_mm.ToString();
+                    TextBox_Column_Distance.Text = fdist_frontcolumn.ToString();
 
                     UpdateAll();
                 }
@@ -672,17 +669,17 @@ namespace PFD
             viewPort.Children.Clear();
         }
 
-        //float fb; // 3000 - 100000 mm
-        //float fL; // 3000 - 150000 mm
-        //float fh; // 2000 -  50000 mm (h1)
+        //float fb; // 3 - 100 m
+        //float fL; // 3 - 150 m
+        //float fh; // 2 -  50 m (h1)
         //float fL1;
-        //int iFrNo; // 2 - 30
+        //int iFrNo; // 2 - 50
         //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
         //float fh2;
-        //float fdist_girt; // 500 - 5000 mm
-        //float fdist_purlin; // 500 - 5000 mm
-        //float fdist_frontcolumn; // 1000 - 10000 mm
-        //float fdist_girt_bottom; // 1000 - 10000 mm
+        //float fdist_girt; // 0.5 - 5 m
+        //float fdist_purlin; // 0.5 - 5 m
+        //float fdist_frontcolumn; // 1 - 10 m
+        //float fdist_girt_bottom; // 1 - 10 m
 
         private void TextBox_Gable_Width_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -690,8 +687,8 @@ namespace PFD
         }
         private static bool IsValidGableWidth(string str)
         {
-            int i;
-            return int.TryParse(str, out i) && i >= 3000 && i <= 100000;
+            double d;
+            return double.TryParse(str, out d) && d >= 3 && d <= 100;
         }
 
         private void TextBox_Length_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -700,8 +697,8 @@ namespace PFD
         }
         private static bool IsValidLength(string str)
         {
-            int i;
-            return int.TryParse(str, out i) && i >= 3000 && i <= 150000;
+            double d;
+            return double.TryParse(str, out d) && d >= 3 && d <= 150;
         }
 
         private void TextBox_Rangetextbox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -711,8 +708,8 @@ namespace PFD
         }
         private static bool IsValidMyRange(string str)
         {
-            int i;
-            return int.TryParse(str, out i) && i >= 5 && i <= 100;
+            double d;
+            return double.TryParse(str, out d) && d >= 5 && d <= 100;
         }
 
         private void SystemComponentViewer_Click(object sender, RoutedEventArgs e)
