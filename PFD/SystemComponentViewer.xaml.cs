@@ -19,6 +19,8 @@ using CRSC;
 using netDxf;
 using netDxf.Entities;
 using netDxf.Tables;
+using System.Windows.Media.Media3D;
+using _3DTools;
 
 namespace PFD
 {
@@ -29,6 +31,7 @@ namespace PFD
     {
         public DatabaseComponents dcomponents; // Todo nahradit databazov component
         public WindowCrossSection2D page2D;
+        public Page3Dmodel page3D;
 
         CCrSc_TW crsc;
         CPlate component;
@@ -84,7 +87,7 @@ namespace PFD
             Frame2D.Content = page2D.Content;
 
             // Create 3D window
-            Page3Dmodel page3D = null;
+            page3D = null;
 
             if (Combobox_Type.SelectedIndex == 0)
             {
@@ -523,7 +526,7 @@ namespace PFD
             Frame2D.Content = page2D.Content;
 
             // Create 3D window
-            Page3Dmodel page3D = null;
+            page3D = null;
 
             if (Combobox_Type.SelectedIndex == 0)
             {
@@ -1016,5 +1019,45 @@ namespace PFD
 
             doc.Save(fileName);
         }
+
+        private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
+        {               
+            DxfDocument doc = new DxfDocument();
+            foreach (Visual3D objVisual3D in page3D._trackport.ViewPort.Children)
+            {
+                if (objVisual3D is ScreenSpaceLines3D)
+                {
+                    ScreenSpaceLines3D lines3D = objVisual3D as ScreenSpaceLines3D;
+                    if (lines3D == null) continue;
+
+                    AddLinesToDXF(lines3D, doc);
+                }
+            }            
+
+            DateTime d = DateTime.Now;
+            string fileName = string.Format("3DExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
+                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+
+            doc.Save(fileName);
+        }
+
+        private void AddLinesToDXF(ScreenSpaceLines3D lines3D, DxfDocument doc)
+        {
+            Point3D startPoint;
+            Point3D endPoint;
+            for (int i = 0; i < lines3D.Points.Count; i = i + 2)
+            {
+                startPoint = lines3D.Points[i];
+                endPoint = lines3D.Points[i + 1];
+                Line line = new Line(new Vector3(startPoint.X, startPoint.Y, startPoint.Z), new Vector3(endPoint.X, endPoint.Y, endPoint.Z));
+
+                doc.AddEntity(line);
+            }
+        }
+
+
+
+
+
     }
 }
