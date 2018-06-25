@@ -24,6 +24,7 @@ using sw_en_GUI.EXAMPLES._3D;
 using M_AS4600;
 using M_EC1.AS_NZS;
 using System.Windows.Media.Media3D;
+using _3DTools;
 
 namespace PFD
 {
@@ -100,6 +101,7 @@ namespace PFD
             // Display model in 3D preview frame
             Frame1.Content = page1;
         }
+        
 
         private void SetDataFromDatabasetoWindow()
         {
@@ -717,5 +719,41 @@ namespace PFD
             SystemComponentViewer win = new SystemComponentViewer();
             win.Show();
         }
+
+        private void ExportDXF_3D_Click(object sender, RoutedEventArgs e)
+        {
+            netDxf.DxfDocument doc = new netDxf.DxfDocument();
+            Page3Dmodel model3D = Frame1.Content as Page3Dmodel;
+            foreach (Visual3D objVisual3D in model3D._trackport.ViewPort.Children)
+            {
+                if (objVisual3D is ScreenSpaceLines3D)
+                {
+                    ScreenSpaceLines3D lines3D = objVisual3D as ScreenSpaceLines3D;
+                    if (lines3D == null) continue;
+
+                    AddLinesToDXF(lines3D, doc);
+                }
+            }
+
+            DateTime d = DateTime.Now;
+            string fileName = string.Format("3DExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
+                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+
+            doc.Save(fileName);
+        }
+        private void AddLinesToDXF(ScreenSpaceLines3D lines3D, netDxf.DxfDocument doc)
+        {
+            Point3D startPoint;
+            Point3D endPoint;
+            for (int i = 0; i < lines3D.Points.Count; i = i + 2)
+            {
+                startPoint = lines3D.Points[i];
+                endPoint = lines3D.Points[i + 1];
+                netDxf.Entities.Line line = new netDxf.Entities.Line(new netDxf.Vector3(startPoint.X, startPoint.Y, startPoint.Z), new netDxf.Vector3(endPoint.X, endPoint.Y, endPoint.Z));
+
+                doc.AddEntity(line);
+            }
+        }
+
     }
 }

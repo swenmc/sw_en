@@ -164,5 +164,7 @@
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
         <Button Grid.Row="3" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
             VerticalAlignment="Center" Width="124" Margin="0 0 120 0" Click="SystemComponentViewer_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" Name="ExportDXF_3D" Content="Export DXF" HorizontalAlignment="Right" Height="20"
+            VerticalAlignment="Center" Width="100" Margin="0 0 270 0" Click="ExportDXF_3D_Click"/>
     </Grid>
 </Window>
