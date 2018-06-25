@@ -293,8 +293,14 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[12]);
             wireFrame.Points.Add(arrPoints3D[13]);
 
+            wireFrame.Points.Add(arrPoints3D[13]);
+            wireFrame.Points.Add(arrPoints3D[14]);
+
             wireFrame.Points.Add(arrPoints3D[14]);
             wireFrame.Points.Add(arrPoints3D[15]);
+
+            wireFrame.Points.Add(arrPoints3D[10]);
+            wireFrame.Points.Add(arrPoints3D[17]);
 
             wireFrame.Points.Add(arrPoints3D[11]);
             wireFrame.Points.Add(arrPoints3D[16]);
@@ -337,6 +343,12 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[4]);
             wireFrame.Points.Add(arrPoints3D[14]);
 
+            wireFrame.Points.Add(arrPoints3D[15]);
+            wireFrame.Points.Add(arrPoints3D[20]);
+
+            wireFrame.Points.Add(arrPoints3D[12]);
+            wireFrame.Points.Add(arrPoints3D[19]);
+
             wireFrame.Points.Add(arrPoints3D[5]);
             wireFrame.Points.Add(arrPoints3D[21]);
 
@@ -351,6 +363,9 @@ namespace BaseClasses
 
             wireFrame.Points.Add(arrPoints3D[16]);
             wireFrame.Points.Add(arrPoints3D[25]);
+
+            wireFrame.Points.Add(arrPoints3D[11]);
+            wireFrame.Points.Add(arrPoints3D[18]);
 
             wireFrame.Points.Add(arrPoints3D[9]);
             wireFrame.Points.Add(arrPoints3D[17]);
