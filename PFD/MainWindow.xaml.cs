@@ -731,8 +731,35 @@ namespace PFD
                     ScreenSpaceLines3D lines3D = objVisual3D as ScreenSpaceLines3D;
                     if (lines3D == null) continue;
 
-                    AddLinesToDXF(lines3D, doc);
+                    //AddLinesToDXF(lines3D, doc);
                 }
+                else if (objVisual3D is ModelVisual3D)
+                {
+                    if ((objVisual3D as ModelVisual3D).Content is Model3DGroup)
+                    {
+                        foreach (Model3D m3D in ((Model3DGroup)(objVisual3D as ModelVisual3D).Content).Children)
+                        {
+                            if (m3D is Model3DGroup)
+                            {
+                                //System.Diagnostics.Trace.WriteLine(m3D.Bounds);
+                                //if(((Model3DGroup)m3D).Children.Count == 0) AddRect3DToDXF(m3D.Bounds, doc);
+
+                                foreach (Model3D childM3D in ((Model3DGroup)m3D).Children)
+                                {
+                                    if (childM3D is GeometryModel3D)
+                                    {
+                                        System.Diagnostics.Trace.WriteLine(childM3D.Bounds);
+                                        //AddRect3DToDXF(m3D.Bounds, doc);
+                                        AddGeometryModel3DToDXF(((GeometryModel3D)childM3D).Geometry as MeshGeometry3D, doc);
+                                        //System.Diagnostics.Trace.WriteLine(((GeometryModel3D)childM3D).Geometry);
+                                    }
+                                }
+                            }
+                        } //foreach
+                    } //if                    
+                } //end else if
+
+                
             }
 
             DateTime d = DateTime.Now;
@@ -754,6 +781,137 @@ namespace PFD
                 doc.AddEntity(line);
             }
         }
+        private void AddRect3DToDXF(Rect3D bounds, netDxf.DxfDocument doc)
+        {
+            bool topView = false;
+            bool frontView = false;
+            bool sideView = true;
 
+            if (topView)
+            {
+                netDxf.Entities.Polyline poly1 = new netDxf.Entities.Polyline();
+                poly1.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X, bounds.Y, 0));
+                poly1.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X + bounds.SizeX, bounds.Y, 0));
+                poly1.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X + bounds.SizeX, bounds.Y + bounds.SizeY, 0));
+                poly1.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X, bounds.Y + bounds.SizeY, 0));
+                poly1.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X, bounds.Y, 0));
+                doc.AddEntity(poly1);
+            }
+            if (frontView)
+            {
+                netDxf.Entities.Polyline poly2 = new netDxf.Entities.Polyline();
+                poly2.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X, bounds.Z, 0));
+                poly2.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X + bounds.SizeX, bounds.Z, 0));
+                poly2.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X + bounds.SizeX, bounds.Z + bounds.SizeZ, 0));
+                poly2.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X, bounds.Z + bounds.SizeZ, 0));
+                poly2.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.X, bounds.Z, 0));
+                doc.AddEntity(poly2);
+            }
+            if (sideView)
+            {
+                netDxf.Entities.Polyline poly3 = new netDxf.Entities.Polyline();
+                poly3.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.Y, bounds.Z, 0));
+                poly3.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.Y + bounds.SizeX, bounds.Z, 0));
+                poly3.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.Y + bounds.SizeX, bounds.Z + bounds.SizeZ, 0));
+                poly3.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.Y, bounds.Z + bounds.SizeZ, 0));
+                poly3.Vertexes.Add(new netDxf.Entities.PolylineVertex(bounds.Y, bounds.Z, 0));
+                doc.AddEntity(poly3);
+            }
+        }
+
+
+        private void AddGeometryModel3DToDXF(MeshGeometry3D geometry, netDxf.DxfDocument doc)
+        {
+            if (geometry == null) return;
+
+            bool topView = false;
+            bool frontView = false;
+            bool sideView = true;
+
+            if (topView)
+            {
+                netDxf.Entities.Polyline poly = new netDxf.Entities.Polyline();
+
+                Point3D p1 = geometry.Positions.OrderBy(p => p.X).ThenBy(p => p.Y).FirstOrDefault();
+                Point3D p2 = geometry.Positions.OrderByDescending(p => p.X).ThenByDescending(p => p.Y).FirstOrDefault();
+                Point3D p3 = geometry.Positions.OrderBy(p => p.Y).ThenByDescending(p => p.X).FirstOrDefault();
+                Point3D p4 = geometry.Positions.OrderByDescending(p => p.Y).ThenBy(p => p.X).FirstOrDefault();
+
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.X, p1.Y, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p3.X, p3.Y, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.X, p2.Y, 0));                
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p4.X, p4.Y, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.X, p1.Y, 0));
+
+                //double minX = geometry.Positions.Min(p => p.X);
+                //double minY = geometry.Positions.Min(p => p.Y);
+                //double maxX = geometry.Positions.Max(p => p.X);
+                //double maxY = geometry.Positions.Max(p => p.Y);
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minX, minY, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(maxX, minY, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(maxX, maxY, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minX, maxY, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minX, minY, 0));
+                doc.AddEntity(poly);
+            }
+            if (frontView)
+            {
+                netDxf.Entities.Polyline poly = new netDxf.Entities.Polyline();
+                                
+                Point3D p1 = geometry.Positions.OrderBy(p => p.X).ThenBy(p => p.Z).FirstOrDefault();
+                Point3D p2 = geometry.Positions.OrderByDescending(p => p.X).ThenByDescending(p => p.Z).FirstOrDefault();
+                Point3D p3 = geometry.Positions.OrderBy(p => p.Z).ThenByDescending(p => p.X).FirstOrDefault();
+                Point3D p4 = geometry.Positions.OrderByDescending(p => p.Z).ThenBy(p => p.X).FirstOrDefault();
+
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.X, p1.Z, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p3.X, p3.Z, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.X, p2.Z, 0));                
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p4.X, p4.Z, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.X, p1.Z, 0));
+
+                //or                
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.X, p2.Z, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p3.X, p3.Z, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.X, p1.Z, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p4.X, p4.Z, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.X, p2.Z, 0));
+
+                //double minX = geometry.Positions.Min(p => p.X);
+                //double minZ = geometry.Positions.Min(p => p.Z);
+                //double maxX = geometry.Positions.Max(p => p.X);
+                //double maxZ = geometry.Positions.Max(p => p.Z);
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minX, minZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(maxX, minZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(maxX, maxZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minX, maxZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minX, minZ, 0));
+                doc.AddEntity(poly);
+            }
+            if (sideView)
+            {
+                netDxf.Entities.Polyline poly = new netDxf.Entities.Polyline();                
+                Point3D p1 = geometry.Positions.OrderBy(p => p.Y).ThenBy(p => p.Z).FirstOrDefault();
+                Point3D p2 = geometry.Positions.OrderByDescending(p => p.Y).ThenByDescending(p => p.Z).FirstOrDefault();
+                Point3D p3 = geometry.Positions.OrderBy(p => p.Z).ThenByDescending(p => p.Y).FirstOrDefault();
+                Point3D p4 = geometry.Positions.OrderByDescending(p => p.Z).ThenBy(p => p.Y).FirstOrDefault();
+
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.Y, p1.Z, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p3.Y, p3.Z, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.Y, p2.Z, 0));                
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p4.Y, p4.Z, 0));
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.Y, p1.Z, 0));
+
+                //double minY = geometry.Positions.Min(p => p.Y);
+                //double minZ = geometry.Positions.Min(p => p.Z);
+                //double maxY = geometry.Positions.Max(p => p.Y);
+                //double maxZ = geometry.Positions.Max(p => p.Z);
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minY, minZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(maxY, minZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(maxY, maxZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minY, maxZ, 0));
+                //poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(minY, minZ, 0));
+                doc.AddEntity(poly);
+            }
+        }
     }
 }
