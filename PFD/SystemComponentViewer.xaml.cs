@@ -44,6 +44,7 @@ namespace PFD
         float fl2; // out of plane - Z coord
         float ft;
         float ft_f;
+        float fPitch_rad =  11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
         int iNumberofHoles;
 
         public SystemComponentViewer()
@@ -357,8 +358,9 @@ namespace PFD
                                 fb = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
                                 fh = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
                                 fh2 = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 4];
+                                fl = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 5];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_K:
@@ -486,7 +488,10 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
-                            component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                            if (Combobox_Component.SelectedIndex == 0) // JA
+                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                            else
+                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, iNumberofHoles, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -625,7 +630,10 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
-                            component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                            if (Combobox_Component.SelectedIndex == 0) // JA
+                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                            else
+                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, iNumberofHoles, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:

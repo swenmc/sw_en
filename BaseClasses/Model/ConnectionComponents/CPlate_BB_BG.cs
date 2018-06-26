@@ -16,10 +16,6 @@ namespace BaseClasses
         public float m_flZ; // Not used in 2D model
         public float m_ft; // Not used in 2D model
 
-        float m_fRotationX_deg = 0;
-        float m_fRotationY_deg = 0;
-        float m_fRotationZ_deg = 0;
-
         float m_fDistanceBetweenHoles;
 
         int iNoPoints2Dfor3D;

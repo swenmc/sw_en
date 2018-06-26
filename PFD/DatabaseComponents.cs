@@ -94,8 +94,9 @@ namespace PFD
                         fbX_mm = arr_Serie_J_Dimension[iComponentIndex, 0];
                         fhY_mm = arr_Serie_J_Dimension[iComponentIndex, 1];
                         fhY2_mm = arr_Serie_J_Dimension[iComponentIndex, 2];
-                        ft_mm = arr_Serie_J_Dimension[iComponentIndex, 3];
-                        iHolesNoumber = (int)arr_Serie_J_Dimension[iComponentIndex, 4];
+                        flZ_mm = arr_Serie_J_Dimension[iComponentIndex, 3];
+                        ft_mm = arr_Serie_J_Dimension[iComponentIndex, 4];
+                        iHolesNoumber = (int)arr_Serie_J_Dimension[iComponentIndex, 5];
 
                         break;
                     }
@@ -188,8 +189,8 @@ namespace PFD
         public string[] arr_Serie_Y_Names = new string[1]
             {"Y"};
 
-        public string[] arr_Serie_J_Names = new string[1]
-        {"JA"};
+        public string[] arr_Serie_J_Names = new string[2]
+        {"JA", "JB"};
 
         public string[] arr_Serie_K_Names = new string[1]
         {"KA"};
@@ -268,10 +269,11 @@ namespace PFD
                 {140, 600, 270, 40, 3, 0}
         };
 
-        public float[,] arr_Serie_J_Dimension = new float[1, 5]
+        public float[,] arr_Serie_J_Dimension = new float[2, 6]
         {
-                // b, h1, h2, t, iHoles
-                {500, 300, 350, 3, 0}
+                // b, h1, h2, t, L, iHoles
+                {500, 300, 350, 0, 3, 0},
+                {500, 300, 350, 50, 3, 0}
         };
 
         public float[,] arr_Serie_K_Dimension = new float[1, 6]

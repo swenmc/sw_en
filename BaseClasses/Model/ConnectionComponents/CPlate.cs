@@ -37,6 +37,71 @@ namespace BaseClasses
 
         // TODO - zjednotit funkcie s triedou CCRSC
 
+        // Draw Hexagon / Add hexagon indices - clockwise CW numbering of input points 1,2,3,4,5,6 (see scheme)
+        // Add in order 1,2,3,4,5,6
+        protected void AddHexagonIndices_CW_123456(Int32Collection Indices,
+              int point1, int point2,
+              int point3, int point4,
+              int point5, int point6)
+        {
+            // Main numbering is clockwise
+
+            //   6  _  1
+            // 5  /   \  2
+            //   |_____|
+            // 4         3
+
+            // Triangles Numbering is Counterclockwise
+
+            Indices.Add(point1);
+            Indices.Add(point3);
+            Indices.Add(point2);
+
+            Indices.Add(point1);
+            Indices.Add(point4);
+            Indices.Add(point3);
+
+            Indices.Add(point1);
+            Indices.Add(point5);
+            Indices.Add(point4);
+
+            Indices.Add(point1);
+            Indices.Add(point6);
+            Indices.Add(point5);
+        }
+
+        // Draw Hexagon / Add hexagon indices - countrer-clockwise CCW numbering of input points 1,2,3,4,5,6 (see scheme)
+        // Add in order 1,6,5,4,3,2
+        protected void AddHexagonIndices_CCW_123456(Int32Collection Indices,
+              int point1, int point2,
+              int point3, int point4,
+              int point5, int point6)
+        {
+            // Main input numbering is clockwise, add indices counter-clockwise
+
+            //   6  _  1
+            // 5  /   \  2
+            //   |_____|
+            // 4         3
+
+            // Triangles Numbering is Clockwise
+            Indices.Add(point1);
+            Indices.Add(point2);
+            Indices.Add(point3);
+
+            Indices.Add(point1);
+            Indices.Add(point3);
+            Indices.Add(point4);
+
+            Indices.Add(point1);
+            Indices.Add(point4);
+            Indices.Add(point5);
+
+            Indices.Add(point1);
+            Indices.Add(point5);
+            Indices.Add(point6);
+        }
+
         // Draw Penthagon / Add penthagon indices - clockwise CW numbering of input points 1,2,3,4,5 (see scheme)
         // Add in order 1,2,3,4,5
         protected void AddPenthagonIndices_CW_12345(Int32Collection Indices,
@@ -250,16 +315,16 @@ namespace BaseClasses
             }
         }
 
-        public void TransformPlateCoord(GeometryModel3D model, float fRotationX_deg, float fRotationY_deg, float fRotationZ_deg)
+        public void TransformPlateCoord(GeometryModel3D model)
         {
             // Rotate Plate from its cs to joint cs system in GCS
             RotateTransform3D RotateTrans3D_AUX_X = new RotateTransform3D();
             RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
             RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
 
-            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), fRotationX_deg); // Rotation in degrees
-            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), fRotationY_deg); // Rotation in degrees
-            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), fRotationZ_deg); // Rotation in degrees
+            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), m_fRotationX_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), m_fRotationY_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ_deg); // Rotation in degrees
 
             // Move 0,0,0 to control point in GCS
             TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
@@ -290,7 +355,7 @@ namespace BaseClasses
 
             model.Material = new DiffuseMaterial(brush);  // Set Model Material
 
-            TransformPlateCoord(model, m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg); // Not used now
+            TransformPlateCoord(model); // Not used now
 
             return model;
         }

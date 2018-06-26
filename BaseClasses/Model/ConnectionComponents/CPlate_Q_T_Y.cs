@@ -17,10 +17,6 @@ namespace BaseClasses
         public float m_ft; // Not used in 2D model
         public int m_iHolesNumber = 0;
 
-        float m_fRotationX_deg = 0;
-        float m_fRotationY_deg = 0;
-        float m_fRotationZ_deg = 0;
-
         public CConCom_Plate_Q_T_Y()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
