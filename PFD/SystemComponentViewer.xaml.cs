@@ -529,6 +529,7 @@ namespace PFD
             else
             {
                 // Screw - not implemented
+                page2D = new WindowCrossSection2D(); // TODO - Display empty window in current state
             }
 
             // Display plate in 2D preview frame
