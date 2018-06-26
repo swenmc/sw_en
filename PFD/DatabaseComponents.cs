@@ -192,8 +192,8 @@ namespace PFD
         public string[] arr_Serie_J_Names = new string[2]
         {"JA", "JB"};
 
-        public string[] arr_Serie_K_Names = new string[1]
-        {"KA"};
+        public string[] arr_Serie_K_Names = new string[2]
+        {"KA", "KB"};
 
         public float[,] arr_Serie_B_Dimension = new float[10, 5]
             {
@@ -276,10 +276,11 @@ namespace PFD
                 {500, 300, 350, 50, 3, 0}
         };
 
-        public float[,] arr_Serie_K_Dimension = new float[1, 6]
+        public float[,] arr_Serie_K_Dimension = new float[2, 7]
         {
-                // b, h, b2, h2, t, iHoles
-                {300, 700, 500, 1000, 3, 0}
+                // b, h, b2, h2, l, t, iHoles
+                {300, 700, 500, 1000, 0, 3, 0},
+                {300, 700, 500, 1000, 50, 3, 0}
         };
 
 

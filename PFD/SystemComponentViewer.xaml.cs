@@ -369,8 +369,9 @@ namespace PFD
                                 fh = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
                                 fb2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
                                 fh2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                ft = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5];
+                                fl = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
+                                ft = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 6];
                                 break;
                             }
                         default:
@@ -496,7 +497,10 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
-                            component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                            if (Combobox_Component.SelectedIndex == 0) // KA
+                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                            else
+                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
                             break;
                         }
                     default:
@@ -638,7 +642,10 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
-                            component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                            if (Combobox_Component.SelectedIndex == 0) // KA
+                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                            else
+                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
                             break;
                         }
                     default:

@@ -10,10 +10,10 @@ namespace BaseClasses
 {
     public class CConCom_Plate_KA : CPlate
     {
-        float m_fb_1;
-        float m_fh_1;
-        float m_fb_2;
-        float m_fh_2;
+        float m_fbX1;
+        float m_fhY1;
+        float m_fbX2;
+        float m_fhY2;
         float m_ft;
         float m_fSlope_rad;
         public float m_fRotationZ;
@@ -33,10 +33,10 @@ namespace BaseClasses
             ITotNoPointsin3D = 8;
 
             m_pControlPoint = controlpoint;
-            m_fb_1 = fb_1_temp;
-            m_fh_1 = fh_1_temp;
-            m_fb_2 = fb_2_temp;
-            m_fh_2 = fh_2_temp;
+            m_fbX1 = fb_1_temp;
+            m_fhY1 = fh_1_temp;
+            m_fbX2 = fb_2_temp;
+            m_fhY2 = fh_2_temp;
             m_ft = ft_platethickness;
             m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / fb_2_temp);
             m_fRotationZ = fPlateRotation;
@@ -62,10 +62,10 @@ namespace BaseClasses
             ITotNoPointsin3D = 8;
 
             m_pControlPoint = controlpoint;
-            m_fb_1 = fb_1_temp;
-            m_fh_1 = fh_1_temp;
-            m_fb_2 = fb_2_temp;
-            m_fh_2 = fh_2_temp;
+            m_fbX1 = fb_1_temp;
+            m_fhY1 = fh_1_temp;
+            m_fbX2 = fb_2_temp;
+            m_fhY2 = fh_2_temp;
             m_ft = ft_platethickness;
             m_fSlope_rad = fSLope_rad_temp;
             m_fRotationZ = fPlateRotation;
@@ -88,14 +88,14 @@ namespace BaseClasses
             PointsOut2D[0, 0] = 0;
             PointsOut2D[0, 1] = 0;
 
-            PointsOut2D[1, 0] = m_fb_1;
+            PointsOut2D[1, 0] = m_fbX1;
             PointsOut2D[1, 1] = 0;
 
-            PointsOut2D[2, 0] = m_fb_2;
-            PointsOut2D[2, 1] = m_fh_2;
+            PointsOut2D[2, 0] = m_fbX2;
+            PointsOut2D[2, 1] = m_fhY2;
 
             PointsOut2D[3, 0] = 0;
-            PointsOut2D[3, 1] = m_fh_1;
+            PointsOut2D[3, 1] = m_fhY1;
         }
 
         void Calc_Coord3D()

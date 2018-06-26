@@ -25,11 +25,14 @@ namespace PFD
     /// </summary>
     public partial class Page3Dmodel : Page
     {
+        bool bDebugging = false;
+        bool bShowGlobalAxis = true;
+        public bool bDisplay_WireFrame = true;
+        public bool bDisplay_SurfaceModel = true;
+
         public Page3Dmodel(CModel model)
         {
             InitializeComponent();
-
-            bool bDebugging = false;
 
             // Create 3D window
             Window2 win1 = new Window2(model, bDebugging);
@@ -40,8 +43,6 @@ namespace PFD
 
             EGCS eGCS = EGCS.eGCSLeftHanded;
             //EGCS eGCS = EGCS.eGCSRightHanded;
-
-            bool bShowGlobalAxis = true;
 
             // Global coordinate system - axis
             if (bShowGlobalAxis)
@@ -93,10 +94,8 @@ namespace PFD
             // Add WireFrame Model
             // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
 
-            bool bDisplayMembers_WireFrame = true;
-
             // Members - Wire Frame
-            if (bDisplayMembers_WireFrame && model != null  && model.m_arrMembers != null)
+            if (bDisplay_WireFrame && model != null  && model.m_arrMembers != null)
             {
                 for (int i = 0; i < model.m_arrMembers.Length; i++)
                 {
@@ -131,8 +130,6 @@ namespace PFD
             // Cross-section Model
             GeometryModel3D ComponentGeomModel;
 
-            bool bDisplay_WireFrame = true;
-            bool bDisplay_SurfaceModel = true;
             float fTempMax_X;
             float fTempMin_X;
             float fTempMax_Y;
@@ -189,8 +186,6 @@ namespace PFD
             // Cross-section Model
             Model3DGroup ComponentGeomModel = new Model3DGroup();
 
-            bool bDisplay_WireFrame = true;
-            bool bDisplay_SurfaceModel = true;
             float fTempMax_X;
             float fTempMin_X;
             float fTempMax_Y;
