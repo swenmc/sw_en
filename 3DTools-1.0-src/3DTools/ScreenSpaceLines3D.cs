@@ -164,7 +164,7 @@ namespace _3DTools
             positions.Freeze();
             _mesh.Positions = positions;
 
-            Int32Collection indices = new Int32Collection(Points.Count * 3);
+            Int32Collection indices = new Int32Collection(Points.Count * 3); // Todo - pri velkej konstrukcii (100x100x30 m) to tu pada "OUT OF MEMORY EXCEPTION"
 
             for (int i = 0; i < Points.Count / 2; i++)
             {
