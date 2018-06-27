@@ -132,7 +132,7 @@ namespace PFD
                     if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
                     {
                         crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length / 2);
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
 
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
@@ -153,7 +153,7 @@ namespace PFD
                     if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
                     {
                         crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length / 2);
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
 
                         // Transfom coordinates to geometry center
                         crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
