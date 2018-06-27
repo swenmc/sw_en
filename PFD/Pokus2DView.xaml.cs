@@ -92,7 +92,7 @@ namespace PFD
                 double h = model.m_arrMembers[i].CrScStart.h * fReal_Model_Zoom_Factor;
 
                 double width = b;
-                //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == 2 * MathF.dPI)
+                //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == MathF.dPI)
                 //    width = h;
 
                     if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
@@ -172,7 +172,7 @@ namespace PFD
                     }
 
                     // Draw cross-section
-                    DrawCrossSection(p, width, crsccoordoutline, crsccoordinline);
+                    DrawCrossSection(p, b, h, model.m_arrMembers[i].DTheta_x, crsccoordoutline, crsccoordinline);
                 }
                 else
                 {
@@ -209,13 +209,17 @@ namespace PFD
             imageCanvas.Children.Add(rect);
         }
 
-        public void DrawCrossSection(Point centroid, double fx, float[,] crsccoordoutline, float[,] crsccoordinline)
+        public void DrawCrossSection(Point centroid, double b, double h, double theta_x, float[,] crsccoordoutline, float[,] crsccoordinline)
         {
             // Outer outline lines
             if (crsccoordoutline != null) // If is array of points not empty
             {
                 double fCanvasTop = modelMarginBottom_y /*- fModel_Length_y_page*/ - centroid.Y;
-                double fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * fx;
+                double fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * b;
+
+                if (MathF.d_equal(Math.Abs(theta_x), MathF.dPI / 2) || MathF.d_equal(Math.Abs(theta_x), 3 / 2 * MathF.dPI)) // Set different margin for rotated cross-section
+                    fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * h;
+
                 DrawPolyLine(crsccoordoutline, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
             }
 
@@ -224,7 +228,11 @@ namespace PFD
             {
                 // TODO - doladit posun vonkajsieho obrysu voci vnutornemu (spravidla m_ft)
                 double fCanvasTop = modelMarginBottom_y /*- fModel_Length_y_page*/ - centroid.Y;
-                double fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * fx;
+                double fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * b;
+
+                if (MathF.d_equal(Math.Abs(theta_x), MathF.dPI / 2) || MathF.d_equal(Math.Abs(theta_x), 3 / 2 * MathF.dPI)) // Set different margin for rotated cross-section
+                    fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5 * h;
+
                 DrawPolyLine(crsccoordinline, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
             }
         }
