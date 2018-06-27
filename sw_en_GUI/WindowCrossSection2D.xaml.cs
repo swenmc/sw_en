@@ -544,7 +544,7 @@ namespace sw_en_GUI
             double dFactor_x = fModel_Length_x_page / dPageWidth;
             double dFactor_y = fModel_Length_y_page / dPageHeight;
 
-            // Recalculate model oordinates and set minimum point coordinates to [0,0]
+            // Recalculate model coordinates and set minimum point coordinates to [0,0]
 
             if (PointsOut != null && INoPointsOut > 0) // It should exist
             {

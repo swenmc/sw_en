@@ -720,6 +720,12 @@ namespace PFD
             win.Show();
         }
 
+        private void View_2D_Click(object sender, RoutedEventArgs e)
+        {
+            Pokus2DView win = new Pokus2DView(model);
+            win.Show();
+        }
+
         private void ExportDXF_3D_Click(object sender, RoutedEventArgs e)
         {
             netDxf.DxfDocument doc = new netDxf.DxfDocument();

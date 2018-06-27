@@ -56,6 +56,9 @@
     </ApplicationDefinition>
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="DatabaseComponents.cs" />
+    <Compile Include="Pokus2DView.xaml.cs">
+      <DependentUpon>Pokus2DView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProgressBarDialog.xaml.cs">
       <DependentUpon>ProgressBarDialog.xaml</DependentUpon>
     </Compile>
@@ -79,6 +82,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Page3Dmodel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pokus2DView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

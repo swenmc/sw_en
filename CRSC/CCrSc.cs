@@ -744,5 +744,62 @@ namespace CRSC
         protected abstract void loadCrScIndicesFrontSide();
         protected abstract void loadCrScIndicesShell();
         protected abstract void loadCrScIndicesBackSide();
+
+        public void CalculateCrScLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
+        {
+            fTempMax_X = float.MinValue;
+            fTempMin_X = float.MaxValue;
+            fTempMax_Y = float.MinValue;
+            fTempMin_Y = float.MaxValue;
+
+            if (CrScPointsOut != null) // Some points exist
+            {
+                for (int i = 0; i < CrScPointsOut.Length / 2; i++)
+                {
+                    // Maximum X - coordinate
+                    if (CrScPointsOut[i, 0] > fTempMax_X)
+                        fTempMax_X = CrScPointsOut[i, 0];
+
+                    // Minimum X - coordinate
+                    if (CrScPointsOut[i, 0] < fTempMin_X)
+                        fTempMin_X = CrScPointsOut[i, 0];
+
+                    // Maximum Y - coordinate
+                    if (CrScPointsOut[i, 1] > fTempMax_Y)
+                        fTempMax_Y = CrScPointsOut[i, 1];
+
+                    // Minimum Y - coordinate
+                    if (CrScPointsOut[i, 1] < fTempMin_Y)
+                        fTempMin_Y = CrScPointsOut[i, 1];
+                }
+            }
+        }
+
+        public void GetGeometryCenterPointCoordinates(out float x, out float y)
+        {
+            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y;
+
+            CalculateCrScLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+
+            x = 0.5f * (fTempMax_X - fTempMin_X);
+            y = 0.5f * (fTempMax_Y - fTempMin_Y);
+        }
+
+        public float[,] GetCoordinatesInGeometryRelatedToGeometryCenterPoint(float[,] array_in)
+        {
+            float[,] array_out = array_in;
+            float x, y;
+
+            GetGeometryCenterPointCoordinates(out x, out y);
+
+            for (int i = 0; i < array_out.Length / 2; i++)
+            {
+                array_out[i, 0] -= x;
+                array_out[i, 1] -= y;
+            }
+
+            return array_out;
+        }
+
     }
 }

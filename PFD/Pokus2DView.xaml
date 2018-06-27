@@ -1,0 +1,14 @@
+﻿<Window x:Class="PFD.Pokus2DView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        Title="Pokus2DView" Height="1200" Width="1600">
+    <Grid>
+        <Canvas Name="canvasForImage" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">
+            <!--<Line X1="50" Y1="50" X2="200" Y2="200" Stroke="Green"/> -->
+        </Canvas>
+    </Grid>
+</Window>
