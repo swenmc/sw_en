@@ -137,6 +137,11 @@ namespace PFD
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
 
+                        // TODO - kedze prut nemusi byt kolmy na smer pohladu, tak spravne by sa mal detekovat uhol, pod ktorym sa na prierez pozerame
+                        // a mali by sa prepocitat lokalne suradnice prierezu
+                        // Napr. stresny nosnik "rafter" je voci rovine pohladu sikmo v uhle roofpitch, takze prierez by sa mal zvacsit v smere zvislej lokalnej osy, zobrazena vyska prierezu je c = h / cos(roofpitch)
+                        // takto by sa mali prepocitat vsetky suradnice prierezu v smere lokalnej zvislej osi [i,1]
+
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
                             float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);

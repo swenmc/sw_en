@@ -434,8 +434,8 @@ Global
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1} = {F2584B6B-5FDD-4F8C-8FD8-23E0A348DF13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
