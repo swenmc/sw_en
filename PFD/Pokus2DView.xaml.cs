@@ -76,9 +76,9 @@ namespace PFD
             // Point of View / Camera
 
             // View perpendicular to the global plane YZ (in "-X" direction)
-            Point3D pCameraPosition = new Point3D(10,0,0);
+            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0,0);
             Vector3D pCameraViewDirection = new Vector3D(-1,0,0);
-            float fViewDepth = 3; // [m]
+            float fViewDepth = 2; // [m]
 
             float fMinCoord_X = (float)(pCameraPosition.X + pCameraViewDirection.X * fViewDepth);
             float fMaxCoord_X = (float)pCameraPosition.X;
