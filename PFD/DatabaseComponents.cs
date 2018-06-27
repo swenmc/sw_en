@@ -9,6 +9,7 @@ namespace PFD
 {
     public class DatabaseComponents
     {
+        public float fbXR_mm; // Rafter Width
         public float fbX_mm;
         public float fbX2_mm;
         public float fhY_mm;
@@ -102,16 +103,16 @@ namespace PFD
                     }
                 case ESerieTypePlate.eSerie_K:
                     {
-                        fbX_mm = arr_Serie_K_Dimension[iComponentIndex, 0];
-                        fhY_mm = arr_Serie_K_Dimension[iComponentIndex, 1];
-                        fbX2_mm = arr_Serie_K_Dimension[iComponentIndex, 2];
-                        fhY2_mm = arr_Serie_K_Dimension[iComponentIndex, 3];
-                        ft_mm = arr_Serie_K_Dimension[iComponentIndex, 4];
-                        iHolesNoumber = (int)arr_Serie_K_Dimension[iComponentIndex, 5];
+                        fbXR_mm = arr_Serie_K_Dimension[iComponentIndex, 0];
+                        fbX_mm = arr_Serie_K_Dimension[iComponentIndex, 1];
+                        fhY_mm = arr_Serie_K_Dimension[iComponentIndex, 2];
+                        fbX2_mm = arr_Serie_K_Dimension[iComponentIndex, 3];
+                        fhY2_mm = arr_Serie_K_Dimension[iComponentIndex, 4];
+                        ft_mm = arr_Serie_K_Dimension[iComponentIndex, 5];
+                        iHolesNoumber = (int)arr_Serie_K_Dimension[iComponentIndex, 6];
 
                         break;
                     }
-
                 default:
                     {
                         // Not implemented
@@ -192,8 +193,8 @@ namespace PFD
         public string[] arr_Serie_J_Names = new string[2]
         {"JA", "JB"};
 
-        public string[] arr_Serie_K_Names = new string[2]
-        {"KA", "KB"};
+        public string[] arr_Serie_K_Names = new string[3]
+        {"KA", "KB", "KC"};
 
         public float[,] arr_Serie_B_Dimension = new float[10, 5]
             {
@@ -276,13 +277,13 @@ namespace PFD
                 {500, 300, 350, 50, 3, 0}
         };
 
-        public float[,] arr_Serie_K_Dimension = new float[2, 7]
+        public float[,] arr_Serie_K_Dimension = new float[3, 8]
         {
-                // b, h, b2, h2, l, t, iHoles
-                {300, 700, 500, 1000, 0, 3, 0},
-                {300, 700, 500, 1000, 50, 3, 0}
+                // bR, b, h, b2, h2, l, t, iHoles
+                {0, 300, 700, 500, 1000, 0, 3, 0},
+                {0, 300, 700, 500, 1000, 50, 3, 0},
+                {200, 300, 700, 500, 1000, 50, 3, 0}
         };
-
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
         public string[] arr_Serie_CrSc_FormSteel_Names = new string[8]

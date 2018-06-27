@@ -80,6 +80,7 @@
     <Compile Include="CConnectionJointTypes.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_JB.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_JA.cs" />
+    <Compile Include="Model\ConnectionComponents\CPlate_KC.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_KB.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_KA.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_BB_BG.cs" />

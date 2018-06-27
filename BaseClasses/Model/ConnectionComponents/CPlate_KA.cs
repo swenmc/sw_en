@@ -162,7 +162,7 @@ namespace BaseClasses
                 if (i < (PointsOut2D.Length / 2) - 1)
                 {
                     pi = arrPoints3D[ITotNoPointsin2D + i];
-                    pj = arrPoints3D[ITotNoPointsin2D + 1];
+                    pj = arrPoints3D[ITotNoPointsin2D + i + 1];
                 }
                 else // Last line
                 {

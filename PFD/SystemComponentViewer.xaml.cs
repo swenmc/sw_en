@@ -36,6 +36,7 @@ namespace PFD
         CCrSc_TW crsc;
         CPlate component;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
+        float fb_R; // Rafter Width
         float fb; // in plane XY -X coord
         float fb2; // in plane XY - X coord
         float fh; // in plane XY - Y coord
@@ -365,13 +366,14 @@ namespace PFD
                             }
                         case ESerieTypePlate.eSerie_K:
                             {
-                                fb = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fb2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fh2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                fl = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                ft = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 6];
+                                fb_R = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fb = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fh = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                fb2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                fh2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
+                                fl = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5] / 1000f;
+                                ft = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 6] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 7];
                                 break;
                             }
                         default:
@@ -499,8 +501,10 @@ namespace PFD
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
                                 component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
-                            else
+                            else if(Combobox_Component.SelectedIndex == 1)
                                 component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
+                            else
+                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
                             break;
                         }
                     default:
@@ -645,8 +649,10 @@ namespace PFD
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
                                 component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
-                            else
+                            else if (Combobox_Component.SelectedIndex == 1)
                                 component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
+                            else
+                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
                             break;
                         }
                     default:
