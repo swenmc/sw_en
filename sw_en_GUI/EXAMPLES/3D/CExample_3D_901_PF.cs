@@ -147,35 +147,30 @@ namespace sw_en_GUI.EXAMPLES._3D
             int[] iArrNumberOfNodesPerFrontColumn = new int[iOneRafterFrontColumnNo];
 
             bool bGenerateFrontGirts = true;
-            try
+
+            if (bGenerateFrontGirts)
             {
-                if (bGenerateFrontGirts)
+                iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterFrontColumnNo, fBottomGirtPosition, fDist_FrontColumns);
+                iFrontIntermediateColumnNodesForGirtsOneFrameNo = 2 * iFrontIntermediateColumnNodesForGirtsOneRafterNo;
+
+                // Number of Girts - Main Frame Column
+                iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
+
+                iFrontGirtsNoInOneFrame = iOneColumnGridNo;
+
+                // Number of girts under one rafter at the frontside of building - middle girts are considered twice
+                for (int i = 0; i < iOneRafterFrontColumnNo; i++)
                 {
-                    iFrontIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterFrontColumnNo, fBottomGirtPosition, fDist_FrontColumns);
-                    iFrontIntermediateColumnNodesForGirtsOneFrameNo = 2 * iFrontIntermediateColumnNodesForGirtsOneRafterNo;
-
-                    // Number of Girts - Main Frame Column
-                    iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
-
-                    iFrontGirtsNoInOneFrame = iOneColumnGridNo;
-
-                    // Number of girts under one rafter at the frontside of building - middle girts are considered twice
-                    for (int i = 0; i < iOneRafterFrontColumnNo; i++)
-                    {
-                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_FrontColumns, i);
-                        iFrontGirtsNoInOneFrame += temp;
-                        iArrNumberOfNodesPerFrontColumn[i] = temp;
-                    }
-
-                    iFrontGirtsNoInOneFrame *= 2;
-                    // Girts in the middle are considered twice - remove one set
-                    iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_FrontColumns, i);
+                    iFrontGirtsNoInOneFrame += temp;
+                    iArrNumberOfNodesPerFrontColumn[i] = temp;
                 }
+
+                iFrontGirtsNoInOneFrame *= 2;
+                // Girts in the middle are considered twice - remove one set
+                iFrontGirtsNoInOneFrame -= iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
             }
-            catch
-            {
-                //tha index outof range exception
-            }
+
 
 
             // Number of Nodes - Back Girts
@@ -185,35 +180,30 @@ namespace sw_en_GUI.EXAMPLES._3D
             int[] iArrNumberOfNodesPerBackColumn = new int[iOneRafterBackColumnNo];
 
             bool bGenerateBackGirts = true;
-            try
+
+            if (bGenerateBackGirts)
             {
-                if (bGenerateBackGirts)
+                iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterBackColumnNo, fBottomGirtPosition, fDist_BackColumns);
+                iBackIntermediateColumnNodesForGirtsOneFrameNo = 2 * iBackIntermediateColumnNodesForGirtsOneRafterNo;
+
+                // Number of Girts - Main Frame Column
+                iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
+
+                iBackGirtsNoInOneFrame = iOneColumnGridNo;
+
+                // Number of girts under one rafter at the frontside of building - middle girts are considered twice
+                for (int i = 0; i < iOneRafterBackColumnNo; i++)
                 {
-                    iBackIntermediateColumnNodesForGirtsOneRafterNo = GetNumberofIntermediateNodesInColumnsForOneFrame(iOneRafterBackColumnNo, fBottomGirtPosition, fDist_BackColumns);
-                    iBackIntermediateColumnNodesForGirtsOneFrameNo = 2 * iBackIntermediateColumnNodesForGirtsOneRafterNo;
-
-                    // Number of Girts - Main Frame Column
-                    iOneColumnGridNo = (int)((fH1_frame - fBottomGirtPosition) / fDist_Girt) + 1;
-
-                    iBackGirtsNoInOneFrame = iOneColumnGridNo;
-
-                    // Number of girts under one rafter at the frontside of building - middle girts are considered twice
-                    for (int i = 0; i < iOneRafterBackColumnNo; i++)
-                    {
-                        int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_BackColumns, i);
-                        iBackGirtsNoInOneFrame += temp;
-                        iArrNumberOfNodesPerBackColumn[i] = temp;
-                    }
-
-                    iBackGirtsNoInOneFrame *= 2;
-                    // Girts in the middle are considered twice - remove one set
-                    iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
+                    int temp = GetNumberofIntermediateNodesInOneColumnForGirts(fBottomGirtPosition, fDist_BackColumns, i);
+                    iBackGirtsNoInOneFrame += temp;
+                    iArrNumberOfNodesPerBackColumn[i] = temp;
                 }
-            }
-            catch
-            {
 
+                iBackGirtsNoInOneFrame *= 2;
+                // Girts in the middle are considered twice - remove one set
+                iBackGirtsNoInOneFrame -= iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
             }
+
 
 
             m_arrNodes = new BaseClasses.CNode[iFrameNodesNo * iFrameNo + iFrameNo * iGirtNoInOneFrame + iFrameNo * iPurlinNoInOneFrame + iFrontColumninOneFrameNodesNo + iBackColumninOneFrameNodesNo + iFrontIntermediateColumnNodesForGirtsOneFrameNo + iBackIntermediateColumnNodesForGirtsOneFrameNo];
