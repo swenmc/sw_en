@@ -105,16 +105,19 @@ namespace PFD
 
         private void SetDataFromDatabasetoWindow()
         {
+            CultureInfo ci = new CultureInfo("en");
+            ci.NumberFormat.NumberDecimalSeparator = ".";
+
             DatabaseModels dmodel = new DatabaseModels(Combobox_Models.SelectedIndex);
 
-            TextBox_Gable_Width.Text = dmodel.fb.ToString();
-            TextBox_Length.Text = dmodel.fL.ToString();
-            TextBox_Wall_Height.Text = dmodel.fh.ToString();
-            TextBox_Frames_No.Text = dmodel.iFrNo.ToString();
-            TextBox_Roof_Pitch.Text = dmodel.fRoof_Pitch_deg.ToString();
-            TextBox_Girt_Distance.Text = dmodel.fdist_girt.ToString();
-            TextBox_Purlin_Distance.Text = dmodel.fdist_purlin.ToString();
-            TextBox_Column_Distance.Text = dmodel.fdist_frontcolumn.ToString();
+            TextBox_Gable_Width.Text = dmodel.fb.ToString(ci);
+            TextBox_Length.Text = dmodel.fL.ToString(ci);
+            TextBox_Wall_Height.Text = dmodel.fh.ToString(ci);
+            TextBox_Frames_No.Text = dmodel.iFrNo.ToString(ci);
+            TextBox_Roof_Pitch.Text = dmodel.fRoof_Pitch_deg.ToString(ci);
+            TextBox_Girt_Distance.Text = dmodel.fdist_girt.ToString(ci);
+            TextBox_Purlin_Distance.Text = dmodel.fdist_purlin.ToString(ci);
+            TextBox_Column_Distance.Text = dmodel.fdist_frontcolumn.ToString(ci);
         }
 
         private void LoadDataFromWindow()
