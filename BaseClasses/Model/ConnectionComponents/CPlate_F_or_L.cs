@@ -23,7 +23,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -38,6 +38,9 @@ namespace BaseClasses
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
@@ -51,7 +54,7 @@ namespace BaseClasses
             loadIndices();
         }
 
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, int iLeftRightIndex, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, int iLeftRightIndex, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -66,6 +69,9 @@ namespace BaseClasses
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];

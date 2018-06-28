@@ -115,108 +115,165 @@ namespace sw_en_GUI
                     _trackport.ViewPort.Children.Add(sAxisZ_3D);
                 }
 
+                bool bDisplayMembersSurface = false;
+
                 // Create model geometry
-                    if (cmodel.m_arrMembers != null) // Some members exist
+                if (bDisplayMembersSurface && cmodel.m_arrMembers != null) // Some members exist
+                {
+                    // Auxialiary for generation of colors numbers
+                    float j = 0;
+
+                    // Model Group of Members
+                    // Prepare member model
+                    for (int i = 0; i < cmodel.m_arrMembers.Length; i++) // !!! BUG pocet prvkov sa nacitava z xls aj z prazdnych riadkov pokial su nejako formatovane / nie default
                     {
-                        // Auxialiary for generation of colors numbers
-                        float j = 0;
-
-                        // Model Group of Members
-                        // Prepare member model
-                        for (int i = 0; i < cmodel.m_arrMembers.Length; i++) // !!! BUG pocet prvkov sa nacitava z xls aj z prazdnych riadkov pokial su nejako formatovane / nie default
+                        if (cmodel.m_arrMembers[i] != null &&
+                            cmodel.m_arrMembers[i].NodeStart != null &&
+                            cmodel.m_arrMembers[i].NodeEnd != null &&
+                            cmodel.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
                         {
-                            if (cmodel.m_arrMembers[i] != null &&
-                                cmodel.m_arrMembers[i].NodeStart != null &&
-                                cmodel.m_arrMembers[i].NodeEnd != null &&
-                                cmodel.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                            if (bDebugging)
                             {
-                                if (bDebugging)
+                                System.Console.Write("\n" + "Member ID:" + (i + 1).ToString() + "\n"); // Write Member ID in console window
+                                System.Console.Write("Start Node ID:" + cmodel.m_arrMembers[i].NodeStart.ID.ToString() + "\n"); // Write Start Node ID and coordinates in console window
+                                System.Console.Write(cmodel.m_arrMembers[i].NodeStart.X.ToString() + "\t" + cmodel.m_arrMembers[i].NodeStart.Y.ToString() + "\t" + cmodel.m_arrMembers[i].NodeStart.Z.ToString() + "\n");
+                                System.Console.Write("End Node ID:" + cmodel.m_arrMembers[i].NodeEnd.ID.ToString() + "\n");     // Write   End Node ID and coordinates in console window
+                                System.Console.Write(cmodel.m_arrMembers[i].NodeEnd.X.ToString() + "\t" + cmodel.m_arrMembers[i].NodeEnd.Y.ToString() + "\t" + cmodel.m_arrMembers[i].NodeEnd.Z.ToString() + "\n\n");
+
+                                cmodel.m_arrMembers[i].BIsDebugging = bDebugging;
+                            }
+
+                            if (cmodel.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
+                            {
+                                // Member material color
+                                byte R = (byte)(250);
+                                byte G = (byte)(240);
+                                byte B = (byte)(230);
+
+                                SolidColorBrush br = new SolidColorBrush(Color.FromRgb(R, G, B)); // Material color
+                                br.Opacity = 0.8;
+
+                                // Set different color for each member
+                                bool bDiffMemberColors = false;
+
+                                if (bDiffMemberColors)
                                 {
-                                    System.Console.Write("\n" + "Member ID:" + (i + 1).ToString() + "\n"); // Write Member ID in console window
-                                    System.Console.Write("Start Node ID:" + cmodel.m_arrMembers[i].NodeStart.ID.ToString() + "\n"); // Write Start Node ID and coordinates in console window
-                                    System.Console.Write(cmodel.m_arrMembers[i].NodeStart.X.ToString() + "\t" + cmodel.m_arrMembers[i].NodeStart.Y.ToString() + "\t" + cmodel.m_arrMembers[i].NodeStart.Z.ToString() + "\n");
-                                    System.Console.Write("End Node ID:" + cmodel.m_arrMembers[i].NodeEnd.ID.ToString() + "\n");     // Write   End Node ID and coordinates in console window
-                                    System.Console.Write(cmodel.m_arrMembers[i].NodeEnd.X.ToString() + "\t" + cmodel.m_arrMembers[i].NodeEnd.Y.ToString() + "\t" + cmodel.m_arrMembers[i].NodeEnd.Z.ToString() + "\n\n");
-
-                                    cmodel.m_arrMembers[i].BIsDebugging = bDebugging;
-                                }
-
-                                if (cmodel.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
-                                {
-                                    // Member material color
-                                    byte R = (byte)(250);
-                                    byte G = (byte)(240);
-                                    byte B = (byte)(230);
-
-                                    SolidColorBrush br = new SolidColorBrush(Color.FromRgb(R, G, B)); // Material color
-                                    br.Opacity = 0.8;
-
-                                    // Set different color for each member
-                                    bool bDiffMemberColors = false;
-
-                                    if (bDiffMemberColors)
+                                    if (j < 20) // 20*10 = 200, 200 + 55 - 255 (maxium number of color)
                                     {
-                                        if (j < 20) // 20*10 = 200, 200 + 55 - 255 (maxium number of color)
-                                        {
-                                            br.Color = Color.FromRgb((byte)(55 + j * 10), (byte)(55 + j * 7), (byte)(55 + j * 5));
-                                            j++;
-                                        }
-                                        else
-                                        {
-                                            j = 0;
-                                        }
-                                    }
-
-                                    bool bFastRendering = false;
-
-                                    if (bFastRendering ||
-                                        (cmodel.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
-                                            cmodel.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
-                                            cmodel.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)
-                                         ) // Check if are particular surfaces defined
-                                    {
-                                        // Create Member model - one geometry model
-                                        // GeometryModel3D memberModel3D;
-                                        // Add current member model to the model group
-                                        gr.Children.Add((Model3D)cmodel.m_arrMembers[i].getG_M_3D_Member(eGCS, br));
+                                        br.Color = Color.FromRgb((byte)(55 + j * 10), (byte)(55 + j * 7), (byte)(55 + j * 5));
+                                        j++;
                                     }
                                     else
                                     {
-                                        // Create Member model - consist of 3 geometry models (member is one model group)
-                                        // Model3DGroup memberModel3D;
-                                        // Add current member model to the model group
-
-                                        SolidColorBrush br1 = new SolidColorBrush(Color.FromRgb(255, 64, 64)); // Material color - Front Side (red)
-                                        SolidColorBrush br2 = new SolidColorBrush(Color.FromRgb(141, 238, 238)); // Material color - Shell (red)
-                                        SolidColorBrush br3 = new SolidColorBrush(Color.FromRgb(238, 154, 73)); // Material color - Back Side (orange)
-
-                                        bool bIsTranspartentModel = false;
-
-                                        if (bIsTranspartentModel)
-                                        {
-                                            br1.Opacity = br3.Opacity = 0.8;
-                                            br2.Opacity = 0.4;
-                                        }
-                                        else
-                                            br1.Opacity = br2.Opacity = br3.Opacity = 0;
-
-                                        bool bUseCrossSectionColor = true;
-
-                                        if (bUseCrossSectionColor && cmodel.m_arrMembers[i].CrScStart.CSColor != null)
-                                            br2 = new SolidColorBrush(cmodel.m_arrMembers[i].CrScStart.CSColor);
-
-                                        gr.Children.Add(cmodel.m_arrMembers[i].getM_3D_G_Member(eGCS, br1, br2, br3));
+                                        j = 0;
                                     }
+                                }
+
+                                bool bFastRendering = false;
+
+                                if (bFastRendering ||
+                                    (cmodel.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
+                                        cmodel.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
+                                        cmodel.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)
+                                        ) // Check if are particular surfaces defined
+                                {
+                                    // Create Member model - one geometry model
+                                    // GeometryModel3D memberModel3D;
+                                    // Add current member model to the model group
+                                    gr.Children.Add((Model3D)cmodel.m_arrMembers[i].getG_M_3D_Member(eGCS, br));
                                 }
                                 else
                                 {
-                                    // Display axis line, member is not valid to display in 3D
+                                    // Create Member model - consist of 3 geometry models (member is one model group)
+                                    // Model3DGroup memberModel3D;
+                                    // Add current member model to the model group
+
+                                    SolidColorBrush br1 = new SolidColorBrush(Color.FromRgb(255, 64, 64)); // Material color - Front Side (red)
+                                    SolidColorBrush br2 = new SolidColorBrush(Color.FromRgb(141, 238, 238)); // Material color - Shell (red)
+                                    SolidColorBrush br3 = new SolidColorBrush(Color.FromRgb(238, 154, 73)); // Material color - Back Side (orange)
+
+                                    bool bIsTranspartentModel = false;
+
+                                    if (bIsTranspartentModel)
+                                    {
+                                        br1.Opacity = br3.Opacity = 0.8;
+                                        br2.Opacity = 0.4;
+                                    }
+                                    else
+                                        br1.Opacity = br2.Opacity = br3.Opacity = 0;
+
+                                    bool bUseCrossSectionColor = true;
+
+                                    if (bUseCrossSectionColor && cmodel.m_arrMembers[i].CrScStart.CSColor != null)
+                                        br2 = new SolidColorBrush(cmodel.m_arrMembers[i].CrScStart.CSColor);
+
+                                    gr.Children.Add(cmodel.m_arrMembers[i].getM_3D_G_Member(eGCS, br1, br2, br3));
+                                }
+                            }
+                            else
+                            {
+                                // Display axis line, member is not valid to display in 3D
+                            }
+                        }
+                    }
+                }
+
+                if (cmodel.m_arrConnectionJoints != null) // Some joints exist
+                {
+                    for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
+                    {
+                        // Brushes
+
+                        SolidColorBrush bPlates = new SolidColorBrush(Colors.Gray);
+                        SolidColorBrush bBolts = new SolidColorBrush(Colors.Red);
+                        SolidColorBrush bWelds = new SolidColorBrush(Colors.Orange);
+
+                        // Models3D or ModelGroups Components
+                        // Plates
+                        if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
+                        {
+                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; l++)
+                            {
+                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
+                                {
+                                    gr.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(bPlates)); // Add plate 3D model to the model group
+                                }
+                            }
+                        }
+
+                        // Bolts
+                        if (cmodel.m_arrConnectionJoints[i].m_arrBolts != null)
+                        {
+                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrBolts.Length; l++)
+                            {
+                                if (cmodel.m_arrConnectionJoints[i].m_arrBolts[l] != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrBolts[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrBolts[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
+                                {
+                                    gr.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrBolts[l].CreateGeomModel3D(bBolts)); // Add bolt 3D model to the model group
+                                }
+                            }
+                        }
+
+                        // Welds
+                        if (cmodel.m_arrConnectionJoints[i].m_arrWelds != null)
+                        {
+                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; l++)
+                            {
+                                if (cmodel.m_arrConnectionJoints[i].m_arrWelds[l] != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].m_pControlPoint != null &&
+                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
+                                {
+                                    gr.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrWelds[l].CreateGeomModel3D(bWelds)); // Add weld 3D model to the model group
                                 }
                             }
                         }
                     }
+                }
 
-                    if (cmodel.m_arrGOAreas != null) // Some areas exist
+                if (cmodel.m_arrGOAreas != null) // Some areas exist
                     {
                         // Model Groups of Areas
 
@@ -226,322 +283,256 @@ namespace sw_en_GUI
 
 
 
-                    }
+                }
 
-                    if (cmodel.m_arrGOVolumes != null) // Some volumes exist
+                if (cmodel.m_arrGOVolumes != null) // Some volumes exist
+                {
+                    // Model Groups of Volumes
+                    for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
                     {
-                        // Model Groups of Volumes
-                        for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
+                        if (cmodel.m_arrGOVolumes[i] != null &&
+                            cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
+                            cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                         {
-                            if (cmodel.m_arrGOVolumes[i] != null &&
-                                cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
-                                cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                            // Get shape - prism , sphere, ...
+                            gr.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
+                        }
+                    }
+                }
+
+                if (cmodel.m_arrGOStrWindows != null) // Some windows exist
+                {
+                    // Model Groups of Windows
+                    for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
+                    {
+                        if (cmodel.m_arrGOStrWindows[i] != null &&
+                            cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                            cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                        {
+                            if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
+                                gr.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
+                            else
                             {
-                                // Get shape - prism , sphere, ...
-                                gr.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
+                                //Exception - not implemented
                             }
                         }
                     }
+                }
 
-                    if (cmodel.m_arrConnectionJointsTypes != null) // Some joints exist
+                if (cmodel.m_arrNSupports != null) // Some nodal supports exist
+                {
+                    // Model Groups of Nodal Suports
+                    for (int i = 0; i < cmodel.m_arrNSupports.Length; i++)
                     {
-                        for (int i = 0; i < cmodel.m_arrConnectionJointsTypes.Length; i++) // Joint Type
+                        if (cmodel.m_arrNSupports[i] != null && cmodel.m_arrNSupports[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
                         {
-                            // Brushes
+                            gr.Children.Add(cmodel.m_arrNSupports[i].CreateM_3D_G_NSupport()); // Add solid to model group
 
-                            SolidColorBrush bPlates = new SolidColorBrush(Colors.Gray);
-                            SolidColorBrush bBolts = new SolidColorBrush(Colors.Red);
-                            SolidColorBrush bWelds = new SolidColorBrush(Colors.Orange);
-
-                            // Models3D or ModelGroups Components
-                            if (cmodel.m_arrConnectionJointsGroup != null) // Some joints exist
-                            {
-                                for (int j = 0; j < (cmodel.m_arrConnectionJointsGroup.Length / cmodel.m_arrConnectionJointsTypes.Length); j++) // Particular joint
-                                {
-                                    // Plates
-                                    if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates != null)
-                                    {
-                                        for (int l = 0; l < cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates.Length; l++)
-                                        {
-                                            if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l] != null &&
-                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l].m_pControlPoint != null &&
-                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
-                                            {
-                                                gr.Children.Add(cmodel.m_arrConnectionJointsGroup[i, j].m_arrPlates[l].CreateGeomModel3D(bPlates)); // Add plate 3D model to the model group
-                                            }
-                                        }
-                                    }
-
-                                    // Bolts
-                                    if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts != null)
-                                    {
-                                        for (int l = 0; l < cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts.Length; l++)
-                                        {
-                                            if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l] != null &&
-                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l].m_pControlPoint != null &&
-                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
-                                            {
-                                                gr.Children.Add(cmodel.m_arrConnectionJointsGroup[i, j].m_arrBolts[l].CreateGeomModel3D(bBolts)); // Add bolt 3D model to the model group
-                                            }
-                                        }
-                                    }
-
-
-                                    // Welds
-                                    if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds != null)
-                                    {
-                                        for (int l = 0; l < cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds.Length; l++)
-                                        {
-                                            if (cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l] != null &&
-                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l].m_pControlPoint != null &&
-                                            cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
-                                            {
-                                                gr.Children.Add(cmodel.m_arrConnectionJointsGroup[i, j].m_arrWelds[l].CreateGeomModel3D(bWelds)); // Add weld 3D model to the model group
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            // Set support for all assigned nodes
                         }
                     }
+                }
 
-                    if (cmodel.m_arrGOStrWindows != null) // Some windows exist
+                if (cmodel.m_arrNReleases != null) // Some member release exist
+                {
+                    // Model Groups of Member Releases
+                    for (int i = 0; i < cmodel.m_arrNReleases.Length; i++)
                     {
-                        // Model Groups of Windows
-                        for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
+                        if (cmodel.m_arrNReleases[i] != null && cmodel.m_arrNReleases[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
                         {
-                            if (cmodel.m_arrGOStrWindows[i] != null &&
-                                cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
-                                cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                            /*
+                            for (int j = 0; j < cmodel.m_arrNReleases[i].m_iMembCollection.Length; j++) // Set release for all assigned members (member nodes)
                             {
-                                if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
-                                    gr.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
-                                else
-                                {
-                                    //Exception - not implemented
-                                }
-                            }
-                        }
-                    }
-
-                    if (cmodel.m_arrNSupports != null) // Some nodal supports exist
-                    {
-                        // Model Groups of Nodal Suports
-                        for (int i = 0; i < cmodel.m_arrNSupports.Length; i++)
-                        {
-                            if (cmodel.m_arrNSupports[i] != null && cmodel.m_arrNSupports[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
-                            {
-                                gr.Children.Add(cmodel.m_arrNSupports[i].CreateM_3D_G_NSupport()); // Add solid to model group
-
-                                // Set support for all assigned nodes
-
-
-                            }
-                        }
-                    }
-
-                    if (cmodel.m_arrNReleases != null) // Some member release exist
-                    {
-                        // Model Groups of Member Releases
-                        for (int i = 0; i < cmodel.m_arrNReleases.Length; i++)
-                        {
-                            if (cmodel.m_arrNReleases[i] != null && cmodel.m_arrNReleases[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
-                            {
-                                /*
-                                for (int j = 0; j < cmodel.m_arrNReleases[i].m_iMembCollection.Length; j++) // Set release for all assigned members (member nodes)
-                                {
-                                    Model3DGroup model_gr = new Model3DGroup();
-                                    model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
-                                    // Transform modelgroup from LCS to GCS
-                                    model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMembers[cmodel.m_arrNReleases[i].m_iMembCollection[j]]);
-
-                                    gr.Children.Add(model_gr); // Add Release to model group
-                                }*/
-
                                 Model3DGroup model_gr = new Model3DGroup();
                                 model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
                                 // Transform modelgroup from LCS to GCS
-                                model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrNReleases[i].Member);
+                                model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMembers[cmodel.m_arrNReleases[i].m_iMembCollection[j]]);
 
                                 gr.Children.Add(model_gr); // Add Release to model group
+                            }*/
 
+                            Model3DGroup model_gr = new Model3DGroup();
+                            model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
+                            // Transform modelgroup from LCS to GCS
+                            model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrNReleases[i].Member);
 
-                            }
+                            gr.Children.Add(model_gr); // Add Release to model group
                         }
                     }
+                }
 
-                    if (cmodel.m_arrNLoads != null) // Some nodal loads exist
+                if (cmodel.m_arrNLoads != null) // Some nodal loads exist
+                {
+                    // Model Groups of Nodal Loads
+                    for (int i = 0; i < cmodel.m_arrNLoads.Length; i++)
                     {
-                        // Model Groups of Nodal Loads
-                        for (int i = 0; i < cmodel.m_arrNLoads.Length; i++)
+                        if (cmodel.m_arrNLoads[i] != null && cmodel.m_arrNLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            if (cmodel.m_arrNLoads[i] != null && cmodel.m_arrNLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
-                            {
-                                gr.Children.Add(cmodel.m_arrNLoads[i].CreateM_3D_G_Load()); // Add to model group
+                            gr.Children.Add(cmodel.m_arrNLoads[i].CreateM_3D_G_Load()); // Add to model group
 
-                                // Set load for all assigned nodes
+                            // Set load for all assigned nodes
 
 
-                            }
                         }
                     }
+                }
 
-                    if (cmodel.m_arrMLoads != null) // Some member loads exist
+                if (cmodel.m_arrMLoads != null) // Some member loads exist
+                {
+                    // Model Groups of Member Loads
+                    for (int i = 0; i < cmodel.m_arrMLoads.Length; i++)
                     {
-                        // Model Groups of Member Loads
-                        for (int i = 0; i < cmodel.m_arrMLoads.Length; i++)
+                        if (cmodel.m_arrMLoads[i] != null && cmodel.m_arrMLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            if (cmodel.m_arrMLoads[i] != null && cmodel.m_arrMLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
-                            {
-                                Model3DGroup model_gr = new Model3DGroup();
-                                model_gr = cmodel.m_arrMLoads[i].CreateM_3D_G_Load();
-                                // Transform modelgroup from LCS to GCS
-                                model_gr = cmodel.m_arrMLoads[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMLoads[i].Member);
+                            Model3DGroup model_gr = new Model3DGroup();
+                            model_gr = cmodel.m_arrMLoads[i].CreateM_3D_G_Load();
+                            // Transform modelgroup from LCS to GCS
+                            model_gr = cmodel.m_arrMLoads[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMLoads[i].Member);
 
-                                gr.Children.Add(model_gr); // Add Release to model group
+                            gr.Children.Add(model_gr); // Add Release to model group
 
-                                // Set load for all assigned member
+                            // Set load for all assigned member
 
 
-                            }
                         }
                     }
+                }
 
-                    /*
-                      The following lights derive from the base class Light:
-                      AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
-                      DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
-                      PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
-                      SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
-                    */
+                /*
+                    The following lights derive from the base class Light:
+                    AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
+                    DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
+                    PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
+                    SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
+                */
 
-                    // Directional Light
-                    DirectionalLight Dir_Light = new DirectionalLight();
-                    Dir_Light.Color = Colors.White;
-                    Dir_Light.Direction = new Vector3D(0, 0, -1);
-                    gr.Children.Add(Dir_Light);
+                // Directional Light
+                DirectionalLight Dir_Light = new DirectionalLight();
+                Dir_Light.Color = Colors.White;
+                Dir_Light.Direction = new Vector3D(0, 0, -1);
+                gr.Children.Add(Dir_Light);
 
-                    // Point light values
-                    PointLight Point_Light = new PointLight();
-                    Point_Light.Position = new Point3D(0, 0, 30);
-                    Point_Light.Color = System.Windows.Media.Brushes.White.Color;
-                    Point_Light.Range = 30.0;
-                    Point_Light.ConstantAttenuation = 0;
-                    Point_Light.LinearAttenuation = 0;
-                    Point_Light.QuadraticAttenuation = 0.2f;
-                    Point_Light.ConstantAttenuation = 5.0;
-                    gr.Children.Add(Point_Light);
+                // Point light values
+                PointLight Point_Light = new PointLight();
+                Point_Light.Position = new Point3D(0, 0, 30);
+                Point_Light.Color = System.Windows.Media.Brushes.White.Color;
+                Point_Light.Range = 30.0;
+                Point_Light.ConstantAttenuation = 0;
+                Point_Light.LinearAttenuation = 0;
+                Point_Light.QuadraticAttenuation = 0.2f;
+                Point_Light.ConstantAttenuation = 5.0;
+                gr.Children.Add(Point_Light);
 
-                    SpotLight Spot_Light = new SpotLight();
-                    Spot_Light.InnerConeAngle = 30;
-                    Spot_Light.OuterConeAngle = 30;
-                    Spot_Light.Color = System.Windows.Media.Brushes.White.Color;
-                    Spot_Light.Direction = new Vector3D(0, 0, -1);
-                    Spot_Light.Position = new Point3D(8.5, 8.5, 20);
-                    Spot_Light.Range = 30;
-                    gr.Children.Add(Spot_Light);
+                SpotLight Spot_Light = new SpotLight();
+                Spot_Light.InnerConeAngle = 30;
+                Spot_Light.OuterConeAngle = 30;
+                Spot_Light.Color = System.Windows.Media.Brushes.White.Color;
+                Spot_Light.Direction = new Vector3D(0, 0, -1);
+                Spot_Light.Position = new Point3D(8.5, 8.5, 20);
+                Spot_Light.Range = 30;
+                gr.Children.Add(Spot_Light);
 
-                    //Set Ambient Light
-                    AmbientLight Ambient_Light = new AmbientLight();
-                    Ambient_Light.Color = Color.FromRgb(250, 250, 230);
-                    gr.Children.Add(new AmbientLight());
+                //Set Ambient Light
+                AmbientLight Ambient_Light = new AmbientLight();
+                Ambient_Light.Color = Color.FromRgb(250, 250, 230);
+                gr.Children.Add(new AmbientLight());
 
-                    if (cmodel.m_arrGOLines != null) // Some lines exist
-                    {
-                        Point3D solidCenter = new Point3D(-5, 0, 0);
+                if (cmodel.m_arrGOLines != null) // Some lines exist
+                {
+                    Point3D solidCenter = new Point3D(-5, 0, 0);
 
-                        float fa = 0.5f;
+                    float fa = 0.5f;
 
-                        Point3D p0 = new Point3D(-fa, -fa, -fa);
-                        Point3D p1 = new Point3D(fa, -fa, -fa);
-                        Point3D p2 = new Point3D(fa, fa, -fa);
-                        Point3D p3 = new Point3D(-fa, fa, -fa);
-                        Point3D p4 = new Point3D(-fa, -fa, fa);
-                        Point3D p5 = new Point3D(fa, -fa, fa);
-                        Point3D p6 = new Point3D(fa, fa, fa);
-                        Point3D p7 = new Point3D(-fa, fa, fa);
+                    Point3D p0 = new Point3D(-fa, -fa, -fa);
+                    Point3D p1 = new Point3D(fa, -fa, -fa);
+                    Point3D p2 = new Point3D(fa, fa, -fa);
+                    Point3D p3 = new Point3D(-fa, fa, -fa);
+                    Point3D p4 = new Point3D(-fa, -fa, fa);
+                    Point3D p5 = new Point3D(fa, -fa, fa);
+                    Point3D p6 = new Point3D(fa, fa, fa);
+                    Point3D p7 = new Point3D(-fa, fa, fa);
 
-                        // Lines
+                    // Lines
 
-                        ScreenSpaceLines3D line1 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line2 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line3 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line4 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line1 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line2 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line3 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line4 = new ScreenSpaceLines3D();
 
-                        Color lineColor = Color.FromRgb(250, 30, 30);
-                        line1.Color = lineColor;
-                        line1.Points.Add(p0);
-                        line1.Points.Add(p1);
+                    Color lineColor = Color.FromRgb(250, 30, 30);
+                    line1.Color = lineColor;
+                    line1.Points.Add(p0);
+                    line1.Points.Add(p1);
 
-                        line2.Color = lineColor;
-                        line2.Points.Add(p1);
-                        line2.Points.Add(p2);
+                    line2.Color = lineColor;
+                    line2.Points.Add(p1);
+                    line2.Points.Add(p2);
 
-                        line3.Color = lineColor;
-                        line3.Points.Add(p2);
-                        line3.Points.Add(p3);
+                    line3.Color = lineColor;
+                    line3.Points.Add(p2);
+                    line3.Points.Add(p3);
 
-                        line4.Color = lineColor;
-                        line4.Points.Add(p3);
-                        line4.Points.Add(p0);
+                    line4.Color = lineColor;
+                    line4.Points.Add(p3);
+                    line4.Points.Add(p0);
 
-                        _trackport.ViewPort.Children.Add(line1);
-                        _trackport.ViewPort.Children.Add(line2);
-                        _trackport.ViewPort.Children.Add(line3);
-                        _trackport.ViewPort.Children.Add(line4);
+                    _trackport.ViewPort.Children.Add(line1);
+                    _trackport.ViewPort.Children.Add(line2);
+                    _trackport.ViewPort.Children.Add(line3);
+                    _trackport.ViewPort.Children.Add(line4);
 
-                        ScreenSpaceLines3D line5 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line6 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line7 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line8 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line5 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line6 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line7 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line8 = new ScreenSpaceLines3D();
 
-                        line5.Color = lineColor;
-                        line5.Points.Add(p4);
-                        line5.Points.Add(p5);
+                    line5.Color = lineColor;
+                    line5.Points.Add(p4);
+                    line5.Points.Add(p5);
 
-                        line6.Color = lineColor;
-                        line6.Points.Add(p5);
-                        line6.Points.Add(p6);
+                    line6.Color = lineColor;
+                    line6.Points.Add(p5);
+                    line6.Points.Add(p6);
 
-                        line7.Color = lineColor;
-                        line7.Points.Add(p6);
-                        line7.Points.Add(p7);
+                    line7.Color = lineColor;
+                    line7.Points.Add(p6);
+                    line7.Points.Add(p7);
 
-                        line8.Color = lineColor;
-                        line8.Points.Add(p7);
-                        line8.Points.Add(p4);
+                    line8.Color = lineColor;
+                    line8.Points.Add(p7);
+                    line8.Points.Add(p4);
 
-                        _trackport.ViewPort.Children.Add(line5);
-                        _trackport.ViewPort.Children.Add(line6);
-                        _trackport.ViewPort.Children.Add(line7);
-                        _trackport.ViewPort.Children.Add(line8);
+                    _trackport.ViewPort.Children.Add(line5);
+                    _trackport.ViewPort.Children.Add(line6);
+                    _trackport.ViewPort.Children.Add(line7);
+                    _trackport.ViewPort.Children.Add(line8);
 
-                        ScreenSpaceLines3D line09 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line10 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line11 = new ScreenSpaceLines3D();
-                        ScreenSpaceLines3D line12 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line09 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line10 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line11 = new ScreenSpaceLines3D();
+                    ScreenSpaceLines3D line12 = new ScreenSpaceLines3D();
 
-                        line09.Color = lineColor;
-                        line09.Points.Add(p0);
-                        line09.Points.Add(p4);
+                    line09.Color = lineColor;
+                    line09.Points.Add(p0);
+                    line09.Points.Add(p4);
 
-                        line10.Color = lineColor;
-                        line10.Points.Add(p1);
-                        line10.Points.Add(p5);
+                    line10.Color = lineColor;
+                    line10.Points.Add(p1);
+                    line10.Points.Add(p5);
 
-                        line11.Color = lineColor;
-                        line11.Points.Add(p2);
-                        line11.Points.Add(p6);
+                    line11.Color = lineColor;
+                    line11.Points.Add(p2);
+                    line11.Points.Add(p6);
 
-                        line12.Color = lineColor;
-                        line12.Points.Add(p3);
-                        line12.Points.Add(p7);
+                    line12.Color = lineColor;
+                    line12.Points.Add(p3);
+                    line12.Points.Add(p7);
 
-                        _trackport.ViewPort.Children.Add(line09);
-                        _trackport.ViewPort.Children.Add(line10);
-                        _trackport.ViewPort.Children.Add(line11);
-                        _trackport.ViewPort.Children.Add(line12);
-                    }
+                    _trackport.ViewPort.Children.Add(line09);
+                    _trackport.ViewPort.Children.Add(line10);
+                    _trackport.ViewPort.Children.Add(line11);
+                    _trackport.ViewPort.Children.Add(line12);
+                }
 
                 // Get model centre
                 float fTempMax_X;
@@ -612,23 +603,22 @@ namespace sw_en_GUI
 
                 bool bDisplayConnectionJointsWireFrame = true;
 
-                if (bDisplayConnectionJointsWireFrame && cmodel.m_arrConnectionJointsTypes != null)
+                if (bDisplayConnectionJointsWireFrame && cmodel.m_arrConnectionJoints != null)
                 {
-                    for (int i = 0; i < cmodel.m_arrConnectionJointsTypes.Length; i++)
+                    for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                     {
-                        if (cmodel.m_arrConnectionJointsTypes[i] != null) // Joint object is valid (not empty)
+                        if (cmodel.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
                         {
                             // Plates
-                            if (cmodel.m_arrConnectionJointsTypes[i].m_arrPlates != null)
+                            if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
                             {
-                                for (int j = 0; j < cmodel.m_arrConnectionJointsTypes[i].m_arrPlates.Length; j++)
+                                for (int j = 0; j < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; j++)
                                 {
                                     // Create WireFrame in LCS
-                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJointsTypes[i].m_arrPlates[j].CreateWireFrameModel();
+                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel();
 
                                     // Rotate from LCS to GCS
-
-                                    // TODO
+                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
 
                                     // Add Wireframe Lines to the trackport
                                     _trackport.ViewPort.Children.Add(wireFrame);
@@ -636,12 +626,12 @@ namespace sw_en_GUI
                             }
 
                             // Bolts
-                            if (cmodel.m_arrConnectionJointsTypes[i].m_arrBolts != null)
+                            if (cmodel.m_arrConnectionJoints[i].m_arrBolts != null)
                             {
-                                for (int j = 0; j < cmodel.m_arrConnectionJointsTypes[i].m_arrBolts.Length; j++)
+                                for (int j = 0; j < cmodel.m_arrConnectionJoints[i].m_arrBolts.Length; j++)
                                 {
                                     // Create WireFrame in LCS
-                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJointsTypes[i].m_arrBolts[j].CreateWireFrameModel();
+                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrBolts[j].CreateWireFrameModel();
 
                                     // Rotate from LCS to GCS
 
@@ -653,12 +643,12 @@ namespace sw_en_GUI
                             }
 
                             // Plates
-                            if (cmodel.m_arrConnectionJointsTypes[i].m_arrWelds != null)
+                            if (cmodel.m_arrConnectionJoints[i].m_arrWelds != null)
                             {
-                                for (int j = 0; j < cmodel.m_arrConnectionJointsTypes[i].m_arrWelds.Length; j++)
+                                for (int j = 0; j < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; j++)
                                 {
                                     // Create WireFrame in LCS
-                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJointsTypes[i].m_arrWelds[j].CreateWireFrameModel();
+                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrWelds[j].CreateWireFrameModel();
 
                                     // Rotate from LCS to GCS
 

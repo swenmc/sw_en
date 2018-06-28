@@ -460,22 +460,22 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, true); // L
+                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, 0 ,0 ,0 ,true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // L
+                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // LL
+                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
+                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
@@ -608,22 +608,22 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f,0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // L
+                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // LL
+                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft, iNumberofHoles, true); // F
+                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

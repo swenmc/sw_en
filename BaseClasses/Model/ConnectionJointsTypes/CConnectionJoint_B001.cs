@@ -14,6 +14,8 @@ namespace BaseClasses
 {
     public class CConnectionJoint_B001 : CConnectionJointTypes
     {
+        // Rafter to Main Column Joint - Knee Joint
+
         float m_fb_1;
         float m_fb_2;
         float m_fh_1;

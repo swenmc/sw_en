@@ -10,6 +10,7 @@ namespace BaseClasses
 {
     public class CConnectionJoint_A001 : CConnectionJointTypes
     {
+        // Rafter to Rafter Joint - Roof Tip
         float m_fb;
         float m_fh_1;
         float m_fh_2;

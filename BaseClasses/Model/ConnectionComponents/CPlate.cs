@@ -317,6 +317,16 @@ namespace BaseClasses
 
         public void TransformPlateCoord(GeometryModel3D model)
         {
+            model.Transform = CreateTransformCoordGroup();
+        }
+
+        public void TransformPlateCoord(ScreenSpaceLines3D wireframeModel)
+        {
+            wireframeModel.Transform = CreateTransformCoordGroup();
+        }
+
+        public Transform3DGroup CreateTransformCoordGroup()
+        {
             // Rotate Plate from its cs to joint cs system in GCS
             RotateTransform3D RotateTrans3D_AUX_X = new RotateTransform3D();
             RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
@@ -334,8 +344,7 @@ namespace BaseClasses
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_Y);
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
             Trans3DGroup.Children.Add(Translate3D_AUX);
-
-            model.Transform = Trans3DGroup;
+            return Trans3DGroup;
         }
 
         public override GeometryModel3D CreateGeomModel3D(SolidColorBrush brush)
@@ -355,7 +364,7 @@ namespace BaseClasses
 
             model.Material = new DiffuseMaterial(brush);  // Set Model Material
 
-            TransformPlateCoord(model); // Not used now
+            TransformPlateCoord(model);
 
             return model;
         }

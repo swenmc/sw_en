@@ -53,7 +53,7 @@ namespace BaseClasses
             loadIndices();
         }
 
-        public CConCom_Plate_JA(GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg,  bool bIsDisplayed)
+        public CConCom_Plate_JA(GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;

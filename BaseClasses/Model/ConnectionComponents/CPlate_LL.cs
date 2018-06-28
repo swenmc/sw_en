@@ -23,7 +23,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_LL(GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_LL(GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -37,6 +37,9 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
             // Create Array - allocate memory
@@ -231,9 +234,9 @@ namespace BaseClasses
             AddRectangleIndices_CCW_1234(TriangleIndices, 19, 20, 21, 22);
 
             // Back
-            AddRectangleIndices_CCW_1234(TriangleIndices, 4, 5, 2, 3);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 8, 9, 0, 1);
-            AddRectangleIndices_CCW_1234(TriangleIndices, 6, 7, 1, 2);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 5, 4, 3, 2);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 9, 8, 1, 0);
+            AddRectangleIndices_CCW_1234(TriangleIndices, 7, 6, 2, 1);
 
             // Side
             AddRectangleIndices_CCW_1234(TriangleIndices, 0, 10, 17, 9);

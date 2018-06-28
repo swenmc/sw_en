@@ -135,6 +135,10 @@
     <Compile Include="Model\CNRelease.cs" />
     <Compile Include="Model\CNSupport.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_C001.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_D001.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_AA01.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_E001.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_B001.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_A001.cs" />
     <Compile Include="Model\CSegment.cs" />

@@ -230,7 +230,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 // Cross-sections
                 // CrSc List - CrSc Array - Fill Data of Cross-sections Array
                 m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Violet); // Main Column
-                m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green); // Rafter
+                m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.LightGreen); // Rafter
                 m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.001f, Colors.Thistle);  // Eaves Purlin
                 m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);  // Girt - Wall
                 m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.00095f, Colors.SlateBlue); // Purlin
@@ -470,44 +470,66 @@ namespace sw_en_GUI.EXAMPLES._3D
                 //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
 
                 // Connection Joints
-                m_arrConnectionJointsTypes = new CConnectionJointTypes[3];
+                m_arrConnectionJoints = new List<CConnectionJointTypes>();
 
-                // Roof Pitch Joints
-                m_arrConnectionJointsTypes[0] = new CConnectionJointTypes(iFrameNo, 2, 0, 0); // Two plates in Joint
-                m_arrConnectionJointsTypes[0].m_arrAssignedNodesWithJointType = new CNode[5];
-                m_arrConnectionJointsTypes[0] = new CConnectionJoint_A001(m_arrNodes[2], m_arrMembers[1], m_arrMembers[2], fRoofPitch_rad, 2 * (float)m_arrMembers[1].CrScStart.h, 0.003f, true);
-
-                // Create Joints
-                m_arrConnectionJointsGroup = new CConnectionJointTypes[3, iFrameNo];
-
-
+                // Frame Main Column Joints to Foundation
                 for (int i = 0; i < iFrameNo; i++)
                 {
-                    m_arrConnectionJointsGroup[0, i] = new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, 0.003f, true);
+                    m_arrConnectionJoints.Add(new CConnectionJoint_AA01(m_arrNodes[i * iFrameNodesNo + 0], m_arrMembers[i * (iFrameNodesNo - 1)], true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_AA01(m_arrNodes[i * iFrameNodesNo + 4], m_arrMembers[i * (iFrameNodesNo - 1) + 3], true));
                 }
 
-                m_arrConnectionJointsTypes[1] = new CConnectionJointTypes(iFrameNo, 2, 0, 0); // Two plates in Joint
-                m_arrConnectionJointsTypes[1].m_arrAssignedNodesWithJointType = new CNode[5];
-                m_arrConnectionJointsTypes[1] = new CConnectionJoint_B001(m_arrNodes[1], m_arrMembers[0], m_arrMembers[1], fRoofPitch_rad, 2 * (float)m_arrMembers[0].CrScStart.h, 2 * (float)m_arrMembers[1].CrScStart.h, 0.003f, true);
-
-
-                // Create Joints
+                // Frame Rafter Joints
                 for (int i = 0; i < iFrameNo; i++)
                 {
-                    m_arrConnectionJointsGroup[1, i] = new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, 0.003f, true);
+                   m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, 0.003f, true));
                 }
 
-                m_arrConnectionJointsTypes[2] = new CConnectionJointTypes(iFrameNo, 2, 0, 0); // Two plates in Joint
-                m_arrConnectionJointsTypes[2].m_arrAssignedNodesWithJointType = new CNode[5];
-                m_arrConnectionJointsTypes[2] = new CConnectionJoint_B001(m_arrNodes[3], m_arrMembers[3], m_arrMembers[2], fRoofPitch_rad, 2 * (float)m_arrMembers[3].CrScStart.h, 2 * (float)m_arrMembers[2].CrScStart.h, 0.003f, true);
-
-                // Create Joints
+                // Knee Joints 1
                 for (int i = 0; i < iFrameNo; i++)
                 {
-                    m_arrConnectionJointsGroup[2, i] = new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2].CrScStart.h, 0.003f, true);
+                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, 0.003f, true));
                 }
 
-                // Loading
+                // Knee Joints 2
+                for (int i = 0; i < iFrameNo; i++)
+                {
+                    m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2].CrScStart.h, 0.003f, true));
+                }
+
+                // Eaves Purlin Joints
+                if (iEavesPurlinNo > 0)
+                {
+                    for (int i = 0; i < iEavesPurlinNo; i++)
+                    {
+                        CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + i];
+                        m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeStart, m_arrMembers[0], current_member, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
+                    }
+                }
+
+                // Girt Joints
+                if (bGenerateGirts)
+                {
+                    for (int i = 0; i < (iFrameNo - 1) * iGirtNoInOneFrame; i++)
+                    {
+                        CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + i];
+                        m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeStart, m_arrMembers[0], current_member, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
+                    }
+                }
+
+                // Purlin Joints
+                if (bGeneratePurlins)
+                {
+                    for (int i = 0; i < (iFrameNo - 1) * iPurlinNoInOneFrame; i++)
+                    {
+                        CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i];
+                        m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeStart, m_arrMembers[1], current_member, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeEnd, m_arrMembers[1], current_member, true));
+                    }
+                }
+                    // Loading
 
                 m_arrLimitStates = new CLimitState[2];
                 m_arrLimitStates[0] = new CLimitState(ELSType.eLS_ULS);
