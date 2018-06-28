@@ -153,20 +153,24 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   SelectionChanged="Results_GridView_SelectionChanged" IsReadOnly="True">
         </DataGrid>
-        <Button Grid.Row="3" Grid.Column="0" Content="Calculate" HorizontalAlignment="Right" 
-                VerticalAlignment="Center" Width="75" Margin="0 0 20 0" Click="Calculate_Click"/>
-        <Button Name="Clear3DModel" Grid.Row="3" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
-                VerticalAlignment="Center" Width="75" Margin="20 0 20 0" Click="Clear3DModel_Click" />
+        
 
         <Frame Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Name ="Frame1" Content="Portal Frame 3D Preview" 
                HorizontalContentAlignment="Stretch" 
                VerticalContentAlignment="Stretch" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="Calculate" HorizontalAlignment="Right" 
+                VerticalAlignment="Center" Width="60"  Margin="0 0 20 0" Click="Calculate_Click"/>
         <Button Grid.Row="3" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="124" Margin="0 0 120 0" Click="SystemComponentViewer_Click"/>
-        <Button Grid.Row="3" Grid.Column="0" Name="ExportDXF_3D" Content="Export DXF" HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="100" Margin="0 0 270 0" Click="ExportDXF_3D_Click"/>
-        <Button Grid.Row="3" Grid.Column="0" Name="View_2D" Content="2D View" HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="100" Margin="0,25,395,25" Click="View_2D_Click"/>
+            VerticalAlignment="Center" Width="110" Margin="0 0 90 0" Click="SystemComponentViewer_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" Name="ExportDXF_3D" Content="Export DXF" 
+                HorizontalAlignment="Right" Height="20"
+            VerticalAlignment="Center" Width="70" Margin="0 0 210 0" Click="ExportDXF_3D_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" Name="View_2D" Content="2D View" HorizontalAlignment="Left" 
+                Height="20" VerticalAlignment="Center" Width="100" Margin="90 0 0 0" Click="View_2D_Click"/>
+        <Button Name="Clear3DModel" Grid.Row="3" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
+                VerticalAlignment="Center" Width="75" Margin="5 0 20 0" Click="Clear3DModel_Click" />
+        
+        
     </Grid>
 </Window>

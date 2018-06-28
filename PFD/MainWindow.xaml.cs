@@ -790,8 +790,8 @@ namespace PFD
         private void AddRect3DToDXF(Rect3D bounds, netDxf.DxfDocument doc)
         {
             bool topView = false;
-            bool frontView = false;
-            bool sideView = true;
+            bool frontView = true;
+            bool sideView = false;
 
             if (topView)
             {
@@ -831,8 +831,8 @@ namespace PFD
             if (geometry == null) return;
 
             bool topView = false;
-            bool frontView = false;
-            bool sideView = true;
+            bool frontView = true;
+            bool sideView = false;
 
             if (topView)
             {
