@@ -10,7 +10,7 @@ namespace BaseClasses
 {
     public abstract class CPlate : CConnectionComponentEntity3D
     {
-        float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
+        public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
 
         public CPlate()
         {

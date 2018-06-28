@@ -87,7 +87,6 @@
     <Compile Include="Model\ConnectionComponents\CPlate_LL.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_Q_T_Y.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_F_or_L.cs" />
-    <Compile Include="Model\ConnectionComponents\CPlate_B1.cs" />
     <Compile Include="Model\ConnectionComponents\CWeld.cs" />
     <Compile Include="Model\ConnectionComponents\CBolt.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate.cs" />
@@ -136,7 +135,6 @@
     <Compile Include="Model\CNRelease.cs" />
     <Compile Include="Model\CNSupport.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Model\ConnectionComponents\CPlate_A1.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_B001.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_A001.cs" />
     <Compile Include="Model\CSegment.cs" />

@@ -52,8 +52,8 @@ namespace BaseClasses
             Point Line2_Start = new Point();
             Point Line2_End = new Point();
 
-            float fRafterVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 270 deg, if negative rotate 90 deg
-            float fRotatePlatesInJointAngle = fRafterVectorDirection > 0 ? 270 : 90;
+            float fRafterVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
+            float fRotatePlatesInJointAngle = fRafterVectorDirection > 0 ? 0 : 180;
             float fDistanceX = fRafterVectorDirection > 0 ? -0.5f * (float)m_MainMember.CrScStart.h : 0.5f * (float)m_MainMember.CrScStart.h;
 
             Line1_Start.X = m_MainMember.NodeStart.X + fDistanceX; // Column
@@ -69,15 +69,29 @@ namespace BaseClasses
             Point pUpperLeftPointOfPlate = new Point();
             pUpperLeftPointOfPlate = (Point)Intersection(Line1_Start, Line1_End, Line2_Start, Line2_End);
 
+            float fControlPointXCoord;
+            float fControlPointYCoord1;
+            float fControlPointYCoord2;
 
-            float fControlPointXCoord = fRafterVectorDirection > 0 ? m_Node.X - 0.5f * m_fb_1 : m_Node.X + 0.5f * m_fb_1;
+            if (fRafterVectorDirection > 0)
+            {
+                fControlPointXCoord = m_Node.X - 0.5f * m_fb_1;
+                fControlPointYCoord1 = (float)(m_Node.Y - 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft);
+                fControlPointYCoord2 = (float)(m_Node.Y + 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft);
+            }
+            else
+            {
+                fControlPointXCoord = m_Node.X + 0.5f * m_fb_1;
+                fControlPointYCoord1 = (float)(m_Node.Y - 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft - m_ft);
+                fControlPointYCoord2 = (float)(m_Node.Y + 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft - m_ft);
+            }
 
-            CPoint ControlPoint_P1 = new CPoint(0, fControlPointXCoord, m_Node.Y - 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
-            CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, m_Node.Y + 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
-            
+            CPoint ControlPoint_P1 = new CPoint(0, fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
+            CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
+
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_B1(ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, fRotatePlatesInJointAngle, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_B1(ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, fRotatePlatesInJointAngle, BIsDisplayed);  // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_KA(ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_KA(ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed);  // Rotation angle in degrees
         }
 
         public static Point ? Intersection(Point start1, Point end1, Point start2, Point end2)

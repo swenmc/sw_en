@@ -492,19 +492,19 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // JA
-                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft,0,0,0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft,0,0,0, true);
                             else if(Combobox_Component.SelectedIndex == 1)
-                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             break;
                         }
                     default:
@@ -640,19 +640,19 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // JA
-                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, true);
                             else if (Combobox_Component.SelectedIndex == 1)
-                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, iNumberofHoles, true);
+                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             break;
                         }
                     default:

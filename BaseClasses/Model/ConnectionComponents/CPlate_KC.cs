@@ -26,7 +26,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_KC(GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fPlateRotation, bool bIsDisplayed)
+        public CConCom_Plate_KC(GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -44,7 +44,9 @@ namespace BaseClasses
             m_flZ = fl_temp;
             m_ft = ft_platethickness;
             m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / fb_2_temp);
-            m_fRotationZ = fPlateRotation;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
@@ -58,7 +60,7 @@ namespace BaseClasses
             loadIndices();
         }
 
-        public CConCom_Plate_KC(GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fSLope_rad_temp, float fPlateRotation, bool bIsDisplayed)
+        public CConCom_Plate_KC(GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -76,7 +78,9 @@ namespace BaseClasses
             m_flZ = fl_temp;
             m_ft = ft_platethickness;
             m_fSlope_rad = fSLope_rad_temp;
-            m_fRotationZ = fPlateRotation;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
