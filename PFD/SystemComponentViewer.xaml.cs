@@ -36,6 +36,7 @@ namespace PFD
         CCrSc_TW crsc;
         CPlate component;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
+        Color cComponentColor = Colors.Aquamarine; // Default
         float fb_R; // Rafter Width
         float fb; // in plane XY -X coord
         float fb2; // in plane XY - X coord
@@ -45,6 +46,8 @@ namespace PFD
         float fl2; // out of plane - Z coord
         float ft;
         float ft_f;
+        float fb_fl; // Flange - Z-section
+        float fc_lip1; // LIP - Z-section
         float fPitch_rad =  11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
         int iNumberofHoles;
 
@@ -125,9 +128,27 @@ namespace PFD
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
+                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_Z_FormSteel_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
                             foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_C_BtoB_FormSteel_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_C_Nested_FormSteel_Names)
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
@@ -247,6 +268,16 @@ namespace PFD
                                 fb = dcomponents.arr_Serie_Box_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
                                 fh = dcomponents.arr_Serie_Box_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
                                 ft = dcomponents.arr_Serie_Box_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_Box_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                break;
+                            }
+                        case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                            {
+                                fh = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fb_fl = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fc_lip1 = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_Z_FormSteel_Colors[Combobox_Component.SelectedIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_C_single:
@@ -254,6 +285,24 @@ namespace PFD
                                 fb = dcomponents.arr_Serie_C_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
                                 fh = dcomponents.arr_Serie_C_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
                                 ft = dcomponents.arr_Serie_C_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_C_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                break;
+                            }
+                        case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                            {
+                                fb = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                fc_lip1 = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_C_BtoB_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                break;
+                            }
+                        case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                            {
+                                fb = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
+                                ft = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_C_Nested_FormSteel_Colors[Combobox_Component.SelectedIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
@@ -262,13 +311,11 @@ namespace PFD
                                 fh = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
                                 ft = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
                                 ft_f = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_Box63020_FormSteel_Colors[Combobox_Component.SelectedIndex];
                                 break;
                             }
-                        case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
-                        case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
                         case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
-                        case ESerieTypeCrSc_FormSteel.eSerie_Z:
                             {
                                 // TODO TEMP
                                 fb = 0.1f;
@@ -405,46 +452,46 @@ namespace PFD
                             //temp test 
                             //crsc = new CCrSc_3_10075_BOX(fh * 3 , fb * 3, ft * 3, Colors.Red); 
 
-                            crsc = new CCrSc_3_10075_BOX(fh, fb, ft, Colors.Aquamarine); // BOX
+                            crsc = new CCrSc_3_10075_BOX(fh, fb, ft, cComponentColor); // BOX
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                        {
+                            crsc = new CCrSc_3_Z(fh, fb_fl, fc_lip1, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
                             if(Combobox_Component.SelectedIndex < 3) // C270
-                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, Colors.Aquamarine);
+                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, cComponentColor);
                             else
-                                crsc = new CCrSc_3_50020_C(fh, fb, ft, Colors.Aquamarine);
+                                crsc = new CCrSc_3_50020_C(fh, fb, ft, cComponentColor);
 
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
                         {
-                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(fh, fb, ft, Colors.Aquamarine);
+                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(fh, fb, fc_lip1, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         {
-                            crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, Colors.Aquamarine);
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
-                        {
-                            crsc = new CCrSc_3_Z(fh, fb, ft, Colors.Aquamarine);
+                            crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
-                            crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, Colors.Aquamarine); // BOX
+                            crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
                         {
-                            crsc = new CCrSc_3_TR_SMARTDEK(fh, fb, ft, Colors.Aquamarine); // BOX
+                            crsc = new CCrSc_3_TR_SMARTDEK(fh, fb, ft, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
                         {
-                            crsc = new CCrSc_3_TR_PURLINDEK(fh, fb, ft, Colors.Aquamarine); // BOX
+                            crsc = new CCrSc_3_TR_PURLINDEK(fh, fb, ft, cComponentColor); // BOX
                             break;
                         }
                     default:
@@ -579,20 +626,35 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
-                            crsc = new CCrSc_3_10075_BOX(fh, fb, ft, Colors.Aquamarine); // BOX
+                            crsc = new CCrSc_3_10075_BOX(fh, fb, ft, cComponentColor); // BOX
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                        {
+                            crsc = new CCrSc_3_Z(fh, fb_fl, fc_lip1, ft, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
                             if (Combobox_Component.SelectedIndex < 3) // C270
-                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, Colors.Aquamarine);
+                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, cComponentColor);
                             else
-                                crsc = new CCrSc_3_50020_C(fh, fb, ft, Colors.Aquamarine);
+                                crsc = new CCrSc_3_50020_C(fh, fb, ft, cComponentColor);
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                        {
+                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(fh, fb, fc_lip1, ft, cComponentColor);
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                        {
+                            crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
-                            crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, Colors.Aquamarine); // Box
+                            crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, cComponentColor); // Box
                             break;
                         }
                     default:
@@ -683,9 +745,27 @@ namespace PFD
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
+                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_Z_FormSteel_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
                             foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_C_BtoB_FormSteel_Names)
+                                Combobox_Component.Items.Add(name); // Add values into the combobox
+                            break;
+                        }
+                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                        {
+                            foreach (string name in dcomponents.arr_Serie_C_Nested_FormSteel_Names)
                                 Combobox_Component.Items.Add(name); // Add values into the combobox
                             break;
                         }
@@ -793,134 +873,17 @@ namespace PFD
 
         private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Vola sa to po kazdom pridani prvku do comboboxu
             // To Ondrej; OK, ale teraz to nefunguje pokial nad comboboxom pouzijem wheel, preview sa nepregeneruje
             // Takze musime zakazat wheel alebo to update / SelectionChanged oddelit od pridania poloziek do comboboxu, aby sa to nevolalo opakovane
 
             //// Change Component Items Combobox
             //Combobox_Component.Items.Clear();
-
-            //if (Combobox_Type.SelectedIndex == 0) // Cross-section
-            //{
-            //    switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
-            //    {
-            //        case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_Box_FormSteel_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypeCrSc_FormSteel.eSerie_C_single:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_Box63020_FormSteel_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        default:
-            //            {
-            //                // Not implemented
-            //                break;
-            //            }
-            //    }
-            //}
-            //else if (Combobox_Type.SelectedIndex == 1)
-            //{
-            //    switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
-            //    {
-            //        case ESerieTypePlate.eSerie_B:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_B_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_L:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_L_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_LL:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_LL_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_F:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_F_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_Q:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_Q_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_S:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_S_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_T:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_T_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_X:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_X_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_Y:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_Y_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_J:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_J_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        case ESerieTypePlate.eSerie_K:
-            //            {
-            //                foreach (string name in dcomponents.arr_Serie_K_Names)
-            //                    Combobox_Component.Items.Add(name); // Add values into the combobox
-            //                break;
-            //            }
-            //        default:
-            //            {
-            //                // Not implemented
-            //                break;
-            //            }
-            //    }
-            //}
-            //else
-            //{
-            //    // Not implemented
-            //}
-
-
-            //// Set default
-            //Combobox_Component.SelectedIndex = 0;
-
-            //UpdateAll();
         }
 
         private void Combobox_Component_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            //ani nahodou, sak sa to vola po kazdom pridani prvku do comboboxu
+            //Vola sa to po kazdom pridani prvku do comboboxu
             //UpdateAll();
 
             // To Ondrej; OK, ale teraz to nefunguje pokial nad comboboxom pouzijem wheel, preview sa nepregeneruje
@@ -1031,8 +994,6 @@ namespace PFD
                     mText.EndParagraph();
                     doc.AddEntity(mText);    */
                 }
-
-
             }
 
             DateTime d = DateTime.Now;
@@ -1054,7 +1015,7 @@ namespace PFD
 
                     AddLinesToDXF(lines3D, doc);
                 }
-            }            
+            }
 
             DateTime d = DateTime.Now;
             string fileName = string.Format("3DExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
@@ -1076,10 +1037,5 @@ namespace PFD
                 doc.AddEntity(line);
             }
         }
-
-
-
-
-
     }
 }

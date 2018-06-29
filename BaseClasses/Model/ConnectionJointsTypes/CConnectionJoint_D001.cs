@@ -30,12 +30,12 @@ namespace BaseClasses
 
             BIsDisplayed = bIsDisplayed_temp;
 
-            float fPurlinVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
-            float fRotatePlatesInJointAngle = fPurlinVectorDirection > 0 ? 270 : 90;
+            float fGirtVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
+            float fRotatePlatesInJointAngle = fGirtVectorDirection > 0 ? 270 : 90;
 
             float fControlPointYCoord1;
 
-            if (fPurlinVectorDirection > 0)
+            if (fGirtVectorDirection > 0)
             {
                 fControlPointYCoord1 = (float)(m_Node.Y - 0.5f * m_MainMember.CrScStart.b - m_ft);
             }

@@ -181,7 +181,7 @@ namespace PFD
             InitializeComponent();
 
             // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
+            SolidColorBrush brushDefault = new SolidColorBrush(crsc.CSColor);
 
             // Cross-section Model
             Model3DGroup ComponentGeomModel = new Model3DGroup();

@@ -518,6 +518,38 @@ namespace sw_en_GUI.EXAMPLES._3D
                     m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeEnd, m_arrMembers[1], current_member, true));
                 }
             }
+
+            // Front Columns Foundation Joints
+            if (bGenerateFrontColumns)
+            {
+                for (int i = 0; i < iFrontColumnNoInOneFrame; i++)
+                {
+                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + i];
+                    m_arrConnectionJoints.Add(new CConnectionJoint_FA01(current_member, true));
+                }
+            }
+
+            // Back Columns Foundation Joints
+            if (bGenerateBackColumns)
+            {
+                for (int i = 0; i < iBackColumnNoInOneFrame; i++)
+                {
+                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + i];
+                    m_arrConnectionJoints.Add(new CConnectionJoint_FA01(current_member, true));
+                }
+            }
+
+            // Front Girt Joints
+            if (bGenerateFrontGirts)
+            {
+                for (int i = 0; i < iFrontGirtsNoInOneFrame; i++)
+                {
+                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + i];
+                    m_arrConnectionJoints.Add(new CConnectionJoint_J001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_J001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
+                }
+            }
+
             // Loading
 
             m_arrLimitStates = new CLimitState[2];

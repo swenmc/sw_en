@@ -119,6 +119,7 @@
     <Compile Include="CrSc_3\CCrSc_3_07.cs" />
     <Compile Include="CrSc_3\CCrSc_3_08.cs" />
     <Compile Include="CrSc_3\CCrSc_3_09.cs" />
+    <Compile Include="CrSc_3\FS\CCrSc_3_I_LIPS.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_Z.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_TR_PURLINDEK.cs" />
     <Compile Include="CrSc_3\FS\CCrSc_3_TR_SMARTDEK.cs" />

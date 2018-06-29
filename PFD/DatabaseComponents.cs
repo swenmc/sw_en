@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using BaseClasses;
 
 namespace PFD
@@ -303,9 +304,30 @@ namespace PFD
                 "10075"
         };
 
+        public Color[] arr_Serie_Box_FormSteel_Colors = new Color[]
+        {
+            Colors.Red,
+        };
+
         public float[,] arr_Serie_Box_FormSteel_Dimension = new float[1, 3]
         {
-        {100, 100, 0.75f}
+                {100, 100, 0.75f}
+        };
+
+        public string[] arr_Serie_Z_FormSteel_Names = new string[1]
+        {
+                "Template Z"
+        };
+
+        public Color[] arr_Serie_Z_FormSteel_Colors = new Color[]
+        {
+            Colors.Gold,
+        };
+
+        public float[,] arr_Serie_Z_FormSteel_Dimension = new float[1, 4]
+        {
+                // h, b_flange, c_lip, t
+                {200, 100, 20, 0.95f}
         };
 
         public string[] arr_Serie_C_FormSteel_Names = new string[4]
@@ -316,6 +338,14 @@ namespace PFD
                 "50020"
         };
 
+        public Color[] arr_Serie_C_FormSteel_Colors = new Color[4]
+        {
+            Colors.Yellow,
+            Colors.Violet,
+            Color.FromRgb(254,153,0), // Orange Peel
+            Colors.Green
+        };
+
         public float[,] arr_Serie_C_FormSteel_Dimension = new float[4, 3]
         {
                 {70,270,0.95f},
@@ -324,11 +354,48 @@ namespace PFD
                 {100,500,1.95f}
         };
 
+        public string[] arr_Serie_C_BtoB_FormSteel_Names = new string[1]
+        {
+                "270115 back to back"
+        };
+
+        public Color[] arr_Serie_C_BtoB_FormSteel_Colors = new Color[1]
+        {
+            Color.FromRgb(204,204,204)
+        };
+
+        public float[,] arr_Serie_C_BtoB_FormSteel_Dimension = new float[1, 4]
+        {
+                {2*70,270,40,1.15f}
+        };
+
+        public string[] arr_Serie_C_Nested_FormSteel_Names = new string[1]
+        {
+                "270115 nested"
+        };
+
+        public Color[] arr_Serie_C_Nested_FormSteel_Colors = new Color[1]
+        {
+            Color.FromRgb(122,40,204)
+        };
+
+        public float[,] arr_Serie_C_Nested_FormSteel_Dimension = new float[1, 3]
+        {
+                {70,290,1.15f}
+        };
+
         public string[] arr_Serie_Box63020_FormSteel_Names = new string[3]
         {
                 "63020-Without Stiffener",
                 "63020-Single Stiffened",
                 "63020-Double Stiffened"
+        };
+
+        public Color[] arr_Serie_Box63020_FormSteel_Colors = new Color[3]
+        {
+            Color.FromRgb(0,38,255),  // Blue
+            Color.FromRgb(0,148,255), // Blue
+            Color.FromRgb(0,255,255)  // Blue
         };
 
         public float[,] arr_Serie_Box63020_FormSteel_Dimension = new float[3, 4]

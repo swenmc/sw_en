@@ -115,7 +115,7 @@ namespace sw_en_GUI
                     _trackport.ViewPort.Children.Add(sAxisZ_3D);
                 }
 
-                bool bDisplayMembersSurface = true;
+                bool bDisplayMembersSurface = false;
 
                 // Create model geometry
                 if (bDisplayMembersSurface && cmodel.m_arrMembers != null) // Some members exist
