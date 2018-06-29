@@ -39,14 +39,14 @@ namespace BaseClasses
 
             if (fGirtVectorDirection > 0)
             {
-                fControlPointXCoord1 = (float)(m_Node.X - 0.5f * m_MainMember.CrScStart.b - m_ft);
+                fControlPointXCoord1 = (float)(m_Node.X - 0.5f * m_MainMember.CrScStart.b);
 
                 fControlPointYCoord1 = (float)(m_Node.Y + 0.5f * m_SecondaryMembers[0].CrScStart.h);
                 fControlPointYCoord2 = (float)(m_Node.Y - 0.5f * m_SecondaryMembers[0].CrScStart.h);
             }
             else
             {
-                fControlPointXCoord1 = (float)(m_Node.X + 0.5f * m_MainMember.CrScStart.b + m_ft);
+                fControlPointXCoord1 = (float)(m_Node.X + 0.5f * m_MainMember.CrScStart.b);
 
                 fControlPointYCoord1 = (float)(m_Node.Y - 0.5f * m_SecondaryMembers[0].CrScStart.h);
                 fControlPointYCoord2 = (float)(m_Node.Y + 0.5f * m_SecondaryMembers[0].CrScStart.h);
