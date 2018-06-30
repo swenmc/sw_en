@@ -638,8 +638,8 @@ namespace sw_en_GUI
                     {
                         if (cmodel.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
                         {
-                            // Joint model wireframe
-                            ScreenSpaceLines3D wireFrameGroup = new ScreenSpaceLines3D();
+                            // Joint model wireframe                            
+                            List<ScreenSpaceLines3D> wireFrameGroup = new List<ScreenSpaceLines3D>(10); //cislom alokujem pociatocnu kapacitu kolekcie
 
                             // Plates
                             if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
@@ -655,7 +655,7 @@ namespace sw_en_GUI
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
                                     }
 
-                                    wireFrameGroup.Children.Add(wireFrame);
+                                    wireFrameGroup.Add(wireFrame);
                                 }
                             }
 
@@ -668,9 +668,8 @@ namespace sw_en_GUI
                                     ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrBolts[j].CreateWireFrameModel();
 
                                     // Rotate from LCS to GCS
-
                                     // TODO
-                                    wireFrameGroup.Children.Add(wireFrame);
+                                    wireFrameGroup.Add(wireFrame);
                                 }
                             }
 
@@ -685,7 +684,7 @@ namespace sw_en_GUI
                                     // Rotate from LCS to GCS
 
                                     // TODO
-                                    wireFrameGroup.Children.Add(wireFrame);
+                                    wireFrameGroup.Add(wireFrame);
                                 }
                             }
 
@@ -695,14 +694,19 @@ namespace sw_en_GUI
                                 cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
                                 cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
                             {
-                                cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(wireFrameGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                                cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(ref wireFrameGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
                             }
 
                             // Add Wireframe Lines to the trackport
 
                             // TODO - !!!!! Nefunguje wireFrame uz je child of Visual3D
 
-                            //_trackport.ViewPort.Children.Add(wireFrameGroup);
+                            // kolekcia a v cykle pridane ScreenLines3D do Viewportu
+                            foreach (ScreenSpaceLines3D wireFrame in wireFrameGroup)
+                            {
+                                _trackport.ViewPort.Children.Add(wireFrame);
+                            }
+                            
                         }
                     }
                 }

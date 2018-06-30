@@ -54,6 +54,13 @@ namespace BaseClasses
             // Return transformed model
             return wireframeModel_out;
         }
+        public void Transform3D_OnMemberEntity_fromLCStoGCS(ref List<ScreenSpaceLines3D> wireframeModel_original_group, CMember member)
+        {
+            foreach (ScreenSpaceLines3D wireframeModel_original in wireframeModel_original_group)
+            {
+                wireframeModel_original.Transform = CreateTransformCoordGroup(member);                
+            }
+        }
 
         public Transform3DGroup CreateTransformCoordGroup(CMember member)
         {
