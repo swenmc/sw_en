@@ -46,6 +46,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Nodes
             m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
             m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0000.0f, 0);
+            //m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
+            //m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
@@ -55,6 +57,8 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Members
             m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
+            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
+            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());
@@ -79,6 +83,12 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Create Release / Hinge Objects
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
+
+            // Connection Joints
+            m_arrConnectionJoints = new List<CConnectionJointTypes>();
+            // Joints
+            m_arrConnectionJoints.Add(new CConnectionJoint_T001(m_arrMembers[000].NodeStart, m_arrMembers[0], m_arrMembers[000], true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T001(m_arrMembers[000].NodeEnd, m_arrMembers[0], m_arrMembers[000], true));
         }
     }
 }

@@ -27,6 +27,8 @@ namespace BaseClasses
 
         public CConnectionJoint_B001(CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, bool bIsDisplayed_temp)
         {
+            bIsJointDefinedinGCS = true;
+
             m_Node = Node_temp;
             m_MainMember = MainFrameColumn_temp;
             m_SecondaryMembers = new CMember[1];

@@ -21,6 +21,8 @@ namespace BaseClasses
 
         public CConnectionJoint_E001(CNode Node_temp, CMember MainFrameRafter_temp, CMember Purlin_temp, bool bIsDisplayed_temp)
         {
+            bIsJointDefinedinGCS = true;
+
             m_Node = Node_temp;
             m_MainMember = MainFrameRafter_temp;
             m_SecondaryMembers = new CMember[1];

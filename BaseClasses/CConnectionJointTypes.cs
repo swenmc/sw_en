@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
-    public class CConnectionJointTypes : CEntity
+    public class CConnectionJointTypes : CEntity3D
     {
         public CPlate[] m_arrPlates;
         public CBolt[] m_arrBolts;
@@ -17,6 +17,7 @@ namespace BaseClasses
         public CNode m_Node;
         public Point3D m_ControlPoint;
         public CNode[] m_arrAssignedNodesWithJointType;
+        public bool bIsJointDefinedinGCS;
 
         public CConnectionJointTypes() { }
 

@@ -5,10 +5,11 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
+using _3DTools;
 
 namespace BaseClasses
 {
-	//[Serializable]
+    //[Serializable]
     // Base class of all topological model entities
     abstract public class CEntity3D : CEntity
     {
@@ -22,7 +23,7 @@ namespace BaseClasses
         }
         */
 
-        public  CPoint m_pControlPoint = new CPoint();
+        public CPoint m_pControlPoint = new CPoint();
         public string m_Mat;
         public string m_Shape;
 
@@ -32,6 +33,29 @@ namespace BaseClasses
         public CEntity3D() { }
 
         public Model3DGroup Transform3D_OnMemberEntity_fromLCStoGCS(Model3DGroup modelgroup_original, CMember member)
+        {
+            // Objekty na prute s x <> 0
+            // Modelgroup musime pridat ako child do novej modelgroup inak sa "Transform" definovane z 0,0,0 do LCS pruta prepise "Transform" z LCS do GCS
+
+            Model3DGroup modelgroup_out = new Model3DGroup();
+            modelgroup_out.Children.Add(modelgroup_original);
+            modelgroup_out.Transform = CreateTransformCoordGroup(member);
+
+            // Return transformed model group
+            return modelgroup_out;
+        }
+
+        public ScreenSpaceLines3D Transform3D_OnMemberEntity_fromLCStoGCS(ScreenSpaceLines3D wireframeModel_original, CMember member)
+        {
+            ScreenSpaceLines3D wireframeModel_out = new ScreenSpaceLines3D();
+            wireframeModel_out.Children.Add(wireframeModel_original);
+            wireframeModel_out.Transform = CreateTransformCoordGroup(member);
+
+            // Return transformed model
+            return wireframeModel_out;
+        }
+
+        public Transform3DGroup CreateTransformCoordGroup(CMember member)
         {
             double dAlphaX = 0;
             double dBetaY = 0;
@@ -61,15 +85,7 @@ namespace BaseClasses
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
             Trans3DGroup.Children.Add(Translate3D_AUX);
 
-            // Objekty na prute s x <> 0
-            // Modelgroup musime pridat ako child do novej modelgroup inak sa "Transform" definovane z 0,0,0 do LCS pruta prepise "Transform" z LCS do GCS
-
-            Model3DGroup modelgroup_out = new Model3DGroup();
-            modelgroup_out.Children.Add(modelgroup_original);
-            modelgroup_out.Transform = Trans3DGroup;
-
-            // Return transformed model group
-            return modelgroup_out;
+            return Trans3DGroup;
         }
     }
 }

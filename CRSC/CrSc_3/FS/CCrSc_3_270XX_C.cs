@@ -52,7 +52,7 @@ namespace CRSC
         }
 
         public CCrSc_3_270XX_C(float fh, float fb, float ft, Color color_temp)
-      {
+        {
             CSColor = color_temp;  // Set cross-section color
             //ITotNoPoints = 56;
             IsShapeSolid = true;
@@ -89,6 +89,8 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
+            ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
+
             // Fill list of indices for drawing of surface - triangles edges
 
             // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
@@ -98,8 +100,8 @@ namespace CRSC
 
         }
 
-      public void CalcCrSc_Coord()
-      {
+        public void CalcCrSc_Coord()
+        {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Point No. 1
@@ -227,6 +229,26 @@ namespace CRSC
             {
                 CrScPointsOut[ITotNoPoints / 2 + i, 0] = CrScPointsOut[ITotNoPoints - i - 1, 0];
                 CrScPointsOut[ITotNoPoints / 2 + i, 1] = -CrScPointsOut[ITotNoPoints - i - 1, 1];
+            }
+        }
+
+        public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
+        {
+            // Temporary - odstranit po implementacii vypoctu
+
+            d_y_gc = -0.044; // Temporary - TODO
+            y_min = d_y_gc;
+            y_max = b + y_min;
+
+            z_min = -h / 2;
+            z_max = h / 2;
+
+            d_z_gc = 0;
+
+            for (int i = 0; i < ITotNoPoints; i++)
+            {
+                CrScPointsOut[i, 0] += (float)d_y_gc;
+                CrScPointsOut[i, 1] += (float)d_z_gc;
             }
         }
     }

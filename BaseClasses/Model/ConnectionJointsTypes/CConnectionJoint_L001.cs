@@ -21,6 +21,8 @@ namespace BaseClasses
 
         public CConnectionJoint_L001(CNode Node_temp, CMember FrontColumn_temp, CMember Girt_temp, bool bIsDisplayed_temp)
         {
+            bIsJointDefinedinGCS = true;
+
             m_Node = Node_temp;
             m_MainMember = FrontColumn_temp;
             m_SecondaryMembers = new CMember[1];

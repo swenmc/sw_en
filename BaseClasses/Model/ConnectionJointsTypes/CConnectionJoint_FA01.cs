@@ -21,6 +21,8 @@ namespace BaseClasses
 
         public CConnectionJoint_FA01(CMember FrontColumn_temp, bool bIsDisplayed_temp)
         {
+            bIsJointDefinedinGCS = true;
+
             m_Node = FrontColumn_temp.NodeStart;
             m_MainMember = FrontColumn_temp;
 
