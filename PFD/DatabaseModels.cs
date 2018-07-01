@@ -8,6 +8,7 @@ namespace PFD
 {
     public class DatabaseModels
     {
+        //mena premmennych treba zvolit tak aby bolo mozne im rozumiet b,L,L1,h,FrNo  to nema sancu nikto rozkodovat co znamena
         public float fb;
         public float fL;
         public float fL1;

@@ -25,6 +25,7 @@ using M_AS4600;
 using M_EC1.AS_NZS;
 using System.Windows.Media.Media3D;
 using _3DTools;
+using System.ComponentModel;
 
 namespace PFD
 {
@@ -45,18 +46,18 @@ namespace PFD
         public DatabaseModels dmodels; // Todo nahradit databazov modelov
         public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
 
-        int selected_Model_Index;
-        float fb; // 3 - 100 m
-        float fL; // 3 - 150 m
-        float fh; // 2 -  50 m (h1)
-        float fL1;
-        int iFrNo; // 2 - 50
-        float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
-        float fh2;
-        float fdist_girt; // 0.5 - 5 m
-        float fdist_purlin; // 0.5 - 5 m
-        float fdist_frontcolumn; // 1 - 10 m
-        float fdist_girt_bottom; // 1 - 10 m
+        //int selected_Model_Index;
+        //float fb; // 3 - 100 m
+        //float fL; // 3 - 150 m
+        //float fh; // 2 -  50 m (h1)
+        //float fL1;
+        //int iFrNo; // 2 - 50
+        //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
+        //float fh2;
+        //float fdist_girt; // 0.5 - 5 m
+        //float fdist_purlin; // 0.5 - 5 m
+        //float fdist_frontcolumn; // 1 - 10 m
+        //float fdist_girt_bottom; // 1 - 10 m
 
         List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
@@ -65,6 +66,7 @@ namespace PFD
         public MainWindow()
         {
             ci = new CultureInfo("en-us");
+            ci.NumberFormat.NumberDecimalSeparator = ".";
 
             // Database Connection
             // TODO Pripojit DATABASE\bin\Debug\MDB.db
@@ -73,8 +75,7 @@ namespace PFD
             dmodels = new DatabaseModels();
             dlocations = new DatabaseLocations();
 
-            InitializeComponent();
-            this.DataContext = new CPFDViewModel();
+            InitializeComponent();            
 
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
@@ -82,17 +83,22 @@ namespace PFD
             foreach (string locationname in dlocations.arr_LocationNames)
                 Combobox_Location.Items.Add(locationname);
 
+            CPFDViewModel vm = new CPFDViewModel(1);
+            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+            this.DataContext = vm;
+
             // Set data from database in to the Window textboxes
-            SetDataFromDatabasetoWindow();
+            //SetDataFromDatabasetoWindow();
 
             // Load data from window
 
-            LoadDataFromWindow();
+            //LoadDataFromWindow();
 
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom);
+            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.fdist_girt_bottom);
+            
+            //model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom);
             //model = new CExample_3D_902_OM();
 
             // Create 3D window
@@ -101,43 +107,48 @@ namespace PFD
             // Display model in 3D preview frame
             Frame1.Content = page1;
         }
-        
 
-        private void SetDataFromDatabasetoWindow()
+
+        protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
-            CultureInfo ci = new CultureInfo("en");
-            ci.NumberFormat.NumberDecimalSeparator = ".";
+            //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
 
-            DatabaseModels dmodel = new DatabaseModels(Combobox_Models.SelectedIndex);
-
-            TextBox_Gable_Width.Text = dmodel.fb.ToString(ci);
-            TextBox_Length.Text = dmodel.fL.ToString(ci);
-            TextBox_Wall_Height.Text = dmodel.fh.ToString(ci);
-            TextBox_Frames_No.Text = dmodel.iFrNo.ToString(ci);
-            TextBox_Roof_Pitch.Text = dmodel.fRoof_Pitch_deg.ToString(ci);
-            TextBox_Girt_Distance.Text = dmodel.fdist_girt.ToString(ci);
-            TextBox_Purlin_Distance.Text = dmodel.fdist_purlin.ToString(ci);
-            TextBox_Column_Distance.Text = dmodel.fdist_frontcolumn.ToString(ci);
+            DeleteCalculationResults();
+            UpdateAll();
         }
 
-        private void LoadDataFromWindow()
-        {
-            selected_Model_Index = Combobox_Models.SelectedIndex;
+        //private void SetDataFromDatabasetoWindow()
+        //{
+        //    DatabaseModels dmodel = new DatabaseModels(Combobox_Models.SelectedIndex);
 
-            fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci);
-            fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci);
-            fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci);
-            iFrNo = (int)Convert.ToInt64(TextBox_Frames_No.Text, ci);
-            fL1 = fL / (iFrNo - 1);
-            fRoofPitch_radians = (float)Convert.ToDecimal(TextBox_Roof_Pitch.Text, ci) * MathF.fPI / 180f;
-            fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
-            fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci);
-            fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci);
-            fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci);
+        //    TextBox_Gable_Width.Text = dmodel.fb.ToString(ci);
+        //    TextBox_Length.Text = dmodel.fL.ToString(ci);
+        //    TextBox_Wall_Height.Text = dmodel.fh.ToString(ci);
+        //    TextBox_Frames_No.Text = dmodel.iFrNo.ToString(ci);
+        //    TextBox_Roof_Pitch.Text = dmodel.fRoof_Pitch_deg.ToString(ci);
+        //    TextBox_Girt_Distance.Text = dmodel.fdist_girt.ToString(ci);
+        //    TextBox_Purlin_Distance.Text = dmodel.fdist_purlin.ToString(ci);
+        //    TextBox_Column_Distance.Text = dmodel.fdist_frontcolumn.ToString(ci);
+        //}
 
-            // Temporary
-            fdist_girt_bottom = dmodels.fdist_girt_bottom;
-        }
+        //private void LoadDataFromWindow()
+        //{
+        //    selected_Model_Index = Combobox_Models.SelectedIndex;
+
+        //    fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci);
+        //    fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci);
+        //    fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci);
+        //    iFrNo = (int)Convert.ToInt64(TextBox_Frames_No.Text, ci);
+        //    fL1 = fL / (iFrNo - 1);
+        //    fRoofPitch_radians = (float)Convert.ToDecimal(TextBox_Roof_Pitch.Text, ci) * MathF.fPI / 180f;
+        //    fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
+        //    fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci);
+        //    fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci);
+        //    fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci);
+
+        //    // Temporary
+        //    fdist_girt_bottom = dmodels.fdist_girt_bottom;
+        //}
 
         private void DeleteCalculationResults()
         {
@@ -150,7 +161,9 @@ namespace PFD
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom); // create calculation model // TODO - set purlin distances
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.fdist_girt_bottom);
+            //model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom); // create calculation model // TODO - set purlin distances
 
             // Clear results of previous calculation
             DeleteCalculationResults();
@@ -459,36 +472,39 @@ namespace PFD
         private void DeleteLists()
         {
             zoznamMenuNazvy.Clear();
-            zoznamMenuNazvy.Clear();
+            zoznamMenuNazvy.Clear();   //Mato co to? 2x ten isty riadok
             zoznamMenuJednotky.Clear();
         }
 
-        private void ComboBox_Models_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DeleteCalculationResults();
+        //private void ComboBox_Models_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    DeleteCalculationResults();
 
-            SetDataFromDatabasetoWindow();
+        //    SetDataFromDatabasetoWindow();
 
-            // Load data from window
-            LoadDataFromWindow();
+        //    // Load data from window
+        //    LoadDataFromWindow();
 
-            // Create Model
-            // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn,fdist_girt_bottom);
+        //    // Create Model
+        //    // Kitset Steel Gable Enclosed Buildings
+        //    model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn,fdist_girt_bottom);
 
-            // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model);
+        //    // Create 3D window
+        //    Page3Dmodel page1 = new Page3Dmodel(model);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
-            this.UpdateLayout();
-        }
+        //    // Display model in 3D preview frame
+        //    Frame1.Content = page1;
+        //    this.UpdateLayout();
+        //}
 
         private void UpdateAll()
         {
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn, fdist_girt_bottom);
+            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.fdist_girt_bottom);
+
+            //model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn, fdist_girt_bottom);
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -503,153 +519,153 @@ namespace PFD
 
         }
 
-        private void TextBox_Gable_Width_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci);
-                    // Recalculate roof pitch
-                    fRoofPitch_radians = (float)Math.Atan((fh2 - fh) / (0.5f * fb));
-                    // Set new value in GUI
-                    TextBox_Roof_Pitch.Text = (fRoofPitch_radians * 180f / MathF.fPI).ToString();
+        //private void TextBox_Gable_Width_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fb = (float)Convert.ToDecimal(TextBox_Gable_Width.Text, ci);
+        //            // Recalculate roof pitch
+        //            fRoofPitch_radians = (float)Math.Atan((fh2 - fh) / (0.5f * fb));
+        //            // Set new value in GUI
+        //            TextBox_Roof_Pitch.Text = (fRoofPitch_radians * 180f / MathF.fPI).ToString();
 
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void TextBox_Length_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci);
-                    // Recalculate fL1
-                    fL1 = fL / (iFrNo - 1);
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //private void TextBox_Length_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fL = (float)Convert.ToDecimal(TextBox_Length.Text, ci);
+        //            // Recalculate fL1
+        //            fL1 = fL / (iFrNo - 1);
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void TextBox_Wall_Height_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci);
-                    // Recalculate roof heigth
-                    fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //private void TextBox_Wall_Height_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fh = (float)Convert.ToDecimal(TextBox_Wall_Height.Text, ci);
+        //            // Recalculate roof heigth
+        //            fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void TextBox_Frames_No_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    iFrNo = (int)Convert.ToInt64(TextBox_Frames_No.Text, ci);
-                    // Recalculate L1
-                    fL1 = fL / (iFrNo - 1);
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //private void TextBox_Frames_No_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            iFrNo = (int)Convert.ToInt64(TextBox_Frames_No.Text, ci);
+        //            // Recalculate L1
+        //            fL1 = fL / (iFrNo - 1);
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void TextBox_Roof_Pitch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fRoofPitch_radians = (float)Convert.ToDecimal(TextBox_Roof_Pitch.Text, ci) * MathF.fPI / 180f;
-                    // Recalculate h2
-                    fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //private void TextBox_Roof_Pitch_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fRoofPitch_radians = (float)Convert.ToDecimal(TextBox_Roof_Pitch.Text, ci) * MathF.fPI / 180f;
+        //            // Recalculate h2
+        //            fh2 = fh + 0.5f * fb * (float)Math.Tan(fRoofPitch_radians);
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void ComboBox_Location_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        //private void ComboBox_Location_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
 
-        }
+        //}
 
-        private void TextBox_Girt_Distance_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci);
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //private void TextBox_Girt_Distance_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fdist_girt = (float)Convert.ToDecimal(TextBox_Girt_Distance.Text, ci);
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void TextBox_Purlin_Distance_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci);
-                    DeleteCalculationResults();
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
+        //private void TextBox_Purlin_Distance_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fdist_purlin = (float)Convert.ToDecimal(TextBox_Purlin_Distance.Text, ci);
+        //            DeleteCalculationResults();
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
 
-        private void TextBox_Column_Distance_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selected_Model_Index != 0)
-            {
-                try
-                {
-                    fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci);
-                    DeleteCalculationResults();
+        //private void TextBox_Column_Distance_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (selected_Model_Index != 0)
+        //    {
+        //        try
+        //        {
+        //            fdist_frontcolumn = (float)Convert.ToDecimal(TextBox_Column_Distance.Text, ci);
+        //            DeleteCalculationResults();
 
-                    // Re-calculate value of distance between columns (number of columns per frame is always even
-                    int iOneRafterFrontColumnNo = (int)((0.5f * fb) / fdist_frontcolumn);
-                    int iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
-                    // Update value of distance between columns
-                    fdist_frontcolumn = (fb / (iFrontColumnNoInOneFrame + 1));
-                    // Set value in textbox
-                    TextBox_Column_Distance.Text = fdist_frontcolumn.ToString();
+        //            // Re-calculate value of distance between columns (number of columns per frame is always even
+        //            int iOneRafterFrontColumnNo = (int)((0.5f * fb) / fdist_frontcolumn);
+        //            int iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
+        //            // Update value of distance between columns
+        //            fdist_frontcolumn = (fb / (iFrontColumnNoInOneFrame + 1));
+        //            // Set value in textbox
+        //            TextBox_Column_Distance.Text = fdist_frontcolumn.ToString();
 
-                    UpdateAll();
-                }
-                catch
-                { }
-            }
-        }
-        
+        //            UpdateAll();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
+
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel) Frame1.Content;
@@ -686,36 +702,36 @@ namespace PFD
         //float fdist_frontcolumn; // 1 - 10 m
         //float fdist_girt_bottom; // 1 - 10 m
 
-        private void TextBox_Gable_Width_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !IsValidGableWidth(((TextBox)sender).Text + e.Text);
-        }
-        private static bool IsValidGableWidth(string str)
-        {
-            double d;
-            return double.TryParse(str, out d) && d >= 3 && d <= 100;
-        }
+        //private void TextBox_Gable_Width_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    e.Handled = !IsValidGableWidth(((TextBox)sender).Text + e.Text);
+        //}
+        //private static bool IsValidGableWidth(string str)
+        //{
+        //    double d;
+        //    return double.TryParse(str, out d) && d >= 3 && d <= 100;
+        //}
 
-        private void TextBox_Length_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !IsValidLength(((TextBox)sender).Text + e.Text);
-        }
-        private static bool IsValidLength(string str)
-        {
-            double d;
-            return double.TryParse(str, out d) && d >= 3 && d <= 150;
-        }
+        //private void TextBox_Length_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    e.Handled = !IsValidLength(((TextBox)sender).Text + e.Text);
+        //}
+        //private static bool IsValidLength(string str)
+        //{
+        //    double d;
+        //    return double.TryParse(str, out d) && d >= 3 && d <= 150;
+        //}
 
-        private void TextBox_Rangetextbox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            bool valid = IsValidMyRange(((TextBox)sender).Text);
-            e.Handled = !valid;
-        }
-        private static bool IsValidMyRange(string str)
-        {
-            double d;
-            return double.TryParse(str, out d) && d >= 5 && d <= 100;
-        }
+        //private void TextBox_Rangetextbox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    bool valid = IsValidMyRange(((TextBox)sender).Text);
+        //    e.Handled = !valid;
+        //}
+        //private static bool IsValidMyRange(string str)
+        //{
+        //    double d;
+        //    return double.TryParse(str, out d) && d >= 5 && d <= 100;
+        //}
 
         private void SystemComponentViewer_Click(object sender, RoutedEventArgs e)
         {

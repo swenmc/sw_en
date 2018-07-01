@@ -15,6 +15,7 @@ namespace CRSC
         // Plati aj pre pruty s nabehom s rovnakym poctom bodov v reze - 2D
         // Use also for tapered members with same number of nodes (points) in section - 2D
         private Int32Collection m_TriangleIndices;
+        private Int32Collection m_WireFrameIndices;
 
         public Int32Collection TriangleIndices
         {
@@ -566,20 +567,11 @@ namespace CRSC
             set { m_z_max = value; }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        public Int32Collection WireFrameIndices
+        {
+            get { return m_WireFrameIndices; }
+            set { m_WireFrameIndices = value; }
+        }
 
         public CMat_00 m_Mat = new CMat_00();
 
@@ -618,10 +610,20 @@ namespace CRSC
 			Indices.Add(point4);
 			Indices.Add(point3);
 		}
+        protected void AddRectangleWireFrameIndices_CW_1234(Int32Collection Indices,
+              int point1, int point2,
+              int point3, int point4)
+        {
+            // Main numbering is clockwise
+            Indices.Add(point1);
+            Indices.Add(point2);
+            Indices.Add(point3);
+            Indices.Add(point4);
+        }
 
-		// Draw Rectangle / Add rectangle indices - countrer-clockwise CCW numbering of input points 1,2,3,4 (see scheme)
-		// Add in order 1,4,3,2
-		protected void AddRectangleIndices_CCW_1234(Int32Collection Indices,
+        // Draw Rectangle / Add rectangle indices - countrer-clockwise CCW numbering of input points 1,2,3,4 (see scheme)
+        // Add in order 1,4,3,2
+        protected void AddRectangleIndices_CCW_1234(Int32Collection Indices,
 			  int point1, int point2,
 			  int point3, int point4)
 		{

@@ -343,7 +343,8 @@ namespace BaseClasses
             return model;
         }
 
-        public void getG_M_3D_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, out GeometryModel3D modelFrontSide, out GeometryModel3D modelShell, out GeometryModel3D modelBackSide)
+        public void getG_M_3D_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, 
+            out GeometryModel3D modelFrontSide, out GeometryModel3D modelShell, out GeometryModel3D modelBackSide)
         {
             modelFrontSide = new GeometryModel3D();
             modelShell = new GeometryModel3D();
