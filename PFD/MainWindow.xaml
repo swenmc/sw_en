@@ -52,7 +52,7 @@
                            VerticalAlignment="Top" />
                 <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="100"
                          TextWrapping="Wrap" VerticalAlignment="Top"   
-                         Text="{Binding Path=GableWidth, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"  
                           TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
 

@@ -38,7 +38,9 @@ namespace PFD
         public float fL1;
         public float fh2;
         public float fdist_girt_bottom;
-        public float fRoofPitch_radians;        
+        public float fRoofPitch_radians;
+
+        private bool IsSetFromCode = false;
 
         public int ModelIndex
         {
@@ -53,14 +55,16 @@ namespace PFD
                 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
                 DatabaseModels dmodel = new DatabaseModels(MModelIndex);
-                MGableWidth = dmodel.fb;                
-                MLength = dmodel.fL;
-                MWallHeight = dmodel.fh;
-                MFrames = dmodel.iFrNo;
-                MRoofPitch = dmodel.fRoof_Pitch_deg;
-                MGirtDistance = dmodel.fdist_girt;
-                MPurlinDistance = dmodel.fdist_purlin;
-                MColumnDistance = dmodel.fdist_frontcolumn;
+                //IsSetFromCode = ;
+                GableWidth = dmodel.fb;                
+                Length = dmodel.fL;
+                WallHeight = dmodel.fh;
+                Frames = dmodel.iFrNo;
+                RoofPitch = dmodel.fRoof_Pitch_deg;
+                GirtDistance = dmodel.fdist_girt;
+                PurlinDistance = dmodel.fdist_purlin;
+                ColumnDistance = dmodel.fdist_frontcolumn;
+                //IsSetFromCode = false;
 
                 //tieto 4 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fdist_girt_bottom = dmodel.fdist_girt_bottom;                
@@ -92,7 +96,7 @@ namespace PFD
                     MRoofPitch = (fRoofPitch_radians * 180f / MATH.MathF.fPI);
                 }
 
-                NotifyPropertyChanged("GableWidth");
+                if(!IsSetFromCode) NotifyPropertyChanged("GableWidth");
             }
         }
         
@@ -115,7 +119,7 @@ namespace PFD
                     fL1 = MLength / (MFrames - 1);
                 }
 
-                NotifyPropertyChanged("Length");
+                if (!IsSetFromCode) NotifyPropertyChanged("Length");
             }
         }
 
@@ -136,9 +140,9 @@ namespace PFD
                 {
                     // Recalculate roof heigth
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
-                }                
+                }
 
-                NotifyPropertyChanged("WallHeight");
+                if (!IsSetFromCode) NotifyPropertyChanged("WallHeight");
             }
         }
 
@@ -165,7 +169,7 @@ namespace PFD
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
 
-                NotifyPropertyChanged("RoofPitch");
+                if (!IsSetFromCode) NotifyPropertyChanged("RoofPitch");
             }
         }
         
@@ -188,7 +192,7 @@ namespace PFD
                     fL1 = MLength / (MFrames - 1);
                 }
 
-                NotifyPropertyChanged("Frames");
+                if (!IsSetFromCode) NotifyPropertyChanged("Frames");
             }
         }
 
@@ -206,7 +210,7 @@ namespace PFD
                 if (value < 0.5 || value > 5)
                     throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
                 MGirtDistance = value;
-                NotifyPropertyChanged("GirtDistance");
+                if (!IsSetFromCode) NotifyPropertyChanged("GirtDistance");
             }
         }
 
@@ -222,7 +226,7 @@ namespace PFD
                 if (value < 0.5 || value > 5)
                     throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
                 MPurlinDistance = value;
-                NotifyPropertyChanged("PurlinDistance");
+                if (!IsSetFromCode) NotifyPropertyChanged("PurlinDistance");
             }
         }
         
@@ -251,7 +255,7 @@ namespace PFD
                     MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));  //nie je to trosku na hlavu? Pouzivatel zada Column distance a ono sa mu to nejako prepocita a zmeni???                    
                 }
 
-                NotifyPropertyChanged("ColumnDistance");
+                if (!IsSetFromCode) NotifyPropertyChanged("ColumnDistance");
             }
         }
         
