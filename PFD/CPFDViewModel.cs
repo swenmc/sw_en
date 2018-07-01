@@ -38,7 +38,7 @@ namespace PFD
         public float fL1;
         public float fh2;
         public float fdist_girt_bottom;
-        public float fRoofPitch_radians;
+        public float fRoofPitch_radians;        
 
         public int ModelIndex
         {
@@ -61,11 +61,12 @@ namespace PFD
                 MGirtDistance = dmodel.fdist_girt;
                 MPurlinDistance = dmodel.fdist_purlin;
                 MColumnDistance = dmodel.fdist_frontcolumn;
-                
-                //tieto 3 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
+
+                //tieto 4 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
+                fdist_girt_bottom = dmodel.fdist_girt_bottom;                
                 fL1 = MLength / (MFrames - 1);
+                fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
-                fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));                
 
                 NotifyPropertyChanged("ModelIndex");
             }
