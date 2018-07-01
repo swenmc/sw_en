@@ -50,7 +50,8 @@ namespace sw_en_GUI
         public Window2()
         {
         }
-            public Window2(bool bDebugging_temp)
+
+        public Window2(bool bDebugging_temp)
         {
             InitializeComponent();
 
@@ -92,8 +93,6 @@ namespace sw_en_GUI
 
             if (cmodel != null)
             {
-                //gr.Children.Add(new AmbientLight());
-
                 // Default color
                 SolidColorBrush brushDefault = new SolidColorBrush(Colors.Red);
 

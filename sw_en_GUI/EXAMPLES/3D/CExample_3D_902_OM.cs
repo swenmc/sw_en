@@ -36,7 +36,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             //m_arrCrSc[0] = new CCrSc_3_51_BOX_TEMP(1f, 0.3f, 0.003f);
 
             //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f);
-            m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -45,7 +46,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Nodes
             m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0000.0f, 0);
+            m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
             //m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
             //m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
 
@@ -87,8 +88,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
             // Joints
-            m_arrConnectionJoints.Add(new CConnectionJoint_T001(m_arrMembers[000].NodeStart, m_arrMembers[0], m_arrMembers[000], true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_T001(m_arrMembers[000].NodeEnd, m_arrMembers[0], m_arrMembers[000], true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeStart, m_arrMembers[0], m_arrMembers[000], 0.003f, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeEnd, m_arrMembers[0], m_arrMembers[000], 0.003f, true));
         }
     }
 }

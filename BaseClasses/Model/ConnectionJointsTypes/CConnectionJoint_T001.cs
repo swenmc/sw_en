@@ -16,6 +16,7 @@ namespace BaseClasses
     {
         // Girts to Main Column Joint
         float m_ft;
+        float m_fPlate_Angle_Leg;
 
         public CConnectionJoint_T001() { }
 
@@ -27,12 +28,10 @@ namespace BaseClasses
             m_MainMember = MainFrameColumn_temp;
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = Girt_temp;
-
-            m_ft = 0.003f;
-
             BIsDisplayed = bIsDisplayed_temp;
 
-            float fPlate_Angle_Leg = 0.05f;
+            m_ft = 0.003f;
+            m_fPlate_Angle_Leg = 0.05f;
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
@@ -41,8 +40,8 @@ namespace BaseClasses
             CPoint ControlPoint_P2 = new CPoint(0, 0.5f * (float)m_MainMember.CrScStart.b, (float)(m_SecondaryMembers[0].CrScStart.y_max), - 0.5f * m_SecondaryMembers[0].CrScStart.h, 0);
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_F_or_L(ControlPoint_P1, fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, fPlate_Angle_Leg, m_ft, 90, 0, 0, 0, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_F_or_L(ControlPoint_P2, fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, fPlate_Angle_Leg, m_ft, 90, 0, 90, 0, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_F_or_L(ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, 0, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_F_or_L(ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, 0, BIsDisplayed); // Rotation angle in degrees
 
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
@@ -51,8 +50,8 @@ namespace BaseClasses
                 ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - 0.5f * (float)m_MainMember.CrScStart.b, (float)(m_SecondaryMembers[0].CrScStart.y_max), - 0.5f * m_SecondaryMembers[0].CrScStart.h, 0);
                 ControlPoint_P2 = new CPoint(0, m_SecondaryMembers[0].FLength - 0.5f * (float)m_MainMember.CrScStart.b, (float)(m_SecondaryMembers[0].CrScStart.y_min), - 0.5f * m_SecondaryMembers[0].CrScStart.h, 0);
 
-                m_arrPlates[0] = new CConCom_Plate_F_or_L(ControlPoint_P1, fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, fPlate_Angle_Leg, m_ft, 90, 0, 180+0, 0, BIsDisplayed); // Rotation angle in degrees
-                m_arrPlates[1] = new CConCom_Plate_F_or_L(ControlPoint_P2, fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, fPlate_Angle_Leg, m_ft, 90, 0, 180+90, 0, BIsDisplayed); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_F_or_L(ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180+0, 0, BIsDisplayed); // Rotation angle in degrees
+                m_arrPlates[1] = new CConCom_Plate_F_or_L(ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180+90, 0, BIsDisplayed); // Rotation angle in degrees
             }
         }
     }

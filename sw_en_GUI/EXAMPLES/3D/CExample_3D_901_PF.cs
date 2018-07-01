@@ -468,32 +468,42 @@ namespace sw_en_GUI.EXAMPLES._3D
                 m_arrConnectionJoints.Add(new CConnectionJoint_AA01(m_arrNodes[i * iFrameNodesNo + 4], m_arrMembers[i * (iFrameNodesNo - 1) + 3], true));
             }
 
+            float ft_rafter_joint_plate = 0.003f; // m
+
             // Frame Rafter Joints
             for (int i = 0; i < iFrameNo; i++)
             {
-                m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, 0.003f, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_A001(m_arrNodes[i * 5 + 2], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, ft_rafter_joint_plate, true));
             }
+
+            float ft_knee_joint_plate = 0.003f; // m
 
             // Knee Joints 1
             for (int i = 0; i < iFrameNo; i++)
             {
-                m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, 0.003f, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 1], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 1].CrScStart.h, ft_knee_joint_plate, true));
             }
 
             // Knee Joints 2
             for (int i = 0; i < iFrameNo; i++)
             {
-                m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2].CrScStart.h, 0.003f, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_B001(m_arrNodes[i * 5 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2], fRoofPitch_rad, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 3].CrScStart.h, 2 * (float)m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * 4 + 2].CrScStart.h, ft_knee_joint_plate, true));
             }
 
             // Eaves Purlin Joints
             if (iEavesPurlinNo > 0)
             {
-                for (int i = 0; i < iEavesPurlinNo; i++)
+                for (int i = 0; i < iEavesPurlinNo / iEavesPurlinNoInOneFrame; i++)
                 {
-                    CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeStart, m_arrMembers[0], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
+                    CMember current_member = m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4];
+                    //m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeStart, m_arrMembers[0], current_member, true));
+                    //m_arrConnectionJoints.Add(new CConnectionJoint_C001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T002(current_member.NodeStart, m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0], current_member, ft_knee_joint_plate, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T002(current_member.NodeEnd, m_arrMembers[(i * iEavesPurlinNoInOneFrame) + (i+1) * (iFrameNodesNo - 1) + 0], current_member, ft_knee_joint_plate, true));
+
+                    current_member = m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5];
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T002(current_member.NodeStart, m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3], current_member, ft_knee_joint_plate, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T002(current_member.NodeEnd, m_arrMembers[(i * iEavesPurlinNoInOneFrame) + (i+1) * (iFrameNodesNo - 1) + 3], current_member, ft_knee_joint_plate, true));
                 }
             }
 
