@@ -515,8 +515,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + i];
                     //m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeStart, m_arrMembers[0], current_member, true));
                     //m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[0], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[0], current_member,true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[0],current_member,true, true));
                 }
             }
 
@@ -528,8 +528,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i];
                     //m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeStart, m_arrMembers[1], current_member, true));
                     //m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeEnd, m_arrMembers[1], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[1], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[1], current_member, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[1], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[1], current_member, true, true));
                 }
             }
 
@@ -561,8 +561,30 @@ namespace sw_en_GUI.EXAMPLES._3D
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + i];
                     //m_arrConnectionJoints.Add(new CConnectionJoint_J001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
                     //m_arrConnectionJoints.Add(new CConnectionJoint_J001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true));
+
+                    // Number of girts in the middle
+                    int iNumberOfGirtsInMiddle = iArrNumberOfNodesPerFrontColumn[iOneRafterFrontColumnNo - 1];
+                    // Number of girts without middle
+                    int iNumberOfSymmetricalGirts = iFrontGirtsNoInOneFrame - iNumberOfGirtsInMiddle;
+                    // Number of girts in the half of frame (without middle)
+                    int iNumberOfSymmetricalGirtsHalf = iNumberOfSymmetricalGirts / 2;
+
+                    // Joint at member start - connected to the first main column
+                    if (i < iGirtNoInOneFrame / 2) // First column of girts are connected to the first main column
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[0], current_member, false, true)); // Use height (z dimension)
+                    }
+                    else if((iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle - 1) < i && i < (iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle + iOneColumnGridNo)) // Joint at member start - connected to the second main column
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[3], current_member, false, true)); // Use height (z dimension)
+                    }
+                    else
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true, true));
+                    }
+
+                    // Joint at member end
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true, true));
                 }
             }
 
@@ -574,8 +596,29 @@ namespace sw_en_GUI.EXAMPLES._3D
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + i];
                     //m_arrConnectionJoints.Add(new CConnectionJoint_L001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true));
                     //m_arrConnectionJoints.Add(new CConnectionJoint_L001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true));
+
+                    // Number of girts in the middle
+                    int iNumberOfGirtsInMiddle = iArrNumberOfNodesPerBackColumn[iOneRafterBackColumnNo - 1];
+                    // Number of girts without middle
+                    int iNumberOfSymmetricalGirts = iBackGirtsNoInOneFrame - iNumberOfGirtsInMiddle;
+                    // Number of girts in the half of frame (without middle)
+                    int iNumberOfSymmetricalGirtsHalf = iNumberOfSymmetricalGirts / 2;
+
+                    // Joint at member start - connected to the first main column
+                    if (i < iGirtNoInOneFrame / 2) // First column of girts are connected to the first main column
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1)], current_member, false, true)); // Use height (z dimension)
+                    }
+                    else if ((iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle - 1) < i && i < (iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle + iOneColumnGridNo)) // Joint at member start - connected to the second main column
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1) + 3], current_member, false, true)); // Use height (z dimension)
+                    }
+                    else
+                    {
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true, true));
+                    }
+
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true, true));
                 }
             }
 

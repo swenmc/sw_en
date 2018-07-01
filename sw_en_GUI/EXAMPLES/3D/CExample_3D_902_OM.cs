@@ -45,10 +45,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Nodes List - Nodes Array
 
             // Nodes
-            m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
-            //m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
-            //m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
+            //m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
+            //m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
+            m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
+            m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
@@ -57,9 +57,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Members List - Members Array
 
             // Members
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
+            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
-            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());

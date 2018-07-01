@@ -404,5 +404,24 @@ namespace PFD
                 {180, 630, 1.95f, 4.95f},
                 {180, 630, 1.95f, 7.95f}
         };
+
+        public string[,] arr_Member_Types_Prefix = new string[15, 2]
+        {
+            {"G", "Girt"},
+            {"C", "Column"},
+            {"ER", "End Rafter"},
+            {"WP", "Wind Post"},
+            {"EC", "End Column"},
+            {"EP", "Edge Purlin"},
+            {"P", "Purlin"},
+            {"DT","Door Trimmer"},
+            {"DL","Door Lintel"},
+            {"PB","Purlin Block"},
+            {"GB","Girt Block"},
+            {"DF","Door Frame"},
+            {"BG","Base Girt"},
+            {"MR","Main Rafter"},
+            {"MC","Main Column"}
+        };
     }
 }
