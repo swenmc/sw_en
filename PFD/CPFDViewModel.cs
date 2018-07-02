@@ -10,6 +10,7 @@ namespace PFD
     public class CPFDViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public bool IsSetFromCode = false;
 
         //float fb; // 3 - 100 m
         //float fL; // 3 - 150 m
@@ -32,7 +33,7 @@ namespace PFD
         private float MGirtDistance;
         private float MPurlinDistance;
         private float MColumnDistance;
-
+        
 
         //tieto treba spracovat nejako 
         public float fL1;
@@ -40,7 +41,7 @@ namespace PFD
         public float fdist_girt_bottom;
         public float fRoofPitch_radians;
 
-        private bool IsSetFromCode = false;
+        
 
         public int ModelIndex
         {
@@ -55,7 +56,7 @@ namespace PFD
                 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
                 DatabaseModels dmodel = new DatabaseModels(MModelIndex);
-                //IsSetFromCode = ;
+                IsSetFromCode = true;
                 GableWidth = dmodel.fb;                
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
@@ -64,7 +65,7 @@ namespace PFD
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
-                //IsSetFromCode = false;
+                IsSetFromCode = false;
 
                 //tieto 4 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fdist_girt_bottom = dmodel.fdist_girt_bottom;                
@@ -96,7 +97,7 @@ namespace PFD
                     MRoofPitch = (fRoofPitch_radians * 180f / MATH.MathF.fPI);
                 }
 
-                if(!IsSetFromCode) NotifyPropertyChanged("GableWidth");
+                NotifyPropertyChanged("GableWidth");
             }
         }
         
@@ -119,7 +120,7 @@ namespace PFD
                     fL1 = MLength / (MFrames - 1);
                 }
 
-                if (!IsSetFromCode) NotifyPropertyChanged("Length");
+                NotifyPropertyChanged("Length");
             }
         }
 
@@ -142,7 +143,7 @@ namespace PFD
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
 
-                if (!IsSetFromCode) NotifyPropertyChanged("WallHeight");
+                NotifyPropertyChanged("WallHeight");
             }
         }
 
@@ -169,7 +170,7 @@ namespace PFD
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
 
-                if (!IsSetFromCode) NotifyPropertyChanged("RoofPitch");
+                NotifyPropertyChanged("RoofPitch");
             }
         }
         
@@ -192,7 +193,7 @@ namespace PFD
                     fL1 = MLength / (MFrames - 1);
                 }
 
-                if (!IsSetFromCode) NotifyPropertyChanged("Frames");
+                NotifyPropertyChanged("Frames");
             }
         }
 
@@ -210,7 +211,7 @@ namespace PFD
                 if (value < 0.5 || value > 5)
                     throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
                 MGirtDistance = value;
-                if (!IsSetFromCode) NotifyPropertyChanged("GirtDistance");
+                NotifyPropertyChanged("GirtDistance");
             }
         }
 
@@ -226,7 +227,7 @@ namespace PFD
                 if (value < 0.5 || value > 5)
                     throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
                 MPurlinDistance = value;
-                if (!IsSetFromCode) NotifyPropertyChanged("PurlinDistance");
+                NotifyPropertyChanged("PurlinDistance");
             }
         }
         
@@ -255,7 +256,7 @@ namespace PFD
                     MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));  //nie je to trosku na hlavu? Pouzivatel zada Column distance a ono sa mu to nejako prepocita a zmeni???                    
                 }
 
-                if (!IsSetFromCode) NotifyPropertyChanged("ColumnDistance");
+                NotifyPropertyChanged("ColumnDistance");
             }
         }
         
@@ -265,6 +266,8 @@ namespace PFD
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
+
+            IsSetFromCode = false;
         }
 
 
