@@ -89,9 +89,9 @@ namespace PFD
             
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.fdist_girt_bottom);
+            //model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.fdist_girt_bottom);
             
-            //model = new CExample_3D_902_OM();
+            model = new CExample_3D_902_OM();
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);

@@ -114,7 +114,7 @@ namespace sw_en_GUI
                     _trackport.ViewPort.Children.Add(sAxisZ_3D);
                 }
 
-                bool bDisplayMembersSurface = true;
+                bool bDisplayMembersSurface = false;
 
                 // Create model geometry
                 if (bDisplayMembersSurface && cmodel.m_arrMembers != null) // Some members exist
@@ -217,7 +217,8 @@ namespace sw_en_GUI
                     }
                 }
 
-                if (cmodel.m_arrConnectionJoints != null) // Some joints exist
+                bool displayConnectionJoints = true;
+                if (displayConnectionJoints && cmodel.m_arrConnectionJoints != null) // Some joints exist
                 {
                     for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                     {
@@ -626,7 +627,7 @@ namespace sw_en_GUI
 
                 _trackport.Model = (Model3D)gr;
 
-                bool bDisplayMembers_WireFrame = true;
+                bool bDisplayMembers_WireFrame = false;
                 // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
                 // Todo - Memory leak v objekte ScreenSpaceLines3D
 
@@ -675,13 +676,14 @@ namespace sw_en_GUI
 
                                     // Rotate from LCS system of plate to LCS system of member or GCS system (depends on joint type definition, in LCS of member or GCS system)
                                     cmodel.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
-                                    jointWireFrameGroup.Children.Add(wireFrame);
+                                    
+                                    // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta 
+                                    //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
 
-                                    // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
-                                    //Transform3DGroup a = cmodel.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
+                                    Transform3DGroup a = cmodel.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
 
-                                    //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
-                                    //jointWireFrameGroup.AddPoints(wireFrame.Points);
+                                    var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
+                                    jointWireFrameGroup.AddPoints(transformedPoints.ToList());
                                 }
                             }
 
@@ -746,6 +748,9 @@ namespace sw_en_GUI
 
                                         // Rotate all lines in the collection about local x-axis
                                         var transformedPoints = jointWireFrameGroup.Points.Select(p => rotate.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje
+                                        List<Point3D> points = transformedPoints.ToList();
+                                        jointWireFrameGroup.Points.Clear();
+                                        jointWireFrameGroup.AddPoints(points);
                                     }
                                     else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
                                     {
@@ -754,6 +759,9 @@ namespace sw_en_GUI
 
                                         // Rotate all lines in the collection about local x-axis
                                         var transformedPoints = jointWireFrameGroup.Points.Select(p => rotate.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje
+                                        List<Point3D> points = transformedPoints.ToList();
+                                        jointWireFrameGroup.Points.Clear();
+                                        jointWireFrameGroup.AddPoints(points);
                                     }
                                     else
                                     {
@@ -779,7 +787,7 @@ namespace sw_en_GUI
                             }
 
                             // Add Wireframe Lines to the trackport
-
+                            //_trackport.ViewPort.Children.Clear();
                             _trackport.ViewPort.Children.Add(jointWireFrameGroup);
                         }
                     }

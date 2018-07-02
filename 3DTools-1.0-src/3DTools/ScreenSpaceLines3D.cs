@@ -13,6 +13,7 @@
 //---------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
@@ -125,6 +126,13 @@ namespace _3DTools
         }
 
         public void AddPoints(Point3DCollection points)
+        {
+            foreach (Point3D p in points)
+            {
+                this.Points.Add(p);
+            }
+        }
+        public void AddPoints(List<Point3D> points)
         {
             foreach (Point3D p in points)
             {
