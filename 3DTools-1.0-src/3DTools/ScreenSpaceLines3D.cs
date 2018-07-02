@@ -124,14 +124,6 @@ namespace _3DTools
             set { SetValue(PointsProperty, value); }
         }
 
-        public void AddPoints(Point3DCollection points)
-        {
-            foreach (Point3D p in points)
-            {
-                this.Points.Add(p);
-            }
-        }
-
         private void OnRender(object sender, EventArgs e)
         {
             if (Points.Count == 0 && (_mesh.Positions == null || _mesh.Positions.Count == 0))
