@@ -539,7 +539,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 for (int i = 0; i < iFrontColumnNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_FA01(current_member, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
                 }
             }
 
@@ -549,7 +549,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 for (int i = 0; i < iBackColumnNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_HA01(current_member, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
                 }
             }
 
