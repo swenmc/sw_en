@@ -464,8 +464,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Frame Main Column Joints to Foundation
             for (int i = 0; i < iFrameNo; i++)
             {
-                m_arrConnectionJoints.Add(new CConnectionJoint_AA01(m_arrNodes[i * iFrameNodesNo + 0], m_arrMembers[i * (iFrameNodesNo - 1)], true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_AA01(m_arrNodes[i * iFrameNodesNo + 4], m_arrMembers[i * (iFrameNodesNo - 1) + 3], true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrNodes[i * iFrameNodesNo + 0], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0], true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrNodes[i * iFrameNodesNo + 4], m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3], true));
             }
 
             float ft_rafter_joint_plate = 0.003f; // m

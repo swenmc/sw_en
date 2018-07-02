@@ -148,6 +148,9 @@ namespace CRSC
         //m_fI_t = (m_fb * m_fb * m_fb * m_fh * m_fh * m_fh) / ((3.645f - (0.06f * m_fh / m_fb)) * (m_fb * m_fb + m_fh * m_fh));  // Unit [m4]
 
         private double m_h, m_b; // Total depth and width of section (must be defined for all section shapes)
+        public double m_y_min, m_y_max, m_z_min, m_z_max;
+        private double m_b_in; // Closed cross-section - internal clear dimension between internal outline points in local y-direction
+        private double m_h_in; // Closed cross-section - internal clear dimension internal outline points in local z-direction
 
         private double m_U,
         m_A_g,
@@ -207,11 +210,6 @@ namespace CRSC
         m_A_z_v_pl,
         m_f_z_v_plel,
         m_alpha;
-
-        public double m_y_min
-                    , m_y_max
-                    , m_z_min
-                    , m_z_max;
 
         public double S_y0
         {
@@ -397,6 +395,18 @@ namespace CRSC
         {
             get { return m_b; }
             set { m_b = value; }
+        }
+
+        public double h_in
+        {
+            get { return m_h_in; }
+            set { m_h_in = value; }
+        }
+
+        public double b_in
+        {
+            get { return m_b_in; }
+            set { m_b_in = value; }
         }
 
         public double I_y

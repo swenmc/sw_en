@@ -15,10 +15,6 @@ namespace CRSC
         private float m_ft_w; // Web Thickness  / Hrubka steny/stojiny
         private float m_fd;
 
-        private float fy_stif1_out;
-        private float fz_stif1;
-        private float fz_stif2;
-
         private float fz_1stif1_out;
         private float fy_1stif1;
         private float fy_1stif2;
@@ -84,6 +80,9 @@ namespace CRSC
 
             fz_23stif = 0.100f; // Straight part
 
+            b_in = b - 2 * MathF.Max(fy_2stif1_out, fy_3stif1_out) - 2 * m_ft_w;
+            h_in = h - 2 * fz_1stif1_out - 2 * m_ft_f;
+
             // Create Array - allocate memory
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
@@ -91,8 +90,9 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
-            // Fill list of indices for drawing of surface - triangles edges
+            ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
+            // Fill list of indices for drawing of surface - triangles edges
             // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
@@ -203,6 +203,24 @@ namespace CRSC
 
                 CrScPointsIn[INoPointsIn - i - 1, 0] = -CrScPointsIn[i, 0];                        // Inside
                 CrScPointsIn[INoPointsIn - i - 1, 1] = CrScPointsIn[i, 1];                         // Inside
+            }
+        }
+
+        public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
+        {
+            // Temporary - odstranit po implementacii vypoctu
+            d_y_gc = 0; // Temporary - TODO
+            d_z_gc = 0;
+
+            y_min = -b / 2;
+            y_max = b / 2;
+            z_min = -h / 2;
+            z_max = h / 2;
+
+            for (int i = 0; i < ITotNoPoints; i++)
+            {
+                CrScPointsOut[i, 0] += (float)d_y_gc;
+                CrScPointsOut[i, 1] += (float)d_z_gc;
             }
         }
     }
