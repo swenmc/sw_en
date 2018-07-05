@@ -53,6 +53,19 @@ namespace _3DTools
 
             CompositionTarget.Rendering += OnRender;
         }
+        public ScreenSpaceLines3D(Color color, double thickness)
+        {
+            _mesh = new MeshGeometry3D();
+            _model = new GeometryModel3D();
+            _model.Geometry = _mesh;
+            
+            this.Color = color;
+            this.Thickness = thickness;
+            this.Content = _model;
+            this.Points = new Point3DCollection();
+
+            CompositionTarget.Rendering += OnRender;
+        }
 
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register(

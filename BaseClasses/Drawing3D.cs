@@ -1,6 +1,7 @@
 ﻿using _3DTools;
 using MATH;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,38 +11,6 @@ namespace BaseClasses
 {
     public static class Drawing3D
     {
-        //-------------------------------------------------------------------------------------------------------------
-        public static void DrawGlobalAxis(Viewport3D viewPort)
-        {
-            // Global coordinate system - axis
-            ScreenSpaceLines3D sAxisX_3D = new ScreenSpaceLines3D();
-            ScreenSpaceLines3D sAxisY_3D = new ScreenSpaceLines3D();
-            ScreenSpaceLines3D sAxisZ_3D = new ScreenSpaceLines3D();
-            Point3D pGCS_centre = new Point3D(0, 0, 0);
-            Point3D pAxisX = new Point3D(1, 0, 0);
-            Point3D pAxisY = new Point3D(0, 1, 0);
-            Point3D pAxisZ = new Point3D(0, 0, 1);
-
-            sAxisX_3D.Points.Add(pGCS_centre);
-            sAxisX_3D.Points.Add(pAxisX);
-            sAxisX_3D.Color = Colors.Red;
-            sAxisX_3D.Thickness = 2;
-
-            sAxisY_3D.Points.Add(pGCS_centre);
-            sAxisY_3D.Points.Add(pAxisY);
-            sAxisY_3D.Color = Colors.Green;
-            sAxisY_3D.Thickness = 2;
-
-            sAxisZ_3D.Points.Add(pGCS_centre);
-            sAxisZ_3D.Points.Add(pAxisZ);
-            sAxisZ_3D.Color = Colors.Blue;
-            sAxisZ_3D.Thickness = 2;
-
-            viewPort.Children.Add(sAxisX_3D);
-            viewPort.Children.Add(sAxisY_3D);
-            viewPort.Children.Add(sAxisZ_3D);
-        }
-
         //-------------------------------------------------------------------------------------------------------------
         // Get model centre
         public static Point3D GetModelCentre(CModel model)
@@ -56,7 +25,23 @@ namespace BaseClasses
 
             return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
         }
+        public static Point3D GetModelCentre(CModel model, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
+        {
+            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
 
+            CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+            fModel_Length_X = fTempMax_X - fTempMin_X;
+            fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+            fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+            return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+        }
+        public static Vector3D GetLookDirection(Point3D cameraPosition, Point3D modelCentre)
+        {
+            Vector3D lookDirection = new Vector3D(-(cameraPosition.X - modelCentre.X), -(cameraPosition.Y - modelCentre.Y), -(cameraPosition.Z - modelCentre.Z));
+            return lookDirection;
+        }
         //-------------------------------------------------------------------------------------------------------------
         // Get model camera position
         public static Point3D GetModelCameraPosition(CModel model, double x, double y, double z)
@@ -65,9 +50,11 @@ namespace BaseClasses
             return new Point3D(center.X + x, center.Y + y, center.Z + z);
         }
 
+
+
         //-------------------------------------------------------------------------------------------------------------
         // Create Members Model3D
-        public static Model3D CreateMembersModel3D(CModel model, SolidColorBrush front = null, SolidColorBrush shell = null, SolidColorBrush back = null, bool transpartentModel = false, EGCS egcs = EGCS.eGCSLeftHanded)
+        public static Model3DGroup CreateMembersModel3D(CModel model, SolidColorBrush front = null, SolidColorBrush shell = null, SolidColorBrush back = null, bool transpartentModel = false, EGCS egcs = EGCS.eGCSLeftHanded)
         {
             if (front == null) front = new SolidColorBrush(Color.FromRgb(255, 64, 64)); // Material color - Front Side (red)
             if (shell == null) shell = new SolidColorBrush(Color.FromRgb(141, 238, 238)); // Material color - Shell (red)
@@ -80,7 +67,7 @@ namespace BaseClasses
             }
             else front.Opacity = shell.Opacity = back.Opacity = 0;
 
-            Model3D model3D = null;
+            Model3DGroup model3D = null;
             if (model.m_arrMembers != null) // Some members exist
             {
                 // Model Group of Members
@@ -99,8 +86,9 @@ namespace BaseClasses
                                     (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null || model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)) // Check if are particular surfaces defined
                             {
+                                if (model3D == null) model3D = new Model3DGroup();
                                 // Create Member model - one geometry model                                
-                                model3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, front);
+                                model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, front));
                             }
                             else
                             {
@@ -109,7 +97,8 @@ namespace BaseClasses
                                 if (bUseCrossSectionColor && model.m_arrMembers[i].CrScStart.CSColor != null)
                                     shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
 
-                                model3D = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back);
+                                if (model3D == null) model3D = new Model3DGroup();
+                                model3D.Children.Add(model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back));
                             }
                         }
                         else
@@ -236,11 +225,389 @@ namespace BaseClasses
         }
 
 
+        //-------------------------------------------------------------------------------------------------------------
+        // Create Other model objects model 3d group
+        public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (cmodel.m_arrGOAreas != null) // Some areas exist
+            {
+                // Model Groups of Areas
+                
+
+
+            }
+
+            if (cmodel.m_arrGOVolumes != null) // Some volumes exist
+            {
+                // Model Groups of Volumes
+                for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
+                {
+                    if (cmodel.m_arrGOVolumes[i] != null &&
+                        cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        // Get shape - prism , sphere, ...
+                        model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
+                    }
+                }
+            }
+
+            if (cmodel.m_arrGOStrWindows != null) // Some windows exist
+            {
+                // Model Groups of Windows
+                for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
+                {
+                    if (cmodel.m_arrGOStrWindows[i] != null &&
+                        cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
+                        cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
+                    {
+                        if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
+                            model3D_group.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
+                        else
+                        {
+                            //Exception - not implemented
+                        }
+                    }
+                }
+            }
+
+            if (cmodel.m_arrNSupports != null) // Some nodal supports exist
+            {
+                // Model Groups of Nodal Suports
+                for (int i = 0; i < cmodel.m_arrNSupports.Length; i++)
+                {
+                    if (cmodel.m_arrNSupports[i] != null && cmodel.m_arrNSupports[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
+                    {
+                        model3D_group.Children.Add(cmodel.m_arrNSupports[i].CreateM_3D_G_NSupport()); // Add solid to model group
+
+                        // Set support for all assigned nodes
+                    }
+                }
+            }
+
+            if (cmodel.m_arrNReleases != null) // Some member release exist
+            {
+                // Model Groups of Member Releases
+                for (int i = 0; i < cmodel.m_arrNReleases.Length; i++)
+                {
+                    if (cmodel.m_arrNReleases[i] != null && cmodel.m_arrNReleases[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
+                    {
+                        /*
+                        for (int j = 0; j < cmodel.m_arrNReleases[i].m_iMembCollection.Length; j++) // Set release for all assigned members (member nodes)
+                        {
+                            Model3DGroup model_gr = new Model3DGroup();
+                            model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
+                            // Transform modelgroup from LCS to GCS
+                            model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMembers[cmodel.m_arrNReleases[i].m_iMembCollection[j]]);
+
+                            gr.Children.Add(model_gr); // Add Release to model group
+                        }*/
+
+                        Model3DGroup model_gr = new Model3DGroup();
+                        model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
+                        // Transform modelgroup from LCS to GCS
+                        model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrNReleases[i].Member);
+
+                        model3D_group.Children.Add(model_gr); // Add Release to model group
+                    }
+                }
+            }
+
+            if (cmodel.m_arrNLoads != null) // Some nodal loads exist
+            {
+                // Model Groups of Nodal Loads
+                for (int i = 0; i < cmodel.m_arrNLoads.Length; i++)
+                {
+                    if (cmodel.m_arrNLoads[i] != null && cmodel.m_arrNLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                    {
+                        model3D_group.Children.Add(cmodel.m_arrNLoads[i].CreateM_3D_G_Load()); // Add to model group
+
+                        // Set load for all assigned nodes
+
+
+                    }
+                }
+            }
+
+            if (cmodel.m_arrMLoads != null) // Some member loads exist
+            {
+                // Model Groups of Member Loads
+                for (int i = 0; i < cmodel.m_arrMLoads.Length; i++)
+                {
+                    if (cmodel.m_arrMLoads[i] != null && cmodel.m_arrMLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                    {
+                        Model3DGroup model_gr = new Model3DGroup();
+                        model_gr = cmodel.m_arrMLoads[i].CreateM_3D_G_Load();
+                        // Transform modelgroup from LCS to GCS
+                        model_gr = cmodel.m_arrMLoads[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMLoads[i].Member);
+
+                        model3D_group.Children.Add(model_gr); // Add Release to model group
+
+                        // Set load for all assigned member
+
+
+                    }
+                }
+            }
+            return model3D_group;
+        }
+
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------        
+        public static void DrawGlobalAxis(Viewport3D viewPort)
+        {
+            // Global coordinate system - axis
+            ScreenSpaceLines3D sAxisX_3D = new ScreenSpaceLines3D();
+            ScreenSpaceLines3D sAxisY_3D = new ScreenSpaceLines3D();
+            ScreenSpaceLines3D sAxisZ_3D = new ScreenSpaceLines3D();
+            Point3D pGCS_centre = new Point3D(0, 0, 0);
+            Point3D pAxisX = new Point3D(1, 0, 0);
+            Point3D pAxisY = new Point3D(0, 1, 0);
+            Point3D pAxisZ = new Point3D(0, 0, 1);
+
+            sAxisX_3D.Points.Add(pGCS_centre);
+            sAxisX_3D.Points.Add(pAxisX);
+            sAxisX_3D.Color = Colors.Red;
+            sAxisX_3D.Thickness = 2;
+
+            sAxisY_3D.Points.Add(pGCS_centre);
+            sAxisY_3D.Points.Add(pAxisY);
+            sAxisY_3D.Color = Colors.Green;
+            sAxisY_3D.Thickness = 2;
+
+            sAxisZ_3D.Points.Add(pGCS_centre);
+            sAxisZ_3D.Points.Add(pAxisZ);
+            sAxisZ_3D.Color = Colors.Blue;
+            sAxisZ_3D.Thickness = 2;
+
+            viewPort.Children.Add(sAxisX_3D);
+            viewPort.Children.Add(sAxisY_3D);
+            viewPort.Children.Add(sAxisZ_3D);
+        }
+        //-------------------------------------------------------------------------------------------------------------        
+        // Draw Members Wire Frame
+        public static void DrawModelMembersWireFrame_temp(CModel model, Viewport3D viewPort)
+        {
+            // Members - Wire Frame
+            if (model.m_arrMembers != null)
+            {
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                    {
+                        // Create WireFrame in LCS                        
+                        ScreenSpaceLines3D wireFrame_FrontSide = model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start);
+                        ScreenSpaceLines3D wireFrame_BackSide = model.m_arrMembers[i].CreateWireFrame(model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End);
+                        ScreenSpaceLines3D wireFrame_Lateral = model.m_arrMembers[i].CreateWireFrameLateral();
+
+                        // Add Wireframe Lines to the trackport
+                        viewPort.Children.Add(wireFrame_FrontSide);
+                        viewPort.Children.Add(wireFrame_BackSide);
+                        viewPort.Children.Add(wireFrame_Lateral);
+                    }
+                }
+            }
+        }
+        // Draw Members Wire Frame - test for better performance
+        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort)
+        {
+            // Members - Wire Frame
+            if (model.m_arrMembers != null)
+            {
+                Color wireFrameColor = Color.FromRgb(60, 60, 60);
+                double thickness = 1.0;
+                ScreenSpaceLines3D wireFrame_FrontSide = new ScreenSpaceLines3D(wireFrameColor, thickness);
+                ScreenSpaceLines3D wireFrame_BackSide = new ScreenSpaceLines3D(wireFrameColor, thickness);
+                ScreenSpaceLines3D wireFrame_Lateral = new ScreenSpaceLines3D(wireFrameColor, thickness);
+
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                    {
+                        // Create WireFrame in LCS                        
+                        wireFrame_FrontSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start).Points);
+                        wireFrame_BackSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End).Points);
+                        wireFrame_Lateral.AddPoints(model.m_arrMembers[i].CreateWireFrameLateral().Points);
+                    }
+                }
+                // Add Wireframe Lines to the trackport
+                viewPort.Children.Add(wireFrame_FrontSide);
+                viewPort.Children.Add(wireFrame_BackSide);
+                viewPort.Children.Add(wireFrame_Lateral);
+            }
+        }
+
+        // Draw Model Connection Joints Wire Frame
+        public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort)
+        {
+            if (model.m_arrConnectionJoints != null)
+            {
+                for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
+                {
+                    if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
+                    {
+                        // Joint model wireframe
+                        ScreenSpaceLines3D jointWireFrameGroup = new ScreenSpaceLines3D();
+                        Transform3DGroup jointTransformGroup = new Transform3DGroup(); // Nepouzite
+
+                        // Plates
+                        if (model.m_arrConnectionJoints[i].m_arrPlates != null)
+                        {
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++)
+                            {
+                                // Create WireFrame in LCS
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel();
+
+                                // Rotate from LCS system of plate to LCS system of member or GCS system (depends on joint type definition, in LCS of member or GCS system)
+                                model.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
+
+                                // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta 
+                                //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
+
+                                Transform3DGroup a = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
+
+                                var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
+                                jointWireFrameGroup.AddPoints(transformedPoints.ToList());
+                            }
+                        }
+
+                        // Bolts
+                        if (model.m_arrConnectionJoints[i].m_arrBolts != null)
+                        {
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrBolts.Length; j++)
+                            {
+                                // Create WireFrame in LCS
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrBolts[j].CreateWireFrameModel();
+
+                                // Rotate from LCS to GCS
+                                // TODO
+                                jointWireFrameGroup.AddPoints(wireFrame.Points);
+                            }
+                        }
+
+                        // Welds
+                        if (model.m_arrConnectionJoints[i].m_arrWelds != null)
+                        {
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrWelds.Length; j++)
+                            {
+                                // Create WireFrame in LCS
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrWelds[j].CreateWireFrameModel();
+
+                                // Rotate from LCS to GCS
+
+                                // TODO
+                                jointWireFrameGroup.AddPoints(wireFrame.Points);
+                            }
+                        }
+
+                        // Rotate and translate wireframe in case joint is defined in LCS of member
+
+                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
+                        {
+                            // TODO - refaktorovat a zjednotit funkcie pre rotaciu surface modelu a wireframe modelu
+
+                            // TODO / BUG - ONDREJ
+                            // Po prvej transformacii wireframe plechov z ich povodneho suradnicoveho systemu, kde (x,y) je v rovine rozvinu plechu a z smeruje smerom z obrazovky)
+                            // do LCS pruta uz tato druha transformacia (otocenie vsetkych plechov v spojoch na prute okolo LCS osi x pruta) nefunguje,
+                            // pretoze sa aplikuje na prvotne suradnice bodov a nie na aktualne suradnice po prvej transformacii
+
+                            // Ak su lines v kolekcii a otacame jednotlive prvky kolekcie, tak sa vzdy otacaju v ramci svojho povodneho systemu a nie okolo LCS pruta
+                            // Je potrebne poskladat postupne vsetky transformacie do jednej skupiny alebo kazdu dalsiu transfromaciu realizovat uz na zmenenych suradniciach points povodneho objektu
+                            // Neviem odkial tie aktualne suradnice points zobrat, vidim len uplne povodne.
+
+                            // Rotate model about local x-axis (LCS - local coordinate system of member)
+                            if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
+                            {
+                                // Druha transformacia - vsetky plechy s dalsie komponenty na prute sa pootocia okolo LCS - os x pruta o uhol theta v pripade ze je nenulovy
+
+                                // TODO prepracovat tento blok a podmienky tak, aby v nebol prazdny else a odstranit duplicitu
+
+                                // Joint is defined in LCS of first secondary member
+                                if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                                model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
+                                !MathF.d_equal(model.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
+                                {
+                                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), model.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
+                                    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x); // We will rotate all joint components about member local x-axis
+
+                                    // Rotate all lines in the collection about local x-axis
+                                    var transformedPoints = jointWireFrameGroup.Points.Select(p => rotate.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje
+                                    List<Point3D> points = transformedPoints.ToList();
+                                    jointWireFrameGroup.Points.Clear();
+                                    jointWireFrameGroup.AddPoints(points);
+                                }
+                                else if (!MathF.d_equal(model.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
+                                {
+                                    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), model.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
+                                    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x); // We will rotate all joint components about member local x-axis
+
+                                    // Rotate all lines in the collection about local x-axis
+                                    var transformedPoints = jointWireFrameGroup.Points.Select(p => rotate.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje
+                                    List<Point3D> points = transformedPoints.ToList();
+                                    jointWireFrameGroup.Points.Clear();
+                                    jointWireFrameGroup.AddPoints(points);
+                                }
+                                else
+                                {
+                                    // There is no rotation defined
+                                }
+                            }
+
+                            // TODO  po oprave rotacie okolo LCS pruta odkomentovat a presunut plechy definovane na prute v LCS do GCS systemu
+
+                            // Tretia transformacia, vsetky plechy na prute sa potoocia do pozicie v GCS a presunu a tak ako by sa presunul prut z jeho LCS [0,0,0] do NodeStart suradnic definovanych v GCS
+
+                            /*
+                            // Joint is defined in LCS of first secondary member
+                            if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                            cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
+                            {
+                                cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(ref jointWireFrameGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                            }
+                            else // Joint is defined in LCS of main member
+                            {
+                                cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(ref jointWireFrameGroup, cmodel.m_arrConnectionJoints[i].m_MainMember);
+                            }*/
+                        }
+
+                        // Add Wireframe Lines to the trackport
+                        //_trackport.ViewPort.Children.Clear();
+                        viewPort.Children.Add(jointWireFrameGroup);
+                    }
+                }
+            }
+        }
+
+        // Draw Members Wire Frame
+        public static void DrawMemberWireFrame(CMember member, Viewport3D viewPort, float memberLength)
+        {
+            //tu je otazne,ci by to nemohlo byt na urovni CMember, ktora by vratila jeden wireframe pre cely member
+            //ScreenSpaceLines3D wireFrame = member.CreateMemberWireFrame();
+            //viewPort.Children.Add(wireFrame);
+
+            ScreenSpaceLines3D wireFrame_FrontSide = member.CreateWireFrame(0f);
+            ScreenSpaceLines3D wireFrame_BackSide = member.CreateWireFrame(memberLength);
+            ScreenSpaceLines3D wireFrame_Lateral = member.CreateWireFrameLateral();
+            
+            viewPort.Children.Add(wireFrame_FrontSide);
+            viewPort.Children.Add(wireFrame_BackSide);
+            viewPort.Children.Add(wireFrame_Lateral);
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        private static void CalculateModelLimits(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
+        public static void CalculateModelLimits(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
         {
             fMax_X = float.MinValue;
             fMin_X = float.MaxValue;
@@ -261,6 +628,39 @@ namespace BaseClasses
             else if (cmodel.m_arrGOPoints != null) // Some points exist
             {
                 fMax_X = (float) cmodel.m_arrGOPoints.Max(p => p.X);
+                fMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
+                fMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
+                fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
+                fMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
+                fMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
+            }
+            else
+            {
+                // Exception - no definition nodes or points
+                throw new Exception("Exception - no definition nodes or points");
+            }
+        }
+        public static void CalculateModelSizes(CModel cmodel, out float fMax_X, out float fMin_X, out float fMax_Y, out float fMin_Y, out float fMax_Z, out float fMin_Z)
+        {
+            fMax_X = float.MinValue;
+            fMin_X = float.MaxValue;
+            fMax_Y = float.MinValue;
+            fMin_Y = float.MaxValue;
+            fMax_Z = float.MinValue;
+            fMin_Z = float.MaxValue;
+
+            if (cmodel.m_arrNodes != null) // Some nodes exist
+            {
+                fMax_X = cmodel.m_arrNodes.Max(p => p.X);
+                fMin_X = cmodel.m_arrNodes.Min(p => p.X);
+                fMax_Y = cmodel.m_arrNodes.Max(p => p.Y);
+                fMin_Y = cmodel.m_arrNodes.Min(p => p.Y);
+                fMax_Z = cmodel.m_arrNodes.Max(p => p.Z);
+                fMin_Z = cmodel.m_arrNodes.Min(p => p.Z);
+            }
+            else if (cmodel.m_arrGOPoints != null) // Some points exist
+            {
+                fMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
                 fMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
                 fMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
                 fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);

@@ -41,82 +41,34 @@ namespace PFD
             // Default color
             SolidColorBrush brushDefault = new SolidColorBrush(Colors.Azure);
 
-            EGCS eGCS = EGCS.eGCSLeftHanded;
+            //EGCS eGCS = EGCS.eGCSLeftHanded;
             //EGCS eGCS = EGCS.eGCSRightHanded;
 
             // Global coordinate system - axis
-            if (bShowGlobalAxis)
-            {
-                // Global coordinate system - axis
-                ScreenSpaceLines3D sAxisX_3D;
-                ScreenSpaceLines3D sAxisY_3D;
-                ScreenSpaceLines3D sAxisZ_3D;
-
-                win1.DrawGlobalAxis(out sAxisX_3D, out sAxisY_3D, out sAxisZ_3D);
-
-                //I made ViewPort public property to Access ViewPort object inside TrackPort3D
-                //to ViewPort add 3 children (3 axis)
-                _trackport.ViewPort.Children.Add(sAxisX_3D);
-                _trackport.ViewPort.Children.Add(sAxisY_3D);
-                _trackport.ViewPort.Children.Add(sAxisZ_3D);
-            }
+            if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
 
             // Frame Model
             Model3DGroup gr = new Model3DGroup();
-
-            float fTempMax_X;
-            float fTempMin_X;
-            float fTempMax_Y;
-            float fTempMin_Y;
-            float fTempMax_Z;
-            float fTempMin_Z;
-
+            
             if (model != null)
             {
                 gr = win1.gr;
 
-                // Get model centre
-
-                win1.CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
-
-                float fModel_Length_X = fTempMax_X - fTempMin_X;
-                float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
-                float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
-
-                Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X + 1, pModelGeomCentre.Y - (2 * fModel_Length_Y), pModelGeomCentre.Z + (2 * fModel_Length_Z));
+                float fModel_Length_X = 0;
+                float fModel_Length_Y = 0;
+                float fModel_Length_Z = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+                _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 _trackport.Model = (Model3D)gr;
             }
 
             // Add WireFrame Model
-            // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
-
-            // Members - Wire Frame
-            if (bDisplay_WireFrame && model != null  && model.m_arrMembers != null)
-            {
-                for (int i = 0; i < model.m_arrMembers.Length; i++)
-                {
-                    if (model.m_arrMembers[i] != null &&
-                        model.m_arrMembers[i].NodeStart != null &&
-                        model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
-                    {
-                        // Create WireFrime in LCS
-                        ScreenSpaceLines3D wireFrame_FrontSide = win1.wireFrame(model.m_arrMembers[i], - model.m_arrMembers[i].FAlignment_Start);
-                        ScreenSpaceLines3D wireFrame_BackSide = win1.wireFrame(model.m_arrMembers[i], model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End);
-                        ScreenSpaceLines3D wireFrame_Lateral = win1.wireFrameLateral(model.m_arrMembers[i]);
-
-                        // Add Wireframe Lines to the trackport
-                        _trackport.ViewPort.Children.Add(wireFrame_FrontSide);
-                        _trackport.ViewPort.Children.Add(wireFrame_BackSide);
-                        _trackport.ViewPort.Children.Add(wireFrame_Lateral);
-                    }
-                }
-            }
-
+            //if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame_temp(model, _trackport.ViewPort);
+            if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
+            
             _trackport.SetupScene();
         }
 
@@ -218,31 +170,8 @@ namespace PFD
                     _trackport.Model = (Model3D)ComponentGeomModel;
                 }
 
-                // Add WireFrame Model
-                // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME (PAGE3D)
-
-                // Members - Wire Frame
-                if (bDisplay_WireFrame)
-                {
-                    // Create WireFrime in LCS
-                    //wireFrame = model.CreateWireFrameModel(); // TODO dopracovat funkcie pre zobrazenie, implementovat v objekte pruta a nie na urovni cmodelu
-
-                    ScreenSpaceLines3D wireFrame_FrontSide = new ScreenSpaceLines3D();
-                    ScreenSpaceLines3D wireFrame_BackSide = new ScreenSpaceLines3D();
-                    ScreenSpaceLines3D wireFrame_Lateral = new ScreenSpaceLines3D();
-
-                    Window2 wtemp = new Window2(); // ToDo - odstranit po zjednoteni vykreslovacich funkcii z viacerych okien a projektov AAC / PFD / SW_EN_GUI - WINDOW2
-
-                    wireFrame_FrontSide = wtemp.wireFrame(member_temp, 0f);
-                    wireFrame_BackSide = wtemp.wireFrame(member_temp, fLengthMember);
-                    wireFrame_Lateral = wtemp.wireFrameLateral(member_temp);
-
-                    // Add Wireframe Lines to the trackport
-                    //_trackport.ViewPort.Children.Add(wireFrame);
-                    _trackport.ViewPort.Children.Add(wireFrame_FrontSide);
-                    _trackport.ViewPort.Children.Add(wireFrame_BackSide);
-                    _trackport.ViewPort.Children.Add(wireFrame_Lateral);
-                }
+                // Add WireFrame Model                
+                if (bDisplay_WireFrame) Drawing3D.DrawMemberWireFrame(member_temp, _trackport.ViewPort, fLengthMember);
             }
 
             _trackport.SetupScene();

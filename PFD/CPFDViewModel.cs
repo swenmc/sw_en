@@ -9,21 +9,12 @@ namespace PFD
 {
     public class CPFDViewModel : INotifyPropertyChanged
     {
+        //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsSetFromCode = false;
 
-        //float fb; // 3 - 100 m
-        //float fL; // 3 - 150 m
-        //float fh; // 2 -  50 m (h1)
-        //float fL1;
-        //int iFrNo; // 2 - 50
-        //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
-        //float fh2;
-        //float fdist_girt; // 0.5 - 5 m
-        //float fdist_purlin; // 0.5 - 5 m
-        //float fdist_frontcolumn; // 1 - 10 m
-        //float fdist_girt_bottom; // 1 - 10 m
-
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
         private int MModelIndex;
         private float MGableWidth;
         private float MLength;
@@ -33,16 +24,18 @@ namespace PFD
         private float MGirtDistance;
         private float MPurlinDistance;
         private float MColumnDistance;
-        
 
+
+        //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako 
         public float fL1;
         public float fh2;
         public float fdist_girt_bottom;
         public float fRoofPitch_radians;
 
-        
 
+
+        //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
             get
@@ -77,6 +70,7 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
         public float GableWidth
         {
             get
@@ -100,7 +94,8 @@ namespace PFD
                 NotifyPropertyChanged("GableWidth");
             }
         }
-        
+
+        //-------------------------------------------------------------------------------------------------------------
         public float Length
         {
             get
@@ -124,6 +119,7 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
         public float WallHeight
         {
             get
@@ -147,6 +143,7 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
         public float RoofPitch
         {
             get
@@ -173,7 +170,8 @@ namespace PFD
                 NotifyPropertyChanged("RoofPitch");
             }
         }
-        
+
+        //-------------------------------------------------------------------------------------------------------------
         public int Frames
         {
             get
@@ -198,7 +196,8 @@ namespace PFD
         }
 
 
-        
+
+        //-------------------------------------------------------------------------------------------------------------
         public float GirtDistance
         {
             get
@@ -215,6 +214,7 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
         public float PurlinDistance
         {
             get
@@ -230,7 +230,8 @@ namespace PFD
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
-        
+
+        //-------------------------------------------------------------------------------------------------------------
         public float ColumnDistance
         {
             get
@@ -259,8 +260,11 @@ namespace PFD
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
-        
 
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
         public CPFDViewModel(int modelIndex)
         {
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
@@ -271,6 +275,7 @@ namespace PFD
         }
 
 
+        //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {
             if (this.PropertyChanged != null)

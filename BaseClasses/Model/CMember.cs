@@ -8,7 +8,7 @@ using System.Windows.Media;
 using MATH;
 using MATERIAL;
 using CRSC;
-
+using _3DTools;
 
 namespace BaseClasses
 {
@@ -893,40 +893,6 @@ namespace BaseClasses
 
             return pointsCollection;
         }
-
-        public void GetRotationAngles(out double dAlphaX, out double dBetaY, out double dGammaZ, out double dBetaY_aux, out double dGammaZ_aux)
-        {
-            Point3D pA = new Point3D (NodeStart.X, NodeStart.Y, NodeStart.Z);
-            Point3D pB = new Point3D(NodeEnd.X, NodeEnd.Y, NodeEnd.Z);
-
-            double dDelta_X = pB.X - pA.X;
-            double dDelta_Y = pB.Y - pA.Y;
-            double dDelta_Z = pB.Z - pA.Z;
-
-            // Uhly pootocenia LCS okolo osi GCS
-            // Angles
-            dAlphaX = Geom2D.GetAlpha2D_CW(dDelta_Y, dDelta_Z);
-            dBetaY = Geom2D.GetAlpha2D_CW_2(dDelta_X, dDelta_Z); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
-            dGammaZ = Geom2D.GetAlpha2D_CW(dDelta_X, dDelta_Y);
-
-            double dLength_XY = 0;
-
-            if (!MathF.d_equal(dDelta_X, 0.0) || !MathF.d_equal(dDelta_Y, 0.0))
-               dLength_XY = Math.Sqrt(Math.Pow(dDelta_X, 2) + Math.Pow(dDelta_Y, 2));
-
-            // Auxialiary angles for members graphics
-            dBetaY_aux = Geom2D.GetAlpha2D_CW_3(dDelta_X, dDelta_Z, Math.Sqrt(Math.Pow(dLength_XY, 2) + Math.Pow(dDelta_Z, 2)));
-            dGammaZ_aux = dGammaZ;
-
-            if (Math.PI / 2 < dBetaY && dBetaY < 1.5 * Math.PI)
-            {
-                if (dGammaZ < Math.PI)
-                    dGammaZ_aux = dGammaZ + Math.PI;
-                else
-                    dGammaZ_aux = dGammaZ - Math.PI;
-            }
-        }
-
         public Point3D RotateTranslatePoint3D(EGCS eGCS, Point3D pA, Point3D p, double betaY, double gamaZ, double theta_x, double dDeltaX, double dDeltaY, double dDeltaZ)
         {
             Point3D p3Drotated = new Point3D();
@@ -1072,6 +1038,227 @@ namespace BaseClasses
 
             return p3Drotated;
         }
+
+        public void GetRotationAngles(out double dAlphaX, out double dBetaY, out double dGammaZ, out double dBetaY_aux, out double dGammaZ_aux)
+        {
+            Point3D pA = new Point3D (NodeStart.X, NodeStart.Y, NodeStart.Z);
+            Point3D pB = new Point3D(NodeEnd.X, NodeEnd.Y, NodeEnd.Z);
+
+            double dDelta_X = pB.X - pA.X;
+            double dDelta_Y = pB.Y - pA.Y;
+            double dDelta_Z = pB.Z - pA.Z;
+
+            // Uhly pootocenia LCS okolo osi GCS
+            // Angles
+            dAlphaX = Geom2D.GetAlpha2D_CW(dDelta_Y, dDelta_Z);
+            dBetaY = Geom2D.GetAlpha2D_CW_2(dDelta_X, dDelta_Z); // !!! Pre pootocenie okolo Y su pouzite ine kvadranty !!!
+            dGammaZ = Geom2D.GetAlpha2D_CW(dDelta_X, dDelta_Y);
+
+            double dLength_XY = 0;
+
+            if (!MathF.d_equal(dDelta_X, 0.0) || !MathF.d_equal(dDelta_Y, 0.0))
+               dLength_XY = Math.Sqrt(Math.Pow(dDelta_X, 2) + Math.Pow(dDelta_Y, 2));
+
+            // Auxialiary angles for members graphics
+            dBetaY_aux = Geom2D.GetAlpha2D_CW_3(dDelta_X, dDelta_Z, Math.Sqrt(Math.Pow(dLength_XY, 2) + Math.Pow(dDelta_Z, 2)));
+            dGammaZ_aux = dGammaZ;
+
+            if (Math.PI / 2 < dBetaY && dBetaY < 1.5 * Math.PI)
+            {
+                if (dGammaZ < Math.PI)
+                    dGammaZ_aux = dGammaZ + Math.PI;
+                else
+                    dGammaZ_aux = dGammaZ - Math.PI;
+            }
+        }
+
+
+
+        //refaktoring
+        public ScreenSpaceLines3D CreateWireFrame(float x, EGCS eGCS = EGCS.eGCSLeftHanded, Color? color = null, double thickness = 1.0)
+        {
+            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
+            Color wireFrameColor = Color.FromRgb(60, 60, 60);
+            if (color != null) wireFrameColor = (Color)color;
+            wireFrame.Color = wireFrameColor;
+            wireFrame.Thickness = thickness;
+
+            // Todo Prepracovat pre vnutornu a vonkajsiu outline
+            // Zjednotit s AAC panel
+
+            float fy, fz;
+
+            if (CrScStart.CrScPointsOut != null && CrScStart.CrScPointsOut.Length > 0)
+            {
+                for (int i = 0; i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
+
+                    if (i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints - 1)
+                    {
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                        pi = new Point3D(x, fy, fz);
+
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+
+                        pj = new Point3D(x, fy, fz);
+                    }
+                    else // Last line
+                    {
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                        pi = new Point3D(x, fy, fz);
+
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+
+                        pj = new Point3D(x, fy, fz);
+                    }
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
+            }
+
+            if (CrScStart.CrScPointsIn != null && CrScStart.CrScPointsIn.Length > 0)
+            {
+                for (int i = 0; i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
+
+                    if (i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints - 1)
+                    {
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                        pi = new Point3D(x, fy, fz);
+
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+
+                        pj = new Point3D(x, fy, fz);
+                    }
+                    else // Last line
+                    {
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                        pi = new Point3D(x, fy, fz);
+
+                        // Rotate about local x-axis
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+
+                        pj = new Point3D(x, fy, fz);
+                    }
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
+            }
+
+            // Transform coordinates from LCS to GCS
+            Point3D p_temp = new Point3D();
+            p_temp.X = NodeStart.X;
+            p_temp.Y = NodeStart.Y;
+            p_temp.Z = NodeStart.Z;
+
+            TransformMember_LCStoGCS(eGCS, p_temp, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, wireFrame.Points);
+
+            return wireFrame;
+        }
+
+        public ScreenSpaceLines3D CreateWireFrameLateral(EGCS eGCS = EGCS.eGCSLeftHanded, Color? color = null, double thickness = 1.0)
+        {
+            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();            
+            Color wireFrameColor = Color.FromRgb(60, 60, 60);
+            if (color != null) wireFrameColor = (Color)color;
+            wireFrame.Color = wireFrameColor;
+            wireFrame.Thickness = thickness;
+
+            // Todo Prepracovat pre vnutornu a vonkajsiu outline
+            // Zjednotit s AAC panel
+
+            float fy, fz;
+
+            if (CrScStart.CrScPointsOut != null && CrScStart.CrScPointsOut.Length > 0)
+            {
+                for (int i = 0; i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
+
+                    // Rotate about local x-axis
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                    pi = new Point3D(- FAlignment_Start, fy, fz);
+
+                    // Rotate about local x-axis
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                    pj = new Point3D(FLength + FAlignment_End, fy, fz);
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
+            }
+
+            if (CrScStart.CrScPointsIn != null && CrScStart.CrScPointsIn.Length > 0)
+            {
+                for (int i = 0; i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints; i++)
+                {
+                    Point3D pi = new Point3D();
+                    Point3D pj = new Point3D();
+
+                    // Rotate about local x-axis
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                    pi = new Point3D(-FAlignment_Start, fy, fz);
+
+                    // Rotate about local x-axis
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+
+                    pj = new Point3D(FLength + FAlignment_End, fy, fz);
+
+                    // Add points
+                    wireFrame.Points.Add(pi);
+                    wireFrame.Points.Add(pj);
+                }
+            }
+
+            // Transform coordinates from LCS to GCS
+            Point3D p_temp = new Point3D();
+            p_temp.X = NodeStart.X;
+            p_temp.Y = NodeStart.Y;
+            p_temp.Z = NodeStart.Z;
+
+            TransformMember_LCStoGCS(eGCS, p_temp, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, wireFrame.Points);
+
+            return wireFrame;
+        }
+        
+
+
         protected Point3D RotatePoint_POKUSY(EGCS eGCS, Point3D pA, Point3D p, double alphaX, double betaY, double gamaZ, double dDeltaX, double dDeltaY, double dDeltaZ)
         {
             Point3D p3Drotated = new Point3D();

@@ -97,359 +97,23 @@ namespace sw_en_GUI
                 SolidColorBrush brushDefault = new SolidColorBrush(Colors.Red);
 
                 bool bShowGlobalAxis = true;
-
-                if(bShowGlobalAxis)
-                {
-                    // Global coordinate system - axis
-                    ScreenSpaceLines3D sAxisX_3D;
-                    ScreenSpaceLines3D sAxisY_3D;
-                    ScreenSpaceLines3D sAxisZ_3D;
-
-                    DrawGlobalAxis(out sAxisX_3D, out sAxisY_3D, out sAxisZ_3D);
-
-                    //I made ViewPort public property to Access ViewPort object inside TrackPort3D
-                    //to ViewPort add 3 children (3 axis)
-                    _trackport.ViewPort.Children.Add(sAxisX_3D);
-                    _trackport.ViewPort.Children.Add(sAxisY_3D);
-                    _trackport.ViewPort.Children.Add(sAxisZ_3D);
-                }
-
-                bool bDisplayMembersSurface = false;
-
-                // Create model geometry
-                if (bDisplayMembersSurface && cmodel.m_arrMembers != null) // Some members exist
-                {
-                    // Auxialiary for generation of colors numbers
-                    float j = 0;
-
-                    // Model Group of Members
-                    // Prepare member model
-                    for (int i = 0; i < cmodel.m_arrMembers.Length; i++) // !!! BUG pocet prvkov sa nacitava z xls aj z prazdnych riadkov pokial su nejako formatovane / nie default
-                    {
-                        if (cmodel.m_arrMembers[i] != null &&
-                            cmodel.m_arrMembers[i].NodeStart != null &&
-                            cmodel.m_arrMembers[i].NodeEnd != null &&
-                            cmodel.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
-                        {
-                            if (bDebugging)
-                            {
-                                System.Console.Write("\n" + "Member ID:" + (i + 1).ToString() + "\n"); // Write Member ID in console window
-                                System.Console.Write("Start Node ID:" + cmodel.m_arrMembers[i].NodeStart.ID.ToString() + "\n"); // Write Start Node ID and coordinates in console window
-                                System.Console.Write(cmodel.m_arrMembers[i].NodeStart.X.ToString() + "\t" + cmodel.m_arrMembers[i].NodeStart.Y.ToString() + "\t" + cmodel.m_arrMembers[i].NodeStart.Z.ToString() + "\n");
-                                System.Console.Write("End Node ID:" + cmodel.m_arrMembers[i].NodeEnd.ID.ToString() + "\n");     // Write   End Node ID and coordinates in console window
-                                System.Console.Write(cmodel.m_arrMembers[i].NodeEnd.X.ToString() + "\t" + cmodel.m_arrMembers[i].NodeEnd.Y.ToString() + "\t" + cmodel.m_arrMembers[i].NodeEnd.Z.ToString() + "\n\n");
-
-                                cmodel.m_arrMembers[i].BIsDebugging = bDebugging;
-                            }
-
-                            if (cmodel.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
-                            {
-                                // Member material color
-                                byte R = (byte)(250);
-                                byte G = (byte)(240);
-                                byte B = (byte)(230);
-
-                                SolidColorBrush br = new SolidColorBrush(Color.FromRgb(R, G, B)); // Material color
-                                br.Opacity = 0.8;
-
-                                // Set different color for each member
-                                bool bDiffMemberColors = false;
-
-                                if (bDiffMemberColors)
-                                {
-                                    if (j < 20) // 20*10 = 200, 200 + 55 - 255 (maxium number of color)
-                                    {
-                                        br.Color = Color.FromRgb((byte)(55 + j * 10), (byte)(55 + j * 7), (byte)(55 + j * 5));
-                                        j++;
-                                    }
-                                    else
-                                    {
-                                        j = 0;
-                                    }
-                                }
-
-                                bool bFastRendering = false;
-
-                                if (bFastRendering ||
-                                    (cmodel.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
-                                        cmodel.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
-                                        cmodel.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)
-                                        ) // Check if are particular surfaces defined
-                                {
-                                    // Create Member model - one geometry model
-                                    // GeometryModel3D memberModel3D;
-                                    // Add current member model to the model group
-                                    gr.Children.Add((Model3D)cmodel.m_arrMembers[i].getG_M_3D_Member(eGCS, br));
-                                }
-                                else
-                                {
-                                    // Create Member model - consist of 3 geometry models (member is one model group)
-                                    // Model3DGroup memberModel3D;
-                                    // Add current member model to the model group
-
-                                    SolidColorBrush br1 = new SolidColorBrush(Color.FromRgb(255, 64, 64)); // Material color - Front Side (red)
-                                    SolidColorBrush br2 = new SolidColorBrush(Color.FromRgb(141, 238, 238)); // Material color - Shell (red)
-                                    SolidColorBrush br3 = new SolidColorBrush(Color.FromRgb(238, 154, 73)); // Material color - Back Side (orange)
-
-                                    bool bIsTranspartentModel = false;
-
-                                    if (bIsTranspartentModel)
-                                    {
-                                        br1.Opacity = br3.Opacity = 0.8;
-                                        br2.Opacity = 0.4;
-                                    }
-                                    else
-                                        br1.Opacity = br2.Opacity = br3.Opacity = 0;
-
-                                    bool bUseCrossSectionColor = true;
-
-                                    if (bUseCrossSectionColor && cmodel.m_arrMembers[i].CrScStart.CSColor != null)
-                                        br2 = new SolidColorBrush(cmodel.m_arrMembers[i].CrScStart.CSColor);
-
-                                    gr.Children.Add(cmodel.m_arrMembers[i].getM_3D_G_Member(eGCS, br1, br2, br3));
-                                }
-                            }
-                            else
-                            {
-                                // Display axis line, member is not valid to display in 3D
-                            }
-                        }
-                    }
-                }
-
+                if(bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);                    
+                
+                bool bDisplayMembersSurface = true;
+                Model3D membersModel3D = null;
+                if (bDisplayMembersSurface) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel);
+                if (membersModel3D != null) gr.Children.Add(membersModel3D);
+                
                 bool displayConnectionJoints = true;
-                if (displayConnectionJoints && cmodel.m_arrConnectionJoints != null) // Some joints exist
-                {
-                    for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
-                    {
-                        // Brushes
+                Model3DGroup jointsModel3DGroup = null;
+                if(displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
+                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
-                        SolidColorBrush bPlates = new SolidColorBrush(Colors.Gray);
-                        SolidColorBrush bBolts = new SolidColorBrush(Colors.Red);
-                        SolidColorBrush bWelds = new SolidColorBrush(Colors.Orange);
-
-                        // Models3D or ModelGroups Components
-                        Model3DGroup JointModelGroup = new Model3DGroup();
-
-                        // Plates
-                        if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
-                        {
-                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; l++)
-                            {
-                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l] != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
-                                {
-                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(bPlates)); // Add plate 3D model to the model group
-                                }
-                            }
-                        }
-
-                        // Bolts
-                        if (cmodel.m_arrConnectionJoints[i].m_arrBolts != null)
-                        {
-                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrBolts.Length; l++)
-                            {
-                                if (cmodel.m_arrConnectionJoints[i].m_arrBolts[l] != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrBolts[l].m_pControlPoint != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrBolts[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
-                                {
-                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrBolts[l].CreateGeomModel3D(bBolts)); // Add bolt 3D model to the model group
-                                }
-                            }
-                        }
-
-                        // Welds
-                        if (cmodel.m_arrConnectionJoints[i].m_arrWelds != null)
-                        {
-                            for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; l++)
-                            {
-                                if (cmodel.m_arrConnectionJoints[i].m_arrWelds[l] != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].m_pControlPoint != null &&
-                                cmodel.m_arrConnectionJoints[i].m_arrWelds[l].BIsDisplayed == true) // Weld object is valid (not empty) and should be displayed
-                                {
-                                    JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrWelds[l].CreateGeomModel3D(bWelds)); // Add weld 3D model to the model group
-                                }
-                            }
-                        }
-
-                        // Rotate model about local x-axis (LCS - local coordinate system of member)
-                        if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                        {
-                            // TODO prepracovat tento blok a podmienky tak, aby v nebol prazdny else a odstranit duplicitu
-
-                            // Joint is defined in LCS of first secondary member
-                            if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                            cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
-                            !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
-                            {
-                                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
-                                RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                                JointModelGroup.Transform = rotate;
-                            }
-                            else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
-                            {
-                                AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
-                                RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                                JointModelGroup.Transform = rotate;
-                            }
-                            else
-                            {
-                                // There is not rotation
-
-                            }
-                        }
-
-                        // Rotate and translate model in GCS (global coordinate system of whole structure / building)
-                        if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                        {
-                            // Create new model group
-                            Model3DGroup JointModelGroup_temp = new Model3DGroup();
-                            JointModelGroup_temp.Children.Add(JointModelGroup);
-
-                            // Joint is defined in LCS of first secondary member
-                            if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                            cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
-                            {
-                                // Transform model group
-                                JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-                            }
-                            else // Joint is defined in LCS of main member
-                            {
-                                // Transform model group
-                                JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_MainMember);
-                            }
-                        }
-
-                        // Add joint model group to the global model group items
-                        gr.Children.Add(JointModelGroup);
-                    }
-                }
-
-                if (cmodel.m_arrGOAreas != null) // Some areas exist
-                {
-                        // Model Groups of Areas
-
-
-
-
-
-
-
-                }
-
-                if (cmodel.m_arrGOVolumes != null) // Some volumes exist
-                {
-                    // Model Groups of Volumes
-                    for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)
-                    {
-                        if (cmodel.m_arrGOVolumes[i] != null &&
-                            cmodel.m_arrGOVolumes[i].m_pControlPoint != null &&
-                            cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                        {
-                            // Get shape - prism , sphere, ...
-                            gr.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
-                        }
-                    }
-                }
-
-                if (cmodel.m_arrGOStrWindows != null) // Some windows exist
-                {
-                    // Model Groups of Windows
-                    for (int i = 0; i < cmodel.m_arrGOStrWindows.Length; i++)
-                    {
-                        if (cmodel.m_arrGOStrWindows[i] != null &&
-                            cmodel.m_arrGOStrWindows[i].m_pControlPoint != null &&
-                            cmodel.m_arrGOStrWindows[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
-                        {
-                            if (cmodel.m_arrGOStrWindows[i].EShapeType == EWindowShapeType.eClassic)
-                                gr.Children.Add(cmodel.m_arrGOStrWindows[i].CreateM_3D_G_Window()); // Add solid to model group
-                            else
-                            {
-                                //Exception - not implemented
-                            }
-                        }
-                    }
-                }
-
-                if (cmodel.m_arrNSupports != null) // Some nodal supports exist
-                {
-                    // Model Groups of Nodal Suports
-                    for (int i = 0; i < cmodel.m_arrNSupports.Length; i++)
-                    {
-                        if (cmodel.m_arrNSupports[i] != null && cmodel.m_arrNSupports[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
-                        {
-                            gr.Children.Add(cmodel.m_arrNSupports[i].CreateM_3D_G_NSupport()); // Add solid to model group
-
-                            // Set support for all assigned nodes
-                        }
-                    }
-                }
-
-                if (cmodel.m_arrNReleases != null) // Some member release exist
-                {
-                    // Model Groups of Member Releases
-                    for (int i = 0; i < cmodel.m_arrNReleases.Length; i++)
-                    {
-                        if (cmodel.m_arrNReleases[i] != null && cmodel.m_arrNReleases[i].BIsDisplayed == true) // Support object is valid (not empty) and should be displayed
-                        {
-                            /*
-                            for (int j = 0; j < cmodel.m_arrNReleases[i].m_iMembCollection.Length; j++) // Set release for all assigned members (member nodes)
-                            {
-                                Model3DGroup model_gr = new Model3DGroup();
-                                model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
-                                // Transform modelgroup from LCS to GCS
-                                model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMembers[cmodel.m_arrNReleases[i].m_iMembCollection[j]]);
-
-                                gr.Children.Add(model_gr); // Add Release to model group
-                            }*/
-
-                            Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = cmodel.m_arrNReleases[i].CreateM_3D_G_MNRelease();
-                            // Transform modelgroup from LCS to GCS
-                            model_gr = cmodel.m_arrNReleases[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrNReleases[i].Member);
-
-                            gr.Children.Add(model_gr); // Add Release to model group
-                        }
-                    }
-                }
-
-                if (cmodel.m_arrNLoads != null) // Some nodal loads exist
-                {
-                    // Model Groups of Nodal Loads
-                    for (int i = 0; i < cmodel.m_arrNLoads.Length; i++)
-                    {
-                        if (cmodel.m_arrNLoads[i] != null && cmodel.m_arrNLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
-                        {
-                            gr.Children.Add(cmodel.m_arrNLoads[i].CreateM_3D_G_Load()); // Add to model group
-
-                            // Set load for all assigned nodes
-
-
-                        }
-                    }
-                }
-
-                if (cmodel.m_arrMLoads != null) // Some member loads exist
-                {
-                    // Model Groups of Member Loads
-                    for (int i = 0; i < cmodel.m_arrMLoads.Length; i++)
-                    {
-                        if (cmodel.m_arrMLoads[i] != null && cmodel.m_arrMLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
-                        {
-                            Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = cmodel.m_arrMLoads[i].CreateM_3D_G_Load();
-                            // Transform modelgroup from LCS to GCS
-                            model_gr = cmodel.m_arrMLoads[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMLoads[i].Member);
-
-                            gr.Children.Add(model_gr); // Add Release to model group
-
-                            // Set load for all assigned member
-
-
-                        }
-                    }
-                }
+                bool displayOtherObjects3D = true;
+                Model3DGroup othersModel3DGroup = null;
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
+                if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
+                
 
                 /*
                     The following lights derive from the base class Light:
@@ -490,6 +154,8 @@ namespace sw_en_GUI
                 Ambient_Light.Color = Color.FromRgb(250, 250, 230);
                 gr.Children.Add(new AmbientLight());
 
+                //Ondrej
+                //Popravde absolutne netusim naco to tu je a co to robi
                 if (cmodel.m_arrGOLines != null) // Some lines exist
                 {
                     Point3D solidCenter = new Point3D(-5, 0, 0);
@@ -586,24 +252,9 @@ namespace sw_en_GUI
                     _trackport.ViewPort.Children.Add(line11);
                     _trackport.ViewPort.Children.Add(line12);
                 }
-
-                // Get model centre
-                float fTempMax_X;
-                float fTempMin_X;
-                float fTempMax_Y;
-                float fTempMin_Y;
-                float fTempMax_Z;
-                float fTempMin_Z;
-
-                CalculateModelLimits(cmodel, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
-
-                float fModel_Length_X = fTempMax_X - fTempMin_X;
-                float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
-                float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
-
-                Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 300, pModelGeomCentre.Z + 100);
+                
+                //Count camera Position for Model
+                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(cmodel, 0, 300, 100);
 
                 //SolidColorBrush brush = new SolidColorBrush(Color.FromRgb(255, 255, 0));
                 //GeometryModel3D model = getGeometryModel3D(brush, obj_CrSc, new Point3D(10, 10, 10), new Point3D(500, 300, 200));
@@ -627,172 +278,12 @@ namespace sw_en_GUI
 
                 _trackport.Model = (Model3D)gr;
 
-                bool bDisplayMembers_WireFrame = false;
-                // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME
-                // Todo - Memory leak v objekte ScreenSpaceLines3D
-
-                // Members - Wire Frame
-                if (bDisplayMembers_WireFrame && cmodel.m_arrMembers != null)
-                {
-                    for (int i = 0; i < cmodel.m_arrMembers.Length; i++)
-                    {
-                        if (cmodel.m_arrMembers[i] != null &&
-                            cmodel.m_arrMembers[i].NodeStart != null &&
-                            cmodel.m_arrMembers[i].NodeEnd != null &&
-                            cmodel.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
-                        {
-                            // Create WireFrame in LCS
-                            ScreenSpaceLines3D wireFrame_FrontSide = wireFrame(cmodel.m_arrMembers[i], - cmodel.m_arrMembers[i].FAlignment_Start);
-                            ScreenSpaceLines3D wireFrame_BackSide = wireFrame(cmodel.m_arrMembers[i], cmodel.m_arrMembers[i].FLength + cmodel.m_arrMembers[i].FAlignment_End);
-                            ScreenSpaceLines3D wireFrame_Lateral = wireFrameLateral(cmodel.m_arrMembers[i]);
-
-                            // Add Wireframe Lines to the trackport
-                            _trackport.ViewPort.Children.Add(wireFrame_FrontSide);
-                            _trackport.ViewPort.Children.Add(wireFrame_BackSide);
-                            _trackport.ViewPort.Children.Add(wireFrame_Lateral);
-                        }
-                    }
-                }
+                bool bDisplayMembers_WireFrame = true;
+                if (bDisplayMembers_WireFrame) Drawing3D.DrawModelMembersWireFrame(cmodel, _trackport.ViewPort);                
 
                 bool bDisplayConnectionJointsWireFrame = true;
-
-                if (bDisplayConnectionJointsWireFrame && cmodel.m_arrConnectionJoints != null)
-                {
-                    for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
-                    {
-                        if (cmodel.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
-                        {
-                            // Joint model wireframe
-                            ScreenSpaceLines3D jointWireFrameGroup = new ScreenSpaceLines3D();
-                            Transform3DGroup jointTransformGroup = new Transform3DGroup(); // Nepouzite
-
-                            // Plates
-                            if (cmodel.m_arrConnectionJoints[i].m_arrPlates != null)
-                            {
-                                for (int j = 0; j < cmodel.m_arrConnectionJoints[i].m_arrPlates.Length; j++)
-                                {
-                                    // Create WireFrame in LCS
-                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel();
-
-                                    // Rotate from LCS system of plate to LCS system of member or GCS system (depends on joint type definition, in LCS of member or GCS system)
-                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
-                                    
-                                    // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta 
-                                    //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
-
-                                    Transform3DGroup a = cmodel.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
-
-                                    var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
-                                    jointWireFrameGroup.AddPoints(transformedPoints.ToList());
-                                }
-                            }
-
-                            // Bolts
-                            if (cmodel.m_arrConnectionJoints[i].m_arrBolts != null)
-                            {
-                                for (int j = 0; j < cmodel.m_arrConnectionJoints[i].m_arrBolts.Length; j++)
-                                {
-                                    // Create WireFrame in LCS
-                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrBolts[j].CreateWireFrameModel();
-
-                                    // Rotate from LCS to GCS
-                                    // TODO
-                                    jointWireFrameGroup.AddPoints(wireFrame.Points);
-                                }
-                            }
-
-                            // Welds
-                            if (cmodel.m_arrConnectionJoints[i].m_arrWelds != null)
-                            {
-                                for (int j = 0; j < cmodel.m_arrConnectionJoints[i].m_arrWelds.Length; j++)
-                                {
-                                    // Create WireFrame in LCS
-                                    ScreenSpaceLines3D wireFrame = cmodel.m_arrConnectionJoints[i].m_arrWelds[j].CreateWireFrameModel();
-
-                                    // Rotate from LCS to GCS
-
-                                    // TODO
-                                    jointWireFrameGroup.AddPoints(wireFrame.Points);
-                                }
-                            }
-
-                            // Rotate and translate wireframe in case joint is defined in LCS of member
-
-                            if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
-                            {
-                                // TODO - refaktorovat a zjednotit funkcie pre rotaciu surface modelu a wireframe modelu
-
-                                // TODO / BUG - ONDREJ
-                                // Po prvej transformacii wireframe plechov z ich povodneho suradnicoveho systemu, kde (x,y) je v rovine rozvinu plechu a z smeruje smerom z obrazovky)
-                                // do LCS pruta uz tato druha transformacia (otocenie vsetkych plechov v spojoch na prute okolo LCS osi x pruta) nefunguje,
-                                // pretoze sa aplikuje na prvotne suradnice bodov a nie na aktualne suradnice po prvej transformacii
-
-                                // Ak su lines v kolekcii a otacame jednotlive prvky kolekcie, tak sa vzdy otacaju v ramci svojho povodneho systemu a nie okolo LCS pruta
-                                // Je potrebne poskladat postupne vsetky transformacie do jednej skupiny alebo kazdu dalsiu transfromaciu realizovat uz na zmenenych suradniciach points povodneho objektu
-                                // Neviem odkial tie aktualne suradnice points zobrat, vidim len uplne povodne.
-
-                                // Rotate model about local x-axis (LCS - local coordinate system of member)
-                                if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                                {
-                                    // Druha transformacia - vsetky plechy s dalsie komponenty na prute sa pootocia okolo LCS - os x pruta o uhol theta v pripade ze je nenulovy
-
-                                    // TODO prepracovat tento blok a podmienky tak, aby v nebol prazdny else a odstranit duplicitu
-
-                                    // Joint is defined in LCS of first secondary member
-                                    if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                                    cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
-                                    !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
-                                    {
-                                        AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
-                                        RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x); // We will rotate all joint components about member local x-axis
-
-                                        // Rotate all lines in the collection about local x-axis
-                                        var transformedPoints = jointWireFrameGroup.Points.Select(p => rotate.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje
-                                        List<Point3D> points = transformedPoints.ToList();
-                                        jointWireFrameGroup.Points.Clear();
-                                        jointWireFrameGroup.AddPoints(points);
-                                    }
-                                    else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
-                                    {
-                                        AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
-                                        RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x); // We will rotate all joint components about member local x-axis
-
-                                        // Rotate all lines in the collection about local x-axis
-                                        var transformedPoints = jointWireFrameGroup.Points.Select(p => rotate.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje
-                                        List<Point3D> points = transformedPoints.ToList();
-                                        jointWireFrameGroup.Points.Clear();
-                                        jointWireFrameGroup.AddPoints(points);
-                                    }
-                                    else
-                                    {
-                                        // There is no rotation defined
-                                    }
-                                }
-
-                                // TODO  po oprave rotacie okolo LCS pruta odkomentovat a presunut plechy definovane na prute v LCS do GCS systemu
-
-                                // Tretia transformacia, vsetky plechy na prute sa potoocia do pozicie v GCS a presunu a tak ako by sa presunul prut z jeho LCS [0,0,0] do NodeStart suradnic definovanych v GCS
-
-                                /*
-                                // Joint is defined in LCS of first secondary member
-                                if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                                cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
-                                {
-                                    cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(ref jointWireFrameGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-                                }
-                                else // Joint is defined in LCS of main member
-                                {
-                                    cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(ref jointWireFrameGroup, cmodel.m_arrConnectionJoints[i].m_MainMember);
-                                }*/
-                            }
-
-                            // Add Wireframe Lines to the trackport
-                            //_trackport.ViewPort.Children.Clear();
-                            _trackport.ViewPort.Children.Add(jointWireFrameGroup);
-                        }
-                    }
-                }
-
+                if (bDisplayConnectionJointsWireFrame) Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
+                
                 _trackport.SetupScene();
             }
         }
@@ -877,183 +368,183 @@ namespace sw_en_GUI
             }
         }
 
-        public ScreenSpaceLines3D wireFrame(CMember member, float x)
-        {
-            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
-            wireFrame.Color = Color.FromRgb(60, 60, 60);
-            wireFrame.Thickness = 1.0;
+        //public ScreenSpaceLines3D wireFrame(CMember member, float x)
+        //{
+        //    ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
+        //    wireFrame.Color = Color.FromRgb(60, 60, 60);
+        //    wireFrame.Thickness = 1.0;
 
-            // Todo Prepracovat pre vnutornu a vonkajsiu outline
-            // Zjednotit s AAC panel
+        //    // Todo Prepracovat pre vnutornu a vonkajsiu outline
+        //    // Zjednotit s AAC panel
 
-            float fy, fz;
+        //    float fy, fz;
 
-            if (member.CrScStart.CrScPointsOut != null && member.CrScStart.CrScPointsOut.Length > 0)
-            {
-                for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
-                {
-                    Point3D pi = new Point3D();
-                    Point3D pj = new Point3D();
+        //    if (member.CrScStart.CrScPointsOut != null && member.CrScStart.CrScPointsOut.Length > 0)
+        //    {
+        //        for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+        //        {
+        //            Point3D pi = new Point3D();
+        //            Point3D pj = new Point3D();
 
-                    if (i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints - 1)
-                    {
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            if (i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints - 1)
+        //            {
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
 
-                        pi = new Point3D(x, fy, fz);
+        //                pi = new Point3D(x, fy, fz);
 
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
 
-                        pj = new Point3D(x, fy, fz);
-                    }
-                    else // Last line
-                    {
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //                pj = new Point3D(x, fy, fz);
+        //            }
+        //            else // Last line
+        //            {
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
 
-                        pi = new Point3D(x, fy, fz);
+        //                pi = new Point3D(x, fy, fz);
 
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
 
-                        pj = new Point3D(x, fy, fz);
-                    }
+        //                pj = new Point3D(x, fy, fz);
+        //            }
 
-                    // Add points
-                    wireFrame.Points.Add(pi);
-                    wireFrame.Points.Add(pj);
-                }
-            }
+        //            // Add points
+        //            wireFrame.Points.Add(pi);
+        //            wireFrame.Points.Add(pj);
+        //        }
+        //    }
 
-            if(member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
-            {
-                for (int i = 0; i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints; i++)
-                {
-                    Point3D pi = new Point3D();
-                    Point3D pj = new Point3D();
+        //    if(member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
+        //    {
+        //        for (int i = 0; i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+        //        {
+        //            Point3D pi = new Point3D();
+        //            Point3D pj = new Point3D();
 
-                    if (i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints - 1)
-                    {
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            if (i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints - 1)
+        //            {
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
                         
-                        pi = new Point3D(x, fy, fz);
+        //                pi = new Point3D(x, fy, fz);
 
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints + 1, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i + 1, 1], member.DTheta_x);
 
-                        pj = new Point3D(x, fy, fz);
-                    }
-                    else // Last line
-                    {
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //                pj = new Point3D(x, fy, fz);
+        //            }
+        //            else // Last line
+        //            {
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
 
-                        pi = new Point3D(x, fy, fz);
+        //                pi = new Point3D(x, fy, fz);
 
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
+        //                // Rotate about local x-axis
+        //                fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
+        //                fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + 0, 1], member.DTheta_x);
 
-                        pj = new Point3D(x, fy, fz);
-                    }
+        //                pj = new Point3D(x, fy, fz);
+        //            }
 
-                    // Add points
-                    wireFrame.Points.Add(pi);
-                    wireFrame.Points.Add(pj);
-                }
-            }
+        //            // Add points
+        //            wireFrame.Points.Add(pi);
+        //            wireFrame.Points.Add(pj);
+        //        }
+        //    }
 
-            // Transform coordinates from LCS to GCS
-            Point3D p_temp = new Point3D();
-            p_temp.X = member.NodeStart.X;
-            p_temp.Y = member.NodeStart.Y;
-            p_temp.Z = member.NodeStart.Z;
+        //    // Transform coordinates from LCS to GCS
+        //    Point3D p_temp = new Point3D();
+        //    p_temp.X = member.NodeStart.X;
+        //    p_temp.Y = member.NodeStart.Y;
+        //    p_temp.Z = member.NodeStart.Z;
 
-            member.TransformMember_LCStoGCS(eGCS, p_temp, member.Delta_X, member.Delta_Y, member.Delta_Z, member.m_dTheta_x, wireFrame.Points);
+        //    member.TransformMember_LCStoGCS(eGCS, p_temp, member.Delta_X, member.Delta_Y, member.Delta_Z, member.m_dTheta_x, wireFrame.Points);
 
-            return wireFrame;
-        }
+        //    return wireFrame;
+        //}
 
-        public ScreenSpaceLines3D wireFrameLateral(CMember member)
-        {
-            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
-            wireFrame.Color = Color.FromRgb(60, 60, 60);
-            wireFrame.Thickness = 1.0;
+        //public ScreenSpaceLines3D wireFrameLateral(CMember member)
+        //{
+        //    ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
+        //    wireFrame.Color = Color.FromRgb(60, 60, 60);
+        //    wireFrame.Thickness = 1.0;
 
-            // Todo Prepracovat pre vnutornu a vonkajsiu outline
-            // Zjednotit s AAC panel
+        //    // Todo Prepracovat pre vnutornu a vonkajsiu outline
+        //    // Zjednotit s AAC panel
 
-            float fy, fz;
+        //    float fy, fz;
 
-            if (member.CrScStart.CrScPointsOut != null && member.CrScStart.CrScPointsOut.Length > 0)
-            {
-                for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
-                {
-                    Point3D pi = new Point3D();
-                    Point3D pj = new Point3D();
+        //    if (member.CrScStart.CrScPointsOut != null && member.CrScStart.CrScPointsOut.Length > 0)
+        //    {
+        //        for (int i = 0; i < member.CrScStart.CrScPointsOut.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+        //        {
+        //            Point3D pi = new Point3D();
+        //            Point3D pj = new Point3D();
 
-                    // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            // Rotate about local x-axis
+        //            fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
 
-                    pi = new Point3D(-member.FAlignment_Start, fy, fz);
+        //            pi = new Point3D(-member.FAlignment_Start, fy, fz);
 
-                    // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            // Rotate about local x-axis
+        //            fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsOut[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsOut[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
 
-                    pj = new Point3D(member.FLength + member.FAlignment_End, fy, fz);
+        //            pj = new Point3D(member.FLength + member.FAlignment_End, fy, fz);
 
-                    // Add points
-                    wireFrame.Points.Add(pi);
-                    wireFrame.Points.Add(pj);
-                }
-            }
+        //            // Add points
+        //            wireFrame.Points.Add(pi);
+        //            wireFrame.Points.Add(pj);
+        //        }
+        //    }
 
-            if (member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
-            {
-                for (int i = 0; i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints; i++)
-                {
-                    Point3D pi = new Point3D();
-                    Point3D pj = new Point3D();
+        //    if (member.CrScStart.CrScPointsIn != null && member.CrScStart.CrScPointsIn.Length > 0)
+        //    {
+        //        for (int i = 0; i < member.CrScStart.CrScPointsIn.Length / 2 - member.CrScStart.INoAuxPoints; i++)
+        //        {
+        //            Point3D pi = new Point3D();
+        //            Point3D pj = new Point3D();
 
-                    // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            // Rotate about local x-axis
+        //            fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
 
-                    pi = new Point3D(-member.FAlignment_Start, fy , fz);
+        //            pi = new Point3D(-member.FAlignment_Start, fy , fz);
 
-                    // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            // Rotate about local x-axis
+        //            fy = (float)Geom2D.GetRotatedPosition_x_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
+        //            fz = (float)Geom2D.GetRotatedPosition_y_CCW(member.CrScStart.CrScPointsIn[i + member.CrScStart.INoAuxPoints, 0], member.CrScStart.CrScPointsIn[member.CrScStart.INoAuxPoints + i, 1], member.DTheta_x);
                     
-                    pj = new Point3D(member.FLength + member.FAlignment_End, fy, fz);
+        //            pj = new Point3D(member.FLength + member.FAlignment_End, fy, fz);
 
-                    // Add points
-                    wireFrame.Points.Add(pi);
-                    wireFrame.Points.Add(pj);
-                }
-            }
+        //            // Add points
+        //            wireFrame.Points.Add(pi);
+        //            wireFrame.Points.Add(pj);
+        //        }
+        //    }
 
-            // Transform coordinates from LCS to GCS
-            Point3D p_temp = new Point3D();
-            p_temp.X = member.NodeStart.X;
-            p_temp.Y = member.NodeStart.Y;
-            p_temp.Z = member.NodeStart.Z;
+        //    // Transform coordinates from LCS to GCS
+        //    Point3D p_temp = new Point3D();
+        //    p_temp.X = member.NodeStart.X;
+        //    p_temp.Y = member.NodeStart.Y;
+        //    p_temp.Z = member.NodeStart.Z;
 
-            member.TransformMember_LCStoGCS(eGCS, p_temp, member.Delta_X, member.Delta_Y, member.Delta_Z, member.m_dTheta_x, wireFrame.Points);
+        //    member.TransformMember_LCStoGCS(eGCS, p_temp, member.Delta_X, member.Delta_Y, member.Delta_Z, member.m_dTheta_x, wireFrame.Points);
 
-            return wireFrame;
-        }
+        //    return wireFrame;
+        //}
 
         public void DrawGlobalAxis(out ScreenSpaceLines3D sAxisX_3D, out ScreenSpaceLines3D sAxisY_3D, out ScreenSpaceLines3D sAxisZ_3D)
         {
