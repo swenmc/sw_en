@@ -33,7 +33,11 @@ namespace PFD
         public Page3Dmodel(CModel model)
         {
             InitializeComponent();
-            
+
+            //zmena farby pre Trackport
+            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            //_trackport.TrackportBackground = new SolidColorBrush(Colors.DarkBlue);
+
             // Global coordinate system - axis
             if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
             

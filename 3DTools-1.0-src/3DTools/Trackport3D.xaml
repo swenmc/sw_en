@@ -29,7 +29,7 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Border Background="DarkBlue">
+    <Border Name="TrackportBorder" Background="DarkBlue">
       <Viewport3D Grid.Row="0" Grid.Column="0" x:Name="Viewport" ClipToBounds="True">
 
         <!--
