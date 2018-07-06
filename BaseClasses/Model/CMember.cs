@@ -1256,9 +1256,42 @@ namespace BaseClasses
 
             return wireFrame;
         }
+
+
+        public void CalculateMemberLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
+        {
+            fTempMax_X = float.MinValue;
+            fTempMin_X = float.MaxValue;
+            fTempMax_Y = float.MinValue;
+            fTempMin_Y = float.MaxValue;
+            fTempMax_Z = float.MinValue;
+            fTempMin_Z = float.MaxValue;
+            
+            if (CrScStart.CrScPointsOut != null) // Some cross-section points exist
+            {
+                // Maximum X - coordinate
+                fTempMax_X = NodeStart.X;
+                // Minimum X - coordinate
+                fTempMin_X = NodeEnd.X;
+
+                for (int i = 0; i < CrScStart.CrScPointsOut.Length / 2; i++)
+                {
+                    // Maximum Y - coordinate
+                    if (CrScStart.CrScPointsOut[i, 0] > fTempMax_Y)
+                        fTempMax_Y = CrScStart.CrScPointsOut[i, 0];
+                    // Minimum Y - coordinate
+                    if (CrScStart.CrScPointsOut[i, 0] < fTempMin_Y)
+                        fTempMin_Y = CrScStart.CrScPointsOut[i, 0];
+                    // Maximum Z - coordinate
+                    if (CrScStart.CrScPointsOut[i, 1] > fTempMax_Z)
+                        fTempMax_Z = CrScStart.CrScPointsOut[i, 1];
+                    // Minimum Z - coordinate
+                    if (CrScStart.CrScPointsOut[i, 1] < fTempMin_Z)
+                        fTempMin_Z = CrScStart.CrScPointsOut[i, 1];
+                }
+            }
+        }
         
-
-
         protected Point3D RotatePoint_POKUSY(EGCS eGCS, Point3D pA, Point3D p, double alphaX, double betaY, double gamaZ, double dDeltaX, double dDeltaY, double dDeltaZ)
         {
             Point3D p3Drotated = new Point3D();

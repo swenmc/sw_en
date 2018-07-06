@@ -25,6 +25,18 @@ namespace BaseClasses
 
             return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
         }
+        public static Point3D GetModelCentre(CMember member)
+        {
+            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
+
+            member.CalculateMemberLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);            
+
+            float fModel_Length_X = fTempMax_X - fTempMin_X;
+            float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+            float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+            return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+        }
         public static Point3D GetModelCentre(CModel model, out float fModel_Length_X, out float fModel_Length_Y, out float fModel_Length_Z)
         {
             float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
@@ -50,7 +62,33 @@ namespace BaseClasses
             return new Point3D(center.X + x, center.Y + y, center.Z + z);
         }
 
+        public static Point3D GetModelCameraPosition(Point3D centerPoint, double x, double y, double z)
+        {            
+            return new Point3D(centerPoint.X + x, centerPoint.Y + y, centerPoint.Z + z);
+        }
 
+        public static Model3DGroup CreateModel3DGroup(CModel model, EGCS egcs = EGCS.eGCSLeftHanded,
+            bool displayMembersSurface = true, bool displayConnectionJoints = true, bool displayOtherObjects3D = true, bool addLights = true)
+        {
+            Model3DGroup gr = new Model3DGroup();
+            if (model != null)
+            {                
+                Model3D membersModel3D = null;
+                if (displayMembersSurface) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, false, egcs);
+                if (membersModel3D != null) gr.Children.Add(membersModel3D);
+                                
+                Model3DGroup jointsModel3DGroup = null;
+                if (displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model);
+                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
+
+                Model3DGroup othersModel3DGroup = null;
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
+                if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
+
+                if(addLights) Drawing3D.AddLightsToModel3D(gr);
+            }
+            return gr;
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Members Model3D
@@ -604,6 +642,49 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_Lateral);
         }
 
+
+        /*
+                    The following lights derive from the base class Light:
+                    AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
+                    DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
+                    PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
+                    SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
+                */
+        
+        //Mato - To tam naozaj potrebujeme tolko roznych svetiel, ci su to len pokusy?
+        public static void AddLightsToModel3D(Model3DGroup gr)
+        {
+            // Directional Light
+            DirectionalLight Dir_Light = new DirectionalLight();
+            Dir_Light.Color = Colors.White;
+            Dir_Light.Direction = new Vector3D(0, 0, -1);
+            gr.Children.Add(Dir_Light);
+
+            // Point light values
+            PointLight Point_Light = new PointLight();
+            Point_Light.Position = new Point3D(0, 0, 30);
+            Point_Light.Color = System.Windows.Media.Brushes.White.Color;
+            Point_Light.Range = 30.0;
+            Point_Light.ConstantAttenuation = 0;
+            Point_Light.LinearAttenuation = 0;
+            Point_Light.QuadraticAttenuation = 0.2f;
+            Point_Light.ConstantAttenuation = 5.0;
+            gr.Children.Add(Point_Light);
+
+            SpotLight Spot_Light = new SpotLight();
+            Spot_Light.InnerConeAngle = 30;
+            Spot_Light.OuterConeAngle = 30;
+            Spot_Light.Color = System.Windows.Media.Brushes.White.Color;
+            Spot_Light.Direction = new Vector3D(0, 0, -1);
+            Spot_Light.Position = new Point3D(8.5, 8.5, 20);
+            Spot_Light.Range = 30;
+            gr.Children.Add(Spot_Light);
+
+            //Set Ambient Light
+            AmbientLight Ambient_Light = new AmbientLight();
+            Ambient_Light.Color = Color.FromRgb(250, 250, 230);
+            gr.Children.Add(new AmbientLight());
+        }
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------

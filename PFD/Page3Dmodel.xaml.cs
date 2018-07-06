@@ -25,7 +25,7 @@ namespace PFD
     /// </summary>
     public partial class Page3Dmodel : Page
     {
-        bool bDebugging = false;
+        //bool bDebugging = false;
         bool bShowGlobalAxis = true;
         public bool bDisplay_WireFrame = true;
         public bool bDisplay_SurfaceModel = true;
@@ -33,33 +33,21 @@ namespace PFD
         public Page3Dmodel(CModel model)
         {
             InitializeComponent();
-
-            // Create 3D window
-            Window2 win1 = new Window2(model, bDebugging);
-
-            // Global Axis System
-            // Default color
-            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Azure);
-
-            //EGCS eGCS = EGCS.eGCSLeftHanded;
-            //EGCS eGCS = EGCS.eGCSRightHanded;
-
+            
             // Global coordinate system - axis
             if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
-
-            // Frame Model
-            Model3DGroup gr = new Model3DGroup();
             
             if (model != null)
             {
-                gr = win1.gr;
+                // Frame Model
+                Model3DGroup gr = Drawing3D.CreateModel3DGroup(model, EGCS.eGCSLeftHanded, true, true, true, true);
 
                 float fModel_Length_X = 0;
                 float fModel_Length_Y = 0;
                 float fModel_Length_Z = 0;
                 Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
                 Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
-
+                                
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 _trackport.Model = (Model3D)gr;
@@ -137,14 +125,7 @@ namespace PFD
 
             // Cross-section Model
             Model3DGroup ComponentGeomModel = new Model3DGroup();
-
-            float fTempMax_X;
-            float fTempMin_X;
-            float fTempMax_Y;
-            float fTempMin_Y;
-            float fTempMax_Z;
-            float fTempMin_Z;
-
+            
             if (crsc != null)
             {
                 float fLengthMember = 0.2f;
@@ -152,18 +133,14 @@ namespace PFD
 
                 ComponentGeomModel = member_temp.getM_3D_G_Member(EGCS.eGCSLeftHanded, brushDefault, brushDefault, brushDefault);
 
-                // Get model limits
-                CalculateModelLimits(member_temp, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
-
-                float fModel_Length_X = fTempMax_X - fTempMin_X;
-                float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
-                float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
-
-                Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X - 0.2f, pModelGeomCentre.Y + 0.005f, pModelGeomCentre.Z + 0.05f);
+                //Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+                //Point3D cameraPosition = new Point3D(pModelGeomCentre.X - 0.2f, pModelGeomCentre.Y + 0.005f, pModelGeomCentre.Z + 0.05f);
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(member_temp);                
+                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(pModelGeomCentre, -0.2f, 0.005f, 0.05f);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+                //_trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+                _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
 
                 if (bDisplay_SurfaceModel)
                 {
@@ -227,53 +204,6 @@ namespace PFD
             }
         }
 
-        public void CalculateModelLimits(CMember member,
-    out float fTempMax_X,
-    out float fTempMin_X,
-    out float fTempMax_Y,
-    out float fTempMin_Y,
-    out float fTempMax_Z,
-    out float fTempMin_Z
-    )
-        {
-            fTempMax_X = float.MinValue;
-            fTempMin_X = float.MaxValue;
-            fTempMax_Y = float.MinValue;
-            fTempMin_Y = float.MaxValue;
-            fTempMax_Z = float.MinValue;
-            fTempMin_Z = float.MaxValue;
-
-            // TODO upravit tak aby sme vedeli ziskat obecne rozmery z modelu, z pruta, z plechu atd
-            // Pripadne riesit vsetko ako cmodel, ale to je pre preview jedneho dielcieho objektu neumerne velke
-
-
-            if (member.CrScStart.CrScPointsOut != null) // Some cross-section points exist
-            {
-                // Maximum X - coordinate
-                fTempMax_X = member.NodeStart.X;
-
-                // Minimum X - coordinate
-                fTempMin_X = member.NodeEnd.X;
-
-                for (int i = 0; i < member.CrScStart.CrScPointsOut.Length/2; i++)
-                {
-                    // Maximum Y - coordinate
-                    if (member.CrScStart.CrScPointsOut[i,0] > fTempMax_Y)
-                        fTempMax_Y = member.CrScStart.CrScPointsOut[i, 0];
-
-                    // Minimum Y - coordinate
-                    if (member.CrScStart.CrScPointsOut[i, 0] < fTempMin_Y)
-                        fTempMin_Y = member.CrScStart.CrScPointsOut[i, 0];
-
-                    // Maximum Z - coordinate
-                    if (member.CrScStart.CrScPointsOut[i, 1] > fTempMax_Z)
-                        fTempMax_Z = member.CrScStart.CrScPointsOut[i, 1];
-
-                    // Minimum Z - coordinate
-                    if (member.CrScStart.CrScPointsOut[i, 1] < fTempMin_Z)
-                        fTempMin_Z = member.CrScStart.CrScPointsOut[i, 1];
-                }
-            }
-        }
+       
     }
 }

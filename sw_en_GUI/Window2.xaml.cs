@@ -114,47 +114,11 @@ namespace sw_en_GUI
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
                 
+                Drawing3D.AddLightsToModel3D(gr);
+                
+                
 
-                /*
-                    The following lights derive from the base class Light:
-                    AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
-                    DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
-                    PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
-                    SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
-                */
-
-                // Directional Light
-                DirectionalLight Dir_Light = new DirectionalLight();
-                Dir_Light.Color = Colors.White;
-                Dir_Light.Direction = new Vector3D(0, 0, -1);
-                gr.Children.Add(Dir_Light);
-
-                // Point light values
-                PointLight Point_Light = new PointLight();
-                Point_Light.Position = new Point3D(0, 0, 30);
-                Point_Light.Color = System.Windows.Media.Brushes.White.Color;
-                Point_Light.Range = 30.0;
-                Point_Light.ConstantAttenuation = 0;
-                Point_Light.LinearAttenuation = 0;
-                Point_Light.QuadraticAttenuation = 0.2f;
-                Point_Light.ConstantAttenuation = 5.0;
-                gr.Children.Add(Point_Light);
-
-                SpotLight Spot_Light = new SpotLight();
-                Spot_Light.InnerConeAngle = 30;
-                Spot_Light.OuterConeAngle = 30;
-                Spot_Light.Color = System.Windows.Media.Brushes.White.Color;
-                Spot_Light.Direction = new Vector3D(0, 0, -1);
-                Spot_Light.Position = new Point3D(8.5, 8.5, 20);
-                Spot_Light.Range = 30;
-                gr.Children.Add(Spot_Light);
-
-                //Set Ambient Light
-                AmbientLight Ambient_Light = new AmbientLight();
-                Ambient_Light.Color = Color.FromRgb(250, 250, 230);
-                gr.Children.Add(new AmbientLight());
-
-                //Ondrej
+                //Mato? toto tu potrebujeme?
                 //Popravde absolutne netusim naco to tu je a co to robi
                 if (cmodel.m_arrGOLines != null) // Some lines exist
                 {
@@ -288,85 +252,7 @@ namespace sw_en_GUI
             }
         }
 
-        public void CalculateModelLimits(CModel cmodel,
-            out float fTempMax_X,
-            out float fTempMin_X,
-            out float fTempMax_Y,
-            out float fTempMin_Y,
-            out float fTempMax_Z,
-            out float fTempMin_Z
-            )
-        {
-            fTempMax_X = float.MinValue;
-            fTempMin_X = float.MaxValue;
-            fTempMax_Y = float.MinValue;
-            fTempMin_Y = float.MaxValue;
-            fTempMax_Z = float.MinValue;
-            fTempMin_Z = float.MaxValue;
-
-            if (cmodel.m_arrNodes != null) // Some nodes exist
-            {
-                for (int i = 0; i < cmodel.m_arrNodes.Length; i++)
-                {
-                    // Maximum X - coordinate
-                    if (cmodel.m_arrNodes[i].X > fTempMax_X)
-                        fTempMax_X = cmodel.m_arrNodes[i].X;
-
-                    // Minimum X - coordinate
-                    if (cmodel.m_arrNodes[i].X < fTempMin_X)
-                        fTempMin_X = cmodel.m_arrNodes[i].X;
-
-                    // Maximum Y - coordinate
-                    if (cmodel.m_arrNodes[i].Y > fTempMax_Y)
-                        fTempMax_Y = cmodel.m_arrNodes[i].Y;
-
-                    // Minimum Y - coordinate
-                    if (cmodel.m_arrNodes[i].Y < fTempMin_Y)
-                        fTempMin_Y = cmodel.m_arrNodes[i].Y;
-
-                    // Maximum Z - coordinate
-                    if (cmodel.m_arrNodes[i].Z > fTempMax_Z)
-                        fTempMax_Z = cmodel.m_arrNodes[i].Z;
-
-                    // Minimum Z - coordinate
-                    if (cmodel.m_arrNodes[i].Z < fTempMin_Z)
-                        fTempMin_Z = cmodel.m_arrNodes[i].Z;
-                }
-            }
-            else if (cmodel.m_arrGOPoints != null) // Some points exist
-            {
-                for (int i = 0; i < cmodel.m_arrGOPoints.Length; i++)
-                {
-                    // Maximum X - coordinate
-                    if (cmodel.m_arrGOPoints[i].X > fTempMax_X)
-                        fTempMax_X = (float)cmodel.m_arrGOPoints[i].X;
-
-                    // Minimum X - coordinate
-                    if (cmodel.m_arrGOPoints[i].X < fTempMin_X)
-                        fTempMin_X = (float)cmodel.m_arrGOPoints[i].X;
-
-                    // Maximum Y - coordinate
-                    if (cmodel.m_arrGOPoints[i].Y > fTempMax_Y)
-                        fTempMax_Y = (float)cmodel.m_arrGOPoints[i].Y;
-
-                    // Minimum Y - coordinate
-                    if (cmodel.m_arrGOPoints[i].Y < fTempMin_Y)
-                        fTempMin_Y = (float)cmodel.m_arrGOPoints[i].Y;
-
-                    // Maximum Z - coordinate
-                    if (cmodel.m_arrGOPoints[i].Z > fTempMax_Z)
-                        fTempMax_Z = (float)cmodel.m_arrGOPoints[i].Z;
-
-                    // Minimum Z - coordinate
-                    if (cmodel.m_arrGOPoints[i].Z < fTempMin_Z)
-                        fTempMin_Z = (float)cmodel.m_arrGOPoints[i].Z;
-                }
-            }
-            else
-            {
-                // Exception - no definition nodes or points
-            }
-        }
+        
 
         //public ScreenSpaceLines3D wireFrame(CMember member, float x)
         //{
@@ -546,31 +432,31 @@ namespace sw_en_GUI
         //    return wireFrame;
         //}
 
-        public void DrawGlobalAxis(out ScreenSpaceLines3D sAxisX_3D, out ScreenSpaceLines3D sAxisY_3D, out ScreenSpaceLines3D sAxisZ_3D)
-        {
-            // Global coordinate system - axis
-            sAxisX_3D = new ScreenSpaceLines3D();
-            sAxisY_3D = new ScreenSpaceLines3D();
-            sAxisZ_3D = new ScreenSpaceLines3D();
-            Point3D pGCS_centre = new Point3D(0, 0, 0);
-            Point3D pAxisX = new Point3D(1, 0, 0);
-            Point3D pAxisY = new Point3D(0, 1, 0);
-            Point3D pAxisZ = new Point3D(0, 0, 1);
+        //public void DrawGlobalAxis(out ScreenSpaceLines3D sAxisX_3D, out ScreenSpaceLines3D sAxisY_3D, out ScreenSpaceLines3D sAxisZ_3D)
+        //{
+        //    // Global coordinate system - axis
+        //    sAxisX_3D = new ScreenSpaceLines3D();
+        //    sAxisY_3D = new ScreenSpaceLines3D();
+        //    sAxisZ_3D = new ScreenSpaceLines3D();
+        //    Point3D pGCS_centre = new Point3D(0, 0, 0);
+        //    Point3D pAxisX = new Point3D(1, 0, 0);
+        //    Point3D pAxisY = new Point3D(0, 1, 0);
+        //    Point3D pAxisZ = new Point3D(0, 0, 1);
 
-            sAxisX_3D.Points.Add(pGCS_centre);
-            sAxisX_3D.Points.Add(pAxisX);
-            sAxisX_3D.Color = Colors.Red;
-            sAxisX_3D.Thickness = 2;
+        //    sAxisX_3D.Points.Add(pGCS_centre);
+        //    sAxisX_3D.Points.Add(pAxisX);
+        //    sAxisX_3D.Color = Colors.Red;
+        //    sAxisX_3D.Thickness = 2;
 
-            sAxisY_3D.Points.Add(pGCS_centre);
-            sAxisY_3D.Points.Add(pAxisY);
-            sAxisY_3D.Color = Colors.Green;
-            sAxisY_3D.Thickness = 2;
+        //    sAxisY_3D.Points.Add(pGCS_centre);
+        //    sAxisY_3D.Points.Add(pAxisY);
+        //    sAxisY_3D.Color = Colors.Green;
+        //    sAxisY_3D.Thickness = 2;
 
-            sAxisZ_3D.Points.Add(pGCS_centre);
-            sAxisZ_3D.Points.Add(pAxisZ);
-            sAxisZ_3D.Color = Colors.Blue;
-            sAxisZ_3D.Thickness = 2;
-        }
+        //    sAxisZ_3D.Points.Add(pGCS_centre);
+        //    sAxisZ_3D.Points.Add(pAxisZ);
+        //    sAxisZ_3D.Color = Colors.Blue;
+        //    sAxisZ_3D.Thickness = 2;
+        //}
     }
 }
