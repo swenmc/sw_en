@@ -71,6 +71,9 @@ namespace BaseClasses
         // 3D Objects
         public BaseClasses.GraphObj.CStructure_Window[] m_arrGOStrWindows;
 
+        //Grouped Members
+        Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
+
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
@@ -123,5 +126,25 @@ namespace BaseClasses
             m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[iWindNum];
         }
 
+
+        public void GroupModelMembers()
+        {
+            GroupedMembers = new Dictionary<Tuple<float, string, string>, List<CMember>>();
+            
+            foreach (CMember m in m_arrMembers)
+            {
+                string startCrscName = m.CrScStart != null ?  m.CrScStart.GetType().Name : string.Empty;
+                string endCrscName = m.CrScEnd != null ? m.CrScEnd.GetType().Name : string.Empty;
+                Tuple<float, string, string> t = Tuple.Create(m.FLength, startCrscName, endCrscName);
+                if (GroupedMembers.ContainsKey(t)) GroupedMembers[t].Add(m);
+                else GroupedMembers.Add(t, new List<CMember> { m });                
+            }
+
+            foreach (KeyValuePair<Tuple<float, string, string>, List<CMember>> pair in GroupedMembers)
+            {
+                System.Diagnostics.Trace.WriteLine(string.Format("{0}, {1}", string.Format("{0}_{1}_{2}", pair.Key.Item1, pair.Key.Item2, pair.Key.Item3), pair.Value.Count));
+            }
+
+        }
     }
 }

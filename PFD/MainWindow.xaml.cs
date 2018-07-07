@@ -99,6 +99,8 @@ namespace PFD
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
+
+            model.GroupModelMembers();
         }
 
 
