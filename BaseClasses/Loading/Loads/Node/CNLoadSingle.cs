@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using CENEX;
-using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses
 {

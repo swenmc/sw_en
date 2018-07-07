@@ -10,7 +10,6 @@ using BaseClasses;
 using BaseClasses.GraphObj;
 using _3DTools;
 using MATH;
-using MATERIAL;
 
 namespace AAC
 {
@@ -58,7 +57,7 @@ namespace AAC
 
         public MATERIAL.CMat_02_00_AAC Concrete;
         public MATERIAL.CMat_03_00 Reinforcement;
-        public CRSC.CCrSc Cross_Section;
+        public CCrSc Cross_Section;
 
         public ReinforcementBar[] Long_Bottom_Bars_Array;
         public ReinforcementBar[] Long_Upper_Bars_Array;
@@ -71,7 +70,7 @@ namespace AAC
 
         public AAC_Panel(E_AACElementType AAC_panel_type,
             float fL_temp,
-            CRSC.CCrSc Cross_Section_temp,
+            CCrSc Cross_Section_temp,
             MATERIAL.CMat_02_00_AAC Concrete_temp,
             MATERIAL.CMat_03_00 Reinforcement_temp,
             int iLB_No,

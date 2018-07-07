@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BaseClasses;
 
 namespace MATERIAL
 {
     // Default timber material class
-    public class CMat_05_00:CMat_00
+    public class CMat_05_00:CMat
     {
         //// Default - timber
         //// General material properties

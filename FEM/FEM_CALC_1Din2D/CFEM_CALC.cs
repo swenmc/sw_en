@@ -6,8 +6,6 @@ using System.Text;
 using CENEX;
 using BaseClasses;
 using MATH;
-using MATERIAL;
-using CRSC;
 using FEM_CALC_BASE;
 
 namespace FEM_CALC_1Din2D

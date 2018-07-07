@@ -76,7 +76,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CCrSc.cs" />
     <Compile Include="CrSc_0\CCrSc_0_00.cs" />
     <Compile Include="CrSc_0\CCrSc_0_01.cs" />
     <Compile Include="CrSc_0\CCrSc_0_02.cs" />
@@ -197,6 +196,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
       <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
       <Name>MATERIAL</Name>

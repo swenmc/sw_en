@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using MATERIAL;
-using CRSC;
 
 namespace BaseClasses
 {
@@ -30,7 +28,7 @@ namespace BaseClasses
         // Collection of references to objects
 
         // Materials used/defined in current model
-        public CMat_00[] m_arrMat;
+        public CMat[] m_arrMat;
         // Cross-sections used/ defined in current model
         public CCrSc[] m_arrCrSc;
 
@@ -90,7 +88,7 @@ namespace BaseClasses
             m_eSLN = eSLN;
             m_eNDOF = eNDOF;
             m_eGCS = eGCS;
-            m_arrMat = new CMat_00[iMatNum];
+            m_arrMat = new CMat[iMatNum];
             m_arrCrSc = new CCrSc[iCrScNum];
             m_arrNodes = new CNode[iNodeNum];
             m_arrMembers = new CMember[iMemNum];
@@ -116,7 +114,7 @@ namespace BaseClasses
             m_eSLN = eSLN;
             m_eNDOF = eNDOF;
             m_eGCS = eGCS;
-            m_arrMat = new CMat_00[iMatNum];
+            m_arrMat = new CMat[iMatNum];
             //m_arrCrSc = new CCrSc[iCrScNum];
             m_arrGOPoints = new BaseClasses.GraphObj.CPoint[iPointNum];
             //m_arrMembers = new CMember[iMemNum];

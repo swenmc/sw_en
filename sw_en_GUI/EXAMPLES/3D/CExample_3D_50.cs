@@ -16,16 +16,16 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[2];
+            m_arrNodes = new CNode[2];
             m_arrMembers = new CMember[1];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[2];
-            m_arrNReleases = new BaseClasses.CNRelease[0];
-            m_arrNLoads = new BaseClasses.CNLoad[0];
-            m_arrMLoads = new BaseClasses.CMLoad[1];
-            m_arrLoadCases = new BaseClasses.CLoadCase[1];
-            m_arrLoadCombs = new BaseClasses.CLoadCombination[1];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[1];
+            m_arrNSupports = new CNSupport[2];
+            m_arrNReleases = new CNRelease[0];
+            m_arrNLoads = new CNLoad[0];
+            m_arrMLoads = new CMLoad[1];
+            m_arrLoadCases = new CLoadCase[1];
+            m_arrLoadCombs = new CLoadCombination[1];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -34,13 +34,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
-            m_arrCrSc[0] = new CRSC.CCrSc_0_05(0.3f, 0.1f); // Solid square section
+            m_arrCrSc[0] = new CCrSc_0_05(0.3f, 0.1f); // Solid square section
 
             // Nodes
             // Nodes List - Nodes Array
 
-            m_arrNodes[0] = new BaseClasses.CNode(1, 0, 0, 0, 0);
-            m_arrNodes[1] = new BaseClasses.CNode(2, 5, 0, 0, 0);
+            m_arrNodes[0] = new CNode(1, 0, 0, 0, 0);
+            m_arrNodes[1] = new CNode(2, 5, 0, 0, 0);
 
             // Sort by ID
             //Array.Sort(m_arrNodes, new BaseClasses.CCompare_NodeID());
@@ -48,7 +48,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Members
             // Members List - Members Array
 
-            m_arrMembers[0] = new BaseClasses.CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
+            m_arrMembers[0] = new CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
 
             //Sort by ID
             //Array.Sort(m_arrMembers, new BaseClasses.CCompare_MemberID());
@@ -99,7 +99,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Member Loads
             //m_arrMLoads[0] = new BaseClasses.CMLoad_12(1.0f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12,EMLoadType.eMLT_F,EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 
-            m_arrMLoads[0] = new BaseClasses.CMLoad_21(-0.8f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            m_arrMLoads[0] = new CMLoad_21(-0.8f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             //m_arrMLoads[1] = new BaseClasses.CMLoad_21(1.0f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, true, 0);
             //m_arrMLoads[2] = new BaseClasses.CMLoad_21(1.5f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 
@@ -108,12 +108,12 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Load Cases
             // Load Case 1
-            m_arrLoadCases[0] = new BaseClasses.CLoadCase();
+            m_arrLoadCases[0] = new CLoadCase();
             m_arrLoadCases[0].ID = 1;
 
             // Load Combinations
             // Load Combination 1
-            m_arrLoadCombs[0] = new BaseClasses.CLoadCombination();
+            m_arrLoadCombs[0] = new CLoadCombination();
             m_arrLoadCombs[0].ID = 1;
         }
     }

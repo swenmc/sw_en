@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using MATH;
+using BaseClasses;
 
 namespace CRSC
 {
@@ -209,8 +210,8 @@ namespace CRSC
         public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
         {
             // Temporary - odstranit po implementacii vypoctu
-            d_y_gc = 0; // Temporary - TODO
-            d_z_gc = 0;
+            D_y_gc = 0; // Temporary - TODO
+            D_z_gc = 0;
 
             y_min = -b / 2;
             y_max = b / 2;
@@ -219,8 +220,8 @@ namespace CRSC
 
             for (int i = 0; i < ITotNoPoints; i++)
             {
-                CrScPointsOut[i, 0] += (float)d_y_gc;
-                CrScPointsOut[i, 1] += (float)d_z_gc;
+                CrScPointsOut[i, 0] += (float)D_y_gc;
+                CrScPointsOut[i, 1] += (float)D_z_gc;
             }
         }
     }

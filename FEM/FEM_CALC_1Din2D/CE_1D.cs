@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BaseClasses;
-using CRSC;
 using FEM_CALC_BASE;
 using MATH;
 using CENEX;

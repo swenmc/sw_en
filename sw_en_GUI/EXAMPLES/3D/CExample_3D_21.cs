@@ -16,11 +16,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[62];
+            m_arrNodes = new CNode[62];
             m_arrMembers = new CMember[31];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[31];
-            m_arrNSupports = new BaseClasses.CNSupport[3];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[31];
+            m_arrNSupports = new CNSupport[3];
             //m_arrNLoads = new BaseClasses.CNLoad[3];
 
             // Materials

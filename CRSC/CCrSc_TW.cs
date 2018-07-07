@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Media;
+using BaseClasses;
 using MATH;
 using MATERIAL;
 
@@ -32,15 +33,15 @@ namespace CRSC
         //public double _Sz0;                 // Static modulus to primary axis zO
         //public double _Sy;                  // Static modulus to centre of gravity
         //public double _Sz;                  // Static modulus to centre of gravity
-        public double d_z_gc;               // Gentre of gravity coordinate // (J.7)
-        public double d_y_gc;               // (J.7)
+        //public double d_z_gc;               // Gentre of gravity coordinate // (J.7)
+        //public double d_y_gc;               // Gentre of gravity coordinate // (J.7)
         //public double _Iy0;                 // Moment of inertia (Second moment of area) y0-y0 and z0-z0 // (J.8)
         //public double _Iy;                  // Moment of inertia (Second moment of area) y-y and z-z // (J.8)
         //public double _Iz0;                 // (J.10)
         //public double _Iz;                  // (J.10)
         //public double _Iyz0;                // Deviacni moment k puvodnim osam y a z // (J.11)
         //public double _Iyz;                 // Deviacni moment k osam y a z prochazejicim tezistem // (J.11)
-        public double _alfa;                 // Rotation of main axis / Natoceni hlavnich os  // (J.12)
+        public double _alfa;                  // Rotation of main axis / Natoceni hlavnich os  // (J.12)
         //public double _Iepsilon;            // Moment of inertia (Second moment of area) to main axis - greek letters XI and ETA  // (J.13)
         //public double _Imikro;              // (J.14)
 
@@ -90,17 +91,6 @@ namespace CRSC
         {
             get { return _A_elem; }
             set { _A_elem = value; }
-        }
-
-        public double D_z_gc
-        {
-            get { return d_z_gc; }
-            set { d_z_gc = value; }
-        }
-        public double D_y_gc
-        {
-            get { return d_y_gc; }
-            set { d_y_gc = value; }
         }
 
         public double Iomega

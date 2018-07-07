@@ -13,7 +13,7 @@ namespace sw_en_GUI.EXAMPLES._3D
         /*
         public BaseClasses.CNode[] m_arrNodes = new BaseClasses.CNode[6];
         public CMember[] arrMembers = new CMember[9];
-        public CMat_00[] arrMat = new CMat_00[5];
+        public CMat[] arrMat = new CMat[5];
         public CRSC.CCrSc[] m_arrCrSc = new CRSC.CCrSc[3];
         public BaseClasses.CNSupport[] arrNSupports = new BaseClasses.CNSupport[3];
         public BaseClasses.CNLoad[] arrNLoads = new BaseClasses.CNLoad[3];
@@ -25,11 +25,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[6];
+            m_arrNodes = new CNode[6];
             m_arrMembers = new CMember[9];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[3];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[1];
+            m_arrNSupports = new CNSupport[3];
             //m_arrNLoads = new BaseClasses.CNLoad[3];
 
             // Materials
@@ -80,12 +80,12 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Nodes
             // Nodes List - Nodes Array
 
-            m_arrNodes[0] = new BaseClasses.CNode(1, 0.500f, 0, 2.500f, 0);
-            m_arrNodes[1] = new BaseClasses.CNode(2, 2.500f, 0, 2.500f, 0);
-            m_arrNodes[2] = new BaseClasses.CNode(3, 5.500f, 0, 2.500f, 0);
-            m_arrNodes[3] = new BaseClasses.CNode(4, 0.500f, 0, 0.500f, 0);
-            m_arrNodes[4] = new BaseClasses.CNode(5, 2.500f, 0, 0.500f, 0);
-            m_arrNodes[5] = new BaseClasses.CNode(6, 5.500f, 0, 0.500f, 0);
+            m_arrNodes[0] = new CNode(1, 0.500f, 0, 2.500f, 0);
+            m_arrNodes[1] = new CNode(2, 2.500f, 0, 2.500f, 0);
+            m_arrNodes[2] = new CNode(3, 5.500f, 0, 2.500f, 0);
+            m_arrNodes[3] = new CNode(4, 0.500f, 0, 0.500f, 0);
+            m_arrNodes[4] = new CNode(5, 2.500f, 0, 0.500f, 0);
+            m_arrNodes[5] = new CNode(6, 5.500f, 0, 0.500f, 0);
 
             // Sort by ID
             //Array.Sort(m_arrNodes, new BaseClasses.CCompare_NodeID());
@@ -93,15 +93,15 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Members
             // Members List - Members Array
 
-            m_arrMembers[0] = new BaseClasses.CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
-            m_arrMembers[1] = new BaseClasses.CMember(2, m_arrNodes[1], m_arrNodes[2], m_arrCrSc[0], 0);
-            m_arrMembers[2] = new BaseClasses.CMember(3, m_arrNodes[0], m_arrNodes[3], m_arrCrSc[0], 0);
-            m_arrMembers[3] = new BaseClasses.CMember(4, m_arrNodes[1], m_arrNodes[4], m_arrCrSc[0], 0);
-            m_arrMembers[4] = new BaseClasses.CMember(5, m_arrNodes[2], m_arrNodes[5], m_arrCrSc[0], 0);
-            m_arrMembers[5] = new BaseClasses.CMember(6, m_arrNodes[3], m_arrNodes[4], m_arrCrSc[0], 0);
-            m_arrMembers[6] = new BaseClasses.CMember(7, m_arrNodes[4], m_arrNodes[5], m_arrCrSc[0], 0);
-            m_arrMembers[7] = new BaseClasses.CMember(8, m_arrNodes[1], m_arrNodes[3], m_arrCrSc[0], 0);
-            m_arrMembers[8] = new BaseClasses.CMember(9, m_arrNodes[1], m_arrNodes[5], m_arrCrSc[0], 0);
+            m_arrMembers[0] = new CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
+            m_arrMembers[1] = new CMember(2, m_arrNodes[1], m_arrNodes[2], m_arrCrSc[0], 0);
+            m_arrMembers[2] = new CMember(3, m_arrNodes[0], m_arrNodes[3], m_arrCrSc[0], 0);
+            m_arrMembers[3] = new CMember(4, m_arrNodes[1], m_arrNodes[4], m_arrCrSc[0], 0);
+            m_arrMembers[4] = new CMember(5, m_arrNodes[2], m_arrNodes[5], m_arrCrSc[0], 0);
+            m_arrMembers[5] = new CMember(6, m_arrNodes[3], m_arrNodes[4], m_arrCrSc[0], 0);
+            m_arrMembers[6] = new CMember(7, m_arrNodes[4], m_arrNodes[5], m_arrCrSc[0], 0);
+            m_arrMembers[7] = new CMember(8, m_arrNodes[1], m_arrNodes[3], m_arrCrSc[0], 0);
+            m_arrMembers[8] = new CMember(9, m_arrNodes[1], m_arrNodes[5], m_arrCrSc[0], 0);
 
             //Sort by ID
             //Array.Sort(m_arrMembers, new BaseClasses.CCompare_MemberID());
@@ -115,12 +115,12 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Create Support Objects
             // Pozn. Jednym z parametrov by malo byt pole ID uzlov v ktorych je zadefinovana tato podpora
             // objekt podpory bude len jeden a dotknute uzly budu vediet ze na ich podpora existuje a ake je konkretne ID jej nastaveni
-            m_arrNSupports[0] = new BaseClasses.CNSupport(6, 1, m_arrNodes[0], bSupport1, 0);
-            m_arrNSupports[1] = new BaseClasses.CNSupport(6, 2, m_arrNodes[2], bSupport2, 0);
-            m_arrNSupports[2] = new BaseClasses.CNSupport(6, 3, m_arrNodes[5], bSupport3, 0);
+            m_arrNSupports[0] = new CNSupport(6, 1, m_arrNodes[0], bSupport1, 0);
+            m_arrNSupports[1] = new CNSupport(6, 2, m_arrNodes[2], bSupport2, 0);
+            m_arrNSupports[2] = new CNSupport(6, 3, m_arrNodes[5], bSupport3, 0);
 
             // Sort by ID
-            Array.Sort(m_arrNSupports, new BaseClasses.CCompare_NSupportID());
+            Array.Sort(m_arrNSupports, new CCompare_NSupportID());
         }
     }
 }

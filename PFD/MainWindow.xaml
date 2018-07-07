@@ -171,7 +171,8 @@
                 Height="20" VerticalAlignment="Center" Width="100" Margin="90 0 0 0" Click="View_2D_Click"/>
         <Button Name="Clear3DModel" Grid.Row="3" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
                 VerticalAlignment="Center" Width="75" Margin="5 0 20 0" Click="Clear3DModel_Click" />
-        
-        
+        <Button Name="MaterialList" Grid.Row="3" Grid.Column="0" Content="Material List" HorizontalAlignment="Left" 
+                VerticalAlignment="Center" Width="75" Margin="201,24.333,0,23.667" Click="MaterialList_Click" />
+
     </Grid>
 </Window>

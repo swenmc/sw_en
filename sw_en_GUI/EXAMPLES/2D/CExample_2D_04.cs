@@ -24,11 +24,11 @@ namespace sw_en_GUI.EXAMPLES._2D
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[22];
+            m_arrNodes = new CNode[22];
             m_arrMembers = new CMember[41];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[2];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[1];
+            m_arrNSupports = new CNSupport[2];
             //m_arrNLoads = new BaseClasses.CNLoad[11];
 
             // Materials
@@ -37,7 +37,7 @@ namespace sw_en_GUI.EXAMPLES._2D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CRSC.CCrSc_0_05(0.6f, 0.4f);
+            m_arrCrSc[0] = new CCrSc_0_05(0.6f, 0.4f);
 
             // Nodes Automatic Generation
             // Nodes List - Nodes Array

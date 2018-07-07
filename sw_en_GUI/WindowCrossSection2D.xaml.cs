@@ -12,9 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
 using BaseClasses;
-using CRSC;
 using MATH;
-using BaseClasses.GraphObj;
+using CRSC;
 
 namespace sw_en_GUI
 {
@@ -105,7 +104,7 @@ namespace sw_en_GUI
             CanvasSection2D = canvasForImage;
         }
 
-        public WindowCrossSection2D(CCrSc_TW crsc, double dPageWidth_temp, double dPageHeight_temp)
+        public WindowCrossSection2D(CCrSc crsc, double dPageWidth_temp, double dPageHeight_temp)
         {
             InitializeComponent();
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using MATH;
+using BaseClasses;
 
 namespace CRSC
 {
@@ -236,19 +237,19 @@ namespace CRSC
         {
             // Temporary - odstranit po implementacii vypoctu
 
-            d_y_gc = -0.044; // Temporary - TODO
-            y_min = d_y_gc;
+            D_y_gc = -0.044; // Temporary - TODO
+            y_min = D_y_gc;
             y_max = b + y_min;
 
             z_min = -h / 2;
             z_max = h / 2;
 
-            d_z_gc = 0;
+            D_z_gc = 0;
 
             for (int i = 0; i < ITotNoPoints; i++)
             {
-                CrScPointsOut[i, 0] += (float)d_y_gc;
-                CrScPointsOut[i, 1] += (float)d_z_gc;
+                CrScPointsOut[i, 0] += (float)D_y_gc;
+                CrScPointsOut[i, 1] += (float)D_z_gc;
             }
         }
     }

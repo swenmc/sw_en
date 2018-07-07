@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using BaseClasses;
 using MATH;
-using MATERIAL;
-using CRSC;
 using CENEX;
 using FEM_CALC_BASE;
 

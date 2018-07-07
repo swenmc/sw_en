@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using BaseClasses;
 using MATH;
+using MATERIAL;
 using CRSC;
 using sw_en_GUI;
 using sw_en_GUI.EXAMPLES._3D;
@@ -75,7 +76,7 @@ namespace PFD
             dmodels = new DatabaseModels();
             dlocations = new DatabaseLocations();
 
-            InitializeComponent();            
+            InitializeComponent();
 
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
@@ -434,7 +435,7 @@ namespace PFD
         private void DeleteLists()
         {
             zoznamMenuNazvy.Clear();
-            zoznamMenuNazvy.Clear();   //Mato co to? 2x ten isty riadok
+            zoznamMenuHodnoty.Clear();
             zoznamMenuJednotky.Clear();
         }
         
@@ -496,6 +497,12 @@ namespace PFD
             win.Show();
         }
 
+        private void MaterialList_Click(object sender, RoutedEventArgs e)
+        {
+            MaterialList win = new MaterialList(model);
+            win.Show();
+        }
+
         private void ExportDXF_3D_Click(object sender, RoutedEventArgs e)
         {
             netDxf.DxfDocument doc = new netDxf.DxfDocument();
@@ -532,10 +539,8 @@ namespace PFD
                                 }
                             }
                         } //foreach
-                    } //if                    
+                    } //if
                 } //end else if
-
-                
             }
 
             DateTime d = DateTime.Now;
@@ -673,7 +678,7 @@ namespace PFD
 
                 poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.Y, p1.Z, 0));
                 poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p3.Y, p3.Z, 0));
-                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.Y, p2.Z, 0));                
+                poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p2.Y, p2.Z, 0));
                 poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p4.Y, p4.Z, 0));
                 poly.Vertexes.Add(new netDxf.Entities.PolylineVertex(p1.Y, p1.Z, 0));
 

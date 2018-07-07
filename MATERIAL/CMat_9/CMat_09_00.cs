@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BaseClasses;
 
 namespace MATERIAL
 {
     // Default aluminium material class
-    public class CMat_09_00:CMat_00
+    public class CMat_09_00:CMat
     {
         // Default - aluminium
         // General material properties

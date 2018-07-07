@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
-using MATERIAL;
-using CENEX;
 
-namespace CRSC
+namespace BaseClasses
 {
     [Serializable]
     public abstract class CCrSc
@@ -47,6 +45,18 @@ namespace CRSC
             get { return m_TriangleIndicesBackSide; }
             set { m_TriangleIndicesBackSide = value; }
         }
+
+        // Name of cross-section
+        private string m_sName;
+
+        public string Name
+        {
+            get { return m_sName; }
+            set { m_sName = value; }
+        }
+
+        // List of Members ID that have assigned cross-section
+        public List<int> AssignedMembersList = new List<int>();
 
         // Type of cross-section
         private bool m_bIsShapeSolid; // 0 (false) - Hollow section, 1 (true) - Solid section
@@ -209,7 +219,11 @@ namespace CRSC
         m_A_z_v_el,
         m_A_z_v_pl,
         m_f_z_v_plel,
-        m_alpha;
+        m_alpha,
+        m_t_max,
+        m_t_min,
+        m_d_z_gc,               // Gentre of gravity coordinate // (J.7)
+        m_d_y_gc;               // Gentre of gravity coordinate // (J.7)
 
         public double S_y0
         {
@@ -577,13 +591,36 @@ namespace CRSC
             set { m_z_max = value; }
         }
 
+        public double t_min
+        {
+            get { return m_t_min; }
+            set { m_t_min = value; }
+        }
+
+        public double t_max
+        {
+            get { return m_t_max; }
+            set { m_t_max = value; }
+        }
+
+        public double D_z_gc
+        {
+            get { return m_d_z_gc; }
+            set { m_d_z_gc = value; }
+        }
+        public double D_y_gc
+        {
+            get { return m_d_y_gc; }
+            set { m_d_y_gc = value; }
+        }
+
         public Int32Collection WireFrameIndices
         {
             get { return m_WireFrameIndices; }
             set { m_WireFrameIndices = value; }
         }
 
-        public CMat_00 m_Mat = new CMat_00();
+        public CMat m_Mat = new CMat();
 
 		//// Constructor 1
 		//public CCrSc()
@@ -591,7 +628,7 @@ namespace CRSC
         
 		//}
 		//// Constructor 2
-		//public CCrSc(CMat_00 objMat)
+		//public CCrSc(CMat objMat)
 		//{
 		//    m_Mat = objMat; // !!! Nevytvarat lokalne kopie !!!
 		//}
@@ -812,6 +849,5 @@ namespace CRSC
 
             return array_out;
         }
-
     }
 }

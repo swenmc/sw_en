@@ -79,6 +79,8 @@
   <ItemGroup>
     <Compile Include="CConnectionJointTypes.cs" />
     <Compile Include="Drawing3D.cs" />
+    <Compile Include="Model\CCrSc.cs" />
+    <Compile Include="Model\CMat.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TB01.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TA01.cs" />
     <Compile Include="Model\ConnectionComponents\CPlate_JB.cs" />
@@ -157,14 +159,6 @@
     <ProjectReference Include="..\3DTools-1.0-src\3DTools\3DTools.csproj">
       <Project>{5F603892-DE40-4246-A969-1C6717AFE35D}</Project>
       <Name>3DTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CRSC\CRSC.csproj">
-      <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
-      <Name>CRSC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
-      <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
-      <Name>MATERIAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>

@@ -10,8 +10,6 @@ using BaseClasses;
 using BaseClasses.GraphObj;
 using _3DTools;
 using MATH;
-using MATERIAL;
-using CRSC;
 
 namespace AAC
 {
@@ -21,7 +19,7 @@ namespace AAC
         public Object3DModel()
         { }
 
-        public Model3DGroup GetMemberModel(EGCS eGCS, bool bIsTransparent, Point3D NodeStart, Point3D NodeEnd, CRSC.CCrSc Cross_Section, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, MaterialGroup qOuterMaterial)
+        public Model3DGroup GetMemberModel(EGCS eGCS, bool bIsTransparent, Point3D NodeStart, Point3D NodeEnd, CCrSc Cross_Section, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, MaterialGroup qOuterMaterial)
         {
             Model3DGroup MObject3DModel = new Model3DGroup(); // Whole member
 
@@ -46,7 +44,7 @@ namespace AAC
             return MObject3DModel;
         }
 
-        public void getG_M_3D_Member(EGCS eGCS, Point3D NodeStart, Point3D NodeEnd, CRSC.CCrSc CrScStart, CRSC.CCrSc CrScEnd, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, out GeometryModel3D modelFrontSide, out GeometryModel3D modelShell, out GeometryModel3D modelBackSide)
+        public void getG_M_3D_Member(EGCS eGCS, Point3D NodeStart, Point3D NodeEnd, CCrSc CrScStart, CCrSc CrScEnd, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, out GeometryModel3D modelFrontSide, out GeometryModel3D modelShell, out GeometryModel3D modelBackSide)
         {
             // We need to transform CNode to Point3D
             Point3D mpA = new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z); // Start point - class Point3D
@@ -74,7 +72,7 @@ namespace AAC
             modelBackSide.Material = new DiffuseMaterial(brushBackSide);
         }
 
-        private void getMeshMemberGeometry3DFromCrSc_1(EGCS eGCS, CRSC.CCrSc obj_CrScA, CRSC.CCrSc obj_CrScB, Point3D mpA, Point3D mpB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
+        private void getMeshMemberGeometry3DFromCrSc_1(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, Point3D mpA, Point3D mpB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
         {
             meshFrontSide = new MeshGeometry3D();
             meshShell = new MeshGeometry3D();

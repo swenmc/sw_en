@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Data.OleDb;
 using DATABASE;
+using BaseClasses;
 
 namespace MATERIAL
 {
     // Default concrete material class
-    public class CMat_02_00:CMat_00
+    public class CMat_02_00:CMat
     {
         // Default - concrete
         // General material properties

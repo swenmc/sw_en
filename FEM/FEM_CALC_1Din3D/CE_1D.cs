@@ -5,7 +5,6 @@ using System.Text;
 using BaseClasses;
 using FEM_CALC_BASE;
 using MATH;
-using CRSC;
 using System.Collections;
 
 namespace FEM_CALC_1Din3D

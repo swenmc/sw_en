@@ -16,14 +16,14 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[4];
+            m_arrNodes = new CNode[4];
             m_arrMembers = new CMember[3];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[2];
-            m_arrMLoads = new BaseClasses.CMLoad[3];
-            m_arrLoadCases = new BaseClasses.CLoadCase[1];
-            m_arrLoadCombs = new BaseClasses.CLoadCombination[1];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[1];
+            m_arrNSupports = new CNSupport[2];
+            m_arrMLoads = new CMLoad[3];
+            m_arrLoadCases = new CLoadCase[1];
+            m_arrLoadCombs = new CLoadCombination[1];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -31,7 +31,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CRSC.CCrSc_3_00(0, 8, 0.300f, 0.125f, 0.0162f, 0.0108f, 0.0108f, 0.0065f, 0.2416f); // I 300 section
+            m_arrCrSc[0] = new CCrSc_3_00(0, 8, 0.300f, 0.125f, 0.0162f, 0.0108f, 0.0108f, 0.0065f, 0.2416f); // I 300 section
             m_arrCrSc[0].I_t = 5.69e-07f;
             m_arrCrSc[0].I_y = 9.79e-05f;
             m_arrCrSc[0].I_z = 4.49e-06f;
@@ -47,10 +47,10 @@ namespace sw_en_GUI.EXAMPLES._3D
                   fGeom_b = 5f,
                   fGeom_c = 3.5f;     // Unit [m]
 
-            m_arrNodes[0] = new BaseClasses.CNode(1, fGeom_a,        0,        0, 0);
-            m_arrNodes[1] = new BaseClasses.CNode(2,       0,        0,        0, 0);
-            m_arrNodes[2] = new BaseClasses.CNode(3, fGeom_a,        0, -fGeom_c, 0);
-            m_arrNodes[3] = new BaseClasses.CNode(4, fGeom_a, -fGeom_b,        0, 0);
+            m_arrNodes[0] = new CNode(1, fGeom_a,        0,        0, 0);
+            m_arrNodes[1] = new CNode(2,       0,        0,        0, 0);
+            m_arrNodes[2] = new CNode(3, fGeom_a,        0, -fGeom_c, 0);
+            m_arrNodes[3] = new CNode(4, fGeom_a, -fGeom_b,        0, 0);
 
             // Sort by ID
             //Array.Sort(m_arrNodes, new BaseClasses.CCompare_NodeID());
@@ -58,9 +58,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Members
             // Members List - Members Array
 
-            m_arrMembers[0] = new BaseClasses.CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
-            m_arrMembers[1] = new BaseClasses.CMember(2, m_arrNodes[0], m_arrNodes[2], m_arrCrSc[0], 0);
-            m_arrMembers[2] = new BaseClasses.CMember(3, m_arrNodes[0], m_arrNodes[3], m_arrCrSc[0], 0);
+            m_arrMembers[0] = new CMember(1, m_arrNodes[0], m_arrNodes[1], m_arrCrSc[0], 0);
+            m_arrMembers[1] = new CMember(2, m_arrNodes[0], m_arrNodes[2], m_arrCrSc[0], 0);
+            m_arrMembers[2] = new CMember(3, m_arrNodes[0], m_arrNodes[3], m_arrCrSc[0], 0);
 
             // Nodal Supports - fill values
 
@@ -118,12 +118,12 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Load Cases
             // Load Case 1
-            m_arrLoadCases[0] = new BaseClasses.CLoadCase();
+            m_arrLoadCases[0] = new CLoadCase();
             m_arrLoadCases[0].ID = 1;
 
             // Load Combinations
             // Load Combination 1
-            m_arrLoadCombs[0] = new BaseClasses.CLoadCombination();
+            m_arrLoadCombs[0] = new CLoadCombination();
             m_arrLoadCombs[0].ID = 1;
         }
     }

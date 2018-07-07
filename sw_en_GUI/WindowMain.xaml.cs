@@ -10,9 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-//using System.Windows.Forms;
 using Microsoft.Win32;
-using CENEX;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using WPF.MDI;
@@ -309,9 +307,9 @@ namespace sw_en_GUI
             CNode Node2;
             int node2ID;
             float fRotation;
-            CRSC.CCrSc_3_00 CrSc1; // Temp
+            CCrSc_3_00 CrSc1; // Temp
             int iCrSc1ID;
-            CRSC.CCrSc_3_00 CrSc2; // Temp
+            CCrSc_3_00 CrSc2; // Temp
             int iCrSc2ID;
             // ReleaseStartID
             // ReleaseEndID
@@ -365,10 +363,10 @@ namespace sw_en_GUI
             return members.ToArray();
         }
 
-        private CRSC.CCrSc[] getCrossSections(DataTable dt)
+        private CCrSc[] getCrossSections(DataTable dt)
         {
-            List<CRSC.CCrSc> list_crsc = new List<CRSC.CCrSc>();
-            CRSC.CCrSc crsc = null;
+            List<CCrSc> list_crsc = new List<CCrSc>();
+            CCrSc crsc = null;
 
             int CrSc_ID;
             float fI_t, fI_y, fI_z, fA_g, fA_vy, fA_vz;

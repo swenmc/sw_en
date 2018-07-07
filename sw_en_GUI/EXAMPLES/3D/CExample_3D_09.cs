@@ -23,11 +23,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[3662];
+            m_arrNodes = new CNode[3662];
             m_arrMembers = new CMember[10696];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[186];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[1];
+            m_arrNSupports = new CNSupport[186];
             //m_arrNLoads = new BaseClasses.CNLoad[1];
 
             // Materials
@@ -36,7 +36,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CRSC.CCrSc_0_05(0.1f, 0.05f);
+            m_arrCrSc[0] = new CCrSc_0_05(0.1f, 0.05f);
 
             // Nodes Automatic Generation
             // Nodes List - Nodes Array
@@ -14620,9 +14620,6 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrNSupports[183] = new CNSupport(6, 184, m_arrNodes[3655 - 1], bSupport1, 0);
             m_arrNSupports[184] = new CNSupport(6, 185, m_arrNodes[3659 - 1], bSupport1, 0);
             m_arrNSupports[185] = new CNSupport(6, 186, m_arrNodes[3660 - 1], bSupport1, 0);
-
-
-
 
             // Setridit pole podle ID
             Array.Sort(m_arrNSupports, new CCompare_NSupportID());

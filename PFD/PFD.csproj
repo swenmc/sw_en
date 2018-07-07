@@ -56,6 +56,9 @@
     </ApplicationDefinition>
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="DatabaseComponents.cs" />
+    <Compile Include="MaterialList.xaml.cs">
+      <DependentUpon>MaterialList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pokus2DView.xaml.cs">
       <DependentUpon>Pokus2DView.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MaterialList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Page3Dmodel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -16,14 +16,14 @@ namespace sw_en_GUI.EXAMPLES._2D
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[5];
+            m_arrNodes = new CNode[5];
             m_arrMembers = new CMember[4];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[3];
-            m_arrNSupports = new BaseClasses.CNSupport[1];
-            m_arrMLoads = new BaseClasses.CMLoad[1];
-            m_arrLoadCases = new BaseClasses.CLoadCase[1];
-            m_arrLoadCombs = new BaseClasses.CLoadCombination[1];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[3];
+            m_arrNSupports = new CNSupport[1];
+            m_arrMLoads = new CMLoad[1];
+            m_arrLoadCases = new CLoadCase[1];
+            m_arrLoadCombs = new CLoadCombination[1];
 
             // Auxiliary
             // Use basic SI units
@@ -41,7 +41,7 @@ namespace sw_en_GUI.EXAMPLES._2D
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat[0] = new CMat_00();
+            m_arrMat[0] = new CMat();
 
             // Auxiliary, dopocitat 
             m_arrMat[0].m_fE = 10000000f;          // Unit [Pa]

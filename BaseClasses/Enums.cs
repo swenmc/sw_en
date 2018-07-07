@@ -275,4 +275,23 @@ namespace BaseClasses
         eSerie_SmartDek,
         eSerie_PurlinDek
     };
+
+    public enum EMemberType_FormSteel
+    {
+        eG,  // Girt
+        eC,  // Column
+        eER, // End Rafter
+        eWP, // Wind Post
+        eEC, // End Column
+        eEP, // Edge Purlin
+        eP,  // Purlin
+        eDT, // Door Trimmer
+        eDL, // Door Lintel
+        ePB, // Purlin Block
+        eGB, // Girt Block
+        eDF, // Door Frame
+        eBG, // Base Girt
+        eMR, // Main Rafter
+        eMC, // Main Column
+    }
 }

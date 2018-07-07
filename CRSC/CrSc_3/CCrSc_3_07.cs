@@ -1,6 +1,7 @@
 ﻿using System;
 using MATH;
 using System.Windows.Media;
+using BaseClasses;
 
 namespace CRSC
 {

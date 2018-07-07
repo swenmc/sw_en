@@ -24,11 +24,11 @@ namespace sw_en_GUI.EXAMPLES._2D
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[12];
+            m_arrNodes = new CNode[12];
             m_arrMembers = new CMember[21];
-            m_arrMat = new CMat_00[1];
-            m_arrCrSc = new CRSC.CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[2];
+            m_arrMat = new CMat[1];
+            m_arrCrSc = new CCrSc[1];
+            m_arrNSupports = new CNSupport[2];
             //m_arrNLoads = new BaseClasses.CNLoad[5];
 
             // Materials
@@ -37,7 +37,7 @@ namespace sw_en_GUI.EXAMPLES._2D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CRSC.CCrSc_0_05(0.1f, 0.05f);
+            m_arrCrSc[0] = new CCrSc_0_05(0.1f, 0.05f);
 
             // Nodes Automatic Generation
             // Nodes List - Nodes Array
@@ -100,8 +100,8 @@ namespace sw_en_GUI.EXAMPLES._2D
             bool[] bSupport3 = { true, false, false, false, false, false };
 
             // Create Support Objects
-            m_arrNSupports[0] = new BaseClasses.CNSupport(m_eNDOF, 1, m_arrNodes[0], bSupport2, 0);
-            m_arrNSupports[1] = new BaseClasses.CNSupport(m_eNDOF, 2, m_arrNodes[6], bSupport3, 0);
+            m_arrNSupports[0] = new CNSupport(m_eNDOF, 1, m_arrNodes[0], bSupport2, 0);
+            m_arrNSupports[1] = new CNSupport(m_eNDOF, 2, m_arrNodes[6], bSupport3, 0);
 
 
             // Setridit pole podle ID

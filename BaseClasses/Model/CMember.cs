@@ -6,8 +6,6 @@ using System.Text;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using MATH;
-using MATERIAL;
-using CRSC;
 using _3DTools;
 
 namespace BaseClasses
@@ -75,6 +73,8 @@ namespace BaseClasses
             get { return m_CrScEnd; }
             set { m_CrScEnd = value; }
         }
+
+        public EMemberType_FormSteel eMemberType_FS;
 
         // Priemet do osi GCS - rozdiel suradnic v GCS
         private double dDelta_X;
@@ -244,6 +244,34 @@ namespace BaseClasses
             CNode iNode1,
             CNode iNode2,
             CCrSc objCrSc1,
+            EMemberType_FormSteel eMemberType,
+            float fAligment1,
+            float fAligment2,
+            float fTheta_x = 0,
+            int fTime = 0
+            )
+        {
+            ID = iLine_ID;
+            m_NodeStart = iNode1;
+            m_NodeEnd = iNode2;
+            m_cnRelease1 = null;
+            m_cnRelease2 = null;
+            m_CrScStart = objCrSc1;
+            eMemberType_FS = eMemberType;
+            FAlignment_Start = fAligment1;
+            FAlignment_End = fAligment2;
+            DTheta_x = fTheta_x;
+            FTime = fTime;
+
+            Fill_Basic();
+        }
+
+        // Constructor 7
+        public CMember(
+            int iLine_ID,
+            CNode iNode1,
+            CNode iNode2,
+            CCrSc objCrSc1,
             CCrSc objCrSc2,
             float fAligment1,
             float fAligment2,
@@ -257,6 +285,34 @@ namespace BaseClasses
             m_cnRelease2 = null;
             m_CrScStart = objCrSc1;
             m_CrScEnd = objCrSc2;
+            FAlignment_Start = fAligment1;
+            FAlignment_End = fAligment2;
+            FTime = fTime;
+
+            Fill_Basic();
+        }
+
+        // Constructor 8
+        public CMember(
+            int iLine_ID,
+            CNode iNode1,
+            CNode iNode2,
+            CCrSc objCrSc1,
+            CCrSc objCrSc2,
+            EMemberType_FormSteel eMemberType,
+            float fAligment1,
+            float fAligment2,
+            int fTime
+            )
+        {
+            ID = iLine_ID;
+            m_NodeStart = iNode1;
+            m_NodeEnd = iNode2;
+            m_cnRelease1 = null;
+            m_cnRelease2 = null;
+            m_CrScStart = objCrSc1;
+            m_CrScEnd = objCrSc2;
+            eMemberType_FS = eMemberType;
             FAlignment_Start = fAligment1;
             FAlignment_End = fAligment2;
             FTime = fTime;
@@ -282,6 +338,13 @@ namespace BaseClasses
 
             SetStartPoint3DCoord();
             SetEndPoint3DCoord();
+
+            // Add created member to the list of members in cross-section object
+            if (m_CrScStart != null)
+                m_CrScStart.AssignedMembersList.Add(ID);
+
+            if (m_CrScEnd != null)
+                m_CrScEnd.AssignedMembersList.Add(ID);
         }
 
         public void SetStartPoint3DCoord()

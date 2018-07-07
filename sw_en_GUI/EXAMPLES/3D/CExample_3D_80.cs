@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using BaseClasses;
 using BaseClasses.GraphObj;
 using MATERIAL;
 using CRSC;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows;
 
 namespace sw_en_GUI.EXAMPLES._3D
 {
@@ -27,7 +27,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrGOVolumes = new BaseClasses.GraphObj.CVolume[434];
             m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[16];
 
-            m_arrMat = new CMat_00[1];
+            m_arrMat = new CMat[1];
             //m_arrCrSc = new CRSC.CCrSc[1];
 
             // Materials

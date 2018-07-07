@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using BaseClasses;
 using BaseClasses.GraphObj;
 using MATERIAL;
 using CRSC;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-
 
 namespace sw_en_GUI.EXAMPLES._3D
 {

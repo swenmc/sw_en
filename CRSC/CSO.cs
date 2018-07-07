@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
-using MATH;
 using System.Windows.Media;
 using System.Windows.Forms;
+using MATH;
+using BaseClasses;
 
 namespace CRSC
 {
@@ -319,8 +320,8 @@ namespace CRSC
                 S_z0 += (y_suradnice[i] + y_suradnice[i - 1]) * dAi;
             }
 
-            this.d_z_gc = S_y0 / A_g;
-            this.d_y_gc = S_z0 / A_g;
+            D_z_gc = S_y0 / A_g;
+            D_y_gc = S_z0 / A_g;
         }
         //(J.8) and (J.10) , (J.11) method
         public void Iy0_Iz0_method(int count)
@@ -340,8 +341,8 @@ namespace CRSC
                         + y_suradnice[i - 1] * z_suradnice[i] + y_suradnice[i] * z_suradnice[i - 1]) * dAi / 6;
             }
 
-            I_y = I_y0 - A_g * Math.Pow(d_z_gc, 2);
-            I_z = I_z0 - A_g * Math.Pow(d_y_gc, 2);
+            I_y = I_y0 - A_g * Math.Pow(D_z_gc, 2);
+            I_z = I_z0 - A_g * Math.Pow(D_y_gc, 2);
             I_yz = I_yz0 - (S_y0 * S_z0 / A_g);
         }
         //J.12,J.13,J.14 method
@@ -445,7 +446,7 @@ namespace CRSC
             d_omega_s[0] = 0;
             for (int i = 1; i < count; i++)
             {
-                d_omega_s[i] = omega[i] - _omega_mean + d_z_sc * (y_suradnice[i] - d_y_gc) - d_y_sc * (z_suradnice[i] - d_z_gc);
+                d_omega_s[i] = omega[i] - _omega_mean + d_z_sc * (y_suradnice[i] - D_y_gc) - d_y_sc * (z_suradnice[i] - D_z_gc);
             }
         }
         //J.24,J.25,J.26 method
@@ -453,16 +454,16 @@ namespace CRSC
         {
             omega_max = MathF.Max(d_omega_s);
             W_w = I_w / omega_max;
-            d_y_s = d_y_sc - d_y_gc;
-            d_z_s = d_z_sc - d_z_gc;
+            d_y_s = d_y_sc - D_y_gc;
+            d_z_s = d_z_sc - D_z_gc;
             _Ip = I_y + I_z + A_g * (Math.Pow(d_y_s, 2) + Math.Pow(d_z_s, 2));
 
         }
         //J.29 method
         public void J_29_method(int num)
         {
-            d_y_ci = (y_suradnice[num] + y_suradnice[num - 1]) / 2 - d_y_gc;
-            d_z_ci = (z_suradnice[num] + z_suradnice[num - 1]) / 2 - d_z_gc;
+            d_y_ci = (y_suradnice[num] + y_suradnice[num - 1]) / 2 - D_y_gc;
+            d_z_ci = (z_suradnice[num] + z_suradnice[num - 1]) / 2 - D_z_gc;
         }
         //J.27,J.28 method
         //This method uses J.29 method to count actual d_y_ci and d_z_ci numbers
@@ -510,11 +511,11 @@ namespace CRSC
         // Calculate elastic cross-section moduli
         public void J_W_el()
         {
-            W_y_el_1 = I_y / (z_max - d_z_gc);
-            W_y_el_2 = I_y / (d_z_gc - z_min);
+            W_y_el_1 = I_y / (z_max - D_z_gc);
+            W_y_el_2 = I_y / (D_z_gc - z_min);
 
-            W_z_el_1 = I_z / (y_max - d_y_gc);
-            W_z_el_2 = I_z / (d_y_gc - y_min);
+            W_z_el_1 = I_z / (y_max - D_y_gc);
+            W_z_el_2 = I_z / (D_y_gc - y_min);
         }
         // Radius of gyration
         public void Calc_Radius_of_Gyration()

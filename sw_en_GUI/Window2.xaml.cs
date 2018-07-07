@@ -12,13 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
 using System.Configuration;
-using CENEX;
 using _3DTools;
-using MATH;
-using CRSC;
 using BaseClasses;
-using BaseClasses.GraphObj;
-using HelixToolkit.Wpf;
 
 namespace sw_en_GUI
 {

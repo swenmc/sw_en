@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BaseClasses;
 
 namespace MATERIAL
 {
     // Default steel material class
-    public class CMat_03_00:CMat_00
+    public class CMat_03_00:CMat
     {
         // Default - steel
         // General material properties
