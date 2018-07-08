@@ -7,17 +7,17 @@
         mc:Ignorable="d"
         Title="MaterialList" Height="1000" Width="800">
     <Grid Margin="0,0,0,0">
-        <DataGrid Name ="Datagrid_Members" AutoGenerateColumns="False"
+        <DataGrid Name ="Datagrid_Members"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,25,10,650"
             IsReadOnly="True">
         </DataGrid>
 
-        <DataGrid Name ="Datagrid_Plates" AutoGenerateColumns="False"
+        <DataGrid Name ="Datagrid_Plates"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,330,10,360"
             IsReadOnly="True">
         </DataGrid>
 
-        <DataGrid Name ="Datagrid_Screws" AutoGenerateColumns="False"
+        <DataGrid Name ="Datagrid_Screws"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,620,10,40"
             IsReadOnly="True">
         </DataGrid>

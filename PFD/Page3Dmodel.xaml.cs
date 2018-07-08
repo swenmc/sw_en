@@ -63,8 +63,8 @@ namespace PFD
                 Point3D tp2 = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 - 0.2, pModelGeomCentre.Z);
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("10 m", new SolidColorBrush(Colors.White), true, 0.1, textPoint, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("1234 mm", new SolidColorBrush(Colors.Red), true, 0.1, textPoint2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-                _trackport.ViewPort.Children.Add(CreateTextLabel3D("Ondro", new SolidColorBrush(Colors.Gold), true, 0.2, tp, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-                _trackport.ViewPort.Children.Add(CreateTextLabel3D("is the BOSS", new SolidColorBrush(Colors.Gold), true, 0.1, tp2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
+                _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row1", new SolidColorBrush(Colors.Gold), true, 0.1, tp, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
+                _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row2", new SolidColorBrush(Colors.Gold), true, 0.05, tp2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
 
             }
 

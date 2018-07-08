@@ -14,6 +14,7 @@ namespace CRSC
 
         public CCrSc_3_270XX_C_BACK_TO_BACK(float fh, float fb, float fc_lip, float ft, Color color_temp) : base(fh, fb, fc_lip, ft, color_temp)
         {
+            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + " back to back";
             CSColor = color_temp;  // Set cross-section color
 
             IsShapeSolid = true;
@@ -39,6 +40,14 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            FillCrScPropertiesByTableData();
+        }
+
+        public void FillCrScPropertiesByTableData()
+        {
+            // Do not calculate but set table data
+            A_g = 1057 / 1e+6;
         }
     }
 }

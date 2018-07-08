@@ -8,8 +8,12 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_50020_C : CCrSc_TW
+    public class CCrSc_3_50020_C_NESTED : CCrSc_TW
     {
+        /// <summary>
+        /// TODO - prepracovat - je to len kopia C 50020
+        /// </summary>
+
         // Thin-walled mono-symmetrical C-section with lips
 
         private float m_ft_f; // Flange Thickness / Hrubka pasnice
@@ -48,10 +52,10 @@ namespace CRSC
             set { m_fc_lip2 = value; }
         }
 
-        public CCrSc_3_50020_C(float fh, float fb, float ft, Color color_temp)
+        public CCrSc_3_50020_C_NESTED(float fh, float fb, float ft, Color color_temp)
         {
-            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
-            Name = "C " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
+            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString() + " nested"; // Original Description
+            Name = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // Formsteel Description
 
             CSColor = color_temp;  // Set cross-section color
 
@@ -207,7 +211,7 @@ namespace CRSC
         public void FillCrScPropertiesByTableData()
         {
             // Do not calculate but set table data
-            A_g = 1675.8 / 1e+6;
+            A_g = 3358 / 1e+6;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace BaseClasses
         }
 
         // List of Members ID that have assigned cross-section
-        public List<int> AssignedMembersList = new List<int>();
+        public List<CMember> AssignedMembersList = new List<CMember>();
 
         // Type of cross-section
         private bool m_bIsShapeSolid; // 0 (false) - Hollow section, 1 (true) - Solid section
@@ -222,8 +222,10 @@ namespace BaseClasses
         m_alpha,
         m_t_max,
         m_t_min,
-        m_d_z_gc,               // Gentre of gravity coordinate // (J.7)
-        m_d_y_gc;               // Gentre of gravity coordinate // (J.7)
+        m_d_z_gc,               // Centre of gravity coordinate // (J.7)
+        m_d_y_gc,               // Centre of gravity coordinate // (J.7)
+        m_d_z_sc,               // Shear centre coordinate
+        m_d_y_sc;               // Shear centre coordinate
 
         public double S_y0
         {
@@ -612,6 +614,17 @@ namespace BaseClasses
         {
             get { return m_d_y_gc; }
             set { m_d_y_gc = value; }
+        }
+
+        public double D_z_sc
+        {
+            get { return m_d_z_sc; }
+            set { m_d_z_sc = value; }
+        }
+        public double D_y_sc
+        {
+            get { return m_d_y_sc; }
+            set { m_d_y_sc = value; }
         }
 
         public Int32Collection WireFrameIndices

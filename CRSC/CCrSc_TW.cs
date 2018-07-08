@@ -190,11 +190,14 @@ namespace CRSC
         // Default example
         public CCrSc_TW()
         {
+            m_Mat.Name = "Steel S500"; //Temporary
         }
 
         // Data in datagrid
         public CCrSc_TW(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
+            m_Mat.Name = "Steel S500"; //Temporary
+
             int count = y_suradnice.Count;
 
             this.y_suradnice = y_suradnice;

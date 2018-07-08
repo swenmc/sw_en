@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using MATH;
 using BaseClasses;
+using MATERIAL;
 
 namespace CRSC
 {
@@ -50,7 +51,8 @@ namespace CRSC
 
         public CCrSc_3_63020_BOX(float fh, float fb, float ft, float ft_flange, Color color_temp)
         {
-            CSColor = color_temp;  // Set cross-section color
+            Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
+            Name = "Box " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
 
             //ITotNoPoints = 40;
             IsShapeSolid = false;
@@ -98,6 +100,8 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()
@@ -223,6 +227,12 @@ namespace CRSC
                 CrScPointsOut[i, 0] += (float)D_y_gc;
                 CrScPointsOut[i, 1] += (float)D_z_gc;
             }
+        }
+
+        public void FillCrScPropertiesByTableData()
+        {
+            // Do not calculate but set table data
+            A_g = 3343 / 1e+6;
         }
     }
 }

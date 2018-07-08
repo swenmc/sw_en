@@ -54,6 +54,7 @@ namespace CRSC
 
         public CCrSc_3_270XX_C(float fh, float fb, float ft, Color color_temp)
         {
+            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
             CSColor = color_temp;  // Set cross-section color
             //ITotNoPoints = 56;
             IsShapeSolid = true;
@@ -99,6 +100,7 @@ namespace CRSC
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
 
+            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()
@@ -251,6 +253,19 @@ namespace CRSC
                 CrScPointsOut[i, 0] += (float)D_y_gc;
                 CrScPointsOut[i, 1] += (float)D_z_gc;
             }
+        }
+
+        public void FillCrScPropertiesByTableData()
+        {
+            // Do not calculate but set table data
+            if (MathF.d_equal(Ft_w, 0.00055))
+                A_g = 0.00055 / 0.00095 * 436.8 / 1e+6; // TODO Temp - zistit plochu
+            if (MathF.d_equal(Ft_w, 0.00095))
+                A_g = 436.8 / 1e+6;
+            else if (MathF.d_equal(Ft_w, 0.00115))
+                A_g = 527.0 / 1e+6; 
+            else
+                A_g = Ft_w / 0.00095 * 436.8 / 1e+6; // Priblizne - nespecifikovana hrubka
         }
     }
 }

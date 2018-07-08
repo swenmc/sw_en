@@ -44,6 +44,7 @@ namespace CRSC
 
         public CCrSc_3_10075_BOX(float fh, float fb, float ft, Color color_temp)
         {
+            Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString();
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 40;
@@ -86,6 +87,8 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()
@@ -211,6 +214,32 @@ namespace CRSC
                 CrScPointsOut[i, 0] += (float)D_y_gc;
                 CrScPointsOut[i, 1] += (float)D_z_gc;
             }
+        }
+
+        public void FillCrScPropertiesByTableData()
+        {
+            // Do not calculate but set table data
+            A_g = 306.8 / 1e+6;
+            I_y = 4.711E+05;
+            I_z = 4.711E+05;
+            W_y_el = 9493;
+            W_z_el = 9493;
+            I_yz = 0.0;
+            I_epsilon = 4.711E+05;
+            I_mikro = 4.711E+05;
+            W_y_el = 9493;
+            W_z_el = 9493;
+            I_t = 6.302E+05;
+            I_w = 1.390E+06;
+            D_y_gc = 0;
+            D_z_gc = 0;
+            D_y_sc = 0;
+            D_z_sc = 0;
+            D_y_s = 0;
+            D_z_s = 0;
+            Beta_y = 0;
+            Beta_z = 0;
+            Alpha = 0;
         }
     }
 }

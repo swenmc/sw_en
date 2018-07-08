@@ -214,19 +214,19 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat[0] = new CMat_03_00();
+            m_arrMat[0] = new CMat_03_00("Steel S500", 500e+6f, 600e+6f);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = (CCrSc)new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Violet); // Main Column
+            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Violet);     // Main Column
             m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.LightGreen); // Rafter
-            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.001f, Colors.Thistle);  // Eaves Purlin
-            m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);  // Girt - Wall
-            m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.00095f, Colors.SlateBlue); // Purlin
-            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.25f, 0.25f, 0.001f, Colors.Beige); // Front Column
-            m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.25f, 0.10f, 0.001f, Colors.BlueViolet); // Back Column
-            m_arrCrSc[7] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Aquamarine); // Front Girt
-            m_arrCrSc[8] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.00095f, Colors.YellowGreen); // Back Girt
+            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.Thistle);                 // Eaves Purlin
+            m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                // Girt - Wall
+            m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);             // Purlin
+            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.0075f, Colors.Beige);                  // Front Column
+            m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.0075f, Colors.BlueViolet);             // Back Column
+            m_arrCrSc[7] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Aquamarine);            // Front Girt
+            m_arrCrSc[8] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);           // Back Girt
 
             // Alignments
             float fMainColumnStart = 0.0f;

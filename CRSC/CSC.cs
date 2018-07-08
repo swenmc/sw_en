@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using MATH;
 using BaseClasses;
+using MATERIAL;
 
 namespace CRSC
 {

@@ -9,7 +9,7 @@ using BaseClasses;
 namespace MATERIAL
 {
     // Default concrete material class
-    public class CMat_02_00:CMat
+    public class CMat_02_00: BaseClasses.CMat
     {
         // Default - concrete
         // General material properties

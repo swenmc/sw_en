@@ -7,7 +7,7 @@ using BaseClasses;
 namespace MATERIAL
 {
     // Default timber material class
-    public class CMat_05_00:CMat
+    public class CMat_05_00: CMat
     {
         //// Default - timber
         //// General material properties

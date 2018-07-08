@@ -46,6 +46,7 @@ namespace CRSC
 
         public CCrSc_3_270XX_C_NESTED(float fh, float fb, float ft, Color color_temp)
         {
+            Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + " nested";
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 32;
@@ -179,6 +180,17 @@ namespace CRSC
                 CrScPointsIn[INoPointsIn - i - 1, 0] = -CrScPointsIn[i, 0];                        // Inside
                 CrScPointsIn[INoPointsIn - i - 1, 1] = CrScPointsIn[i, 1];                         // Inside
             }
+        }
+
+        public void FillCrScPropertiesByTableData()
+        {
+            // Do not calculate but set table data
+            if (MathF.d_equal(Ft_w, 0.00095))
+                A_g = 2 * 436.8 / 1e+6;
+            else if (MathF.d_equal(Ft_w, 0.00115))
+                A_g = 2 * 527.0 / 1e+6;
+            else
+            { }
         }
     }
 }

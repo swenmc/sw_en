@@ -40,6 +40,7 @@ namespace CRSC
 
         public CCrSc_3_I_LIPS(float fh, float fb, float fc_lip, float ft, Color color_temp)
         {
+            Name = "I " + (fh * 1000).ToString() + (ft * 1000).ToString();
             CSColor = color_temp;  // Set cross-section color
 
             IsShapeSolid = true;

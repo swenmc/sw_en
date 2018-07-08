@@ -341,10 +341,10 @@ namespace BaseClasses
 
             // Add created member to the list of members in cross-section object
             if (m_CrScStart != null)
-                m_CrScStart.AssignedMembersList.Add(ID);
+                m_CrScStart.AssignedMembersList.Add(this);
 
             if (m_CrScEnd != null)
-                m_CrScEnd.AssignedMembersList.Add(ID);
+                m_CrScEnd.AssignedMembersList.Add(this);
         }
 
         public void SetStartPoint3DCoord()
