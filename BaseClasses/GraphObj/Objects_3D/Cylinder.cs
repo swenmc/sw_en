@@ -10,7 +10,7 @@ using MATH;
 namespace BaseClasses.GraphObj.Objects_3D
 {
     // Cylinder in local x-axis
-    class Cylinder
+    public class Cylinder
     {
         public float m_fDim1_r;
         public float m_fDim2_L;
