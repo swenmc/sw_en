@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using _3DTools;
@@ -10,16 +11,24 @@ namespace BaseClasses
 {
     public abstract class CPlate : CConnectionComponentEntity3D
     {
+        public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FormSteel
+        public float fWidth_bx;
+        public float fHeight_hy;
+        public float fThickness_tz;
+        public float fArea;
+
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
 
         public CPlate()
         {
             BIsDisplayed = true;
+            m_Mat = new CMat();
         }
 
         public CPlate(bool bIsDisplayed)
         {
             BIsDisplayed = bIsDisplayed;
+            m_Mat = new CMat();
         }
 
         protected override void loadIndices()
@@ -405,6 +414,47 @@ namespace BaseClasses
                     iThird += 3;
                 }
             }
+        }
+
+        // Return the polygon's area in "square units."
+        // The value will be negative if the polygon is
+        // oriented clockwise.
+
+        private float SignedPolygonArea()
+        {
+            // Add the first point to the end.
+            int num_points = PointsOut2D.Length / 2;
+            Point[] pts = new Point[num_points + 1];
+
+            for (int i = 0; i < num_points; i++)
+            {
+                pts[i].X = PointsOut2D[i, 0];
+                pts[i].Y = PointsOut2D[i, 1];
+            }
+
+            pts[num_points].X = PointsOut2D[0, 0];
+            pts[num_points].Y = PointsOut2D[0, 1];
+
+            // Get the areas.
+            float area = 0;
+            for (int i = 0; i < num_points; i++)
+            {
+                area += (float)(
+                    (pts[i + 1].X - pts[i].X) *
+                    (pts[i + 1].Y + pts[i].Y) / 2);
+            }
+
+            // Return the result.
+            return area;
+        }
+
+        // Return the polygon's area in "square units."
+        public float PolygonArea()
+        {
+            // Return the absolute value of the signed area.
+            // The signed area is negative if the polyogn is
+            // oriented clockwise.
+            return Math.Abs(SignedPolygonArea());
         }
     }
 }

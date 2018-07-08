@@ -505,51 +505,55 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, 0 ,0 ,0 ,true); // L
+                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, 0 ,0 ,0 ,true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, true); // LL
+                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
+                        {
+                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_T:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q T
+                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
+                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // JA
-                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft,0,0,0, true);
+                                component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, true);
+                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft,0,0,0, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, true);
                             else if(Combobox_Component.SelectedIndex == 1)
-                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             break;
                         }
                     default:
@@ -668,51 +672,55 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new BaseClasses.CConCom_Plate_BB_BG(controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f,0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f,0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new BaseClasses.CConCom_Plate_LL(controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, true); // LL
+                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new BaseClasses.CConCom_Plate_F_or_L(controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
+                        {
+                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
+                            break;
+                        }
                     case ESerieTypePlate.eSerie_T:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q, T
+                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            component = new BaseClasses.CConCom_Plate_Q_T_Y(controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
+                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // JA
-                                component = new BaseClasses.CConCom_Plate_JA(controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
+                                component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_JB(controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, true);
+                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new BaseClasses.CConCom_Plate_KA(controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, true);
                             else if (Combobox_Component.SelectedIndex == 1)
-                                component = new BaseClasses.CConCom_Plate_KB(controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
+                                component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             else
-                                component = new BaseClasses.CConCom_Plate_KC(controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
+                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             break;
                         }
                     default:

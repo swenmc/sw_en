@@ -22,12 +22,16 @@ namespace BaseClasses
         public CConCom_Plate_KB()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_K;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_KB(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_KB(string sName_temp, GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
+            Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_K;
+
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 6;
@@ -56,6 +60,11 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = Math.Max(m_fbX1, m_fbX2);
+            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         public CConCom_Plate_KB(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
@@ -89,6 +98,11 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = Math.Max(m_fbX1, m_fbX2);
+            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         //----------------------------------------------------------------------------

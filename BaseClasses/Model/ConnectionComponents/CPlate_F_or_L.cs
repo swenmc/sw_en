@@ -23,9 +23,11 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
         {
+            Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 6;
@@ -52,10 +54,16 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = m_fbX1 + m_fbX2;
+            fHeight_hy = m_fhY;
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
-        public CConCom_Plate_F_or_L(GraphObj.CPoint controlpoint, int iLeftRightIndex, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(string sName_temp, GraphObj.CPoint controlpoint, int iLeftRightIndex, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
         {
+            Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
 
@@ -99,6 +107,11 @@ namespace BaseClasses
                 // Change indices
                 ChangeIndices(TriangleIndices); // Todo - takto to nefunguje :-)
             }
+
+            fWidth_bx = m_fbX1 + m_fbX2;
+            fHeight_hy = m_fhY;
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         //----------------------------------------------------------------------------

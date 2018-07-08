@@ -36,13 +36,15 @@ namespace PFD
         List<double>  listMemberTotalWeight = new List<double>(1);
 
         List<string> listPlatePrefix = new List<string>(1);
-        List<string> listPlateQuantity = new List<string>(1);
-        List<string> listMaterialName = new List<string>(1);
-        List<string> listPlateWidth_bx = new List<string>(1);
-        List<string> listPlateHeight_hy = new List<string>(1);
-        List<string> listPlateArea = new List<string>(1);
-        List<string> listPlateWeightPerPiece = new List<string>(1);
-        List<string> listPlateTotalWeight = new List<string>(1);
+        List<int> listPlateQuantity = new List<int>(1);
+        List<string> listPlateMaterialName = new List<string>(1);
+        List<double> listPlateWidth_bx = new List<double>(1);
+        List<double> listPlateHeight_hy = new List<double>(1);
+        List<double> listPlateThickness_tz = new List<double>(1);
+        List<double> listPlateArea = new List<double>(1);
+        List<double> listPlateWeightPerPiece = new List<double>(1);
+        List<double> listPlateTotalArea = new List<double>(1);
+        List<double> listPlateTotalWeight = new List<double>(1);
 
         DatabaseComponents databaseCopm = new DatabaseComponents();
 
@@ -66,10 +68,11 @@ namespace PFD
             {
                 if (model.m_arrCrSc[i].AssignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
                 {
-                    List<CMember> ListOfGroups = new List<CMember>();
+                    List<CMember> ListOfMemberGroups = new List<CMember>();
 
                     for (int j = 0; j < model.m_arrCrSc[i].AssignedMembersList.Count; j++) // Each member in the list
                     {
+                        // Define current member properties
                         string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0];
                         string sCrScName = model.m_arrCrSc[i].Name;
                         int iQuantity = 1;
@@ -84,10 +87,10 @@ namespace PFD
 
                         if (j > 0) // If it not first item
                         {
-                            for (int k = 0; k < ListOfGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
+                            for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
                             {
-                                if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfGroups[k].eMemberType_FS, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0]) &&
-                                (MathF.d_equal(ListOfGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
+                                if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].eMemberType_FS, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0]) &&
+                                (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
                                 {
                                     // Add member to the one from already created groups
 
@@ -97,10 +100,11 @@ namespace PFD
 
                                     bMemberwasAdded = true;
                                 }
+                                // TOO - po pridani pruta by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
                             }
                         }
 
-                        if(j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
+                        if (j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
                         {
                             listMemberPrefix.Add(sPrefix);
                             listMemberCrScName.Add(sCrScName);
@@ -113,11 +117,11 @@ namespace PFD
                             listMemberTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlaces));
 
                             // Add first member in the group to the list of member groups
-                            ListOfGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
+                            ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
                         }
                     }
 
-                    iLastItemIndex += ListOfGroups.Count; // Index of last row for previous cross-section
+                    iLastItemIndex += ListOfMemberGroups.Count; // Index of last row for previous cross-section
                 }
             }
 
@@ -127,15 +131,15 @@ namespace PFD
             double dTotalMembersWeight_Model = 0, dTotalMembersWeight_Table = 0;
             int iTotalMembersNumber_Model = 0, iTotalMembersNumber_Table = 0;
 
-            foreach(CMember member in model.m_arrMembers)
+            foreach (CMember member in model.m_arrMembers)
             {
                 dTotalMembersLength_Model += member.FLength_real;
                 dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
-                dTotalMembersWeight_Model += dTotalMembersVolume_Model * member.CrScStart.m_Mat.m_fRho;
+                dTotalMembersWeight_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho;
                 iTotalMembersNumber_Model += 1;
             }
 
-            for(int i = 0; i < listMemberPrefix.Count; i++)
+            for (int i = 0; i < listMemberPrefix.Count; i++)
             {
                 dTotalMembersLength_Table += listMemberLength[i] * listMemberQuantity[i];
                 //dTotalMembersVolume_Table += member.CrScStart.A_g * listMemberLength[i]; // TODO - pridat funkciu, ktora podla nazvu prierezu vrati jeho parametre
@@ -160,16 +164,15 @@ namespace PFD
                 "Total number of members in table " + iTotalMembersNumber_Table + "\n");
 
             // Add Sum
-            listMemberPrefix.Add("");
+            listMemberPrefix.Add("Total:");
             listMemberCrScName.Add("");
             listMemberQuantity.Add(iTotalMembersNumber_Table);
             listMemberMaterialName.Add("");
-            //listMemberLength.Add();
-            //listMemberWeightPerLength.Add();
-            //listMemberWeightPerPiece.Add();
+            listMemberLength.Add(0); // Empty cell
+            listMemberWeightPerLength.Add(0); // Empty cell
+            listMemberWeightPerPiece.Add(0); // Empty cell
             listMemberTotalLength.Add(dTotalMembersLength_Table);
             listMemberTotalWeight.Add(dTotalMembersWeight_Table);
-
 
             // Create Table
             DataTable table = new DataTable("Table");
@@ -181,20 +184,20 @@ namespace PFD
             table.Columns.Add("Material", typeof(String));
             table.Columns.Add("Length", typeof(Decimal));
             table.Columns.Add("Weight_per_m", typeof(Decimal));
-            table.Columns.Add("Weight_per_piece", typeof(Decimal));
+            table.Columns.Add("Weight_per_Piece", typeof(Decimal));
             table.Columns.Add("Total_Length", typeof(Decimal));
             table.Columns.Add("Total_Weight", typeof(Decimal));
 
             // Set Column Caption
-            table.Columns["Prefix"].Caption = "Prefix1";
-            table.Columns["Section"].Caption = "Section1";
+            table.Columns["Prefix"].Caption = "Prefix";
+            table.Columns["Section"].Caption = "Section";
             table.Columns["Quantity"].Caption = "Quantity";
             table.Columns["Material"].Caption = "Material";
             table.Columns["Length"].Caption = "Length";
-            table.Columns["Weight_per_m"].Caption = "Weight / m";
-            table.Columns["Weight_per_piece"].Caption = "Weight / piece";
-            table.Columns["Total_Length"].Caption = "Total Length";
-            table.Columns["Total_Weight"].Caption = "Total Weight";
+            table.Columns["Weight_per_m"].Caption = "Weight_per_m";
+            table.Columns["Weight_per_Piece"].Caption = "Weight_per_Piece";
+            table.Columns["Total_Length"].Caption = "Total_Length";
+            table.Columns["Total_Weight"].Caption = "Total_Weight";
 
             // Create Datases
             ds = new DataSet();
@@ -213,7 +216,7 @@ namespace PFD
                     row["Material"] = listMemberMaterialName[i];
                     row["Length"] = listMemberLength[i];
                     row["Weight_per_m"] = listMemberWeightPerLength[i];
-                    row["Weight_per_piece"] = listMemberWeightPerPiece[i];
+                    row["Weight_per_Piece"] = listMemberWeightPerPiece[i];
                     row["Total_Length"] = listMemberTotalLength[i];
                     row["Total_Weight"] = listMemberTotalWeight[i];
                 }
@@ -222,22 +225,6 @@ namespace PFD
             }
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
-            // TODO - temporary - tento column nema byt v tabulke, ale inak sa do Datagrid_Members.ItemsSource neprevezme pocet columns
-
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "ID", Width = 30 });
-
-            /*
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Prefix" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Section" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Quantity" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Material" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Length" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Weight / m" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Weight / piece" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Total Length" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Total Weight" });
-            */
 
             // Set Column Header
             /*
@@ -265,8 +252,254 @@ namespace PFD
             Datagrid_Members.Columns[8].Width = 100;
             */
 
+            // Plates
 
+            List<CPlate> ListOfPlateGroups = new List<CPlate>();
 
+            for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
+            {
+                for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+                {
+                    // Define current plate properties
+                    // Not used - could be used to compare names in database with user-defined in the future
+
+                    string[] sPlateNames;
+                    ESerieTypePlate ePlateSerieType_FS = model.m_arrConnectionJoints[i].m_arrPlates[j].m_ePlateSerieType_FS;
+                    switch (ePlateSerieType_FS)
+                    {
+                        case ESerieTypePlate.eSerie_B:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_B_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_L:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_L_Names;
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_LL:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_LL_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_F:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_F_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_Q:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_Q_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_S:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_S_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_T:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_T_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_X:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_X_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_Y:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_Y_Names;
+
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_J:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_J_Names;
+                                break;
+                            }
+                        case ESerieTypePlate.eSerie_K:
+                            {
+                                sPlateNames = databaseCopm.arr_Serie_K_Names;
+                                break;
+                            }
+                        default:
+                            {
+                                // Not implemented
+                                break;
+                            }
+                    }
+
+                    string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].Name;
+                    int iQuantity = 1;
+                    string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.Name;
+
+                    float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx;
+                    float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy;
+                    float fThickness_tz = model.m_arrConnectionJoints[i].m_arrPlates[j].fThickness_tz;
+                    float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].PolygonArea();
+                    float fWeightPerPiece = fArea * fThickness_tz * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
+                    float fTotalArea = iQuantity * fArea;
+                    float fTotalWeight = iQuantity * fWeightPerPiece;
+
+                    bool bPlatewasAdded = false; // Plate was added to the group
+
+                    if (i > 0 || (i == 0 && j > 0)) // If it not first item
+                    {
+                        for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
+                        {
+                            if (ListOfPlateGroups[k].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].Name &&
+                            MathF.d_equal(ListOfPlateGroups[k].fWidth_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx) &&
+                            MathF.d_equal(ListOfPlateGroups[k].fHeight_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy) &&
+                            MathF.d_equal(ListOfPlateGroups[k].fThickness_tz, model.m_arrConnectionJoints[i].m_arrPlates[j].fThickness_tz) &&
+                            MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
+                            {
+                                // Add member to the one from already created groups
+
+                                listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
+                                listPlateTotalArea[k] = Math.Round(listPlateQuantity[k] * listPlateArea[k], iNumberOfDecimalPlaces);
+                                listPlateTotalWeight[k] = Math.Round(listPlateQuantity[k] * listPlateWeightPerPiece[k], iNumberOfDecimalPlaces); // Recalculate total weight of all plates in the group
+
+                                bPlatewasAdded = true;
+                            }
+                            // TOO - po pridani plechu by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                        }
+                    }
+
+                    if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                    {
+                        listPlatePrefix.Add(sPrefix);
+                        listPlateQuantity.Add(iQuantity);
+                        listPlateMaterialName.Add(sMaterialName);
+                        listPlateWidth_bx.Add(Math.Round(fWidth_bx, iNumberOfDecimalPlaces));
+                        listPlateHeight_hy.Add(Math.Round(fHeight_hy, iNumberOfDecimalPlaces));
+                        listPlateThickness_tz.Add(Math.Round(fThickness_tz, iNumberOfDecimalPlaces));
+                        listPlateArea.Add(Math.Round(fArea, iNumberOfDecimalPlaces));
+                        listPlateWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlaces));
+                        listPlateTotalArea.Add(Math.Round(fTotalArea, iNumberOfDecimalPlaces));
+                        listPlateTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlaces));
+
+                        // Add first plate in the group to the list of plate groups
+                        ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
+                    }
+                }
+            }
+
+            // Check Data
+            double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
+            double dTotalPlatesVolume_Model = 0, dTotalPlatesVolume_Table = 0;
+            double dTotalPlatesWeight_Model = 0, dTotalPlatesWeight_Table = 0;
+            int iTotalPlatesNumber_Model = 0, iTotalPlatesNumber_Table = 0;
+
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
+            {
+                foreach (CPlate plate in joint.m_arrPlates)
+                {
+                    dTotalPlatesArea_Model += plate.fArea;
+                    dTotalPlatesVolume_Model += plate.fArea * plate.fThickness_tz;
+                    dTotalPlatesWeight_Model += plate.fArea * plate.fThickness_tz * plate.m_Mat.m_fRho;
+                    iTotalPlatesNumber_Model += 1;
+                }
+            }
+
+            for (int i = 0; i < listPlatePrefix.Count; i++)
+            {
+                dTotalPlatesArea_Table += (listPlateArea[i] * listPlateQuantity[i]);
+                dTotalPlatesVolume_Table += (listPlateArea[i] * listPlateThickness_tz[i]);
+                dTotalPlatesWeight_Table += listPlateTotalWeight[i];
+                iTotalPlatesNumber_Table += listPlateQuantity[i];
+            }
+
+            dTotalPlatesArea_Model = Math.Round(dTotalPlatesArea_Model, iNumberOfDecimalPlaces);
+            dTotalPlatesVolume_Model = Math.Round(dTotalPlatesVolume_Model, iNumberOfDecimalPlaces);
+            dTotalPlatesWeight_Model = Math.Round(dTotalPlatesWeight_Model, iNumberOfDecimalPlaces);
+
+            if (!MathF.d_equal(dTotalPlatesArea_Model, dTotalPlatesArea_Table) ||
+                !MathF.d_equal(dTotalPlatesWeight_Model, dTotalPlatesWeight_Table) ||
+                (iTotalPlatesNumber_Model != iTotalPlatesNumber_Table)) // Error
+                MessageBox.Show(
+                "Total area of plates in model " + dTotalPlatesArea_Model + " m^2" + "\n" +
+                "Total area of plates in table " + dTotalPlatesArea_Table + " m^2" + "\n" +
+                "Total volume of plates in model " + dTotalPlatesVolume_Model + " m^3" + "\n" +
+                "Total volume of plates in table " + dTotalPlatesVolume_Table + " m^3" + "\n" +
+                "Total weight of plates in model " + dTotalPlatesWeight_Model + " kg" + "\n" +
+                "Total weight of plates in table " + dTotalPlatesWeight_Table + " kg" + "\n" +
+                "Total number of plates in model " + iTotalPlatesNumber_Model + "\n" +
+                "Total number of plates in table " + iTotalPlatesNumber_Table + "\n");
+
+            // Add Sum
+            listPlatePrefix.Add("Total:");
+            listPlateQuantity.Add(iTotalPlatesNumber_Table);
+            listPlateMaterialName.Add("");
+            listPlateWidth_bx.Add(0); // Empty cell
+            listPlateHeight_hy.Add(0); // Empty cell
+            listPlateThickness_tz.Add(0); // Empty cell
+            listPlateArea.Add(0); // Empty cell
+            listPlateWeightPerPiece.Add(0); // Empty cell
+            listPlateTotalArea.Add(dTotalPlatesArea_Table);
+            listPlateTotalWeight.Add(dTotalPlatesWeight_Table);
+
+            // Create Table
+            DataTable table2 = new DataTable("Table2");
+            // Create Table Rows
+
+            table2.Columns.Add("Prefix", typeof(String));
+            table2.Columns.Add("Quantity", typeof(Int32));
+            table2.Columns.Add("Material", typeof(String));
+            table2.Columns.Add("Width", typeof(Decimal));
+            table2.Columns.Add("Height", typeof(Decimal));
+            table2.Columns.Add("Thickness", typeof(Decimal));
+            table2.Columns.Add("Area", typeof(Decimal));
+            table2.Columns.Add("Weight_per_Piece", typeof(Decimal));
+            table2.Columns.Add("Total_Area", typeof(Decimal));
+            table2.Columns.Add("Total_Weight", typeof(Decimal));
+
+            // Set Column Caption
+            table2.Columns["Prefix"].Caption = "Prefix1";
+            table2.Columns["Quantity"].Caption = "Quantity";
+            table2.Columns["Material"].Caption = "Material";
+            table2.Columns["Width"].Caption = "Width";
+            table2.Columns["Height"].Caption = "Height";
+            table2.Columns["Thickness"].Caption = "Thickness";
+            table2.Columns["Area"].Caption = "Area";
+            table2.Columns["Weight_per_Piece"].Caption = "Weight_per_Piece";
+            table2.Columns["Total_Area"].Caption = "Total_Area";
+            table2.Columns["Total_Weight"].Caption = "Total_Weight";
+
+            // Create Datases
+            ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table2);
+
+            for (int i = 0; i < listPlatePrefix.Count; i++)
+            {
+                DataRow row = table2.NewRow();
+
+                try
+                {
+                    row["Prefix"] = listPlatePrefix[i];
+                    row["Quantity"] = listPlateQuantity[i];
+                    row["Material"] = listPlateMaterialName[i];
+                    row["Width"] = listPlateWidth_bx[i];
+                    row["Height"] = listPlateHeight_hy[i];
+                    row["Thickness"] = listPlateThickness_tz[i];
+                    row["Area"] = listPlateArea[i];
+                    row["Weight_per_Piece"] = listPlateWeightPerPiece[i];
+                    row["Total_Area"] = listPlateTotalArea[i];
+                    row["Total_Weight"] = listPlateTotalWeight[i];
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table2.Rows.Add(row);
+            }
+
+            Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
         }
 
         private void DeleteAllLists()
@@ -302,7 +535,7 @@ namespace PFD
 
             listPlatePrefix.Clear();
             listPlateQuantity.Clear();
-            listMaterialName.Clear();
+            listPlateMaterialName.Clear();
             listPlateWidth_bx.Clear();
             listPlateHeight_hy.Clear();
             listPlateArea.Clear();

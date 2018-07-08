@@ -24,7 +24,7 @@ namespace BaseClasses
         */
 
         public CPoint m_pControlPoint = new CPoint();
-        public string m_Mat;
+        public CMat m_Mat;
         public string m_Shape;
 
         //----------------------------------------------------------------------------------------------------------------
