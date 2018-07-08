@@ -34,7 +34,7 @@ namespace TestDxfDocument
 
             #region Samples for new and modified features 2.0.1
 
-            DimensionUserTextWithTwoLines();
+            //DimensionUserTextWithTwoLines();
 
             #endregion
 
@@ -196,8 +196,8 @@ namespace TestDxfDocument
             //WriteNestedInsert();
             //WritePolyfaceMesh();
             //Ellipse();
-            //Solid();
-            //Face3d();
+            Solid();
+            Face3d();
             //LwPolyline();
             Polyline();
             //Dxf2000();
@@ -800,6 +800,9 @@ namespace TestDxfDocument
             };
 
             Wipeout wipeout2 = new Wipeout(vertexes);
+            wipeout2.Color = AciColor.Red;
+            //wipeout2.Lineweight = Lineweight.W211;
+
             // optionally you can set the normal and elevation
             //wipeout1.Normal = new Vector3(1.0);
             //wipeout1.Elevation = 10;
@@ -5710,6 +5713,9 @@ namespace TestDxfDocument
             DxfDocument dxf = new DxfDocument();
 
             Solid solid = new Solid();
+            solid.Color = new AciColor(Color.LightGreen);
+            solid.Transparency = new Transparency(60); // from 0 - 90
+
             solid.FirstVertex = new Vector2(0, 0);
             solid.SecondVertex = new Vector2(1, 0);
             solid.ThirdVertex = new Vector2(0, 1);
@@ -5726,6 +5732,8 @@ namespace TestDxfDocument
             DxfDocument dxf = new DxfDocument();
 
             Face3d face3d = new Face3d();
+            face3d.Color = AciColor.Blue;
+
             face3d.FirstVertex = new Vector3(0, 0, 0);
             face3d.SecondVertex = new Vector3(1, 0, 0);
             face3d.ThirdVertex = new Vector3(1, 1, 0);

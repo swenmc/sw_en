@@ -11,6 +11,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Controls;
 using System.Linq;
 using WindowsShapes = System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace SharedLibraries.EXPIMP
 {
@@ -52,18 +53,28 @@ namespace SharedLibraries.EXPIMP
                 {
                     WindowsShapes.Rectangle winRect = o as WindowsShapes.Rectangle;
                     double x = Canvas.GetLeft(winRect);
-                    double y = Canvas.GetTop(winRect);
-                    //double y = Canvas.GetTop(winRect) * -1; pretocenim podla osi y dostanem body tak ako v canvase
+                    //double y = Canvas.GetTop(winRect);
+                    double y = Canvas.GetTop(winRect) * -1; //pretocenim podla osi y dostanem body tak ako v canvase
 
-                    //System.Windows.Point p = winRect.RenderedGeometry.Bounds.Location;
-                    System.Windows.Point p1 = winRect.RenderedGeometry.Bounds.TopLeft;
-                    System.Windows.Point p2 = winRect.RenderedGeometry.Bounds.BottomRight;
+                    System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
+                    System.Drawing.Color drawingcolor = System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
 
-                    Wipeout wip = new Wipeout(new Vector2(p1.X + x, p1.Y + y), new Vector2(p2.X + x, p2.Y + y));
-                    //wip.Color = AciColor.Red;
-                    //wip.Lineweight = Lineweight.W200;
+                    System.Windows.Point pTL = winRect.RenderedGeometry.Bounds.TopLeft;
+                    System.Windows.Point pTR = winRect.RenderedGeometry.Bounds.TopRight;
+                    System.Windows.Point pBL = winRect.RenderedGeometry.Bounds.BottomLeft;
+                    System.Windows.Point pBR = winRect.RenderedGeometry.Bounds.BottomRight;
+                    //Wipeout wip = new Wipeout(new Vector2(p1.X + x, p1.Y + y), new Vector2(p2.X + x, p2.Y + y));
 
-                    doc.AddEntity(wip);
+                    Solid solid = new Solid();
+                    solid.Color = new AciColor(drawingcolor);
+                    solid.Transparency = new Transparency(60); // from 0 - 90
+
+                    solid.FirstVertex = new Vector2(pTL.X + x, pTL.Y + y);
+                    solid.SecondVertex = new Vector2(pTR.X + x, pTR.Y + y);
+                    solid.ThirdVertex = new Vector2(pBL.X + x, pBL.Y + y);
+                    solid.FourthVertex = new Vector2(pBR.X + x, pBR.Y + y);
+
+                    doc.AddEntity(solid);
                 }
                 else if (o is WindowsShapes.Polyline)
                 {

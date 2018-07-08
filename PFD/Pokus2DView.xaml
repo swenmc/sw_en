@@ -7,6 +7,27 @@
         mc:Ignorable="d"
         Title="Pokus2DView" Height="1000" Width="1600">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />            
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <ComboBox Name="comboViews" Grid.Column="0" Grid.Row="0" Margin="10 0 0 0" Width="200" Height="20"
+                  HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="comboViews_SelectionChanged"
+                  SelectedItem="cbi4"
+                  >
+            <ComboBoxItem Name="cbi1" Tag="1">Front</ComboBoxItem>
+            <ComboBoxItem Name="cbi2" Tag="2">Back</ComboBoxItem>
+            <ComboBoxItem Name="cbi3" Tag="3">Left</ComboBoxItem>
+            <ComboBoxItem Name="cbi4" Tag="4">Right</ComboBoxItem>
+            <ComboBoxItem Name="cbi5" Tag="5">Top</ComboBoxItem>
+        </ComboBox>
+        <Button Name="saveDXF" Grid.Column="0" Grid.Row="0" Width="100" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center"
+                Margin="240 0 0 0" Click="saveDXF_Click">Save DXF</Button>
+                
         <Canvas Name="canvasForImage" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">
             <!--<Line X1="50" Y1="50" X2="200" Y2="200" Stroke="Green"/> -->
         </Canvas>

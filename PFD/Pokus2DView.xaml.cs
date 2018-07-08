@@ -17,6 +17,7 @@ using sw_en_GUI;
 using CRSC;
 using BaseClasses;
 using MATH;
+using SharedLibraries.EXPIMP;
 
 namespace PFD
 {
@@ -26,6 +27,7 @@ namespace PFD
     public partial class Pokus2DView : Window
     {
         public Canvas CanvasSection2D = null;
+        public CModel Model = null;
 
         double modelMarginLeft_x;
         double modelMarginBottom_y;
@@ -50,7 +52,7 @@ namespace PFD
         public Pokus2DView()
         {
             InitializeComponent();
-
+            
             canvasForImage.Children.Clear();
             CanvasSection2D = canvasForImage;
         }
@@ -58,6 +60,13 @@ namespace PFD
         public Pokus2DView(CModel model)
         {
             InitializeComponent();
+            Model = model;
+
+            comboViews.SelectedIndex = 3;
+        }
+
+        public void DrawRightView_ModelToCanvas(CModel model)
+        {
             canvasForImage.Children.Clear();
 
             dPageWidth = this.Width;
@@ -77,14 +86,14 @@ namespace PFD
             // Point of View / Camera
 
             // View perpendicular to the global plane YZ (in "-X" direction)
-            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0,0);
-            Vector3D pCameraViewDirection = new Vector3D(-1,0,0);
+            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0, 0);
+            Vector3D pCameraViewDirection = new Vector3D(-1, 0, 0);
             float fViewDepth = 2; // [m]
 
             float fMinCoord_X = (float)(pCameraPosition.X + pCameraViewDirection.X * fViewDepth);
             float fMaxCoord_X = (float)pCameraPosition.X;
 
-            for(int i = 0; i < model.m_arrMembers.Length; i++)
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
             {
                 if (model.m_arrMembers[i] == null) continue;
 
@@ -98,8 +107,8 @@ namespace PFD
                 //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == MathF.dPI)
                 //    width = h;
 
-                    if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
-                   (fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X))
+                if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+               (fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X))
                 {
                     // Both definition points of the member are within interval - draw rectangle (L - length in the plane YZ)
                     double fRotationAboutX_rad = Geom2D.GetAlpha2D_CW((float)pA.X, (float)pB.X, (float)pA.Y, (float)pB.Y); // ToDo - dopocitat podla suradnic koncovych bodov v rovine pohladu YZ
@@ -189,6 +198,551 @@ namespace PFD
             }
 
             CanvasSection2D = canvasForImage;
+
+        }
+
+        public void DrawLeftView_ModelToCanvas(CModel model)
+        {
+            canvasForImage.Children.Clear(); return;
+
+            dPageWidth = this.Width;
+            dPageHeight = this.Height;
+
+            if (model != null)
+            {
+                Drawing3D.CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
+                dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
+            }
+
+            CalculateBasicValue();
+
+            // Set 3D environment data to generate 2D view
+            // Point of View / Camera
+
+            // View perpendicular to the global plane YZ (in "-X" direction)
+            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0, 0);
+            Vector3D pCameraViewDirection = new Vector3D(-1, 0, 0);
+            float fViewDepth = 2; // [m]
+
+            float fMinCoord_X = (float)(pCameraPosition.X + pCameraViewDirection.X * fViewDepth);
+            float fMaxCoord_X = (float)pCameraPosition.X;
+
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
+            {
+                if (model.m_arrMembers[i] == null) continue;
+
+                // Transform Units from 3D real model to 2D view (depends on size of window)
+                Point pA = new Point(model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor);
+                Point pB = new Point(model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor);
+                double b = model.m_arrMembers[i].CrScStart.b * fReal_Model_Zoom_Factor; // Todo - to ci sa ma vykreslovat sirka alebo vyska prierezu zavisi od uhla theta smeru lokalnej osy z prierezu voci smeru pohladu
+                double h = model.m_arrMembers[i].CrScStart.h * fReal_Model_Zoom_Factor;
+
+                double width = b;
+                //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == MathF.dPI)
+                //    width = h;
+
+                if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+               (fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X))
+                {
+                    // Both definition points of the member are within interval - draw rectangle (L - length in the plane YZ)
+                    double fRotationAboutX_rad = Geom2D.GetAlpha2D_CW((float)pA.X, (float)pB.X, (float)pA.Y, (float)pB.Y); // ToDo - dopocitat podla suradnic koncovych bodov v rovine pohladu YZ
+                    double dLengthProjected = Math.Sqrt(MathF.Pow2(pB.X - pA.X) + MathF.Pow2(pB.Y - pA.Y));
+
+                    DrawMember2D(Brushes.Black, Brushes.Azure, pA, width, dLengthProjected, fRotationAboutX_rad, canvasForImage);
+                }
+                else if (((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointEnd.X || model.m_arrMembers[i].PointEnd.X > fMaxCoord_X)) ||
+                   ((fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointStart.X || model.m_arrMembers[i].PointStart.X > fMaxCoord_X)))
+                {
+                    // Only one point is within interval for view depth - draw cross-section
+                    // We should check that other point is perpendicular to the plane YZ otherwise modified cross-section shape (cut of he member) should be displayed
+
+                    // Set centroid coordinates
+                    Point p = new Point();
+                    if (fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X)
+                    {
+                        p.X = model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor;
+                    }
+                    else
+                    {
+                        p.X = model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor;
+                    }
+
+                    // Transform cross-section coordinates in 2D
+                    float[,] crsccoordoutline = null;
+                    float[,] crsccoordinline = null;
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
+                    {
+                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
+
+                        // TODO - kedze prut nemusi byt kolmy na smer pohladu, tak spravne by sa mal detekovat uhol, pod ktorym sa na prierez pozerame
+                        // a mali by sa prepocitat lokalne suradnice prierezu
+                        // Napr. stresny nosnik "rafter" je voci rovine pohladu sikmo v uhle roofpitch, takze prierez by sa mal zvacsit v smere zvislej lokalnej osy, zobrazena vyska prierezu je c = h / cos(roofpitch)
+                        // takto by sa mali prepocitat vsetky suradnice prierezu v smere lokalnej zvislej osi [i,1]
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordoutline[j, 0] += (float)p.X;
+                            crsccoordoutline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
+                    {
+                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordinline[j, 0] += (float)p.X;
+                            crsccoordinline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    // Draw cross-section
+                    DrawCrossSection(p, b, h, model.m_arrMembers[i].DTheta_x, crsccoordoutline, crsccoordinline);
+                }
+                else
+                {
+                    // Member is outside the box (do not draw)
+                }
+            }
+
+            CanvasSection2D = canvasForImage;
+
+        }
+
+        public void DrawFrontView_ModelToCanvas(CModel model)
+        {
+            canvasForImage.Children.Clear(); return;
+
+            dPageWidth = this.Width;
+            dPageHeight = this.Height;
+
+            if (model != null)
+            {
+                Drawing3D.CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
+                dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
+            }
+
+            CalculateBasicValue();
+
+            // Set 3D environment data to generate 2D view
+            // Point of View / Camera
+
+            // View perpendicular to the global plane YZ (in "-X" direction)
+            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0, 0);
+            Vector3D pCameraViewDirection = new Vector3D(-1, 0, 0);
+            float fViewDepth = 2; // [m]
+
+            float fMinCoord_X = (float)(pCameraPosition.X + pCameraViewDirection.X * fViewDepth);
+            float fMaxCoord_X = (float)pCameraPosition.X;
+
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
+            {
+                if (model.m_arrMembers[i] == null) continue;
+
+                // Transform Units from 3D real model to 2D view (depends on size of window)
+                Point pA = new Point(model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor);
+                Point pB = new Point(model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor);
+                double b = model.m_arrMembers[i].CrScStart.b * fReal_Model_Zoom_Factor; // Todo - to ci sa ma vykreslovat sirka alebo vyska prierezu zavisi od uhla theta smeru lokalnej osy z prierezu voci smeru pohladu
+                double h = model.m_arrMembers[i].CrScStart.h * fReal_Model_Zoom_Factor;
+
+                double width = b;
+                //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == MathF.dPI)
+                //    width = h;
+
+                if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+               (fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X))
+                {
+                    // Both definition points of the member are within interval - draw rectangle (L - length in the plane YZ)
+                    double fRotationAboutX_rad = Geom2D.GetAlpha2D_CW((float)pA.X, (float)pB.X, (float)pA.Y, (float)pB.Y); // ToDo - dopocitat podla suradnic koncovych bodov v rovine pohladu YZ
+                    double dLengthProjected = Math.Sqrt(MathF.Pow2(pB.X - pA.X) + MathF.Pow2(pB.Y - pA.Y));
+
+                    DrawMember2D(Brushes.Black, Brushes.Azure, pA, width, dLengthProjected, fRotationAboutX_rad, canvasForImage);
+                }
+                else if (((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointEnd.X || model.m_arrMembers[i].PointEnd.X > fMaxCoord_X)) ||
+                   ((fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointStart.X || model.m_arrMembers[i].PointStart.X > fMaxCoord_X)))
+                {
+                    // Only one point is within interval for view depth - draw cross-section
+                    // We should check that other point is perpendicular to the plane YZ otherwise modified cross-section shape (cut of he member) should be displayed
+
+                    // Set centroid coordinates
+                    Point p = new Point();
+                    if (fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X)
+                    {
+                        p.X = model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor;
+                    }
+                    else
+                    {
+                        p.X = model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor;
+                    }
+
+                    // Transform cross-section coordinates in 2D
+                    float[,] crsccoordoutline = null;
+                    float[,] crsccoordinline = null;
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
+                    {
+                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
+
+                        // TODO - kedze prut nemusi byt kolmy na smer pohladu, tak spravne by sa mal detekovat uhol, pod ktorym sa na prierez pozerame
+                        // a mali by sa prepocitat lokalne suradnice prierezu
+                        // Napr. stresny nosnik "rafter" je voci rovine pohladu sikmo v uhle roofpitch, takze prierez by sa mal zvacsit v smere zvislej lokalnej osy, zobrazena vyska prierezu je c = h / cos(roofpitch)
+                        // takto by sa mali prepocitat vsetky suradnice prierezu v smere lokalnej zvislej osi [i,1]
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordoutline[j, 0] += (float)p.X;
+                            crsccoordoutline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
+                    {
+                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordinline[j, 0] += (float)p.X;
+                            crsccoordinline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    // Draw cross-section
+                    DrawCrossSection(p, b, h, model.m_arrMembers[i].DTheta_x, crsccoordoutline, crsccoordinline);
+                }
+                else
+                {
+                    // Member is outside the box (do not draw)
+                }
+            }
+
+            CanvasSection2D = canvasForImage;
+
+        }
+
+        public void DrawBackView_ModelToCanvas(CModel model)
+        {
+            canvasForImage.Children.Clear(); return;
+
+            dPageWidth = this.Width;
+            dPageHeight = this.Height;
+
+            if (model != null)
+            {
+                Drawing3D.CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
+                dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
+            }
+
+            CalculateBasicValue();
+
+            // Set 3D environment data to generate 2D view
+            // Point of View / Camera
+
+            // View perpendicular to the global plane YZ (in "-X" direction)
+            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0, 0);
+            Vector3D pCameraViewDirection = new Vector3D(-1, 0, 0);
+            float fViewDepth = 2; // [m]
+
+            float fMinCoord_X = (float)(pCameraPosition.X + pCameraViewDirection.X * fViewDepth);
+            float fMaxCoord_X = (float)pCameraPosition.X;
+
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
+            {
+                if (model.m_arrMembers[i] == null) continue;
+
+                // Transform Units from 3D real model to 2D view (depends on size of window)
+                Point pA = new Point(model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor);
+                Point pB = new Point(model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor);
+                double b = model.m_arrMembers[i].CrScStart.b * fReal_Model_Zoom_Factor; // Todo - to ci sa ma vykreslovat sirka alebo vyska prierezu zavisi od uhla theta smeru lokalnej osy z prierezu voci smeru pohladu
+                double h = model.m_arrMembers[i].CrScStart.h * fReal_Model_Zoom_Factor;
+
+                double width = b;
+                //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == MathF.dPI)
+                //    width = h;
+
+                if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+               (fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X))
+                {
+                    // Both definition points of the member are within interval - draw rectangle (L - length in the plane YZ)
+                    double fRotationAboutX_rad = Geom2D.GetAlpha2D_CW((float)pA.X, (float)pB.X, (float)pA.Y, (float)pB.Y); // ToDo - dopocitat podla suradnic koncovych bodov v rovine pohladu YZ
+                    double dLengthProjected = Math.Sqrt(MathF.Pow2(pB.X - pA.X) + MathF.Pow2(pB.Y - pA.Y));
+
+                    DrawMember2D(Brushes.Black, Brushes.Azure, pA, width, dLengthProjected, fRotationAboutX_rad, canvasForImage);
+                }
+                else if (((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointEnd.X || model.m_arrMembers[i].PointEnd.X > fMaxCoord_X)) ||
+                   ((fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointStart.X || model.m_arrMembers[i].PointStart.X > fMaxCoord_X)))
+                {
+                    // Only one point is within interval for view depth - draw cross-section
+                    // We should check that other point is perpendicular to the plane YZ otherwise modified cross-section shape (cut of he member) should be displayed
+
+                    // Set centroid coordinates
+                    Point p = new Point();
+                    if (fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X)
+                    {
+                        p.X = model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor;
+                    }
+                    else
+                    {
+                        p.X = model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor;
+                    }
+
+                    // Transform cross-section coordinates in 2D
+                    float[,] crsccoordoutline = null;
+                    float[,] crsccoordinline = null;
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
+                    {
+                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
+
+                        // TODO - kedze prut nemusi byt kolmy na smer pohladu, tak spravne by sa mal detekovat uhol, pod ktorym sa na prierez pozerame
+                        // a mali by sa prepocitat lokalne suradnice prierezu
+                        // Napr. stresny nosnik "rafter" je voci rovine pohladu sikmo v uhle roofpitch, takze prierez by sa mal zvacsit v smere zvislej lokalnej osy, zobrazena vyska prierezu je c = h / cos(roofpitch)
+                        // takto by sa mali prepocitat vsetky suradnice prierezu v smere lokalnej zvislej osi [i,1]
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordoutline[j, 0] += (float)p.X;
+                            crsccoordoutline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
+                    {
+                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordinline[j, 0] += (float)p.X;
+                            crsccoordinline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    // Draw cross-section
+                    DrawCrossSection(p, b, h, model.m_arrMembers[i].DTheta_x, crsccoordoutline, crsccoordinline);
+                }
+                else
+                {
+                    // Member is outside the box (do not draw)
+                }
+            }
+
+            CanvasSection2D = canvasForImage;
+
+        }
+
+        public void DrawTopView_ModelToCanvas(CModel model)
+        {
+            canvasForImage.Children.Clear(); return;
+
+            dPageWidth = this.Width;
+            dPageHeight = this.Height;
+
+            if (model != null)
+            {
+                Drawing3D.CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
+                dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
+            }
+
+            CalculateBasicValue();
+
+            // Set 3D environment data to generate 2D view
+            // Point of View / Camera
+
+            // View perpendicular to the global plane YZ (in "-X" direction)
+            Point3D pCameraPosition = new Point3D(fTempMax_X + 1, 0, 0);
+            Vector3D pCameraViewDirection = new Vector3D(-1, 0, 0);
+            float fViewDepth = 2; // [m]
+
+            float fMinCoord_X = (float)(pCameraPosition.X + pCameraViewDirection.X * fViewDepth);
+            float fMaxCoord_X = (float)pCameraPosition.X;
+
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
+            {
+                if (model.m_arrMembers[i] == null) continue;
+
+                // Transform Units from 3D real model to 2D view (depends on size of window)
+                Point pA = new Point(model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor);
+                Point pB = new Point(model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor);
+                double b = model.m_arrMembers[i].CrScStart.b * fReal_Model_Zoom_Factor; // Todo - to ci sa ma vykreslovat sirka alebo vyska prierezu zavisi od uhla theta smeru lokalnej osy z prierezu voci smeru pohladu
+                double h = model.m_arrMembers[i].CrScStart.h * fReal_Model_Zoom_Factor;
+
+                double width = b;
+                //if (model.m_arrMembers[i].DTheta_x == 0 || model.m_arrMembers[i].DTheta_x == MathF.dPI)
+                //    width = h;
+
+                if ((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+               (fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X))
+                {
+                    // Both definition points of the member are within interval - draw rectangle (L - length in the plane YZ)
+                    double fRotationAboutX_rad = Geom2D.GetAlpha2D_CW((float)pA.X, (float)pB.X, (float)pA.Y, (float)pB.Y); // ToDo - dopocitat podla suradnic koncovych bodov v rovine pohladu YZ
+                    double dLengthProjected = Math.Sqrt(MathF.Pow2(pB.X - pA.X) + MathF.Pow2(pB.Y - pA.Y));
+
+                    DrawMember2D(Brushes.Black, Brushes.Azure, pA, width, dLengthProjected, fRotationAboutX_rad, canvasForImage);
+                }
+                else if (((fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointEnd.X || model.m_arrMembers[i].PointEnd.X > fMaxCoord_X)) ||
+                   ((fMinCoord_X < model.m_arrMembers[i].PointEnd.X && model.m_arrMembers[i].PointEnd.X < fMaxCoord_X) &&
+                   (fMinCoord_X > model.m_arrMembers[i].PointStart.X || model.m_arrMembers[i].PointStart.X > fMaxCoord_X)))
+                {
+                    // Only one point is within interval for view depth - draw cross-section
+                    // We should check that other point is perpendicular to the plane YZ otherwise modified cross-section shape (cut of he member) should be displayed
+
+                    // Set centroid coordinates
+                    Point p = new Point();
+                    if (fMinCoord_X < model.m_arrMembers[i].PointStart.X && model.m_arrMembers[i].PointStart.X < fMaxCoord_X)
+                    {
+                        p.X = model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor;
+                    }
+                    else
+                    {
+                        p.X = model.m_arrMembers[i].PointEnd.Y * fReal_Model_Zoom_Factor;
+                        p.Y = model.m_arrMembers[i].PointEnd.Z * fReal_Model_Zoom_Factor;
+                    }
+
+                    // Transform cross-section coordinates in 2D
+                    float[,] crsccoordoutline = null;
+                    float[,] crsccoordinline = null;
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
+                    {
+                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
+
+                        // TODO - kedze prut nemusi byt kolmy na smer pohladu, tak spravne by sa mal detekovat uhol, pod ktorym sa na prierez pozerame
+                        // a mali by sa prepocitat lokalne suradnice prierezu
+                        // Napr. stresny nosnik "rafter" je voci rovine pohladu sikmo v uhle roofpitch, takze prierez by sa mal zvacsit v smere zvislej lokalnej osy, zobrazena vyska prierezu je c = h / cos(roofpitch)
+                        // takto by sa mali prepocitat vsetky suradnice prierezu v smere lokalnej zvislej osi [i,1]
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordoutline[j, 0] += (float)p.X;
+                            crsccoordoutline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
+                    {
+                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+
+                        // Transfom coordinates to geometry center
+                        crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
+
+                        for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
+                        {
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+
+                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
+                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+
+                            crsccoordinline[j, 0] += (float)p.X;
+                            crsccoordinline[j, 1] += (float)p.Y;
+                        }
+                    }
+
+                    // Draw cross-section
+                    DrawCrossSection(p, b, h, model.m_arrMembers[i].DTheta_x, crsccoordoutline, crsccoordinline);
+                }
+                else
+                {
+                    // Member is outside the box (do not draw)
+                }
+            }
+
+            CanvasSection2D = canvasForImage;
+
         }
 
         public void DrawMember2D(SolidColorBrush strokeColor, SolidColorBrush fillColor, Point pA, double Width, double Length, double fRotationAboutX_rad, Canvas imageCanvas)
@@ -288,6 +842,23 @@ namespace PFD
 
             modelMarginLeft_x = 0.5 * (dPageWidth - fModel_Length_x_page);
             modelMarginBottom_y = fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page);
+        }
+
+        private void comboViews_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (comboViews.SelectedIndex)
+            {
+                case 0: DrawFrontView_ModelToCanvas(Model); break;
+                case 1: DrawBackView_ModelToCanvas(Model); break;
+                case 2: DrawLeftView_ModelToCanvas(Model); break;
+                case 3: DrawRightView_ModelToCanvas(Model); break;
+                case 4: DrawTopView_ModelToCanvas(Model); break;
+            }
+        }
+
+        private void saveDXF_Click(object sender, RoutedEventArgs e)
+        {
+            CExportToDXF.ExportCanvas_DXF(CanvasSection2D);
         }
 
         //public void CalculateModelLimits(CModel cmodel, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
