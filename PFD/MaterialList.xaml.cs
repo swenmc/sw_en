@@ -226,22 +226,6 @@ namespace PFD
 
             Datagrid_Members.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
-            // TODO - temporary - tento column nema byt v tabulke, ale inak sa do Datagrid_Members.ItemsSource neprevezme pocet columns
-
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "ID", Width = 30 });
-
-            /*
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Prefix" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Section" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Quantity" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Material" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Length" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Weight / m" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Weight / piece" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Total Length" });
-            Datagrid_Members.Columns.Add(new DataGridTextColumn() { Header = "Total Weight" });
-            */
-
             // Set Column Header
             /*
             Datagrid_Members.Columns[0].Header = "Prefix";
@@ -267,7 +251,6 @@ namespace PFD
             Datagrid_Members.Columns[7].Width = 100;
             Datagrid_Members.Columns[8].Width = 100;
             */
-
 
             // Plates
 
@@ -368,7 +351,7 @@ namespace PFD
 
                     bool bPlatewasAdded = false; // Plate was added to the group
 
-                    if (j > 0) // If it not first item
+                    if (i > 0 || (i == 0 && j > 0)) // If it not first item
                     {
                         for (int k = 0; k < ListOfPlateGroups.Count; k++) // For each group of plates check if current plate has same prefix and same dimensions as some already created -  // Add plate to the group or create new one
                         {
@@ -390,7 +373,7 @@ namespace PFD
                         }
                     }
 
-                    if (j == 0 || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                    if ((i == 0 && j == 0) || !bPlatewasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
                     {
                         listPlatePrefix.Add(sPrefix);
                         listPlateQuantity.Add(iQuantity);
@@ -517,10 +500,6 @@ namespace PFD
             }
 
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
-            // TODO - temporary - tento column nema byt v tabulke, ale inak sa do Datagrid_Plates.ItemsSource neprevezme pocet columns
-
-            Datagrid_Plates.Columns.Add(new DataGridTextColumn() { Header = "ID", Width = 30 });
         }
 
         private void DeleteAllLists()

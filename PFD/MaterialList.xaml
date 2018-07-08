@@ -7,20 +7,22 @@
         mc:Ignorable="d"
         Title="MaterialList" Height="1200" Width="670">
     <Grid Margin="0,0,0,0">
+        <TextBlock HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_Members"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,800"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,30,10,800"
             IsReadOnly="True">
         </DataGrid>
 
+        <TextBlock HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Plates" VerticalAlignment="Top" Width="120" Margin="10,376,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_Plates"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,400,10,400"
             IsReadOnly="True">
         </DataGrid>
 
+        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Screws" VerticalAlignment="Top" Width="120" Margin="10,775,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_Screws"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,800,10,10"
             IsReadOnly="True">
         </DataGrid>
-
     </Grid>
 </Window>

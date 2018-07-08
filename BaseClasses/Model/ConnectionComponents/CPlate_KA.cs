@@ -56,6 +56,11 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = Math.Max(m_fbX1, m_fbX2);
+            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         public CConCom_Plate_KA(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
@@ -87,6 +92,11 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = Math.Max(m_fbX1, m_fbX2);
+            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         //----------------------------------------------------------------------------

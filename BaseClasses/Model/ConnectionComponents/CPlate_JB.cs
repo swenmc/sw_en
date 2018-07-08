@@ -56,6 +56,11 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = m_fbX;
+            fHeight_hy = Math.Max(m_fhY_1, m_fhY_2);
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
@@ -90,6 +95,11 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            fWidth_bx = m_fbX;
+            fHeight_hy = Math.Max(m_fhY_1, m_fhY_2);
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         //----------------------------------------------------------------------------

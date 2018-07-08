@@ -425,6 +425,13 @@ namespace BaseClasses
             // Add the first point to the end.
             int num_points = PointsOut2D.Length / 2;
             Point[] pts = new Point[num_points + 1];
+
+            for (int i = 0; i < num_points; i++)
+            {
+                pts[i].X = PointsOut2D[i, 0];
+                pts[i].Y = PointsOut2D[i, 1];
+            }
+
             pts[num_points].X = PointsOut2D[0, 0];
             pts[num_points].Y = PointsOut2D[0, 1];
 

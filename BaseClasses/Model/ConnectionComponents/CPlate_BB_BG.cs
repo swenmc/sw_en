@@ -66,7 +66,10 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            PolygonArea();
+            fWidth_bx = m_fbX;
+            fHeight_hy = m_fhY;
+            fThickness_tz = m_ft;
+            fArea = PolygonArea();
         }
 
         //----------------------------------------------------------------------------
