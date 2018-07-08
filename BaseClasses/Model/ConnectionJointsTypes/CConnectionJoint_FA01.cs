@@ -39,7 +39,7 @@ namespace BaseClasses
             CPoint ControlPoint_P1 = new CPoint(0, m_Node.X - 0.5f * fb_plate, m_Node.Y - 0.5f * fh_plate, m_Node.Z, 0);
 
             m_arrPlates = new CPlate[1];
-            m_arrPlates[0] = new CConCom_Plate_BB_BG(ControlPoint_P1, fb_plate, fh_plate, 0.18f, m_ft, iHoleNo, fd_hole, 0, 0, 0, bIsDisplayed_temp); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_BB_BG("BB", ControlPoint_P1, fb_plate, fh_plate, 0.18f, m_ft, iHoleNo, fd_hole, 0, 0, 0, bIsDisplayed_temp); // Rotation angle in degrees
         }
     }
 }

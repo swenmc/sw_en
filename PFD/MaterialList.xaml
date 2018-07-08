@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="MaterialList" Height="1000" Width="800">
+        Title="MaterialList" Height="1200" Width="670">
     <Grid Margin="0,0,0,0">
         <DataGrid Name ="Datagrid_Members"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,25,10,650"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,800"
             IsReadOnly="True">
         </DataGrid>
 
         <DataGrid Name ="Datagrid_Plates"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,330,10,360"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,400,10,400"
             IsReadOnly="True">
         </DataGrid>
 
         <DataGrid Name ="Datagrid_Screws"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,620,10,40"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,800,10,10"
             IsReadOnly="True">
         </DataGrid>
 

@@ -94,8 +94,9 @@ namespace BaseClasses
             CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_KA(ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_KA(ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed);  // Rotation angle in degrees
+
+            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed);  // Rotation angle in degrees
         }
 
         public static Point ? Intersection(Point start1, Point end1, Point start2, Point end2)

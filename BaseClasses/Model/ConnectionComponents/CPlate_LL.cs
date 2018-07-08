@@ -20,12 +20,16 @@ namespace BaseClasses
         public CConCom_Plate_LL()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_LL;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_LL(GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_LL(string sName_temp, GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
         {
+            Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_LL;
+
             BIsDisplayed = bIsDisplayed;
 
             ITotNoPointsin2D = 12;

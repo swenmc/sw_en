@@ -28,6 +28,8 @@ namespace BaseClasses
             m_arrPlates = arrPlatesSize != 0 ? new CPlate[arrPlatesSize] : null;
             m_arrBolts = arrBoltsSize != 0 ? new CBolt[arrBoltsSize] : null;
             m_arrWelds = arrWeldsSize != 0 ? new CWeld[arrWeldsSize] : null;
+
+            m_Mat = new CMat();
         }
 
         public CConnectionJointTypes(CPlate[] arrPlatesTemp, CBolt[] arrBoltsTemp, CWeld[] arrWeldsTemp)

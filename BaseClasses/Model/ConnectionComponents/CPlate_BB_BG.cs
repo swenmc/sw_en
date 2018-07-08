@@ -23,12 +23,16 @@ namespace BaseClasses
         public CConCom_Plate_BB_BG()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_B;
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_BB_BG(GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber_temp, float fHoleDiameter_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_BB_BG(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber_temp, float fHoleDiameter_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
+            Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_B;
+
             BIsDisplayed = bIsDisplayed;
 
             m_pControlPoint = controlpoint;
@@ -61,6 +65,8 @@ namespace BaseClasses
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            PolygonArea();
         }
 
         //----------------------------------------------------------------------------
