@@ -127,19 +127,27 @@ namespace BaseClasses
         }
 
 
+        //Funkcia vytvori Dictionary z rovnakych Members - kriterium je tu (FLength, CrScStart.GetType().Name, CrScEnd.GetType().Name)
         public void GroupModelMembers()
         {
             GroupedMembers = new Dictionary<Tuple<float, string, string>, List<CMember>>();
             
+            //pre kazdy member v poli members
             foreach (CMember m in m_arrMembers)
             {
                 string startCrscName = m.CrScStart != null ?  m.CrScStart.GetType().Name : string.Empty;
                 string endCrscName = m.CrScEnd != null ? m.CrScEnd.GetType().Name : string.Empty;
+                //vytvori n-ticu 3 property
                 Tuple<float, string, string> t = Tuple.Create(m.FLength, startCrscName, endCrscName);
+                //ak sa dana n-tica v dictionary nachadza, tak pridaj member do kolekcie
+                //inak vytvor novy zaznam v dictionary kde Key je n-tica a Value je list s tymto objektom member
                 if (GroupedMembers.ContainsKey(t)) GroupedMembers[t].Add(m);
                 else GroupedMembers.Add(t, new List<CMember> { m });                
             }
 
+            //Takto sa kolekciou prechadza. Stale je to par Key a Value
+            //v nasom pripade je Key n-tica (FLength, CrScStart.GetType().Name, CrScEnd.GetType().Name) a pristupuje sa k tymto properties pair.Key.Item1, pair.Key.Item2, pair.Key.Item3
+            //value je List<Member> vypiseme pocet rovnakych prvkov Members
             foreach (KeyValuePair<Tuple<float, string, string>, List<CMember>> pair in GroupedMembers)
             {
                 System.Diagnostics.Trace.WriteLine(string.Format("{0}, {1}", string.Format("{0}_{1}_{2}", pair.Key.Item1, pair.Key.Item2, pair.Key.Item3), pair.Value.Count));
