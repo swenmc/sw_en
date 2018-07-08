@@ -16,11 +16,9 @@ using BaseClasses;
 using BaseClasses.GraphObj;
 using sw_en_GUI;
 using CRSC;
-using netDxf;
-using netDxf.Entities;
-using netDxf.Tables;
 using System.Windows.Media.Media3D;
 using _3DTools;
+using SharedLibraries.EXPIMP;
 
 namespace PFD
 {
@@ -897,145 +895,14 @@ namespace PFD
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
-            Canvas canvas = page2D.CanvasSection2D;
-            DxfDocument doc = new DxfDocument();
-            double Z = 0; //is is 2D so Z axis is always 0
-            double fontSize = 10;
-
-            foreach (object o in canvas.Children)
-            {
-                System.Diagnostics.Trace.WriteLine(o.GetType());
-
-                if (o is WindowsShapes.Rectangle)
-                {
-                    WindowsShapes.Rectangle winRect = o as WindowsShapes.Rectangle;
-                    double x = Canvas.GetLeft(winRect);
-                    double y = Canvas.GetTop(winRect);
-                    //double y = Canvas.GetTop(winRect) * -1; pretocenim podla osi y dostanem body tak ako v canvase
-
-                    //System.Windows.Point p = winRect.RenderedGeometry.Bounds.Location;
-                    System.Windows.Point p1 = winRect.RenderedGeometry.Bounds.TopLeft;
-                    System.Windows.Point p2 = winRect.RenderedGeometry.Bounds.BottomRight;
-                    
-                    Wipeout wip = new Wipeout(new Vector2(p1.X + x, p1.Y + y), new Vector2(p2.X + x, p2.Y + y));
-                    //wip.Color = AciColor.Red;
-                    //wip.Lineweight = Lineweight.W200;
-                    
-                    doc.AddEntity(wip);
-                }
-                else if (o is WindowsShapes.Polyline)
-                {
-                    WindowsShapes.Polyline winPol = o as WindowsShapes.Polyline;
-                    Polyline poly = new Polyline();
-
-                    foreach (System.Windows.Point p in winPol.Points)
-                    {
-                        poly.Vertexes.Add(new PolylineVertex(p.X, p.Y, Z));
-                    }
-                    
-                    doc.AddEntity(poly);
-                }
-                else if (o is WindowsShapes.Ellipse)
-                {
-                    WindowsShapes.Ellipse winElipse = o as WindowsShapes.Ellipse;
-                    double majorAxis = winElipse.Width;
-                    double minorAxis = winElipse.Height;
-
-                    System.Windows.Point p1 = winElipse.RenderedGeometry.Bounds.TopLeft;
-                    System.Windows.Point p2 = winElipse.RenderedGeometry.Bounds.BottomRight;
-                    System.Windows.Point pCenter = new System.Windows.Point((p2.X - p1.X) / 2, (p2.Y - p1.Y) / 2);
-
-                    double x = Canvas.GetLeft(winElipse);
-                    double y = Canvas.GetTop(winElipse);
-                    Ellipse elipse = new Ellipse(new Vector2(pCenter.X + x, pCenter.Y + y), majorAxis, minorAxis);
-                    
-                    doc.AddEntity(elipse);
-                }
-                else if (o is WindowsShapes.Line)
-                {
-                    WindowsShapes.Line winLine = o as WindowsShapes.Line;
-                    
-                    Vector2 startPoint = new Vector2(winLine.X1, winLine.Y1);
-                    Vector2 endPoint = new Vector2(winLine.X2, winLine.Y2);
-                    Line line = new Line(startPoint, endPoint);
-                    
-                    doc.AddEntity(line);
-                }
-                else if (o is System.Windows.Controls.TextBlock)
-                {
-                    System.Windows.Controls.TextBlock winText = o as System.Windows.Controls.TextBlock;
-                    
-                    double x = Canvas.GetLeft(winText);
-                    x += winText.ActualWidth / 2;
-                    double y = Canvas.GetTop(winText);
-                    y -= winText.BaselineOffset;
-                    y += fontSize / 2;
-                    
-                    Text txt = new Text(winText.Text, new Vector2(x, y), fontSize);
-                    //Text txt = new Text(winText.Text, new Vector2(x, -y), fontSize);  //pretocenim podla osi y dostanem body tak ako v canvase
-                    txt.Color = AciColor.Yellow;
-                    doc.AddEntity(txt);
-
-                    //Takto sa da spravit zlozitejsi text, napr. Bold atd..
-                    /*TextStyle style = new TextStyle("Times.ttf");
-                    //TextStyle style = TextStyle.Default;
-                    MText mText = new MText(new Vector2(x, y), fontSize, 100.0f, style);
-                    mText.Layer = new Layer("Multiline Text");
-                    //mText.Layer.Color.Index = 8;
-                    mText.Rotation = 0;
-                    //mText.LineSpacingFactor = 1.0;
-                    //mText.ParagraphHeightFactor = 1.0;
-                    //mText.AttachmentPoint = MTextAttachmentPoint.TopCenter;
-
-                    MTextFormattingOptions options = new MTextFormattingOptions(mText.Style);
-                    options.Bold = true;
-                    options.Color = AciColor.Yellow;
-                    mText.Write(winText.Text, options);
-                    mText.EndParagraph();
-                    doc.AddEntity(mText);    */
-                }
-            }
-
-            DateTime d = DateTime.Now;
-            string fileName = string.Format("ExportDXF_{0}{1}{2}T{3}{4}{5}.dxf", 
-                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
-
-            doc.Save(fileName);
+            CExportToDXF.ExportCanvas_DXF(page2D.CanvasSection2D);
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
-        {               
-            DxfDocument doc = new DxfDocument();
-            foreach (Visual3D objVisual3D in page3D._trackport.ViewPort.Children)
-            {
-                if (objVisual3D is ScreenSpaceLines3D)
-                {
-                    ScreenSpaceLines3D lines3D = objVisual3D as ScreenSpaceLines3D;
-                    if (lines3D == null) continue;
-
-                    AddLinesToDXF(lines3D, doc);
-                }
-            }
-
-            DateTime d = DateTime.Now;
-            string fileName = string.Format("3DExportDXF_{0}{1}{2}T{3}{4}{5}.dxf",
-                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
-
-            doc.Save(fileName);
-        }
-
-        private void AddLinesToDXF(ScreenSpaceLines3D lines3D, DxfDocument doc)
         {
-            Point3D startPoint;
-            Point3D endPoint;
-            for (int i = 0; i < lines3D.Points.Count; i = i + 2)
-            {
-                startPoint = lines3D.Points[i];
-                endPoint = lines3D.Points[i + 1];
-                Line line = new Line(new Vector3(startPoint.X, startPoint.Y, startPoint.Z), new Vector3(endPoint.X, endPoint.Y, endPoint.Z));
-
-                doc.AddEntity(line);
-            }
+            CExportToDXF.ExportViewPort_DXF(page3D._trackport.ViewPort);
         }
+
+        
     }
 }

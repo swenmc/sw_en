@@ -65,7 +65,8 @@ namespace PFD
 
             if (model != null)
             {
-                CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                Drawing3D.CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+                //CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
                 dModelDimension_Y_real = fTempMax_Y - fTempMin_Y;
                 dModelDimension_Z_real = fTempMax_Z - fTempMin_Z;
             }
@@ -85,7 +86,7 @@ namespace PFD
 
             for(int i = 0; i < model.m_arrMembers.Length; i++)
             {
-                if (model.m_arrMembers[i] == null) continue; //??? index 70 az 85 == null
+                if (model.m_arrMembers[i] == null) continue;
 
                 // Transform Units from 3D real model to 2D view (depends on size of window)
                 Point pA = new Point(model.m_arrMembers[i].PointStart.Y * fReal_Model_Zoom_Factor, model.m_arrMembers[i].PointStart.Z * fReal_Model_Zoom_Factor);
@@ -289,37 +290,37 @@ namespace PFD
             modelMarginBottom_y = fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page);
         }
 
-        public void CalculateModelLimits(CModel cmodel, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
-        {
-            fTempMax_X = float.MinValue;
-            fTempMin_X = float.MaxValue;
-            fTempMax_Y = float.MinValue;
-            fTempMin_Y = float.MaxValue;
-            fTempMax_Z = float.MinValue;
-            fTempMin_Z = float.MaxValue;
+        //public void CalculateModelLimits(CModel cmodel, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
+        //{
+        //    fTempMax_X = float.MinValue;
+        //    fTempMin_X = float.MaxValue;
+        //    fTempMax_Y = float.MinValue;
+        //    fTempMin_Y = float.MaxValue;
+        //    fTempMax_Z = float.MinValue;
+        //    fTempMin_Z = float.MaxValue;
 
-            if (cmodel.m_arrNodes != null) // Some nodes exist
-            {   
-                fTempMax_X = cmodel.m_arrNodes.Max(n => n.X);
-                fTempMin_X = cmodel.m_arrNodes.Min(n => n.X);
-                fTempMax_Y = cmodel.m_arrNodes.Max(n => n.Y);
-                fTempMin_Y = cmodel.m_arrNodes.Min(n => n.Y);
-                fTempMax_Z = cmodel.m_arrNodes.Max(n => n.Z);
-                fTempMin_Z = cmodel.m_arrNodes.Min(n => n.Z);
-            }
-            else if (cmodel.m_arrGOPoints != null) // Some points exist
-            {
-                fTempMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
-                fTempMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
-                fTempMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
-                fTempMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
-                fTempMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
-                fTempMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
-            }
-            else
-            {
-                // Exception - no definition nodes or points
-            }
-        }
+        //    if (cmodel.m_arrNodes != null) // Some nodes exist
+        //    {   
+        //        fTempMax_X = cmodel.m_arrNodes.Max(n => n.X);
+        //        fTempMin_X = cmodel.m_arrNodes.Min(n => n.X);
+        //        fTempMax_Y = cmodel.m_arrNodes.Max(n => n.Y);
+        //        fTempMin_Y = cmodel.m_arrNodes.Min(n => n.Y);
+        //        fTempMax_Z = cmodel.m_arrNodes.Max(n => n.Z);
+        //        fTempMin_Z = cmodel.m_arrNodes.Min(n => n.Z);
+        //    }
+        //    else if (cmodel.m_arrGOPoints != null) // Some points exist
+        //    {
+        //        fTempMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
+        //        fTempMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
+        //        fTempMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
+        //        fTempMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);
+        //        fTempMax_Z = (float)cmodel.m_arrGOPoints.Max(p => p.Z);
+        //        fTempMin_Z = (float)cmodel.m_arrGOPoints.Min(p => p.Z);
+        //    }
+        //    else
+        //    {
+        //        // Exception - no definition nodes or points
+        //    }
+        //}
     }
 }
