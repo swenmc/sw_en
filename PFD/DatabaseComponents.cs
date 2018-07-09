@@ -423,5 +423,16 @@ namespace PFD
             {"MR","Main Rafter"},
             {"MC","Main Column"}
         };
+
+        public float[,] arr_Screws_TEK_Dimensions = new float[7, 2]
+        {
+            {4f,   2.9f },
+            {6f,   3.5f },
+            {8f,   4.2f },
+            {10f,  4.8f },
+            {12f,  5.5f },
+            {14f,  6.3f },
+            {18f,  8.0f },
+        };
     }
 }

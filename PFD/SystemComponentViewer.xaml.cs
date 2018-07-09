@@ -510,7 +510,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, 0.01f, null, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
@@ -520,7 +520,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
@@ -677,7 +677,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, true); // L
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, 0.001f, null, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
@@ -687,7 +687,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0,0,0, iNumberofHoles, true); // F
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

@@ -36,9 +36,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             //m_arrCrSc[0] = new CCrSc_3_51_BOX_TEMP(1f, 0.3f, 0.003f);
 
             //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f);
-            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.20f, 0.001f, 0.001f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.20f, 0.001f, 0.001f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -60,7 +60,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Members
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0.7f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());
@@ -89,8 +89,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
             // Joints
-            m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeStart, m_arrMembers[0], true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeEnd, m_arrMembers[0], true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeStart, m_arrMembers[0], true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeEnd, m_arrMembers[0], true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T001(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], false, true));
         }
     }
 }

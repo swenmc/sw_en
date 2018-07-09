@@ -16,6 +16,7 @@ namespace BaseClasses
         public float fHeight_hy;
         public float fThickness_tz;
         public float fArea;
+        public CConnector[] m_arrPlateConnectors;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
 
@@ -41,6 +42,7 @@ namespace BaseClasses
         public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
         public float FHoleDiameter;
         public int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
+        public Point3D [] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
 
         public int INoPoints2Dfor3D; // Number of points in one surface used for 3D model (holes lines are divided to the straight segments)
 

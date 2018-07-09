@@ -151,10 +151,10 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
-        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, SolidColorBrush brushPlates = null, SolidColorBrush brushBolts = null, SolidColorBrush brushWelds = null)
+        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, SolidColorBrush brushPlates = null, SolidColorBrush brushConnectors = null, SolidColorBrush brushWelds = null)
         {
             if (brushPlates == null) brushPlates = new SolidColorBrush(Colors.Gray);
-            if (brushBolts == null) brushBolts = new SolidColorBrush(Colors.Red);
+            if (brushConnectors == null) brushConnectors = new SolidColorBrush(Colors.Red);
             if (brushWelds == null) brushWelds = new SolidColorBrush(Colors.Orange);
 
             Model3DGroup JointsModel3DGroup = null;
@@ -176,20 +176,30 @@ namespace BaseClasses
                             cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                             {
                                 JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates)); // Add plate 3D model to the model group
+
+                                // Add plate connectors
+                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
+                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
+                                {
+                                    for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m ++)
+                                        JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors));
+                                }
                             }
                         }
                     }
 
-                    // Bolts
-                    if (cmodel.m_arrConnectionJoints[i].m_arrBolts != null)
+                    // Connectors
+                    bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
+
+                    if (bUseAdditionalConnectors && cmodel.m_arrConnectionJoints[i].m_arrConnectors != null)
                     {
-                        for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrBolts.Length; l++)
+                        for (int l = 0; l < cmodel.m_arrConnectionJoints[i].m_arrConnectors.Length; l++)
                         {
-                            if (cmodel.m_arrConnectionJoints[i].m_arrBolts[l] != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrBolts[l].m_pControlPoint != null &&
-                            cmodel.m_arrConnectionJoints[i].m_arrBolts[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
+                            if (cmodel.m_arrConnectionJoints[i].m_arrConnectors[l] != null &&
+                            cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].m_pControlPoint != null &&
+                            cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].BIsDisplayed == true) // Bolt object is valid (not empty) and should be displayed
                             {
-                                JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrBolts[l].CreateGeomModel3D(brushBolts)); // Add bolt 3D model to the model group
+                                JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrConnectors[l].CreateGeomModel3D(brushConnectors)); // Add bolt 3D model to the model group
                             }
                         }
                     }
@@ -207,7 +217,7 @@ namespace BaseClasses
                             }
                         }
                     }
-                                        
+
                     if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
                     {
                         // TODO prepracovat tento blok a podmienky tak, aby v nebol prazdny else a odstranit duplicitu
@@ -516,16 +526,20 @@ namespace BaseClasses
 
                                 var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
                                 jointWireFrameGroup.AddPoints(transformedPoints.ToList());
+
+                                // TODO - pridat wireframe pre connectors v plechoch
                             }
                         }
 
-                        // Bolts
-                        if (model.m_arrConnectionJoints[i].m_arrBolts != null)
+                        // Connectors
+                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
+
+                        if (bUseAdditionalConnectors && model.m_arrConnectionJoints[i].m_arrConnectors != null)
                         {
-                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrBolts.Length; j++)
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrConnectors.Length; j++)
                             {
                                 // Create WireFrame in LCS
-                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrBolts[j].CreateWireFrameModel();
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrConnectors[j].CreateWireFrameModel();
 
                                 // Rotate from LCS to GCS
                                 // TODO

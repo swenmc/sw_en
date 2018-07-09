@@ -19,7 +19,7 @@
             IsReadOnly="True">
         </DataGrid>
 
-        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="Screws" VerticalAlignment="Top" Width="120" Margin="10,775,0,0" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,775,0,0" FontSize="16"><Run Text="Connectors ("/><Run Text="Anchors, "/><Run Text="Bolts, Screws, Rivets)"/></TextBlock>
         <DataGrid Name ="Datagrid_Screws"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,800,10,10"
             IsReadOnly="True">

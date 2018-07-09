@@ -46,6 +46,13 @@ namespace PFD
         List<double> listPlateTotalArea = new List<double>(1);
         List<double> listPlateTotalWeight = new List<double>(1);
 
+        List<string> listConnectorPrefix = new List<string>(1);
+        List<int> listConnectorQuantity = new List<int>(1);
+        List<string> listConnectorMaterialName = new List<string>(1);
+        List<string> listConnectorSize = new List<string>(1);
+        List<double> listConnectorWeightPerPiece = new List<double>(1);
+        List<double> listConnectorTotalWeight = new List<double>(1);
+
         DatabaseComponents databaseCopm = new DatabaseComponents();
 
         public MaterialList()
@@ -361,7 +368,7 @@ namespace PFD
                             MathF.d_equal(ListOfPlateGroups[k].fThickness_tz, model.m_arrConnectionJoints[i].m_arrPlates[j].fThickness_tz) &&
                             MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
                             {
-                                // Add member to the one from already created groups
+                                // Add plate to the one from already created groups
 
                                 listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
                                 listPlateTotalArea[k] = Math.Round(listPlateQuantity[k] * listPlateArea[k], iNumberOfDecimalPlaces);
@@ -398,8 +405,12 @@ namespace PFD
             double dTotalPlatesWeight_Model = 0, dTotalPlatesWeight_Table = 0;
             int iTotalPlatesNumber_Model = 0, iTotalPlatesNumber_Table = 0;
 
+            double dTotalConnectorsWeight_Model = 0, dTotalConnectorsWeight_Table = 0;
+            int iTotalConnectorsNumber_Model = 0, iTotalConnectorsNumber_Table = 0;
+
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
             {
+                // Set plates and connectors data
                 foreach (CPlate plate in joint.m_arrPlates)
                 {
                     dTotalPlatesArea_Model += plate.fArea;
@@ -500,6 +511,151 @@ namespace PFD
             }
 
             Datagrid_Plates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+
+            // Connectors
+
+            List<CConnector> ListOfConnectorGroups = new List<CConnector>();
+
+            for (int i = 0; i < model.m_arrConnectionJoints.Count; i++) // For each joint
+            {
+                for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
+                {
+                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors != null)
+                    {
+                        for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; k++) // For each connector in plate
+                        {
+                            string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].Name;
+                            int iQuantity = 1;
+                            string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_Mat.Name;
+                            int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_iGauge;
+                            float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fDiameter;
+                            float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fLength;
+                            string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
+                            float fWeightPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fWeight;
+                            float fTotalWeight = iQuantity * fWeightPerPiece;
+
+                            bool bConnectorwasAdded = false; // Connector was added to the group
+
+                            if (ListOfConnectorGroups.Count > 0) // If it not first item
+                            {
+                                for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
+                                {
+                                    if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].Name &&
+                                    MathF.d_equal(ListOfConnectorGroups[m].m_fDiameter, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fDiameter) &&
+                                    MathF.d_equal(ListOfConnectorGroups[m].m_fLength, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fLength) &&
+                                    MathF.d_equal(ListOfConnectorGroups[m].m_fWeight, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fWeight))
+                                    {
+                                        // Add connector to the one from already created groups
+
+                                        listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
+                                        listConnectorTotalWeight[m] = Math.Round(listConnectorQuantity[m] * listConnectorWeightPerPiece[m], iNumberOfDecimalPlaces); // Recalculate total weight of all connectors in the group
+
+                                        bConnectorwasAdded = true;
+                                    }
+                                    // TODO - po pridani spojovacieho prostriedku by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                                }
+                            }
+
+                            if ((i == 0 && j == 0 && k == 0) || !bConnectorwasAdded) // Create new group (new row) (different length / prefix of plates or first item in list of plates assigned to the cross-section)
+                            {
+                                listConnectorPrefix.Add(sPrefix);
+                                listConnectorQuantity.Add(iQuantity);
+                                listConnectorMaterialName.Add(sMaterialName);
+                                listConnectorSize.Add(size);
+                                listConnectorWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlaces));
+                                listConnectorTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlaces));
+
+                                // Add first plate in the group to the list of plate groups
+                                ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
+            {
+                foreach (CPlate plate in joint.m_arrPlates)
+                {
+                    // Set connectors data
+                    if (plate.m_arrPlateConnectors != null)
+                    {
+                        foreach (CConnector connector in plate.m_arrPlateConnectors)
+                        {
+                            dTotalConnectorsWeight_Model += connector.m_fWeight;
+                            iTotalConnectorsNumber_Model += 1;
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < listConnectorPrefix.Count; i++)
+            {
+                dTotalConnectorsWeight_Table += listConnectorTotalWeight[i];
+                iTotalConnectorsNumber_Table += listConnectorQuantity[i];
+            }
+
+            dTotalConnectorsWeight_Model = Math.Round(dTotalConnectorsWeight_Model, iNumberOfDecimalPlaces);
+
+            if (!MathF.d_equal(dTotalConnectorsWeight_Model, dTotalConnectorsWeight_Table) ||
+                    (iTotalConnectorsNumber_Model != iTotalConnectorsNumber_Table)) // Error
+                MessageBox.Show(
+                "Total weight of connectors in model " + dTotalConnectorsWeight_Model + " kg" + "\n" +
+                "Total weight of connectors in table " + dTotalConnectorsWeight_Table + " kg" + "\n" +
+                "Total number of connectors in model " + iTotalConnectorsNumber_Model + "\n" +
+                "Total number of connectors in table " + iTotalConnectorsNumber_Table + "\n");
+
+            // Add Sum
+            listConnectorPrefix.Add("Total:");
+            listConnectorQuantity.Add(iTotalConnectorsNumber_Table);
+            listConnectorMaterialName.Add(""); // Empty cell
+            listConnectorSize.Add(""); // Empty cell
+            listConnectorWeightPerPiece.Add(0); // Empty cell
+            listConnectorTotalWeight.Add(dTotalConnectorsWeight_Table);
+
+            // Create Table
+            DataTable table3 = new DataTable("Table3");
+            // Create Table Rows
+
+            table3.Columns.Add("Prefix", typeof(String));
+            table3.Columns.Add("Quantity", typeof(Int32));
+            table3.Columns.Add("Material", typeof(String));
+            table3.Columns.Add("Size", typeof(String));
+            table3.Columns.Add("Weight_per_Piece", typeof(Decimal));
+            table3.Columns.Add("Total_Weight", typeof(Decimal));
+
+            // Set Column Caption
+            table3.Columns["Prefix"].Caption = "Prefix1";
+            table3.Columns["Quantity"].Caption = "Quantity";
+            table3.Columns["Material"].Caption = "Material";
+            table3.Columns["Size"].Caption = "Size";
+            table3.Columns["Weight_per_Piece"].Caption = "Weight_per_Piece";
+            table3.Columns["Total_Weight"].Caption = "Total_Weight";
+
+            // Create Datases
+            ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table3);
+
+            for (int i = 0; i < listPlatePrefix.Count; i++)
+            {
+                DataRow row = table3.NewRow();
+
+                try
+                {
+                    row["Prefix"] = listConnectorPrefix[i];
+                    row["Quantity"] = listConnectorQuantity[i];
+                    row["Material"] = listConnectorMaterialName[i];
+                    row["Size"] = listConnectorSize[i];
+                    row["Weight_per_Piece"] = listConnectorWeightPerPiece[i];
+                    row["Total_Weight"] = listConnectorTotalWeight[i];
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table3.Rows.Add(row);
+            }
+
+            Datagrid_Screws.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+
         }
 
         private void DeleteAllLists()
