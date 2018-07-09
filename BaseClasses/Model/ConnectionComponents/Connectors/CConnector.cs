@@ -113,7 +113,7 @@ namespace BaseClasses
         {
             m_DiffuseMat = new DiffuseMaterial(brush);
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
 
             TransformCoord(geometryModel);
 

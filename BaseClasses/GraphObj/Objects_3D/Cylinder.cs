@@ -16,6 +16,8 @@ namespace BaseClasses.GraphObj.Objects_3D
         public float m_fDim2_L;
         DiffuseMaterial m_mat;
 
+        short iTotNoPoints = 73; // 1 auxialiary node in centroid / stredovy bod
+
         public Cylinder()
         { }
         public Cylinder(float fDim1_r, float fDim2_L, DiffuseMaterial mat)
@@ -25,14 +27,26 @@ namespace BaseClasses.GraphObj.Objects_3D
             m_mat = mat;
         }
 
+
+        public Cylinder(short iNumberOfPointsWithCentroid, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
+        {
+            iTotNoPoints = iNumberOfPointsWithCentroid; // Odd number - include centroid
+            m_fDim1_r = fDim1_r;
+            m_fDim2_L = fDim2_L;
+            m_mat = mat;
+        }
+
         //--------------------------------------------------------------------------------------------
         // Generate 3D volume geometry of cylinder
         //--------------------------------------------------------------------------------------------
-        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
+        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short iNumberPoints, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
+        {
+            iTotNoPoints = iNumberPoints;  // Odd number - include centroid
+            return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, fDim1_r, fDim2_L, mat);
+        }
+            public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
-
-            short iTotNoPoints = 73; // 1 auxialiary node in centroid / stredovy bod
 
             if (fDim1_r <= 0f)
             {
@@ -52,7 +66,7 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             meshGeom3D.Positions = new Point3DCollection();
 
-            // Bottom  h = 0
+            // Bottom  x = 0
             for (int i = 0; i < iTotNoPoints; i++)
             {
                 Point3D p = new Point3D(0,  PointsOut[i, 0],  PointsOut[i, 1]);
