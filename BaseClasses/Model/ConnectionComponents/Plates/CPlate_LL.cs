@@ -235,10 +235,10 @@ namespace BaseClasses
 
         void Calc_HolesCentersCoord2D()
         {
-            float fx_edge = 0.010f;
-            float fy_edge1 = 0.010f;
-            float fy_edge2 = 0.030f;
-            float fy_edge3 = 0.120f;
+            float fx_edge = 0.010f;  // y-direction
+            float fy_edge1 = 0.010f; // x-direction
+            float fy_edge2 = 0.030f; // x-direction
+            float fy_edge3 = 0.120f; // x-direction
 
             // TODO nahradit enumom a switchom
 
@@ -246,57 +246,59 @@ namespace BaseClasses
 
             if (IHolesNumber == 32) // LLH, LLK
             {
-                HolesCentersPoints2D[8, 0] = m_fbX1 + HolesCentersPoints2D[6, 0];
-                HolesCentersPoints2D[8, 1] = HolesCentersPoints2D[6, 1];
+                HolesCentersPoints2D[0, 0] = - m_fhY + m_ft + fy_edge1;
+                HolesCentersPoints2D[0, 1] = fx_edge;
 
-                HolesCentersPoints2D[9, 0] = m_fbX1 + HolesCentersPoints2D[7, 0];
-                HolesCentersPoints2D[9, 1] = HolesCentersPoints2D[7, 1];
+                HolesCentersPoints2D[1, 0] = HolesCentersPoints2D[0, 0];
+                HolesCentersPoints2D[1, 1] = m_fbX1 - fx_edge;
 
-                HolesCentersPoints2D[10, 0] = m_fbX1 + HolesCentersPoints2D[5, 0];
-                HolesCentersPoints2D[10, 1] = HolesCentersPoints2D[5, 1];
+                HolesCentersPoints2D[2, 0] = -m_fhY + m_ft + fy_edge2;
+                HolesCentersPoints2D[2, 1] = 0.5f * m_fbX1;
 
-                HolesCentersPoints2D[11, 0] = m_fbX1 + HolesCentersPoints2D[4, 0];
-                HolesCentersPoints2D[11, 1] = HolesCentersPoints2D[4, 1];
+                HolesCentersPoints2D[3, 0] = -m_fhY + m_ft + fy_edge3;
+                HolesCentersPoints2D[3, 1] = HolesCentersPoints2D[2, 1];
 
-                HolesCentersPoints2D[12, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[12, 1] = HolesCentersPoints2D[3, 1];
+                HolesCentersPoints2D[4, 0] = -fy_edge3;
+                HolesCentersPoints2D[4, 1] = HolesCentersPoints2D[2, 1];
 
-                HolesCentersPoints2D[13, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
-                HolesCentersPoints2D[13, 1] = HolesCentersPoints2D[2, 1];
+                HolesCentersPoints2D[5, 0] = -fy_edge2;
+                HolesCentersPoints2D[5, 1] = HolesCentersPoints2D[2, 1];
 
-                HolesCentersPoints2D[14, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
-                HolesCentersPoints2D[14, 1] = HolesCentersPoints2D[1, 1];
+                HolesCentersPoints2D[6, 0] = -fy_edge1;
+                HolesCentersPoints2D[6, 1] = HolesCentersPoints2D[0, 1];
 
-                HolesCentersPoints2D[15, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
-                HolesCentersPoints2D[15, 1] = HolesCentersPoints2D[0, 1];
+                HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[6, 0];
+                HolesCentersPoints2D[7, 1] = HolesCentersPoints2D[1, 1];
 
-                HolesCentersPoints2D[0, 0] = fx_edge;
-                HolesCentersPoints2D[0, 1] = fy_edge1;
+                float fTemp = (0.5f * m_fbX1 + 0.5f * m_flZ);
 
-                HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
-                HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
+                HolesCentersPoints2D[8, 0] = HolesCentersPoints2D[7, 0];
+                HolesCentersPoints2D[8, 1] = fTemp + HolesCentersPoints2D[7, 1];
 
-                HolesCentersPoints2D[2, 0] = 0.5f * m_flZ;
-                HolesCentersPoints2D[2, 1] = fy_edge2;
+                HolesCentersPoints2D[9, 0] = HolesCentersPoints2D[6, 0];
+                HolesCentersPoints2D[9, 1] = fTemp + HolesCentersPoints2D[6, 1];
 
-                HolesCentersPoints2D[3, 0] = 0.5f * m_flZ;
-                HolesCentersPoints2D[3, 1] = fy_edge3;
+                HolesCentersPoints2D[10, 0] = HolesCentersPoints2D[5, 0];
+                HolesCentersPoints2D[10, 1] = fTemp + HolesCentersPoints2D[5, 1];
 
-                HolesCentersPoints2D[4, 0] = HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[4, 1] = m_fhY - fy_edge3;
+                HolesCentersPoints2D[11, 0] = HolesCentersPoints2D[4, 0];
+                HolesCentersPoints2D[11, 1] = fTemp + HolesCentersPoints2D[4, 1];
 
-                HolesCentersPoints2D[5, 0] = HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[5, 1] = m_fhY - fy_edge2;
+                HolesCentersPoints2D[12, 0] = HolesCentersPoints2D[3, 0];
+                HolesCentersPoints2D[12, 1] = fTemp + HolesCentersPoints2D[3, 1];
 
-                HolesCentersPoints2D[6, 0] = HolesCentersPoints2D[0, 0];
-                HolesCentersPoints2D[6, 1] = m_fhY - fy_edge1;
+                HolesCentersPoints2D[13, 0] = HolesCentersPoints2D[2, 0];
+                HolesCentersPoints2D[13, 1] = fTemp + HolesCentersPoints2D[2, 1];
 
-                HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[1, 0];
-                HolesCentersPoints2D[7, 1] = m_fhY - fy_edge1;
+                HolesCentersPoints2D[14, 0] = HolesCentersPoints2D[0, 0];
+                HolesCentersPoints2D[14, 1] = fTemp + HolesCentersPoints2D[1, 1];
 
-                for(int i = 0; i < IHolesNumber / 2; i++)
+                HolesCentersPoints2D[15, 0] = HolesCentersPoints2D[1, 0];
+                HolesCentersPoints2D[15, 1] = fTemp + HolesCentersPoints2D[0, 1];
+
+                for (int i = 0; i < IHolesNumber / 2; i++)
                 {
-                    HolesCentersPoints2D[IHolesNumber / 2 + i, 0] = -HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 0];
+                    HolesCentersPoints2D[IHolesNumber / 2 + i, 0] = m_fbX2 -HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 0];
                     HolesCentersPoints2D[IHolesNumber / 2 + i, 1] = HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 1];
                 }
             }

@@ -501,21 +501,24 @@ namespace PFD
             }
             else if (Combobox_Type.SelectedIndex == 1)
             {
+                float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
+                float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
+
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f, 0 ,0 ,0 ,true); // L
+                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, 0.01f, null, true); // L
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, null, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles,0,0, true); // LL
+                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -668,21 +671,24 @@ namespace PFD
             }
             else if (Combobox_Type.SelectedIndex == 1) // Plates
             {
+                float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
+                float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
+
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, 0.02f,0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, 0.001f, null, true); // L
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, null, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles,0,0, true); // LL
+                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:

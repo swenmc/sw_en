@@ -228,8 +228,8 @@ namespace PFD
 
         public float[,] arr_Serie_LL_Dimension = new float[2, 6]
     {
-                {050, 072, 268, 050, 2, 0},
-                {050, 072, 288, 050, 2, 0}
+                {050, 072, 268, 050, 2, 32},
+                {050, 072, 288, 050, 2, 32}
     };
 
         public float[,] arr_Serie_F_Dimension = new float[10, 6]
