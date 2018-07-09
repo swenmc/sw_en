@@ -39,7 +39,7 @@ namespace SharedLibraries.EXPIMP
 
             doc.Save(fileName);
         }
-        public static void ExportCanvas_DXF(Canvas canvas)
+        public static void ExportCanvas_DXF(Canvas canvas, double xx, double yy)
         {
             DxfDocument doc = new DxfDocument();
             double Z = 0; //is is 2D so Z axis is always 0
@@ -53,26 +53,34 @@ namespace SharedLibraries.EXPIMP
                 {
                     WindowsShapes.Rectangle winRect = o as WindowsShapes.Rectangle;
                     double x = Canvas.GetLeft(winRect);
-                    //double y = Canvas.GetTop(winRect);
-                    double y = Canvas.GetTop(winRect) * -1; //pretocenim podla osi y dostanem body tak ako v canvase
+                    double y = Canvas.GetTop(winRect);
+                    //double y = Canvas.GetTop(winRect) * -1; //pretocenim podla osi y dostanem body tak ako v canvase
 
                     System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
                     System.Drawing.Color drawingcolor = System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
-
+                    
                     System.Windows.Point pTL = winRect.RenderedGeometry.Bounds.TopLeft;
                     System.Windows.Point pTR = winRect.RenderedGeometry.Bounds.TopRight;
                     System.Windows.Point pBL = winRect.RenderedGeometry.Bounds.BottomLeft;
                     System.Windows.Point pBR = winRect.RenderedGeometry.Bounds.BottomRight;
                     //Wipeout wip = new Wipeout(new Vector2(p1.X + x, p1.Y + y), new Vector2(p2.X + x, p2.Y + y));
 
+                    if(winRect.RenderTransform != null)
+                    {
+                        pTL = winRect.RenderTransform.Transform(pTL);
+                        pTR = winRect.RenderTransform.Transform(pTR);
+                        pBL = winRect.RenderTransform.Transform(pBL);
+                        pBR = winRect.RenderTransform.Transform(pBR);
+                    }                    
+
                     Solid solid = new Solid();
                     solid.Color = new AciColor(drawingcolor);
                     solid.Transparency = new Transparency(60); // from 0 - 90
 
-                    solid.FirstVertex = new Vector2(pTL.X + x, pTL.Y + y);
-                    solid.SecondVertex = new Vector2(pTR.X + x, pTR.Y + y);
-                    solid.ThirdVertex = new Vector2(pBL.X + x, pBL.Y + y);
-                    solid.FourthVertex = new Vector2(pBR.X + x, pBR.Y + y);
+                    solid.FirstVertex = new Vector2(pTL.X + x, -(pTL.Y + y));
+                    solid.SecondVertex = new Vector2(pTR.X + x, -(pTR.Y + y));
+                    solid.ThirdVertex = new Vector2(pBL.X + x, -(pBL.Y + y));
+                    solid.FourthVertex = new Vector2(pBR.X + x, -(pBR.Y + y));
 
                     doc.AddEntity(solid);
                 }
@@ -81,9 +89,14 @@ namespace SharedLibraries.EXPIMP
                     WindowsShapes.Polyline winPol = o as WindowsShapes.Polyline;
                     Polyline poly = new Polyline();
 
+
+                    //vznika tam posun...ani srnka netusi preco
+                    //double x = Canvas.GetLeft(winPol);
+                    //double y = Canvas.GetTop(winPol);
+                    
                     foreach (System.Windows.Point p in winPol.Points)
                     {
-                        poly.Vertexes.Add(new PolylineVertex(p.X, p.Y, Z));
+                        poly.Vertexes.Add(new PolylineVertex(p.X + xx, p.Y - yy, Z));
                     }
 
                     doc.AddEntity(poly);

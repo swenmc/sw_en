@@ -762,7 +762,7 @@ namespace PFD
             // Rotate about (X-axis)
             RotateTransform Rotation2D = new RotateTransform(-fRotationAboutX_rad / MathF.dPI * 180, lt.X , -lt.Y); // TODO Doriesit vypocet uhla??? 
             rect.RenderTransform = Rotation2D;
-
+                        
             // Translate to the pA point coordinates in plane
             //TranslateTransform translate = new TranslateTransform(pA.X, pA.Y);
             //TranslateTransform translate = new TranslateTransform(200, 200);
@@ -858,7 +858,7 @@ namespace PFD
 
         private void saveDXF_Click(object sender, RoutedEventArgs e)
         {
-            CExportToDXF.ExportCanvas_DXF(CanvasSection2D);
+            CExportToDXF.ExportCanvas_DXF(CanvasSection2D, modelMarginLeft_x + 14, modelMarginBottom_y);
         }
 
         //public void CalculateModelLimits(CModel cmodel, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)

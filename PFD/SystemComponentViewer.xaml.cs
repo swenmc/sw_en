@@ -903,7 +903,7 @@ namespace PFD
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
-            CExportToDXF.ExportCanvas_DXF(page2D.CanvasSection2D);
+            CExportToDXF.ExportCanvas_DXF(page2D.CanvasSection2D,0,0);
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
