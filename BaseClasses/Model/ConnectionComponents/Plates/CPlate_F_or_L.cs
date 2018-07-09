@@ -17,13 +17,12 @@ namespace BaseClasses
         public float m_flZ; // Not used in 2D model
         public float m_ft; // Not used in 2D model
         private float fConnectorLength;
-
-
+        
         public float FConnectorLength
         {
-          get => fConnectorLength;
-          set => fConnectorLength = value;
-        }
+            get { return fConnectorLength; }
+            set { fConnectorLength = value; }            
+        }       
 
         public CConCom_Plate_F_or_L()
         {

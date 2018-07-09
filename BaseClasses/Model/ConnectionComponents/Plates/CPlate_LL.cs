@@ -21,8 +21,8 @@ namespace BaseClasses
 
         public float FConnectorLength
         {
-            get => fConnectorLength;
-            set => fConnectorLength = value;
+            get { return fConnectorLength; }
+            set { fConnectorLength = value; }
         }
 
         public CConCom_Plate_LL()
