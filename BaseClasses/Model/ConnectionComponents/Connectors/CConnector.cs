@@ -42,6 +42,7 @@ namespace BaseClasses
         {
             Name = sName_temp;
             m_Mat = new CMat(); // Todo - material ako parameter
+            m_Mat.Name = "Class 3 / 4 / B8";
             m_pControlPoint = controlpoint;
             BIsDisplayed = bIsDisplayed;
             m_fLength = fLength_temp;

@@ -353,7 +353,6 @@ namespace BaseClasses
             {
                 // Not defined expected number of holes for L or F plate
             }
-
         }
 
         void Calc_HolesControlPointsCoord3D()

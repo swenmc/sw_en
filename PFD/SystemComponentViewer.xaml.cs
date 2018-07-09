@@ -515,7 +515,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, true); // LL
+                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles,0,0, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -682,7 +682,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, true); // LL
+                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles,0,0, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:

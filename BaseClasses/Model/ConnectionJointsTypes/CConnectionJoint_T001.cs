@@ -47,9 +47,9 @@ namespace BaseClasses
             CPoint ControlPoint_P2 = new CPoint(0, fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max), - 0.5f * m_SecondaryMembers[0].CrScStart.h, 0);
 
             int iConnectorNumberinOnePlate = 16;
-            float fDiameter_temp = 0.005f; // Default - same size as screw
+            float fDiameter_temp = 0.0055f; // Default - same size as screw
             float fScrewLength = 0.009f;
-            float fScrewWeight = 0.012f;
+            //float fScrewWeight = 0.012f;
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees

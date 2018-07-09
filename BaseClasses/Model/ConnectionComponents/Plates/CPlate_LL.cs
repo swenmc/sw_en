@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using _3DTools;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -15,7 +16,14 @@ namespace BaseClasses
         public float m_fhY;
         public float m_flZ; // Not used in 2D model
         public float m_ft; // Not used in 2D model
-        public int m_iHolesNumber = 0;
+
+        private float fConnectorLength;
+
+        public float FConnectorLength
+        {
+            get => fConnectorLength;
+            set => fConnectorLength = value;
+        }
 
         public CConCom_Plate_LL()
         {
@@ -24,7 +32,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_LL(string sName_temp, GraphObj.CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_LL(string sName_temp, CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -41,21 +49,30 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
+            IHolesNumber = iHolesNumber;
+            FHoleDiameter = fHoleDiameter_temp;
+            FConnectorLength = fConnectorLength_temp;
+            // m_arrPlateConnectors = arrPlateConnectors_temp; // Generate
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
-            m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[IHolesNumber, 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
+            Calc_HolesCentersCoord2D();
+            Calc_HolesControlPointsCoord3D();
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            GenerateConnectors();
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = m_fhY;
@@ -214,6 +231,203 @@ namespace BaseClasses
             arrPoints3D[25].X = arrPoints3D[16].X;
             arrPoints3D[25].Y = arrPoints3D[16].Y;
             arrPoints3D[25].Z = m_flZ;
+        }
+
+        void Calc_HolesCentersCoord2D()
+        {
+            float fx_edge = 0.010f;
+            float fy_edge1 = 0.010f;
+            float fy_edge2 = 0.030f;
+            float fy_edge3 = 0.120f;
+
+            // TODO nahradit enumom a switchom
+
+            // TODO OPRAVIT SURADNICE
+
+            if (IHolesNumber == 32) // LLH, LLK
+            {
+                HolesCentersPoints2D[8, 0] = m_fbX1 + HolesCentersPoints2D[6, 0];
+                HolesCentersPoints2D[8, 1] = HolesCentersPoints2D[6, 1];
+
+                HolesCentersPoints2D[9, 0] = m_fbX1 + HolesCentersPoints2D[7, 0];
+                HolesCentersPoints2D[9, 1] = HolesCentersPoints2D[7, 1];
+
+                HolesCentersPoints2D[10, 0] = m_fbX1 + HolesCentersPoints2D[5, 0];
+                HolesCentersPoints2D[10, 1] = HolesCentersPoints2D[5, 1];
+
+                HolesCentersPoints2D[11, 0] = m_fbX1 + HolesCentersPoints2D[4, 0];
+                HolesCentersPoints2D[11, 1] = HolesCentersPoints2D[4, 1];
+
+                HolesCentersPoints2D[12, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
+                HolesCentersPoints2D[12, 1] = HolesCentersPoints2D[3, 1];
+
+                HolesCentersPoints2D[13, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
+                HolesCentersPoints2D[13, 1] = HolesCentersPoints2D[2, 1];
+
+                HolesCentersPoints2D[14, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
+                HolesCentersPoints2D[14, 1] = HolesCentersPoints2D[1, 1];
+
+                HolesCentersPoints2D[15, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
+                HolesCentersPoints2D[15, 1] = HolesCentersPoints2D[0, 1];
+
+                HolesCentersPoints2D[0, 0] = fx_edge;
+                HolesCentersPoints2D[0, 1] = fy_edge1;
+
+                HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
+                HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
+
+                HolesCentersPoints2D[2, 0] = 0.5f * m_flZ;
+                HolesCentersPoints2D[2, 1] = fy_edge2;
+
+                HolesCentersPoints2D[3, 0] = 0.5f * m_flZ;
+                HolesCentersPoints2D[3, 1] = fy_edge3;
+
+                HolesCentersPoints2D[4, 0] = HolesCentersPoints2D[3, 0];
+                HolesCentersPoints2D[4, 1] = m_fhY - fy_edge3;
+
+                HolesCentersPoints2D[5, 0] = HolesCentersPoints2D[3, 0];
+                HolesCentersPoints2D[5, 1] = m_fhY - fy_edge2;
+
+                HolesCentersPoints2D[6, 0] = HolesCentersPoints2D[0, 0];
+                HolesCentersPoints2D[6, 1] = m_fhY - fy_edge1;
+
+                HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[1, 0];
+                HolesCentersPoints2D[7, 1] = m_fhY - fy_edge1;
+
+                for(int i = 0; i < IHolesNumber / 2; i++)
+                {
+                    HolesCentersPoints2D[IHolesNumber / 2 + i, 0] = -HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 0];
+                    HolesCentersPoints2D[IHolesNumber / 2 + i, 1] = HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 1];
+                }
+            }
+            else
+            {
+                // Not defined expected number of holes for LL plate
+            }
+        }
+
+        void Calc_HolesControlPointsCoord3D()
+        {
+            // TODO UPRAVIT SURADNICE
+
+            float fx_edge = 0.010f;
+            float fy_edge1 = 0.010f;
+            float fy_edge2 = 0.030f;
+            float fy_edge3 = 0.120f;
+
+            // TODO nahradit enumom a switchom
+
+            if (IHolesNumber == 32) // LLH, LLK
+            {
+                arrConnectorControlPoints3D[0].X = fx_edge;
+                arrConnectorControlPoints3D[0].Y = m_fhY - fy_edge1;
+                arrConnectorControlPoints3D[0].Z = -m_ft;
+
+                arrConnectorControlPoints3D[1].X = m_fbX1 - fx_edge;
+                arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
+                arrConnectorControlPoints3D[1].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[2].X = 0.5f * m_fbX1;
+                arrConnectorControlPoints3D[2].Y = m_fhY - fy_edge2;
+                arrConnectorControlPoints3D[2].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[3].X = arrConnectorControlPoints3D[2].X;
+                arrConnectorControlPoints3D[3].Y = m_fhY - fy_edge3;
+                arrConnectorControlPoints3D[3].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[4].X = arrConnectorControlPoints3D[2].X;
+                arrConnectorControlPoints3D[4].Y = fy_edge3;
+                arrConnectorControlPoints3D[4].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[5].X = arrConnectorControlPoints3D[2].X;
+                arrConnectorControlPoints3D[5].Y = fy_edge2;
+                arrConnectorControlPoints3D[5].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[6].X = arrConnectorControlPoints3D[0].X;
+                arrConnectorControlPoints3D[6].Y = fy_edge1;
+                arrConnectorControlPoints3D[6].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[7].X = arrConnectorControlPoints3D[1].X;
+                arrConnectorControlPoints3D[7].Y = fy_edge1;
+                arrConnectorControlPoints3D[7].Z = arrConnectorControlPoints3D[0].Z;
+
+                arrConnectorControlPoints3D[8].X = m_fbX1 - m_ft;
+                arrConnectorControlPoints3D[8].Y = fy_edge1;
+                arrConnectorControlPoints3D[8].Z = m_flZ - fx_edge;
+
+                arrConnectorControlPoints3D[9].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[8].Y;
+                arrConnectorControlPoints3D[9].Z = fx_edge;
+
+                arrConnectorControlPoints3D[10].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[10].Y = fy_edge2;
+                arrConnectorControlPoints3D[10].Z = 0.5f * m_flZ;
+
+                arrConnectorControlPoints3D[11].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[11].Y = fy_edge3;
+                arrConnectorControlPoints3D[11].Z = arrConnectorControlPoints3D[10].Z;
+
+                arrConnectorControlPoints3D[12].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[12].Y = m_fhY - fy_edge3;
+                arrConnectorControlPoints3D[12].Z = arrConnectorControlPoints3D[10].Z;
+
+                arrConnectorControlPoints3D[13].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[13].Y = m_fhY - fy_edge2;
+                arrConnectorControlPoints3D[13].Z = arrConnectorControlPoints3D[10].Z;
+
+                arrConnectorControlPoints3D[14].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[14].Y = m_fhY - fy_edge1;
+                arrConnectorControlPoints3D[14].Z = arrConnectorControlPoints3D[8].Z;
+
+                arrConnectorControlPoints3D[15].X = arrConnectorControlPoints3D[8].X;
+                arrConnectorControlPoints3D[15].Y = m_fhY - fy_edge1;
+                arrConnectorControlPoints3D[15].Z = arrConnectorControlPoints3D[9].Z;
+
+                float fb_temp = m_fbX1 * 2 + m_fbX2;
+
+                for (int i = 0; i < IHolesNumber / 2; i++)
+                {
+                    arrConnectorControlPoints3D[IHolesNumber / 2 + i].X = fb_temp - arrConnectorControlPoints3D[(IHolesNumber / 2 - i - 1)].X;
+                    arrConnectorControlPoints3D[IHolesNumber / 2 + i].Y = arrConnectorControlPoints3D[(IHolesNumber / 2 - i - 1)].Y;
+                    arrConnectorControlPoints3D[IHolesNumber / 2 + i].Z = arrConnectorControlPoints3D[(IHolesNumber / 2 - i - 1)].Z;
+                }
+            }
+            else
+            {
+                // Not defined expected number of holes for LL plate
+            }
+        }
+
+        void GenerateConnectors()
+        {
+            if (IHolesNumber > 0)
+            {
+                m_arrPlateConnectors = new CConnector[IHolesNumber];
+
+                for (int i = 0; i < IHolesNumber; i++)
+                {
+                    if (i < IHolesNumber / 4) // Left
+                    {
+                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 90, 0, true);
+                    }
+                    else if (i < IHolesNumber * 2 / 4) // Front Left
+                    {
+                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 0, 0, true);
+                    }
+                    else if (i < IHolesNumber * 3 / 4) // Front Right
+                    {
+                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 0, 0, true);
+                    }
+                    else // Right
+                    {
+                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 90, 0, true);
+                    }
+                }
+            }
         }
 
         protected override void loadIndices()
