@@ -112,6 +112,7 @@ namespace PFD
             if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
 
             //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
+
             DeleteCalculationResults();
             UpdateAll();
         }

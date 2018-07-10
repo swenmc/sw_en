@@ -46,11 +46,11 @@ namespace PFD
             set
             {
                 MModelIndex = value;
-                
+
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
                 DatabaseModels dmodel = new DatabaseModels(MModelIndex);
                 IsSetFromCode = true;
-                GableWidth = dmodel.fb;                
+                GableWidth = dmodel.fb;
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
                 Frames = dmodel.iFrNo;
@@ -61,7 +61,7 @@ namespace PFD
                 IsSetFromCode = false;
 
                 //tieto 4 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
-                fdist_girt_bottom = dmodel.fdist_girt_bottom;                
+                fdist_girt_bottom = dmodel.fdist_girt_bottom;
                 fL1 = MLength / (MFrames - 1);
                 fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
@@ -163,6 +163,7 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
+                    fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
                     // Recalculate h2
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
