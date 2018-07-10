@@ -111,6 +111,7 @@
                          Text="{Binding Path=ColumnDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                 <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" 
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <ProgressBar Name="progressBar" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Hidden" IsIndeterminate="True" />
 
                 <TextBlock Grid.Row="0" Grid.Column="4" Text="Location:" HorizontalAlignment="Left" 
                            VerticalAlignment="Top" />

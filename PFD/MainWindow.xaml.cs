@@ -124,12 +124,17 @@ namespace PFD
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
-            
+
+            progressBar.Visibility = Visibility.Visible;
+            Thread.Sleep(300);
+
             DeleteCalculationResults();
             UpdateAll();
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
-            
+            progressBar.Value = 100;
+
+            progressBar.Visibility = Visibility.Hidden;
 
             //waiting = false;
             //Thread.Sleep(2000);
