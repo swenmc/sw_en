@@ -29,11 +29,12 @@ namespace PFD
         List<string> listMemberCrScName = new List<string>(1);
         List<int>    listMemberQuantity = new List<int>(1);
         List<string> listMemberMaterialName = new List<string>(1);
-        List<double>  dlistMemberLength = new List<double>(1);
-        List<double>  dlistMemberWeightPerLength = new List<double>(1);
-        List<double>  dlistMemberWeightPerPiece = new List<double>(1);
-        List<double>  listMemberTotalLength = new List<double>(1);
-        List<double>  listMemberTotalWeight = new List<double>(1);
+        List<double> dlistMemberLength = new List<double>(1);
+        List<double> dlistMemberWeightPerLength = new List<double>(1);
+        List<double> dlistMemberWeightPerPiece = new List<double>(1);
+        List<double> listMemberTotalLength = new List<double>(1);
+        List<double> listMemberTotalWeight = new List<double>(1);
+        List<double> listMemberTotalPrice = new List<double>(1);
 
         // For output
         List<string> listMemberLength = new List<string>(1);
@@ -50,6 +51,7 @@ namespace PFD
         List<double> dlistPlateWeightPerPiece = new List<double>(1);
         List<double> listPlateTotalArea = new List<double>(1);
         List<double> listPlateTotalWeight = new List<double>(1);
+        List<double> listPlateTotalPrice = new List<double>(1);
 
         // For output
         List<string> listPlateWidth_bx = new List<string>(1);
@@ -64,6 +66,7 @@ namespace PFD
         List<string> listConnectorSize = new List<string>(1);
         List<double> dlistConnectorWeightPerPiece = new List<double>(1);
         List<double> listConnectorTotalWeight = new List<double>(1);
+        List<double> listConnectorTotalPrice = new List<double>(1);
 
         // For output
         List<string> listConnectorWeightPerPiece = new List<string>(1);
@@ -87,6 +90,15 @@ namespace PFD
             int iNumberOfDecimalPlacesArea = 3;
             int iNumberOfDecimalPlacesVolume = 3;
             int iNumberOfDecimalPlacesWeight = 3;
+            int iNumberOfDecimalPlacesPrice = 3;
+
+            float fCFS_PricePerKg_Members_Material = 0.3f;     // NZD / kg
+            float fCFS_PricePerKg_Plates_Material = 0.4f;      // NZD / kg
+            float fCFS_PricePerKg_Members_Manufacture = 0.2f;  // NZD / kg
+            float fCFS_PricePerKg_Plates_Manufacture = 0.3f;   // NZD / kg
+            float fCFS_PricePerKg_Members_Total = fCFS_PricePerKg_Members_Material + fCFS_PricePerKg_Members_Manufacture;        // NZD / kg
+            float fCFS_PricePerKg_Plates_Total = fCFS_PricePerKg_Plates_Material + fCFS_PricePerKg_Plates_Manufacture;           // NZD / kg
+            float fTEK_PricePerPiece_Screws_Total = 0.05f;         // NZD / piece
 
             int iLastItemIndex = 0; // Index of last row for previous cross-section
 
@@ -109,6 +121,7 @@ namespace PFD
                         float fWeightPerPiece = fLength * fWeightPerLength;
                         float fTotalLength = iQuantity * fLength;
                         float fTotalWeight = fTotalLength * fWeightPerLength;
+                        float fTotalPrice = fTotalWeight * fCFS_PricePerKg_Members_Total;
 
                         bool bMemberwasAdded = false; // Member was added to the group
 
@@ -124,6 +137,7 @@ namespace PFD
                                     listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
                                     listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
                                     listMemberTotalWeight[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberWeightPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesWeight); // Recalculate total weight of all members in the group
+                                    listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalWeight[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
 
                                     bMemberwasAdded = true;
                                 }
@@ -142,6 +156,7 @@ namespace PFD
                             dlistMemberWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
                             listMemberTotalLength.Add(Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
                             listMemberTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlacesWeight));
+                            listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
                             // Add first member in the group to the list of member groups
                             ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
@@ -156,6 +171,7 @@ namespace PFD
             double dTotalMembersLength_Model = 0, dTotalMembersLength_Table = 0;
             double dTotalMembersVolume_Model = 0, dTotalMembersVolume_Table = 0;
             double dTotalMembersWeight_Model = 0, dTotalMembersWeight_Table = 0;
+            double dTotalMembersPrice_Model = 0, dTotalMembersPrice_Table = 0;
             int iTotalMembersNumber_Model = 0, iTotalMembersNumber_Table = 0;
 
             foreach (CMember member in model.m_arrMembers)
@@ -163,6 +179,7 @@ namespace PFD
                 dTotalMembersLength_Model += member.FLength_real;
                 dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
                 dTotalMembersWeight_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho;
+                dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho * fCFS_PricePerKg_Members_Total;
                 iTotalMembersNumber_Model += 1;
             }
 
@@ -171,6 +188,7 @@ namespace PFD
                 dTotalMembersLength_Table += dlistMemberLength[i] * listMemberQuantity[i];
                 //dTotalMembersVolume_Table += member.CrScStart.A_g * dlistMemberLength[i]; // TODO - pridat funkciu, ktora podla nazvu prierezu vrati jeho parametre
                 dTotalMembersWeight_Table += listMemberTotalWeight[i];
+                dTotalMembersPrice_Table += listMemberTotalPrice[i];
                 iTotalMembersNumber_Table += listMemberQuantity[i];
             }
 
@@ -209,6 +227,7 @@ namespace PFD
             listMemberWeightPerPiece.Add(""); // Empty cell
             listMemberTotalLength.Add(dTotalMembersLength_Table);
             listMemberTotalWeight.Add(dTotalMembersWeight_Table);
+            listMemberTotalPrice.Add(dTotalMembersPrice_Table);
 
             // Create Table
             DataTable table = new DataTable("Table");
@@ -223,6 +242,7 @@ namespace PFD
             table.Columns.Add("Weight_per_Piece", typeof(String));
             table.Columns.Add("Total_Length", typeof(Decimal));
             table.Columns.Add("Total_Weight", typeof(Decimal));
+            table.Columns.Add("Total_Price", typeof(Decimal));
 
             // Set Column Caption
             table.Columns["Prefix"].Caption = "Prefix";
@@ -234,6 +254,7 @@ namespace PFD
             table.Columns["Weight_per_Piece"].Caption = "Weight_per_Piece";
             table.Columns["Total_Length"].Caption = "Total_Length";
             table.Columns["Total_Weight"].Caption = "Total_Weight";
+            table.Columns["Total_Price"].Caption = "Total_Price";
 
             // Create Datases
             ds = new DataSet();
@@ -255,6 +276,7 @@ namespace PFD
                     row["Weight_per_Piece"] = listMemberWeightPerPiece[i];
                     row["Total_Length"] = listMemberTotalLength[i];
                     row["Total_Weight"] = listMemberTotalWeight[i];
+                    row["Total_Price"] = listMemberTotalPrice[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
@@ -384,6 +406,7 @@ namespace PFD
                     float fWeightPerPiece = fArea * fThickness_tz * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
                     float fTotalArea = iQuantity * fArea;
                     float fTotalWeight = iQuantity * fWeightPerPiece;
+                    float fTotalPrice = fTotalWeight * fCFS_PricePerKg_Plates_Total;
 
                     bool bPlatewasAdded = false; // Plate was added to the group
 
@@ -402,6 +425,7 @@ namespace PFD
                                 listPlateQuantity[k] += 1; // Add one plate (piece) to the quantity
                                 listPlateTotalArea[k] = Math.Round(listPlateQuantity[k] * dlistPlateArea[k], iNumberOfDecimalPlacesArea);
                                 listPlateTotalWeight[k] = Math.Round(listPlateQuantity[k] * dlistPlateWeightPerPiece[k], iNumberOfDecimalPlacesWeight); // Recalculate total weight of all plates in the group
+                                listPlateTotalPrice[k] = Math.Round(listPlateTotalWeight[k] * fCFS_PricePerKg_Plates_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all plates in the group
 
                                 bPlatewasAdded = true;
                             }
@@ -421,6 +445,7 @@ namespace PFD
                         dlistPlateWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
                         listPlateTotalArea.Add(Math.Round(fTotalArea, iNumberOfDecimalPlacesArea));
                         listPlateTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlacesWeight));
+                        listPlateTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
                         // Add first plate in the group to the list of plate groups
                         ListOfPlateGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j]);
@@ -432,10 +457,8 @@ namespace PFD
             double dTotalPlatesArea_Model = 0, dTotalPlatesArea_Table = 0;
             double dTotalPlatesVolume_Model = 0, dTotalPlatesVolume_Table = 0;
             double dTotalPlatesWeight_Model = 0, dTotalPlatesWeight_Table = 0;
+            double dTotalPlatesPrice_Model = 0, dTotalPlatesPrice_Table = 0;
             int iTotalPlatesNumber_Model = 0, iTotalPlatesNumber_Table = 0;
-
-            double dTotalConnectorsWeight_Model = 0, dTotalConnectorsWeight_Table = 0;
-            int iTotalConnectorsNumber_Model = 0, iTotalConnectorsNumber_Table = 0;
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
             {
@@ -445,6 +468,7 @@ namespace PFD
                     dTotalPlatesArea_Model += plate.fArea;
                     dTotalPlatesVolume_Model += plate.fArea * plate.fThickness_tz;
                     dTotalPlatesWeight_Model += plate.fArea * plate.fThickness_tz * plate.m_Mat.m_fRho;
+                    dTotalPlatesPrice_Model += plate.fArea * plate.fThickness_tz * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
                     iTotalPlatesNumber_Model += 1;
                 }
             }
@@ -454,12 +478,14 @@ namespace PFD
                 dTotalPlatesArea_Table += (dlistPlateArea[i] * listPlateQuantity[i]);
                 dTotalPlatesVolume_Table += (dlistPlateArea[i] * dlistPlateThickness_tz[i]);
                 dTotalPlatesWeight_Table += listPlateTotalWeight[i];
+                dTotalPlatesPrice_Table += listPlateTotalPrice[i];
                 iTotalPlatesNumber_Table += listPlateQuantity[i];
             }
 
             dTotalPlatesArea_Model = Math.Round(dTotalPlatesArea_Model, iNumberOfDecimalPlacesArea);
             dTotalPlatesVolume_Model = Math.Round(dTotalPlatesVolume_Model, iNumberOfDecimalPlacesVolume);
             dTotalPlatesWeight_Model = Math.Round(dTotalPlatesWeight_Model, iNumberOfDecimalPlacesWeight);
+            dTotalPlatesPrice_Model = Math.Round(dTotalPlatesPrice_Model, iNumberOfDecimalPlacesPrice);
 
             if (!MathF.d_equal(dTotalPlatesArea_Model, dTotalPlatesArea_Table) ||
                 !MathF.d_equal(dTotalPlatesWeight_Model, dTotalPlatesWeight_Table) ||
@@ -496,6 +522,7 @@ namespace PFD
             listPlateWeightPerPiece.Add(""); // Empty cell
             listPlateTotalArea.Add(dTotalPlatesArea_Table);
             listPlateTotalWeight.Add(dTotalPlatesWeight_Table);
+            listPlateTotalPrice.Add(dTotalPlatesPrice_Table);
 
             // Create Table
             DataTable table2 = new DataTable("Table2");
@@ -511,6 +538,7 @@ namespace PFD
             table2.Columns.Add("Weight_per_Piece", typeof(String));
             table2.Columns.Add("Total_Area", typeof(Decimal));
             table2.Columns.Add("Total_Weight", typeof(Decimal));
+            table2.Columns.Add("Total_Price", typeof(Decimal));
 
             // Set Column Caption
             table2.Columns["Prefix"].Caption = "Prefix1";
@@ -523,6 +551,7 @@ namespace PFD
             table2.Columns["Weight_per_Piece"].Caption = "Weight_per_Piece";
             table2.Columns["Total_Area"].Caption = "Total_Area";
             table2.Columns["Total_Weight"].Caption = "Total_Weight";
+            table2.Columns["Total_Price"].Caption = "Total_Price";
 
             // Create Datases
             ds = new DataSet();
@@ -545,6 +574,7 @@ namespace PFD
                     row["Weight_per_Piece"] = listPlateWeightPerPiece[i];
                     row["Total_Area"] = listPlateTotalArea[i];
                     row["Total_Weight"] = listPlateTotalWeight[i];
+                    row["Total_Price"] = listPlateTotalPrice[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table2.Rows.Add(row);
@@ -573,6 +603,7 @@ namespace PFD
                             string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
                             float fWeightPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fWeight;
                             float fTotalWeight = iQuantity * fWeightPerPiece;
+                            float fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
 
                             bool bConnectorwasAdded = false; // Connector was added to the group
 
@@ -589,6 +620,7 @@ namespace PFD
 
                                         listConnectorQuantity[m] += 1; // Add one connector (piece) to the quantity
                                         listConnectorTotalWeight[m] = Math.Round(listConnectorQuantity[m] * dlistConnectorWeightPerPiece[m], iNumberOfDecimalPlacesWeight); // Recalculate total weight of all connectors in the group
+                                        listConnectorTotalPrice[m] = Math.Round(listConnectorQuantity[m] * fTEK_PricePerPiece_Screws_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all connectors in the group
 
                                         bConnectorwasAdded = true;
                                     }
@@ -604,6 +636,7 @@ namespace PFD
                                 listConnectorSize.Add(size);
                                 dlistConnectorWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
                                 listConnectorTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlacesWeight));
+                                listConnectorTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
                                 // Add first plate in the group to the list of plate groups
                                 ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k]);
@@ -612,6 +645,11 @@ namespace PFD
                     }
                 }
             }
+
+            // Check Data
+            double dTotalConnectorsWeight_Model = 0, dTotalConnectorsWeight_Table = 0;
+            double dTotalConnectorsPrice_Model = 0, dTotalConnectorsPrice_Table = 0;
+            int iTotalConnectorsNumber_Model = 0, iTotalConnectorsNumber_Table = 0;
 
             foreach (CConnectionJointTypes joint in model.m_arrConnectionJoints)
             {
@@ -623,6 +661,7 @@ namespace PFD
                         foreach (CConnector connector in plate.m_arrPlateConnectors)
                         {
                             dTotalConnectorsWeight_Model += connector.m_fWeight;
+                            dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
                             iTotalConnectorsNumber_Model += 1;
                         }
                     }
@@ -632,10 +671,12 @@ namespace PFD
             for (int i = 0; i < listConnectorPrefix.Count; i++)
             {
                 dTotalConnectorsWeight_Table += listConnectorTotalWeight[i];
+                dTotalConnectorsPrice_Table += listConnectorTotalPrice[i];
                 iTotalConnectorsNumber_Table += listConnectorQuantity[i];
             }
 
-            dTotalConnectorsWeight_Model = Math.Round(dTotalConnectorsWeight_Model, iNumberOfDecimalPlacesLength);
+            dTotalConnectorsWeight_Model = Math.Round(dTotalConnectorsWeight_Model, iNumberOfDecimalPlacesWeight);
+            dTotalConnectorsPrice_Model = Math.Round(dTotalConnectorsPrice_Model, iNumberOfDecimalPlacesPrice);
 
             if (!MathF.d_equal(dTotalConnectorsWeight_Model, dTotalConnectorsWeight_Table) ||
                     (iTotalConnectorsNumber_Model != iTotalConnectorsNumber_Table)) // Error
@@ -659,6 +700,7 @@ namespace PFD
             listConnectorSize.Add(""); // Empty cell
             listConnectorWeightPerPiece.Add(""); // Empty cell
             listConnectorTotalWeight.Add(dTotalConnectorsWeight_Table);
+            listConnectorTotalPrice.Add(dTotalConnectorsPrice_Table);
 
             // Create Table
             DataTable table3 = new DataTable("Table3");
@@ -670,6 +712,7 @@ namespace PFD
             table3.Columns.Add("Size", typeof(String));
             table3.Columns.Add("Weight_per_Piece", typeof(String));
             table3.Columns.Add("Total_Weight", typeof(Decimal));
+            table3.Columns.Add("Total_Price", typeof(Decimal));
 
             // Set Column Caption
             table3.Columns["Prefix"].Caption = "Prefix1";
@@ -678,6 +721,7 @@ namespace PFD
             table3.Columns["Size"].Caption = "Size";
             table3.Columns["Weight_per_Piece"].Caption = "Weight_per_Piece";
             table3.Columns["Total_Weight"].Caption = "Total_Weight";
+            table3.Columns["Total_Price"].Caption = "Total_Price";
 
             // Create Datases
             ds = new DataSet();
@@ -696,13 +740,13 @@ namespace PFD
                     row["Size"] = listConnectorSize[i];
                     row["Weight_per_Piece"] = listConnectorWeightPerPiece[i];
                     row["Total_Weight"] = listConnectorTotalWeight[i];
+                    row["Total_Price"] = listConnectorTotalPrice[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table3.Rows.Add(row);
             }
 
             Datagrid_Screws.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
         }
 
         private void DeleteAllLists()

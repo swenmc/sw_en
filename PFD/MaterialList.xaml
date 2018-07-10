@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="MaterialList" Height="1200" Width="670">
+        Title="MaterialList" Height="1200" Width="750">
     <Grid Margin="0,0,0,0">
         <TextBlock HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_Members"
