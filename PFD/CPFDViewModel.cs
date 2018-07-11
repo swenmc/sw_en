@@ -24,6 +24,7 @@ namespace PFD
         private float MGirtDistance;
         private float MPurlinDistance;
         private float MColumnDistance;
+        private float MBottomGirtPosition;
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
 
@@ -31,7 +32,6 @@ namespace PFD
         //tieto treba spracovat nejako
         public float fL1;
         public float fh2;
-        public float fdist_girt_bottom;
         public float fRoofPitch_radians;
 
 
@@ -59,13 +59,13 @@ namespace PFD
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
+                BottomGirtPosition = dmodel.fdist_girt_bottom;
                 FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
                 BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
 
                 IsSetFromCode = false;
 
-                //tieto 4 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
-                fdist_girt_bottom = dmodel.fdist_girt_bottom;
+                //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fL1 = MLength / (MFrames - 1);
                 fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
@@ -269,6 +269,23 @@ namespace PFD
                 }
 
                 NotifyPropertyChanged("ColumnDistance");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BottomGirtPosition
+        {
+            get
+            {
+                return MBottomGirtPosition;
+            }
+
+            set
+            {
+                if (value < 0.2 || value > 0.8 * MWallHeight) // Limit is 80% of main column height, could be more but it is 
+                    throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) +" [m]");
+                MBottomGirtPosition = value;
+                NotifyPropertyChanged("BottomGirtPosition");
             }
         }
 

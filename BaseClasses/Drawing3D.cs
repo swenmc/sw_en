@@ -54,6 +54,7 @@ namespace BaseClasses
             Vector3D lookDirection = new Vector3D(-(cameraPosition.X - modelCentre.X), -(cameraPosition.Y - modelCentre.Y), -(cameraPosition.Z - modelCentre.Z));
             return lookDirection;
         }
+
         //-------------------------------------------------------------------------------------------------------------
         // Get model camera position
         public static Point3D GetModelCameraPosition(CModel model, double x, double y, double z)
@@ -63,7 +64,7 @@ namespace BaseClasses
         }
 
         public static Point3D GetModelCameraPosition(Point3D centerPoint, double x, double y, double z)
-        {            
+        {
             return new Point3D(centerPoint.X + x, centerPoint.Y + y, centerPoint.Z + z);
         }
 
@@ -72,11 +73,11 @@ namespace BaseClasses
         {
             Model3DGroup gr = new Model3DGroup();
             if (model != null)
-            {                
+            {
                 Model3D membersModel3D = null;
                 if (displayMembersSurface) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, false, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
-                                
+
                 Model3DGroup jointsModel3DGroup = null;
                 if (displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
@@ -97,7 +98,7 @@ namespace BaseClasses
             if (front == null) front = new SolidColorBrush(Color.FromRgb(255, 64, 64)); // Material color - Front Side (red)
             if (shell == null) shell = new SolidColorBrush(Color.FromRgb(141, 238, 238)); // Material color - Shell (red)
             if (back == null) back = new SolidColorBrush(Color.FromRgb(238, 154, 73)); // Material color - Back Side (orange)
-            
+
             if (transpartentModel)
             {
                 front.Opacity = back.Opacity = 0.8; 
@@ -116,7 +117,7 @@ namespace BaseClasses
                         model.m_arrMembers[i].NodeStart != null &&
                         model.m_arrMembers[i].NodeEnd != null &&
                         model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
-                    {                        
+                    {
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
                             bool bFastRendering = false;
@@ -246,7 +247,7 @@ namespace BaseClasses
                         }
                         else
                         {
-                            // There is not rotation
+                            // There is no rotation
 
                         }
 
@@ -379,7 +380,6 @@ namespace BaseClasses
 
                         // Set load for all assigned nodes
 
-
                     }
                 }
             }
@@ -400,13 +400,11 @@ namespace BaseClasses
 
                         // Set load for all assigned member
 
-
                     }
                 }
             }
             return model3D_group;
         }
-
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -455,7 +453,7 @@ namespace BaseClasses
                         model.m_arrMembers[i].NodeEnd != null &&
                         model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
                     {
-                        // Create WireFrame in LCS                        
+                        // Create WireFrame in LCS
                         ScreenSpaceLines3D wireFrame_FrontSide = model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start);
                         ScreenSpaceLines3D wireFrame_BackSide = model.m_arrMembers[i].CreateWireFrame(model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End);
                         ScreenSpaceLines3D wireFrame_Lateral = model.m_arrMembers[i].CreateWireFrameLateral();
@@ -648,9 +646,15 @@ namespace BaseClasses
         // Draw Members Wire Frame
         public static void DrawMemberWireFrame(CMember member, Viewport3D viewPort, float memberLength)
         {
+            // TODO
             //tu je otazne,ci by to nemohlo byt na urovni CMember, ktora by vratila jeden wireframe pre cely member
             //ScreenSpaceLines3D wireFrame = member.CreateMemberWireFrame();
             //viewPort.Children.Add(wireFrame);
+
+            // To Ondrej: 
+            // Kazdy topologicky objekt (prut, plech, skrutka (pripadne cely spoj) moze mat svoje funkcie, ktore vratia jeho surface model alebo wireframe model, pripadne objekty
+            // Model3DGroup surfaceModel a ScreenSpaceLines3D wireFrame ako public v triede
+            // Podla toho co je rychlejsie, mat velky objekt v triede alebo len volat funkciu ktora ho na poziadanie vygeneruje
 
             ScreenSpaceLines3D wireFrame_FrontSide = member.CreateWireFrame(0f);
             ScreenSpaceLines3D wireFrame_BackSide = member.CreateWireFrame(memberLength);
@@ -661,16 +665,17 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_Lateral);
         }
 
-
         /*
                     The following lights derive from the base class Light:
                     AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
                     DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
                     PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
                     SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
-                */
-        
-        //Mato - To tam naozaj potrebujeme tolko roznych svetiel, ci su to len pokusy?
+         */
+
+        // Mato - To tam naozaj potrebujeme tolko roznych svetiel, ci su to len pokusy?
+        // TODO - To Ondrej: su to len pokusy a typy svetiel, doporucujem zapracovat do GUI moznosti nastavovania osvetlenia, pridavanie svetiel a podobne, nie je to urgentne
+
         public static void AddLightsToModel3D(Model3DGroup gr)
         {
             // Directional Light
@@ -704,6 +709,7 @@ namespace BaseClasses
             Ambient_Light.Color = Color.FromRgb(250, 250, 230);
             gr.Children.Add(new AmbientLight());
         }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -773,6 +779,5 @@ namespace BaseClasses
                 throw new Exception("Exception - no definition nodes or points");
             }
         }
-
     }
 }
