@@ -24,10 +24,11 @@ namespace PFD
         private float MGirtDistance;
         private float MPurlinDistance;
         private float MColumnDistance;
-
+        private float MFrontFrameRakeAngle;
+        private float MBackFrameRakeAngle;
 
         //-------------------------------------------------------------------------------------------------------------
-        //tieto treba spracovat nejako 
+        //tieto treba spracovat nejako
         public float fL1;
         public float fh2;
         public float fdist_girt_bottom;
@@ -58,6 +59,9 @@ namespace PFD
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
+                FrontFrameRakeAngle = dmodel.fRakeAngleFrontFrame_deg;
+                BackFrameRakeAngle = dmodel.fRakeAngleBackFrame_deg;
+
                 IsSetFromCode = false;
 
                 //tieto 4 riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
@@ -248,20 +252,73 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
-
-                    //DeleteCalculationResults();  ???? na co to je?
-
                     // Re-calculate value of distance between columns (number of columns per frame is always even
                     int iOneRafterFrontColumnNo = (int)((0.5f * MGableWidth) / MColumnDistance);
                     int iFrontColumnNoInOneFrame = 2 * iOneRafterFrontColumnNo;
                     // Update value of distance between columns
-                    MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));  //nie je to trosku na hlavu? Pouzivatel zada Column distance a ono sa mu to nejako prepocita a zmeni???                    
+
+                    // Todo
+                    // Nie je to trosku na hlavu? Pouzivatel zada Column distance a ono sa mu to nejako prepocita a zmeni???
+                    // Odpoved: Spravnejsie by bolo zadat pocet stlpov, ale je to urobene tak ze to musi byt parne cislo aby boli stlpiky symetricky voci stredu
+                    // Pripadalo mi lepsie ak si uzivatel zada nejaku vzdialenost ktoru priblizne vie, pocet stlpikov by si musel spocitat 
+                    // alebo tam musi byt dalsi textbox pre column distance kde sa ta dopocitana vzdialenost bude zobrazovat, ale je to dalsi readonly riadok na vstupe navyse
+                    // chcel som tam mat toho co najmenej a len najnutnejsie hodnoty
+                    // Mozes to tak upravit ak je to logickejsie a spravnejsie
+
+                    MColumnDistance = (MGableWidth / (iFrontColumnNoInOneFrame + 1));
                 }
 
                 NotifyPropertyChanged("ColumnDistance");
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public float FrontFrameRakeAngle
+        {
+            get
+            {
+                return MFrontFrameRakeAngle;
+            }
+
+            set
+            {
+                float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fL1 / MGableWidth) - (Math.PI / 180)); // minus 1 radian
+                float frontFrameRakeAngle_limit_deg = frontFrameRakeAngle_limit_rad * 180f / MATH.MathF.fPI;
+
+                if (value < -frontFrameRakeAngle_limit_deg || value > frontFrameRakeAngle_limit_deg)
+                {
+                    string s = "Front frame angle must be between " + (-Math.Round(frontFrameRakeAngle_limit_deg, 1)) + " and " + Math.Round(frontFrameRakeAngle_limit_deg, 1) + " degrees";
+                    throw new ArgumentException(s);
+                }
+                MFrontFrameRakeAngle = value;
+
+                NotifyPropertyChanged("FrontFrameRakeAngle");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BackFrameRakeAngle
+        {
+            get
+            {
+                return MBackFrameRakeAngle;
+            }
+
+            set
+            {
+                float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fL1 / MGableWidth) - (Math.PI / 180)); // minus 1 radian
+                float backFrameRakeAngle_limit_deg = backFrameRakeAngle_limit_rad * 180f / MATH.MathF.fPI;
+
+                if (value < -backFrameRakeAngle_limit_deg || value > backFrameRakeAngle_limit_deg)
+                {
+                    string s = "Back frame angle must be between " + (-Math.Round(backFrameRakeAngle_limit_deg, 1)) + " and " + Math.Round(backFrameRakeAngle_limit_deg, 1) + " degrees";
+                    throw new ArgumentException(s);
+                }
+                MBackFrameRakeAngle = value;
+
+                NotifyPropertyChanged("BackFrameRakeAngle");
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------

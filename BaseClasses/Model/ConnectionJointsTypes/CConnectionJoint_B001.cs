@@ -25,7 +25,7 @@ namespace BaseClasses
 
         public CConnectionJoint_B001() { }
 
-        public CConnectionJoint_B001(CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, bool bIsDisplayed_temp)
+        public CConnectionJoint_B001(CNode Node_temp, CMember MainFrameColumn_temp, CMember MainFrameRafter_temp, float fSLope_rad_temp, float fb_2_temp, float fh_1_temp, float ft, float ft_rafter, float fJointAngleAboutZ_deg, bool bIsDisplayed_temp)
         {
             bIsJointDefinedinGCS = true;
 
@@ -57,7 +57,7 @@ namespace BaseClasses
             Point Line2_End = new Point();
 
             float fRafterVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg
-            float fRotatePlatesInJointAngle = fRafterVectorDirection > 0 ? 0 : 180;
+            float fRotatePlatesInJointAngle = fRafterVectorDirection > 0 ? (0  + fJointAngleAboutZ_deg): (180 + fJointAngleAboutZ_deg);
             float fDistanceX = fRafterVectorDirection > 0 ? -0.5f * (float)m_MainMember.CrScStart.h : 0.5f * (float)m_MainMember.CrScStart.h;
 
             Line1_Start.X = m_MainMember.NodeStart.X + fDistanceX; // Column

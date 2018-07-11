@@ -159,6 +159,8 @@ namespace BaseClasses
 
             Model3DGroup JointsModel3DGroup = null;
 
+            bool bDrawConnectors = false;
+
             if (cmodel.m_arrConnectionJoints != null) // Some joints exist
             {
                 for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
@@ -177,12 +179,15 @@ namespace BaseClasses
                             {
                                 JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates)); // Add plate 3D model to the model group
 
-                                // Add plate connectors
-                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
-                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
+                                if (bDrawConnectors)
                                 {
-                                    for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m ++)
-                                        JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors));
+                                    // Add plate connectors
+                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
+                                    {
+                                        for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m++)
+                                            JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors));
+                                    }
                                 }
                             }
                         }

@@ -178,6 +178,9 @@ namespace _3DTools
             double halfThickness = Thickness / 2.0;
             int numLines = Points.Count / 2;
 
+            // Todo - pada to tu na outofmemory exception (rozmery budovy 140 * 90 m, vyska 35 m, pocet frames 30)
+            // Pri pokuse o ZOOM nastane pad
+
             Point3DCollection positions = new Point3DCollection(numLines * 4);
 
             for (int i = 0; i < numLines; i++)

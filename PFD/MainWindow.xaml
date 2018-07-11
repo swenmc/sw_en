@@ -24,15 +24,19 @@
         <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Grid Name="ParamsGrid" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
@@ -45,84 +49,101 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0"/>
                 <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
-                <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
-                          VerticalAlignment="Center" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="80"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
                            VerticalAlignment="Top" />
-                <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="100"
-                         TextWrapping="Wrap" VerticalAlignment="Top"   
+                <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"  
-                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
                          VerticalAlignment="Top" />
-                <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="100"
+                <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="80"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" VerticalAlignment="Top"  />
-                <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="100"
+                           TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="80"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" 
-                           TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                           TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="100"
-                         TextWrapping="Wrap" VerticalAlignment="Top" 
+                           TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofPitch, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" 
-                           TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                           TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" VerticalAlignment="Top"  />
-                <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left"  Width="100"
-                         TextWrapping="Wrap" VerticalAlignment="Top" 
+                           TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left"  Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Frames, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left"  
+                <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="100"
-                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"                          
+                <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="80"
+                         HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GirtDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="100"
-                         TextWrapping="Wrap" VerticalAlignment="Top" 
+                <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PurlinDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                 <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="100"
-                         TextWrapping="Wrap" VerticalAlignment="Top" 
+                <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ColumnDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" 
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" />
+                <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+                <TextBlock Grid.Row="10" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_FrontFrame_RakeAngle" HorizontalAlignment="Left" Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=FrontFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
+
+                <TextBlock Grid.Row="11" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+                <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_BackFrame_RakeAngle" HorizontalAlignment="Left" Width="80"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=BackFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
+
                 <ProgressBar Name="progressBar" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Hidden" IsIndeterminate="True" />
 
                 <TextBlock Grid.Row="0" Grid.Column="4" Text="Location:" HorizontalAlignment="Left" 
                            VerticalAlignment="Top" />
                 <ComboBox Grid.Row="0" Grid.Column="5" Name ="Combobox_Location" HorizontalAlignment="Left" 
                           VerticalAlignment="Top" Width="120" SelectedIndex="11"/>
-                
+
             </Grid>
         </ScrollViewer>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Name ="Components" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <DataGrid Grid.Column="0" Name ="Components" AutoGenerateColumns="False"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,474,0.333,1" Grid.RowSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Status}" Header="Component" Width="200"/>
                 <DataGridTemplateColumn Header="Cross-Section" Width="100">
@@ -155,12 +176,12 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="True">
         </DataGrid>
-        
 
-        <Frame Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Name ="Frame1" Content="Portal Frame 3D Preview" 
+
+        <Frame Grid.Row="0" Grid.RowSpan="4" Name ="Frame1" Content="Portal Frame 3D Preview" 
                HorizontalContentAlignment="Stretch" 
                VerticalContentAlignment="Stretch" 
-               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden"/>
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2" Margin="623,0,0,68"/>
         <Button Grid.Row="3" Grid.Column="0" Content="Calculate" HorizontalAlignment="Right" 
                 VerticalAlignment="Center" Width="60"  Margin="0 0 20 0" Click="Calculate_Click"/>
         <Button Grid.Row="3" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
