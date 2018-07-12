@@ -6,7 +6,7 @@ using MATH;
 
 namespace M_EC1.AS_NZS
 {
-    public class AS_NZS_1170_2
+    public static class AS_NZS_1170_2
     {
         public enum EWindRegion
         {
@@ -23,27 +23,27 @@ namespace M_EC1.AS_NZS
             eD
         }
 
-        public float Eq_22______(float fV_R, float fM_d, float fM_z_cat, float fM_s, float fM_t)
+        public static float Eq_22______(float fV_R, float fM_d, float fM_z_cat, float fM_s, float fM_t)
         {
             return fV_R * fM_d * fM_z_cat * fM_s * fM_t; // Eq. (2.2) // fV_sit_beta
         }
-        public float Eq_24_1____(float fRho_air, float fV_des_theta, float fC_fig, float fC_dyn)
+        public static float Eq_24_1____(float fRho_air, float fV_des_theta, float fC_fig, float fC_dyn)
         {
             return (0.5f * fRho_air) * MathF.Pow2(fV_des_theta) * fC_fig * fC_dyn; // Eq. (2.4(1)) // fp
         }
-        public float Eq_24_2____(float fRho_air, float fV_des_theta, float fC_fig, float fC_dyn)
+        public static float Eq_24_2____(float fRho_air, float fV_des_theta, float fC_fig, float fC_dyn)
         {
             return (0.5f * fRho_air) * MathF.Pow2(fV_des_theta) * fC_fig * fC_dyn; // Eq. (2.4(1)) // ff
         }
-        public float Eq_25_3____(float fRho_air, float fV_des_theta, float fC_fig, float fC_dyn, float fA_z)
+        public static float Eq_25_3____(float fRho_air, float fV_des_theta, float fC_fig, float fC_dyn, float fA_z)
         {
             return (0.5f * fRho_air) * MathF.Pow2(fV_des_theta) * fC_fig * fC_dyn * fA_z; // Eq. (2.5(3)) // fF
         }
-        public float Eq_25_4____(float fN_g)
+        public static float Eq_25_4____(float fN_g)
         {
             return 0.7f * MathF.Pow2((float)Math.Log(fN_g)) - 17.4f * (float)Math.Log(fN_g) + 100.0f; // Eq. (2.5(4)) // fSigma_to_Sigma_max
         }
-        public float Eq_25_4____(int iTimeinYears, EWindRegion eRegion, float fF_C = 1.0f, float fF_D = 1.0f)
+        public static float Eq_25_4____(int iTimeinYears, EWindRegion eRegion, float fF_C = 1.0f, float fF_D = 1.0f)
         {
             if (iTimeinYears >= 5)
             {
@@ -88,7 +88,8 @@ namespace M_EC1.AS_NZS
                 }
             }
         }
-        int[,] arrTable3_1 = new int[15, 6]
+
+        static int[,] arrTable3_1 = new int[15, 6]
             {
             {1, 30, 34, 26, 23, 23},
             {5, 32, 39, 28, 33, 35},
@@ -108,9 +109,9 @@ namespace M_EC1.AS_NZS
             };
 
         // Interpolation - aby fungovalo obecne, je potrebne doriesit kladne a zaporne hodnoty
-        public int Table31_Interpolation_positive(int x, EWindRegion eRegion, int[,] TableValues)
+        public static int Table31_Interpolation_positive(int x, EWindRegion eRegion, int[,] TableValues)
         {
-            if (TableValues.Length != null)
+            if (TableValues != null)
             {
                 for (int i = 0; i < TableValues.Length / 6; i++)
                 {

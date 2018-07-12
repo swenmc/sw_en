@@ -16,6 +16,9 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
+using System.Windows.Media.Media3D;
+using System.Threading;
 using BaseClasses;
 using MATH;
 using MATERIAL;
@@ -24,11 +27,8 @@ using sw_en_GUI;
 using sw_en_GUI.EXAMPLES._3D;
 using M_AS4600;
 using M_EC1.AS_NZS;
-using System.Windows.Media.Media3D;
 using _3DTools;
-using System.ComponentModel;
 using SharedLibraries.EXPIMP;
-using System.Threading;
 
 namespace PFD
 {
@@ -41,13 +41,18 @@ namespace PFD
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
 
+        CultureInfo ci;
         SqlConnection cn;
         SqlDataAdapter da;
         DataSet ds;
+
         public CModel model;
-        CultureInfo ci;
         public DatabaseModels dmodels; // Todo nahradit databazov modelov
         public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
+        public CPFDViewModel vm;
+        public BuildingDataInput sBuildingInputData;
+        public WindLoadDataInput sWindInputData;
+        public SeisLoadDataInput sSeisInputData;
 
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
@@ -86,7 +91,7 @@ namespace PFD
             foreach (string locationname in dlocations.arr_LocationNames)
                 Combobox_Location.Items.Add(locationname);
 
-            CPFDViewModel vm = new CPFDViewModel(1);
+            vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             
@@ -105,7 +110,6 @@ namespace PFD
             model.GroupModelMembers();
         }
 
-
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
@@ -114,7 +118,6 @@ namespace PFD
 
             //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
 
-            
             //waiting = true;
             //BackgroundWorker bckWrk = new BackgroundWorker();
             //bckWrk.DoWork += new DoWorkEventHandler(bckWrk_DoWork);
@@ -145,15 +148,13 @@ namespace PFD
         //SplashScreen splashScreen = null;
         //bool waiting = true;
         public void bckWrk_DoWork(object sender, DoWorkEventArgs e)
-        {           
-                        
+        {
             //while (waiting) { Thread.Sleep(1000); }
         }
         
         public void bckWrk_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //hide the popup
-                        
         }
 
         private void DeleteCalculationResults()
@@ -177,15 +178,38 @@ namespace PFD
             // Load Generation
             // Self-weigth (1170.1)
 
+            //Temporary
+            sBuildingInputData.location = ELocation.eAuckland;
+            sBuildingInputData.iDesignLife = 50; // years
+            sBuildingInputData.iImportanceClass = 3; // Importance Level
+            sBuildingInputData.fAnnualProbability_R_ULS = 1f / 500f; // Annual Probability of Exceedence R_ULS
+            sBuildingInputData.fAnnualProbability_R_SLS = 1f / 25f; // Annual Probability of Exceedence R_SLS
+
+            // General loading
+            CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
+            float fLiveLoad_Roof = 250f; // N/m2
+            float fSuperImposed_DeadLoad = 450f;
+
             // Wind
-            CCalcul_1170_2 wind = new CCalcul_1170_2();
+            //1.wind region
+            //2.terrain roughness
+            //3.topography
+            //4.pressure coefficients
+            sWindInputData.fh = vm.fh2;
+            CCalcul_1170_2 wind = new CCalcul_1170_2(sBuildingInputData, sWindInputData);
 
             // Snow
             CCalcul_1170_3 snow = new CCalcul_1170_3();
 
-            // Earthquake
-            CCalcul_1170_5 eq = new CCalcul_1170_5();
+            // Earthquake / Seismic Design
+            sSeisInputData.sSiteSubsoilClass = "D";
+            sSeisInputData.fProximityToFault = 20000; // m
+            sSeisInputData.fZoneFactor_Z = 0.13f;
+            sSeisInputData.fPeriodAlongXDirection_Tx = 0.4f; //sec
+            sSeisInputData.fPeriodAlongYDirection_Ty = 0.4f; //sec
+            sSeisInputData.fSpectralShapeFactor_Ch_T = 3.0f;
 
+            CCalcul_1170_5 eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
 
 
 

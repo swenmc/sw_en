@@ -294,4 +294,49 @@ namespace BaseClasses
         eMR, // Main Rafter
         eMC, // Main Column
     }
+
+    public enum ELocation
+    {
+        eAuckland,
+        eWellington,
+        eChristchurch,
+        eHamilton,
+        eTauranga,
+        eNapier_Hastings,
+        eDunedin,
+        ePalmerston_North,
+        eNelson,
+        eRotorua,
+        eWhangarei,
+        eNew_Plymouth,
+        eInvercargill,
+        eWhanganui,
+        eGibsborne
+    }
+
+    // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre zatazenie a lokalizaciu budovy
+    public struct BuildingDataInput
+    {
+        public ELocation location; // City / Town
+        public int iDesignLife; // Years
+        public int iImportanceClass; // Importance Level
+        public float fAnnualProbability_R_ULS; // Annual Probability of Exceedence R_ULS
+        public float fAnnualProbability_R_SLS; // Annual Probability of Exceedence R_SLS
+    }
+
+    public struct WindLoadDataInput
+    {
+        public string sWindRegion; // Wind region // Wind region CI 3.2. Fig 3.1(A)
+        public float fh; // Height
+    }
+
+    public struct SeisLoadDataInput
+    {
+        public string sSiteSubsoilClass;
+        public float fProximityToFault; // m
+        public float fZoneFactor_Z;
+        public float fPeriodAlongXDirection_Tx; //sec
+        public float fPeriodAlongYDirection_Ty;//sec
+        public float fSpectralShapeFactor_Ch_T;
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BaseClasses;
 
 namespace M_EC1.AS_NZS
 {
@@ -9,21 +10,20 @@ namespace M_EC1.AS_NZS
     {
         int iSoilClass; // Site subsoil class
 
+        //int iBuildingImportanceLevel = 2;
+        //float fAnnualProbability_ULS = 1f / 500f;
+        //float fAnnualProbability_SLS = 1f / 25f;
 
-        int iBuildingImportanceLevel = 2;
-        float fAnnualProbability_ULS = 1f / 500f;
-        float fAnnualProbability_SLS = 1f / 25f;
+        //float fHazardFactor = 0.13f;
 
-        float fHazardFactor = 0.13f;
-
-        float fReturnPeriodFactor_R_ULS = 1.00f; // ULS
-        float fReturnPeriodFactor_R_SLS = 0.25f; // SLS
+        //float fReturnPeriodFactor_R_ULS = 1.00f; // ULS
+        //float fReturnPeriodFactor_R_SLS = 0.25f; // SLS
         float fNear_fault_N = 1.0f; // Near-fault factor
 
         // Elastic site spectra
 
-        float fT_period = 0.4f;
-        float fC_h = 3f; // Spectral shape factor
+        //float fT_period = 0.4f;
+        //float fC_h = 3f; // Spectral shape factor
 
         float fC_ULS = 0.39f;
         float fC_SLS = 0.1f; // Horizontal elastic site spectra coefficient
@@ -59,18 +59,13 @@ namespace M_EC1.AS_NZS
         float fC_v_Tv_ULS_strength;
         float fC_v_Tv_SLS;
 
-        public CCalcul_1170_5()
+        public CCalcul_1170_5(float fW, float fL1_PF_spacing, float fH1_columns, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
             // Seismic Weight
             float fg_roof = 200f; // kN / m^2
             float fg_walls = 200f; // kN / m^2
 
             float fq_roof = 250f; // kN / m^2
-
-            // One Portal Frame
-            float fW = 60; // Width
-            float fL1_PF_spacing = 5.765f; // L1
-            float fH1_columns = 6f;
 
             float fG_roof = fg_roof * fL1_PF_spacing * fW;
             float fG_walls = fg_roof * fH1_columns * fL1_PF_spacing;
@@ -94,9 +89,5 @@ namespace M_EC1.AS_NZS
             fC_v_Tv_ULS_strength = fCv_T1 * fS_p_ULS_strength / fkNu_ULS;
             fC_v_Tv_SLS = fCv_T1 * fS_p_SLS / fkNu_SLS;
         }
-
-
-
-
     }
 }
