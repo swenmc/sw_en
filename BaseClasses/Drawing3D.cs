@@ -528,7 +528,7 @@ namespace BaseClasses
                             {
                                 // TODO Ondrej - performance - Toto bude potrebne odstranit
                                 // Mali by sa pouzit data zo surface modelu pruta, takto sa to vytvara 2 krat raz pre surface model a druhy krat pre wireframe
-                                // Vyriesit co sa stane, ak budeme chciet zobrazit len wireframe a surface model teda nebude k dispozicii
+                                // Vyriesit co sa stane, ak budeme chciet zobrazit len samostatny wireframe a surface model teda nebude k dispozicii (vygeneruje sa, ale nepouzije sa pri vykresleni?)
 
                                 Model3DGroup model3D = new Model3DGroup();
                                 model3D = model.m_arrMembers[i].getM_3D_G_Member(EGCS.eGCSLeftHanded, Brushes.AliceBlue, Brushes.AliceBlue, Brushes.AliceBlue);
