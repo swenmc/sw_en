@@ -126,12 +126,12 @@ namespace BaseClasses
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)) // Check if are particular surfaces defined
                             {
                                 if (model3D == null) model3D = new Model3DGroup();
-                                // Create Member model - one geometry model                                
+                                // Create Member model - one geometry model
                                 model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, front));
                             }
                             else
                             {
-                                // Create Member model - consist of 3 geometry models (member is one model group)                                
+                                // Create Member model - consist of 3 geometry models (member is one model group)
                                 bool bUseCrossSectionColor = true;
                                 if (bUseCrossSectionColor && model.m_arrMembers[i].CrScStart.CSColor != null)
                                     shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
@@ -278,7 +278,6 @@ namespace BaseClasses
             return JointsModel3DGroup;
         }
 
-
         //-------------------------------------------------------------------------------------------------------------
         // Create Other model objects model 3d group
         public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel)
@@ -408,7 +407,7 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------        
+        //-------------------------------------------------------------------------------------------------------------
         public static void DrawGlobalAxis(Viewport3D viewPort)
         {
             // Global coordinate system - axis
@@ -439,7 +438,7 @@ namespace BaseClasses
             viewPort.Children.Add(sAxisY_3D);
             viewPort.Children.Add(sAxisZ_3D);
         }
-        //-------------------------------------------------------------------------------------------------------------        
+        //-------------------------------------------------------------------------------------------------------------
         // Draw Members Wire Frame
         public static void DrawModelMembersWireFrame_temp(CModel model, Viewport3D viewPort)
         {
@@ -485,7 +484,7 @@ namespace BaseClasses
                         model.m_arrMembers[i].NodeEnd != null &&
                         model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
                     {
-                        // Create WireFrame in LCS                        
+                        // Create WireFrame in LCS
                         wireFrame_FrontSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start).Points);
                         wireFrame_BackSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(model.m_arrMembers[i].FLength + model.m_arrMembers[i].FAlignment_End).Points);
                         wireFrame_Lateral.AddPoints(model.m_arrMembers[i].CreateWireFrameLateral().Points);
@@ -495,6 +494,57 @@ namespace BaseClasses
                 viewPort.Children.Add(wireFrame_FrontSide);
                 viewPort.Children.Add(wireFrame_BackSide);
                 viewPort.Children.Add(wireFrame_Lateral);
+            }
+        }
+
+        // Add all members in one wireframe collection of ScreenSpaceLines3D
+        public static void DrawModelMembersinOneWireFrame(CModel model, Viewport3D viewPort)
+        {
+            // Members - Wire Frame
+            if (model.m_arrMembers != null)
+            {
+                Color wireFrameColor = Color.FromRgb(60, 60, 60);
+                double thickness = 1.0;
+                ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
+                Int32Collection wireFrameMemberPointNo = new Int32Collection();
+
+                for (int i = 0; i < model.m_arrMembers.Length; i++) // Per each member
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                    {
+                        for (int j = 0; j < 3; j++) // Per front, back side and laterals
+                        {
+                            if (j == 0) // Front Side
+                                wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameFrontIndices();
+                            else if(j==1) // Laterals
+                                wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameLateralIndices();
+                            else //if (j == 2) // Back Side
+                                wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameBackIndices();
+
+                            foreach (Int32 no in wireFrameMemberPointNo) // Assign Point3D of surface model to the each number in the wireframe collection 
+                            {
+                                // TODO - Toto bude potrebne odstranit
+                                // Mali by sa pouzit data zo surface modelu pruta, takto sa to vytvara 2 krat
+
+                                Model3DGroup model3D = new Model3DGroup();
+                                model3D = model.m_arrMembers[i].getM_3D_G_Member(EGCS.eGCSLeftHanded, Brushes.AliceBlue, Brushes.AliceBlue, Brushes.AliceBlue);
+
+                                // Potrebujeme sa nejako dostat k bodom siete
+                                GeometryModel3D m = new GeometryModel3D();
+                                m = (GeometryModel3D)model3D.Children[j];
+                                MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;
+
+                                wireFrameAllMembers.Points.Add(geom.Positions[no]); // Add Point3D to the collection
+                            }
+                        }
+                    }
+                }
+
+                // Add Wireframe Lines to the trackport
+                viewPort.Children.Add(wireFrameAllMembers);
             }
         }
 

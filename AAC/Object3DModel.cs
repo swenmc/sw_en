@@ -97,7 +97,7 @@ namespace AAC
             double m_dLength = Math.Sqrt(Math.Pow(dDelta_X, 2) + Math.Pow(dDelta_Y, 2) + Math.Pow(dDelta_Z, 2));
 
             // Number of Points per section
-            short iNoCrScPoints2D;
+            int iNoCrScPoints2D;
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
             {

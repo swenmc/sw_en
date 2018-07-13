@@ -13,12 +13,52 @@ namespace BaseClasses
         // Plati aj pre pruty s nabehom s rovnakym poctom bodov v reze - 2D
         // Use also for tapered members with same number of nodes (points) in section - 2D
         private Int32Collection m_TriangleIndices;
-        private Int32Collection m_WireFrameIndices;
 
         public Int32Collection TriangleIndices
         {
             get { return m_TriangleIndices; }
             set { m_TriangleIndices = value; }
+        }
+
+        // Kolekcia bodov definujuca linie obrysu vonkajsej alebo vnutornej outline
+        private Int32Collection m_WireFrameIndicesFrontSideOut;
+
+        public Int32Collection WireFrameIndicesFrontSideOut
+        {
+            get { return m_WireFrameIndicesFrontSideOut; }
+            set { m_WireFrameIndicesFrontSideOut = value; }
+        }
+
+        private Int32Collection m_WireFrameIndicesFrontSideIn;
+
+        public Int32Collection WireFrameIndicesFrontSideIn
+        {
+            get { return m_WireFrameIndicesFrontSideIn; }
+            set { m_WireFrameIndicesFrontSideIn = value; }
+        }
+
+        private Int32Collection m_WireFrameIndicesBackSideOut;
+
+        public Int32Collection WireFrameIndicesBackSideOut
+        {
+            get { return m_WireFrameIndicesBackSideOut; }
+            set { m_WireFrameIndicesBackSideOut = value; }
+        }
+
+        private Int32Collection m_WireFrameIndicesBackSideIn;
+
+        public Int32Collection WireFrameIndicesBackSideIn
+        {
+            get { return m_WireFrameIndicesBackSideIn; }
+            set { m_WireFrameIndicesBackSideIn = value; }
+        }
+
+        private Int32Collection m_WireFrameIndicesLateral;
+
+        public Int32Collection WireFrameIndicesLateral
+        {
+            get { return m_WireFrameIndicesLateral; }
+            set { m_WireFrameIndicesLateral = value; }
         }
 
         // New
@@ -68,9 +108,9 @@ namespace BaseClasses
         }
 
         // Total number of points per section in 2D
-        private short m_iTotNoPoints;
+        private int m_iTotNoPoints;
 
-        public short ITotNoPoints
+        public int ITotNoPoints
         {
             get { return m_iTotNoPoints; }
             set { m_iTotNoPoints = value; }
@@ -627,49 +667,31 @@ namespace BaseClasses
             set { m_d_y_sc = value; }
         }
 
-        public Int32Collection WireFrameIndices
-        {
-            get { return m_WireFrameIndices; }
-            set { m_WireFrameIndices = value; }
-        }
-
         public CMat m_Mat = new CMat();
 
-		//// Constructor 1
-		//public CCrSc()
-		//{ 
-        
-		//}
-		//// Constructor 2
-		//public CCrSc(CMat objMat)
-		//{
-		//    m_Mat = objMat; // !!! Nevytvarat lokalne kopie !!!
-		//}
+        // Draw Rectangle / Add rectangle indices - clockwise CW numbering of input points 1,2,3,4 (see scheme)
+        // Add in order 1,2,3,4
+        protected void AddRectangleIndices_CW_1234(Int32Collection Indices,
+              int point1, int point2,
+              int point3, int point4)
+        {
+            // Main numbering is clockwise
 
+            // 1  _______  2
+            //   |_______|
+            // 4           3
 
-		// Draw Rectangle / Add rectangle indices - clockwise CW numbering of input points 1,2,3,4 (see scheme)
-		// Add in order 1,2,3,4
-		protected void AddRectangleIndices_CW_1234(Int32Collection Indices,
-			  int point1, int point2,
-			  int point3, int point4)
-		{
-			// Main numbering is clockwise
+            // Triangles Numbering is Counterclockwise
+            // Top Right
+            Indices.Add(point1);
+            Indices.Add(point3);
+            Indices.Add(point2);
 
-			// 1  _______  2
-			//   |_______| 
-			// 4           3
-
-			// Triangles Numbering is Counterclockwise
-			// Top Right
-			Indices.Add(point1);
-			Indices.Add(point3);
-			Indices.Add(point2);
-
-			// Bottom Left
-			Indices.Add(point1);
-			Indices.Add(point4);
-			Indices.Add(point3);
-		}
+            // Bottom Left
+            Indices.Add(point1);
+            Indices.Add(point4);
+            Indices.Add(point3);
+        }
         protected void AddRectangleWireFrameIndices_CW_1234(Int32Collection Indices,
               int point1, int point2,
               int point3, int point4)
@@ -684,26 +706,26 @@ namespace BaseClasses
         // Draw Rectangle / Add rectangle indices - countrer-clockwise CCW numbering of input points 1,2,3,4 (see scheme)
         // Add in order 1,4,3,2
         protected void AddRectangleIndices_CCW_1234(Int32Collection Indices,
-			  int point1, int point2,
-			  int point3, int point4)
-		{
-			// Main input numbering is clockwise, add indices counter-clockwise
+              int point1, int point2,
+              int point3, int point4)
+        {
+            // Main input numbering is clockwise, add indices counter-clockwise
 
-			// 1  _______  2
-			//   |_______| 
-			// 4           3
+            // 1  _______  2
+            //   |_______| 
+            // 4           3
 
-			// Triangles Numbering is Clockwise
-			// Top Right
-			Indices.Add(point1);
-			Indices.Add(point2);
-			Indices.Add(point3);
+            // Triangles Numbering is Clockwise
+            // Top Right
+            Indices.Add(point1);
+            Indices.Add(point2);
+            Indices.Add(point3);
 
-			// Bottom Left
-			Indices.Add(point1);
-			Indices.Add(point3);
-			Indices.Add(point4);
-		}
+            // Bottom Left
+            Indices.Add(point1);
+            Indices.Add(point3);
+            Indices.Add(point4);
+        }
 
         // Draw Triangle / Add triangle indices - clockwise CW numbering of input points 1,2,3 (see scheme)
         // Add in order 1,2,3,4
@@ -744,61 +766,61 @@ namespace BaseClasses
         // Draw Prism CaraLaterals
         // Kresli plast hranola pre kontinualne pravidelne cislovanie bodov
         protected void DrawCaraLaterals(int secNum, Int32Collection TriangelsIndices)
-		{
-			// secNum - number of one base edges / - pocet rohov - hranicnych bodov jednej podstavy
+        {
+            // secNum - number of one base edges / - pocet rohov - hranicnych bodov jednej podstavy
 
-			// Shell (Face)Surface
-			// Cycle for regular numbering of section points
+            // Shell (Face)Surface
+            // Cycle for regular numbering of section points
 
-			for (int i = 0; i < secNum; i++)
-			{
-				if (i < secNum - 1)
-					AddRectangleIndices_CW_1234(TriangelsIndices, i, secNum + i, secNum + i + 1, i + 1);
-				else
-					AddRectangleIndices_CW_1234(TriangelsIndices, i, secNum + i, secNum, 0); // Last Element
-			}
-		}
+            for (int i = 0; i < secNum; i++)
+            {
+                if (i < secNum - 1)
+                    AddRectangleIndices_CW_1234(TriangelsIndices, i, secNum + i, secNum + i + 1, i + 1);
+                else
+                    AddRectangleIndices_CW_1234(TriangelsIndices, i, secNum + i, secNum, 0); // Last Element
+            }
+        }
 
-		// Draw Prism CaraLaterals
-		// Kresli plast hranola pre pravidelne cislovanie bodov s vynechanim pociatocnych uzlov - pomocne 
-		protected void DrawCaraLaterals(int iAuxNum, int secNum, Int32Collection TriangelsIndices)
-		{
-			// iAuxNum - number of auxiliary points - start ofset
-			// secNum - number of one base edges / - pocet rohov - hranicnych bodov jednej podstavy (tento pocet neobsahuje pomocne body iAuxNum)
+        // Draw Prism CaraLaterals
+        // Kresli plast hranola pre pravidelne cislovanie bodov s vynechanim pociatocnych uzlov - pomocne 
+        protected void DrawCaraLaterals(int iAuxNum, int secNum, Int32Collection TriangelsIndices)
+        {
+            // iAuxNum - number of auxiliary points - start ofset
+            // secNum - number of one base edges / - pocet rohov - hranicnych bodov jednej podstavy (tento pocet neobsahuje pomocne body iAuxNum)
 
-			// Shell (Face)Surface
-			// Cycle for regular numbering of section points
+            // Shell (Face)Surface
+            // Cycle for regular numbering of section points
 
-			for (int i = 0; i < secNum; i++)
-			{
-				if (i < secNum - 1)
-					AddRectangleIndices_CW_1234(TriangelsIndices, iAuxNum + i, 2 * iAuxNum + secNum + i, 2 * iAuxNum + secNum + i + 1, iAuxNum + i + 1);
-				else
-					AddRectangleIndices_CW_1234(TriangelsIndices, iAuxNum + i, 2 * iAuxNum + secNum + i, 2 * iAuxNum + secNum, iAuxNum + 0); // Last Element
-			}
-		}
+            for (int i = 0; i < secNum; i++)
+            {
+                if (i < secNum - 1)
+                    AddRectangleIndices_CW_1234(TriangelsIndices, iAuxNum + i, 2 * iAuxNum + secNum + i, 2 * iAuxNum + secNum + i + 1, iAuxNum + i + 1);
+                else
+                    AddRectangleIndices_CW_1234(TriangelsIndices, iAuxNum + i, 2 * iAuxNum + secNum + i, 2 * iAuxNum + secNum, iAuxNum + 0); // Last Element
+            }
+        }
 
-		// Draw Sector of Solid Circle
-		// Kresli vyrez kruhu,
-		// Parametre:
-		// pocet pomocnych uzlov;  ID stredu vyrezu; ID  prvy bod obluka; pocet segmentov (trojuholnikov); kolekcia, do ktorej sa zapisuju trojice, vzostupne cislovanie CW
-		protected void AddSolidCircleSectorIndices(int iCentrePointID, int iArcFirstPointID, int iRadiusSegment, Int32Collection TriangelsIndices, bool bAscendingNumCW)
-		{
-			for (int i = 0; i < iRadiusSegment; i++)
-			{
-				TriangelsIndices.Add(iCentrePointID); // Centre point
-				if (!bAscendingNumCW) // Clock-wise
-				{
-					TriangelsIndices.Add(iArcFirstPointID + 1 + i);
-					TriangelsIndices.Add(iArcFirstPointID + i);
-				}
-				else // Counter Clock-wise
-				{
-					TriangelsIndices.Add(iArcFirstPointID + i);
-					TriangelsIndices.Add(iArcFirstPointID + 1 + i);
-				}
-			}
-		}
+        // Draw Sector of Solid Circle
+        // Kresli vyrez kruhu,
+        // Parametre:
+        // pocet pomocnych uzlov;  ID stredu vyrezu; ID  prvy bod obluka; pocet segmentov (trojuholnikov); kolekcia, do ktorej sa zapisuju trojice, vzostupne cislovanie CW
+        protected void AddSolidCircleSectorIndices(int iCentrePointID, int iArcFirstPointID, int iRadiusSegment, Int32Collection TriangelsIndices, bool bAscendingNumCW)
+        {
+            for (int i = 0; i < iRadiusSegment; i++)
+            {
+                TriangelsIndices.Add(iCentrePointID); // Centre point
+                if (!bAscendingNumCW) // Clock-wise
+                {
+                    TriangelsIndices.Add(iArcFirstPointID + 1 + i);
+                    TriangelsIndices.Add(iArcFirstPointID + i);
+                }
+                else // Counter Clock-wise
+                {
+                    TriangelsIndices.Add(iArcFirstPointID + i);
+                    TriangelsIndices.Add(iArcFirstPointID + 1 + i);
+                }
+            }
+        }
 
         protected abstract void loadCrScIndices();
 
@@ -806,6 +828,123 @@ namespace BaseClasses
         protected abstract void loadCrScIndicesFrontSide();
         protected abstract void loadCrScIndicesShell();
         protected abstract void loadCrScIndicesBackSide();
+
+        // TODO - ONDREJ PROSIM REFAKTOROVAT
+        // PREDNA A ZADNA STRANA BY MOHLI MAT SPOLOCNY KOD
+        // VNUTORNY A VONKAJSI OBRYS BY MOHLI MAT SPOLOCNY KOD
+
+        public void loadCrScWireFrameIndicesFrontSide()
+        {
+            // Outside outline
+            if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+            {
+                WireFrameIndicesFrontSideOut = new Int32Collection();
+
+                for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+                {
+                    if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
+                    {
+                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
+                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i +1);
+                    }
+                    else // Last line
+                    {
+                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
+                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + 0);
+                    }
+                }
+            }
+
+            // Inside outline
+            if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+            {
+                WireFrameIndicesFrontSideIn = new Int32Collection();
+
+                for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+                {
+                    if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
+                    {
+                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
+                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i + 1);
+                    }
+                    else // Last line
+                    {
+                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
+                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + 0);
+                    }
+                }
+            }
+        }
+
+        public void loadCrScWireFrameIndicesBackSide()
+        {
+            // Outside outline
+            if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+            {
+                WireFrameIndicesBackSideOut = new Int32Collection();
+
+                for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+                {
+                    // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
+
+                    if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
+                    {
+                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
+                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i + 1);
+                    }
+                    else // Last line
+                    {
+                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
+                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + 0);
+                    }
+                }
+            }
+
+            // Inside outline
+            if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+            {
+                WireFrameIndicesBackSideIn = new Int32Collection();
+
+                for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+                {
+                    // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
+
+                    if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
+                    {
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i + 1);
+                    }
+                    else // Last line
+                    {
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + 0);
+                    }
+                }
+            }
+        }
+
+        public void loadCrScWireFrameIndicesLaterals()
+        {
+            if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+            {
+                WireFrameIndicesLateral = new Int32Collection();
+
+                for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+                {
+                    WireFrameIndicesLateral.Add(INoAuxPoints + i);
+                    WireFrameIndicesLateral.Add(ITotNoPoints + INoAuxPoints + i);
+                }
+            }
+
+            if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+            {
+                for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+                {
+                    WireFrameIndicesLateral.Add(INoPointsOut + INoAuxPoints + i);
+                    WireFrameIndicesLateral.Add(ITotNoPoints + INoPointsOut + INoAuxPoints + i);
+                }
+            }
+        }
 
         public void CalculateCrScLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
         {

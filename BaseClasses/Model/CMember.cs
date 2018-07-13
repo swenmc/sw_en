@@ -441,7 +441,7 @@ namespace BaseClasses
             //double m_dLength = Math.Sqrt(Math.Pow(Delta_X, 2) + Math.Pow(Delta_Y, 2) + Math.Pow(Delta_Z, 2));
 
             // Number of Points per section
-            short iNoCrScPoints2D;
+            int iNoCrScPoints2D;
             float fy, fz;
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
@@ -698,7 +698,7 @@ namespace BaseClasses
             meshBackSide.Positions = new Point3DCollection();
 
             // Number of Points per section
-            short iNoCrScPoints2D;
+            int iNoCrScPoints2D;
             float fy, fz;
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
@@ -1248,7 +1248,7 @@ namespace BaseClasses
 
         public ScreenSpaceLines3D CreateWireFrameLateral(EGCS eGCS = EGCS.eGCSLeftHanded, Color? color = null, double thickness = 1.0)
         {
-            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();            
+            ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
             Color wireFrameColor = Color.FromRgb(60, 60, 60);
             if (color != null) wireFrameColor = (Color)color;
             wireFrame.Color = wireFrameColor;
@@ -1320,6 +1320,77 @@ namespace BaseClasses
             return wireFrame;
         }
 
+        // TODO
+        // Nove funkcie - To Ondrej: upravit podla potreby ako chceme mat rozdelene jednotlive body, jeden balik pre cely prut alebo predna strana, zadna strana, plast
+        // V surface modeli pruta su obe moznosti (rozdelene to bolo v minulosti preto, aby mohli mat cela pruta inu farbu), ale pre rychle vykreslovanie by sme mohli ponechat aj Model3D, v ktorom su vsetky positions a indices
+        // v jednom balicku pre cely prut a vykresluje sa to len jednou farbou, mohlo by to byt ovela rychlejsie ak uzivatela celne steny nezaujimaju,
+        // navyse tie hrubky u prierezov, pre ktore to teraz robime priecinok "FS" v projekte CRSC - CrSc_3, su tak tenke ze to ani nie je vidno
+
+        public Int32Collection GetMemberWireFrameFrontIndices()
+        {
+            // Returns collection of point indices for front side of wireframe
+            Int32Collection memberWireframeIndices = new Int32Collection();
+
+            foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideOut)
+                memberWireframeIndices.Add(pointNo);
+
+            if (CrScStart.WireFrameIndicesFrontSideIn != null && CrScStart.WireFrameIndicesFrontSideIn.Count > 0)
+            {
+                foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideIn)
+                    memberWireframeIndices.Add(pointNo);
+            }
+
+            return memberWireframeIndices;
+        }
+
+        public Int32Collection GetMemberWireFrameBackIndices()
+        {
+            // Returns collection of point indices for back side of wireframe
+            Int32Collection memberWireframeIndices = new Int32Collection();
+
+            foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideOut)
+                memberWireframeIndices.Add(pointNo);
+
+            if (CrScStart.WireFrameIndicesBackSideIn != null && CrScStart.WireFrameIndicesBackSideIn.Count > 0)
+            {
+                foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideIn)
+                    memberWireframeIndices.Add(pointNo);
+            }
+
+            return memberWireframeIndices;
+        }
+
+        public Int32Collection GetMemberWireFrameLateralIndices()
+        {
+            // Returns collection of point indices for lateral wireframe
+            return CrScStart.WireFrameIndicesLateral;
+        }
+
+        public Int32Collection GetMemberWireFrameIndices()
+        {
+            // Returns collection of point indices for whole member wireframe
+            Int32Collection memberWireframeIndices = new Int32Collection();
+
+            foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideOut)
+                memberWireframeIndices.Add(pointNo);
+
+            if (CrScStart.WireFrameIndicesFrontSideIn != null && CrScStart.WireFrameIndicesFrontSideIn.Count > 0)
+            {
+                foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideIn)
+                    memberWireframeIndices.Add(pointNo);
+            }
+
+            foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideOut)
+                memberWireframeIndices.Add(pointNo);
+
+            if (CrScStart.WireFrameIndicesBackSideIn != null && CrScStart.WireFrameIndicesBackSideIn.Count > 0)
+            {
+                foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideIn)
+                    memberWireframeIndices.Add(pointNo);
+            }
+
+            return memberWireframeIndices;
+        }
 
         public void CalculateMemberLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
         {

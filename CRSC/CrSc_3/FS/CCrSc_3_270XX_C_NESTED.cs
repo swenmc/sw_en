@@ -52,6 +52,7 @@ namespace CRSC
             //ITotNoPoints = 32;
             IsShapeSolid = false;
             INoPointsIn = INoPointsOut = 32; // vykreslujeme ako n-uholnik, pocet bodov n
+            ITotNoPoints = INoPointsIn + INoPointsOut;
 
             h = fh;
             b = fb;
@@ -83,12 +84,19 @@ namespace CRSC
             // Fill Array Data
             CalcCrSc_Coord();
 
+            ChangeCoordToCentroid();
+
             // Fill list of indices for drawing of surface - triangles edges
 
             // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            // Wireframe Indices
+            loadCrScWireFrameIndicesFrontSide();
+            loadCrScWireFrameIndicesBackSide();
+            loadCrScWireFrameIndicesLaterals();
         }
 
         public void CalcCrSc_Coord()
@@ -179,6 +187,30 @@ namespace CRSC
 
                 CrScPointsIn[INoPointsIn - i - 1, 0] = -CrScPointsIn[i, 0];                        // Inside
                 CrScPointsIn[INoPointsIn - i - 1, 1] = CrScPointsIn[i, 1];                         // Inside
+            }
+        }
+
+        public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
+        {
+            // Temporary - odstranit po implementacii vypoctu
+            D_y_gc = 0; // Temporary - TODO
+            D_z_gc = 0;
+
+            y_min = -b / 2;
+            y_max = b / 2;
+            z_min = -h / 2;
+            z_max = h / 2;
+
+            for (int i = 0; i < INoPointsOut; i++)
+            {
+                CrScPointsOut[i, 0] += (float)D_y_gc;
+                CrScPointsOut[i, 1] += (float)D_z_gc;
+            }
+
+            for (int i = 0; i < INoPointsIn; i++)
+            {
+                CrScPointsIn[i, 0] += (float)D_y_gc;
+                CrScPointsIn[i, 1] += (float)D_z_gc;
             }
         }
 

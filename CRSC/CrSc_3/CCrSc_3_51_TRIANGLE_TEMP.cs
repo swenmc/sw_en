@@ -27,6 +27,7 @@ namespace CRSC
             //ITotNoPoints = 3;
             IsShapeSolid = false;
             INoPointsIn = INoPointsOut = 3; // vykreslujeme ako n-uholnik, pocet bodov n
+            ITotNoPoints = INoPointsIn + INoPointsOut;
 
             h = fh;
             b = fb;
@@ -45,6 +46,11 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            // Wireframe Indices
+            loadCrScWireFrameIndicesFrontSide();
+            loadCrScWireFrameIndicesBackSide();
+            loadCrScWireFrameIndicesLaterals();
         }
 
         public void CalcCrSc_Coord()

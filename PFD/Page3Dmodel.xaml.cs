@@ -70,8 +70,9 @@ namespace PFD
 
             // Add WireFrame Model
             //if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame_temp(model, _trackport.ViewPort);
-            if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
-            
+            //if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
+            if (bDisplay_WireFrame) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
+
             _trackport.SetupScene();
         }
 

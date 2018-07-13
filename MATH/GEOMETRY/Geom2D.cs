@@ -80,7 +80,7 @@ namespace MATH
         #region Circle
         // Circle
         // Get Points Coordinates
-        public static float[,] GetCirclePointCoord(float fr, short iNumber)
+        public static float[,] GetCirclePointCoord(float fr, int iNumber)
         {
             m_ArrfPointsCoord2D = new float[iNumber, 2];
 
@@ -95,7 +95,7 @@ namespace MATH
         #endregion
         #region Arc
         // Arc
-        public static float[,] GetArcPointCoord(float fr, int fStartAngle, int fEndAngle, short iNumber)
+        public static float[,] GetArcPointCoord(float fr, int fStartAngle, int fEndAngle, int iNumber)
         {
             // iNumber - number of points of section (arc + centroid)
             // iNumber - 1 - number of points arc

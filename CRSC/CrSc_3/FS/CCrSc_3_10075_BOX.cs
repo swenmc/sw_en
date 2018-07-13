@@ -50,6 +50,7 @@ namespace CRSC
             //ITotNoPoints = 40;
             IsShapeSolid = false;
             INoPointsIn = INoPointsOut = 40; // vykreslujeme ako n-uholnik, pocet bodov n
+            ITotNoPoints = INoPointsIn + INoPointsOut;
 
             h = fh;
             b = fb;
@@ -87,6 +88,11 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            // Wireframe Indices
+            loadCrScWireFrameIndicesFrontSide();
+            loadCrScWireFrameIndicesBackSide();
+            loadCrScWireFrameIndicesLaterals();
 
             FillCrScPropertiesByTableData();
         }
@@ -209,10 +215,16 @@ namespace CRSC
             z_min = -h / 2;
             z_max = h / 2;
 
-            for (int i = 0; i < ITotNoPoints; i++)
+            for (int i = 0; i < INoPointsOut; i++)
             {
                 CrScPointsOut[i, 0] += (float)D_y_gc;
                 CrScPointsOut[i, 1] += (float)D_z_gc;
+            }
+
+            for (int i = 0; i < INoPointsIn; i++)
+            {
+                CrScPointsIn[i, 0] += (float)D_y_gc;
+                CrScPointsIn[i, 1] += (float)D_z_gc;
             }
         }
 

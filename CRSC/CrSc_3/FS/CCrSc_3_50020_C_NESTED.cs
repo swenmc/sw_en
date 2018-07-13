@@ -62,6 +62,7 @@ namespace CRSC
             //ITotNoPoints = 34;
             IsShapeSolid = true;
             ITotNoPoints = INoPointsOut = 34;
+            ITotNoPoints = INoPointsIn + INoPointsOut;
 
             h = fh;
             b = fb;
@@ -93,6 +94,11 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            // Wireframe Indices
+            loadCrScWireFrameIndicesFrontSide();
+            loadCrScWireFrameIndicesBackSide();
+            loadCrScWireFrameIndicesLaterals();
 
             FillCrScPropertiesByTableData();
         }
@@ -201,10 +207,16 @@ namespace CRSC
 
             D_z_gc = 0;
 
-            for (int i = 0; i < ITotNoPoints; i++)
+            for (int i = 0; i < INoPointsOut; i++)
             {
                 CrScPointsOut[i, 0] += (float)D_y_gc;
                 CrScPointsOut[i, 1] += (float)D_z_gc;
+            }
+
+            for (int i = 0; i < INoPointsIn; i++)
+            {
+                CrScPointsIn[i, 0] += (float)D_y_gc;
+                CrScPointsIn[i, 1] += (float)D_z_gc;
             }
         }
 

@@ -115,6 +115,10 @@ namespace sw_en_GUI
 
                 //Mato? toto tu potrebujeme?
                 //Popravde absolutne netusim naco to tu je a co to robi
+
+                // To Ondrej, to je nejaky stary pokusny kod ktory kresli wireframe kocky
+                // Doporucujem presunut niekam do nejakych testovacich prikladov, mozno sa to zide niekedy
+
                 if (cmodel.m_arrGOLines != null) // Some lines exist
                 {
                     Point3D solidCenter = new Point3D(-5, 0, 0);
@@ -237,8 +241,11 @@ namespace sw_en_GUI
 
                 _trackport.Model = (Model3D)gr;
 
+                //bool bDisplayMembers_WireFrame = true;
+                //if (bDisplayMembers_WireFrame) Drawing3D.DrawModelMembersWireFrame(cmodel, _trackport.ViewPort);
+
                 bool bDisplayMembers_WireFrame = true;
-                if (bDisplayMembers_WireFrame) Drawing3D.DrawModelMembersWireFrame(cmodel, _trackport.ViewPort);                
+                if (bDisplayMembers_WireFrame) Drawing3D.DrawModelMembersinOneWireFrame(cmodel, _trackport.ViewPort);
 
                 bool bDisplayConnectionJointsWireFrame = true;
                 if (bDisplayConnectionJointsWireFrame) Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
@@ -246,8 +253,6 @@ namespace sw_en_GUI
                 _trackport.SetupScene();
             }
         }
-
-        
 
         //public ScreenSpaceLines3D wireFrame(CMember member, float x)
         //{
