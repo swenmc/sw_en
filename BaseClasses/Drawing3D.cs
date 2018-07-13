@@ -526,13 +526,14 @@ namespace BaseClasses
 
                             foreach (Int32 no in wireFrameMemberPointNo) // Assign Point3D of surface model to the each number in the wireframe collection 
                             {
-                                // TODO - Toto bude potrebne odstranit
-                                // Mali by sa pouzit data zo surface modelu pruta, takto sa to vytvara 2 krat
+                                // TODO Ondrej - performance - Toto bude potrebne odstranit
+                                // Mali by sa pouzit data zo surface modelu pruta, takto sa to vytvara 2 krat raz pre surface model a druhy krat pre wireframe
+                                // Vyriesit co sa stane, ak budeme chciet zobrazit len wireframe a surface model teda nebude k dispozicii
 
                                 Model3DGroup model3D = new Model3DGroup();
                                 model3D = model.m_arrMembers[i].getM_3D_G_Member(EGCS.eGCSLeftHanded, Brushes.AliceBlue, Brushes.AliceBlue, Brushes.AliceBlue);
 
-                                // Potrebujeme sa nejako dostat k bodom siete
+                                // Potrebujeme sa nejako dostat k bodom siete, asi sa to da urobit aj elegantnejsie :-/
                                 GeometryModel3D m = new GeometryModel3D();
                                 m = (GeometryModel3D)model3D.Children[j];
                                 MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;
