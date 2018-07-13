@@ -21,194 +21,247 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="7*" />
-            <RowDefinition Height="4*" />
-            <RowDefinition Height="6*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="900*" />
+            <RowDefinition Height="70*" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid Name="ParamsGrid" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130" />
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="130" />
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0"/>
-                <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
+        <TabControl Margin="5,5,0,0" Name="MainTabControl" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Name ="General">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="General" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Name="ParamsGrid" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na GridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0"/>
+                        <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
-                <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
                            VerticalAlignment="Top" />
-                <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                           TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
                          VerticalAlignment="Top" />
-                <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofPitch, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" VerticalAlignment="Top"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Frames, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                            TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="80"
+                        <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_Girt_Distance" Width="80"
                          HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GirtDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Purlin Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_Purlin_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PurlinDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Column Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_Column_Distance" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ColumnDistance, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
-                
-                <TextBlock Grid.Row="9" Grid.Column="0" Text="Bottom Girt Position:" HorizontalAlignment="Left" Margin="5,0"
+
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Bottom Girt Position:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_BottomGirt_Position" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_BottomGirt_Position" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=BottomGirtPosition, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="10" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Front Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_FrontFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_FrontFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=FrontFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                <TextBlock Grid.Row="11" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Back Frame Angle:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
-                <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_BackFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_BackFrame_RakeAngle" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=BackFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-                <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                        <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-                <ProgressBar Name="progressBar" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Hidden" IsIndeterminate="True" />
+                        <ProgressBar Name="progressBar" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Hidden" IsIndeterminate="True" />
 
-                <TextBlock Grid.Row="0" Grid.Column="4" Text="Location:" HorizontalAlignment="Left" 
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="Location:" HorizontalAlignment="Left" 
                            VerticalAlignment="Top" />
-                <ComboBox Grid.Row="0" Grid.Column="5" Name ="Combobox_Location" HorizontalAlignment="Left" 
+                        <ComboBox Grid.Row="0" Grid.Column="5" Name ="Combobox_Location" HorizontalAlignment="Left" 
                           VerticalAlignment="Top" Width="120" SelectedIndex="11"/>
-
-            </Grid>
-        </ScrollViewer>
-
-        <DataGrid Grid.Column="0" Name ="Components" AutoGenerateColumns="False"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,474,0.333,1" Grid.RowSpan="2">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Status}" Header="Component" Width="200"/>
-                <DataGridTemplateColumn Header="Cross-Section" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Status}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Material" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Status}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid Grid.Row="2" Grid.Column="0" Name ="Results_GridView" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name ="Model_Component" Header="Model Components">
+                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid Name="ModelComponents">
+                        <DataGrid Grid.Column="0" Name ="Components" AutoGenerateColumns="False"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,10,0,0" Grid.RowSpan="2">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Status}" Header="Component" Width="200"/>
+                                <DataGridTemplateColumn Header="Cross-Section" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Material" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Name ="Loading">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Loading" Foreground="Green"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem Name ="Load_Cases" Header="Load Cases"/>
+            <TabItem Name ="Load_Combinations" Header="Combinations"/>
+            <TabItem Name ="Design" Header="Design">
+                <Grid Name="Results" Margin="0,10,0,0">
+                    <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   IsReadOnly="True">
-        </DataGrid>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Name ="Material_List" Header="Material List">
+            <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="325"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="325"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="325"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
 
-        <Frame Grid.Row="0" Grid.RowSpan="4" Name ="Frame1" Content="Portal Frame 3D Preview" 
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="0,0,0,0" FontSize="16"/>
+                    <DataGrid Grid.Row="1" Grid.Column="0" Name ="Datagrid_Members"  
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,10,0"
+            IsReadOnly="True">
+                </DataGrid>
+                    <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="Plates" VerticalAlignment="Top" Width="120" Margin="0,0,0,0" FontSize="16"/>
+                    <DataGrid Grid.Row="3" Grid.Column="0" Name ="Datagrid_Plates"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,10,0"
+            IsReadOnly="True">
+                </DataGrid>
+                    <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="350" Margin="0,0,0,0" FontSize="16"><Run Text="Connectors, Anchors, Bolts, Screws, Rivets)"/></TextBlock>
+                    <DataGrid Grid.Row="5" Grid.Column="0" Name ="Datagrid_Screws"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,10,0"
+            IsReadOnly="True">
+                </DataGrid>
+            </Grid>
+            </TabItem>
+            <TabItem Name ="Quotation" Header="Quotation"/>
+        </TabControl>
+        <Frame Grid.Row="0" Grid.RowSpan="4" Name ="Frame1" Content="Portal Frame 3D Preview"
                HorizontalContentAlignment="Stretch" 
                VerticalContentAlignment="Stretch" 
-               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2" Margin="623,0,0,68"/>
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2" Margin="623,0,0.333,67.667"/>
         <Button Grid.Row="3" Grid.Column="0" Content="Calculate" HorizontalAlignment="Right" 
-                VerticalAlignment="Center" Width="60"  Margin="0 0 20 0" Click="Calculate_Click"/>
+                VerticalAlignment="Center" Width="100"  Margin="0,25,20,25" Click="Calculate_Click" Height="20"/>
         <Button Grid.Row="3" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="110" Margin="0 0 90 0" Click="SystemComponentViewer_Click"/>
+            VerticalAlignment="Center" Width="120" Margin="0,25,140,25" Click="SystemComponentViewer_Click"/>
         <Button Grid.Row="3" Grid.Column="0" Name="ExportDXF_3D" Content="Export DXF" 
                 HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="70" Margin="0 0 210 0" Click="ExportDXF_3D_Click"/>
+            VerticalAlignment="Center" Width="100" Margin="0,25,270,25" Click="ExportDXF_3D_Click"/>
         <Button Grid.Row="3" Grid.Column="0" Name="View_2D" Content="2D View" HorizontalAlignment="Left" 
-                Height="20" VerticalAlignment="Center" Width="100" Margin="90 0 0 0" Click="View_2D_Click"/>
+                Height="20" VerticalAlignment="Center" Width="70" Margin="90,25,0,25" Click="View_2D_Click"/>
         <Button Name="Clear3DModel" Grid.Row="3" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
-                VerticalAlignment="Center" Width="75" Margin="5 0 20 0" Click="Clear3DModel_Click" />
-        <Button Name="MaterialList" Grid.Row="3" Grid.Column="0" Content="Material List" HorizontalAlignment="Left" 
-                VerticalAlignment="Center" Width="75" Margin="201,24.333,0,23.667" Click="MaterialList_Click" />
-
+                VerticalAlignment="Center" Width="70" Margin="5,25,0,25" Click="Clear3DModel_Click" Height="20" />
     </Grid>
 </Window>

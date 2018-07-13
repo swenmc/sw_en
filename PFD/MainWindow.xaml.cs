@@ -220,6 +220,34 @@ namespace PFD
 
             //Calculate Internal Forces
             // Todo - napojit FEM vypocet
+            bool bDebugging = false;
+
+            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(model, bDebugging);
+
+            // Auxialiary string - result data
+            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
+            string sDOFResults = null;
+
+            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
+            {
+                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Incerase index (1st member "0" to "1"
+                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
+
+                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
+                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
+                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
+                               + "\n";
+            }
+
+            // Main String
+            string sMessageCalc =
+                "Calculation was successful!" + "\n\n" +
+                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
+
+            // Display Message
+            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
+
+
 
             float fN = -5000f;
             float fN_c = fN > 0 ? 0f : Math.Abs(fN);
@@ -575,7 +603,19 @@ namespace PFD
             Page3Dmodel model3D = Frame1.Content as Page3Dmodel;
             CExportToDXF.ExportViewPort_DXF_Test(model3D._trackport.ViewPort);
         }
-        
-       
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainTabControl.SelectedIndex == 6)
+            {
+                MaterialList list = new MaterialList(model);
+
+                // TODO nastavit polozky do GridView v Tab Item Material List
+
+            }
+
+            //TabItem ti =  MainTabControl.SelectedItem as TabItem;
+            //MessageBox.Show("Selected tab: " + (MainTabControl.SelectedItem as TabItem).Header);
+        }
     }
 }

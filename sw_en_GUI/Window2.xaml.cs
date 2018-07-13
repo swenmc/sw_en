@@ -29,7 +29,7 @@ namespace sw_en_GUI
 
         ///////////////////////////////////////////////////////////////
         // Create switch command for various sections, split code into separate objects / function of 3D drawing for each type
-        /////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
 
         // Tutorial
         /// http://kindohm.com/technical/WPF3DTutorial.htm  ScreenSpaceLines3D
@@ -92,7 +92,7 @@ namespace sw_en_GUI
                 SolidColorBrush brushDefault = new SolidColorBrush(Colors.Red);
 
                 bool bShowGlobalAxis = true;
-                if(bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);                    
+                if(bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
                 
                 bool bDisplayMembersSurface = true;
                 Model3D membersModel3D = null;
@@ -110,8 +110,6 @@ namespace sw_en_GUI
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
                 
                 Drawing3D.AddLightsToModel3D(gr);
-                
-                
 
                 //Mato? toto tu potrebujeme?
                 //Popravde absolutne netusim naco to tu je a co to robi
