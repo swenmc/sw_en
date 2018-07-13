@@ -208,6 +208,7 @@
             </TabItem>
             <TabItem Name ="Load_Cases" Header="Load Cases"/>
             <TabItem Name ="Load_Combinations" Header="Load Combinations"/>
+            <TabItem Name ="Internal_Forces" Header="Internal Forces"/>
             <TabItem Name ="Member_Design" Header="Member Design">
                 <Grid Name="Results" Margin="0,10,0,0">
                     <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView"
@@ -221,7 +222,7 @@
                 </Grid>
             </TabItem>
             <TabItem Name ="Part_List" Header="Parts List">
-            <Grid Margin="0,10,0,0">
+                <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25"/>
                         <RowDefinition Height="325"/>
@@ -237,20 +238,26 @@
                     <DataGrid Grid.Row="1" Grid.Column="0" Name ="Datagrid_Members"  
                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,10,0"
             IsReadOnly="True">
-                </DataGrid>
+                    </DataGrid>
                     <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="Plates" VerticalAlignment="Top" Width="120" Margin="0,0,0,0" FontSize="16"/>
                     <DataGrid Grid.Row="3" Grid.Column="0" Name ="Datagrid_Plates"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,10,0"
             IsReadOnly="True">
-                </DataGrid>
+                    </DataGrid>
                     <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="350" Margin="0,0,0,0" FontSize="16"><Run Text="Connectors, Anchors, Bolts, Screws, Rivets)"/></TextBlock>
                     <DataGrid Grid.Row="5" Grid.Column="0" Name ="Datagrid_Screws"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,10,0"
             IsReadOnly="True">
-                </DataGrid>
-            </Grid>
+                    </DataGrid>
+                </Grid>
             </TabItem>
-            <TabItem Name ="Quotation" Header="Quotation"/>
+            <TabItem Name ="Quotation">
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Quotation" Foreground="Red"/>
+                </StackPanel>
+            </TabItem.Header>
+            </TabItem>
         </TabControl>
         <Frame Grid.Row="0" Grid.RowSpan="4" Name ="Frame1" Content="Portal Frame 3D Preview"
                HorizontalContentAlignment="Stretch" 

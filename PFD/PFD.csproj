@@ -209,5 +209,8 @@
   <ItemGroup>
     <Resource Include="loading2.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="formsteel-screen.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

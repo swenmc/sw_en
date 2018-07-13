@@ -83,7 +83,12 @@ namespace PFD
             dmodels = new DatabaseModels();
             dlocations = new DatabaseLocations();
 
+            // Initial Screen
+
+            SplashScreen splashScreen = new SplashScreen("formsteel-screen.jpg");
+            splashScreen.Show(false);
             InitializeComponent();
+            splashScreen.Close(TimeSpan.FromMilliseconds(5000));
 
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
@@ -108,6 +113,8 @@ namespace PFD
             Frame1.Content = page1;
 
             model.GroupModelMembers();
+
+
         }
 
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
