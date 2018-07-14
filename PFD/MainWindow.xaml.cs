@@ -121,7 +121,7 @@ namespace PFD
             // Loading
             loadinput = new CPFDLoadInput(11); // Default - Auckland
             loadinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
-            this.DataContext = loadinput;
+            //this.DataContext = loadinput; // Toto prepise aj predchadzajuce nastavenie z vm, musi to byt inak Todo Ondrej
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
