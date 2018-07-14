@@ -548,7 +548,7 @@ namespace BaseClasses
                 viewPort.Children.Add(wireFrameAllMembers);
             }
         }
-
+        
         // Draw Model Connection Joints Wire Frame
         public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort)
         {
@@ -692,6 +692,54 @@ namespace BaseClasses
                     }
                 }
             }
+        }
+
+        public static void DrawModelConnectionJointsWireFrame(Model3DGroup model3DGroup, Viewport3D viewPort)
+        {
+            ScreenSpaceLines3D wire = new ScreenSpaceLines3D();            
+
+            GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
+
+            if (gm.Geometry != null)
+            {
+                MeshGeometry3D mesh = gm.Geometry as MeshGeometry3D;
+                for(int i = 0; i < mesh.TriangleIndices.Count; i = i+6)
+                {
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 1]]);
+
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 2]]);
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 3]]);
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 5]]);
+                }
+                //mesh.Positions;
+                //mesh.TriangleIndices;
+            }
+            //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
+            //jointWireFrameGroup.AddPoints(transformedPoints.ToList());
+
+
+
+            // Add Wireframe Lines to the trackport
+            //_trackport.ViewPort.Children.Clear();
+            viewPort.Children.Add(wire);
+                    
+        }
+
+        public static GeometryModel3D GetGeoMetryModel3DFrom(Model3DGroup model3DGroup)
+        {
+            GeometryModel3D gm = null;
+            foreach (Model3D m in model3DGroup.Children)
+            {
+                if (m is Model3DGroup) gm = GetGeoMetryModel3DFrom(m as Model3DGroup);
+                else if (m is GeometryModel3D) gm = m as GeometryModel3D;
+            }
+            return gm;
         }
 
         // Draw Members Wire Frame
