@@ -56,15 +56,6 @@ namespace PFD
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
-        // Pokus - Datagrid item source - TODO - nefunguje to
-        System.Collections.IEnumerable d;
-
-        public System.Collections.IEnumerable Data
-        {
-            get { return d; }
-            set { d = value; }
-        }
-
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
         //float fL; // 3 - 150 m
@@ -636,20 +627,8 @@ namespace PFD
         {
             if (MainTabControl.SelectedIndex == 8)
             {
-                MaterialList list = new MaterialList(model);
-
-                // TODO nastavit polozky do GridView v Tab Item Material List
-                //MainTabControl.Items[8]
-
-                //DataGrid a = list.Datagrid_Members;
-                //Data = a.ItemsSource;
-
-
-                Part_List.Content = list.Content;
+                Part_List.Content = new MaterialList(model).Content;
             }
-
-            //TabItem ti =  MainTabControl.SelectedItem as TabItem;
-            //MessageBox.Show("Selected tab: " + (MainTabControl.SelectedItem as TabItem).Header);
         }
     }
 }

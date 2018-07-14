@@ -177,6 +177,8 @@ namespace PFD
 
             set
             {
+                if (value < 0 || value > 4)
+                    throw new ArgumentException("Site subsoil class must be between A and E");
                 MSiteSubsoilClassIndex = value;
 
                 NotifyPropertyChanged("SubsoilClassIndex");
@@ -229,8 +231,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.01f || value > 0.90f)
-                    throw new ArgumentException("Period along X-direction Tx must be between 0.01 and 0.90 seconds");
+                if (value < 0.00f || value > 4.50f)
+                    throw new ArgumentException("Period along X-direction Tx must be between 0.00 and 4.50 seconds");
                 MPeriodAlongXDirectionTx = value;
 
                 NotifyPropertyChanged("PeriodAlongXDirectionTx");
@@ -247,8 +249,8 @@ namespace PFD
 
             set
             {
-                if (value < 0.01f || value > 0.90f)
-                    throw new ArgumentException("Period along Y-direction Ty must be between 0.01 and 0.90 seconds");
+                if (value < 0.00f || value > 4.50f)
+                    throw new ArgumentException("Period along Y-direction Ty must be between 0.00 and 4.50 seconds");
                 MPeriodAlongYDirectionTy = value;
 
                 NotifyPropertyChanged("PeriodAlongYDirectionTy");
