@@ -25,6 +25,8 @@ namespace BaseClasses
 
         public CConnectionComponentEntity3D() { }
         protected abstract void loadIndices();
+        public abstract void loadWireFrameIndices();
+
         protected abstract Point3DCollection GetDefinitionPoints();
         public abstract GeometryModel3D CreateGeomModel3D(SolidColorBrush brush);
         public abstract ScreenSpaceLines3D CreateWireFrameModel();
