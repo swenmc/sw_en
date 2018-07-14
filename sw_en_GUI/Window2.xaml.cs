@@ -246,8 +246,9 @@ namespace sw_en_GUI
                 if (bDisplayMembers_WireFrame) Drawing3D.DrawModelMembersinOneWireFrame(cmodel, _trackport.ViewPort);
 
                 bool bDisplayConnectionJointsWireFrame = true;
-                if (bDisplayConnectionJointsWireFrame) Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
-                
+                //if (bDisplayConnectionJointsWireFrame) Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
+                if (bDisplayConnectionJointsWireFrame) Drawing3D.DrawModelConnectionJointsWireFrame(jointsModel3DGroup, _trackport.ViewPort);
+
                 _trackport.SetupScene();
             }
         }
