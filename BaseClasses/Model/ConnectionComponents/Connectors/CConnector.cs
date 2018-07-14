@@ -89,7 +89,7 @@ namespace BaseClasses
 
         public Transform3DGroup CreateTransformCoordGroup()
         {
-            // Rotate Plate from its cs to joint cs system in LCS of member or GCS
+            // Rotate connector from its cs to joint cs system in LCS of member or GCS
             RotateTransform3D RotateTrans3D_AUX_X = new RotateTransform3D();
             RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
             RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
@@ -98,7 +98,7 @@ namespace BaseClasses
             RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), m_fRotationY_deg); // Rotation in degrees
             RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ_deg); // Rotation in degrees
 
-            // Move 0,0,0 to control point in LCS of member or GCS
+            // Move 0,0,0 to the control point in LCS of member or GCS
             TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
 
             Transform3DGroup Trans3DGroup = new Transform3DGroup();
