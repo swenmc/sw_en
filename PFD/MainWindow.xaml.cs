@@ -29,6 +29,8 @@ using M_AS4600;
 using M_EC1.AS_NZS;
 using _3DTools;
 using SharedLibraries.EXPIMP;
+using System.Data.SQLite;
+using System.Configuration;
 
 namespace PFD
 {
@@ -41,7 +43,7 @@ namespace PFD
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
 
-        CultureInfo ci;
+        //CultureInfo ci;
         SqlConnection cn;
         SqlDataAdapter da;
         DataSet ds;
@@ -84,22 +86,38 @@ namespace PFD
 
         public MainWindow()
         {
-            ci = new CultureInfo("en-us");
-            ci.NumberFormat.NumberDecimalSeparator = ".";
+            //ci = new CultureInfo("en-us");
+            //ci.NumberFormat.NumberDecimalSeparator = ".";
 
-            // Database Connection
-            // TODO Pripojit DATABASE\bin\Debug\MDB.db
-            //cn = new SqlConnection(@"data source"); // Data Source
-            //cn.Open();
+            // Database Connection            
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+
+                SQLiteCommand command = new SQLiteCommand("Select * from corrosion_category", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        System.Diagnostics.Trace.Write(reader["ID"] + ", ");
+                        System.Diagnostics.Trace.Write(reader["standard"] + ", ");
+                        System.Diagnostics.Trace.Write(reader["corrosion_category"] + ", ");
+                        System.Diagnostics.Trace.Write(reader["category_name"] + ", ");
+                        System.Diagnostics.Trace.WriteLine(reader["description"] + ", ");
+                    }
+                    
+                    reader.Close();
+                }                
+            }
+            
             dmodels = new DatabaseModels();
             dlocations = new DatabaseLocations();
 
             // Initial Screen
-
             SplashScreen splashScreen = new SplashScreen("formsteel-screen.jpg");
             splashScreen.Show(false);
             InitializeComponent();
-            splashScreen.Close(TimeSpan.FromMilliseconds(5000));
+            splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
