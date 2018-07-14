@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="PFD.UC_MaterialList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        Height="1200" Width="750">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>            
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Members" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+        <DataGrid Name ="Datagrid_Members" Grid.Row="0"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            IsReadOnly="True">
+        </DataGrid>
+
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Plates" VerticalAlignment="Top" Width="120" Margin="10,2,0,0" FontSize="16"/>
+        <DataGrid Name ="Datagrid_Plates" Grid.Row="1"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            IsReadOnly="True">
+        </DataGrid>
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,2,0,0" FontSize="16"><Run Text="Connectors ("/><Run Text="Anchors, "/><Run Text="Bolts, Screws, Rivets)"/></TextBlock>
+        <DataGrid Name ="Datagrid_Screws" Grid.Row="2"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            IsReadOnly="True">
+        </DataGrid>
+    </Grid>
+</UserControl>

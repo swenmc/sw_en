@@ -636,7 +636,7 @@ namespace PFD
         {
             if (MainTabControl.SelectedIndex == 8)
             {
-                MaterialList list = new MaterialList(model);
+                UC_MaterialList list = new UC_MaterialList(model);
 
                 // TODO nastavit polozky do GridView v Tab Item Material List
                 //MainTabControl.Items[8]
@@ -645,7 +645,7 @@ namespace PFD
                 //Data = a.ItemsSource;
 
 
-                Part_List.Content = list.Content;
+                Part_List.Content = list;
             }
 
             //TabItem ti =  MainTabControl.SelectedItem as TabItem;
