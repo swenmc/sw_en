@@ -250,7 +250,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DesignLife, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Importance Class:" HorizontalAlignment="Left" 
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Importance Level:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
                         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ImportanceClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>

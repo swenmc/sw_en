@@ -17,7 +17,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         private int MLocationIndex;
         private float MDesignLife;
-        private int MImportanceClass;
+        private int MImportanceClass; // Clause A3—Building importance levels
         private float MAnnualProbability_R_ULS;
         private float MAnnualProbability_R_SLS;
         private int MSnowRegionIndex;
@@ -59,8 +59,8 @@ namespace PFD
             }
             set
             {
-                if (value < 1 || value > 1000)
-                    throw new ArgumentException("Design Life must be between 1 and 1000 years");
+                if (value < 1 || value > 100)
+                    throw new ArgumentException("Design Life must be between 1 and 100 years");
                 MDesignLife = value;
 
                 NotifyPropertyChanged("DesignLife");
@@ -77,6 +77,10 @@ namespace PFD
 
             set
             {
+                if (value < 1 || value > 5)
+                    throw new ArgumentException("Importance level must be between 1 and 5");
+                MDesignLife = value;
+
                 MImportanceClass = value;
 
                 NotifyPropertyChanged("ImportanceClassIndex");
