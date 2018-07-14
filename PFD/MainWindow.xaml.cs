@@ -641,8 +641,11 @@ namespace PFD
                 // TODO nastavit polozky do GridView v Tab Item Material List
                 //MainTabControl.Items[8]
 
-                DataGrid a = list.Datagrid_Members;
-                Data = a.ItemsSource;
+                //DataGrid a = list.Datagrid_Members;
+                //Data = a.ItemsSource;
+
+
+                Part_List.Content = list.Content;
             }
 
             //TabItem ti =  MainTabControl.SelectedItem as TabItem;
