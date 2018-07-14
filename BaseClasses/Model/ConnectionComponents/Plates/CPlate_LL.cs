@@ -600,5 +600,129 @@ namespace BaseClasses
 
             return wireFrame;
         }
+
+        // TODO Ondrej - Indices pre wireframe plechu
+        public override void loadWireFrameIndices()
+        {
+            Int32Collection wireFrameIndices = new Int32Collection();
+
+            // z = 0
+            wireFrameIndices.Add(0);
+            wireFrameIndices.Add(1);
+
+            wireFrameIndices.Add(1);
+            wireFrameIndices.Add(2);
+
+            wireFrameIndices.Add(2);
+            wireFrameIndices.Add(3);
+
+            wireFrameIndices.Add(3);
+            wireFrameIndices.Add(4);
+
+            wireFrameIndices.Add(4);
+            wireFrameIndices.Add(5);
+
+            wireFrameIndices.Add(5);
+            wireFrameIndices.Add(6);
+
+            wireFrameIndices.Add(6);
+            wireFrameIndices.Add(7);
+
+            wireFrameIndices.Add(7);
+            wireFrameIndices.Add(8);
+
+            wireFrameIndices.Add(8);
+            wireFrameIndices.Add(9);
+
+            wireFrameIndices.Add(9);
+            wireFrameIndices.Add(0);
+
+            // z = t
+            wireFrameIndices.Add(10);
+            wireFrameIndices.Add(11);
+
+            wireFrameIndices.Add(16);
+            wireFrameIndices.Add(17);
+
+            wireFrameIndices.Add(12);
+            wireFrameIndices.Add(13);
+
+            wireFrameIndices.Add(13);
+            wireFrameIndices.Add(14);
+
+            wireFrameIndices.Add(14);
+            wireFrameIndices.Add(15);
+
+            wireFrameIndices.Add(10);
+            wireFrameIndices.Add(17);
+
+            wireFrameIndices.Add(11);
+            wireFrameIndices.Add(16);
+
+            wireFrameIndices.Add(12);
+            wireFrameIndices.Add(15);
+
+            // z = L
+            wireFrameIndices.Add(18);
+            wireFrameIndices.Add(19);
+
+            wireFrameIndices.Add(19);
+            wireFrameIndices.Add(20);
+
+            wireFrameIndices.Add(20);
+            wireFrameIndices.Add(21);
+
+            wireFrameIndices.Add(21);
+            wireFrameIndices.Add(22);
+
+            wireFrameIndices.Add(22);
+            wireFrameIndices.Add(23);
+
+            wireFrameIndices.Add(23);
+            wireFrameIndices.Add(24);
+
+            wireFrameIndices.Add(24);
+            wireFrameIndices.Add(25);
+
+            wireFrameIndices.Add(25);
+            wireFrameIndices.Add(18);
+
+            // Lateral
+            wireFrameIndices.Add(0);
+            wireFrameIndices.Add(10);
+
+            wireFrameIndices.Add(3);
+            wireFrameIndices.Add(13);
+
+            wireFrameIndices.Add(4);
+            wireFrameIndices.Add(14);
+
+            wireFrameIndices.Add(15);
+            wireFrameIndices.Add(20);
+
+            wireFrameIndices.Add(12);
+            wireFrameIndices.Add(19);
+
+            wireFrameIndices.Add(5);
+            wireFrameIndices.Add(21);
+
+            wireFrameIndices.Add(6);
+            wireFrameIndices.Add(22);
+
+            wireFrameIndices.Add(7);
+            wireFrameIndices.Add(23);
+
+            wireFrameIndices.Add(8);
+            wireFrameIndices.Add(24);
+
+            wireFrameIndices.Add(16);
+            wireFrameIndices.Add(25);
+
+            wireFrameIndices.Add(11);
+            wireFrameIndices.Add(18);
+
+            wireFrameIndices.Add(9);
+            wireFrameIndices.Add(17);
+        }
     }
 }

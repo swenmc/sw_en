@@ -119,5 +119,8 @@ namespace BaseClasses
 
             return geometryModel;
         }
+
+        public override void loadWireFrameIndices()
+        { }
     }
 }

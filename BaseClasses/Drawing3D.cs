@@ -864,7 +864,7 @@ namespace BaseClasses
             // Point light values
             PointLight Point_Light = new PointLight();
             Point_Light.Position = new Point3D(0, 0, 30);
-            Point_Light.Color = System.Windows.Media.Brushes.White.Color;
+            Point_Light.Color = Brushes.White.Color;
             Point_Light.Range = 30.0;
             Point_Light.ConstantAttenuation = 0;
             Point_Light.LinearAttenuation = 0;
@@ -875,7 +875,7 @@ namespace BaseClasses
             SpotLight Spot_Light = new SpotLight();
             Spot_Light.InnerConeAngle = 30;
             Spot_Light.OuterConeAngle = 30;
-            Spot_Light.Color = System.Windows.Media.Brushes.White.Color;
+            Spot_Light.Color = Brushes.White.Color;
             Spot_Light.Direction = new Vector3D(0, 0, -1);
             Spot_Light.Position = new Point3D(8.5, 8.5, 20);
             Spot_Light.Range = 30;

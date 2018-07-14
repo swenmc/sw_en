@@ -35,6 +35,9 @@ namespace BaseClasses
         protected override void loadIndices()
         { }
 
+        public override void loadWireFrameIndices()
+        { }
+
         public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
         public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
         //public float[,] PointsOut2D; // Array of points coordinates of plate outline in 2D used for DXF
