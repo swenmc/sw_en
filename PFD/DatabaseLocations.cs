@@ -11,6 +11,9 @@ namespace PFD
         public DatabaseLocations()
         { }
 
+        public DatabaseLocations(int index)
+        { }
+
         // NZ Location
         /*
         Auckland

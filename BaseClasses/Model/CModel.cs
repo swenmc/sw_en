@@ -142,7 +142,7 @@ namespace BaseClasses
                 //ak sa dana n-tica v dictionary nachadza, tak pridaj member do kolekcie
                 //inak vytvor novy zaznam v dictionary kde Key je n-tica a Value je list s tymto objektom member
                 if (GroupedMembers.ContainsKey(t)) GroupedMembers[t].Add(m);
-                else GroupedMembers.Add(t, new List<CMember> { m });                
+                else GroupedMembers.Add(t, new List<CMember> { m });
             }
 
             //Takto sa kolekciou prechadza. Stale je to par Key a Value

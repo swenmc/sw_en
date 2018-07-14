@@ -84,7 +84,7 @@ namespace PFD
             set
             {
                 if (value < 3 || value > 100)
-                    throw new ArgumentException("Cable Width must be between 3 and 100 [m]");
+                    throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
                 MGableWidth = value;
                 
                 if (MModelIndex != 0)

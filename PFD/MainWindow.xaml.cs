@@ -50,9 +50,20 @@ namespace PFD
         public DatabaseModels dmodels; // Todo nahradit databazov modelov
         public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
         public CPFDViewModel vm;
+        public CPFDLoadInput loadinput;
+
         public BuildingDataInput sBuildingInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
+
+        // Pokus - Datagrid item source - TODO - nefunguje to
+        System.Collections.IEnumerable d;
+
+        public System.Collections.IEnumerable Data
+        {
+            get { return d; }
+            set { d = value; }
+        }
 
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
@@ -96,6 +107,7 @@ namespace PFD
             foreach (string locationname in dlocations.arr_LocationNames)
                 Combobox_Location.Items.Add(locationname);
 
+            // Model Geometry
             vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
@@ -103,8 +115,13 @@ namespace PFD
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
-            
+
             //model = new CExample_3D_902_OM();
+
+            // Loading
+            loadinput = new CPFDLoadInput(11); // Default - Auckland
+            loadinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
+            this.DataContext = loadinput;
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -113,8 +130,6 @@ namespace PFD
             Frame1.Content = page1;
 
             model.GroupModelMembers();
-
-
         }
 
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -152,6 +167,13 @@ namespace PFD
             //MessageBox.Show("OK");
         }
 
+        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            CPFDLoadInput loadInput = sender as CPFDLoadInput;
+            if (loadInput != null && loadInput.IsSetFromCode) return;
+        }
+
         //SplashScreen splashScreen = null;
         //bool waiting = true;
         public void bckWrk_DoWork(object sender, DoWorkEventArgs e)
@@ -177,7 +199,6 @@ namespace PFD
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
-            //model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin, fdist_frontcolumn, fdist_girt_bottom); // create calculation model // TODO - set purlin distances
 
             // Clear results of previous calculation
             DeleteCalculationResults();
@@ -613,12 +634,15 @@ namespace PFD
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainTabControl.SelectedIndex == 6)
+            if (MainTabControl.SelectedIndex == 8)
             {
                 MaterialList list = new MaterialList(model);
 
                 // TODO nastavit polozky do GridView v Tab Item Material List
+                //MainTabControl.Items[8]
 
+                DataGrid a = list.Datagrid_Members;
+                Data = a.ItemsSource;
             }
 
             //TabItem ti =  MainTabControl.SelectedItem as TabItem;

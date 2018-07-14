@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CPFDLoadInput.cs" />
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="DatabaseComponents.cs" />
     <Compile Include="MaterialList.xaml.cs">
