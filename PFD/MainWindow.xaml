@@ -65,15 +65,15 @@
                         <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=ModelIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
                          VerticalAlignment="Top" />
@@ -84,28 +84,28 @@
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"  
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofPitch, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="Frames:" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Frames_No" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Frames, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                           TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="Girt Distance:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -240,79 +240,79 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Location:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Location" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LocationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=LocationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Design Life:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_DesignLife" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=DesignLife, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Importance Class:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ImportanceClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Annual Probability ULS:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AnnualProbabilityULS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="Annual Probability SLS:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_AnnualProbabilitySLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <ComboBox Grid.Row="6" Grid.Column="1" Name ="Combobox_SnowRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=SnowRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="8" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <ComboBox Grid.Row="8" Grid.Column="1" Name ="Combobox_WindRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=WindRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="9" Grid.Column="0" Text="Terrain Roughness:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_TerrainRoughness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainRoughnessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="11" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_SubSoilClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=SubSoilClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="12" Grid.Column="0" Text="Proximity to Fault:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="12" Grid.Column="1" Name ="ProximityToFault" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ProximityToFault, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="13" Grid.Column="0" Text="Zone Factor Z:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="13" Grid.Column="1" Name ="ZoneFactorZ" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=ZoneFactorZ, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="14" Grid.Column="0" Text="Period along X-direction Tx:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="14" Grid.Column="1" Name ="PeriodAlongXdirectionTx" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PeriodAlongXdirectionTx, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="15" Grid.Column="0" Text="Period along Y-direction Ty:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="15" Grid.Column="1" Name ="PeriodAlongYdirectionTy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PeriodAlongYdirectionTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
                         <TextBlock Grid.Row="16" Grid.Column="0" Text="Spectral Shape Factor Ch T:" HorizontalAlignment="Left" 
-                           VerticalAlignment="Top" />
+                         VerticalAlignment="Top" />
                         <TextBox Grid.Row="16" Grid.Column="1" Name ="SpectralShapeFactorChT" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=SpectralShapeFactorChT, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
