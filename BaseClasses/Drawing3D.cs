@@ -694,32 +694,110 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawModelConnectionJointsWireFrame(Model3DGroup model3DGroup, Viewport3D viewPort)
+        public static void DrawModelConnectionJointsWireFrame(Model3DGroup model3DGroup, CModel model, Viewport3D viewPort)
         {
-            ScreenSpaceLines3D wire = new ScreenSpaceLines3D();            
-
-            GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
-
-            if (gm.Geometry != null)
+            ScreenSpaceLines3D jointWireFrameGroup = new ScreenSpaceLines3D();
+            if (model.m_arrConnectionJoints != null)
             {
-                MeshGeometry3D mesh = gm.Geometry as MeshGeometry3D;
-                for(int i = 0; i < mesh.TriangleIndices.Count; i = i+6)
+                for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
                 {
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 1]]);
+                    if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
+                    {
+                        // Joint model wireframe                        
+                        Transform3DGroup jointTransformGroup = new Transform3DGroup(); // Nepouzite
 
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 2]]);
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+                        // Plates
+                        if (model.m_arrConnectionJoints[i].m_arrPlates != null)
+                        {
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++)
+                            {
+                                // Create WireFrame in LCS
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel();
 
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 3]]);
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+                                // Rotate from LCS system of plate to LCS system of member or GCS system (depends on joint type definition, in LCS of member or GCS system)
+                                model.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
 
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
-                    wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 5]]);
+                                // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta 
+                                //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
+
+                                Transform3DGroup a = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
+
+                                var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
+                                jointWireFrameGroup.AddPoints(transformedPoints.ToList());
+
+                                // TODO - pridat wireframe pre connectors v plechoch
+                            }
+                        }
+
+                        // Connectors
+                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
+
+                        if (bUseAdditionalConnectors && model.m_arrConnectionJoints[i].m_arrConnectors != null)
+                        {
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrConnectors.Length; j++)
+                            {
+                                // Create WireFrame in LCS
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrConnectors[j].CreateWireFrameModel();
+
+                                // Rotate from LCS to GCS
+                                // TODO
+                                jointWireFrameGroup.AddPoints(wireFrame.Points);
+                            }
+                        }
+
+                        // Welds
+                        if (model.m_arrConnectionJoints[i].m_arrWelds != null)
+                        {
+                            for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrWelds.Length; j++)
+                            {
+                                // Create WireFrame in LCS
+                                ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrWelds[j].CreateWireFrameModel();
+
+                                // Rotate from LCS to GCS
+
+                                // TODO
+                                jointWireFrameGroup.AddPoints(wireFrame.Points);
+                            }
+                        }
+
+
+                    }
                 }
-                //mesh.Positions;
-                //mesh.TriangleIndices;
             }
+
+            
+
+            foreach (Model3D m in model3DGroup.Children)
+            {
+                var transPoints = jointWireFrameGroup.Points.Select(p => m.Transform.Transform(p));
+                List<Point3D> points = transPoints.ToList();
+                jointWireFrameGroup.Points.Clear();
+                jointWireFrameGroup.AddPoints(points);
+            }
+            //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();            
+
+            //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
+
+            //if (gm.Geometry != null)
+            //{
+            //    MeshGeometry3D mesh = gm.Geometry as MeshGeometry3D;
+            //    for(int i = 0; i < mesh.TriangleIndices.Count; i = i+6)
+            //    {
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 1]]);
+
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 2]]);
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 3]]);
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 5]]);
+            //    }
+            //    //mesh.Positions;
+            //    //mesh.TriangleIndices;
+            //}
             //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
             //jointWireFrameGroup.AddPoints(transformedPoints.ToList());
 
@@ -727,7 +805,7 @@ namespace BaseClasses
 
             // Add Wireframe Lines to the trackport
             //_trackport.ViewPort.Children.Clear();
-            viewPort.Children.Add(wire);
+            viewPort.Children.Add(jointWireFrameGroup);
                     
         }
 
