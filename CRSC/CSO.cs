@@ -349,8 +349,8 @@ namespace CRSC
         public void J_12_13_14_method()
         {
             if ((I_z - I_y) != 0)
-                Alpha = Math.Atan(2 * I_yz / (I_z - I_y)) / 2;
-            else Alpha = 0;
+                Alpha_rad = Math.Atan(2 * I_yz / (I_z - I_y)) / 2;
+            else Alpha_rad = 0;
             double temp = Math.Sqrt(Math.Pow(I_z - I_y, 2) + 4 * Math.Pow(I_yz, 2));
             this.I_epsilon = 0.5 * (I_y + I_z + temp);
             this.I_mikro = 0.5 * (I_y + I_z - temp);
@@ -406,9 +406,9 @@ namespace CRSC
             try
             {
                 double temp = I_y * I_z - Math.Pow(I_yz, 2);
-                d_y_sc = (_Iz_omega * I_z - _Iy_omega * I_yz) / temp;
-                d_z_sc = (-_Iy_omega * I_y - _Iz_omega * I_yz) / temp;
-                I_w = _Iomega_omega + d_z_sc * _Iy_omega - d_y_sc * _Iz_omega;
+                D_y_sc = (_Iz_omega * I_z - _Iy_omega * I_yz) / temp;
+                D_z_sc = (-_Iy_omega * I_y - _Iz_omega * I_yz) / temp;
+                I_w = _Iomega_omega + D_z_sc * _Iy_omega - D_y_sc * _Iz_omega;
             }
             catch (DivideByZeroException) { MessageBox.Show("ERROR. Divide by zero, J.20 method."); }
         }
@@ -446,7 +446,7 @@ namespace CRSC
             d_omega_s[0] = 0;
             for (int i = 1; i < count; i++)
             {
-                d_omega_s[i] = omega[i] - _omega_mean + d_z_sc * (y_suradnice[i] - D_y_gc) - d_y_sc * (z_suradnice[i] - D_z_gc);
+                d_omega_s[i] = omega[i] - _omega_mean + D_z_sc * (y_suradnice[i] - D_y_gc) - D_y_sc * (z_suradnice[i] - D_z_gc);
             }
         }
         //J.24,J.25,J.26 method
@@ -454,9 +454,9 @@ namespace CRSC
         {
             omega_max = MathF.Max(d_omega_s);
             W_w = I_w / omega_max;
-            d_y_s = d_y_sc - D_y_gc;
-            d_z_s = d_z_sc - D_z_gc;
-            _Ip = I_y + I_z + A_g * (Math.Pow(d_y_s, 2) + Math.Pow(d_z_s, 2));
+            D_y_s = D_y_sc - D_y_gc;
+            D_z_s = D_z_sc - D_z_gc;
+            _Ip = I_y + I_z + A_g * (Math.Pow(D_y_s, 2) + Math.Pow(D_z_s, 2));
 
         }
         //J.29 method
@@ -481,8 +481,8 @@ namespace CRSC
                         Math.Pow(z_suradnice[i] - z_suradnice[i - 1], 2) / 12) + d_z_ci * (z_suradnice[i] - z_suradnice[i - 1]) *
                         (y_suradnice[i] - y_suradnice[i - 1]) / 6) * dAi;
             }
-            d_z_j = d_z_s - (0.5 / I_y) * zj_temp;
-            d_y_j = d_y_s - (0.5 / I_z) * yj_temp;
+            d_z_j = D_z_s - (0.5 / I_y) * zj_temp;
+            d_y_j = D_y_s - (0.5 / I_z) * yj_temp;
         }
         // Calculate dimensions
         public void J_Calc_Dimensions()
@@ -543,7 +543,7 @@ namespace CRSC
                 Beta_y_temp += (Math.Pow(d_y_ci, 2) * (d_z_ci) + Math.Pow(d_z_ci, 3)) * dAi;
             }
 
-            Beta_y = (1 / I_y) * Beta_y_temp - 2 * d_z_s;
+            Beta_y = (1 / I_y) * Beta_y_temp - 2 * D_z_s;
         }
         // Calculate Monosymmetry section constant Beta z
         public void Calc_Beta_z_method(int count)
@@ -558,7 +558,7 @@ namespace CRSC
                 Beta_z_temp += (Math.Pow(d_z_ci, 2) * (d_y_ci) + Math.Pow(d_y_ci, 3)) * dAi;
             }
 
-            Beta_z = (1 / I_z) * Beta_z_temp - 2 * d_y_s;
+            Beta_z = (1 / I_z) * Beta_z_temp - 2 * D_y_s;
 
             //Table E1
             // Pokusny vypocet - c s vystuhami na koncoch

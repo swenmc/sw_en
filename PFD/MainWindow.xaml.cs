@@ -24,6 +24,7 @@ using MATH;
 using MATERIAL;
 using CRSC;
 using sw_en_GUI;
+using sw_en_GUI.EXAMPLES._2D;
 using sw_en_GUI.EXAMPLES._3D;
 using M_AS4600;
 using M_EC1.AS_NZS;
@@ -43,9 +44,6 @@ namespace PFD
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
 
-        //CultureInfo ci;
-        SqlConnection cn;
-        SqlDataAdapter da;
         DataSet ds;
 
         public CModel model;
@@ -57,15 +55,6 @@ namespace PFD
         public BuildingDataInput sBuildingInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
-
-        // Pokus - Datagrid item source - TODO - nefunguje to
-        System.Collections.IEnumerable d;
-
-        public System.Collections.IEnumerable Data
-        {
-            get { return d; }
-            set { d = value; }
-        }
 
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
@@ -86,10 +75,7 @@ namespace PFD
 
         public MainWindow()
         {
-            //ci = new CultureInfo("en-us");
-            //ci.NumberFormat.NumberDecimalSeparator = ".";
-
-            // Database Connection            
+            // Database Connection
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -107,9 +93,12 @@ namespace PFD
                     }
                     
                     reader.Close();
-                }                
+                }
             }
-            
+
+
+
+
             dmodels = new DatabaseModels();
             dlocations = new DatabaseLocations();
 
@@ -133,8 +122,6 @@ namespace PFD
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
-
-            //model = new CExample_3D_902_OM();
 
             // Loading
             loadinput = new CPFDLoadInput(11); // Default - Auckland
@@ -257,18 +244,69 @@ namespace PFD
 
             CCalcul_1170_5 eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
 
+            // TODO  - toto je potrebne presunut niekam k prierezom
+            // Nastavit hodnoty pre vypocet
 
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command;
+                SQLiteDataReader reader;
 
+                foreach (CCrSc_TW crsc in model.m_arrCrSc)
+                {
+                    command = new SQLiteCommand("Select * from tableSections_m where section = '27095'", conn);
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            crsc.Name = reader["section"].ToString();
+                            crsc.h = reader.GetDouble(reader.GetOrdinal("h"));
+                            crsc.b = reader.GetDouble(reader.GetOrdinal("b"));
+                            crsc.t_min = crsc.t_max = reader.GetDouble(reader.GetOrdinal("t")); // Max and min value is just for thin-walled cold formed cross-sections
+                            crsc.A_g = reader.GetDouble(reader.GetOrdinal("A_g"));
+                            crsc.I_y0 = reader.GetDouble(reader.GetOrdinal("I_y0"));
+                            crsc.I_z0 = reader.GetDouble(reader.GetOrdinal("I_z0"));
+                            //crsc.W_y_el0 = reader.GetDouble(reader.GetOrdinal("W_el_y0"));
+                            //crsc.W_z_el0 = reader.GetDouble(reader.GetOrdinal("W_el_z0"));
+                            crsc.I_yz0 = reader.GetDouble(reader.GetOrdinal("Iyz0"));
+                            crsc.I_y = reader.GetDouble(reader.GetOrdinal("Iy"));
+                            crsc.I_z = reader.GetDouble(reader.GetOrdinal("Iz"));
+                            crsc.W_y_el = reader.GetDouble(reader.GetOrdinal("W_el_y"));
+                            crsc.W_z_el = reader.GetDouble(reader.GetOrdinal("W_el_z"));
+                            crsc.I_t = reader.GetDouble(reader.GetOrdinal("It"));
+                            crsc.I_w = reader.GetDouble(reader.GetOrdinal("Iw"));
+                            crsc.D_y_gc = reader.GetDouble(reader.GetOrdinal("yc")); // Poloha taziska v povodnom suradnicovom systeme
+                            crsc.D_z_gc = reader.GetDouble(reader.GetOrdinal("zc"));
+                            crsc.D_y_sc = reader.GetDouble(reader.GetOrdinal("ys")); // Poloha stredu smyku v povodnom suradnicovom systeme
+                            crsc.D_z_sc = reader.GetDouble(reader.GetOrdinal("zs"));
+                            crsc.D_y_s = reader.GetDouble(reader.GetOrdinal("ycs"));  // Vzdialenost medzi taziskom G a stredom smyku S
+                            crsc.D_z_s = reader.GetDouble(reader.GetOrdinal("zcs"));
+                            crsc.Beta_y = reader.GetDouble(reader.GetOrdinal("betay"));
+                            crsc.Beta_z = reader.GetDouble(reader.GetOrdinal("betaz"));
+                            crsc.Alpha_rad = (reader.GetDouble(reader.GetOrdinal("alpha_deg")) / 180 * MathF.dPI);
+                            crsc.Bending_curve_stress_x1 = reader.GetDouble(reader.GetOrdinal("Bending_curve_x1"));
+                            crsc.Bending_curve_stress_x2 = reader.GetDouble(reader.GetOrdinal("Bending_curve_x2"));
+                            //crsc.Bending_curve_stress_x3 = reader.GetDouble(reader.GetOrdinal("Bending_curve_x3")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
+                            //crsc.Bending_curve_stress_y = reader.GetDouble(reader.GetOrdinal("Bending_curve_y")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
+                            crsc.Compression_curve_stress_1 = reader.GetDouble(reader.GetOrdinal("Compression_curve_1"));
+                            //crsc.Compression_curve_stress_2 = reader.GetDouble(reader.GetOrdinal("Compression_curve_2")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
+                            //crsc.Compression_curve_stress_3 = reader.GetDouble(reader.GetOrdinal("Compression_curve_3")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
+                        }
+                    }
+                    reader.Close();
+                }
+            }
 
-
-
-
-
-            //Calculate Internal Forces
+            // Calculate Internal Forces
             // Todo - napojit FEM vypocet
             bool bDebugging = false;
 
-            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(model, bDebugging);
+            // Todo - nefunguje to, chce to viac casu zistit preco
+            // Navrhujem napojjit nejaky externy solver alebo vypocet
+
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(model.m_arrMat[0], model.m_arrCrSc[0], model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2,1000,1000,1000,1000);
+            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
 
             // Auxialiary string - result data
             int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
@@ -276,7 +314,7 @@ namespace PFD
 
             for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
             {
-                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Incerase index (1st member "0" to "1"
+                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
                 int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
 
                 sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
@@ -551,6 +589,7 @@ namespace PFD
 
             Results_GridView.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
+            /*
             // Set Column Header
             Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
             Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
@@ -560,16 +599,7 @@ namespace PFD
             Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
             Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
             Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Material - pokus TODO
-            da = new SqlDataAdapter("SELECT * FROM STEEL", cn); // SQL Query
-            ds = new DataSet();
-            da.Fill(ds);
-
-            //Results_GridView.ItemsSource = ds.Tables[0].DefaultView;
+            */
         }
 
         //deleting lists for updating actual values
@@ -586,8 +616,6 @@ namespace PFD
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
-
-            //model = new CExample_3D_901_PF(fh, fb, fL1, iFrNo, fh2, fdist_girt, fdist_purlin,fdist_frontcolumn, fdist_girt_bottom);
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -653,21 +681,7 @@ namespace PFD
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MainTabControl.SelectedIndex == 8)
-            {
-                UC_MaterialList list = new UC_MaterialList(model);
-
-                // TODO nastavit polozky do GridView v Tab Item Material List
-                //MainTabControl.Items[8]
-
-                //DataGrid a = list.Datagrid_Members;
-                //Data = a.ItemsSource;
-
-
-                Part_List.Content = list;
-            }
-
-            //TabItem ti =  MainTabControl.SelectedItem as TabItem;
-            //MessageBox.Show("Selected tab: " + (MainTabControl.SelectedItem as TabItem).Header);
+                Part_List.Content = new UC_MaterialList(model).Content;
         }
     }
 }

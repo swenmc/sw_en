@@ -251,7 +251,7 @@ namespace CRSC
             D_z_s = 0;
             Beta_y = 0;
             Beta_z = 0;
-            Alpha = 0;
+            Alpha_rad = 0;
         }
     }
 }

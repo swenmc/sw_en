@@ -259,13 +259,15 @@ namespace BaseClasses
         m_A_z_v_el,
         m_A_z_v_pl,
         m_f_z_v_plel,
-        m_alpha,
+        m_alpha_rad,            // Angle in radians
         m_t_max,
         m_t_min,
         m_d_z_gc,               // Centre of gravity coordinate // (J.7)
         m_d_y_gc,               // Centre of gravity coordinate // (J.7)
-        m_d_z_sc,               // Shear centre coordinate
-        m_d_y_sc;               // Shear centre coordinate
+        m_d_z_sc,               // Shear centre coordinate // Souradnice stredu smyku (J.20) // (J.20)
+        m_d_y_sc,               // Shear centre coordinate
+        m_d_y_s,                // Vzdalenost stredu smyku a teziste // (J.25)
+        m_d_z_s;                // (J.25)
 
         public double S_y0
         {
@@ -603,10 +605,10 @@ namespace BaseClasses
             set { m_U = value; }
         }
 
-        public double Alpha
+        public double Alpha_rad
         {
-            get { return m_alpha; }
-            set { m_alpha = value; }
+            get { return m_alpha_rad; }
+            set { m_alpha_rad = value; }
         }
 
         public double y_min
@@ -665,6 +667,17 @@ namespace BaseClasses
         {
             get { return m_d_y_sc; }
             set { m_d_y_sc = value; }
+        }
+
+        public double D_z_s
+        {
+            get { return m_d_z_s; }
+            set { m_d_z_s = value; }
+        }
+        public double D_y_s
+        {
+            get { return m_d_y_s; }
+            set { m_d_y_s = value; }
         }
 
         public CMat m_Mat = new CMat();

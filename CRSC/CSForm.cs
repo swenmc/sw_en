@@ -123,7 +123,7 @@ namespace CRSC
             double d_Wy_el_2 = Math.Round(cs.W_y_el_2, dec_place_num2);
             double d_Wz_el_2 = Math.Round(cs.W_z_el_2, dec_place_num2);
 
-            double d_Alpha = Math.Round(cs.Alpha, dec_place_num2);
+            double d_Alpha = Math.Round(cs.Alpha_rad, dec_place_num2);
             double d_I_yz = Math.Round(cs.I_yz, dec_place_num2);
             double d_I_eps = Math.Round(cs.I_epsilon, dec_place_num2);
             double d_I_eta = Math.Round(cs.I_mikro, dec_place_num2);

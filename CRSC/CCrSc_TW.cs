@@ -57,10 +57,10 @@ namespace CRSC
              , _Iz_omega             // Staticky vysecový moment // (J.18) 
              , _Iomega_omega         // Staticky vysecový moment // (J.19)
              , _Ip                   // Polarni moment setrvacnosti // (J.26)
-             , d_y_sc                // Souradnice stredu smyku (J.20) // (J.20)
-             , d_z_sc                // (J.20)
-             , d_y_s                 // Vzdalenost stredu smyku a teziste // (J.25)
-             , d_z_s                 // (J.25)
+             //, d_y_sc                // Souradnice stredu smyku (J.20) // (J.20)
+             //, d_z_sc                // (J.20)
+             //, d_y_s                 // Vzdalenost stredu smyku a teziste // (J.25)
+             //, d_z_s                 // (J.25)
              //, d_I_w                 // Vysecovy moment setrvacnosti (J.21)  // Warping constant, Iw - Vysecovy moment setrvacnosti
                                      //, d_I_t                 // St. Venant torsional constant / Moment tuhosti v prostem krouceni // (J.22)
                                      //, d_W_t                 // Modul odporu prierezu v kruteni / Modul tuhosti v prostem krouceni // (J.22)
@@ -82,6 +82,14 @@ namespace CRSC
         public double m_Beta_y, m_Beta_z;      // Monosymmetry constant AS / NZS standards
         public double m_t_min;
         public double m_t_max;
+
+        public double dBending_curve_stress_x1;
+        public double dBending_curve_stress_x2;
+        public double dBending_curve_stress_x3;
+        public double dBending_curve_stress_y;
+        public double dCompression_curve_stress_1;
+        public double dCompression_curve_stress_2;
+        public double dCompression_curve_stress_3;
 
         #endregion
 
@@ -120,18 +128,6 @@ namespace CRSC
         {
             get { return omega_max; }
             set { omega_max = value; }
-        }
-
-        public double D_z_s
-        {
-            get { return d_z_s; }
-            set { d_z_s = value; }
-        }
-
-        public double D_y_s
-        {
-            get { return d_y_s; }
-            set { d_y_s = value; }
         }
 
         public double Ip
@@ -180,6 +176,48 @@ namespace CRSC
         {
             get { return m_t_max; }
             set { m_t_max = value; }
+        }
+
+        public double Bending_curve_stress_x1
+        {
+            get { return dBending_curve_stress_x1; }
+            set { dBending_curve_stress_x1 = value; }
+        }
+
+        public double Bending_curve_stress_x2
+        {
+            get { return dBending_curve_stress_x2; }
+            set { dBending_curve_stress_x2 = value; }
+        }
+
+        public double Bending_curve_stress_x3
+        {
+            get { return dBending_curve_stress_x3; }
+            set { dBending_curve_stress_x3 = value; }
+        }
+
+        public double Bending_curve_stress_y
+        {
+            get { return dBending_curve_stress_y; }
+            set { dBending_curve_stress_y = value; }
+        }
+
+        public double Compression_curve_stress_1
+        {
+            get { return dCompression_curve_stress_1; }
+            set { dCompression_curve_stress_1 = value; }
+        }
+
+        public double Compression_curve_stress_2
+        {
+            get { return dCompression_curve_stress_2; }
+            set { dCompression_curve_stress_2 = value; }
+        }
+
+        public double Compression_curve_stress_3
+        {
+            get { return dCompression_curve_stress_3; }
+            set { dCompression_curve_stress_3 = value; }
         }
 
         // end of cross-section variables definition

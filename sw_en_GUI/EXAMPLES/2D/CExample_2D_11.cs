@@ -8,7 +8,7 @@ using CRSC;
 
 namespace sw_en_GUI.EXAMPLES._2D
 {
-    class CExample_2D_11 : CExample
+    public class CExample_2D_11 : CExample
     {
         public CExample_2D_11()
         {

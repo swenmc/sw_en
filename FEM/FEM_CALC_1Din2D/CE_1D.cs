@@ -512,7 +512,7 @@ namespace FEM_CALC_1Din2D
             float f04EIy_len1 = (4f * f_EIy) / FLength;
 
             // Local Stiffeness Matrix
-            return new float[3, 3]  
+            return new float[3, 3]
             {
             {fEA_len,               0f,            0f },
             {       0f,      f12EIy_len3,   f06EIy_len2 },
@@ -524,7 +524,7 @@ namespace FEM_CALC_1Din2D
         // 00_0_
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // votknutie na zaciatku - posuvne ulozenie / valcovy klbna konci - 2D
+        // votknutie na zaciatku - posuvne ulozenie / valcovy klb na konci - 2D
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         private float[,] GetLocMatrix_2D_00_0_()
         {
@@ -536,11 +536,11 @@ namespace FEM_CALC_1Din2D
             float f3EIy_len1 = (3f * f_EIy) / FLength;
 
             // Local Stiffeness Matrix
-            return new float[3, 3]  
+            return new float[3, 3]
             {
-            {fEA_len,                0f,           0f },
-            {       0f,      f3EIy_len3,   f3EIy_len2 },
-            {       0f,      f3EIy_len2,   f3EIy_len1 }
+            {fEA_len,           0f,         0f },
+            {       0f, f3EIy_len3, f3EIy_len2 },
+            {       0f, f3EIy_len2, f3EIy_len1 }
             };
         }
         #endregion
@@ -557,11 +557,11 @@ namespace FEM_CALC_1Din2D
             float f3EIy_len3 = (3f * Member.CrScStart.m_Mat.m_fE * (float)Member.CrScStart.I_y) / (float)Math.Pow(FLength, 3f);
 
             // Local Stiffeness Matrix
-            return new float[3, 3]  
+            return new float[3, 3]
             {
-            {fEA_len,          0f,    0f },
-            {       0f, f3EIy_len3,   0f },
-            {       0f,        0f,    0f }
+            {fEA_len,         0f,    0f },
+            {     0f, f3EIy_len3,    0f },
+            {     0f,         0f,    0f }
             };
         }
         #endregion
@@ -578,9 +578,9 @@ namespace FEM_CALC_1Din2D
             // Local Stiffeness Matrix
             return new float[3, 3]  
             {
-            {fEA_len,          0f,    0f },
-            {       0f,        0f,   0f },
-            {       0f,        0f,    0f }
+            {fEA_len,         0f,    0f },
+            {     0f,         0f,    0f },
+            {     0f,         0f,    0f }
             };
         }
         #endregion
