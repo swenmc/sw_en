@@ -597,7 +597,22 @@ namespace BaseClasses
                                 var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
                                 jointWireFrameGroup.AddPoints(transformedPoints.ToList());
 
+                                bool bDrawConnectors = true;
+
                                 // TODO - pridat wireframe pre connectors v plechoch
+                                // TODO Ondrej 15/07/2018
+                                // Pridat do wireframe aj linie na skrutkach
+
+                                if (bDrawConnectors)
+                                {
+                                    // Add plate connectors
+                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors != null &&
+                                        model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length > 0)
+                                    {
+                                        for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; m++)
+                                            jointWireFrameGroup.AddPoints(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].WireFrameModelPoints());
+                                    }
+                                }
                             }
                         }
 
@@ -742,6 +757,22 @@ namespace BaseClasses
                                 jointWireFrameGroup.AddPoints(transformedPoints.ToList());
 
                                 // TODO - pridat wireframe pre connectors v plechoch
+                                bool bDrawConnectors = true;
+
+                                // TODO - pridat wireframe pre connectors v plechoch
+                                // TODO Ondrej 15/07/2018
+                                // Pridat do wireframe aj linie na skrutkach
+
+                                if (bDrawConnectors)
+                                {
+                                    // Add plate connectors
+                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors != null &&
+                                        model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length > 0)
+                                    {
+                                        for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; m++)
+                                            jointWireFrameGroup.AddPoints(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].WireFrameModelPoints());
+                                    }
+                                }
                             }
                         }
 

@@ -44,7 +44,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             iTotNoPoints = iNumberPoints;  // Odd number - include centroid
             return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, fDim1_r, fDim2_L, mat);
         }
-            public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
+        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, float fDim1_r, float fDim2_L, DiffuseMaterial mat)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
 
@@ -143,7 +143,51 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             return geomModel3D;
         }
+        public Int32Collection GetWireFrameIndices_Cylinder(short nPoints)
+        {
+            Int32Collection wireFrameIndices = new Int32Collection();
 
+            short iTotNoPoints = nPoints; // 73 // 1 auxialiary node in centroid / stredovy bod
+
+            // Front Side / Forehead
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                if (i < iTotNoPoints - 2)
+                {
+                    wireFrameIndices.Add(i + 1);
+                    wireFrameIndices.Add(i);
+                }
+                else // Last Element
+                {
+                    wireFrameIndices.Add(i);
+                    wireFrameIndices.Add(0);
+                }
+            }
+
+            // Back Side
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                if (i < iTotNoPoints - 2)
+                {
+                    wireFrameIndices.Add(iTotNoPoints + i + 1);
+                    wireFrameIndices.Add(iTotNoPoints + i);
+                }
+                else // Last Element
+                {
+                    wireFrameIndices.Add(iTotNoPoints);
+                    wireFrameIndices.Add(iTotNoPoints + i);
+                }
+            }
+
+            // Shell Surface OutSide
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                wireFrameIndices.Add(i);
+                wireFrameIndices.Add(iTotNoPoints + i);
+            }
+
+            return wireFrameIndices;
+        }
         // Draw Rectangle / Add rectangle indices - countrer-clockwise CCW numbering of input points 1,2,3,4 (see scheme)
         // Add in order 1,4,3,2
         protected void AddRectangleIndices_CCW_1234(Int32Collection Indices,

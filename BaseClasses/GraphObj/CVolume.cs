@@ -531,7 +531,6 @@ namespace BaseClasses.GraphObj
         {
             return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 73, fDim1_r, fDim2_h, mat);
         }
-
         public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat)
         {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
@@ -626,7 +625,6 @@ namespace BaseClasses.GraphObj
 
             return geomModel3D;
         }
-
         public Int32Collection GetWireFrameIndices_Cylinder(short nPoints)
         {
             Int32Collection wireFrameIndices = new Int32Collection();
