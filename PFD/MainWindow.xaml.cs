@@ -255,7 +255,22 @@ namespace PFD
 
                 foreach (CCrSc_TW crsc in model.m_arrCrSc)
                 {
-                    command = new SQLiteCommand("Select * from tableSections_m where section = '27095'", conn);
+                    // TODO - zjednotit nazvy prierezov v database a v GUI programu
+                    string stringcommand = "Select * from tableSections_m where section = '" + crsc.Name + "'";
+                    /*
+                    10075
+                    27095
+                    270115
+                    270115btb
+                    270115n
+                    50020
+                    50020n
+                    63020
+                    63020s1
+                    63020s2
+                    */
+
+                    command = new SQLiteCommand("Select * from tableSections_m where section = '27095'", conn); // Temp
                     using (reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -600,10 +615,10 @@ namespace PFD
             Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
             Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
             */
-        }
+                }
 
-        //deleting lists for updating actual values
-        private void DeleteLists()
+                //deleting lists for updating actual values
+                private void DeleteLists()
         {
             zoznamMenuNazvy.Clear();
             zoznamMenuHodnoty.Clear();
