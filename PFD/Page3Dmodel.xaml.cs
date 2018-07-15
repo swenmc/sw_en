@@ -34,9 +34,8 @@ namespace PFD
         {
             InitializeComponent();
 
-            //zmena farby pre Trackport
+            //Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
-            //_trackport.TrackportBackground = new SolidColorBrush(Colors.DarkBlue);
 
             // Global coordinate system - axis
             if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
@@ -61,16 +60,14 @@ namespace PFD
                 Point3D textPoint2 = new Point3D(pModelGeomCentre.X + fModel_Length_X / 2 + fModel_Length_X / 10, pModelGeomCentre.Y - fModel_Length_Y / 2, pModelGeomCentre.Z);
                 Point3D tp = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 + 0.3, pModelGeomCentre.Z);
                 Point3D tp2 = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 - 0.2, pModelGeomCentre.Z);
+
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("10 m", new SolidColorBrush(Colors.White), true, 0.1, textPoint, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("1234 mm", new SolidColorBrush(Colors.Red), true, 0.1, textPoint2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row1", new SolidColorBrush(Colors.Gold), true, 0.1, tp, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row2", new SolidColorBrush(Colors.Gold), true, 0.05, tp2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-
             }
 
             // Add WireFrame Model
-            //if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame_temp(model, _trackport.ViewPort);
-            //if (bDisplay_WireFrame) Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
             if (bDisplay_WireFrame) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
 
             _trackport.SetupScene();
@@ -149,9 +146,7 @@ namespace PFD
 
                 ComponentGeomModel = member_temp.getM_3D_G_Member(EGCS.eGCSLeftHanded, brushDefault, brushDefault, brushDefault);
 
-                //Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                //Point3D cameraPosition = new Point3D(pModelGeomCentre.X - 0.2f, pModelGeomCentre.Y + 0.005f, pModelGeomCentre.Z + 0.05f);
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(member_temp);                
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(member_temp);
                 Point3D cameraPosition = Drawing3D.GetModelCameraPosition(pModelGeomCentre, -0.2f, 0.005f, 0.05f);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
@@ -163,7 +158,7 @@ namespace PFD
                     _trackport.Model = (Model3D)ComponentGeomModel;
                 }
 
-                // Add WireFrame Model                
+                // Add WireFrame Model
                 if (bDisplay_WireFrame) Drawing3D.DrawMemberWireFrame(member_temp, _trackport.ViewPort, fLengthMember);
             }
 

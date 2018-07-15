@@ -13,14 +13,14 @@ namespace BaseClasses
     [Serializable]
     public class CMember : CEntity3D
     {
-        private CNode    m_NodeStart;
+        private CNode m_NodeStart;
 
         public CNode NodeStart
         {
           get { return m_NodeStart; }
           set { m_NodeStart = value; }
         }
-        private CNode    m_NodeEnd;
+        private CNode m_NodeEnd;
 
         public CNode NodeEnd
         {

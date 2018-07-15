@@ -703,7 +703,7 @@ namespace BaseClasses
                 {
                     if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
                     {
-                        // Joint model wireframe                        
+                        // Joint model wireframe
                         Transform3DGroup jointTransformGroup = new Transform3DGroup(); // Nepouzite
 
                         // Plates

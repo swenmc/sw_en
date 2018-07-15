@@ -529,9 +529,14 @@ namespace BaseClasses.GraphObj
         //--------------------------------------------------------------------------------------------
         public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, float fDim1_r, float fDim2_h, DiffuseMaterial mat)
         {
+            return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 73, fDim1_r, fDim2_h, mat);
+        }
+
+        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, short nPoints, float fDim1_r, float fDim2_h, DiffuseMaterial mat)
+        {
             MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
 
-            short iTotNoPoints = 73; // 1 auxialiary node in centroid / stredovy bod
+            short iTotNoPoints = nPoints; // 73 // 1 auxialiary node in centroid / stredovy bod
 
             if (fDim1_r <= 0f)
             {
@@ -620,6 +625,52 @@ namespace BaseClasses.GraphObj
             geomModel3D.Material = mat;
 
             return geomModel3D;
+        }
+
+        public Int32Collection GetWireFrameIndices_Cylinder(short nPoints)
+        {
+            Int32Collection wireFrameIndices = new Int32Collection();
+
+            short iTotNoPoints = nPoints; // 73 // 1 auxialiary node in centroid / stredovy bod
+
+            // Front Side / Forehead
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                if (i < iTotNoPoints - 2)
+                {
+                    wireFrameIndices.Add(i + 1);
+                    wireFrameIndices.Add(i);
+                }
+                else // Last Element
+                {
+                    wireFrameIndices.Add(i);
+                    wireFrameIndices.Add(0);
+                }
+            }
+
+            // Back Side
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                if (i < iTotNoPoints - 2)
+                {
+                    wireFrameIndices.Add(iTotNoPoints + i + 1);
+                    wireFrameIndices.Add(iTotNoPoints + i);
+                }
+                else // Last Element
+                {
+                    wireFrameIndices.Add(iTotNoPoints);
+                    wireFrameIndices.Add(iTotNoPoints + i);
+                }
+            }
+
+            // Shell Surface OutSide
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                wireFrameIndices.Add(i);
+                wireFrameIndices.Add(iTotNoPoints + i);
+            }
+
+            return wireFrameIndices;
         }
 
         //--------------------------------------------------------------------------------------------
