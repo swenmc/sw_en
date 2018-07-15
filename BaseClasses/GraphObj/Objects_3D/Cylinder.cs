@@ -66,10 +66,13 @@ namespace BaseClasses.GraphObj.Objects_3D
 
             meshGeom3D.Positions = new Point3DCollection();
 
+            // TODO Ondrej 15/07/2018
+            // Vytvorime valec, ktory ma vysku v smere suradnice x
+
             // Bottom  x = 0
             for (int i = 0; i < iTotNoPoints; i++)
             {
-                Point3D p = new Point3D(0,  PointsOut[i, 0],  PointsOut[i, 1]);
+                Point3D p = new Point3D(0, PointsOut[i, 0],  PointsOut[i, 1]);
                 meshGeom3D.Positions.Add(p);
             }
 

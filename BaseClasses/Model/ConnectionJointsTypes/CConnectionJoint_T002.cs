@@ -38,6 +38,16 @@ namespace BaseClasses
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
 
+            // TODO Ondrej 15/07/2018
+            // Tu sa pridava plech (plate) do spoja (joint), vklada sa do pozicie v LCS pruta
+            // Spoj sa vklada na zaciatok alebo na koniec pruta (pootocenie okolo "z" 0 alebo 180)
+            // Kedze v tomto pripade je tu jeden plech, ktory je definovany tak ze osa x, v ktorej je plech zadany zviera s osou x pruta uhol 90 stupnov, pootocenie je okolo "z" +90
+            // Uvedena rotacia plechu znamena ako sa ma plech otocit zo systemu v ktorom je definovany do systemu v LCS pruta
+            // Spolu s plechom by sa pri tento stransformacii mali pootocit aj skrutky priradene k plechu (vid m_arrPlateConnectors)
+
+            // Update 2
+            // Po tomto vlozeni plechov a ich skrutiek do spoja by sa mali suradnice vsetkych plechov a skrutiek v spoji prepocitat z povodnych suradnic plechov, v ktorych su plechy zadane do suradnicoveho systemu spoja a ulozit
+
             CPoint ControlPoint_P1 = new CPoint(0, 0.5f * (float)m_MainMember.CrScStart.b + m_ft_main_plate, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg), -0.5f * m_SecondaryMembers[0].CrScStart.h, 0);
 
             int iConnectorNumberinOnePlate = 32;

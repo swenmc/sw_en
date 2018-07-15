@@ -51,12 +51,22 @@ namespace BaseClasses
             float fScrewLength = 0.009f;
             //float fScrewWeight = 0.012f;
 
+            // TODO Ondrej 15/07/2018
+            // Tu sa pridavaju plechy (plates) do spoja (joint), vklada sa do pozicie v LCS pruta
+            // Spoj sa vklada na zaciatok alebo na koniec pruta (pootocenie okolo "z" 0 alebo 180)
+            // Uvedena rotacia plechu znamena ako sa ma plech otocit zo systemu v ktorom je definovany do systemu v LCS pruta
+            // Kedze v tomto pripade je jeden plech v spoji zlava a druhy zprava ma kazdy plech vlastny CP a pootocenie je okolo "z" je pre jeden 0 a pre druhy +90
+            // Spolu s plechom by sa pri tento stransformacii mali pootocit aj skrutky priradene k plechu (vid m_arrPlateConnectors)
+
+            // Update 2
+            // Po tomto vlozeni plechov a ich skrutiek do spoja by sa mali suradnice vsetkych plechov a skrutiek v spoji prepocitat z povodnych suradnic plechov, v ktorych su plechy zadane do suradnicoveho systemu spoja a ulozit
+
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
             m_arrPlates[1] = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
 
             // Identification of current joint node location (start or end definition node of secondary member)
-            if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
+            if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
                 ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max), - 0.5f * m_SecondaryMembers[0].CrScStart.h, 0);

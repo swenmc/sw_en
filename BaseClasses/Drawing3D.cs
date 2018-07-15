@@ -226,6 +226,14 @@ namespace BaseClasses
 
                     if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
                     {
+                        // TODO Ondrej 15/07/2018
+                        // na riadku 181 sme pridali do spoja postupne plechy a na riakdu 190 vsetky skrutky v jednotlivych plechoch
+                        // mame teda spoj so suradnicami v LCS pruta (na zaciatku alebo na konci)
+
+                        // Update 3
+                        // Cely spoj na prute (vsetky plechy aj skrutky v spoji) tu pootocime o uhol theta okolo LCS osi x pruta
+                        // Po tomto pootoceni by sa mali suradnice plechov a skrutiek v spoji prepocitat o pootocenie theta ulozit
+
                         // TODO prepracovat tento blok a podmienky tak, aby v nebol prazdny else a odstranit duplicitu
 
                         // Rotate model about local x-axis (LCS - local coordinate system of member)
@@ -250,6 +258,14 @@ namespace BaseClasses
                             // There is no rotation
 
                         }
+
+                        // TODO Ondrej 15/07/2018
+                        // ak sme vsetky prvky v spoji pootocili o theta mame pripraveny spoj na transformaciu z LCS do GCS
+
+                        // Update 4
+                        // Cely spoj na prute (vsetky plechy aj skrutky v spoji) tu pootocime a presunieme na poziciu kde sa ma nachazat na prute v GCS
+                        // Ma sa pouzit rovnaka transformacia akou sa presuva samotny prut z LCS do GCS
+                        // Po tomto presune a pootoceni by sa mali suradnice plechov a skrutiek v spoji prepocitat z LCS GCS a ulozit, to je finalny stav
 
                         // Rotate and translate model in GCS (global coordinate system of whole structure / building)
                         // Create new model group

@@ -406,6 +406,14 @@ namespace BaseClasses
             {
                 m_arrPlateConnectors = new CConnector[IHolesNumber];
 
+                // TODO Ondrej 15/07/2018
+                // Tu sa pridava sktrutka do plechu, v klada sa do pozicie na plechu v suradnicovom systeme plechu (controlpoint) a otoci sa do pozicie v LCS plechu
+                // Potom je potrebne pri posune a otoceni plechu otocit aj vsetky skrutky, ktore k nemu patria
+                // Povodne suradnice skrutky su ako suradnice valca kde x je v smere vysky valca
+
+                // Update 1
+                // Po tomto vlozeni skrutiek do plechu by sa mali suradnice skrutiek prepocitat z povodnych, v ktorych su zadane do suradnicoveho systemu plechu a ulozit
+
                 for (int i = 0; i < IHolesNumber; i++)
                 {
                     if (i < IHolesNumber / 4) // Left
