@@ -247,6 +247,81 @@ namespace PFD
             // TODO  - toto je potrebne presunut niekam k prierezom
             // Nastavit hodnoty pre vypocet
 
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command;
+                SQLiteDataReader reader;
+
+                foreach (CMat_03_00 mat in model.m_arrMat)
+                {
+                    int ID = 1;
+                    string stringcommand = "Select * from materialSteelAS4600 where ID = '" + ID + "'";
+
+                    command = new SQLiteCommand(stringcommand, conn);
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            mat.Standard = reader["Standard"].ToString();
+                            mat.Name = /*mat.Grade =*/ reader["Grade"].ToString();
+                            int intervals = reader.GetInt32(reader.GetOrdinal("iNumberOfIntervals"));
+                            mat.Note = reader["note"].ToString();
+
+                            if (intervals == 1)
+                            {
+                                mat.m_ft_interval = new float[intervals];
+                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
+                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
+                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
+                            }
+                            else if(intervals == 2)
+                            {
+                                mat.m_ft_interval = new float[intervals];
+                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
+                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f;
+                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
+                                mat.m_ft_interval[1] = reader.GetFloat(reader.GetOrdinal("t2"));
+                                mat.m_ff_yk[1] = reader.GetFloat(reader.GetOrdinal("f_y2")) * 1e+6f;
+                                mat.m_ff_u[1] = reader.GetFloat(reader.GetOrdinal("f_u2")) * 1e+6f;
+                            }
+                            else if (intervals == 3)
+                            {
+                                mat.m_ft_interval = new float[intervals];
+                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
+                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f;
+                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
+                                mat.m_ft_interval[1] = reader.GetFloat(reader.GetOrdinal("t2"));
+                                mat.m_ff_yk[1] = reader.GetFloat(reader.GetOrdinal("f_y2")) * 1e+6f;
+                                mat.m_ff_u[1] = reader.GetFloat(reader.GetOrdinal("f_u2")) * 1e+6f;
+                                mat.m_ft_interval[2] = reader.GetFloat(reader.GetOrdinal("t3"));
+                                mat.m_ff_yk[2] = reader.GetFloat(reader.GetOrdinal("f_y3")) * 1e+6f;
+                                mat.m_ff_u[2] = reader.GetFloat(reader.GetOrdinal("f_u3")) * 1e+6f;
+                            }
+                            else if (intervals == 4)
+                            {
+                                mat.m_ft_interval = new float[intervals];
+                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
+                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f;
+                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
+                                mat.m_ft_interval[1] = reader.GetFloat(reader.GetOrdinal("t2"));
+                                mat.m_ff_yk[1] = reader.GetFloat(reader.GetOrdinal("f_y2")) * 1e+6f;
+                                mat.m_ff_u[1] = reader.GetFloat(reader.GetOrdinal("f_u2")) * 1e+6f;
+                                mat.m_ft_interval[2] = reader.GetFloat(reader.GetOrdinal("t3"));
+                                mat.m_ff_yk[2] = reader.GetFloat(reader.GetOrdinal("f_y3")) * 1e+6f;
+                                mat.m_ff_u[2] = reader.GetFloat(reader.GetOrdinal("f_u3")) * 1e+6f;
+                                mat.m_ft_interval[3] = reader.GetFloat(reader.GetOrdinal("t4"));
+                                mat.m_ff_yk[3] = reader.GetFloat(reader.GetOrdinal("f_y4")) * 1e+6f;
+                                mat.m_ff_u[3] = reader.GetFloat(reader.GetOrdinal("f_u4")) * 1e+6f;
+                            }
+
+                           model.m_arrMat[0] = mat;
+                        }
+                    }
+                    reader.Close();
+                }
+            }
+
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
@@ -307,6 +382,21 @@ namespace PFD
                             crsc.Compression_curve_stress_1 = reader.GetDouble(reader.GetOrdinal("Compression_curve_1"));
                             //crsc.Compression_curve_stress_2 = reader.GetDouble(reader.GetOrdinal("Compression_curve_2")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
                             //crsc.Compression_curve_stress_3 = reader.GetDouble(reader.GetOrdinal("Compression_curve_3")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
+
+                            crsc.A_vy = crsc.h * crsc.t_min; // TODO - len priblizne Temp
+                            crsc.A_vz = crsc.b * crsc.t_min; // Temp
+                            crsc.W_y_pl = 1.1 * crsc.W_y_el;
+                            crsc.W_z_pl = 1.1 * crsc.W_z_el;
+                            crsc.i_y_rg = 0.102f;
+                            crsc.i_z_rg = 0.052f;
+                            crsc.i_yz_rg = 0.102f;
+
+                            /*
+                            crsc.m_Mat.m_ff_yk_0 = 5e+8f;
+                            crsc.m_Mat.m_fE = 2.1e+8f;
+                            crsc.m_Mat.m_fG = 8.1e+7f;
+                            crsc.m_Mat.m_fNu = 0.297f;
+                            */
                         }
                     }
                     reader.Close();
@@ -317,8 +407,10 @@ namespace PFD
             // Todo - napojit FEM vypocet
             bool bDebugging = false;
 
-            // Todo - nefunguje to, chce to viac casu zistit preco
-            // Navrhujem napojjit nejaky externy solver alebo vypocet
+            // Todo - nefunguje to, asi je chybna detekcia zakladnej tuhostnej matice pruta
+            // Treba sa na to pozriet podrobnejsie
+
+            // Navrhujem napojit nejaky externy solver
 
             CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(model.m_arrMat[0], model.m_arrCrSc[0], model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2,1000,1000,1000,1000);
             FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
@@ -365,41 +457,12 @@ namespace PFD
             //for (int i = 0; i < model.m_arrMembers.Length; i++)
             //{
             // skontrolovat co sa pocita, ostatne nastavit
-            CCrSc_TW cso = new CSO();
 
-            //cso = model.m_arrMembers[i].CrScStart;
 
-            cso.A_g = 2100;
-            cso.I_y = 11200;
-            cso.I_z = 55406;
-            cso.I_yz = 12;
-            cso.I_t = 5887878;
-            cso.I_w = 5277778;
-            cso.A_vy = 6546;
-            cso.A_vz = 65465;
-            cso.W_y_el = 556;
-            cso.W_z_el = 564;
-            cso.W_y_pl = 742;
-            cso.W_z_pl = 545;
 
-            cso.h = 0.27f;
-            cso.b = 0.09f;
-            cso.t_min = 0.00115;
-            cso.t_max = 0.00115;
 
-            cso.m_Mat.m_ff_yk_0 = 5e+8f;
-            cso.m_Mat.m_fE = 2.1e+8f;
-            cso.m_Mat.m_fG = 8.1e+7f;
-            cso.m_Mat.m_fNu = 0.297f;
 
-            cso.i_y_rg = 0.102f;
-            cso.i_z_rg = 0.052f;
-            cso.i_yz_rg = 0.102f;
-
-            cso.D_y_s = 0.043f;
-            cso.D_z_s = 0.0f;
-
-            CCalcul obj_calculate = new CCalcul(fN, fN_c, fN_t, fV_xu, fV_yv, fT, fM_xu, fM_yv, cso);
+            CCalcul obj_calculate = new CCalcul(fN, fN_c, fN_t, fV_xu, fV_yv, fT, fM_xu, fM_yv, (CCrSc_TW) model.m_arrCrSc[0]);
             //}
 
             // Display results in datagrid

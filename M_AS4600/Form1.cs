@@ -67,7 +67,7 @@ namespace M_AS4600
             cso.t_min = 0.00115;
             cso.t_max = 0.00115;
 
-            cso.m_Mat.m_ff_yk_0 = 5e+8f;
+            cso.m_Mat.m_ff_yk[0] = 5e+8f;
             cso.m_Mat.m_fE = 2.1e+8f;
             cso.m_Mat.m_fG = 8.1e+7f;
             cso.m_Mat.m_fNu = 0.297f;

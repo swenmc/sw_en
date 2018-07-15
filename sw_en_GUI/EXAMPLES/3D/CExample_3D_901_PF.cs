@@ -111,7 +111,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat[0] = new CMat_03_00("Steel S500", 500e+6f, 600e+6f);
+            m_arrMat[0] = new CMat_03_00("G550", 0.1f, 550e+6f, 550e+6f);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array

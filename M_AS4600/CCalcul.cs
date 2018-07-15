@@ -192,7 +192,7 @@ namespace M_AS4600
             cs = cs_temp;
 
             // Set material properties
-            ff_y = cs.m_Mat.m_ff_yk_0;
+            ff_y = cs.m_Mat.m_ff_yk[0];
             fE = cs.m_Mat.m_fE;
             fG = cs.m_Mat.m_fG;
             fNu = cs.m_Mat.m_fNu;

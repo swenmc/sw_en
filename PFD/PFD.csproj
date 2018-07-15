@@ -149,6 +149,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Resources\MDB.db3" />
+    <None Include="Resources\MDBMaterials.db3" />
     <None Include="Resources\MDBSections.db3" />
   </ItemGroup>
   <ItemGroup>

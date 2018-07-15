@@ -611,7 +611,7 @@ namespace AAC
                 ftrans_rein_arr_dist_3
                 );
 
-            obj_panel.Reinforcement.m_ff_yk_0 = ff_yk_0;
+            obj_panel.Reinforcement.m_ff_yk[0] = ff_yk_0;
             obj_panel.FillReinforcementData(0, obj_panel.Long_Bottom_Bars_Array, fd_long_lower, fc_1);
             obj_panel.FillReinforcementData(0, obj_panel.Long_Upper_Bars_Array, fd_long_upper, fc_2);
             obj_panel.FillReinforcementData(1, obj_panel.Trans_Bottom_Bars_Array, fd_trans, fc_trans); // Zatial rovnaky priemer hornej aj spodnej priecnej vyztuze
@@ -686,14 +686,14 @@ namespace AAC
             double thousand_omega_S500 = AAC_data.AAC_value_array_for_1000md[5];
             double thousand_omega = 0.0;
 
-            if (obj_panel.Reinforcement.m_ff_yk_0 <= 2.51e+8)
+            if (obj_panel.Reinforcement.m_ff_yk[0] <= 2.51e+8)
                 thousand_omega = thousand_omega_S235;
             else
                 thousand_omega = thousand_omega_S500;
 
             float fomega = (float)thousand_omega / 1000.0f;
 
-            double fA_s_b_min = fA_c_lower * fomega * fFactor_Alpha * obj_panel.Concrete.Fck * fGamma_s / (fGamma_c_BF * obj_panel.Reinforcement.m_ff_yk_0);
+            double fA_s_b_min = fA_c_lower * fomega * fFactor_Alpha * obj_panel.Concrete.Fck * fGamma_s / (fGamma_c_BF * obj_panel.Reinforcement.m_ff_yk[0]);
 
             double fA_s_exis_lower = number_long_lower_bars * Math.PI * (fd_long_lower * fd_long_lower / 4.0); // Bottom Reinforcement
  
@@ -718,14 +718,14 @@ namespace AAC
             double thousand_omega_S500_u = AAC_data.AAC_value_array_for_1000md[5];
             double thousand_omega_u = 0.0;
 
-            if (obj_panel.Reinforcement.m_ff_yk_0 <= 2.51e+8)
+            if (obj_panel.Reinforcement.m_ff_yk[0] <= 2.51e+8)
                 thousand_omega_u = thousand_omega_S235_u;
             else
                 thousand_omega_u = thousand_omega_S500_u;
 
             float fomega_u = (float)thousand_omega_u / 1000.0f;
 
-            double fA_s_u_min = fA_c_u * fomega_u * fFactor_Alpha * obj_panel.Concrete.Fck * fGamma_s / (fGamma_c_DBF * obj_panel.Reinforcement.m_ff_yk_0);
+            double fA_s_u_min = fA_c_u * fomega_u * fFactor_Alpha * obj_panel.Concrete.Fck * fGamma_s / (fGamma_c_DBF * obj_panel.Reinforcement.m_ff_yk[0]);
 
             double fA_s_exis_upper = number_long_upper_bars * Math.PI * (fd_long_upper * fd_long_upper / 4.0); // Upper Reinforcement
 
@@ -744,7 +744,7 @@ namespace AAC
             // k = 0.4 - pure bending without normal compressive force
 
             float fk_A34 = 0.4f;
-            double fAs_min = fk_A34 * fA_ct * ff_cflm / obj_panel.Reinforcement.m_ff_yk_0;
+            double fAs_min = fk_A34 * fA_ct * ff_cflm / obj_panel.Reinforcement.m_ff_yk[0];
 
             float fb_w = (float)obj_panel.Cross_Section.b; //  ??????? Moze byt ina
 
@@ -830,7 +830,7 @@ namespace AAC
             float fk_w = 0.25f;
             int n_l = number_long_lower_bars; // Number of longitudinal bars - Eq. (A.48)
 
-            double F_wg = fk_w * A_sl * obj_panel.Reinforcement.m_ff_yk_0;
+            double F_wg = fk_w * A_sl * obj_panel.Reinforcement.m_ff_yk[0];
             double F_RA_support_limit = 0.6f * n_l * n_t_support * F_wg / fGamma_s;
 
             if (F_RA_support > F_RA_support_limit) //A.48
