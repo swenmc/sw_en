@@ -73,11 +73,6 @@ namespace PFD
 
         DatabaseComponents databaseCopm = new DatabaseComponents();
 
-        public UC_MaterialList()
-        {
-            InitializeComponent();
-        }
-
         public UC_MaterialList(CModel model)
         {
             InitializeComponent();
@@ -788,6 +783,14 @@ namespace PFD
             dlistPlateArea.Clear();
             dlistPlateWeightPerPiece.Clear();
             listPlateTotalWeight.Clear();
+
+            listConnectorPrefix.Clear();
+            listConnectorQuantity.Clear();
+            listConnectorMaterialName.Clear();
+            listConnectorSize.Clear();
+            dlistConnectorWeightPerPiece.Clear();
+            listConnectorTotalWeight.Clear();
+            listConnectorTotalPrice.Clear();
         }
     }
 }

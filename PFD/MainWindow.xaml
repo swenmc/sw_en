@@ -18,7 +18,7 @@
     <Grid>
         <!--Base Grid 2 columns and 4 rows-->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="235*" />
+            <ColumnDefinition Width="234*" />
             <ColumnDefinition Width="500*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -26,7 +26,7 @@
             <RowDefinition Height="70*" />
         </Grid.RowDefinitions>
 
-        <TabControl Margin="5,5,1,88" Name="MainTabControl" SelectionChanged="TabControl_SelectionChanged" Grid.RowSpan="2">
+        <TabControl Margin="5,5,0,88" Name="MainTabControl" SelectionChanged="TabControl_SelectionChanged" Grid.RowSpan="2">
             <TabItem Name ="General">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -160,40 +160,6 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Name ="Model_Component" Header="Model Components">
-                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid Name="ModelComponents">
-                        <DataGrid Grid.Column="0" Name ="Components" AutoGenerateColumns="False"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,10,0,0" Grid.RowSpan="2">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Status}" Header="Component" Width="200"/>
-                                <DataGridTemplateColumn Header="Cross-Section" Width="100">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Status}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Material" Width="100">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Status}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate>
-                                            <ComboBox Height="22" SelectedItem="={Binding Status}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
-                </ScrollViewer>
             </TabItem>
             <TabItem Name ="Loads">
                 <TabItem.Header>

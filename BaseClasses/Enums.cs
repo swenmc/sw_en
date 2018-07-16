@@ -227,7 +227,7 @@ namespace BaseClasses
     public enum ELSType
     {
         eLS_ULS = 0, // ULS (include strength, stability, Fire, EQ, ...)
-        eLS_SLS = 1  // ULS
+        eLS_SLS = 1  // SLS
     }
 
     //----------------------------------------------------------------------------

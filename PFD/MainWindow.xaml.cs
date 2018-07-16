@@ -758,8 +758,18 @@ namespace PFD
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainTabControl.SelectedIndex == 8)
+            if (MainTabControl.SelectedIndex == 1)
+                Model_Component.Content = new UC_ComponentList().Content;
+            else if (MainTabControl.SelectedIndex == 3)
+                Load_Cases.Content = new UC_LoadCaseList(model).Content;
+            else if (MainTabControl.SelectedIndex == 4)
+                Load_Combinations.Content = new UC_LoadCombinationList(model).Content;
+            else if (MainTabControl.SelectedIndex == 8)
                 Part_List.Content = new UC_MaterialList(model).Content;
+            else
+            { 
+                // Not implemented like UC;
+            };
         }
     }
 }

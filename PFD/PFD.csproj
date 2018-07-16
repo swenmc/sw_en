@@ -66,6 +66,15 @@
     <Compile Include="CPFDLoadInput.cs" />
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="DatabaseComponents.cs" />
+    <Compile Include="UC_LoadCombinationsList.xaml.cs">
+      <DependentUpon>UC_LoadCombinationsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UC_LoadCasesList.xaml.cs">
+      <DependentUpon>UC_LoadCasesList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UC_ComponentList.xaml.cs">
+      <DependentUpon>UC_ComponentList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UC_MaterialList.xaml.cs">
       <DependentUpon>UC_MaterialList.xaml</DependentUpon>
     </Compile>
@@ -97,6 +106,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UC_LoadCombinationsList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UC_LoadCasesList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UC_ComponentList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UC_MaterialList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

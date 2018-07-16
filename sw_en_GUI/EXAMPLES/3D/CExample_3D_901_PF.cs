@@ -685,31 +685,88 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLimitStates[1] = new CLimitState(ELSType.eLS_SLS);
 
             m_arrLoadCombs = new CLoadCombination[6];
-            m_arrLoadCombs[0] = new CLoadCombination(ELSType.eLS_ULS);
-            m_arrLoadCombs[1] = new CLoadCombination(ELSType.eLS_ULS);
-            m_arrLoadCombs[2] = new CLoadCombination(ELSType.eLS_ULS);
-            m_arrLoadCombs[3] = new CLoadCombination(ELSType.eLS_ULS);
-            m_arrLoadCombs[4] = new CLoadCombination(ELSType.eLS_SLS);
-            m_arrLoadCombs[5] = new CLoadCombination(ELSType.eLS_SLS);
+            m_arrLoadCombs[0] = new CLoadCombination(1, "CO 1", ELSType.eLS_ULS);
+            m_arrLoadCombs[1] = new CLoadCombination(2, "CO 2", ELSType.eLS_ULS);
+            m_arrLoadCombs[2] = new CLoadCombination(3, "CO 3", ELSType.eLS_ULS);
+            m_arrLoadCombs[3] = new CLoadCombination(4, "CO 4", ELSType.eLS_ULS);
+            m_arrLoadCombs[4] = new CLoadCombination(5, "CO 5", ELSType.eLS_SLS);
+            m_arrLoadCombs[5] = new CLoadCombination(6, "CO 6", ELSType.eLS_SLS);
 
-            m_arrLoadCases = new CLoadCase[6];
-            m_arrLoadCases[0] = new CLoadCase();
-            m_arrLoadCases[1] = new CLoadCase();
-            m_arrLoadCases[2] = new CLoadCase();
-            m_arrLoadCases[3] = new CLoadCase();
-            m_arrLoadCases[4] = new CLoadCase();
-            m_arrLoadCases[5] = new CLoadCase();
 
-            m_arrLimitStates = new CLimitState[2];
-            m_arrLimitStates[0] = new CLimitState(ELSType.eLS_ULS);
-            m_arrLimitStates[1] = new CLimitState(ELSType.eLS_SLS);
+            m_arrLoadCases = new CLoadCase[20];
+            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Dead Load");                                  // 1
+            m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load");       // 2
+            m_arrLoadCases[2] = new CLoadCase(3, "Live load Q", "Live load");                                  // 3
+            m_arrLoadCases[3] = new CLoadCase(4, "Snow load Qs - full", "Snow load");                          // 4
+            m_arrLoadCases[4] = new CLoadCase(5, "Snow load Qs - left", "Snow load");                          // 5
+            m_arrLoadCases[5] = new CLoadCase(6, "Snow load Qs - right","Snow load");                          // 6
+            m_arrLoadCases[6] = new CLoadCase(7, "Wind load Qw - Cpi - Left - X+", "Wind load");               // 7
+            m_arrLoadCases[7] = new CLoadCase(8, "Wind load Qw - Cpi - Right - X-", "Wind load");              // 8
+            m_arrLoadCases[8] = new CLoadCase(9, "Wind load Qw - Cpi - Front - Y+", "Wind load");              // 9
+            m_arrLoadCases[9] = new CLoadCase(10, "Wind load Qw - Cpi - Rear - Y-", "Wind load");              // 10
+            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Qw - Cpe,min - Left - X+", "Wind load");         // 11
+            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Qw - Cpe,min - Right - X-", "Wind load");        // 12
+            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Qw - Cpe,min - Front - Y+", "Wind load");        // 13
+            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Qw - Cpe,min - Rear - Y-", "Wind load");         // 14
+            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Qw - Cpe,max - Left - X+", "Wind load");         // 15
+            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Qw - Cpe,max - Right - X-", "Wind load");        // 16
+            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Qw - Cpe,max - Front - Y+", "Wind load");        // 17
+            m_arrLoadCases[17] = new CLoadCase(18, "Wind load Qw - Cpe,max - Rear - Y-", "Wind load");         // 18
+            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load EQ - X", "Earthquake load");               // 19
+            m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load EQ - Y", "Earthquake load");               // 20
 
-            m_arrNLoads = new BaseClasses.CNLoad[3];
+            // G + Gs
+            m_arrLoadCombs[0].LoadCasesList.Add(m_arrLoadCases[0]);
+            m_arrLoadCombs[0].LoadCasesFactorsList.Add(1.35f);
+            m_arrLoadCombs[0].LoadCasesList.Add(m_arrLoadCases[1]);
+            m_arrLoadCombs[0].LoadCasesFactorsList.Add(1.35f);
+
+            // G + Gs + Q
+            m_arrLoadCombs[1].LoadCasesList.Add(m_arrLoadCases[0]);
+            m_arrLoadCombs[1].LoadCasesFactorsList.Add(1.20f);
+            m_arrLoadCombs[1].LoadCasesList.Add(m_arrLoadCases[1]);
+            m_arrLoadCombs[1].LoadCasesFactorsList.Add(1.20f);
+            m_arrLoadCombs[1].LoadCasesList.Add(m_arrLoadCases[2]);
+            m_arrLoadCombs[1].LoadCasesFactorsList.Add(1.50f);
+
+            // G + Cpi front + W Cpe,max  front
+            m_arrLoadCombs[2].LoadCasesList.Add(m_arrLoadCases[0]);
+            m_arrLoadCombs[2].LoadCasesFactorsList.Add(0.90f);
+            m_arrLoadCombs[2].LoadCasesList.Add(m_arrLoadCases[8]);
+            m_arrLoadCombs[2].LoadCasesFactorsList.Add(0.70f);
+            m_arrLoadCombs[2].LoadCasesList.Add(m_arrLoadCases[16]);
+            m_arrLoadCombs[2].LoadCasesFactorsList.Add(1.00f);
+
+            // G + Cpi front + W Cpe,min  front
+            m_arrLoadCombs[3].LoadCasesList.Add(m_arrLoadCases[0]);
+            m_arrLoadCombs[3].LoadCasesFactorsList.Add(0.90f);
+            m_arrLoadCombs[3].LoadCasesList.Add(m_arrLoadCases[8]);
+            m_arrLoadCombs[3].LoadCasesFactorsList.Add(0.70f);
+            m_arrLoadCombs[3].LoadCasesList.Add(m_arrLoadCases[12]);
+            m_arrLoadCombs[3].LoadCasesFactorsList.Add(1.00f);
+
+            // G + Cpi front + W Cpe,max left
+            m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[0]);
+            m_arrLoadCombs[4].LoadCasesFactorsList.Add(0.90f);
+            m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[6]);
+            m_arrLoadCombs[4].LoadCasesFactorsList.Add(0.70f);
+            m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[10]);
+            m_arrLoadCombs[4].LoadCasesFactorsList.Add(1.00f);
+
+            // G + Cpi front + W Cpe,min lef
+            m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[0]);
+            m_arrLoadCombs[5].LoadCasesFactorsList.Add(0.90f);
+            m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[6]);
+            m_arrLoadCombs[5].LoadCasesFactorsList.Add(0.70f);
+            m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[14]);
+            m_arrLoadCombs[5].LoadCasesFactorsList.Add(1.00f);
+
+            m_arrNLoads = new CNLoad[3];
             m_arrNLoads[0] = new CNLoadAll(m_arrNodes[1], 0, 0, -4f, 0, 0, 0, true, 0);
             m_arrNLoads[1] = new CNLoadAll(m_arrNodes[2], 0, 0, -4f, 0, 0, 0, true, 0);
             m_arrNLoads[2] = new CNLoadAll(m_arrNodes[3], 0, 0, -4f, 0, 0, 0, true, 0);
 
-            m_arrMLoads = new BaseClasses.CMLoad[2];
+            m_arrMLoads = new CMLoad[2];
             m_arrMLoads[0] = new CMLoad_21(-0.8f, m_arrMembers[1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             m_arrMLoads[1] = new CMLoad_21(-0.9f, m_arrMembers[2], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 
