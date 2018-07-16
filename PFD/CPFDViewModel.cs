@@ -27,14 +27,15 @@ namespace PFD
         private float MBottomGirtPosition;
         private float MFrontFrameRakeAngle;
         private float MBackFrameRakeAngle;
-
+        private int MRoofCladdingIndex;
+        private int MRoofCladdingColorIndex;
+        private int MWallCladdingIndex;
+        private int MWallCladdingColorIndex;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
         public float fL1;
         public float fh2;
         public float fRoofPitch_radians;
-
-
 
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
@@ -69,6 +70,11 @@ namespace PFD
                 fL1 = MLength / (MFrames - 1);
                 fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
+
+                RoofCladdingIndex = 1;
+                RoofCladdingColorIndex = 22;
+                WallCladdingIndex = 0;
+                WallCladdingColorIndex = 22;
 
                 NotifyPropertyChanged("ModelIndex");
             }
@@ -214,7 +220,9 @@ namespace PFD
             {
                 if (value < 0.5 || value > 5)
                     throw new ArgumentException("Girt distance must be between 0.5 and 5 [m]");
-                MGirtDistance = value;
+
+                MGirtDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
+
                 NotifyPropertyChanged("GirtDistance");
             }
         }
@@ -231,7 +239,9 @@ namespace PFD
             {
                 if (value < 0.5 || value > 5)
                     throw new ArgumentException("Purlin distance must be between 0.5 and 5 [m]");
-                MPurlinDistance = value;
+
+                MPurlinDistance = (float)Math.Round(value, 3); //Display only limited number of decimal places - Todo - Ondrej Review
+
                 NotifyPropertyChanged("PurlinDistance");
             }
         }
@@ -334,6 +344,70 @@ namespace PFD
                 MBackFrameRakeAngle = value;
 
                 NotifyPropertyChanged("BackFrameRakeAngle");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int RoofCladdingIndex
+        {
+            get
+            {
+                return MRoofCladdingIndex;
+            }
+
+            set
+            {
+                MRoofCladdingIndex = value;
+
+                NotifyPropertyChanged("RoofCladdingIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int RoofCladdingColorIndex
+        {
+            get
+            {
+                return MRoofCladdingColorIndex;
+            }
+
+            set
+            {
+                MRoofCladdingColorIndex = value;
+
+                NotifyPropertyChanged("RoofCladdingColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WallCladdingIndex
+        {
+            get
+            {
+                return MWallCladdingIndex;
+            }
+
+            set
+            {
+                MWallCladdingIndex = value;
+
+                NotifyPropertyChanged("WallCladdingIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WallCladdingColorIndex
+        {
+            get
+            {
+                return MWallCladdingColorIndex;
+            }
+
+            set
+            {
+                MWallCladdingColorIndex = value;
+
+                NotifyPropertyChanged("WallCladdingColorIndex");
             }
         }
 

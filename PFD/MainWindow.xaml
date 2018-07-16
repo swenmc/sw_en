@@ -56,12 +56,16 @@
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na DataGridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0"/>
                         <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
                           VerticalAlignment="Center" SelectionChanged="ComboBox_Models_SelectionChanged" SelectedIndex="1"/>-->
                         <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -154,6 +158,40 @@
                          Text="{Binding Path=BackFrameRakeAngle, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
+
+                        <TextBlock Grid.Row="12" Grid.Column="0" Text="Roof Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="12" Grid.Column="1" Name ="Combobox_RoofCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="13" Grid.Column="0" Text="Roof Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="13" Grid.Column="1" Name ="Combobox_RoofCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="62" Height="12" Margin="0,1,5,1" />
+                                        <!--<TextBlock Text="{Binding Name}" /> -->
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Rectangle Fill="{Binding Name}" Width="62" Height="12" Margin="0,1,5,1" />
+                                        <!--<TextBlock Text="{Binding Name}" /> -->
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
 
                         <ProgressBar Name="progressBar" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Hidden" IsIndeterminate="True" />
                     </Grid>

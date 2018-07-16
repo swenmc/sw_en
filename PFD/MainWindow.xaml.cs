@@ -108,11 +108,42 @@ namespace PFD
             InitializeComponent();
             splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
+            // Fill combobox items
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
 
             foreach (string locationname in dlocations.arr_LocationNames)
                 Combobox_Location.Items.Add(locationname);
+
+            // Cladding
+            Combobox_RoofCladding.Items.Add("SmartDek");
+            Combobox_RoofCladding.Items.Add("PurlinDek");
+
+            Combobox_WallCladding.Items.Add("SmartDek");
+            Combobox_WallCladding.Items.Add("PurlinDek");
+
+            // Colors
+            // TODO - pridat do comboboxu len vybrane farby
+
+            /*
+            Desert Sand
+            Bone White
+            Titania
+            Smooth Cream
+            New Denim Blue
+            Grey Friars
+            Sandstone Grey
+            Gull Grey
+            Permanent Green
+            Scoria
+            Pioneer Red
+            Mist Green
+            Rivergum
+            Lichen
+            */
+
+            Combobox_RoofCladdingColor.ItemsSource = typeof(Colors).GetProperties();
+            Combobox_WallCladdingColor.ItemsSource = typeof(Colors).GetProperties();
 
             // Model Geometry
             vm = new CPFDViewModel(1);
