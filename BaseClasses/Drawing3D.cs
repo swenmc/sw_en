@@ -160,7 +160,7 @@ namespace BaseClasses
 
             Model3DGroup JointsModel3DGroup = null;
 
-            bool bDrawConnectors = false;
+            bool bDrawConnectors = true;
 
             if (cmodel.m_arrConnectionJoints != null) // Some joints exist
             {
@@ -178,16 +178,24 @@ namespace BaseClasses
                             cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_pControlPoint != null &&
                             cmodel.m_arrConnectionJoints[i].m_arrPlates[l].BIsDisplayed == true) // Plate object is valid (not empty) and should be displayed
                             {
-                                JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates)); // Add plate 3D model to the model group
-
+                                GeometryModel3D plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
+                                JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
+                                
                                 if (bDrawConnectors)
                                 {
                                     // Add plate connectors
                                     if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
                                         cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
                                     {
+                                        Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
                                         for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m++)
-                                            JointModelGroup.Children.Add(cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors));
+                                        {
+                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors);                                            
+                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+                                            //JointModelGroup.Children.Add(plateConnectorgeom);
+                                        }
+                                        plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                        JointModelGroup.Children.Add(plateConnectorsModelGroup);
                                     }
                                 }
                             }
@@ -238,26 +246,28 @@ namespace BaseClasses
 
                         // Rotate model about local x-axis (LCS - local coordinate system of member)
 
-                        // Joint is defined in LCS of first secondary member
-                        if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                        cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
-                        !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
-                        {
-                            AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
-                            RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                            JointModelGroup.Transform = rotate;
-                        }
-                        else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
-                        {
-                            AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
-                            RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                            JointModelGroup.Transform = rotate;
-                        }
-                        else
-                        {
-                            // There is no rotation
 
-                        }
+                        //O.P. 16.7.2018 - zakomentoval som a nevidim aby to nieco robilo =  neviem,ci to treba
+                        // Joint is defined in LCS of first secondary member
+                        //if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                        //cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
+                        //!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
+                        //{
+                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
+                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                        //    JointModelGroup.Transform = rotate;
+                        //}
+                        //else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
+                        //{
+                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
+                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                        //    JointModelGroup.Transform = rotate;
+                        //}
+                        //else
+                        //{
+                        //    // There is no rotation
+
+                        //}
 
                         // TODO Ondrej 15/07/2018
                         // ak sme vsetky prvky v spoji pootocili o theta mame pripraveny spoj na transformaciu z LCS do GCS
