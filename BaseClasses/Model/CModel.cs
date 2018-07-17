@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -59,17 +60,17 @@ namespace BaseClasses
 
         // Geometrical graphical model objects
         // Points
-        //public BaseClasses.GraphObj.CPoint[] m_arrGOPoints;
-        public BaseClasses.GraphObj.CPoint[] m_arrGOPoints;
+        //public CPoint[] m_arrGOPoints;
+        public CPoint[] m_arrGOPoints;
         // Lines
-        public BaseClasses.GraphObj.CLine[] m_arrGOLines;
+        public CLine[] m_arrGOLines;
         // Areas
-        public BaseClasses.GraphObj.CArea[] m_arrGOAreas;
+        public CArea[] m_arrGOAreas;
         // Volumes
-        public BaseClasses.GraphObj.CVolume[] m_arrGOVolumes;
+        public CVolume[] m_arrGOVolumes;
 
         // 3D Objects
-        public BaseClasses.GraphObj.CStructure_Window[] m_arrGOStrWindows;
+        public CStructure_Window[] m_arrGOStrWindows;
 
         //Grouped Members
         Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
@@ -119,11 +120,11 @@ namespace BaseClasses
             m_eGCS = eGCS;
             m_arrMat = new CMat[iMatNum];
             //m_arrCrSc = new CCrSc[iCrScNum];
-            m_arrGOPoints = new BaseClasses.GraphObj.CPoint[iPointNum];
+            m_arrGOPoints = new CPoint[iPointNum];
             //m_arrMembers = new CMember[iMemNum];
-            m_arrGOAreas = new BaseClasses.GraphObj.CArea[iAreaNum];
-            m_arrGOVolumes = new BaseClasses.GraphObj.CVolume[iVolumeNum];
-            m_arrGOStrWindows = new BaseClasses.GraphObj.CStructure_Window[iWindNum];
+            m_arrGOAreas = new CArea[iAreaNum];
+            m_arrGOVolumes = new CVolume[iVolumeNum];
+            m_arrGOStrWindows = new CStructure_Window[iWindNum];
         }
 
 

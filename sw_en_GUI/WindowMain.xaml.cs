@@ -631,6 +631,17 @@ namespace sw_en_GUI
 
         }
 
+        // 3D Blocks
+        private void menuItemBlock3D_001_DoorInBay_Click(object sender, RoutedEventArgs e)
+        {
+            CMember refgirt = new CMember();
+            model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay(2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, 0, 9.3f);
+            Window2 win = new Window2(model, m_bDebugging);
+            list_trackports.Add(win._trackport);
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Doors in bay" + " - Window " + (Container.Children.Count + 1) });
+            win.Close();
+        }
+
         // 2D Examples
 
         private void menuItemExample2D_01_Click(object sender, RoutedEventArgs e)

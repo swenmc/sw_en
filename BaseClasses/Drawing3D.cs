@@ -116,7 +116,8 @@ namespace BaseClasses
                     if (model.m_arrMembers[i] != null &&
                         model.m_arrMembers[i].NodeStart != null &&
                         model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to display
                     {
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
@@ -476,7 +477,8 @@ namespace BaseClasses
                     if (model.m_arrMembers[i] != null &&
                         model.m_arrMembers[i].NodeStart != null &&
                         model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
                     {
                         // Create WireFrame in LCS
                         ScreenSpaceLines3D wireFrame_FrontSide = model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start);
@@ -508,7 +510,8 @@ namespace BaseClasses
                     if (model.m_arrMembers[i] != null &&
                         model.m_arrMembers[i].NodeStart != null &&
                         model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
                     {
                         // Create WireFrame in LCS
                         wireFrame_FrontSide.AddPoints(model.m_arrMembers[i].CreateWireFrame(-model.m_arrMembers[i].FAlignment_Start).Points);
@@ -539,7 +542,8 @@ namespace BaseClasses
                     if (model.m_arrMembers[i] != null &&
                         model.m_arrMembers[i].NodeStart != null &&
                         model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null) // Member object is valid (not empty)
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
                     {
                         for (int j = 0; j < 3; j++) // Per front, back side and laterals
                         {
@@ -820,50 +824,47 @@ namespace BaseClasses
 
                     }
                 }
+
+                // Perform only in case that joint object is not null
+                foreach (Model3D m in model3DGroup.Children)
+                {
+                    var transPoints = jointWireFrameGroup.Points.Select(p => m.Transform.Transform(p));
+                    List<Point3D> points = transPoints.ToList();
+                    jointWireFrameGroup.Points.Clear();
+                    jointWireFrameGroup.AddPoints(points);
+                }
+
+                //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();            
+
+                //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
+
+                //if (gm.Geometry != null)
+                //{
+                //    MeshGeometry3D mesh = gm.Geometry as MeshGeometry3D;
+                //    for(int i = 0; i < mesh.TriangleIndices.Count; i = i+6)
+                //    {
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 1]]);
+
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 2]]);
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
+
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 3]]);
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
+                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 5]]);
+                //    }
+                //    //mesh.Positions;
+                //    //mesh.TriangleIndices;
+                //}
+                //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
+                //jointWireFrameGroup.AddPoints(transformedPoints.ToList());
+
+                // Add Wireframe Lines to the trackport
+                //_trackport.ViewPort.Children.Clear();
+                viewPort.Children.Add(jointWireFrameGroup);
             }
-
-            
-
-            foreach (Model3D m in model3DGroup.Children)
-            {
-                var transPoints = jointWireFrameGroup.Points.Select(p => m.Transform.Transform(p));
-                List<Point3D> points = transPoints.ToList();
-                jointWireFrameGroup.Points.Clear();
-                jointWireFrameGroup.AddPoints(points);
-            }
-            //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();            
-
-            //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
-
-            //if (gm.Geometry != null)
-            //{
-            //    MeshGeometry3D mesh = gm.Geometry as MeshGeometry3D;
-            //    for(int i = 0; i < mesh.TriangleIndices.Count; i = i+6)
-            //    {
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 1]]);
-
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 2]]);
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
-
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 3]]);
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
-
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
-            //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 5]]);
-            //    }
-            //    //mesh.Positions;
-            //    //mesh.TriangleIndices;
-            //}
-            //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
-            //jointWireFrameGroup.AddPoints(transformedPoints.ToList());
-
-
-
-            // Add Wireframe Lines to the trackport
-            //_trackport.ViewPort.Children.Clear();
-            viewPort.Children.Add(jointWireFrameGroup);
-                    
         }
 
         public static GeometryModel3D GetGeoMetryModel3DFrom(Model3DGroup model3DGroup)

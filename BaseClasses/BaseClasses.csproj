@@ -85,6 +85,7 @@
     <Compile Include="Model\CCrSc.cs" />
     <Compile Include="Model\CMat.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />
+    <Compile Include="Model\CBlock.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CAnchor.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CBolt.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CRivet.cs" />

@@ -164,11 +164,23 @@ namespace BaseClasses
         // Constructor 1
         public CMember()
         {
-            m_NodeStart = new CNode();
-            m_NodeEnd = new CNode();
+            m_NodeStart = new CNode(0,0,0,0,0);
+            m_NodeEnd = new CNode(1,1,0,0,0);
             m_cnRelease1 = null;
             m_cnRelease2 = null;
+            ID = 0;
+            m_CrScStart = null;
+            m_CrScEnd =null;
+            //eMemberType_FS;
+            EccentricityStart = new CMemberEccentricity(0,0);
+            EccentricityEnd = new CMemberEccentricity(0, 0);
+            FAlignment_Start = 0;
+            FAlignment_End = 0;
+            FTime = 0;
+
+            Fill_Basic();
         }
+
         // Constructor 2
         public CMember(
             int iLine_ID,
@@ -346,14 +358,13 @@ namespace BaseClasses
         //Fill basic data
         public void Fill_Basic()
         {
-            // Temporary !!!!!!!!!!!!!!!!!!!!!! Member Length for 3D
-            // Theroretical length of member (between definition nodes)
-
-            // Priemet do osi GCS - rozdiel suradnic v GCS
-
+            // Theroretical length of member (between definition nodes) - used for calculation
             FLength = (float)Math.Sqrt((float)Math.Pow(m_NodeEnd.X - m_NodeStart.X, 2f) + (float)Math.Pow(m_NodeEnd.Y - m_NodeStart.Y, 2f) + (float)Math.Pow(m_NodeEnd.Z - m_NodeStart.Z, 2f));
-            FLength_real = FAlignment_Start + FLength + FAlignment_End; // Real length of member
 
+            // Real length of member (displayed in graphics, used for material list)
+            FLength_real = FAlignment_Start + FLength + FAlignment_End;
+            
+            // Priemet do osi GCS - rozdiel suradnic v GCS
             Delta_X = m_NodeEnd.X - m_NodeStart.X;
             Delta_Y = m_NodeEnd.Y - m_NodeStart.Y;
             Delta_Z = m_NodeEnd.Z - m_NodeStart.Z;
@@ -367,6 +378,9 @@ namespace BaseClasses
 
             if (m_CrScEnd != null)
                 m_CrScEnd.AssignedMembersList.Add(this);
+
+            // Set as default property that member should be displayed
+            BIsDisplayed = true;
         }
 
         public void SetStartPoint3DCoord()

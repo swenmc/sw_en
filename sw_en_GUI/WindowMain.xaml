@@ -207,6 +207,11 @@
                         <MenuItem x:Name="menuItemExample3D_902_OM" Header="Example - OM" Click="menuItemExample3D_902_OM_Click"></MenuItem>
                     </MenuItem>
                 </MenuItem>
+                <MenuItem x:Name="menuItemBlockFiles" Header="Block Files">
+                    <MenuItem x:Name="menuItemBlocks3D" Header="Blocks 3D">
+                        <MenuItem x:Name="menuItemBlock3D_001_DoorInBay" Header="Block 001 Door in bay" Click="menuItemBlock3D_001_DoorInBay_Click"></MenuItem>
+                    </MenuItem>
+                </MenuItem>
                 <MenuItem x:Name="menuItemSystem" Header="System Properties"></MenuItem>
                 <MenuItem x:Name="menuItemCheckUpdate" Header="Check for Updates"></MenuItem>
                 <MenuItem x:Name="menuItemAbout" Header="About"></MenuItem>
