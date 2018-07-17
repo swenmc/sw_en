@@ -323,7 +323,7 @@ namespace BaseClasses
             {
                 arrConnectorControlPoints3D[0].X = fx_edge;
                 arrConnectorControlPoints3D[0].Y = m_fhY - fy_edge1;
-                arrConnectorControlPoints3D[0].Z = -m_ft;
+                arrConnectorControlPoints3D[0].Z = - m_ft; // TODO Position depends on screw length
 
                 arrConnectorControlPoints3D[1].X = m_fbX1 - fx_edge;
                 arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
@@ -353,7 +353,7 @@ namespace BaseClasses
                 arrConnectorControlPoints3D[7].Y = fy_edge1;
                 arrConnectorControlPoints3D[7].Z = arrConnectorControlPoints3D[0].Z;
 
-                arrConnectorControlPoints3D[8].X = m_fbX1 - m_ft;
+                arrConnectorControlPoints3D[8].X = m_fbX1 - 2 * m_ft; // TODO Position depends on screw length
                 arrConnectorControlPoints3D[8].Y = fy_edge1;
                 arrConnectorControlPoints3D[8].Z = m_flZ - fx_edge;
 
@@ -414,27 +414,28 @@ namespace BaseClasses
                 // Update 1
                 // Po tomto vlozeni skrutiek do plechu by sa mali suradnice skrutiek prepocitat z povodnych, v ktorych su zadane do suradnicoveho systemu plechu a ulozit
 
+                
                 for (int i = 0; i < IHolesNumber; i++)
                 {
                     if (i < IHolesNumber / 4) // Left
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 90, 0, true);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, -90, 0, true);
                     }
                     else if (i < IHolesNumber * 2 / 4) // Front Left
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 0, 0, true);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, 0, 0, true);
                     }
                     else if (i < IHolesNumber * 3 / 4) // Front Right
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 0, 0, true);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, 180, 0, true);
                     }
                     else // Right
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, 0.022f, 0.015f, 0, 90, 0, true);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, -90, 0, true);
                     }
                 }
             }

@@ -490,20 +490,23 @@ namespace BaseClasses
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
                         // X - start, Y, Z
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                        // Set original value to the temporary variable
+                        fy = obj_CrScA.CrScPointsOut[j, 0];
+                        fz = obj_CrScA.CrScPointsOut[j, 1];
 
                         // Set Member Eccentricity
-                        // TODO
-                        // Je potrebne vsade upravit tak ze sa najprv posunie prierez o excentricitu a potom sa pootoci okolo [0,0]
-                        // Teraz sa najprv pootoci a potom posunie, ale kedze otocenim za zmenili smery osi y a z tak uz nemusi zodpovedat zadaniu
-
                         if (EccentricityStart != null)
                         {
                             fy += EccentricityStart.MFy_local;
                             fz += EccentricityStart.MFz_local;
                         }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
+
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
 
                         mesh.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
@@ -512,9 +515,9 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScA.CrScPointsOut[j, 0];
+                            fz = obj_CrScA.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -522,14 +525,17 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
                         else
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScB.CrScPointsOut[j, 0];
+                            fz = obj_CrScB.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -537,6 +543,9 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
@@ -562,9 +571,10 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsOut; j++)
                     {
                         // X - start, Y, Z
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                        // Set original value to the temporary variable
+                        fy = obj_CrScA.CrScPointsIn[j, 0];
+                        fz = obj_CrScA.CrScPointsIn[j, 1];
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -572,6 +582,9 @@ namespace BaseClasses
                             fy += EccentricityStart.MFy_local;
                             fz += EccentricityStart.MFz_local;
                         }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                         mesh.Positions.Add(new Point3D(-FAlignment_Start,fy, fz));
                     }
@@ -587,9 +600,10 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsIn; j++)
                     {
                         // X - start, Y, Z
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                        // Set original value to the temporary variable
+                        fy = obj_CrScA.CrScPointsIn[j, 0];
+                        fz = obj_CrScA.CrScPointsIn[j, 1];
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -597,6 +611,9 @@ namespace BaseClasses
                             fy += EccentricityStart.MFy_local;
                             fz += EccentricityStart.MFz_local;
                         }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                         mesh.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
@@ -615,9 +632,9 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScA.CrScPointsOut[j, 0];
+                            fz = obj_CrScA.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -625,14 +642,17 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
                         else
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScB.CrScPointsOut[j, 0];
+                            fz = obj_CrScB.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -640,6 +660,9 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
@@ -658,9 +681,9 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScA.CrScPointsIn[j, 0];
+                            fz = obj_CrScA.CrScPointsIn[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -668,14 +691,17 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
                         else
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScB.CrScPointsIn[j, 0];
+                            fz = obj_CrScB.CrScPointsIn[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -683,6 +709,9 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
@@ -817,20 +846,20 @@ namespace BaseClasses
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
                         // X - start, Y, Z
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                        // Set original value to the temporary variable
+                        fy = obj_CrScA.CrScPointsOut[j, 0];
+                        fz = obj_CrScA.CrScPointsOut[j, 1];
 
                         // Set Member Eccentricity
-                        // TODO
-                        // Je potrebne vsade upravit tak ze sa najprv posunie prierez o excentricitu a potom sa pootoci okolo [0,0]
-                        // Teraz sa najprv pootoci a potom posunie, ale kedze otocenim za zmenili smery osi y a z tak uz nemusi zodpovedat zadaniu
-
                         if (EccentricityStart != null)
                         {
                             fy += EccentricityStart.MFy_local;
                             fz += EccentricityStart.MFz_local;
                         }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                         meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                         meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
@@ -841,9 +870,9 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScA.CrScPointsOut[j, 0];
+                            fz = obj_CrScA.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -851,15 +880,18 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End,fy, fz)); // Constant size member
                             meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScB.CrScPointsOut[j, 0];
+                            fz = obj_CrScB.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -867,6 +899,9 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                             meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -893,9 +928,10 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsOut; j++)
                     {
                         // X - start, Y, Z
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+
+                        // Set original value to the temporary variable
+                        fy = obj_CrScA.CrScPointsOut[j, 0];
+                        fz = obj_CrScA.CrScPointsOut[j, 1];
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -903,6 +939,9 @@ namespace BaseClasses
                             fy += EccentricityStart.MFy_local;
                             fz += EccentricityStart.MFz_local;
                         }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                         meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                         meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
@@ -919,9 +958,10 @@ namespace BaseClasses
                     for (int j = 0; j < obj_CrScA.INoPointsIn; j++)
                     {
                         // X - start, Y, Z
-                        // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+
+                        // Set original value to the temporary variable
+                        fy = obj_CrScA.CrScPointsIn[j, 0];
+                        fz = obj_CrScA.CrScPointsIn[j, 1];
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -929,6 +969,9 @@ namespace BaseClasses
                             fy += EccentricityStart.MFy_local;
                             fz += EccentricityStart.MFz_local;
                         }
+
+                        // Rotate about local x-axis
+                        Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                         meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
                         meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
@@ -948,9 +991,9 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScA.CrScPointsOut[j, 0];
+                            fz = obj_CrScA.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -958,15 +1001,18 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                             meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScB.CrScPointsOut[j, 0];
+                            fz = obj_CrScB.CrScPointsOut[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -974,6 +1020,9 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                             meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -993,9 +1042,9 @@ namespace BaseClasses
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsIn[j, 0], obj_CrScA.CrScPointsIn[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScA.CrScPointsIn[j, 0];
+                            fz = obj_CrScA.CrScPointsIn[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -1003,15 +1052,18 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                             meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
-                            // Rotate about local x-axis
-                            fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
-                            fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScB.CrScPointsIn[j, 0], obj_CrScB.CrScPointsIn[j, 1], dTheta_x);
+                            // Set original value to the temporary variable
+                            fy = obj_CrScB.CrScPointsIn[j, 0];
+                            fz = obj_CrScB.CrScPointsIn[j, 1];
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -1019,6 +1071,9 @@ namespace BaseClasses
                                 fy += EccentricityEnd.MFy_local;
                                 fz += EccentricityEnd.MFz_local;
                             }
+
+                            // Rotate about local x-axis
+                            Geom2D.TransformPositions_CCW(fy, fz, 0f, 0f, dTheta_x);
 
                             meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                             meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));

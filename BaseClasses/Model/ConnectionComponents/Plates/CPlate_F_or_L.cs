@@ -367,7 +367,7 @@ namespace BaseClasses
             {
                 // Left Leg
 
-                arrConnectorControlPoints3D[0].X = -m_ft;
+                arrConnectorControlPoints3D[0].X = - m_ft; // TODO Position depends on screw length
                 arrConnectorControlPoints3D[0].Y = fy_edge1;
                 arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -403,7 +403,7 @@ namespace BaseClasses
 
                 arrConnectorControlPoints3D[8].X = fx_edge;
                 arrConnectorControlPoints3D[8].Y = m_fhY - fy_edge1;
-                arrConnectorControlPoints3D[8].Z = -m_ft;
+                arrConnectorControlPoints3D[8].Z = -m_ft;  // TODO Position depends on screw length
 
                 arrConnectorControlPoints3D[9].X = m_fbX1 - fx_edge;
                 arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[8].Y;
@@ -437,7 +437,7 @@ namespace BaseClasses
             {
                 // Left Leg
 
-                arrConnectorControlPoints3D[0].X = -m_ft;
+                arrConnectorControlPoints3D[0].X = - m_ft; // TODO Position depends on screw length
                 arrConnectorControlPoints3D[0].Y = fy_edge1;
                 arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -457,7 +457,7 @@ namespace BaseClasses
 
                 arrConnectorControlPoints3D[4].X = fx_edge;
                 arrConnectorControlPoints3D[4].Y = m_fhY - fy_edge1;
-                arrConnectorControlPoints3D[4].Z = -m_ft;
+                arrConnectorControlPoints3D[4].Z = -m_ft; // TODO Position depends on screw length
 
                 arrConnectorControlPoints3D[5].X = m_fbX1 - fx_edge;
                 arrConnectorControlPoints3D[5].Y = arrConnectorControlPoints3D[4].Y;
@@ -496,12 +496,12 @@ namespace BaseClasses
                     if (i < IHolesNumber / 2) // Left Leg
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 12, FHoleDiameter, 0.02f, 0.012f, 0, 0, 0, true);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 12, FHoleDiameter, FConnectorLength, 0.012f, 0, 0, 0, true);
                     }
                     else
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 12, FHoleDiameter, 0.02f, 0.012f, 0, 90, 0, true);
+                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 12, FHoleDiameter, FConnectorLength, 0.012f, 0, -90, 0, true);
                     }
                 }
             }

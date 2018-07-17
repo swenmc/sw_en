@@ -49,6 +49,46 @@ namespace MATH
             return (float)(x * - Math.Sin(theta) + y * Math.Cos(theta));
         }
 
+        public static void TransformPositions_CCW(float x, float y, float x_centerOfRotation, float y_centerOfRotation, double theta)
+        {
+            float px;
+            float py;
+
+            if (!MathF.d_equal(theta, 0)) // Translate and rotate
+            {
+                px = (float)(Math.Cos(theta) * (x - x_centerOfRotation) - Math.Sin(theta) * (y - y_centerOfRotation) + x_centerOfRotation);
+                py = (float)(Math.Sin(theta) * (x - x_centerOfRotation) + Math.Cos(theta) * (y - y_centerOfRotation) + y_centerOfRotation);
+            }
+            else // Only translate
+            {
+                px = x + x_centerOfRotation;
+                py = y + y_centerOfRotation;
+            }
+
+            x = px;
+            y = py;
+        }
+
+        public static void TransformPositions_CW(float x, float y, float x_centerOfRotation, float y_centerOfRotation, double theta)
+        {
+            float px;
+            float py;
+
+            if (!MathF.d_equal(theta, 0)) // Translate and rotate
+            {
+                px = (float)(Math.Cos(theta) * (x - x_centerOfRotation) + Math.Sin(theta) * (y - y_centerOfRotation) + x_centerOfRotation);
+                py = (float)(-Math.Sin(theta) * (x - x_centerOfRotation) + Math.Cos(theta) * (y - y_centerOfRotation) + y_centerOfRotation);
+            }
+            else  // Only translate
+            {
+                px = x + x_centerOfRotation;
+                py = y + y_centerOfRotation;
+            }
+
+            x = px;
+            y = py;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Get Basic 2D Shapes Coordinates
 
