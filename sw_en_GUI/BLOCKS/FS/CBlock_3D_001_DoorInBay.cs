@@ -13,6 +13,8 @@ namespace sw_en_GUI.EXAMPLES._3D
     {
         public CBlock_3D_001_DoorInBay(float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, float fL1_bayofframe)
         {
+            // TODO napojit premennu na hlavny model a pripadne dat moznost uzivatelovi nastavit hodnotu 0 - 30 mm
+            float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
             /*
             fDoorsHeight = 2.1f;
             fDoorsWidth = 1.1f;
@@ -35,7 +37,8 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[0] = referenceGirt.CrScStart; // Girts
-            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f,0.00075f, Colors.Red); // Door frame
+            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
+            m_arrCrSc[1].Name = "Box 10075";
 
             INumberOfGirtsToDeactivate = (int)((fDoorHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
 
@@ -114,7 +117,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to block parameters
 
             float fGirtAllignmentStart = referenceGirt.FAlignment_Start; // Main column of a frame
-            float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b; // Door column
+            float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Door column
             CMemberEccentricity eccentricityGirtStart = referenceGirt.EccentricityStart;
             CMemberEccentricity eccentricityGirtEnd = referenceGirt.EccentricityEnd;
             float fGirtsRotation = (float)referenceGirt.DTheta_x;
@@ -144,12 +147,13 @@ namespace sw_en_GUI.EXAMPLES._3D
                     }
 
                     m_arrMembers[i * INumberOfGirtsToDeactivate + j] = new CMember(i * INumberOfGirtsToDeactivate + j + 1, m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2], m_arrNodes[i * iNumberOfNodesOnOneSide + j * 2 + 1], m_arrCrSc[0], EMemberType_FormSteel.eG, eccentricityGirtStart_temp, eccentricityGirtEnd_temp, fGirtStartTemp, fGirtEndTemp, fGirtsRotation, 0);
+                    m_arrMembers[i * INumberOfGirtsToDeactivate + j].BIsDisplayed = true;
                 }
             }
 
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
-            float fDoorColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b;
+            float fDoorColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b - fCutOffOneSide;
             CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
             CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
             float fDoorColumnRotation = (float)Math.PI / 2;
@@ -158,10 +162,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], m_arrCrSc[1], EMemberType_FormSteel.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
             m_arrMembers[iMembersGirts + 1] = new CMember(iMembersGirts + 1 + 1, m_arrNodes[iNodesForGirts + 2], m_arrNodes[iNodesForGirts + 2 + 1], m_arrCrSc[1], EMemberType_FormSteel.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
 
+            m_arrMembers[iMembersGirts].BIsDisplayed = true;
+            m_arrMembers[iMembersGirts + 1].BIsDisplayed = true;
+
             // Door lintel
             // TODO - add to block parameters
-            float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h;
-            float fDoorLintelEnd = -0.5f * (float)m_arrCrSc[1].h;
+            float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
+            float fDoorLintelEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
             CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
             CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
             float fDoorLintelRotation = (float)Math.PI /2;
@@ -169,6 +176,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             if (iNumberOfLintels > 0)
             {
                 m_arrMembers[iMembersGirts + iNumberOfColumns] = new CMember(iMembersGirts + iNumberOfColumns + 1, m_arrNodes[iNodesForGirts + iNumberOfColumns * 2], m_arrNodes[iNodesForGirts + iNumberOfColumns * 2 + 1], m_arrCrSc[1], EMemberType_FormSteel.eDF, feccentricityDoorLintelStart, feccentricityDoorLintelEnd, fDoorLintelStart, fDoorLintelEnd, fDoorLintelRotation, 0);
+                m_arrMembers[iMembersGirts + iNumberOfColumns].BIsDisplayed = true;
             }
         }
     }

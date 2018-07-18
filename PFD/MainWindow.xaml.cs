@@ -730,16 +730,16 @@ namespace PFD
             Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
             Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
             */
-                }
+        }
 
-                //deleting lists for updating actual values
-                private void DeleteLists()
+        //deleting lists for updating actual values
+        private void DeleteLists()
         {
             zoznamMenuNazvy.Clear();
             zoznamMenuHodnoty.Clear();
             zoznamMenuJednotky.Clear();
         }
-        
+
         private void UpdateAll()
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;

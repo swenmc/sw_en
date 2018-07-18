@@ -262,29 +262,30 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrMembers = new CMember[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iFrontGirtsNoInOneFrame + iBackGirtsNoInOneFrame];
             m_arrNSupports = new CNSupport[2 * iFrameNo];
 
+            float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
             // Alignments
             float fMainColumnStart = 0.0f;
-            float fMainColumnEnd = -0.20f * (float)m_arrCrSc[1].h; // ??? // TODO - dopocitat
-            float fRafterStart = -0.50f * (float)m_arrCrSc[0].h;     // TODO - dopocitat
-            float fRafterEnd = -0.25f * (float)m_arrCrSc[1].h;       // TODO - Calculate according to h of rafter and roof pitch
-            float fEavesPurlinStart = -0.5f * (float)m_arrCrSc[1].b;  // Just in case that cross-section of rafter is symmetric about z-z
-            float fEavesPurlinEnd = -0.5f * (float)m_arrCrSc[1].b;   // Just in case that cross-section of rafter is symmetric about z-z
-            float fGirtStart = -0.5f * (float)m_arrCrSc[0].b;        // Just in case that cross-section of main column is symmetric about z-z
-            float fGirtEnd = -0.5f * (float)m_arrCrSc[0].b;          // Just in case that cross-section of main column is symmetric about z-z
-            float fPurlinStart = -0.5f * (float)m_arrCrSc[1].b;      // Just in case that cross-section of rafter is symmetric about z-z
-            float fPurlinEnd = -0.5f * (float)m_arrCrSc[1].b;        // Just in case that cross-section of rafter is symmetric about z-z
+            float fMainColumnEnd = -0.20f * (float)m_arrCrSc[1].h - fCutOffOneSide; // ??? // TODO - dopocitat
+            float fRafterStart = -0.50f * (float)m_arrCrSc[0].h - fCutOffOneSide;     // TODO - dopocitat
+            float fRafterEnd = -0.25f * (float)m_arrCrSc[1].h - fCutOffOneSide;       // TODO - Calculate according to h of rafter and roof pitch
+            float fEavesPurlinStart = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;  // Just in case that cross-section of rafter is symmetric about z-z
+            float fEavesPurlinEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;   // Just in case that cross-section of rafter is symmetric about z-z
+            float fGirtStart = -0.5f * (float)m_arrCrSc[0].b - fCutOffOneSide;        // Just in case that cross-section of main column is symmetric about z-z
+            float fGirtEnd = -0.5f * (float)m_arrCrSc[0].b - fCutOffOneSide;          // Just in case that cross-section of main column is symmetric about z-z
+            float fPurlinStart = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;      // Just in case that cross-section of rafter is symmetric about z-z
+            float fPurlinEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;        // Just in case that cross-section of rafter is symmetric about z-z
             float fFrontColumnStart = 0f;
-            float fFrontColumnEnd = -0.5f * (float)m_arrCrSc[1].h;   // TODO - Calculate according to h of rafter and roof pitch
+            float fFrontColumnEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;   // TODO - Calculate according to h of rafter and roof pitch
             float fBackColumnStart = 0f;
-            float fBackColumnEnd = -0.5f * (float)m_arrCrSc[1].h;   // TODO - Calculate according to h of rafter and roof pitch
-            float fFrontGirtStart = -0.5f * (float)m_arrCrSc[5].b;   // Just in case that cross-section of column is symmetric about z-z
-            float fFrontGirtEnd = -0.5f * (float)m_arrCrSc[5].b;   // Just in case that cross-section of column is symmetric about z-z
-            float fBackGirtStart = -0.5f * (float)m_arrCrSc[6].b;   // Just in case that cross-section of column is symmetric about z-z
-            float fBackGirtEnd = -0.5f * (float)m_arrCrSc[6].b;   // Just in case that cross-section of column is symmetric about z-z
-            float fFrontGirtStart_MC = -0.5f * (float)m_arrCrSc[0].h; // Connection to the main frame column (column symmetrical about y-y)
-            float fFrontGirtEnd_MC = -0.5f * (float)m_arrCrSc[0].h;   // Connection to the main frame column (column symmetrical about y-y)
-            float fBackGirtStart_MC = -0.5f * (float)m_arrCrSc[0].h;  // Connection to the main frame column (column symmetrical about y-y)
-            float fBackGirtEnd_MC = -0.5f * (float)m_arrCrSc[0].h;    // Connection to the main frame column (column symmetrical about y-y)
+            float fBackColumnEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;   // TODO - Calculate according to h of rafter and roof pitch
+            float fFrontGirtStart = -0.5f * (float)m_arrCrSc[5].b - fCutOffOneSide;   // Just in case that cross-section of column is symmetric about z-z
+            float fFrontGirtEnd = -0.5f * (float)m_arrCrSc[5].b - fCutOffOneSide;   // Just in case that cross-section of column is symmetric about z-z
+            float fBackGirtStart = -0.5f * (float)m_arrCrSc[6].b - fCutOffOneSide;   // Just in case that cross-section of column is symmetric about z-z
+            float fBackGirtEnd = -0.5f * (float)m_arrCrSc[6].b - fCutOffOneSide;   // Just in case that cross-section of column is symmetric about z-z
+            float fFrontGirtStart_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide; // Connection to the main frame column (column symmetrical about y-y)
+            float fFrontGirtEnd_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide;   // Connection to the main frame column (column symmetrical about y-y)
+            float fBackGirtStart_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide;  // Connection to the main frame column (column symmetrical about y-y)
+            float fBackGirtEnd_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide;    // Connection to the main frame column (column symmetrical about y-y)
 
             float fColumnsRotation = MathF.fPI / 2.0f;
             float fGirtsRotation = MathF.fPI / 2.0f;
@@ -1037,6 +1038,19 @@ namespace sw_en_GUI.EXAMPLES._3D
             int arraysizeoriginal;
             CBlock door = new CBlock_3D_001_DoorInBay(fDoorsHeight, fDoorsWidth, fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, fL1_frame);
 
+            // Cross-sections
+            arraysizeoriginal = m_arrCrSc.Length;
+
+            Array.Resize(ref m_arrCrSc, m_arrCrSc.Length + door.m_arrCrSc.Length - 1); // ( - 1) Prvy prvok v poli doors crsc ignorujeme
+
+            // Copy block cross-sections into the model
+            for (int i = 1; i < door.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+            {
+                // Preskocit prvy prvok v poli doors crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+                m_arrCrSc[arraysizeoriginal + i-1] = door.m_arrCrSc[i];
+                m_arrCrSc[arraysizeoriginal + i-1].ICrSc_ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+1)
+            }
+
             // Nodes
             arraysizeoriginal = m_arrNodes.Length;
             Array.Resize(ref m_arrNodes, m_arrNodes.Length + door.m_arrNodes.Length);
@@ -1067,7 +1081,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             arraysizeoriginal = m_arrMembers.Length;
             Array.Resize(ref m_arrMembers, m_arrMembers.Length + door.m_arrMembers.Length);
 
-            // Copy block nodes into the model
+            // Copy block members into the model
             for (int i = 0; i < door.m_arrMembers.Length; i++)
             {
                 // Position of definition nodes was already changed, we dont need to rotate member definition nodes NodeStart and NodeEnd
@@ -1076,7 +1090,28 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                 m_arrMembers[arraysizeoriginal + i] = door.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
+
+                // TODO - nizsie uvedeny kod zmaze priradenie pruta do zoznamu prutov v priereze (list prutov ktorym je prierez priradeny), prut je totizto uz priradeny k prierezu kedze bol uz priradeny v bloku
+                // TODO - dvojite priradenie by sa malo vyriesit nejako elegantnejsie
+
+                // We need to remove assignment of member to the girt cross-section, it is already assigned
+
+                if (m_arrCrSc[3].AssignedMembersList.Count > 0) // Check that list is not empty
+                {
+                    if (m_arrCrSc[3].Equals(m_arrMembers[arraysizeoriginal + i].CrScStart))
+                        m_arrCrSc[3].AssignedMembersList.RemoveAt(m_arrCrSc[3].AssignedMembersList.Count - 1);
+                }
+
+                // We need to remove assignment of member to the door cross-section, it is already assigned
+
+                if (m_arrCrSc.Length > 0 && m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.Count > 0) // Check that list is not empty
+                {
+                    if (m_arrCrSc[m_arrCrSc.Length - 1].Equals(m_arrMembers[arraysizeoriginal + i].CrScStart))
+                        m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.RemoveAt(m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.Count - 1);
+                }
             }
+
+            // TODO - pridat prvky spojov na novych prutoch
         }
     }
 }

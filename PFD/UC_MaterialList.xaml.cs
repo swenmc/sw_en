@@ -106,55 +106,58 @@ namespace PFD
 
                     for (int j = 0; j < model.m_arrCrSc[i].AssignedMembersList.Count; j++) // Each member in the list
                     {
-                        // Define current member properties
-                        string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0];
-                        string sCrScName = model.m_arrCrSc[i].Name;
-                        int iQuantity = 1;
-                        string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
-                        float fLength = model.m_arrCrSc[i].AssignedMembersList[j].FLength_real;
-                        float fWeightPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
-                        float fWeightPerPiece = fLength * fWeightPerLength;
-                        float fTotalLength = iQuantity * fLength;
-                        float fTotalWeight = fTotalLength * fWeightPerLength;
-                        float fTotalPrice = fTotalWeight * fCFS_PricePerKg_Members_Total;
-
-                        bool bMemberwasAdded = false; // Member was added to the group
-
-                        if (j > 0) // If it not first item
+                        if (model.m_arrCrSc[i].AssignedMembersList[j].BIsDisplayed)
                         {
-                            for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
+                            // Define current member properties
+                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0];
+                            string sCrScName = model.m_arrCrSc[i].Name;
+                            int iQuantity = 1;
+                            string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
+                            float fLength = model.m_arrCrSc[i].AssignedMembersList[j].FLength_real;
+                            float fWeightPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
+                            float fWeightPerPiece = fLength * fWeightPerLength;
+                            float fTotalLength = iQuantity * fLength;
+                            float fTotalWeight = fTotalLength * fWeightPerLength;
+                            float fTotalPrice = fTotalWeight * fCFS_PricePerKg_Members_Total;
+
+                            bool bMemberwasAdded = false; // Member was added to the group
+
+                            if (j > 0) // If it not first item
                             {
-                                if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].eMemberType_FS, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0]) &&
-                                (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
+                                for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
                                 {
-                                    // Add member to the one from already created groups
+                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].eMemberType_FS, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0]) &&
+                                    (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
+                                    {
+                                        // Add member to the one from already created groups
 
-                                    listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
-                                    listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
-                                    listMemberTotalWeight[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberWeightPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesWeight); // Recalculate total weight of all members in the group
-                                    listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalWeight[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+                                        listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
+                                        listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
+                                        listMemberTotalWeight[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberWeightPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesWeight); // Recalculate total weight of all members in the group
+                                        listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalWeight[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
 
-                                    bMemberwasAdded = true;
+                                        bMemberwasAdded = true;
+                                    }
+                                    // TODO - po pridani pruta by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
                                 }
-                                // TOO - po pridani pruta by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
                             }
-                        }
 
-                        if (j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
-                        {
-                            listMemberPrefix.Add(sPrefix);
-                            listMemberCrScName.Add(sCrScName);
-                            listMemberQuantity.Add(iQuantity);
-                            listMemberMaterialName.Add(sMaterialName);
-                            dlistMemberLength.Add(Math.Round(fLength, iNumberOfDecimalPlacesLength));
-                            dlistMemberWeightPerLength.Add(Math.Round(fWeightPerLength, iNumberOfDecimalPlacesWeight));
-                            dlistMemberWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
-                            listMemberTotalLength.Add(Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
-                            listMemberTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlacesWeight));
-                            listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+                            if (j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
+                            {
+                                listMemberPrefix.Add(sPrefix);
+                                listMemberCrScName.Add(sCrScName);
+                                listMemberQuantity.Add(iQuantity);
+                                listMemberMaterialName.Add(sMaterialName);
+                                dlistMemberLength.Add(Math.Round(fLength, iNumberOfDecimalPlacesLength));
+                                dlistMemberWeightPerLength.Add(Math.Round(fWeightPerLength, iNumberOfDecimalPlacesWeight));
+                                dlistMemberWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
+                                listMemberTotalLength.Add(Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
+                                listMemberTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlacesWeight));
+                                listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
-                            // Add first member in the group to the list of member groups
-                            ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
+                                // Add first member in the group to the list of member groups
+                                ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
+                            }
                         }
                     }
 
@@ -171,11 +174,14 @@ namespace PFD
 
             foreach (CMember member in model.m_arrMembers)
             {
-                dTotalMembersLength_Model += member.FLength_real;
-                dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
-                dTotalMembersWeight_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho;
-                dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho * fCFS_PricePerKg_Members_Total;
-                iTotalMembersNumber_Model += 1;
+                if (member.BIsDisplayed)
+                {
+                    dTotalMembersLength_Model += member.FLength_real;
+                    dTotalMembersVolume_Model += member.CrScStart.A_g * member.FLength_real;
+                    dTotalMembersWeight_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho;
+                    dTotalMembersPrice_Model += member.CrScStart.A_g * member.FLength_real * member.CrScStart.m_Mat.m_fRho * fCFS_PricePerKg_Members_Total;
+                    iTotalMembersNumber_Model += 1;
+                }
             }
 
             for (int i = 0; i < listMemberPrefix.Count; i++)
