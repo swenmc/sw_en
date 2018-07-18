@@ -60,6 +60,8 @@
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="200"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -192,6 +194,8 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                        <TextBlock Grid.Row="16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
+                        <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="17" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="395" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
 
                         <ProgressBar Name="progressBar" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Height="20" Minimum="0" Maximum="100" Value="0" Visibility="Hidden" IsIndeterminate="True" />
                     </Grid>

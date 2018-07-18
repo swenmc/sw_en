@@ -11,7 +11,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 {
     public class CBlock_3D_001_DoorInBay : CBlock
     {
-        public CBlock_3D_001_DoorInBay(float fDoorsHeight, float fDoorsWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, float fGirtRotation, float fL1_bayofframe)
+        public CBlock_3D_001_DoorInBay(float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, float fL1_bayofframe)
         {
             /*
             fDoorsHeight = 2.1f;
@@ -20,7 +20,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             */
 
             // Basic validation
-            if ((fDoorsWidth + fDoorCoordinateXinBlock) > fL1_bayofframe)
+            if ((fDoorWidth + fDoorCoordinateXinBlock) > fL1_bayofframe)
                 throw new Exception(); // Door is defined out of frame bay
 
             m_arrMat = new CMat[1];
@@ -37,7 +37,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrCrSc[0] = referenceGirt.CrScStart; // Girts
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f,0.00075f, Colors.Red); // Door frame
 
-            INumberOfGirtsToDeactivate = (int)((fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
+            INumberOfGirtsToDeactivate = (int)((fDoorHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
 
             bool bDoorToCloseToLeftColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
             bool bDoorToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
@@ -45,12 +45,12 @@ namespace sw_en_GUI.EXAMPLES._3D
             if (fDoorCoordinateXinBlock < fLimitDistanceFromColumn)
                 bDoorToCloseToLeftColumn = true; // Door are to close to the left column
 
-            if((fL1_bayofframe - (fDoorCoordinateXinBlock + fDoorsWidth)) < fLimitDistanceFromColumn)
+            if((fL1_bayofframe - (fDoorCoordinateXinBlock + fDoorWidth)) < fLimitDistanceFromColumn)
                 bDoorToCloseToRightColumn = true; // Door are to close to the right column
 
             int iNumberOfGirtsSequences;
 
-            if (bDoorToCloseToLeftColumn && bDoorToCloseToRightColumn || fBottomGirtPosition > fDoorsHeight)
+            if (bDoorToCloseToLeftColumn && bDoorToCloseToRightColumn || fBottomGirtPosition > fDoorHeight)
                 iNumberOfGirtsSequences = 0;  // No girts (not generate girts, just door frame members)
             else if (bDoorToCloseToLeftColumn || bDoorToCloseToRightColumn)
                 iNumberOfGirtsSequences = 1; // Girts only on one side of doors
@@ -63,7 +63,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             int iNumberOfLintels = 1;
 
             float fLimitOfLintelAndGirtDistance = 0.2f;
-            if ((fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt) - fDoorsHeight < fLimitOfLintelAndGirtDistance)
+            if ((fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt) - fDoorHeight < fLimitOfLintelAndGirtDistance)
                 iNumberOfLintels = 0; // Not generate lintel - girt is close to the top edge of doors
 
             m_arrNodes = new CNode[iNodesForGirts + 2 * iNumberOfColumns + 2 * iNumberOfLintels];
@@ -76,12 +76,12 @@ namespace sw_en_GUI.EXAMPLES._3D
             {
                 int iNumberOfNodesOnOneSide = INumberOfGirtsToDeactivate * 2;
 
-                float fxcoordinate_start = i * (fDoorCoordinateXinBlock + fDoorsWidth);
+                float fxcoordinate_start = i * (fDoorCoordinateXinBlock + fDoorWidth);
                 float fxcoordinate_end = i == 0 ? fDoorCoordinateXinBlock : fL1_bayofframe;
 
                 if (bDoorToCloseToLeftColumn) // Generate only second sequence of girt nodes
                 {
-                    fxcoordinate_start = fDoorCoordinateXinBlock + fDoorsWidth;
+                    fxcoordinate_start = fDoorCoordinateXinBlock + fDoorWidth;
                     fxcoordinate_end = fL1_bayofframe;
                 }
 
@@ -99,15 +99,15 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             for (int i = 0; i < iNumberOfColumns; i++) // (Column on the left side and the right side of door)
             {
-                m_arrNodes[iNodesForGirts + i * iNumberOfColumns] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1, fDoorCoordinateXinBlock + i * fDoorsWidth, 0, 0, 0);
-                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + i * fDoorsWidth, 0, fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt, 0);
+                m_arrNodes[iNodesForGirts + i * iNumberOfColumns] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, 0, 0);
+                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt, 0);
             }
 
             // Coordinates of door lintel nodes
             if (iNumberOfLintels > 0)
             {
-                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock, 0, fDoorsHeight, 0);
-                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns + 1] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock + fDoorsWidth, 0, fDoorsHeight, 0);
+                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock, 0, fDoorHeight, 0);
+                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns + 1] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock + fDoorWidth, 0, fDoorHeight, 0);
             }
 
             // Block Members
@@ -152,7 +152,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fDoorColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b;
             CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
             CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
-            float fDoorColumnRotation = 0;
+            float fDoorColumnRotation = (float)Math.PI / 2;
 
             // Door columns
             m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], m_arrCrSc[1], EMemberType_FormSteel.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
@@ -162,9 +162,9 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to block parameters
             float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h;
             float fDoorLintelEnd = -0.5f * (float)m_arrCrSc[1].h;
-            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(-(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h), 0f);
-            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(-(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h), 0f);
-            float fDoorLintelRotation = 0;
+            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
+            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
+            float fDoorLintelRotation = (float)Math.PI /2;
 
             if (iNumberOfLintels > 0)
             {

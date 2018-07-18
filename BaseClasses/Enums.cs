@@ -339,4 +339,13 @@ namespace BaseClasses
         public float fPeriodAlongYDirection_Ty;//sec
         public float fSpectralShapeFactor_Ch_T;
     }
+
+    public struct DoorProperties
+    {
+        public string sBuildingSide;
+        public int iBayNumber;
+        public float fDoorsHeight;
+        public float fDoorsWidth;
+        public float fDoorCoordinateXinBlock;
+    }
 }

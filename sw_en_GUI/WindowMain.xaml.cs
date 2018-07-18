@@ -634,8 +634,14 @@ namespace sw_en_GUI
         // 3D Blocks
         private void menuItemBlock3D_001_DoorInBay_Click(object sender, RoutedEventArgs e)
         {
-            CMember refgirt = new CMember();
-            model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay(2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, 0, 9.3f);
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0,0,0,0), new CNode(1,1,0,0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay(2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, 9.3f);
             Window2 win = new Window2(model, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Doors in bay" + " - Window " + (Container.Children.Count + 1) });
@@ -846,7 +852,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_901_PF_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0);
+            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null);
             Window2 win = new Window2(model, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 901 PF" + " - Window " + (Container.Children.Count + 1) });

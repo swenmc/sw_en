@@ -56,13 +56,14 @@ namespace sw_en_GUI.EXAMPLES._3D
                 float fDist_FrontColumns_temp,
                 float fBottomGirtPosition_temp,
                 float fFrontFrameRakeAngle_temp_deg,
-                float fBackFrameRakeAngle_temp_deg
+                float fBackFrameRakeAngle_temp_deg,
+                List<DoorProperties> doorBlocksProperties
             )
         {
 
             // Todo asi prepracovat na zoznam tried objektov
 
-            string[,] componentTypesList = new string[9, 3]
+        string[,] componentTypesList = new string[9, 3]
             {
                 {"Main Column","2x50020","AS"},
                 {"Rafter","2x50020",""},
@@ -403,7 +404,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 {
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[4], EMemberType_FormSteel.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, -fRoofPitch_rad - MathF.fPI, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[4], EMemberType_FormSteel.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, -fRoofPitch_rad, 0);
                     }
 
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
@@ -487,9 +488,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - pokusny blok dveri, je potreba refaktorovat, napojit na GUI, vytvorit zoznam tychto objektov -> viacero dveri v budove na roznych poziciach a s roznymi parametrami
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            AddDoorBlock(0, 1, 2.1f, 0.9f, 1.2f, 0.5f, fGirtsRotation);
-            AddDoorBlock(0, 2, 2.5f, 1.5f, 0.6f, 0.5f, fGirtsRotation);
-            AddDoorBlock(1, 1, 2.1f, 0.9f, 1.2f, 0.5f, fGirtsRotation);
+            if (doorBlocksProperties != null)
+            {
+                foreach (DoorProperties prop in doorBlocksProperties)
+                {
+                    AddDoorBlock(prop, 0.5f);
+                }
+            }
 
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1003,7 +1008,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             }
         }
 
-        public void AddDoorBlock(int iSideMultiplier, int iBlockFrame, float fDoorsHeight, float fDoorsWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn, float fGirtsRotation)
+        public void AddDoorBlock(DoorProperties prop, float fLimitDistanceFromColumn)
         {
             // Left side X = 0, Right Side X = GableWidth
             // Insert after frame ID
@@ -1018,12 +1023,19 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fLimitDistanceFromColumn = 0.5f; // Default but could be also defined by user
             */
 
+            // TODO - prepracovat a pouzivat priamo vstupnu strukturu
+            int iSideMultiplier = prop.sBuildingSide == "Left" ? 0 : 1; // 0 lef side X = 0, 1 - right side X = Gable Width
+            int iBlockFrame = prop.iBayNumber - 1; // ID of frame in the bay
+            float fDoorsHeight = prop.fDoorsHeight;
+            float fDoorsWidth = prop.fDoorsWidth;
+            float fDoorCoordinateXinBlock = prop.fDoorCoordinateXinBlock;
+
             int iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
             CPoint pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
             CMember mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
 
             int arraysizeoriginal;
-            CBlock door = new CBlock_3D_001_DoorInBay(fDoorsHeight, fDoorsWidth, fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, fGirtsRotation, fL1_frame);
+            CBlock door = new CBlock_3D_001_DoorInBay(fDoorsHeight, fDoorsWidth, fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, fL1_frame);
 
             // Nodes
             arraysizeoriginal = m_arrNodes.Length;

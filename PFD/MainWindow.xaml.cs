@@ -49,6 +49,7 @@ namespace PFD
         public CModel model;
         public DatabaseModels dmodels; // Todo nahradit databazov modelov
         public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
+        public List<DoorProperties> DoorBlocksProperties;
         public CPFDViewModel vm;
         public CPFDLoadInput loadinput;
 
@@ -149,10 +150,30 @@ namespace PFD
             vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
-            
+
+            // Prapare data for generating of door blocks
+            DataTable dt = ((DataView)UC_doors.Datagrid_DoorsAndGates.ItemsSource).ToTable();
+
+            DoorBlocksProperties = new List<DoorProperties>();
+            // Fill list of door blocks
+            foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
+            {
+                if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
+                {
+                    DoorProperties dp_temp = new DoorProperties();
+                    dp_temp.sBuildingSide = (string)row.ItemArray[0];
+                    dp_temp.iBayNumber = (int)row.ItemArray[1];
+                    dp_temp.fDoorsHeight = float.Parse(row.ItemArray[2].ToString());
+                    dp_temp.fDoorsWidth = float.Parse(row.ItemArray[3].ToString());
+                    dp_temp.fDoorCoordinateXinBlock = float.Parse(row.ItemArray[4].ToString());
+
+                    DoorBlocksProperties.Add(dp_temp);
+                }
+            }
+
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
+            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties);
 
             // Loading
             loadinput = new CPFDLoadInput(11); // Default - Auckland
@@ -234,7 +255,7 @@ namespace PFD
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
+            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties);
 
             // Clear results of previous calculation
             DeleteCalculationResults();
@@ -724,7 +745,7 @@ namespace PFD
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle);
+            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties);
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
