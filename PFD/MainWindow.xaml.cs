@@ -775,12 +775,6 @@ namespace PFD
             win.Show();
         }
 
-        private void MaterialList_Click(object sender, RoutedEventArgs e)
-        {
-            MaterialList win = new MaterialList(model);
-            win.Show();
-        }
-
         private void ExportDXF_3D_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel model3D = Frame1.Content as Page3Dmodel;

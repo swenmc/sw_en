@@ -248,27 +248,28 @@ namespace BaseClasses
                         // Rotate model about local x-axis (LCS - local coordinate system of member)
 
 
-                        //O.P. 16.7.2018 - zakomentoval som a nevidim aby to nieco robilo =  neviem,ci to treba
-                        // Joint is defined in LCS of first secondary member
-                        //if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                        //cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
-                        //!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
-                        //{
-                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
-                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                        //    JointModelGroup.Transform = rotate;
-                        //}
-                        //else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
-                        //{
-                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
-                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                        //    JointModelGroup.Transform = rotate;
-                        //}
-                        //else
-                        //{
-                        //    // There is no rotation
+                        // O.P. 16.7.2018 - zakomentoval som a nevidim aby to nieco robilo =  neviem,ci to treba
+                        // M.C. 18.7.2018 - je to potrebne, ak je spoj definovany v LCS pruta, tak sa musi pootocit spolu s prutom o uhol theta (pripadne sa mu musi nastavit este aj excentricita ktora je nastavena prutu), ak je definovany v GCS tak sa neotaca
 
-                        //}
+                        // Joint is defined in LCS of first secondary member
+                        if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                        cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
+                        !MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
+                        {
+                            AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
+                            RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                            JointModelGroup.Transform = rotate;
+                        }
+                        else if (!MathF.d_equal(cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
+                        {
+                            AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), cmodel.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
+                            RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                            JointModelGroup.Transform = rotate;
+                        }
+                        else
+                        {
+                            // There is no rotation
+                        }
 
                         // TODO Ondrej 15/07/2018
                         // ak sme vsetky prvky v spoji pootocili o theta mame pripraveny spoj na transformaciu z LCS do GCS
@@ -820,10 +821,11 @@ namespace BaseClasses
                                 jointWireFrameGroup.AddPoints(wireFrame.Points);
                             }
                         }
-
-
                     }
                 }
+
+                // TODO Ondrej 18.7.2018 - niekde potrebujeme este otocit cely wireframe spoja o uhol Theta okolo LCS pruta, ak bol pootoceny surface model pruta
+                // vid line 252 // M.C. 18.7.2018
 
                 // Perform only in case that joint object is not null
                 foreach (Model3D m in model3DGroup.Children)
@@ -834,7 +836,7 @@ namespace BaseClasses
                     jointWireFrameGroup.AddPoints(points);
                 }
 
-                //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();            
+                //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();
 
                 //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
 

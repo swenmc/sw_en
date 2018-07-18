@@ -129,8 +129,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
             CMemberEccentricity eccentricityPurlin = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[1].h - 0.5 * m_arrCrSc[4].h));
-            CMemberEccentricity eccentricityGirtLeft_X0 = new CMemberEccentricity((float)(0.5 * m_arrCrSc[0].h - 0.5 * m_arrCrSc[3].h), 0);
-            CMemberEccentricity eccentricityGirtRight_XB = new CMemberEccentricity((float)(-(0.5 * m_arrCrSc[0].h - 0.5 * m_arrCrSc[3].h)), 0);
+            CMemberEccentricity eccentricityGirtLeft_X0 = new CMemberEccentricity(0, (float)(-(0.5 * m_arrCrSc[0].h - 0.5 * m_arrCrSc[3].h)));
+            CMemberEccentricity eccentricityGirtRight_XB = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[0].h - 0.5 * m_arrCrSc[3].h));
 
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
             fUpperGirtLimit = (float)(m_arrCrSc[2].h + m_arrCrSc[3].b);
@@ -1035,6 +1035,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             for (int i = 0; i < iNumberofMembersToDeactivate; i++)
             {
                 m_arrMembers[iFirstMemberToDeactivate + i].BIsDisplayed = false;
+
+                // Deactivate Member Joints
+                // TODO Ondrej - potrebujeme zistit, ktore spoje su pripojene na prut a deaktivovat ich, aby sa nevytvorili, asi by sme mali na tieto veci vyrobit nejaku mapu alebo dictionary
+ 
             }
 
             float fBlockRotationAboutZaxis_rad = MathF.fPI / 2.0f; // Parameter of block - depending on side of building (front, back (0 deg), left, right (90 deg))

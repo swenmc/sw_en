@@ -49,7 +49,7 @@ namespace MATH
             return (float)(x * - Math.Sin(theta) + y * Math.Cos(theta));
         }
 
-        public static void TransformPositions_CCW(float x, float y, float x_centerOfRotation, float y_centerOfRotation, double theta)
+        public static void TransformPositions_CCW(float x_centerOfRotation, float y_centerOfRotation, double theta, ref float x, ref float y)
         {
             float px;
             float py;
@@ -69,7 +69,7 @@ namespace MATH
             y = py;
         }
 
-        public static void TransformPositions_CW(float x, float y, float x_centerOfRotation, float y_centerOfRotation, double theta)
+        public static void TransformPositions_CW(float x_centerOfRotation, float y_centerOfRotation, double theta, ref float x, ref float y)
         {
             float px;
             float py;

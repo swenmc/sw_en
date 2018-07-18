@@ -150,8 +150,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
             float fDoorColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b;
-            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFy_local + 0.5f * (float)m_arrCrSc[1].h);
-            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFy_local + 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
+            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
             float fDoorColumnRotation = 0;
 
             // Door columns
@@ -162,8 +162,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to block parameters
             float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h;
             float fDoorLintelEnd = -0.5f * (float)m_arrCrSc[1].h;
-            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(eccentricityGirtStart.MFy_local + 0.5f * (float)m_arrCrSc[1].h, 0f);
-            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(eccentricityGirtStart.MFy_local + 0.5f * (float)m_arrCrSc[1].h, 0f);
+            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(-(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h), 0f);
+            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(-(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h), 0f);
             float fDoorLintelRotation = 0;
 
             if (iNumberOfLintels > 0)
