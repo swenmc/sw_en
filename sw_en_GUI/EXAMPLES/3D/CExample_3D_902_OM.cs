@@ -95,7 +95,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Joints
             //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeStart, m_arrMembers[0], true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeEnd, m_arrMembers[0], true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_T001(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], false, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], false, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0.003f, true));
         }
     }

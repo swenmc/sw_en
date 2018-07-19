@@ -43,6 +43,7 @@ namespace PFD
             listBuildingSide.Add("Right");
             listBuildingSide.Add("Left");
             listBuildingSide.Add("Right");
+
             listBayNumber.Add(1);
             listBayNumber.Add(2);
             listBayNumber.Add(3);
@@ -54,13 +55,13 @@ namespace PFD
             listDoorHeight.Add(2.6f);
 
             listDoorWidth.Add(0.9f);
-            listDoorWidth.Add(1.5f);
             listDoorWidth.Add(1.2f);
-            listDoorWidth.Add(2.5f);
+            listDoorWidth.Add(1.2f);
+            listDoorWidth.Add(2.0f);
 
             listDoorCoordinateXinBlock.Add(1.1f);
-            listDoorCoordinateXinBlock.Add(1.6f);
-            listDoorCoordinateXinBlock.Add(1.5f);
+            listDoorCoordinateXinBlock.Add(1.3f);
+            listDoorCoordinateXinBlock.Add(1.2f);
             listDoorCoordinateXinBlock.Add(0.6f);
 
             // Create Table

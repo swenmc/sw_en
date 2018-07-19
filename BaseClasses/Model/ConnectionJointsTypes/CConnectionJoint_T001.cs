@@ -20,7 +20,7 @@ namespace BaseClasses
 
         public CConnectionJoint_T001() { }
 
-        public CConnectionJoint_T001(CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, bool bIsAlignmentMainMemberWidth, bool bIsDisplayed_temp)
+        public CConnectionJoint_T001(string sPlateType_ForL, CNode Node_temp, CMember MainMember_temp, CMember SecondaryConnectedMember_temp, bool bIsAlignmentMainMemberWidth, bool bIsDisplayed_temp)
         {
             bIsJointDefinedinGCS = false;
 
@@ -33,12 +33,15 @@ namespace BaseClasses
             m_ft = 0.003f;
             m_fPlate_Angle_Leg = 0.05f;
 
-            float fAlignment_x;
+            float fAlignment_x = 0.0f;
 
-            if (bIsAlignmentMainMemberWidth) // Odsadenie moze byt suradnice v smere sirky pruta (y) alebo vysky pruta (z), pre symetricke prierezy je to polovica rozmeru ale je potrebne zapracovat obecne s ymin,ymax a zmin, zmax
-                fAlignment_x = 0.5f * (float)m_MainMember.CrScStart.b;
-            else
-                fAlignment_x = 0.5f * (float)m_MainMember.CrScStart.h;
+            if (m_MainMember != null)
+            {
+                if (bIsAlignmentMainMemberWidth) // Odsadenie moze byt suradnice v smere sirky pruta (y) alebo vysky pruta (z), pre symetricke prierezy je to polovica rozmeru ale je potrebne zapracovat obecne s ymin,ymax a zmin, zmax
+                    fAlignment_x = 0.5f * (float)m_MainMember.CrScStart.b;
+                else
+                    fAlignment_x = 0.5f * (float)m_MainMember.CrScStart.h;
+            }
 
             // Joint is defined in start point and LCS of secondary member [0,y,z]
             // Plates are usually defined in x,y coordinates
@@ -49,7 +52,11 @@ namespace BaseClasses
             CPoint ControlPoint_P1 = new CPoint(0, fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min), - 0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
             CPoint ControlPoint_P2 = new CPoint(0, fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max), - 0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
 
-            int iConnectorNumberinOnePlate = 16;
+            int iConnectorNumberinOnePlate = 16; // Plates LH LI, LK
+
+            if (sPlateType_ForL == "LJ") // TODO - tento string prepracovat na enum pre jednotlive typy plechov, pripravit databazu plechov
+                iConnectorNumberinOnePlate = 8; // Plate LJ
+            
             float fDiameter_temp = 0.0055f; // Default - same size as screw
             float fScrewLength = 0.009f;
             //float fScrewWeight = 0.012f;
@@ -65,8 +72,8 @@ namespace BaseClasses
             // Po tomto vlozeni plechov a ich skrutiek do spoja by sa mali suradnice vsetkych plechov a skrutiek v spoji prepocitat z povodnych suradnic plechov, v ktorych su plechy zadane do suradnicoveho systemu spoja a ulozit
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
 
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -75,8 +82,8 @@ namespace BaseClasses
                 ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max), - 0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
                 ControlPoint_P2 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min), - 0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
 
-                m_arrPlates[0] = new CConCom_Plate_F_or_L("LH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180+0, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
-                m_arrPlates[1] = new CConCom_Plate_F_or_L("LH", ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180+90, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
+                m_arrPlates[0] = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180+0, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
+                m_arrPlates[1] = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180+90, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
             }
         }
     }

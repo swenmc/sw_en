@@ -11,7 +11,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 {
     public class CBlock_3D_001_DoorInBay : CBlock
     {
-        public CBlock_3D_001_DoorInBay(float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, float fL1_bayofframe)
+        public CBlock_3D_001_DoorInBay(string sBuildingSide, float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, CMember Colummn, float fL1_bayofframe)
         {
             // TODO napojit premennu na hlavny model a pripadne dat moznost uzivatelovi nastavit hodnotu 0 - 30 mm
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
@@ -120,6 +120,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Door column
             CMemberEccentricity eccentricityGirtStart = referenceGirt.EccentricityStart;
             CMemberEccentricity eccentricityGirtEnd = referenceGirt.EccentricityEnd;
+            CMemberEccentricity eccentricityGirtStart_temp;
+            CMemberEccentricity eccentricityGirtEnd_temp;
             float fGirtsRotation = (float)referenceGirt.DTheta_x;
 
             // Girt Members
@@ -135,8 +137,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     // Alignment - switch stanrt and end allignment for girts on the left side of door and the right side of door
                     float fGirtStartTemp = fGirtAllignmentStart;
                     float fGirtEndTemp = fGirtAllignmentEnd;
-                    CMemberEccentricity eccentricityGirtStart_temp = eccentricityGirtStart;
-                    CMemberEccentricity eccentricityGirtEnd_temp = eccentricityGirtEnd;
+                    eccentricityGirtStart_temp = eccentricityGirtStart;
+                    eccentricityGirtEnd_temp = eccentricityGirtEnd;
 
                     if (i == 1 || bDoorToCloseToLeftColumn) // If just right sequence of girts is generated switch allignment and eccentricity (???) need testing;
                     {
@@ -154,9 +156,16 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
             float fDoorColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b - fCutOffOneSide;
-            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
-            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
-            float fDoorColumnRotation = (float)Math.PI / 2;
+            CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
+            float fDoorColumnRotation = (float)Math.PI;
+
+            // Set eccentricity sign depending on global rotation angle and building side (left / right)
+            if (sBuildingSide == "Left")
+            {
+                feccentricityDoorColumnStart.MFz_local *= -1.0f;
+                feccentricityDoorColumnEnd.MFz_local *= -1.0f;
+            }
 
             // Door columns
             m_arrMembers[iMembersGirts] = new CMember(iMembersGirts + 1, m_arrNodes[iNodesForGirts], m_arrNodes[iNodesForGirts + 1], m_arrCrSc[1], EMemberType_FormSteel.eDF, feccentricityDoorColumnStart, feccentricityDoorColumnEnd, fDoorColumnStart, fDoorColumnEnd, fDoorColumnRotation, 0);
@@ -165,18 +174,59 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrMembers[iMembersGirts].BIsDisplayed = true;
             m_arrMembers[iMembersGirts + 1].BIsDisplayed = true;
 
-            // Door lintel
+            // Door lintel (header)
             // TODO - add to block parameters
             float fDoorLintelStart = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
             float fDoorLintelEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;
-            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
-            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, -(eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h));
-            float fDoorLintelRotation = (float)Math.PI /2;
+            CMemberEccentricity feccentricityDoorLintelStart = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
+            CMemberEccentricity feccentricityDoorLintelEnd = new CMemberEccentricity(0, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
+            float fDoorLintelRotation = (float)Math.PI / 2;
+
+            // Set eccentricity sign depending on global rotation angle and building side (left / right)
+            if (sBuildingSide == "Left")
+            {
+                feccentricityDoorLintelStart.MFz_local *= -1.0f;
+                feccentricityDoorLintelEnd.MFz_local *= -1.0f;
+            }
 
             if (iNumberOfLintels > 0)
             {
                 m_arrMembers[iMembersGirts + iNumberOfColumns] = new CMember(iMembersGirts + iNumberOfColumns + 1, m_arrNodes[iNodesForGirts + iNumberOfColumns * 2], m_arrNodes[iNodesForGirts + iNumberOfColumns * 2 + 1], m_arrCrSc[1], EMemberType_FormSteel.eDF, feccentricityDoorLintelStart, feccentricityDoorLintelEnd, fDoorLintelStart, fDoorLintelEnd, fDoorLintelRotation, 0);
                 m_arrMembers[iMembersGirts + iNumberOfColumns].BIsDisplayed = true;
+            }
+
+            // Connection Joints
+            m_arrConnectionJoints = new List<CConnectionJointTypes>();
+
+            // Girt Joints
+            if (iMembersGirts > 0)
+            {
+                for (int i = 0; i < iMembersGirts; i++) // Each created girt
+                {
+                    CMember current_member = m_arrMembers[i];
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, Colummn, current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, Colummn, current_member, true, true));
+                }
+            }
+
+            // Column Joints (Stile)
+            for (int i = 0; i < iNumberOfColumns; i++) // Each created girt
+            {
+                CMember current_member = m_arrMembers[iMembersGirts + i];
+                // TODO - dopracovat moznosti kedy je stlpik dveri pripojeny k eave purlin, main rafter a podobne (nemusi to byt vzdy girt)
+
+                // Bottom - columns is connected to the concrete foundation (use different type of plate ???)
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, null, current_member, true, true));
+                // Top
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, referenceGirt, current_member, true, true));
+            }
+
+            // Lintel (header) Joint
+            if (iNumberOfLintels > 0)
+            {
+                CMember current_member = m_arrMembers[iMembersGirts + iNumberOfColumns];
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts], current_member, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + 1], current_member, true, true));
             }
         }
     }

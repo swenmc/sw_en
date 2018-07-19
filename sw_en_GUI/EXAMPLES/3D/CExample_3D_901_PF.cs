@@ -122,8 +122,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.Thistle);                 // Eaves Purlin
             m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                // Girt - Wall
             m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);             // Purlin
-            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.0075f, Colors.Beige);                  // Front Column
-            m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.0075f, Colors.BlueViolet);             // Back Column
+            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.Beige);                  // Front Column
+            m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Back Column
             m_arrCrSc[7] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Aquamarine);            // Front Girt
             m_arrCrSc[8] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);           // Back Girt
 
@@ -484,22 +484,6 @@ namespace sw_en_GUI.EXAMPLES._3D
                 AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[8], fColumnsRotation);
             }
 
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // Blocks
-            // TODO - pokusny blok dveri, je potreba refaktorovat, napojit na GUI, vytvorit zoznam tychto objektov -> viacero dveri v budove na roznych poziciach a s roznymi parametrami
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            if (doorBlocksProperties != null)
-            {
-                foreach (DoorProperties prop in doorBlocksProperties)
-                {
-                    AddDoorBlock(prop, 0.5f);
-                }
-            }
-
-            // End of blocks
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
             // Nodal Supports - fill values
 
             // Set values
@@ -590,8 +574,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + i];
                     //m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeStart, m_arrMembers[0], current_member, true));
                     //m_arrConnectionJoints.Add(new CConnectionJoint_D001(current_member.NodeEnd, m_arrMembers[0], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[0], current_member, true, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[0], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[0], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[0], current_member, true, true));
                 }
             }
 
@@ -603,8 +587,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i];
                     //m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeStart, m_arrMembers[1], current_member, true));
                     //m_arrConnectionJoints.Add(new CConnectionJoint_E001(current_member.NodeEnd, m_arrMembers[1], current_member, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[1], current_member, true, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[1], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[1], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[1], current_member, true, true));
                 }
             }
 
@@ -647,19 +631,19 @@ namespace sw_en_GUI.EXAMPLES._3D
                     // Joint at member start - connected to the first main column
                     if (i < iGirtNoInOneFrame / 2) // First column of girts are connected to the first main column
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[0], current_member, false, true)); // Use height (z dimension)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[0], current_member, false, true)); // Use height (z dimension)
                     }
                     else if ((iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle - 1) < i && i < (iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle + iOneColumnGridNo)) // Joint at member start - connected to the second main column
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[3], current_member, false, true)); // Use height (z dimension)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[3], current_member, false, true)); // Use height (z dimension)
                     }
                     else
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true, true));
                     }
 
                     // Joint at member end
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame], current_member, true, true));
                 }
             }
 
@@ -682,20 +666,36 @@ namespace sw_en_GUI.EXAMPLES._3D
                     // Joint at member start - connected to the first main column
                     if (i < iGirtNoInOneFrame / 2) // First column of girts are connected to the first main column
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1)], current_member, false, true)); // Use height (z dimension)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1)], current_member, false, true)); // Use height (z dimension)
                     }
                     else if ((iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle - 1) < i && i < (iNumberOfSymmetricalGirtsHalf + iNumberOfGirtsInMiddle + iOneColumnGridNo)) // Joint at member start - connected to the second main column
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1) + 3], current_member, false, true)); // Use height (z dimension)
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[((iFrameNo - 1) * iEavesPurlinNoInOneFrame) + (iFrameNo - 1) * (iFrameNodesNo - 1) + 3], current_member, false, true)); // Use height (z dimension)
                     }
                     else
                     {
-                        m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true, true));
+                        m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true, true));
                     }
 
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001(current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, true, true));
                 }
             }
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Blocks
+            // TODO - pokusny blok dveri, je potreba refaktorovat, napojit na GUI, vytvorit zoznam tychto objektov -> viacero dveri v budove na roznych poziciach a s roznymi parametrami
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            if (doorBlocksProperties != null)
+            {
+                foreach (DoorProperties prop in doorBlocksProperties)
+                {
+                    AddDoorBlock(prop, 0.5f);
+                }
+            }
+
+            // End of blocks
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Loading
 
@@ -713,26 +713,26 @@ namespace sw_en_GUI.EXAMPLES._3D
 
 
             m_arrLoadCases = new CLoadCase[20];
-            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Dead Load");                                  // 1
+            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load");                             // 1
             m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load");       // 2
-            m_arrLoadCases[2] = new CLoadCase(3, "Live load Q", "Live load");                                  // 3
-            m_arrLoadCases[3] = new CLoadCase(4, "Snow load Qs - full", "Snow load");                          // 4
-            m_arrLoadCases[4] = new CLoadCase(5, "Snow load Qs - left", "Snow load");                          // 5
-            m_arrLoadCases[5] = new CLoadCase(6, "Snow load Qs - right", "Snow load");                          // 6
-            m_arrLoadCases[6] = new CLoadCase(7, "Wind load Qw - Cpi - Left - X+", "Wind load");               // 7
-            m_arrLoadCases[7] = new CLoadCase(8, "Wind load Qw - Cpi - Right - X-", "Wind load");              // 8
-            m_arrLoadCases[8] = new CLoadCase(9, "Wind load Qw - Cpi - Front - Y+", "Wind load");              // 9
-            m_arrLoadCases[9] = new CLoadCase(10, "Wind load Qw - Cpi - Rear - Y-", "Wind load");              // 10
-            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Qw - Cpe,min - Left - X+", "Wind load");         // 11
-            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Qw - Cpe,min - Right - X-", "Wind load");        // 12
-            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Qw - Cpe,min - Front - Y+", "Wind load");        // 13
-            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Qw - Cpe,min - Rear - Y-", "Wind load");         // 14
-            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Qw - Cpe,max - Left - X+", "Wind load");         // 15
-            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Qw - Cpe,max - Right - X-", "Wind load");        // 16
-            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Qw - Cpe,max - Front - Y+", "Wind load");        // 17
-            m_arrLoadCases[17] = new CLoadCase(18, "Wind load Qw - Cpe,max - Rear - Y-", "Wind load");         // 18
-            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load EQ - X", "Earthquake load");               // 19
-            m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load EQ - Y", "Earthquake load");               // 20
+            m_arrLoadCases[2] = new CLoadCase(3, "Imposed load Q", "Imposed load");                            // 3
+            m_arrLoadCases[3] = new CLoadCase(4, "Snow load Su - full", "Snow load");                          // 4
+            m_arrLoadCases[4] = new CLoadCase(5, "Snow load Su - left", "Snow load");                          // 5
+            m_arrLoadCases[5] = new CLoadCase(6, "Snow load Su - right", "Snow load");                         // 6
+            m_arrLoadCases[6] = new CLoadCase(7, "Wind load Wu - Cpi - Left - X+", "Wind load");               // 7
+            m_arrLoadCases[7] = new CLoadCase(8, "Wind load Wu - Cpi - Right - X-", "Wind load");              // 8
+            m_arrLoadCases[8] = new CLoadCase(9, "Wind load Wu - Cpi - Front - Y+", "Wind load");              // 9
+            m_arrLoadCases[9] = new CLoadCase(10, "Wind load Wu - Cpi - Rear - Y-", "Wind load");              // 10
+            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Left - X+", "Wind load");         // 11
+            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Right - X-", "Wind load");        // 12
+            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Wu - Cpe,min - Front - Y+", "Wind load");        // 13
+            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Wu - Cpe,min - Rear - Y-", "Wind load");         // 14
+            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Wu - Cpe,max - Left - X+", "Wind load");         // 15
+            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Wu - Cpe,max - Right - X-", "Wind load");        // 16
+            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Wu - Cpe,max - Front - Y+", "Wind load");        // 17
+            m_arrLoadCases[17] = new CLoadCase(18, "Wind load Wu - Cpe,max - Rear - Y-", "Wind load");         // 18
+            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - X", "Earthquake load");               // 19
+            m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load Eu - Y", "Earthquake load");               // 20
 
             // G + Gs
             m_arrLoadCombs[0].LoadCasesList.Add(m_arrLoadCases[0]);
@@ -1031,12 +1031,15 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fDoorsWidth = prop.fDoorsWidth;
             float fDoorCoordinateXinBlock = prop.fDoorCoordinateXinBlock;
 
+            int iBayColumn = (iBlockFrame * 6) + (iSideMultiplier == 0 ?  0 : (4-1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
+
             int iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
             CPoint pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
             CMember mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
+            CMember mFrameColumn = m_arrMembers[iBayColumn];
 
             int arraysizeoriginal;
-            CBlock door = new CBlock_3D_001_DoorInBay(fDoorsHeight, fDoorsWidth, fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, fL1_frame);
+            CBlock door = new CBlock_3D_001_DoorInBay(prop.sBuildingSide, fDoorsHeight, fDoorsWidth, fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, mFrameColumn, fL1_frame);
 
             // Cross-sections
             arraysizeoriginal = m_arrCrSc.Length;
@@ -1111,7 +1114,11 @@ namespace sw_en_GUI.EXAMPLES._3D
                 }
             }
 
-            // TODO - pridat prvky spojov na novych prutoch
+            // TODO - odstranit spoje na deaktivovanych prutoch
+
+            // Add block member connections to the main model connections
+            foreach (CConnectionJointTypes joint in door.m_arrConnectionJoints)
+                m_arrConnectionJoints.Add(joint);
         }
     }
 }
