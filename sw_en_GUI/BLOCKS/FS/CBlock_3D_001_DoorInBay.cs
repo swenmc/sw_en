@@ -110,7 +110,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             if (iNumberOfLintels > 0)
             {
                 m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock, 0, fDoorHeight, 0);
-                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns + 1] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock + fDoorWidth, 0, fDoorHeight, 0);
+                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns + 1] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + fDoorWidth, 0, fDoorHeight, 0);
             }
 
             // Block Members
