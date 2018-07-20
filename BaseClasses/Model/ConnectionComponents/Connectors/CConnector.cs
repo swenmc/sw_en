@@ -68,11 +68,15 @@ namespace BaseClasses
             GeometryModel3D geometryModel = new GeometryModel3D();
             geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
 
-            m_cylinder.GetWireFrameIndices_Cylinder(13);
+            Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
 
             // TODO Ondrej 15/07/2018
             // TODO Dopracovat pristup k bodom v geometry model a pridat ich do ssl3D
-
+            Point3DCollection positions = ((MeshGeometry3D)geometryModel.Geometry).Positions;
+            for (int i = 0; i < wireFrameIndices.Count; i++)
+            {
+                ssl3D.Points.Add(positions[wireFrameIndices[i]]);
+            }
             return ssl3D;
         }
 
@@ -83,10 +87,15 @@ namespace BaseClasses
             GeometryModel3D geometryModel = new GeometryModel3D();
             geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
 
-            m_cylinder.GetWireFrameIndices_Cylinder(13);
+            Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
 
             // TODO Ondrej 15/07/2018
             // TODO Dopracovat pristup k bodom v geometry model a pridat ich do points3D
+            Point3DCollection positions = ((MeshGeometry3D)geometryModel.Geometry).Positions;
+            for (int i = 0; i < wireFrameIndices.Count; i++)
+            {
+                points3D.Add(positions[wireFrameIndices[i]]);
+            }
 
             return points3D;
         }

@@ -781,14 +781,20 @@ namespace BaseClasses
                                         model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length > 0)
                                     {
                                         for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; m++)
-                                            jointWireFrameGroup.AddPoints(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].WireFrameModelPoints());
+                                        {
+                                            //jointWireFrameGroup.AddPoints(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].WireFrameModelPoints());
+                                            ScreenSpaceLines3D wFrame = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].CreateWireFrameModel();
+                                            var transPoints = wFrame.Points.Select(p => a.Transform(p));
+                                            jointWireFrameGroup.AddPoints(transPoints.ToList());
+                                        }
+                                            
                                     }
                                 }
                             }
                         }
 
                         // Connectors
-                        bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
+                        bool bUseAdditionalConnectors = true; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
 
                         if (bUseAdditionalConnectors && model.m_arrConnectionJoints[i].m_arrConnectors != null)
                         {
@@ -829,7 +835,7 @@ namespace BaseClasses
                 GetTransformedPoints(model3DGroup, ref points);
                 jointWireFrameGroup.Points.Clear();
                 jointWireFrameGroup.AddPoints(points);
-                
+
                 //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();
 
                 //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
