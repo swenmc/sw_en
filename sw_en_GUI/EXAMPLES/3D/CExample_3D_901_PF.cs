@@ -9,6 +9,7 @@ using BaseClasses.GraphObj;
 using MATH;
 using MATERIAL;
 using CRSC;
+using Combinatorics.Collections;
 
 namespace sw_en_GUI.EXAMPLES._3D
 {
@@ -60,8 +61,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 List<DoorProperties> doorBlocksProperties
             )
         {
-
-            // Todo asi prepracovat na zoznam tried objektov
+        // Todo asi prepracovat na zoznam tried objektov
 
         string[,] componentTypesList = new string[9, 3]
             {
@@ -734,6 +734,14 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - X", "Earthquake load");               // 19
             m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load Eu - Y", "Earthquake load");               // 20
 
+            // Create combinations
+            //TODO - vytvorit kombinacie podla predpisu v CLoadCombinations
+
+            /*
+            Combinations<CLoadCase> a = new Combinations<CLoadCase>(m_arrLoadCases,3, GenerateOption.WithoutRepetition);
+            Permutations<CLoadCase> b = new Permutations<CLoadCase>(m_arrLoadCases,GenerateOption.WithoutRepetition);
+            */
+
             // G + Gs
             m_arrLoadCombs[0].LoadCasesList.Add(m_arrLoadCases[0]);
             m_arrLoadCombs[0].LoadCasesFactorsList.Add(1.35f);
@@ -788,7 +796,6 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrMLoads = new CMLoad[2];
             m_arrMLoads[0] = new CMLoad_21(-0.8f, m_arrMembers[1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             m_arrMLoads[1] = new CMLoad_21(-0.9f, m_arrMembers[2], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)

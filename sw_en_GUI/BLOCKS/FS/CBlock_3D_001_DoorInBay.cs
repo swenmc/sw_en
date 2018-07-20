@@ -46,19 +46,19 @@ namespace sw_en_GUI.EXAMPLES._3D
             bool bDoorToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
 
             if (fDoorCoordinateXinBlock < fLimitDistanceFromColumn)
-                bDoorToCloseToLeftColumn = true; // Door are to close to the left column
+                bDoorToCloseToLeftColumn = true; // Door is to close to the left column
 
             if((fL1_bayofframe - (fDoorCoordinateXinBlock + fDoorWidth)) < fLimitDistanceFromColumn)
-                bDoorToCloseToRightColumn = true; // Door are to close to the right column
+                bDoorToCloseToRightColumn = true; // Door is to close to the right column
 
             int iNumberOfGirtsSequences;
 
             if (bDoorToCloseToLeftColumn && bDoorToCloseToRightColumn || fBottomGirtPosition > fDoorHeight)
                 iNumberOfGirtsSequences = 0;  // No girts (not generate girts, just door frame members)
             else if (bDoorToCloseToLeftColumn || bDoorToCloseToRightColumn)
-                iNumberOfGirtsSequences = 1; // Girts only on one side of doors
+                iNumberOfGirtsSequences = 1; // Girts only on one side of door
             else
-                iNumberOfGirtsSequences = 2; // Girts on both sides of doors
+                iNumberOfGirtsSequences = 2; // Girts on both sides of door
 
             int iNodesForGirts = INumberOfGirtsToDeactivate * iNumberOfGirtsSequences * 2;
             int iMembersGirts = INumberOfGirtsToDeactivate * iNumberOfGirtsSequences;
@@ -67,7 +67,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             float fLimitOfLintelAndGirtDistance = 0.2f;
             if ((fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt) - fDoorHeight < fLimitOfLintelAndGirtDistance)
-                iNumberOfLintels = 0; // Not generate lintel - girt is close to the top edge of doors
+                iNumberOfLintels = 0; // Not generate lintel - girt is close to the top edge of door
 
             m_arrNodes = new CNode[iNodesForGirts + 2 * iNumberOfColumns + 2 * iNumberOfLintels];
             m_arrMembers = new CMember[iMembersGirts + iNumberOfColumns + iNumberOfLintels];
@@ -134,7 +134,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                 for (int j = 0; j < INumberOfGirtsToDeactivate; j++)
                 {
-                    // Alignment - switch stanrt and end allignment for girts on the left side of door and the right side of door
+                    // Alignment - switch start and end allignment for girts on the left side of door and the right side of door
                     float fGirtStartTemp = fGirtAllignmentStart;
                     float fGirtEndTemp = fGirtAllignmentEnd;
                     eccentricityGirtStart_temp = eccentricityGirtStart;
@@ -209,14 +209,14 @@ namespace sw_en_GUI.EXAMPLES._3D
                 }
             }
 
-            // Column Joints (Stile)
-            for (int i = 0; i < iNumberOfColumns; i++) // Each created girt
+            // Column Joints
+            for (int i = 0; i < iNumberOfColumns; i++) // Each created column
             {
                 CMember current_member = m_arrMembers[iMembersGirts + i];
                 // TODO - dopracovat moznosti kedy je stlpik dveri pripojeny k eave purlin, main rafter a podobne (nemusi to byt vzdy girt)
 
                 // Bottom - columns is connected to the concrete foundation (use different type of plate ???)
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, null, current_member, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, null, current_member, false, true));
                 // Top
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, referenceGirt, current_member, true, true));
             }

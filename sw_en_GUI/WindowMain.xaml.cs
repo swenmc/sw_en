@@ -648,7 +648,27 @@ namespace sw_en_GUI
             model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 9.3f);
             Window2 win = new Window2(model, m_bDebugging);
             list_trackports.Add(win._trackport);
-            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Doors in bay" + " - Window " + (Container.Children.Count + 1) });
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Door in bay" + " - Window " + (Container.Children.Count + 1) });
+            win.Close();
+        }
+
+        private void menuItemBlock3D_002_WindowInBay_Click(object sender, RoutedEventArgs e)
+        {
+            // Girt
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
+            CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+
+            model = new EXAMPLES._3D.CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
+            Window2 win = new Window2(model, m_bDebugging);
+            list_trackports.Add(win._trackport);
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 002 Window in bay" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
         }
 

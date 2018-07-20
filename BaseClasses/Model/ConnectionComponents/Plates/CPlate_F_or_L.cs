@@ -443,7 +443,7 @@ namespace BaseClasses
 
                 arrConnectorControlPoints3D[1].X = arrConnectorControlPoints3D[0].X;
                 arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
-                arrConnectorControlPoints3D[1].Z = arrConnectorControlPoints3D[0].Z;
+                arrConnectorControlPoints3D[1].Z = fx_edge;
 
                 arrConnectorControlPoints3D[2].X = arrConnectorControlPoints3D[0].X;
                 arrConnectorControlPoints3D[2].Y = m_fhY - fy_edge1;

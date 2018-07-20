@@ -210,6 +210,7 @@
                 <MenuItem x:Name="menuItemBlockFiles" Header="Block Files">
                     <MenuItem x:Name="menuItemBlocks3D" Header="Blocks 3D">
                         <MenuItem x:Name="menuItemBlock3D_001_DoorInBay" Header="Block 001 Door in bay" Click="menuItemBlock3D_001_DoorInBay_Click"></MenuItem>
+                        <MenuItem x:Name="menuItemBlock3D_002_WindowInBay" Header="Block 002 Window in bay" Click="menuItemBlock3D_002_WindowInBay_Click"></MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem x:Name="menuItemSystem" Header="System Properties"></MenuItem>

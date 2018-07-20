@@ -187,6 +187,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BLOCKS\FS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="BLOCKS\FS\CBlock_3D_001_DoorInBay.cs" />
     <Compile Include="CUIHelper.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_01.cs" />
