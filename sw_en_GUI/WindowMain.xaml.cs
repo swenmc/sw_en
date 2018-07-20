@@ -876,7 +876,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_901_PF_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null);
+            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null);
             Window2 win = new Window2(model, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 901 PF" + " - Window " + (Container.Children.Count + 1) });

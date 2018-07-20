@@ -58,7 +58,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                 float fBottomGirtPosition_temp,
                 float fFrontFrameRakeAngle_temp_deg,
                 float fBackFrameRakeAngle_temp_deg,
-                List<DoorProperties> doorBlocksProperties
+                List<DoorProperties> doorBlocksProperties,
+                List<WindowProperties> windowBlocksProperties
             )
         {
         // Todo asi prepracovat na zoznam tried objektov
@@ -694,6 +695,14 @@ namespace sw_en_GUI.EXAMPLES._3D
                 }
             }
 
+            if (windowBlocksProperties != null)
+            {
+                foreach (WindowProperties prop in windowBlocksProperties)
+                {
+                    AddWindowBlock(prop, 0.5f);
+                }
+            }
+
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1041,31 +1050,66 @@ namespace sw_en_GUI.EXAMPLES._3D
             int iBayColumn = (iBlockFrame * 6) + (iSideMultiplier == 0 ?  0 : (4-1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
 
             int iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
-            CPoint pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
+
             CMember mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
             CMember mFrameColumn = m_arrMembers[iBayColumn];
 
-            int arraysizeoriginal;
             CBlock door = new CBlock_3D_001_DoorInBay(prop.sBuildingSide, fDoorsHeight, fDoorsWidth, fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, mFrameColumn, fL1_frame);
+
+            CPoint pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door);
+        }
+
+        public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn)
+        {
+            // Left side X = 0, Right Side X = GableWidth
+            // Insert after frame ID
+
+            // TODO - prepracovat a pouzivat priamo vstupnu strukturu
+            int iSideMultiplier = prop.sBuildingSide == "Left" ? 0 : 1; // 0 lef side X = 0, 1 - right side X = Gable Width
+            int iBlockFrame = prop.iBayNumber - 1; // ID of frame in the bay
+            float fWindowHeight = prop.fWindowsHeight;
+            float fWindowWidth = prop.fWindowsWidth;
+            float fWindowCoordinateXinBlock = prop.fWindowCoordinateXinBay;
+            float fWindowCoordinateZinBay = prop.fWindowCoordinateZinBay;
+            int iNumberOfWindowColumns = prop.iNumberOfWindowColumns;
+
+            int iBayColumn = (iBlockFrame * 6) + (iSideMultiplier == 0 ? 0 : (4 - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
+            int iFirstGirtInBay = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
+
+            CMember mReferenceGirt = m_arrMembers[iFirstGirtInBay]; // First girt in bay member properties define properties of block girts
+            CMember mFrameColumn = m_arrMembers[iBayColumn];
+
+            CBlock_3D_002_WindowInBay window = new CBlock_3D_002_WindowInBay(prop.sBuildingSide, fWindowHeight, fWindowWidth, fWindowCoordinateXinBlock, fWindowCoordinateZinBay, iNumberOfWindowColumns, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, mFrameColumn, fL1_frame, fH1_frame);
+
+            CPoint pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
+            int iFirstMemberToDeactivate = iFirstGirtInBay + window.iNumberOfGirtsUnderWindow;
+
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window);
+        }
+
+        public void AddDoorOrWindowBlockProperties(CPoint pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
+        {
+            int arraysizeoriginal;
 
             // Cross-sections
             arraysizeoriginal = m_arrCrSc.Length;
 
-            Array.Resize(ref m_arrCrSc, m_arrCrSc.Length + door.m_arrCrSc.Length - 1); // ( - 1) Prvy prvok v poli doors crsc ignorujeme
+            Array.Resize(ref m_arrCrSc, m_arrCrSc.Length + block.m_arrCrSc.Length - 1); // ( - 1) Prvy prvok v poli blocks crsc ignorujeme
 
             // Copy block cross-sections into the model
-            for (int i = 1; i < door.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+            for (int i = 1; i < block.m_arrCrSc.Length; i++) // Zacina sa od i = 1 - preskocit prvy prvok v poli doors, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
             {
-                // Preskocit prvy prvok v poli doors crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
-                m_arrCrSc[arraysizeoriginal + i-1] = door.m_arrCrSc[i];
-                m_arrCrSc[arraysizeoriginal + i-1].ICrSc_ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+1)
+                // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
+                m_arrCrSc[arraysizeoriginal + i - 1] = block.m_arrCrSc[i];
+                m_arrCrSc[arraysizeoriginal + i - 1].ICrSc_ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
             }
 
             // Nodes
             arraysizeoriginal = m_arrNodes.Length;
-            Array.Resize(ref m_arrNodes, m_arrNodes.Length + door.m_arrNodes.Length);
+            Array.Resize(ref m_arrNodes, m_arrNodes.Length + block.m_arrNodes.Length);
 
-            int iNumberofMembersToDeactivate = door.INumberOfGirtsToDeactivate;
+            int iNumberofMembersToDeactivate = block.INumberOfGirtsToDeactivate;
 
             // Deactivate already generated members in the bay (space between frames) where is the block inserted
             for (int i = 0; i < iNumberofMembersToDeactivate; i++)
@@ -1074,31 +1118,30 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                 // Deactivate Member Joints
                 // TODO Ondrej - potrebujeme zistit, ktore spoje su pripojene na prut a deaktivovat ich, aby sa nevytvorili, asi by sme mali na tieto veci vyrobit nejaku mapu alebo dictionary
- 
             }
 
             float fBlockRotationAboutZaxis_rad = MathF.fPI / 2.0f; // Parameter of block - depending on side of building (front, back (0 deg), left, right (90 deg))
 
             // Copy block nodes into the model
-            for (int i = 0; i < door.m_arrNodes.Length; i++)
+            for (int i = 0; i < block.m_arrNodes.Length; i++)
             {
-                RotateAndTranslateNodeAboutZ_CCW(pControlPointBlock, door.m_arrNodes[i], fBlockRotationAboutZaxis_rad);
-                m_arrNodes[arraysizeoriginal + i] = door.m_arrNodes[i];
+                RotateAndTranslateNodeAboutZ_CCW(pControlPointBlock, block.m_arrNodes[i], fBlockRotationAboutZaxis_rad);
+                m_arrNodes[arraysizeoriginal + i] = block.m_arrNodes[i];
                 m_arrNodes[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
             }
 
             // Members
             arraysizeoriginal = m_arrMembers.Length;
-            Array.Resize(ref m_arrMembers, m_arrMembers.Length + door.m_arrMembers.Length);
+            Array.Resize(ref m_arrMembers, m_arrMembers.Length + block.m_arrMembers.Length);
 
             // Copy block members into the model
-            for (int i = 0; i < door.m_arrMembers.Length; i++)
+            for (int i = 0; i < block.m_arrMembers.Length; i++)
             {
                 // Position of definition nodes was already changed, we dont need to rotate member definition nodes NodeStart and NodeEnd
                 // Recalculate basic member data (PointA, PointB, delta projection length)
-                door.m_arrMembers[i].Fill_Basic();
+                block.m_arrMembers[i].Fill_Basic();
 
-                m_arrMembers[arraysizeoriginal + i] = door.m_arrMembers[i];
+                m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
 
                 // TODO - nizsie uvedeny kod zmaze priradenie pruta do zoznamu prutov v priereze (list prutov ktorym je prierez priradeny), prut je totizto uz priradeny k prierezu kedze bol uz priradeny v bloku
@@ -1112,7 +1155,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                         m_arrCrSc[3].AssignedMembersList.RemoveAt(m_arrCrSc[3].AssignedMembersList.Count - 1);
                 }
 
-                // We need to remove assignment of member to the door cross-section, it is already assigned
+                // We need to remove assignment of member to the block cross-section, it is already assigned
 
                 if (m_arrCrSc.Length > 0 && m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.Count > 0) // Check that list is not empty
                 {
@@ -1124,7 +1167,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - odstranit spoje na deaktivovanych prutoch
 
             // Add block member connections to the main model connections
-            foreach (CConnectionJointTypes joint in door.m_arrConnectionJoints)
+            foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
                 m_arrConnectionJoints.Add(joint);
         }
     }
