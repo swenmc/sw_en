@@ -88,7 +88,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float AnnualProbability_R_ULS
+        public float AnnualProbabilityULS
         {
             get
             {
@@ -99,12 +99,12 @@ namespace PFD
             {
                MAnnualProbability_R_ULS = value;
 
-                NotifyPropertyChanged("AnnualProbabilityULS");
+               NotifyPropertyChanged("AnnualProbabilityULS");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float AnnualProbability_R_SLS
+        public float AnnualProbabilitySLS
         {
             get
             {
@@ -281,6 +281,11 @@ namespace PFD
         public CPFDLoadInput(int locationIndex)
         {
             LocationIndex = locationIndex;
+
+            //test ci sa to vyplna
+            DesignLife = 20;
+            AnnualProbabilityULS = 10;
+            AnnualProbabilitySLS = 11;
 
             IsSetFromCode = false;
         }

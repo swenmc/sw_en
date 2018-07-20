@@ -210,7 +210,9 @@
                     </StackPanel>
                 </TabItem.Header>
                 <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <Grid Name="LoadParamsGrid" Margin="0,10,0,0">
+                    <local:UC_Loads></local:UC_Loads>
+
+                    <!--<Grid Name="LoadParamsGrid" Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150" />
                             <ColumnDefinition Width="130" />
@@ -325,7 +327,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=SpectralShapeFactorChT, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-                    </Grid>
+                    </Grid>-->
                 </ScrollViewer>
             </TabItem>
             <TabItem Name ="Load_Cases" Header="Load Cases"/>

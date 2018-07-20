@@ -101,7 +101,7 @@ namespace PFD
 
 
             dmodels = new DatabaseModels();
-            dlocations = new DatabaseLocations();
+            
 
             // Initial Screen
             SplashScreen splashScreen = new SplashScreen("formsteel-screen.jpg");
@@ -113,8 +113,7 @@ namespace PFD
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
 
-            foreach (string locationname in dlocations.arr_LocationNames)
-                Combobox_Location.Items.Add(locationname);
+            
 
             // Cladding
             Combobox_RoofCladding.Items.Add("SmartDek");
@@ -175,10 +174,7 @@ namespace PFD
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties);
 
-            // Loading
-            loadinput = new CPFDLoadInput(11); // Default - Auckland
-            loadinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
-            //this.DataContext = loadinput; // Toto prepise aj predchadzajuce nastavenie z vm, musi to byt inak Todo Ondrej
+            
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -224,12 +220,7 @@ namespace PFD
             //MessageBox.Show("OK");
         }
 
-        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            if (sender == null) return;
-            CPFDLoadInput loadInput = sender as CPFDLoadInput;
-            if (loadInput != null && loadInput.IsSetFromCode) return;
-        }
+        
 
         //SplashScreen splashScreen = null;
         //bool waiting = true;
@@ -804,8 +795,13 @@ namespace PFD
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!(e.OriginalSource is TabControl)) return; //pozor selection changed event buble smerom nahor
+
             if (MainTabControl.SelectedIndex == 1)
                 Model_Component.Content = new UC_ComponentList().Content;
+            else if (MainTabControl.SelectedIndex == 2)
+                //dlocations.arr_LocationNames
+                Load_Cases.Content = new UC_Loads();
             else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
             else if (MainTabControl.SelectedIndex == 4)

@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="PFD.UC_Loads"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:PFD"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <!--<System:String x:Key="strHelloWorld">Hello, world!</System:String> -->
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
+    </UserControl.Resources>
+    <Grid Name="LoadParamsGrid" Margin="0,10,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Location:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Location" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=LocationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Design Life:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_DesignLife" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=DesignLife, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Importance Level:" HorizontalAlignment="Left"
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ImportanceClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Annual Probability ULS:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=AnnualProbabilityULS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Annual Probability SLS:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_AnnualProbabilitySLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="6" Grid.Column="1" Name ="Combobox_SnowRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SnowRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="8" Grid.Column="1" Name ="Combobox_WindRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WindRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Terrain Roughness:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="9" Grid.Column="1" Name ="Combobox_TerrainRoughness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainRoughnessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="11" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_SubSoilClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SubSoilClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="12" Grid.Column="0" Text="Proximity to Fault:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="12" Grid.Column="1" Name ="ProximityToFault" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ProximityToFault, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="13" Grid.Column="0" Text="Zone Factor Z:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="13" Grid.Column="1" Name ="ZoneFactorZ" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=ZoneFactorZ, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="14" Grid.Column="0" Text="Period along X-direction Tx:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="14" Grid.Column="1" Name ="PeriodAlongXdirectionTx" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=PeriodAlongXdirectionTx, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="15" Grid.Column="0" Text="Period along Y-direction Ty:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="15" Grid.Column="1" Name ="PeriodAlongYdirectionTy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=PeriodAlongYdirectionTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="16" Grid.Column="0" Text="Spectral Shape Factor Ch T:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="16" Grid.Column="1" Name ="SpectralShapeFactorChT" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=SpectralShapeFactorChT, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+    </Grid>
+</UserControl>
