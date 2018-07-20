@@ -11,6 +11,8 @@ namespace sw_en_GUI.EXAMPLES._3D
 {
     public class CBlock_3D_002_WindowInBay : CBlock
     {
+        public int iNumberOfGirtsUnderWindow;
+
         public CBlock_3D_002_WindowInBay(string sBuildingSide, float fWindowHeight, float fWindowWidth, float fWindowCoordinateXinBay, float fWindowCoordinateZinBay, int iNumberOfWindowColumns, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, CMember Colummn, float fL1_bayofframe, float fH1_frame)
         {
             //iNumberOfWindowColumns = 2; // Minimum is 2
@@ -44,7 +46,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
             m_arrCrSc[1].Name = "Box 10075";
 
-            int iNumberOfGirtsUnderWindow = (int)((fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
+            iNumberOfGirtsUnderWindow = (int)((fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
             float fCoordinateZOfGirtUnderWindow = (iNumberOfGirtsUnderWindow - 1) * fDist_Girt + fBottomGirtPosition;
 
             if (fWindowCoordinateZinBay <= fBottomGirtPosition)

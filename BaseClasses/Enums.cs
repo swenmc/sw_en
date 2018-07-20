@@ -348,4 +348,15 @@ namespace BaseClasses
         public float fDoorsWidth;
         public float fDoorCoordinateXinBlock;
     }
+
+    public struct WindowProperties
+    {
+        public string sBuildingSide;
+        public int iBayNumber;
+        public float fWindowsHeight;
+        public float fWindowsWidth;
+        public float fWindowCoordinateXinBay;
+        public float fWindowCoordinateZinBay;
+        public int iNumberOfWindowColumns;
+    }
 }
