@@ -748,10 +748,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
                 {
                     if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
-                    {
-                        // Joint model wireframe
-                        Transform3DGroup jointTransformGroup = new Transform3DGroup(); // Nepouzite
-
+                    {   
                         // Plates
                         if (model.m_arrConnectionJoints[i].m_arrPlates != null)
                         {
@@ -767,10 +764,9 @@ namespace BaseClasses
                                 //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
 
                                 Transform3DGroup a = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
-
-                                var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
+                                var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); 
                                 jointWireFrameGroup.AddPoints(transformedPoints.ToList());
-
+                                
                                 // TODO - pridat wireframe pre connectors v plechoch
                                 bool bDrawConnectors = true;
 
@@ -827,15 +823,13 @@ namespace BaseClasses
                 // TODO Ondrej 18.7.2018 - niekde potrebujeme este otocit cely wireframe spoja o uhol Theta okolo LCS pruta, ak bol pootoceny surface model pruta
                 // vid line 252 // M.C. 18.7.2018
 
-                // Perform only in case that joint object is not null
-                foreach (Model3D m in model3DGroup.Children)
-                {
-                    var transPoints = jointWireFrameGroup.Points.Select(p => m.Transform.Transform(p));
-                    List<Point3D> points = transPoints.ToList();
-                    jointWireFrameGroup.Points.Clear();
-                    jointWireFrameGroup.AddPoints(points);
-                }
-
+                // Perform only in case that joint object is not null                                
+                //O.P. 20.7.2018 brute force metoda prejde vsetky Model3DGroup a transformuje wireframe podla transformacie Model3DGroup
+                List<Point3D> points = jointWireFrameGroup.Points.ToList();
+                GetTransformedPoints(model3DGroup, ref points);
+                jointWireFrameGroup.Points.Clear();
+                jointWireFrameGroup.AddPoints(points);
+                
                 //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();
 
                 //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
@@ -867,6 +861,20 @@ namespace BaseClasses
                 //_trackport.ViewPort.Children.Clear();
                 viewPort.Children.Add(jointWireFrameGroup);
             }
+        }
+
+        //metoda transformuje body pre potreby wireframe
+        private static void GetTransformedPoints(Model3DGroup mgr, ref List<Point3D> points)
+        {
+            foreach (Model3D m in mgr.Children)
+            {
+                if (m is Model3DGroup) { GetTransformedPoints(m as Model3DGroup, ref points); }
+                break;  //only transformation from first child
+            }
+            if (mgr.Transform == Transform3D.Identity) return; //zbytocne transformovat ak ide o Identitu
+
+            var transPoints = points.Select(p => mgr.Transform.Transform(p));
+            points = transPoints.ToList();
         }
 
         public static GeometryModel3D GetGeoMetryModel3DFrom(Model3DGroup model3DGroup)
