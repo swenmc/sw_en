@@ -17,7 +17,7 @@ namespace BaseClasses
         public CNode m_Node;
         public Point3D m_ControlPoint;
         public CNode[] m_arrAssignedNodesWithJointType;
-        public bool bIsJointDefinedinGCS;
+        public bool bIsJointDefinedinGCS;        
 
         public CConnectionJointTypes() { }
 

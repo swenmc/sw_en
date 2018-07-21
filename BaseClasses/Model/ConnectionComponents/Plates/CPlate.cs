@@ -17,6 +17,7 @@ namespace BaseClasses
         public float fThickness_tz;
         public float fArea;
         public CConnector[] m_arrPlateConnectors;
+        public GeometryModel3D Visual_Plate;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
 

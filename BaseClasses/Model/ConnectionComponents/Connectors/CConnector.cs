@@ -19,6 +19,7 @@ namespace BaseClasses
         public float m_iNumberOfThreads;
         public DiffuseMaterial m_DiffuseMat;
         public Cylinder m_cylinder;
+        public GeometryModel3D Visual_Connector;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
 
@@ -92,6 +93,21 @@ namespace BaseClasses
             // TODO Ondrej 15/07/2018
             // TODO Dopracovat pristup k bodom v geometry model a pridat ich do points3D
             Point3DCollection positions = ((MeshGeometry3D)geometryModel.Geometry).Positions;
+            for (int i = 0; i < wireFrameIndices.Count; i++)
+            {
+                points3D.Add(positions[wireFrameIndices[i]]);
+            }
+
+            return points3D;
+        }
+        public Point3DCollection WireFrameModelPointsFromVisual()
+        {
+            Point3DCollection points3D = new Point3DCollection();            
+            Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
+
+            // TODO Ondrej 15/07/2018
+            // TODO Dopracovat pristup k bodom v geometry model a pridat ich do points3D
+            Point3DCollection positions = ((MeshGeometry3D)Visual_Connector.Geometry).Positions;
             for (int i = 0; i < wireFrameIndices.Count; i++)
             {
                 points3D.Add(positions[wireFrameIndices[i]]);
