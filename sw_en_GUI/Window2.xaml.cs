@@ -84,7 +84,7 @@ namespace sw_en_GUI
                 if(displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
-                bool displayOtherObjects3D = false;
+                bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);

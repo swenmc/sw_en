@@ -304,8 +304,9 @@ namespace BaseClasses
                         {
                             // Transform model group
                             JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_MainMember);
-                        }
+                        }                        
                     }
+                    cmodel.m_arrConnectionJoints[i].Visual_ConnectionJoint = JointModelGroup;
 
                     // Add joint model group to the global model group items
                     if (JointsModel3DGroup == null) JointsModel3DGroup = new Model3DGroup();
@@ -757,7 +758,8 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
                 {
                     if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
-                    {   
+                    {
+                        ScreenSpaceLines3D jointWireFrame = new ScreenSpaceLines3D();
                         // Plates
                         if (model.m_arrConnectionJoints[i].m_arrPlates != null)
                         {
@@ -790,13 +792,17 @@ namespace BaseClasses
                                 }
 
                                 // Rotate from LCS system of plate to LCS system of member or GCS system (depends on joint type definition, in LCS of member or GCS system)
-                                model.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
+                                //model.m_arrConnectionJoints[i].m_arrPlates[j].TransformPlateCoord(wireFrame);
                                 // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta 
                                 //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
-                                Transform3DGroup a = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
-                                var transformedPoints = wireFrame.Points.Select(p => a.Transform(p));
-                                jointWireFrameGroup.AddPoints(transformedPoints.ToList());
+                                //Transform3DGroup a = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
+                                //var transformedPoints1 = wireFrame.Points.Select(p => a.Transform(p));
+
+                                var transformedPoints = wireFrame.Points.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
+                                jointWireFrame.AddPoints(transformedPoints.ToList());
                             }
+                            var transformedPoints2 = jointWireFrame.Points.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
+                            jointWireFrameGroup.AddPoints(transformedPoints2.ToList());
                         }
 
                         // Connectors
@@ -829,6 +835,18 @@ namespace BaseClasses
                                 jointWireFrameGroup.AddPoints(wireFrame.Points);
                             }
                         }
+
+                        
+
+                        //List<Point3D> pointsPlate = jointWireFrameGroup.Points.ToList();
+                        //var transPoints2 = points.Select(p => .Transform.Transform(p));
+                        //points = transPoints.ToList();
+
+
+                        //GetTransformedPoints(model3DGroup, ref points);
+                        //jointWireFrameGroup.Points.Clear();
+                        //jointWireFrameGroup.AddPoints(points);
+
                     }
                 }
 
@@ -837,10 +855,10 @@ namespace BaseClasses
 
                 // Perform only in case that joint object is not null                                
                 //O.P. 20.7.2018 brute force metoda prejde vsetky Model3DGroup a transformuje wireframe podla transformacie Model3DGroup
-                List<Point3D> points = jointWireFrameGroup.Points.ToList();
-                GetTransformedPoints(model3DGroup, ref points);
-                jointWireFrameGroup.Points.Clear();
-                jointWireFrameGroup.AddPoints(points);
+                //List<Point3D> points = jointWireFrameGroup.Points.ToList();
+                //GetTransformedPoints(model3DGroup, ref points);
+                //jointWireFrameGroup.Points.Clear();
+                //jointWireFrameGroup.AddPoints(points);
 
                 //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();
 
@@ -878,8 +896,7 @@ namespace BaseClasses
 
         //metoda transformuje body pre potreby wireframe
         private static void GetTransformedPoints(Model3DGroup mgr, ref List<Point3D> points)
-        {
-           
+        {           
             foreach (Model3D m in mgr.Children)
             {
                 if (m is Model3DGroup) { GetTransformedPoints(m as Model3DGroup, ref points); }
