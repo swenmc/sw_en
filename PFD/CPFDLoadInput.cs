@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BaseClasses;
 
 namespace PFD
 {
@@ -23,7 +24,7 @@ namespace PFD
         private int MSnowRegionIndex;
         private int MWindRegionIndex;
         private int MTerrainRoughnessIndex;
-        private int MSiteSubsoilClassIndex;
+        private int MSiteSubSoilClassIndex;
         private float MProximityToFault;
         private float MZoneFactorZ;
         private float MPeriodAlongXDirectionTx;
@@ -41,10 +42,6 @@ namespace PFD
             set
             {
                 MLocationIndex = value;
-
-                DatabaseLocations dlocation = new DatabaseLocations(MLocationIndex);
-
-                // TODO nastavit podla location dalsie parametre, vytvorit na to databazu
 
                 NotifyPropertyChanged("LocationIndex");
             }
@@ -77,10 +74,8 @@ namespace PFD
 
             set
             {
-                if (value < 1 || value > 5)
+                if (value + 1 < 1 || value + 1 > 5) // Add one because it is indexed from 0
                     throw new ArgumentException("Importance level must be between 1 and 5");
-                MDesignLife = value;
-
                 MImportanceClass = value;
 
                 NotifyPropertyChanged("ImportanceClassIndex");
@@ -168,20 +163,20 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int SiteSubsoilClassIndex
+        public int SiteSubSoilClassIndex
         {
             get
             {
-                return MSiteSubsoilClassIndex;
+                return MSiteSubSoilClassIndex;
             }
 
             set
             {
                 if (value < 0 || value > 4)
                     throw new ArgumentException("Site subsoil class must be between A and E");
-                MSiteSubsoilClassIndex = value;
+                MSiteSubSoilClassIndex = value;
 
-                NotifyPropertyChanged("SubsoilClassIndex");
+                NotifyPropertyChanged("SubSoilClassIndex");
             }
         }
 
@@ -278,14 +273,22 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDLoadInput(int locationIndex)
+        public CPFDLoadInput(loadInputComboboxIndexes loadInputIndexes)
         {
-            LocationIndex = locationIndex;
-
-            //test ci sa to vyplna
+            LocationIndex = loadInputIndexes.LocationComboboxIndex;
             DesignLife = 20;
-            AnnualProbabilityULS = 10;
-            AnnualProbabilitySLS = 11;
+            ImportanceClassIndex = loadInputIndexes.ImportanceLevelComboboxIndex;
+            AnnualProbabilityULS = 1/250;
+            AnnualProbabilitySLS = 1/500;
+            SnowRegionIndex = loadInputIndexes.SnowRegionComboboxIndex;
+            WindRegionIndex = loadInputIndexes.WindRegionComboboxIndex;
+            TerrainRoughnessIndex = loadInputIndexes.TerrainMultiplierComboboxIndex;
+            SiteSubSoilClassIndex = loadInputIndexes.SiteSubSoilClassComboboxIndex;
+            ProximityToFault = 4000;
+            ZoneFactorZ = 0.5f;
+            PeriodAlongXDirectionTx = 0.4f;
+            PeriodAlongYDirectionTy = 0.4f;
+            SpectralShapeFactorChT = 1;
 
             IsSetFromCode = false;
         }

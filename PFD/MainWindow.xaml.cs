@@ -19,19 +19,17 @@ using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Windows.Media.Media3D;
 using System.Threading;
+using System.Data.SQLite;
+using System.Configuration;
 using BaseClasses;
 using MATH;
 using MATERIAL;
 using CRSC;
-using sw_en_GUI;
 using sw_en_GUI.EXAMPLES._2D;
 using sw_en_GUI.EXAMPLES._3D;
 using M_AS4600;
 using M_EC1.AS_NZS;
-using _3DTools;
 using SharedLibraries.EXPIMP;
-using System.Data.SQLite;
-using System.Configuration;
 
 namespace PFD
 {
@@ -77,32 +75,7 @@ namespace PFD
 
         public MainWindow()
         {
-            // Database Connection
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-
-                SQLiteCommand command = new SQLiteCommand("Select * from corrosion_category", conn);
-                using (SQLiteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        System.Diagnostics.Trace.Write(reader["ID"] + ", ");
-                        System.Diagnostics.Trace.Write(reader["standard"] + ", ");
-                        System.Diagnostics.Trace.Write(reader["corrosion_category"] + ", ");
-                        System.Diagnostics.Trace.Write(reader["category_name"] + ", ");
-                        System.Diagnostics.Trace.WriteLine(reader["description"] + ", ");
-                    }
-                    
-                    reader.Close();
-                }
-            }
-
-
-
-
             dmodels = new DatabaseModels();
-            
 
             // Initial Screen
             SplashScreen splashScreen = new SplashScreen("formsteel-screen.jpg");
@@ -114,8 +87,6 @@ namespace PFD
             foreach (string modelname in dmodels.arr_ModelNames)
               Combobox_Models.Items.Add(modelname);
 
-            
-
             // Cladding
             Combobox_RoofCladding.Items.Add("SmartDek");
             Combobox_RoofCladding.Items.Add("PurlinDek");
@@ -124,7 +95,7 @@ namespace PFD
             Combobox_WallCladding.Items.Add("PurlinDek");
 
             // Colors
-            // TODO - pridat do comboboxu len vybrane farby
+            // TODO Ondrej - pridat do comboboxu len vybrane farby
 
             /*
             Desert Sand
@@ -151,16 +122,18 @@ namespace PFD
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
 
+            DataTable dt;
             // Prepare data for generating of door blocks
-            DataTable dt = ((DataView)UC_doors.Datagrid_DoorsAndGates.ItemsSource).ToTable();
+            dt = ((DataView)UC_doors.Datagrid_DoorsAndGates.ItemsSource).ToTable();
 
             DoorBlocksProperties = new List<DoorProperties>();
             // Fill list of door blocks
+            DoorProperties dp_temp;
             foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
             {
                 if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
                 {
-                    DoorProperties dp_temp = new DoorProperties();
+                    dp_temp = new DoorProperties();
                     dp_temp.sBuildingSide = (string)row.ItemArray[0];
                     dp_temp.iBayNumber = (int)row.ItemArray[1];
                     dp_temp.fDoorsHeight = float.Parse(row.ItemArray[2].ToString());
@@ -171,29 +144,32 @@ namespace PFD
                 }
             }
 
-            // TEMPORARY
-            // TODO - vytvorit datagrid pre zadavanie okien
+            // Prepare data for generating of window blocks
+            dt = ((DataView)UC_windows.Datagrid_Windows.ItemsSource).ToTable();
 
             WindowBlocksProperties = new List<WindowProperties>();
+            // Fill list of window blocks
+            WindowProperties wp_temp;
+            foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
+            {
+                if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
+                {
+                    wp_temp = new WindowProperties();
+                    wp_temp.sBuildingSide = (string)row.ItemArray[0];
+                    wp_temp.iBayNumber = (int)row.ItemArray[1];
+                    wp_temp.fWindowsHeight = float.Parse(row.ItemArray[2].ToString());
+                    wp_temp.fWindowsWidth = float.Parse(row.ItemArray[3].ToString());
+                    wp_temp.fWindowCoordinateXinBay = float.Parse(row.ItemArray[4].ToString());
+                    wp_temp.fWindowCoordinateZinBay = float.Parse(row.ItemArray[5].ToString());
+                    wp_temp.iNumberOfWindowColumns = int.Parse(row.ItemArray[6].ToString());
 
-            WindowProperties dp_temp1 = new WindowProperties();
-            dp_temp1.sBuildingSide = "Left";
-            dp_temp1.iBayNumber = 2;
-            dp_temp1.fWindowsHeight = 1.5f;
-            dp_temp1.fWindowsWidth = 1.5f;
-            dp_temp1.fWindowCoordinateXinBay = 0.6f;
-            dp_temp1.fWindowCoordinateZinBay = 0.9f;
-            dp_temp1.iNumberOfWindowColumns = 2;
-
-            WindowBlocksProperties.Add(dp_temp1);
-
-
+                    WindowBlocksProperties.Add(wp_temp);
+                }
+            }
 
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
-
-            
 
             // Create 3D window
             Page3Dmodel page1 = new Page3Dmodel(model);
@@ -238,8 +214,6 @@ namespace PFD
             //bckWrk.Dispose();
             //MessageBox.Show("OK");
         }
-
-        
 
         //SplashScreen splashScreen = null;
         //bool waiting = true;
@@ -742,9 +716,9 @@ namespace PFD
             */
         }
 
-        //deleting lists for updating actual values
         private void DeleteLists()
         {
+            // Deleting lists for updating actual values
             zoznamMenuNazvy.Clear();
             zoznamMenuHodnoty.Clear();
             zoznamMenuJednotky.Clear();
@@ -819,7 +793,6 @@ namespace PFD
             if (MainTabControl.SelectedIndex == 1)
                 Model_Component.Content = new UC_ComponentList().Content;
             else if (MainTabControl.SelectedIndex == 2)
-                //dlocations.arr_LocationNames
                 Load_Cases.Content = new UC_Loads();
             else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
