@@ -56,7 +56,7 @@ namespace BaseClasses
             float flocaleccentricity_y = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFy_local;
             float flocaleccentricity_z = m_SecondaryMembers[0].EccentricityStart == null ? 0f : m_SecondaryMembers[0].EccentricityStart.MFz_local;
 
-            CPoint ControlPoint_P1 = new CPoint(0, fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg), -0.5f * m_SecondaryMembers[0].CrScStart.h - m_ft + flocaleccentricity_z, 0);
+            CPoint ControlPoint_P1 = new CPoint(0, fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_min - m_fPlate_Angle_Leg + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h - m_ft + flocaleccentricity_z, 0);
 
             int iConnectorNumberinOnePlate = 32;
             float fDiameter_temp = 0.0055f; // Default - same size as screw
@@ -70,7 +70,7 @@ namespace BaseClasses
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (se we need to rotate joint about z-axis 180 deg)
             {
                 // Rotate and move joint defined in the start point [0,0,0] to the end point
-                ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg), -0.5f * m_SecondaryMembers[0].CrScStart.h - m_ft + flocaleccentricity_z, 0);
+                ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fControlPointPosition_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + m_fPlate_Angle_Leg + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h - m_ft + flocaleccentricity_z, 0);
 
                 m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 90, iConnectorNumberinOnePlate, fDiameter_temp, fScrewLength, BIsDisplayed); // Rotation angle in degrees
             }
