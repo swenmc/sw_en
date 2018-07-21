@@ -796,13 +796,29 @@ namespace BaseClasses
                                 // Prva transformacia plechu z jeho prvotneho system x,y do suradnic ako je ulozeny na neootocenom prute v lokalnych suradniciach pruta 
                                 //ak je spoj definovany v LCS systeme alebo do globalnych suradnic ak je spoj definovany v GCS
                                 //Transform3DGroup a = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateTransformCoordGroup();
-                                //var transformedPoints1 = wireFrame.Points.Select(p => a.Transform(p));
+                                //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p));
 
                                 var transformedPoints = wireFrame.Points.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
                                 jointWireFrame.AddPoints(transformedPoints.ToList());
                             }
-                            var transformedPoints2 = jointWireFrame.Points.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
-                            jointWireFrameGroup.AddPoints(transformedPoints2.ToList());
+                                                        
+                            //var transformedPoints2 = jointWireFrame.Points.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
+                            if (model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0] is Model3DGroup)
+                            {
+                                if (((Model3DGroup)model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0]).Children[0] is Model3DGroup)
+                                {
+                                    Model3DGroup mgr = ((Model3DGroup)model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0]).Children[0] as Model3DGroup;
+                                    if (mgr.Transform is RotateTransform3D)
+                                    {
+                                        var transformedPoints3 = jointWireFrame.Points.Select(p => mgr.Transform.Transform(p));
+                                        jointWireFrameGroup.AddPoints(transformedPoints3.ToList());
+                                    }
+                                    else jointWireFrameGroup.AddPoints(jointWireFrame.Points);
+                                }
+                                else jointWireFrameGroup.AddPoints(jointWireFrame.Points);
+                            }
+                            else jointWireFrameGroup.AddPoints(jointWireFrame.Points);
+
                         }
 
                         // Connectors
