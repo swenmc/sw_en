@@ -43,32 +43,31 @@ namespace PFD
             // For each component add one row
             listBuildingSide.Add("Left");
             listBuildingSide.Add("Right");
-            listBuildingSide.Add("Right");
+            //listBuildingSide.Add("Right");
 
             listBayNumber.Add(2);
             listBayNumber.Add(3);
-            listBayNumber.Add(3);
+            //listBayNumber.Add(3);
 
-            listWindowHeight.Add(1.1f);
-            listWindowHeight.Add(1.2f);
-            listWindowHeight.Add(1.4f);
+            listWindowHeight.Add(0.6f);
+            listWindowHeight.Add(0.7f);
+            //listWindowHeight.Add(1.4f);
 
-            listWindowWidth.Add(0.9f);
-            listWindowWidth.Add(1.2f);
-            listWindowWidth.Add(1.2f);
+            listWindowWidth.Add(1.9f);
+            listWindowWidth.Add(2.2f);
+            //listWindowWidth.Add(1.2f);
 
-            listWindowCoordinateXinBay.Add(1.1f);
-            listWindowCoordinateXinBay.Add(1.3f);
             listWindowCoordinateXinBay.Add(0.7f);
+            listWindowCoordinateXinBay.Add(0.6f);
+            //listWindowCoordinateXinBay.Add(0.7f);
 
             listWindowCoordinateZinBay.Add(0.8f);
-            listWindowCoordinateZinBay.Add(1.0f);
-            listWindowCoordinateZinBay.Add(0.5f);
+            listWindowCoordinateZinBay.Add(1.5f);
+            //listWindowCoordinateZinBay.Add(0.5f);
 
-            listWindowNumberOfWindowColumns.Add(2); // Min 2
+            listWindowNumberOfWindowColumns.Add(4); // Min 2
             listWindowNumberOfWindowColumns.Add(3);
-            listWindowNumberOfWindowColumns.Add(2);
-
+            //listWindowNumberOfWindowColumns.Add(2);
 
             // Create Table
             DataTable table = new DataTable("Table");

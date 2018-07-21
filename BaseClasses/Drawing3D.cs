@@ -167,6 +167,10 @@ namespace BaseClasses
             {
                 for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                 {
+                    // Set different colors of plates in joints defined in LCS of member and GCS of model
+                    if (cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
+                        brushPlates = new SolidColorBrush(Colors.DarkGreen);
+
                     // Models3D or ModelGroups Components
                     Model3DGroup JointModelGroup = new Model3DGroup();
 
@@ -202,6 +206,9 @@ namespace BaseClasses
                             }
                         }
                     }
+
+                    // Set plates color to default
+                    brushPlates = new SolidColorBrush(Colors.Gray);
 
                     // Connectors
                     bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
