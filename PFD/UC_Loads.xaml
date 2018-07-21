@@ -84,8 +84,8 @@
 
         <TextBlock Grid.Row="11" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_SubSoilClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SubSoilClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_SiteSubSoilClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=SiteSubSoilClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="12" Grid.Column="0" Text="Proximity to Fault:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -103,13 +103,13 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="14" Grid.Column="1" Name ="PeriodAlongXdirectionTx" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=PeriodAlongXdirectionTx, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=PeriodAlongXDirectionTx, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="15" Grid.Column="0" Text="Period along Y-direction Ty:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="15" Grid.Column="1" Name ="PeriodAlongYdirectionTy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=PeriodAlongYdirectionTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=PeriodAlongYDirectionTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="16" Grid.Column="0" Text="Spectral Shape Factor Ch T:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />

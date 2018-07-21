@@ -407,21 +407,37 @@ namespace PFD
 
         public string[,] arr_Member_Types_Prefix = new string[15, 2]
         {
-            {"G", "Girt"},
-            {"C", "Column"},
-            {"ER", "End Rafter"},
-            {"WP", "Wind Post"},
-            {"EC", "End Column"},
-            {"EP", "Edge Purlin"},
-            {"P", "Purlin"},
-            {"DT","Door Trimmer"},
-            {"DL","Door Lintel"},
-            {"PB","Purlin Block"},
-            {"GB","Girt Block"},
-            {"DF","Door Frame"},
-            {"BG","Base Girt"},
-            {"MR","Main Rafter"},
-            {"MC","Main Column"}
+            {"G", "Girt"},             // 00
+            {"C", "Column"},           // 01
+            {"ER", "End Rafter"},      // 02
+            {"WP", "Wind Post"},       // 03
+            {"EC", "End Column"},      // 04
+            {"EP", "Edge Purlin"},     // 05
+            {"P", "Purlin"},           // 06
+            {"DT","Door Trimmer"},     // 07
+            {"DL","Door Lintel"},      // 08
+            {"PB","Purlin Block"},     // 09
+            {"GB","Girt Block"},       // 10
+            {"DF","Door Frame"},       // 11
+            {"BG","Base Girt"},        // 12
+            {"MR","Main Rafter"},      // 13
+            {"MC","Main Column"}       // 14
+        };
+
+        public string[] arr_Crsc_Types = new string[]
+        { "Box 63020",      // 00
+          "Box 63020s1",    // 01
+          "Box 63020s2",    // 02
+          "C 50020n",       // 03
+          "C 270115n",      // 04
+          "C 27095n",       // 05
+          "C 27055n",       // 06
+          "C 50020",        // 07
+          "C 270115",       // 08
+          "C 27095",        // 09
+          "C 27055",        // 10
+          "C 270115btb",    // 11
+          "Box 10075"       // 12
         };
 
         public float[,] arr_Screws_TEK_Dimensions = new float[7, 2]

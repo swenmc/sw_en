@@ -176,7 +176,7 @@ namespace PFD
                     throw new ArgumentException("Site subsoil class must be between A and E");
                 MSiteSubSoilClassIndex = value;
 
-                NotifyPropertyChanged("SubSoilClassIndex");
+                NotifyPropertyChanged("SiteSubSoilClassIndex");
             }
         }
 
@@ -276,19 +276,19 @@ namespace PFD
         public CPFDLoadInput(loadInputComboboxIndexes loadInputIndexes)
         {
             LocationIndex = loadInputIndexes.LocationComboboxIndex;
-            DesignLife = 20;
+            DesignLife = 20f;
             ImportanceClassIndex = loadInputIndexes.ImportanceLevelComboboxIndex;
-            AnnualProbabilityULS = 1/250;
-            AnnualProbabilitySLS = 1/500;
+            AnnualProbabilityULS = 1f/250f;
+            AnnualProbabilitySLS = 1f/500f;
             SnowRegionIndex = loadInputIndexes.SnowRegionComboboxIndex;
             WindRegionIndex = loadInputIndexes.WindRegionComboboxIndex;
             TerrainRoughnessIndex = loadInputIndexes.TerrainMultiplierComboboxIndex;
             SiteSubSoilClassIndex = loadInputIndexes.SiteSubSoilClassComboboxIndex;
-            ProximityToFault = 4000;
+            ProximityToFault = 4000f;
             ZoneFactorZ = 0.5f;
             PeriodAlongXDirectionTx = 0.4f;
             PeriodAlongYDirectionTy = 0.4f;
-            SpectralShapeFactorChT = 1;
+            SpectralShapeFactorChT = 1f;
 
             IsSetFromCode = false;
         }

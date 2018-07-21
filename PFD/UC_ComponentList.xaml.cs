@@ -24,6 +24,7 @@ namespace PFD
     public partial class UC_ComponentList : UserControl
     {
         DataSet ds;
+        DatabaseComponents database = new DatabaseComponents(); // System components database
 
         List<string> listMemberPrefix = new List<string>(0);
         List<string> listMemberComponentName = new List<string>();
@@ -44,27 +45,36 @@ namespace PFD
             DeleteAllLists();
 
             // For each component add one row
-            listMemberPrefix.Add("MC");
-            listMemberPrefix.Add("R");
-            listMemberPrefix.Add("EP");
-            listMemberPrefix.Add("G");
-            listMemberPrefix.Add("P");
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0]);   // "MC"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 0]);   // "MR"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 0]);   // "EP"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP,  0]);   // "P"
 
-            listMemberPrefix.Add("C");
-            listMemberPrefix.Add("C");
-            listMemberPrefix.Add("G");
-            listMemberPrefix.Add("G");
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC,  0]);   // "C"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC,  0]);   // "C"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
+            listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
 
-            listMemberComponentName.Add("Main Column");
-            listMemberComponentName.Add("Rafter");
-            listMemberComponentName.Add("Eaves Purlin");
-            listMemberComponentName.Add("Girt");
-            listMemberComponentName.Add("Purlin");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP,  1]);
 
-            listMemberComponentName.Add("Column - Front Side");
-            listMemberComponentName.Add("Column - Back Side");
-            listMemberComponentName.Add("Girt - Front Side");
-            listMemberComponentName.Add("Girt - Back Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side");
+
+            // Creating new DataGridComboBoxColumn
+            DataGridComboBoxColumn myDGCBC_crsc = new DataGridComboBoxColumn();
+            myDGCBC_crsc.Header = "Section";
+            // Binding DataGridComboBoxColumn.ItemsSource and DataGridComboBoxColumn.SelectedItem
+            myDGCBC_crsc.ItemsSource = database.arr_Crsc_Types;
+            myDGCBC_crsc.SelectedItemBinding = new Binding("SelectedValue");
+            // Adding DataGridComboBoxColumn to the DataGrid
+            //Datagrid_Components.Columns.Add(myDGCBC_crsc);
 
             listMemberCrScName.Add("Box 63020");   // Main Column
             listMemberCrScName.Add("Box 63020");   // Rafter
@@ -94,7 +104,7 @@ namespace PFD
             // Create Table Rows
             table.Columns.Add("Prefix", typeof(String));
             table.Columns.Add("ComponentName", typeof(String));
-            table.Columns.Add("Section", typeof(String));
+            //table.Columns.Add("Section", typeof(String));
             table.Columns.Add("Material", typeof(String));
             table.Columns.Add("Generate", typeof(Boolean));
             table.Columns.Add("Display", typeof(Boolean));
@@ -105,7 +115,7 @@ namespace PFD
             // Set Column Caption
             table.Columns["Prefix"].Caption = "Prefix";
             table.Columns["ComponentName"].Caption = "ComponentName";
-            table.Columns["Section"].Caption = "Section";
+            //table.Columns["Section"].Caption = "Section";
             table.Columns["Material"].Caption = "Material";
             table.Columns["Generate"].Caption = "Generate";
             table.Columns["Display"].Caption = "Display";
@@ -126,7 +136,7 @@ namespace PFD
                 {
                     row["Prefix"] = listMemberPrefix[i];
                     row["ComponentName"] = listMemberComponentName[i];
-                    row["Section"] = listMemberCrScName[i];
+                    //row["Section"] = listMemberCrScName[i];
                     row["Material"] = listMemberMaterialName[i];
                     row["Generate"] = listMemberGenerate[i];
                     row["Display"] =  listMemberDisplay[i];
@@ -140,44 +150,53 @@ namespace PFD
 
             Datagrid_Components.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
+            // Adding DataGridComboBoxColumn to the DataGrid
+            Datagrid_Components.Columns.Add(myDGCBC_crsc);
+
+            // TODO Ondrej - vlozit stlpec section pred stlpec material (teraz sa vklada na zaciatok ako prvy stlpec) a inicializovat defaultne hodnoty v comboboxoch
+
+            /*
+             "Box 63020"
+             "Box 63020"
+             "C 50020"
+             "C 27095"
+             "C 270115"
+             
+             "Box 10075"
+             "Box 10075"
+             "C 27095"
+             "C 27095"
+             */
+
+            // Set default indexes of cross-sections
+
+            (Datagrid_Components.Items[0] as DataRowView).Row.ItemArray[0] = database.arr_Crsc_Types[0];
+            (Datagrid_Components.Items[1] as DataRowView).Row.ItemArray[0] = database.arr_Crsc_Types[1];
+
             // Set Column Header
             /*
-            Datagrid_Members.Columns[0].Header = "Prefix";
-            Datagrid_Members.Columns[1].Header = "ComponentName";
-            Datagrid_Members.Columns[2].Header = "Section";
-            Datagrid_Members.Columns[3].Header = "Material";
-            Datagrid_Members.Columns[4].Header = "Generate";
-            Datagrid_Members.Columns[5].Header = "Display";
-            Datagrid_Members.Columns[6].Header = "Calculate";
-            Datagrid_Members.Columns[7].Header = "Design";
-            Datagrid_Members.Columns[8].Header = "MaterialList";
+            Datagrid_Components.Columns[0].Header = "Prefix";
+            Datagrid_Components.Columns[1].Header = "ComponentName";
+            Datagrid_Components.Columns[2].Header = "Section";
+            Datagrid_Components.Columns[3].Header = "Material";
+            Datagrid_Components.Columns[4].Header = "Generate";
+            Datagrid_Components.Columns[5].Header = "Display";
+            Datagrid_Components.Columns[6].Header = "Calculate";
+            Datagrid_Components.Columns[7].Header = "Design";
+            Datagrid_Components.Columns[8].Header = "MaterialList";
             */
 
             // Set Column Width
             /*
-            Datagrid_Members.Columns[0].Width = 100;
-            Datagrid_Members.Columns[1].Width = 100;
-            Datagrid_Members.Columns[2].Width = 100;
-            Datagrid_Members.Columns[3].Width = 100;
-            Datagrid_Members.Columns[4].Width = 100;
-            Datagrid_Members.Columns[5].Width = 100;
-            Datagrid_Members.Columns[6].Width = 100;
-            Datagrid_Members.Columns[7].Width = 100;
+            Datagrid_Components.Columns[0].Width = 100;
+            Datagrid_Components.Columns[1].Width = 100;
+            Datagrid_Components.Columns[2].Width = 100;
+            Datagrid_Components.Columns[3].Width = 100;
+            Datagrid_Components.Columns[4].Width = 100;
+            Datagrid_Components.Columns[5].Width = 100;
+            Datagrid_Components.Columns[6].Width = 100;
+            Datagrid_Components.Columns[7].Width = 100;
             */
-
-
-            // TODO Ondrej - zmenit bunky typu string v stlpci cross-secion na na comboboxy
-
-            // Creating new DataGridComboBoxColumn
-            DataGridComboBoxColumn myDGCBC_crsc = new DataGridComboBoxColumn();
-            myDGCBC_crsc.Header = "crsc";
-            // Binding DataGridComboBoxColumn.ItemsSource and DataGridComboBoxColumn.SelectedItem
-            string [] s = new string [] { "Box 63020", "Box 63020s1", "Box 63020s2", "C 50020n", "C 270115n", "C 27095n" };
-            myDGCBC_crsc.ItemsSource = s;
-            myDGCBC_crsc.SelectedItemBinding = new Binding("SelectedValue");
-            // Adding DataGridComboBoxColumn to the DataGrid
-            Datagrid_Components.Columns.Add(myDGCBC_crsc);
-            //Datagrid_Components.Columns[3] = myDGCBC;
         }
 
         private void DeleteAllLists()

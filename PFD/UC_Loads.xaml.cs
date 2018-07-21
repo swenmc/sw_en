@@ -45,18 +45,18 @@ namespace PFD
                 FillComboboxValues("snow_regions", "snow_zone", ref reader, ref Combobox_SnowRegion);
                 FillComboboxValues("wind_regions", "id", ref reader, ref Combobox_WindRegion);
                 FillComboboxValues("terrain_multiplier", "terrain_category", ref reader, ref Combobox_TerrainRoughness);
-                FillComboboxValues("sitesubsoilclass", "class", ref reader, ref Combobox_SubSoilClass);
+                FillComboboxValues("sitesubsoilclass", "class", ref reader, ref Combobox_SiteSubSoilClass);
                 reader.Close();
             }
 
             loadInputComboboxIndexes loadInputIndexes;
 
             loadInputIndexes.LocationComboboxIndex = 11;
-            loadInputIndexes.ImportanceLevelComboboxIndex = 0;
-            loadInputIndexes.SnowRegionComboboxIndex = 0;
-            loadInputIndexes.WindRegionComboboxIndex = 0;
-            loadInputIndexes.TerrainMultiplierComboboxIndex = 0;
-            loadInputIndexes.SiteSubSoilClassComboboxIndex = 0;
+            loadInputIndexes.ImportanceLevelComboboxIndex = 1;
+            loadInputIndexes.SnowRegionComboboxIndex = 1;
+            loadInputIndexes.WindRegionComboboxIndex = 1;
+            loadInputIndexes.TerrainMultiplierComboboxIndex = 1;
+            loadInputIndexes.SiteSubSoilClassComboboxIndex = 1;
 
             // Loading
             CPFDLoadInput loadinput = new CPFDLoadInput(loadInputIndexes);
