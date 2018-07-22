@@ -852,7 +852,7 @@ namespace BaseClasses
                             }
                         }
 
-                        
+
 
                         //List<Point3D> pointsPlate = jointWireFrameGroup.Points.ToList();
                         //var transPoints2 = points.Select(p => .Transform.Transform(p));
@@ -863,6 +863,16 @@ namespace BaseClasses
                         //jointWireFrameGroup.Points.Clear();
                         //jointWireFrameGroup.AddPoints(points);
 
+
+                        // TODO Ondrej - Tu by si mal vsetko co je v spoji presunut z LCS do GCS
+                        // 22/07/2018
+                        // Otocit a presunut cely spoj (vsetky jeho komponenty) z LCS pruta do GCS pruta
+                        // Realizovat tuto transformaciu len pre spoje definovane v LCS pruta
+
+                        /*
+                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
+                            model.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(jointWireFrameGroup, model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                        */
                     }
                 }
 

@@ -22,7 +22,9 @@ namespace PFD
         private int MLocationIndex;
         private float MDesignLife;
         private int MImportanceClass; // Clause A3—Building importance levels
-        private float MAnnualProbability_R_ULS;
+        private float MAnnualProbability_R_ULS_Wind;
+        private float MAnnualProbability_R_ULS_Snow;
+        private float MAnnualProbability_R_ULS_EQ;
         private float MAnnualProbability_R_SLS;
         private int MSnowRegionIndex;
         private int MWindRegionIndex;
@@ -97,7 +99,10 @@ namespace PFD
 
                 DesignLife = 20f;
                 ImportanceClassIndex = 0;
-                AnnualProbabilityULS = 1f / 250f;
+                AnnualProbabilityULS_Wind = 1f / 250f;
+                AnnualProbabilityULS_Snow = 1f / 250f;
+                AnnualProbabilityULS_EQ = 1f / 250f;
+
                 AnnualProbabilitySLS = 1f / 500f;
                 TerrainRoughnessIndex = 0;
                 SiteSubSoilClassIndex = 0;
@@ -148,18 +153,50 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float AnnualProbabilityULS
+        public float AnnualProbabilityULS_Wind
         {
             get
             {
-                return MAnnualProbability_R_ULS;
+                return MAnnualProbability_R_ULS_Wind;
             }
 
             set
             {
-               MAnnualProbability_R_ULS = value;
+                MAnnualProbability_R_ULS_Wind = value;
 
-               NotifyPropertyChanged("AnnualProbabilityULS");
+                NotifyPropertyChanged("AnnualProbabilityULS_Wind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float AnnualProbabilityULS_Snow
+        {
+            get
+            {
+                return MAnnualProbability_R_ULS_Snow;
+            }
+
+            set
+            {
+               MAnnualProbability_R_ULS_Snow = value;
+
+               NotifyPropertyChanged("AnnualProbabilityULS_Snow");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float AnnualProbabilityULS_EQ
+        {
+            get
+            {
+                return MAnnualProbability_R_ULS_EQ;
+            }
+
+            set
+            {
+                MAnnualProbability_R_ULS_EQ = value;
+
+                NotifyPropertyChanged("AnnualProbabilityULS_EQ");
             }
         }
 

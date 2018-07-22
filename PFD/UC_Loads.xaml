@@ -6,14 +6,14 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        d:DesignHeight="700" d:DesignWidth="300">
+        d:DesignHeight="710" d:DesignWidth="300">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
     </UserControl.Resources>
     <Grid Name="LoadParamsGrid" Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="160"/>
             <ColumnDefinition Width="130"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -55,21 +55,33 @@
         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ImportanceClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Annual Probability ULS:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Annual Probability ULS Snow:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS_Snow" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=AnnualProbabilityULS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=AnnualProbabilityULS_Snow, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Annual Probability SLS:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Annual Probability ULS Wind:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_AnnualProbabilitySLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS_Wind" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=AnnualProbabilityULS_Wind, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Annual Probability ULS EQ:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_AnnualProbabilityULS_EQ" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=AnnualProbabilityULS_EQ, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Annual Probability SLS:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_AnnualProbabilitySLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <ComboBox Grid.Row="6" Grid.Column="1" Name ="Combobox_SnowRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_SnowRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=SnowRegionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="8" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
