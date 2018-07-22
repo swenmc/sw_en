@@ -366,15 +366,4 @@ namespace BaseClasses
         public float fWindowCoordinateZinBay;
         public int iNumberOfWindowColumns;
     }
-
-    public struct loadInputComboboxIndexes
-    {
-        public int LocationComboboxIndex;
-        public int ImportanceLevelComboboxIndex;
-        public int SnowRegionComboboxIndex;
-        public int WindRegionComboboxIndex;
-        public int TerrainMultiplierComboboxIndex;
-        public int SiteSubSoilClassComboboxIndex;
-    }
-
 }

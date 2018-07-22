@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
+using System.Configuration;
 using BaseClasses;
 
 namespace PFD
@@ -12,6 +14,7 @@ namespace PFD
     {
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
+        public SQLiteConnection conn;
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -42,6 +45,68 @@ namespace PFD
             set
             {
                 MLocationIndex = value;
+
+                IsSetFromCode = true;
+
+                // Connect to database
+                using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+                {
+                    conn.Open();
+                    SQLiteDataReader reader = null;
+                    string sTableName = "nzLocations";
+                    int cityID = MLocationIndex;
+
+                    SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + cityID + "'", conn);
+
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            SnowRegionIndex = int.Parse(reader["snow_zone"].ToString());
+                            WindRegionIndex = int.Parse(reader["wind_zone"].ToString());
+
+                            // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
+
+                            int fMultiplier_M_lee_ID; // Could be empty
+                            try
+                            {
+                                //fMultiplier_M_lee_ID = int.Parse(reader["windMultiplierM_lee"].ToString());
+                            }
+                            catch (ArgumentNullException) { }
+
+                            int iRainZone = int.Parse(reader["rain_zone"].ToString());
+                            int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
+
+                            // Earthquake
+                            ZoneFactorZ = float.Parse(reader["eqFactorZ"].ToString());
+
+                            float fD_min_km;  // Could be empty
+                            float fD_max_km;  // Could be empty
+
+                            try
+                            {
+                                //fD_min_km = float.Parse(reader["D_min_km"].ToString());
+                                //fD_max_km = float.Parse(reader["D_max_km"].ToString());
+                            }
+                            catch (ArgumentNullException) { }
+                        }
+                    }
+
+                    reader.Close();
+                }
+
+                DesignLife = 20f;
+                ImportanceClassIndex = 0;
+                AnnualProbabilityULS = 1f / 250f;
+                AnnualProbabilitySLS = 1f / 500f;
+                TerrainRoughnessIndex = 0;
+                SiteSubSoilClassIndex = 0;
+                ProximityToFault = 4000f;
+                PeriodAlongXDirectionTx = 0.4f;
+                PeriodAlongYDirectionTy = 0.4f;
+                SpectralShapeFactorChT = 1f;
+
+                IsSetFromCode = false;
 
                 NotifyPropertyChanged("LocationIndex");
             }
@@ -273,22 +338,10 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDLoadInput(loadInputComboboxIndexes loadInputIndexes)
+        public CPFDLoadInput(int locationCombobox)
         {
-            LocationIndex = loadInputIndexes.LocationComboboxIndex;
-            DesignLife = 20f;
-            ImportanceClassIndex = loadInputIndexes.ImportanceLevelComboboxIndex;
-            AnnualProbabilityULS = 1f/250f;
-            AnnualProbabilitySLS = 1f/500f;
-            SnowRegionIndex = loadInputIndexes.SnowRegionComboboxIndex;
-            WindRegionIndex = loadInputIndexes.WindRegionComboboxIndex;
-            TerrainRoughnessIndex = loadInputIndexes.TerrainMultiplierComboboxIndex;
-            SiteSubSoilClassIndex = loadInputIndexes.SiteSubSoilClassComboboxIndex;
-            ProximityToFault = 4000f;
-            ZoneFactorZ = 0.5f;
-            PeriodAlongXDirectionTx = 0.4f;
-            PeriodAlongYDirectionTy = 0.4f;
-            SpectralShapeFactorChT = 1f;
+            // Set default location
+            LocationIndex = locationCombobox;
 
             IsSetFromCode = false;
         }
