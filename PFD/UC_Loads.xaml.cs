@@ -37,6 +37,7 @@ namespace PFD
                 SQLiteDataReader reader = null;
 
                 FillComboboxValues("nzLocations", "city", ref reader, ref Combobox_Location);
+                FillComboboxValues("ASNZS1170_Tab3_3_DWL", "design_working_life", ref reader, ref Combobox_DesignLife);
                 FillComboboxValues("ASNZS1170_Tab3_2_IL", "importanceLevelInt", ref reader, ref Combobox_ImportanceClass);
                 FillComboboxValues("SnowRegions", "snowZone", ref reader, ref Combobox_SnowRegion);
                 FillComboboxValues("WindRegions", "windRegion", ref reader, ref Combobox_WindRegion);
@@ -45,10 +46,19 @@ namespace PFD
                 reader.Close();
             }
 
-            int default_location = 0;
+            loadInputComboboxIndexes sloadInput;
+
+            sloadInput.LocationIndex = 0;
+            sloadInput.DesignLifeIndex = 4;
+            sloadInput.SiteSubSoilClassIndex = 1;
+            sloadInput.ImportanceLevelIndex = 1;
+            sloadInput.TerrainRoughnessIndex = 0;
+            sloadInput.ProximityToFault = 4000f;
+            sloadInput.PeriodAlongXDirectionTx = 0.4f;
+            sloadInput.PeriodAlongYDirectionTy = 0.4f;
 
             // Loading
-            CPFDLoadInput loadinput = new CPFDLoadInput(default_location);
+            CPFDLoadInput loadinput = new CPFDLoadInput(sloadInput);
             loadinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = loadinput;
         }

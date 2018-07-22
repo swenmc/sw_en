@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        d:DesignHeight="710" d:DesignWidth="300">
+        d:DesignHeight="750" d:DesignWidth="300">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
@@ -35,6 +35,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -46,9 +47,8 @@
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Design Life:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_DesignLife" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=DesignLife, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_DesignLife" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=DesignLifeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Importance Level:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
@@ -123,10 +123,16 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=PeriodAlongYDirectionTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="16" Grid.Column="0" Text="Spectral Shape Factor Ch T:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="16" Grid.Column="0" Text="Spectral Shape Factor Ch Tx:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="16" Grid.Column="1" Name ="SpectralShapeFactorChT" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="16" Grid.Column="1" Name ="SpectralShapeFactorChTx" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=SpectralShapeFactorChT, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=SpectralShapeFactorChTx, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="17" Grid.Column="0" Text="Spectral Shape Factor Ch Ty:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="17" Grid.Column="1" Name ="SpectralShapeFactorChTy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=SpectralShapeFactorChTy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
     </Grid>
 </UserControl>

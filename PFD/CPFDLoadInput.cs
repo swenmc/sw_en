@@ -20,8 +20,8 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private int MLocationIndex;
-        private float MDesignLife;
-        private int MImportanceClass; // Clause A3—Building importance levels
+        private int MDesignLifeIndex;
+        private int MImportanceClassIndex; // Clause A3—Building importance levels
         private float MAnnualProbability_R_ULS_Wind;
         private float MAnnualProbability_R_ULS_Snow;
         private float MAnnualProbability_R_ULS_EQ;
@@ -34,7 +34,8 @@ namespace PFD
         private float MZoneFactorZ;
         private float MPeriodAlongXDirectionTx;
         private float MPeriodAlongYDirectionTy;
-        private float MSpectralShapeFactorChT;
+        private float MSpectralShapeFactorChTx;
+        private float MSpectralShapeFactorChTy;
 
         //-------------------------------------------------------------------------------------------------------------
         public int LocationIndex
@@ -94,22 +95,50 @@ namespace PFD
                         }
                     }
 
+                    sTableName = "SiteSubSoilClass";
+                    string sSiteSubSoilClass ="";
+
+                    command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + MSiteSubSoilClassIndex + "'", conn);
+
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            sSiteSubSoilClass = reader["class"].ToString();
+                        }
+                    }
+
+                    sTableName = "ASNZS1170_5_Tab3_1_SSF";
+                    string sPeriodT = MPeriodAlongXDirectionTx.ToString();
+                    string sSpectralShapeFactorChTx = "";
+
+                    command = new SQLiteCommand("Select * from " + sTableName + " where periodT = '" + sPeriodT + "'", conn);
+
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            sSpectralShapeFactorChTx = reader[sSiteSubSoilClass].ToString();
+                            MSpectralShapeFactorChTx = float.Parse(sSpectralShapeFactorChTx);
+                        }
+                    }
+
+                    sPeriodT = MPeriodAlongYDirectionTy.ToString();
+                    string sSpectralShapeFactorChTy = "";
+
+                    command = new SQLiteCommand("Select * from " + sTableName + " where periodT = '" + sPeriodT + "'", conn);
+
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            sSpectralShapeFactorChTy = reader[sSiteSubSoilClass].ToString();
+                            MSpectralShapeFactorChTy = float.Parse(sSpectralShapeFactorChTy);
+                        }
+                    }
+
                     reader.Close();
                 }
-
-                DesignLife = 20f;
-                ImportanceClassIndex = 0;
-                AnnualProbabilityULS_Wind = 1f / 250f;
-                AnnualProbabilityULS_Snow = 1f / 250f;
-                AnnualProbabilityULS_EQ = 1f / 250f;
-
-                AnnualProbabilitySLS = 1f / 500f;
-                TerrainRoughnessIndex = 0;
-                SiteSubSoilClassIndex = 0;
-                ProximityToFault = 4000f;
-                PeriodAlongXDirectionTx = 0.4f;
-                PeriodAlongYDirectionTy = 0.4f;
-                SpectralShapeFactorChT = 1f;
 
                 IsSetFromCode = false;
 
@@ -118,17 +147,75 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float DesignLife
+        public int DesignLifeIndex
         {
             get
             {
-                return MDesignLife;
+                return MDesignLifeIndex;
             }
             set
             {
-                if (value < 1 || value > 100)
-                    throw new ArgumentException("Design Life must be between 1 and 100 years");
-                MDesignLife = value;
+                MDesignLifeIndex = value;
+
+                // Connect to database
+                using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+                {
+                    /*
+                    AnnualProbabilityULS_Wind = 1f / 250f;
+                    AnnualProbabilityULS_Snow = 1f / 250f;
+                    AnnualProbabilityULS_EQ = 1f / 250f;
+                    AnnualProbabilitySLS = 1f / 25f;
+                    */
+
+                    conn.Open();
+                    SQLiteDataReader reader = null;
+                    string sTableName = "ASNZS1170_Tab3_3_APOE";
+
+                    SQLiteCommand command = new SQLiteCommand(
+                        "Select * from " +
+                        " ( " +
+                        "Select * from " + sTableName + " where designWorkingLife_ID = '" + MDesignLifeIndex +
+                        "')," +
+                        " ( " +
+                        "Select * from " + sTableName + " where importanceLevel_ID = '" + MImportanceClassIndex +
+                        "')"
+                        , conn);
+
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            //SnowRegionIndex = int.Parse(reader["snow_zone"].ToString());
+                            //WindRegionIndex = int.Parse(reader["wind_zone"].ToString());
+
+                            // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
+                            // Osetrit ako nacitat zlomok zadany ako string v databaze do float
+                            // Bolo by super ak by sa zlomok v textboxe zobrazoval ako zlomok a potom sa previedol na float az vo vypocte
+                            // uzivatel by mohol zadavat do textboxu zlomok x / y alebo priamo float
+
+                            // Pridana trieda "FractionConverter.cs" - presunut ???
+
+                            /*
+                            AnnualProbabilityULS_Wind = float.Parse(reader["apoeULS_Wind"].ToString());
+                            AnnualProbabilityULS_Snow = float.Parse(reader["apoeULS_Snow"].ToString());
+                            AnnualProbabilityULS_EQ = float.Parse(reader["apoeULS_Earthquake"].ToString());
+                            AnnualProbabilitySLS = float.Parse(reader["SLS1"].ToString());
+                            float AnnualProbabilitySLS_2 = float.Parse(reader["SLS2"].ToString());
+                            */
+                            string sAnnualProbabilityULS_Wind = reader["apoeULS_Wind"].ToString();
+                            string sAnnualProbabilityULS_Snow = reader["apoeULS_Snow"].ToString();
+                            string sAnnualProbabilityULS_EQ = reader["apoeULS_Earthquake"].ToString();
+                            string sAnnualProbabilitySLS = reader["SLS1"].ToString();
+
+                            AnnualProbabilityULS_Wind = (float)FractionConverter.Convert(sAnnualProbabilityULS_Wind);
+                            AnnualProbabilityULS_Snow = (float)FractionConverter.Convert(sAnnualProbabilityULS_Snow);
+                            AnnualProbabilityULS_EQ = (float)FractionConverter.Convert(sAnnualProbabilityULS_EQ);
+                            AnnualProbabilitySLS = (float)FractionConverter.Convert(sAnnualProbabilitySLS);
+                        }
+                    }
+
+                    reader.Close();
+                }
 
                 NotifyPropertyChanged("DesignLife");
             }
@@ -139,14 +226,12 @@ namespace PFD
         {
             get
             {
-                return MImportanceClass;
+                return MImportanceClassIndex;
             }
 
             set
             {
-                if (value + 1 < 1 || value + 1 > 5) // Add one because it is indexed from 0
-                    throw new ArgumentException("Importance level must be between 1 and 5");
-                MImportanceClass = value;
+                MImportanceClassIndex = value;
 
                 NotifyPropertyChanged("ImportanceClassIndex");
             }
@@ -355,30 +440,57 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float SpectralShapeFactorChT
+        public float SpectralShapeFactorChTx
         {
             get
             {
-                return MSpectralShapeFactorChT;
+                return MSpectralShapeFactorChTx;
             }
 
             set
             {
-                if (value < 0.50f || value > 5.00f)
-                    throw new ArgumentException("Spectral shape factor Ch T must be between 0.5 and 5.0");
-                MSpectralShapeFactorChT = value;
+                if (value < 0.15f || value > 3.00f)
+                    throw new ArgumentException("Spectral shape factor Ch T must be between 0.15 and 3.0");
+                MSpectralShapeFactorChTx = value;
 
-                NotifyPropertyChanged("SpectralShapeFactorChT");
+
+
+                NotifyPropertyChanged("SpectralShapeFactorChTx");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float SpectralShapeFactorChTy
+        {
+            get
+            {
+                return MSpectralShapeFactorChTx;
+            }
+
+            set
+            {
+                if (value < 0.15f || value > 3.00f)
+                    throw new ArgumentException("Spectral shape factor Ch T must be between 0.15 and 3.0");
+                MSpectralShapeFactorChTx = value;
+
+                NotifyPropertyChanged("SpectralShapeFactorChTy");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDLoadInput(int locationCombobox)
+        public CPFDLoadInput(loadInputComboboxIndexes sloadInput)
         {
             // Set default location
-            LocationIndex = locationCombobox;
+            LocationIndex = sloadInput.LocationIndex;
+            DesignLifeIndex = sloadInput.DesignLifeIndex;
+            SiteSubSoilClassIndex = sloadInput.SiteSubSoilClassIndex;
+            ImportanceClassIndex = sloadInput.ImportanceLevelIndex;
+            TerrainRoughnessIndex = sloadInput.TerrainRoughnessIndex;
+            ProximityToFault = sloadInput.ProximityToFault;
+            PeriodAlongXDirectionTx = sloadInput.PeriodAlongXDirectionTx;
+            PeriodAlongYDirectionTy = sloadInput.PeriodAlongYDirectionTy;
 
             IsSetFromCode = false;
         }
