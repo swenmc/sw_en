@@ -259,8 +259,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                 for (int i = 0; i < iMembersGirts; i++) // Each created girt
                 {
                     CMember current_member = m_arrMembers[i];
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, Colummn, current_member, true, true));
-                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, Colummn, current_member, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeStart, Colummn, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                    m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, Colummn, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                 }
             }
 
@@ -271,25 +271,25 @@ namespace sw_en_GUI.EXAMPLES._3D
                 // TODO - dopracovat moznosti kedy je stlpik okna pripojeny k eave purlin, main rafter a podobne (nemusi to byt vzdy girt)
 
                 // Bottom - columns is connected to the concrete foundation of girt (use different type of plate ???)
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, iNumberOfGirtsUnderWindow == 0 ? null : referenceGirt, current_member, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, iNumberOfGirtsUnderWindow == 0 ? null : referenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
                 // Top
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, referenceGirt, current_member, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, referenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }
 
             // Window Header Joint
             for (int i = 0; i < iNumberOfHeaders; i++) // Each created header
             {
                 CMember current_member = m_arrMembers[iMembersGirts + iNumberOfWindowColumns + i];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, true, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }
 
             // Window Sill Joint
             for (int i = 0; i < iNumberOfSills; i++) // Each created sill
             {
                 CMember current_member = m_arrMembers[iMembersGirts + iNumberOfWindowColumns + iNumberOfHeaders + i];
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, true, true));
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }
         }
     }

@@ -56,7 +56,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Member eccentricity
 
-            CMemberEccentricity eccmember = new CMemberEccentricity(0, 0.5f);
+            CMemberEccentricity eccmember = new CMemberEccentricity(0.2f, 0.5f);
             // Members Automatic Generation
             // Members List - Members Array
 
@@ -95,8 +95,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Joints
             //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeStart, m_arrMembers[0], true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeEnd, m_arrMembers[0], true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], false, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeEnd, m_arrMembers[000], m_arrMembers[000], false, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeEnd, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0.003f, true));
         }
     }

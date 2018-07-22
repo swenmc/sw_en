@@ -314,6 +314,13 @@ namespace BaseClasses
         eGibsborne
     }
 
+    public enum EPlateNumberAndPositionInJoint
+    {
+        eOneLeftPlate,   // 1 plate on the left side of cross-section (- y local axis)
+        eOneRightPlate,  // 1 plate on the right side of cross-section (+ y local axis)
+        eTwoPlates       // 2 plates in joint (one on the left and one on the right side of cross-section)
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre zatazenie a lokalizaciu budovy
     public struct BuildingDataInput
     {
