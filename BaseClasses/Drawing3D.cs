@@ -754,15 +754,17 @@ namespace BaseClasses
         {
             // Wireframe of all joints
             ScreenSpaceLines3D jointWireFrameGroupTotal = new ScreenSpaceLines3D();
-            // Wireframe of one joint
-            ScreenSpaceLines3D jointWireFrameGroup = new ScreenSpaceLines3D();
 
             if (model.m_arrConnectionJoints != null)
             {
                 for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
                 {
+                    // Wireframe of one joint (all components in joint)
+                    ScreenSpaceLines3D jointWireFrameGroup = new ScreenSpaceLines3D();
+
                     if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
                     {
+                        // Wireframe of joint component (plate, connector, ....)
                         ScreenSpaceLines3D jointWireFrame = new ScreenSpaceLines3D();
 
                         // Plates
