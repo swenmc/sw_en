@@ -45,24 +45,14 @@ namespace BaseClasses
             return modelgroup_out;
         }
 
-        public List<Point3D> Transform3D_OnMemberEntity_fromLCStoGCS(List<Point3D> points, CMember member)
+        public ScreenSpaceLines3D Transform3D_OnMemberEntity_fromLCStoGCS(ScreenSpaceLines3D wireframeModel_original, CMember member)
         {
-            Transform3DGroup trans = CreateTransformCoordGroup(member);
-            var transformedPoints = points.Select(p => trans.Transform(p));
-            return transformedPoints.ToList();
-        }
-        public List<Point3D> Transform3D_OnMemberEntity_fromLCStoGCS(ScreenSpaceLines3D wireframeModel_original, CMember member)
-        {
-            Transform3DGroup trans = CreateTransformCoordGroup(member);
-            var transformedPoints = wireframeModel_original.Points.Select(p => trans.Transform(p));
-            return transformedPoints.ToList();
+            ScreenSpaceLines3D wireframeModel_out = new ScreenSpaceLines3D();
+            wireframeModel_out.Children.Add(wireframeModel_original);
+            wireframeModel_out.Transform = CreateTransformCoordGroup(member);
 
-            //ScreenSpaceLines3D wireframeModel_out = new ScreenSpaceLines3D();
-            //wireframeModel_out.Children.Add(wireframeModel_original);
-            //wireframeModel_out.Transform = CreateTransformCoordGroup(member);
-
-            //// Return transformed model
-            //return wireframeModel_out;
+            // Return transformed model
+            return wireframeModel_out;
         }
         public void Transform3D_OnMemberEntity_fromLCStoGCS(ref List<ScreenSpaceLines3D> wireframeModel_group, CMember member)
         {
