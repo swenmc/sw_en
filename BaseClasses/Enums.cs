@@ -374,7 +374,8 @@ namespace BaseClasses
         public int DesignLifeIndex;
         public int SiteSubSoilClassIndex;
         public int TerrainRoughnessIndex;
-        public float ProximityToFault;
+        public float FaultDistanceDmin;
+        public float FaultDistanceDmax;
         public float PeriodAlongXDirectionTx;
         public float PeriodAlongYDirectionTy;
     }

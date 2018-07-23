@@ -53,7 +53,8 @@ namespace PFD
             sloadInput.SiteSubSoilClassIndex = 1;
             sloadInput.ImportanceLevelIndex = 1;
             sloadInput.TerrainRoughnessIndex = 0;
-            sloadInput.ProximityToFault = 4000f;
+            sloadInput.FaultDistanceDmin = 20f; // km
+            sloadInput.FaultDistanceDmax = 20f; // km
             sloadInput.PeriodAlongXDirectionTx = 0.4f;
             sloadInput.PeriodAlongYDirectionTy = 0.4f;
 
