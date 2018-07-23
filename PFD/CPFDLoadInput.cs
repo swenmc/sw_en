@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
+using System.Globalization;
 
 namespace PFD
 {
@@ -435,6 +436,9 @@ namespace PFD
 
         protected void SetLocationDependentDataFromDatabaseValues()
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
             // Connect to database
             using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
             {
@@ -444,28 +448,34 @@ namespace PFD
                 int cityID = LocationIndex;
 
                 SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + cityID + "'", conn);
-
+                
                 using (reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        SnowRegionIndex = int.Parse(reader["snow_zone"].ToString());
-                        WindRegionIndex = int.Parse(reader["wind_zone"].ToString());
+                        //Co tak v databaze dat spravny typ ???
+                        SnowRegionIndex = int.Parse(reader["snow_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("snow_zone"));
+                        WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
 
                         // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
+                        //23.7.2018 O.P.
 
-                        int fMultiplier_M_lee_ID; // Could be empty
+                        int fMultiplier_M_lee_ID = 0; // Could be empty
                         try
                         {
-                            //fMultiplier_M_lee_ID = int.Parse(reader["windMultiplierM_lee"].ToString());
+                            if (!reader.IsDBNull(reader.GetOrdinal("windMultiplierM_lee")))
+                            {
+                                fMultiplier_M_lee_ID = reader.GetInt32(reader.GetOrdinal("windMultiplierM_lee"));
+                            } 
+                            
                         }
                         catch (ArgumentNullException) { }
 
-                        int iRainZone = int.Parse(reader["rain_zone"].ToString());
-                        int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
+                        int iRainZone = int.Parse(reader["rain_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("rain_zone"));
+                        int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("corrosion_zone"));
 
                         // Earthquake
-                        ZoneFactorZ = float.Parse(reader["eqFactorZ"].ToString());
+                        ZoneFactorZ = float.Parse(reader["rain_zone"].ToString(), nfi); //reader.GetFloat(reader.GetOrdinal("eqFactorZ"));
 
                         try
                         {
