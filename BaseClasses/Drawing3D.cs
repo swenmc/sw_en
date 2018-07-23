@@ -346,7 +346,20 @@ namespace BaseClasses
                         cmodel.m_arrGOVolumes[i].BIsDisplayed == true) // Volume object is valid (not empty) and should be displayed
                     {
                         // Get shape - prism , sphere, ...
-                        model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
+
+                        switch (cmodel.m_arrGOVolumes[i].m_eShapeType)
+                        {
+                            case EVolumeShapeType.eShape3DCube:
+                            case EVolumeShapeType.eShape3DPrism_8Edges:
+                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_3D_G_Volume_8Edges()); // Add solid to model group
+                                break;
+                            case EVolumeShapeType.eShape3D_Cylinder:
+                                model3D_group.Children.Add(cmodel.m_arrGOVolumes[i].CreateM_G_M_3D_Volume_Cylinder()); // Add solid to model group
+                                break;
+                            default:
+                                //TODO - prepracovat a dopracovat
+                                break;
+                        }
                     }
                 }
             }

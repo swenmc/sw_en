@@ -527,6 +527,15 @@ namespace BaseClasses.GraphObj
         //--------------------------------------------------------------------------------------------
         // Generate 3D volume geometry of cylinder
         //--------------------------------------------------------------------------------------------
+        public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder()
+        {
+            Point3D solidControlEdge = new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
+            float fDim1_r = m_fDim1;
+            float fDim2_h = 1.0f; /*m_fDim2;*/ // TEMP TODO - Prepracovat cely koncept pre CVolume
+            DiffuseMaterial mat = m_Material_1;
+
+            return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 13, fDim1_r, fDim2_h, mat);
+        }
         public GeometryModel3D CreateM_G_M_3D_Volume_Cylinder(Point3D solidControlEdge, float fDim1_r, float fDim2_h, DiffuseMaterial mat)
         {
             return CreateM_G_M_3D_Volume_Cylinder(solidControlEdge, 73, fDim1_r, fDim2_h, mat);
@@ -544,10 +553,21 @@ namespace BaseClasses.GraphObj
             }
 
             // Create Array - allocate memory
-            float [,] PointsOut = new float[iTotNoPoints, 2];
+            float [,] PointsOut = new float[iTotNoPoints-1, 2];
 
             // Outside Points Coordinates
-            PointsOut = Geom2D.GetCirclePointCoord(fDim1_r, iTotNoPoints);
+            PointsOut = Geom2D.GetCirclePointCoord(fDim1_r, iTotNoPoints-1);
+
+            // TODO - potrebujeme zmenit velkost dvojrozmerneho pola a pridat don posledny bod - stredovy bod kruhu
+            float[,] PointsOutTemp = PointsOut;
+
+            PointsOut = new float [iTotNoPoints, 2];
+
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                PointsOut[i, 0] = PointsOutTemp[i, 0];
+                PointsOut[i, 1] = PointsOutTemp[i, 1];
+            }
 
             // Centroid
             PointsOut[iTotNoPoints - 1, 0] = 0f;

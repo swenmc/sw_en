@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using BaseClasses;
+using BaseClasses.GraphObj;
+using BaseClasses.GraphObj.Objects_3D;
 using MATERIAL;
 using CRSC;
 
@@ -100,6 +102,12 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeEnd, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0.003f, true));
+
+            /* // Test cylinder
+            m_arrGOVolumes = new CVolume[1];
+            CVolume a = new CVolume(1, EVolumeShapeType.eShape3D_Cylinder, new CPoint(1,0,0,0,0), 1f, new System.Windows.Media.Media3D.DiffuseMaterial(Brushes.Coral),true, 0);
+            m_arrGOVolumes[0] = a;
+            */
         }
     }
 }

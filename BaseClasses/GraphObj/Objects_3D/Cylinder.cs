@@ -55,10 +55,21 @@ namespace BaseClasses.GraphObj.Objects_3D
             }
 
             // Create Array - allocate memory
-            float[,] PointsOut = new float[iTotNoPoints, 2];
+            float[,] PointsOut = new float[iTotNoPoints - 1, 2];
 
             // Outside Points Coordinates
-            PointsOut = Geom2D.GetCirclePointCoord(fDim1_r, iTotNoPoints);
+            PointsOut = Geom2D.GetCirclePointCoord(fDim1_r, iTotNoPoints - 1);
+
+            // TODO - potrebujeme zmenit velkost dvojrozmerneho pola a pridat don posledny bod - stredovy bod kruhu
+            float[,] PointsOutTemp = PointsOut;
+
+            PointsOut = new float[iTotNoPoints, 2];
+
+            for (int i = 0; i < iTotNoPoints - 1; i++)
+            {
+                PointsOut[i, 0] = PointsOutTemp[i, 0];
+                PointsOut[i, 1] = PointsOutTemp[i, 1];
+            }
 
             // Centroid
             PointsOut[iTotNoPoints - 1, 0] = 0f;
