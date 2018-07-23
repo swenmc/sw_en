@@ -29,7 +29,7 @@ namespace BaseClasses
         {
             float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
 
-            member.CalculateMemberLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);            
+            member.CalculateMemberLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
             float fModel_Length_X = fTempMax_X - fTempMin_X;
             float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
@@ -86,7 +86,7 @@ namespace BaseClasses
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
-                if(addLights) Drawing3D.AddLightsToModel3D(gr);
+                if (addLights) Drawing3D.AddLightsToModel3D(gr);
             }
             return gr;
         }
@@ -101,7 +101,7 @@ namespace BaseClasses
 
             if (transpartentModel)
             {
-                front.Opacity = back.Opacity = 0.8; 
+                front.Opacity = back.Opacity = 0.8;
                 shell.Opacity = 0.4;
             }
             else front.Opacity = shell.Opacity = back.Opacity = 0;
@@ -122,7 +122,7 @@ namespace BaseClasses
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
                             bool bFastRendering = false;
-                            if (bFastRendering || 
+                            if (bFastRendering ||
                                     (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null || model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)) // Check if are particular surfaces defined
                             {
@@ -186,7 +186,7 @@ namespace BaseClasses
                                 GeometryModel3D plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
                                 JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
-                                
+
                                 if (bDrawConnectors)
                                 {
                                     // Add plate connectors
@@ -304,7 +304,7 @@ namespace BaseClasses
                         {
                             // Transform model group
                             JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_MainMember);
-                        }                        
+                        }
                     }
                     cmodel.m_arrConnectionJoints[i].Visual_ConnectionJoint = JointModelGroup;
 
@@ -325,7 +325,7 @@ namespace BaseClasses
             if (cmodel.m_arrGOAreas != null) // Some areas exist
             {
                 // Model Groups of Areas
-                
+
 
 
             }
@@ -560,7 +560,7 @@ namespace BaseClasses
                         {
                             if (j == 0) // Front Side
                                 wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameFrontIndices();
-                            else if(j==1) // Laterals
+                            else if (j == 1) // Laterals
                                 wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameLateralIndices();
                             else //if (j == 2) // Back Side
                                 wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameBackIndices();
@@ -589,7 +589,7 @@ namespace BaseClasses
                 viewPort.Children.Add(wireFrameAllMembers);
             }
         }
-        
+
         // Draw Model Connection Joints Wire Frame
         public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort)
         {
@@ -772,7 +772,7 @@ namespace BaseClasses
                             {
                                 // Create WireFrame in LCS
                                 ScreenSpaceLines3D wireFrame = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel();
-                                
+
                                 // TODO - pridat wireframe pre connectors v plechoch
                                 bool bDrawConnectors = true;
 
@@ -902,7 +902,7 @@ namespace BaseClasses
 
         //metoda transformuje body pre potreby wireframe
         private static void GetTransformedPoints(Model3DGroup mgr, ref List<Point3D> points)
-        {           
+        {
             foreach (Model3D m in mgr.Children)
             {
                 if (m is Model3DGroup) { GetTransformedPoints(m as Model3DGroup, ref points); }
@@ -941,7 +941,7 @@ namespace BaseClasses
             ScreenSpaceLines3D wireFrame_FrontSide = member.CreateWireFrame(0f);
             ScreenSpaceLines3D wireFrame_BackSide = member.CreateWireFrame(memberLength);
             ScreenSpaceLines3D wireFrame_Lateral = member.CreateWireFrameLateral();
-            
+
             viewPort.Children.Add(wireFrame_FrontSide);
             viewPort.Children.Add(wireFrame_BackSide);
             viewPort.Children.Add(wireFrame_Lateral);
@@ -1015,7 +1015,7 @@ namespace BaseClasses
             }
             else if (cmodel.m_arrGOPoints != null) // Some points exist
             {
-                fMax_X = (float) cmodel.m_arrGOPoints.Max(p => p.X);
+                fMax_X = (float)cmodel.m_arrGOPoints.Max(p => p.X);
                 fMin_X = (float)cmodel.m_arrGOPoints.Min(p => p.X);
                 fMax_Y = (float)cmodel.m_arrGOPoints.Max(p => p.Y);
                 fMin_Y = (float)cmodel.m_arrGOPoints.Min(p => p.Y);

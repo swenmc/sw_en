@@ -66,7 +66,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0],EMemberType_FormSteel.eG,eccmember, eccmember, 0f, 0f, 0.0f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eG, eccmember, eccmember, 0f, 0f, 0.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());
