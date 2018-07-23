@@ -48,7 +48,7 @@ namespace BaseClasses
         public ScreenSpaceLines3D Transform3D_OnMemberEntity_fromLCStoGCS(ScreenSpaceLines3D wireframeModel_original, CMember member)
         {
             ScreenSpaceLines3D wireframeModel_out = new ScreenSpaceLines3D();
-            wireframeModel_out.Children.Add(wireframeModel_original);
+            wireframeModel_out = wireframeModel_original;
             wireframeModel_out.Transform = CreateTransformCoordGroup(member);
 
             // Return transformed model

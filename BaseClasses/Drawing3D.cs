@@ -752,7 +752,11 @@ namespace BaseClasses
 
         public static void DrawModelConnectionJointsWireFrame(Model3DGroup model3DGroup, CModel model, Viewport3D viewPort)
         {
+            // Wireframe of all joints
+            ScreenSpaceLines3D jointWireFrameGroupTotal = new ScreenSpaceLines3D();
+            // Wireframe of one joint
             ScreenSpaceLines3D jointWireFrameGroup = new ScreenSpaceLines3D();
+
             if (model.m_arrConnectionJoints != null)
             {
                 for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
@@ -760,6 +764,7 @@ namespace BaseClasses
                     if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
                     {
                         ScreenSpaceLines3D jointWireFrame = new ScreenSpaceLines3D();
+
                         // Plates
                         if (model.m_arrConnectionJoints[i].m_arrPlates != null)
                         {
@@ -783,10 +788,10 @@ namespace BaseClasses
                                     {
                                         for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; m++)
                                         {
-                                            GeometryModel3D geom = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].Visual_Connector;                                            
+                                            GeometryModel3D geom = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].Visual_Connector;
                                             Point3DCollection pointsConnector = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].WireFrameModelPointsFromVisual();
                                             var transPoints = pointsConnector.Select(p => geom.Transform.Transform(p));
-                                            wireFrame.AddPoints(transPoints.ToList());                                            
+                                            wireFrame.AddPoints(transPoints.ToList());
                                         }
                                     }
                                 }
@@ -801,7 +806,7 @@ namespace BaseClasses
                                 var transformedPoints = wireFrame.Points.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
                                 jointWireFrame.AddPoints(transformedPoints.ToList());
                             }
-                                                        
+
                             //var transformedPoints2 = jointWireFrame.Points.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
                             if (model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0] is Model3DGroup)
                             {
@@ -852,8 +857,6 @@ namespace BaseClasses
                             }
                         }
 
-
-
                         //List<Point3D> pointsPlate = jointWireFrameGroup.Points.ToList();
                         //var transPoints2 = points.Select(p => .Transform.Transform(p));
                         //points = transPoints.ToList();
@@ -869,54 +872,31 @@ namespace BaseClasses
                         // Otocit a presunut cely spoj (vsetky jeho komponenty) z LCS pruta do GCS pruta
                         // Realizovat tuto transformaciu len pre spoje definovane v LCS pruta
 
-                        /*
-                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
-                            model.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(jointWireFrameGroup, model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-                        */
+                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS &&
+                            model.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                            model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null) // Joint is defined in LCS
+                        {
+                            // Create Transformation Matrix
+                            Transform3DGroup tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+
+                            // Tento riadok nahradi podovne suradnice jointWireFrameGroup v LCS suradnicami v GCS
+                            // Je mozne pouzit ako alternativne riesenie
+                            //jointWireFrameGroup = model.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(jointWireFrameGroup, model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+
+                            // TODO ONDREJ 23 / 07 / 2018 pada to na vycerpani povodnej velkosti
+                            var transPoints = jointWireFrameGroup.Points.Select(p => tr.Transform(p));
+                            jointWireFrameGroupTotal.AddPoints(transPoints.ToList());
+                        }
+                        else
+                        {
+                            // Add wireframe of joint defined in GCS to the wireframe of all joints
+                            // TODO ONDREJ 23/07/2018 - prepracovat na pridanie bodov ak ma byt vsetko v jednom wireframe (! pridat body so suradnicami po transformaciach) pada to na vycerpani povodnej velkosti
+                            // jointWireFrameGroupTotal.AddPoints(jointWireFrameGroup.Points);
+                        }
                     }
                 }
 
-                // TODO Ondrej 18.7.2018 - niekde potrebujeme este otocit cely wireframe spoja o uhol Theta okolo LCS pruta, ak bol pootoceny surface model pruta
-                // vid line 252 // M.C. 18.7.2018
-
-                // Perform only in case that joint object is not null                                
-                //O.P. 20.7.2018 brute force metoda prejde vsetky Model3DGroup a transformuje wireframe podla transformacie Model3DGroup
-                //List<Point3D> points = jointWireFrameGroup.Points.ToList();
-                //GetTransformedPoints(model3DGroup, ref points);
-                //jointWireFrameGroup.Points.Clear();
-                //jointWireFrameGroup.AddPoints(points);
-
-                //ScreenSpaceLines3D wire = new ScreenSpaceLines3D();
-
-                //GeometryModel3D gm = GetGeoMetryModel3DFrom(model3DGroup);
-
-                //if (gm.Geometry != null)
-                //{
-                //    MeshGeometry3D mesh = gm.Geometry as MeshGeometry3D;
-                //    for(int i = 0; i < mesh.TriangleIndices.Count; i = i+6)
-                //    {
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 1]]);
-
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 2]]);
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i]]);
-
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 3]]);
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
-
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 4]]);
-                //        wire.Points.Add(mesh.Positions[mesh.TriangleIndices[i + 5]]);
-                //    }
-                //    //mesh.Positions;
-                //    //mesh.TriangleIndices;
-                //}
-                //var transformedPoints = wireFrame.Points.Select(p => a.Transform(p)); // TODO - ONDREJ: Toto asi nefunguje lebo suradnice sa neotacaju
-                //jointWireFrameGroup.AddPoints(transformedPoints.ToList());
-
-                // Add Wireframe Lines to the trackport
-                //_trackport.ViewPort.Children.Clear();
-                
-                viewPort.Children.Add(jointWireFrameGroup);
+                viewPort.Children.Add(jointWireFrameGroupTotal);
             }
         }
 
