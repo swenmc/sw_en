@@ -172,7 +172,7 @@ namespace PFD
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
 
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model);
+            Page3Dmodel page1 = new Page3Dmodel(model, (bool)chbLightDirectional.IsChecked, (bool)chbLightPoint.IsChecked, (bool)chbLightSpot.IsChecked, (bool)chbLightAmbient.IsChecked);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -732,7 +732,7 @@ namespace PFD
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
 
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model);
+            Page3Dmodel page1 = new Page3Dmodel(model, (bool)chbLightDirectional.IsChecked, (bool)chbLightPoint.IsChecked, (bool)chbLightSpot.IsChecked, (bool)chbLightAmbient.IsChecked);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -805,5 +805,66 @@ namespace PFD
                 // Not implemented like UC;
             };
         }
+
+        private void chbLightDirectional_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbLightpoint_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbLightSpot_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbLightAmbient_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbLightDirectional_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbLightpoint_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbLightSpot_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbLightAmbient_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        
+
+        
     }
 }

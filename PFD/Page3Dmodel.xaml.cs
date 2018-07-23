@@ -30,7 +30,7 @@ namespace PFD
         public bool bDisplay_WireFrame = true;
         public bool bDisplay_SurfaceModel = true;
 
-        public Page3Dmodel(CModel model)
+        public Page3Dmodel(CModel model, bool directionalLigth, bool pointLight, bool spotLight, bool ambientLight)
         {
             InitializeComponent();
 
@@ -43,7 +43,7 @@ namespace PFD
             if (model != null)
             {
                 // Frame Model
-                Model3DGroup gr = Drawing3D.CreateModel3DGroup(model, EGCS.eGCSLeftHanded, true, true, true, true);
+                Model3DGroup gr = Drawing3D.CreateModel3DGroup(model, EGCS.eGCSLeftHanded, true, true, true, directionalLigth, pointLight, spotLight, ambientLight);
 
                 float fModel_Length_X = 0;
                 float fModel_Length_Y = 0;

@@ -67,6 +67,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- TODO To Ondrej: Navrhujem prepracovat vsetko na DataGridView, bude to jednoduchsie lebo budeme mat len jeden typ objektu pre vstupy a vystupy a budeme tie tabulky vkladat do protokolu, napr. export do Wordu-->
+                        <!-- Nemyslim si,ze to nejako extra pomoze. Export je vacsinou specificky a chces ho aj nejako stylovat, nie len nasmarat tabulky a koniec. -->                        
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Model:" HorizontalAlignment="Left" Margin="5,0"/>
                         <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Models" HorizontalAlignment="Left" 
@@ -195,6 +196,12 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <CheckBox Name="chbLightDirectional" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" IsChecked="False" Checked="chbLightDirectional_Checked" Unchecked="chbLightDirectional_Unchecked">Directional Light</CheckBox>
+                        <CheckBox Name="chbLightPoint" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" IsChecked="False" Unchecked="chbLightpoint_Unchecked" Checked="chbLightpoint_Checked">Point Light</CheckBox>
+                        <CheckBox Name="chbLightSpot" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" IsChecked="False" Unchecked="chbLightSpot_Unchecked" Checked="chbLightSpot_Checked">SpotLight</CheckBox>
+                        <CheckBox Name="chbLightAmbient" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" IsChecked="True" Unchecked="chbLightAmbient_Unchecked" Checked="chbLightAmbient_Checked" >Ambient Light</CheckBox>
+                        
                         <TextBlock Grid.Row="16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
                         <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="17" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="395" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
                         <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="18" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>

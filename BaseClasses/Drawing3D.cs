@@ -69,7 +69,7 @@ namespace BaseClasses
         }
 
         public static Model3DGroup CreateModel3DGroup(CModel model, EGCS egcs = EGCS.eGCSLeftHanded,
-            bool displayMembersSurface = true, bool displayConnectionJoints = true, bool displayOtherObjects3D = true, bool addLights = true)
+            bool displayMembersSurface = true, bool displayConnectionJoints = true, bool displayOtherObjects3D = true, bool directionalLight = false, bool pointLight = false, bool spotLight = false, bool ambientLight = true)
         {
             Model3DGroup gr = new Model3DGroup();
             if (model != null)
@@ -86,7 +86,7 @@ namespace BaseClasses
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
-                if (addLights) Drawing3D.AddLightsToModel3D(gr);
+                Drawing3D.AddLightsToModel3D(gr, directionalLight, pointLight, spotLight, ambientLight);
             }
             return gr;
         }
@@ -721,21 +721,7 @@ namespace BaseClasses
                 viewPort.Children.Add(jointsWireFrameTotal);
             }
         }
-
-        //metoda transformuje body pre potreby wireframe
-        private static void GetTransformedPoints(Model3DGroup mgr, ref List<Point3D> points)
-        {
-            foreach (Model3D m in mgr.Children)
-            {
-                if (m is Model3DGroup) { GetTransformedPoints(m as Model3DGroup, ref points); }
-                break;  //only transformation from first child
-            }
-            if (mgr.Transform == Transform3D.Identity) return; //zbytocne transformovat ak ide o Identitu
-
-            var transPoints = points.Select(p => mgr.Transform.Transform(p));
-            points = transPoints.ToList();
-        }
-
+        
         public static GeometryModel3D GetGeoMetryModel3DFrom(Model3DGroup model3DGroup)
         {
             GeometryModel3D gm = null;
@@ -780,38 +766,48 @@ namespace BaseClasses
         // Mato - To tam naozaj potrebujeme tolko roznych svetiel, ci su to len pokusy?
         // TODO - To Ondrej: su to len pokusy a typy svetiel, doporucujem zapracovat do GUI moznosti nastavovania osvetlenia, pridavanie svetiel a podobne, nie je to urgentne
 
-        public static void AddLightsToModel3D(Model3DGroup gr)
+        public static void AddLightsToModel3D(Model3DGroup gr, bool directionalLight = false, bool pointLight = false, bool spotLight = false, bool ambientLight = true)
         {
             // Directional Light
-            DirectionalLight Dir_Light = new DirectionalLight();
-            Dir_Light.Color = Colors.White;
-            Dir_Light.Direction = new Vector3D(0, 0, -1);
-            gr.Children.Add(Dir_Light);
+            if (directionalLight)
+            {
+                DirectionalLight Dir_Light = new DirectionalLight();
+                Dir_Light.Color = Colors.White;
+                Dir_Light.Direction = new Vector3D(0, 0, -1);
+                gr.Children.Add(Dir_Light);
+            }
+                        
+            if (pointLight)
+            {
+                PointLight Point_Light = new PointLight();
+                Point_Light.Position = new Point3D(0, 0, 30);
+                Point_Light.Color = Brushes.White.Color;
+                Point_Light.Range = 30.0;
+                Point_Light.ConstantAttenuation = 0;
+                Point_Light.LinearAttenuation = 0;
+                Point_Light.QuadraticAttenuation = 0.2f;
+                Point_Light.ConstantAttenuation = 5.0;
+                gr.Children.Add(Point_Light);
+            }
 
-            // Point light values
-            PointLight Point_Light = new PointLight();
-            Point_Light.Position = new Point3D(0, 0, 30);
-            Point_Light.Color = Brushes.White.Color;
-            Point_Light.Range = 30.0;
-            Point_Light.ConstantAttenuation = 0;
-            Point_Light.LinearAttenuation = 0;
-            Point_Light.QuadraticAttenuation = 0.2f;
-            Point_Light.ConstantAttenuation = 5.0;
-            gr.Children.Add(Point_Light);
+            if (spotLight)
+            {
+                SpotLight Spot_Light = new SpotLight();
+                Spot_Light.InnerConeAngle = 30;
+                Spot_Light.OuterConeAngle = 30;
+                Spot_Light.Color = Brushes.White.Color;
+                Spot_Light.Direction = new Vector3D(0, 0, -1);
+                Spot_Light.Position = new Point3D(8.5, 8.5, 20);
+                Spot_Light.Range = 30;
+                gr.Children.Add(Spot_Light);
+            }
 
-            SpotLight Spot_Light = new SpotLight();
-            Spot_Light.InnerConeAngle = 30;
-            Spot_Light.OuterConeAngle = 30;
-            Spot_Light.Color = Brushes.White.Color;
-            Spot_Light.Direction = new Vector3D(0, 0, -1);
-            Spot_Light.Position = new Point3D(8.5, 8.5, 20);
-            Spot_Light.Range = 30;
-            gr.Children.Add(Spot_Light);
-
-            //Set Ambient Light
-            AmbientLight Ambient_Light = new AmbientLight();
-            Ambient_Light.Color = Color.FromRgb(250, 250, 230);
-            gr.Children.Add(new AmbientLight());
+            if (ambientLight)
+            {
+                AmbientLight Ambient_Light = new AmbientLight();
+                Ambient_Light.Color = Color.FromRgb(250, 250, 230);
+                gr.Children.Add(new AmbientLight());
+            }            
         }
 
         //-------------------------------------------------------------------------------------------------------------
