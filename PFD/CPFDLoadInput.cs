@@ -340,14 +340,14 @@ namespace PFD
         {
             get
             {
-                return MSpectralShapeFactorChTx;
+                return MSpectralShapeFactorChTy;
             }
 
             set
             {
                 if (value < 0.15f || value > 3.00f)
                     throw new ArgumentException("Spectral shape factor Ch T must be between 0.15 and 3.0");
-                MSpectralShapeFactorChTx = value;
+                MSpectralShapeFactorChTy = value;
 
                 NotifyPropertyChanged("SpectralShapeFactorChTy");
             }
