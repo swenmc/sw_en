@@ -44,6 +44,21 @@ namespace BaseClasses
             // Return transformed model group
             return modelgroup_out;
         }
+        public void Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(Model3DGroup modelgroup_original, CMember member)
+        {
+            // Objekty na prute s x <> 0
+            // Modelgroup musime pridat ako child do novej modelgroup inak sa "Transform" definovane z 0,0,0 do LCS pruta prepise "Transform" z LCS do GCS
+            Transform3DGroup trg = CreateTransformCoordGroup(member);
+            if (modelgroup_original.Transform == null) modelgroup_original.Transform = trg;
+            else
+            {
+                Transform3DGroup gr = new Transform3DGroup();
+                gr.Children.Add(modelgroup_original.Transform);
+                gr.Children.Add(trg);
+                modelgroup_original.Transform = gr;
+            }
+        }
+
 
         public ScreenSpaceLines3D Transform3D_OnMemberEntity_fromLCStoGCS(ScreenSpaceLines3D wireframeModel_original, CMember member)
         {

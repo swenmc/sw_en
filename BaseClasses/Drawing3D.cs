@@ -198,8 +198,7 @@ namespace BaseClasses
                                         {
                                             GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors);
                                             cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].Visual_Connector = plateConnectorgeom;
-                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
-                                            //JointModelGroup.Children.Add(plateConnectorgeom);
+                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);                                            
                                         }
                                         plateConnectorsModelGroup.Transform = plateGeom.Transform;
                                         JointModelGroup.Children.Add(plateConnectorsModelGroup);
@@ -290,20 +289,27 @@ namespace BaseClasses
 
                         // Rotate and translate model in GCS (global coordinate system of whole structure / building)
                         // Create new model group
-                        Model3DGroup JointModelGroup_temp = new Model3DGroup();
-                        JointModelGroup_temp.Children.Add(JointModelGroup);
+
+                        //Model3DGroup JointModelGroup_temp = new Model3DGroup();
+                        //JointModelGroup_temp.Children.Add(JointModelGroup);
 
                         // Joint is defined in LCS of first secondary member
                         if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
                         cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
                         {
                             // Transform model group
-                            JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                            //JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+
+                            //temp
+                            cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
                         }
                         else // Joint is defined in LCS of main member
                         {
                             // Transform model group
-                            JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_MainMember);
+                            //JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_MainMember);
+
+                            //temp
+                            cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_MainMember);
                         }
                     }
                     cmodel.m_arrConnectionJoints[i].Visual_ConnectionJoint = JointModelGroup;
@@ -631,22 +637,27 @@ namespace BaseClasses
                                 var transPoints_Plate = jointPlatePoints.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
                                 jointPoints.AddRange(transPoints_Plate);
                             }
-                        }
+                        }                                        
                         
-                        //tu by som chcel mat tento jeden riadok a nie  prehrabavanie o 2 urovne nizsie a aplikovanie rotacie
-                        //var transformedPoints2 = jointWireFrame.Points.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
-                        if (model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0] is Model3DGroup)
-                        {
-                            if (((Model3DGroup)model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0]).Children[0] is Model3DGroup)
-                            {
-                                Model3DGroup mgr = ((Model3DGroup)model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Children[0]).Children[0] as Model3DGroup;
-                                if (mgr.Transform is RotateTransform3D)
-                                {
-                                    jointPoints = jointPoints.Select(p => mgr.Transform.Transform(p)).ToList();                                    
-                                }
-                            }
-                        }
-                        
+                        // Joint is defined in LCS of first secondary member
+                        //if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
+                        //model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
+                        //!MathF.d_equal(model.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
+                        //{
+                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), model.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
+                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                        //    jointPoints = jointPoints.Select(p => rotate.Transform(p)).ToList();
+                        //}
+                        //else if (!MathF.d_equal(model.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
+                        //{
+                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), model.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
+                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
+                        //    jointPoints = jointPoints.Select(p => rotate.Transform(p)).ToList();
+                        //}
+                        //else
+                        //{
+                        //    // There is no rotation
+                        //}                        
 
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
@@ -678,22 +689,29 @@ namespace BaseClasses
                             }
                         }
 
-                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
-                        {
-                            Transform3DGroup tr;
+                        //if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
+                        //{
+                        //    Transform3DGroup tr;
 
-                            if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null && model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
-                            {
-                                // Create Transformation Matrix
-                                tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-                            }
-                            else
-                            {
-                                // Create Transformation Matrix
-                                tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_MainMember);
-                            }
-                            jointPoints = jointPoints.Select(p => tr.Transform(p)).ToList();
-                        }                        
+                        //    if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null && model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
+                        //    {
+                        //        // Create Transformation Matrix
+                        //        tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                        //    }
+                        //    else
+                        //    {
+                        //        // Create Transformation Matrix
+                        //        tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_MainMember);
+                        //    }
+                        //    jointPoints = jointPoints.Select(p => tr.Transform(p)).ToList();
+                        //}                        
+
+
+                        //23.7.2018
+                        //Mato - otestuj,ci vsetko funguje ako ma
+                        //prerobil som Transform3D_OnMemberEntity_fromLCStoGCS metodu na Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal a jednym riadkom to funguje...takze chyba bola tam
+                        //vsetko prerobene do jedneho riadku kodu - narocky som nechal zakomentovane riadky,aby bolo vidno ktore riadky to nahradza
+                        jointPoints = jointPoints.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p)).ToList();
                         jointsWireFramePoints.AddRange(jointPoints);
                     }
                 }
