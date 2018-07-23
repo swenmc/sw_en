@@ -72,23 +72,23 @@ namespace sw_en_GUI
                 SolidColorBrush brushDefault = new SolidColorBrush(Colors.Red);
 
                 bool bShowGlobalAxis = true;
-                if(bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
-                
+                if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
+
                 bool bDisplayMembersSurface = true;
                 Model3D membersModel3D = null;
                 if (bDisplayMembersSurface) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
-                
+
                 bool displayConnectionJoints = true;
                 Model3DGroup jointsModel3DGroup = null;
-                if(displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
+                if (displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
-                
+
                 Drawing3D.AddLightsToModel3D(gr);
 
                 // Camera Position for Model
@@ -112,8 +112,8 @@ namespace sw_en_GUI
 
                 if (bDisplayConnectionJointsWireFrame)
                 {
-                    //if(jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
+                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(jointsModel3DGroup, cmodel, _trackport.ViewPort);
                 }
 
                 _trackport.SetupScene();
