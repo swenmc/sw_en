@@ -874,12 +874,20 @@ namespace BaseClasses
                         // Otocit a presunut cely spoj (vsetky jeho komponenty) z LCS pruta do GCS pruta
                         // Realizovat tuto transformaciu len pre spoje definovane v LCS pruta
 
-                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS &&
-                            model.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                            model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null) // Joint is defined in LCS
+                        if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
                         {
-                            // Create Transformation Matrix
-                            Transform3DGroup tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                            Transform3DGroup tr;
+
+                            if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null && model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
+                            {
+                                // Create Transformation Matrix
+                                tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
+                            }
+                            else
+                            {
+                                // Create Transformation Matrix
+                                tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_MainMember);
+                            }
 
                             // Tento riadok nahradi podovne suradnice jointWireFrameGroup v LCS suradnicami v GCS
                             // Je mozne pouzit ako alternativne riesenie
