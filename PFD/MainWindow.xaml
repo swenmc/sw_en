@@ -205,8 +205,7 @@
             </TabItem>
             <TabItem Name ="Model_Component" Header="Model Components">
             </TabItem>
-            <TabItem Name ="Loads" Header="Loads">
-                <local:UC_Loads HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TabItem Name ="Loads" Header="Loads">                
             </TabItem>
             <TabItem Name ="Load_Cases" Header="Load Cases"/>
             <TabItem Name ="Load_Combinations" Header="Load Combinations"/>

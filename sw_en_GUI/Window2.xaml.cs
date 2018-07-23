@@ -113,7 +113,7 @@ namespace sw_en_GUI
                 if (bDisplayConnectionJointsWireFrame)
                 {
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(jointsModel3DGroup, cmodel, _trackport.ViewPort);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
                 }
 
                 _trackport.SetupScene();
