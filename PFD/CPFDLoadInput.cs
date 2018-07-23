@@ -448,39 +448,54 @@ namespace PFD
                 int cityID = LocationIndex;
 
                 SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + cityID + "'", conn);
-                
+
                 using (reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         //Co tak v databaze dat spravny typ ???
+                        // TO Ondrej - potrebujem najst conventor ktory to urobi automaticky a nebude tam pridavat ako prvy stlpec svoje ID
+                        // Teraz pouzivam convertor ktory vsetko nastavi ako default na string
+
                         SnowRegionIndex = int.Parse(reader["snow_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("snow_zone"));
                         WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
 
                         // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
                         //23.7.2018 O.P.
 
-                        int fMultiplier_M_lee_ID = 0; // Could be empty
+                        int fMultiplier_M_lee_ID = 1; // Could be empty
                         try
                         {
                             if (!reader.IsDBNull(reader.GetOrdinal("windMultiplierM_lee")))
                             {
                                 fMultiplier_M_lee_ID = reader.GetInt32(reader.GetOrdinal("windMultiplierM_lee"));
-                            } 
-                            
+
+                                // TODO nacitat data pre index fMultiplier_M_lee_ID z databazy - tabulka multiplierM_lee, vzdialenost (zone_min a zone_max)
+                            }
                         }
                         catch (ArgumentNullException) { }
 
-                        int iRainZone = int.Parse(reader["rain_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("rain_zone"));
-                        int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("corrosion_zone"));
+                        int iRainZone = int.Parse(reader["rain_zone"].ToString());
+                        int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
 
                         // Earthquake
-                        ZoneFactorZ = float.Parse(reader["rain_zone"].ToString(), nfi); //reader.GetFloat(reader.GetOrdinal("eqFactorZ"));
+                        ZoneFactorZ = float.Parse(reader["eqFactorZ"].ToString(), nfi);
 
                         try
                         {
-                            //FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
-                            //FaultDistanceDmax = float.Parse(reader["D_max_km"].ToString());
+                            if (!reader.IsDBNull(reader.GetOrdinal("D_min_km")))
+                            {
+                                FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException) { }
+
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("D_max_km")))
+                            {
+                                FaultDistanceDmax = float.Parse(reader["D_max_km"].ToString());
+                            }
                         }
                         catch (ArgumentNullException) { }
                     }
@@ -547,12 +562,24 @@ namespace PFD
                         string sAnnualProbabilityULS_Wind = reader["apoeULS_Wind"].ToString();
                         string sAnnualProbabilityULS_Snow = reader["apoeULS_Snow"].ToString();
                         string sAnnualProbabilityULS_EQ = reader["apoeULS_Earthquake"].ToString();
-                        string sAnnualProbabilitySLS = reader["SLS1"].ToString();
+                        string sAnnualProbabilitySLS1 = reader["SLS1"].ToString();
+                        string sAnnualProbabilitySLS2 = "";
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("SLS2")))
+                            {
+                                sAnnualProbabilitySLS2 = reader["SLS2"].ToString();
+                            }
+                        }
+                        catch (ArgumentNullException) { }
 
                         AnnualProbabilityULS_Wind = (float)FractionConverter.Convert(sAnnualProbabilityULS_Wind);
                         AnnualProbabilityULS_Snow = (float)FractionConverter.Convert(sAnnualProbabilityULS_Snow);
                         AnnualProbabilityULS_EQ = (float)FractionConverter.Convert(sAnnualProbabilityULS_EQ);
-                        AnnualProbabilitySLS = (float)FractionConverter.Convert(sAnnualProbabilitySLS);
+                        AnnualProbabilitySLS = (float)FractionConverter.Convert(sAnnualProbabilitySLS1);
+
+                        //TODO Martin - doriesit SLS1 a SLS2
+                        //AnnualProbabilitySLS2 = (float)FractionConverter.Convert(sAnnualProbabilitySLS2);
                     }
                 }
 
