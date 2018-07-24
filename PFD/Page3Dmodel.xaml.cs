@@ -40,6 +40,7 @@ namespace PFD
 
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            //_trackport.ViewPort.ClipToBounds = false; //nemozne pouzit,lebo vychadza model mimo plochu
 
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);

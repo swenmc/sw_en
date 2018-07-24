@@ -52,7 +52,7 @@ namespace _3DTools
             get { return _trackball; }
             set { _trackball = value; }
         }
-        private readonly ScreenSpaceLines3D Wireframe = new ScreenSpaceLines3D();
+        //private readonly ScreenSpaceLines3D Wireframe = new ScreenSpaceLines3D();
 
         private Brush _trackportBackground;
         public Brush TrackportBackground
@@ -77,8 +77,11 @@ namespace _3DTools
         public Trackport3D()
         {
             InitializeComponent();
-          
-            this.Viewport.Children.Add(Wireframe);
+
+            //optimalization            
+            this.Viewport.IsHitTestVisible = false;
+
+            //this.Viewport.Children.Add(Wireframe);
             this.Camera.Transform = _trackball.Transform;
             this.Headlight.Transform = _trackball.Transform;
                         
@@ -125,12 +128,12 @@ namespace _3DTools
             {
                 case ViewMode.Solid:
                     this.Root.Content = _model;
-                    this.Wireframe.Points.Clear();
+                    //this.Wireframe.Points.Clear();
                     break;
 
                 case ViewMode.Wireframe:
                     this.Root.Content = null;
-                    this.Wireframe.MakeWireframe(_model);
+                    //this.Wireframe.MakeWireframe(_model);
                     break;
             }
         }
