@@ -437,8 +437,8 @@ namespace BaseClasses
 
             model.Geometry = mesh;
 
-            model.Material = new DiffuseMaterial(brush);  // Set MemberModel Material
-            //model.Material = new EmissiveMaterial(brush);
+            //model.Material = new DiffuseMaterial(brush);  // Set MemberModel Material
+            model.Material = new EmissiveMaterial(brush);
 
             return model;
         }
@@ -775,7 +775,7 @@ namespace BaseClasses
                 sOutput = "After transformation \n\n"; // create temporary string
                 for (int i = 0; i < 2 * iNoCrScPoints2D; i++) // for all mesh positions (start and end of member, number of edge points of whole member = 2 * number in one section)
                 {
-                    Point3D p3D = mesh.Positions[i]; // Get mesh element/item (returns Point3D)
+                    Point3D p3D = meshPositions[i]; // Get mesh element/item (returns Point3D)
 
                     sOutput += "Node ID: " + i.ToString();
                     sOutput += "\t"; // New Tab between columns
