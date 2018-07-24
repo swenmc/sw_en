@@ -50,7 +50,7 @@ namespace BaseClasses
             FTime = fTime;
 
             // Set Load Model "material" Color and Opacity - default
-            m_Color = Color.FromRgb(100, 20, 20);
+            m_Color = Colors.Cyan;
             m_Material.Brush = new SolidColorBrush(m_Color);
             m_Material.Brush.Opacity = m_fOpacity = 0.9f;
         }
@@ -62,7 +62,7 @@ namespace BaseClasses
             ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(EDirPPC, MLoadType);
 
             // Set Load Model "material" Color and Opacity - default
-            m_Color = Color.FromRgb(200, 20, 20);
+            m_Color = Colors.Cyan;
             m_Material.Brush = new SolidColorBrush(m_Color);
             m_Material.Brush.Opacity = m_fOpacity = 0.9f;
 
@@ -89,6 +89,16 @@ namespace BaseClasses
                 Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(Fq), Member.FLength, m_Material);
                 model_gr.Children.Add(cConnectLine.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(Fq), Member.FLength, m_Material));
             }
+
+            // Trasnform position of load on member (consider eccentricity of load / member / cross-section dimensions)
+            TranslateTransform3D translate = new TranslateTransform3D(0, 0, 0.5 * Member.CrScStart.h);
+
+            // Add the transform to a Transform3DGroup
+            Transform3DGroup loadTransform3DGroup = new Transform3DGroup();
+            loadTransform3DGroup.Children.Add(translate);
+
+            // Set the Transform property of the GeometryModel to the Transform3DGroup 
+            model_gr.Transform = loadTransform3DGroup;
 
             return model_gr; // Model group of whole member load in LCS
         }

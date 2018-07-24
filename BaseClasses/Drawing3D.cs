@@ -800,16 +800,16 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_Lateral);
         }
 
-        /*
-        The following lights derive from the base class Light:
-        AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
-        DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
-        PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
-        SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
-         */
-
         public static void AddLightsToModel3D(Model3DGroup gr, bool directionalLight = false, bool pointLight = false, bool spotLight = false, bool ambientLight = true)
         {
+            /*
+            The following lights derive from the base class Light:
+            AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
+            DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
+            PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
+            SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
+            */
+
             // Directional Light
             if (directionalLight)
             {

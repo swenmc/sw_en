@@ -139,8 +139,8 @@ namespace PFD
 
             set
             {
-                if (value < 2 || value > 50)
-                    throw new ArgumentException("Wall Height must be between 2 and 50 [m]");
+                if (value < 2 || value > 30)
+                    throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
 
                 if (MModelIndex != 0)
@@ -167,8 +167,8 @@ namespace PFD
                 // ak sa prepocita z inych hodnot (napr. b), tak by sa mala zobrazit
                 // aj ked je nevalidna a malo by vypisat nizsie uvedene varovanie, model by sa nemal prekreslit kym nie su vsetky hodnoty validne
 
-                if (value < 3 || value > 50)
-                    throw new ArgumentException("Roof Pitch must be between 2 and 50 degrees");
+                if (value < 3 || value > 35)
+                    throw new ArgumentException("Roof Pitch must be between 2 and 35 degrees");
                 MRoofPitch = value;
 
                 if (MModelIndex != 0)

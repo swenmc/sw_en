@@ -51,7 +51,7 @@ namespace BaseClasses
         public CMLoad()
         {
             // Set Load Model "material" Color and Opacity - default
-            m_Color = Color.FromRgb(200, 0, 0);
+            m_Color = Colors.Cyan;
             m_Material.Brush = new SolidColorBrush(m_Color);
             m_Material.Brush.Opacity = 0.9f;
         }

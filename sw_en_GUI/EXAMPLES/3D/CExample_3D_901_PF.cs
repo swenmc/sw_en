@@ -807,9 +807,15 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrNLoads[1] = new CNLoadAll(m_arrNodes[2], 0, 0, -4f, 0, 0, 0, true, 0);
             m_arrNLoads[2] = new CNLoadAll(m_arrNodes[3], 0, 0, -4f, 0, 0, 0, true, 0);
 
-            m_arrMLoads = new CMLoad[2];
-            m_arrMLoads[0] = new CMLoad_21(-0.8f, m_arrMembers[1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            m_arrMLoads[1] = new CMLoad_21(-0.9f, m_arrMembers[2], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            // Rafters
+            m_arrMLoads = new CMLoad[iRafterNo];
+            float fValueLoad = -0.8f;
+
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                m_arrMLoads[i * 1 + i] = new CMLoad_21(fValueLoad, m_arrMembers[1 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                m_arrMLoads[i * 1 + i + 1] = new CMLoad_21(fValueLoad, m_arrMembers[1 + i * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            }
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)

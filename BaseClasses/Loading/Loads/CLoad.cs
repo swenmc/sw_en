@@ -23,24 +23,27 @@ namespace BaseClasses
 
             if (eLoadType == ENLoadType.eNLT_Fx || eLoadType == ENLoadType.eNLT_Mx)
             {
-                cColor = Color.FromRgb(100, 40, 40);
+                // Red
+                cColor = Color.FromRgb(250, 0, 200);
 
                 if (fValue < 0.0f)
-                    cColor = Color.FromRgb(150, 20, 20);
+                    cColor = Color.FromRgb(200, 0, 200);
             }
             else if (eLoadType == ENLoadType.eNLT_Fy || eLoadType == ENLoadType.eNLT_My)
             {
-                cColor = Color.FromRgb(40, 100, 40);
+                // Green
+                cColor = Color.FromRgb(0, 250, 200);
 
                 if (fValue < 0.0f)
-                    cColor = Color.FromRgb(20, 150, 20);
+                    cColor = Color.FromRgb(0, 200, 200);
             }
             else //if (NLoadType == ENLoadType.eNLT_Fz || NLoadType == ENLoadType.eNLT_Mz)
             {
-                cColor = Color.FromRgb(40, 40, 100);
+                // Blue
+                cColor = Color.FromRgb(0, 200, 250);
 
                 if (fValue < 0.0f)
-                    cColor = Color.FromRgb(20, 20, 150);
+                    cColor = Color.FromRgb(0, 200, 200);
             }
 
             fOpacity = 0.9f;
@@ -188,6 +191,5 @@ namespace BaseClasses
             Model3DGroup model_gr = new Model3DGroup();
             return model_gr;
         }
-
     }
 }

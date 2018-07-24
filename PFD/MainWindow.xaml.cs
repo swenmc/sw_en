@@ -61,10 +61,10 @@ namespace PFD
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
         //float fL; // 3 - 150 m
-        //float fh; // 2 -  50 m (h1)
+        //float fh; // 2 -  30 m (h1)
         //float fL1;
-        //int iFrNo; // 2 - 50
-        //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 50 deg)
+        //int iFrNo; // 2 - 30
+        //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 35 deg)
         //float fh2;
         //float fdist_girt; // 0.5 - 5 m
         //float fdist_purlin; // 0.5 - 5 m
