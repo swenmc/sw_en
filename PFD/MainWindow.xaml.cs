@@ -173,11 +173,18 @@ namespace PFD
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
 
+            // Load cases
+            // Fill combobox items
+            foreach (CLoadCase loadcase in model.m_arrLoadCases)
+                Combobox_LoadCase.Items.Add(loadcase.Name);
+
+            Combobox_LoadCase.SelectedIndex = 0; // Selected load case
+
             // Update display options
             UpdateDisplayOptions();
 
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions);
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -748,6 +755,8 @@ namespace PFD
             sDisplayOptions.bDisplayWireFrameModel = chbDisplayWireFrameModel.IsChecked == true;
 
             sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
+
+            sDisplayOptions.bDisplayLoads = chbDisplayLoads.IsChecked == true;
         }
 
         private void UpdateAll()
@@ -759,7 +768,8 @@ namespace PFD
 
             // Create 3D window
             UpdateDisplayOptions();
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions);
+            
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -820,7 +830,7 @@ namespace PFD
             if (MainTabControl.SelectedIndex == 1)
                 Model_Component.Content = new UC_ComponentList().Content;
             else if (MainTabControl.SelectedIndex == 2)
-                Load_Cases.Content = new UC_Loads();
+                Loads.Content = new UC_Loads();
             else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
             else if (MainTabControl.SelectedIndex == 4)
@@ -1007,5 +1017,27 @@ namespace PFD
                 UpdateAll();
             }
         }
+
+        private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayLoads_UnChecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void Combobox_LoadCase_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateAll();
+        }
+
+
     }
 }

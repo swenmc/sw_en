@@ -32,7 +32,7 @@ namespace PFD
         //EGCS eGCS = EGCS.eGCSRightHanded;
 
         // TODO - Ondrej Konstruktor je identicky s swen_GUI Window 2 - zjednotit
-        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp)
+        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase)
         {
             sDisplayOptions = sDisplayOptions_temp;
 
@@ -58,6 +58,10 @@ namespace PFD
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
+
+                Model3DGroup loadsModel3DGroup = null;
+                if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase);
+                if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr);
 

@@ -110,5 +110,10 @@ namespace PFD
             listLoadCaseName.Clear();
             listLoadCaseType.Clear();
         }
+
+        private void loadCases_Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

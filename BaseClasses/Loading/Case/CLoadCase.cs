@@ -45,18 +45,15 @@ namespace BaseClasses
             set { m_Type = value; }
         }
 
-        List<CLoad> LoadsList;
+        public List<CNLoad> NodeLoadsList;
+        public List<CMLoad> MemberLoadsList;
+
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
         public CLoadCase()
-		{
-
-		}
-
-        public CLoadCase(List<CLoad> Loads_temp)
         {
-            LoadsList = Loads_temp;
+
         }
 
         public CLoadCase(int id_temp, string name_temp, string type_temp)
@@ -64,6 +61,31 @@ namespace BaseClasses
             ID = id_temp;
             Name = name_temp;
             Type = type_temp;
+        }
+
+        public CLoadCase(int id_temp, string name_temp, string type_temp, List<CNLoad> NodeLoads_temp, List<CMLoad> MemberLoads_temp)
+        {
+            ID = id_temp;
+            Name = name_temp;
+            Type = type_temp;
+            NodeLoadsList = NodeLoads_temp;
+            MemberLoadsList = MemberLoads_temp;
+        }
+
+        public CLoadCase(int id_temp, string name_temp, string type_temp, List<CMLoad> MemberLoads_temp)
+        {
+            ID = id_temp;
+            Name = name_temp;
+            Type = type_temp;
+            MemberLoadsList = MemberLoads_temp;
+        }
+
+        public CLoadCase(int id_temp, string name_temp, string type_temp, List<CNLoad> NodeLoads_temp)
+        {
+            ID = id_temp;
+            Name = name_temp;
+            Type = type_temp;
+            NodeLoadsList = NodeLoads_temp;
         }
     }
 }

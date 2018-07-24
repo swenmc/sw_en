@@ -713,32 +713,57 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Loading
 
-            m_arrLimitStates = new CLimitState[2];
-            m_arrLimitStates[0] = new CLimitState(ELSType.eLS_ULS);
-            m_arrLimitStates[1] = new CLimitState(ELSType.eLS_SLS);
+            // Loads
+            m_arrNLoads = new CNLoad[3];
+            m_arrNLoads[0] = new CNLoadAll(m_arrNodes[1], 0, 0, -4f, 0, 0, 0, true, 0);
+            m_arrNLoads[1] = new CNLoadAll(m_arrNodes[2], 0, 0, -4f, 0, 0, 0, true, 0);
+            m_arrNLoads[2] = new CNLoadAll(m_arrNodes[3], 0, 0, -4f, 0, 0, 0, true, 0);
 
-            m_arrLoadCombs = new CLoadCombination[6];
-            m_arrLoadCombs[0] = new CLoadCombination(1, "CO 1", ELSType.eLS_ULS);
-            m_arrLoadCombs[1] = new CLoadCombination(2, "CO 2", ELSType.eLS_ULS);
-            m_arrLoadCombs[2] = new CLoadCombination(3, "CO 3", ELSType.eLS_ULS);
-            m_arrLoadCombs[3] = new CLoadCombination(4, "CO 4", ELSType.eLS_ULS);
-            m_arrLoadCombs[4] = new CLoadCombination(5, "CO 5", ELSType.eLS_SLS);
-            m_arrLoadCombs[5] = new CLoadCombination(6, "CO 6", ELSType.eLS_SLS);
+            // Rafters
+            float fValueLoadRafterDead = -0.3f;
+            float fValueLoadRafterImposed = -0.1f;
+            float fValueLoadRafterSnow1 = -0.8f;
+            float fValueLoadRafterSnow2 = -0.4f;
 
+            // Columns
+            float fValueLoadColumnWind1PlusX = -0.5f;
+            float fValueLoadColumnWind2PlusX = 0.2f;
 
+            float fValueLoadColumnWind1MinusX = -0.2f;
+            float fValueLoadColumnWind2MinusX = 0.5f;
+
+            List<CMLoad> memberLoadDeadRafters = new List<CMLoad>();
+            List<CMLoad> memberLoadImposedRafters = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadSnowAllRafters = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadSnowLeftRafters = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadSnowRightRafters = new List<CMLoad>();
+
+            List<CMLoad> memberMaxLoadWindColumnPlusX = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadWindColumnMinusX = new List<CMLoad>();
+
+            GenerateLoadOnRafters(fValueLoadRafterDead, fValueLoadRafterDead, ref memberLoadDeadRafters);
+            GenerateLoadOnRafters(fValueLoadRafterImposed, fValueLoadRafterImposed, ref memberLoadImposedRafters);
+            GenerateLoadOnRafters(fValueLoadRafterSnow1, fValueLoadRafterSnow1, ref memberMaxLoadSnowAllRafters);
+            GenerateLoadOnRafters(fValueLoadRafterSnow1, fValueLoadRafterSnow2, ref memberMaxLoadSnowLeftRafters);
+            GenerateLoadOnRafters(fValueLoadRafterSnow2, fValueLoadRafterSnow1, ref memberMaxLoadSnowRightRafters);
+
+            GenerateLoadOnMainColumns(fValueLoadColumnWind1PlusX, fValueLoadColumnWind2PlusX, ref memberMaxLoadWindColumnPlusX);
+            GenerateLoadOnMainColumns(fValueLoadColumnWind1MinusX, fValueLoadColumnWind2MinusX, ref memberMaxLoadWindColumnMinusX);
+
+            // Load Cases
             m_arrLoadCases = new CLoadCase[20];
-            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load");                             // 1
-            m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load");       // 2
-            m_arrLoadCases[2] = new CLoadCase(3, "Imposed load Q", "Imposed load");                            // 3
-            m_arrLoadCases[3] = new CLoadCase(4, "Snow load Su - full", "Snow load");                          // 4
-            m_arrLoadCases[4] = new CLoadCase(5, "Snow load Su - left", "Snow load");                          // 5
-            m_arrLoadCases[5] = new CLoadCase(6, "Snow load Su - right", "Snow load");                         // 6
-            m_arrLoadCases[6] = new CLoadCase(7, "Wind load Wu - Cpi - Left - X+", "Wind load");               // 7
-            m_arrLoadCases[7] = new CLoadCase(8, "Wind load Wu - Cpi - Right - X-", "Wind load");              // 8
-            m_arrLoadCases[8] = new CLoadCase(9, "Wind load Wu - Cpi - Front - Y+", "Wind load");              // 9
-            m_arrLoadCases[9] = new CLoadCase(10, "Wind load Wu - Cpi - Rear - Y-", "Wind load");              // 10
-            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Left - X+", "Wind load");         // 11
-            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Right - X-", "Wind load");        // 12
+            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load", memberLoadDeadRafters);                                     // 1
+            m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load");                                      // 2
+            m_arrLoadCases[2] = new CLoadCase(3, "Imposed load Q", "Imposed load", memberLoadImposedRafters);                                 // 3
+            m_arrLoadCases[3] = new CLoadCase(4, "Snow load Su - full", "Snow load", memberMaxLoadSnowAllRafters);                            // 4
+            m_arrLoadCases[4] = new CLoadCase(5, "Snow load Su - left", "Snow load", memberMaxLoadSnowLeftRafters);                           // 5
+            m_arrLoadCases[5] = new CLoadCase(6, "Snow load Su - right", "Snow load", memberMaxLoadSnowRightRafters);                         // 6
+            m_arrLoadCases[6] = new CLoadCase(7, "Wind load Wu - Cpi - Left - X+", "Wind load");                                              // 7
+            m_arrLoadCases[7] = new CLoadCase(8, "Wind load Wu - Cpi - Right - X-", "Wind load");                                             // 8
+            m_arrLoadCases[8] = new CLoadCase(9, "Wind load Wu - Cpi - Front - Y+", "Wind load");                                             // 9
+            m_arrLoadCases[9] = new CLoadCase(10, "Wind load Wu - Cpi - Rear - Y-", "Wind load");                                             // 10
+            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Left - X+", "Wind load", memberMaxLoadWindColumnPlusX);          // 11
+            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Right - X-", "Wind load", memberMaxLoadWindColumnMinusX);        // 12
             m_arrLoadCases[12] = new CLoadCase(13, "Wind load Wu - Cpe,min - Front - Y+", "Wind load");        // 13
             m_arrLoadCases[13] = new CLoadCase(14, "Wind load Wu - Cpe,min - Rear - Y-", "Wind load");         // 14
             m_arrLoadCases[14] = new CLoadCase(15, "Wind load Wu - Cpe,max - Left - X+", "Wind load");         // 15
@@ -747,6 +772,16 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLoadCases[17] = new CLoadCase(18, "Wind load Wu - Cpe,max - Rear - Y-", "Wind load");         // 18
             m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - X", "Earthquake load");               // 19
             m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load Eu - Y", "Earthquake load");               // 20
+
+            // Load Combinations
+            m_arrLoadCombs = new CLoadCombination[6];
+            m_arrLoadCombs[0] = new CLoadCombination(1, "CO 1", ELSType.eLS_ULS);
+            m_arrLoadCombs[1] = new CLoadCombination(2, "CO 2", ELSType.eLS_ULS);
+            m_arrLoadCombs[2] = new CLoadCombination(3, "CO 3", ELSType.eLS_ULS);
+            m_arrLoadCombs[3] = new CLoadCombination(4, "CO 4", ELSType.eLS_ULS);
+            m_arrLoadCombs[4] = new CLoadCombination(5, "CO 5", ELSType.eLS_SLS);
+            m_arrLoadCombs[5] = new CLoadCombination(6, "CO 6", ELSType.eLS_SLS);
+
 
             // Create combinations
             //TODO - vytvorit kombinacie podla predpisu v CLoadCombinations
@@ -802,20 +837,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[14]);
             m_arrLoadCombs[5].LoadCasesFactorsList.Add(1.00f);
 
-            m_arrNLoads = new CNLoad[3];
-            m_arrNLoads[0] = new CNLoadAll(m_arrNodes[1], 0, 0, -4f, 0, 0, 0, true, 0);
-            m_arrNLoads[1] = new CNLoadAll(m_arrNodes[2], 0, 0, -4f, 0, 0, 0, true, 0);
-            m_arrNLoads[2] = new CNLoadAll(m_arrNodes[3], 0, 0, -4f, 0, 0, 0, true, 0);
-
-            // Rafters
-            m_arrMLoads = new CMLoad[iRafterNo];
-            float fValueLoad = -0.8f;
-
-            for (int i = 0; i < iFrameNo; i++)
-            {
-                m_arrMLoads[i * 1 + i] = new CMLoad_21(fValueLoad, m_arrMembers[1 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-                m_arrMLoads[i * 1 + i + 1] = new CMLoad_21(fValueLoad, m_arrMembers[1 + i * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            }
+            // Limit States
+            m_arrLimitStates = new CLimitState[2];
+            m_arrLimitStates[0] = new CLimitState(ELSType.eLS_ULS);
+            m_arrLimitStates[1] = new CLimitState(ELSType.eLS_SLS);
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
@@ -1180,6 +1205,29 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Add block member connections to the main model connections
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
                 m_arrConnectionJoints.Add(joint);
+        }
+
+        // Loading
+        public void GenerateLoadOnRafters(float fValue1, float fValue2, ref List<CMLoad> list)
+        {
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                CMLoad loadleft = new CMLoad_21(fValue1, m_arrMembers[1 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadright = new CMLoad_21(fValue2, m_arrMembers[1 + i * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                list.Add(loadleft);
+                list.Add(loadright);
+            }
+        }
+
+        public void GenerateLoadOnMainColumns(float fValue1, float fValue2, ref List<CMLoad> list)
+        {
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                CMLoad loadleft = new CMLoad_21(fValue1, m_arrMembers[i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadright = new CMLoad_21(fValue2, m_arrMembers[3 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                list.Add(loadleft);
+                list.Add(loadright);
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ namespace PFD
         private int MRoofCladdingColorIndex;
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
+        private int MLoadCaseIndex;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
         public float fL1;
@@ -408,6 +409,22 @@ namespace PFD
                 MWallCladdingColorIndex = value;
 
                 NotifyPropertyChanged("WallCladdingColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LoadCaseIndex
+        {
+            get
+            {
+                return MLoadCaseIndex;
+            }
+
+            set
+            {
+                MLoadCaseIndex = value;
+
+                NotifyPropertyChanged("LoadCaseIndex");
             }
         }
 

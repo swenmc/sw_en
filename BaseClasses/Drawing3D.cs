@@ -326,6 +326,52 @@ namespace BaseClasses
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        // Create Loading objects model 3d group
+        public static Model3DGroup CreateModelLoadObjectsModel3DGroup(CLoadCase selectedLoadCase)
+        {
+            Model3DGroup model3D_group = new Model3DGroup();
+
+            if (selectedLoadCase != null)
+            {
+                if (selectedLoadCase.NodeLoadsList != null) // Some nodal loads exist
+                {
+                    // Model Groups of Nodal Loads
+                    for (int i = 0; i < selectedLoadCase.NodeLoadsList.Count; i++)
+                    {
+                        if (selectedLoadCase.NodeLoadsList[i] != null && selectedLoadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load()); // Add to model group
+
+                            // Set load for all assigned nodes
+
+                        }
+                    }
+                }
+
+                if (selectedLoadCase.MemberLoadsList != null) // Some member loads exist
+                {
+                    // Model Groups of Member Loads
+                    for (int i = 0; i < selectedLoadCase.MemberLoadsList.Count; i++)
+                    {
+                        if (selectedLoadCase.MemberLoadsList[i] != null && selectedLoadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            Model3DGroup model_gr = new Model3DGroup();
+                            model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load();
+                            // Transform modelgroup from LCS to GCS
+                            model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member);
+
+                            model3D_group.Children.Add(model_gr); // Add Release to model group
+
+                            // Set load for all assigned member
+
+                        }
+                    }
+                }
+            }
+            return model3D_group;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         // Create Other model objects model 3d group
         public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel)
         {
@@ -428,40 +474,6 @@ namespace BaseClasses
                 }
             }
 
-            if (cmodel.m_arrNLoads != null) // Some nodal loads exist
-            {
-                // Model Groups of Nodal Loads
-                for (int i = 0; i < cmodel.m_arrNLoads.Length; i++)
-                {
-                    if (cmodel.m_arrNLoads[i] != null && cmodel.m_arrNLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
-                    {
-                        model3D_group.Children.Add(cmodel.m_arrNLoads[i].CreateM_3D_G_Load()); // Add to model group
-
-                        // Set load for all assigned nodes
-
-                    }
-                }
-            }
-
-            if (cmodel.m_arrMLoads != null) // Some member loads exist
-            {
-                // Model Groups of Member Loads
-                for (int i = 0; i < cmodel.m_arrMLoads.Length; i++)
-                {
-                    if (cmodel.m_arrMLoads[i] != null && cmodel.m_arrMLoads[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
-                    {
-                        Model3DGroup model_gr = new Model3DGroup();
-                        model_gr = cmodel.m_arrMLoads[i].CreateM_3D_G_Load();
-                        // Transform modelgroup from LCS to GCS
-                        model_gr = cmodel.m_arrMLoads[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, cmodel.m_arrMLoads[i].Member);
-
-                        model3D_group.Children.Add(model_gr); // Add Release to model group
-
-                        // Set load for all assigned member
-
-                    }
-                }
-            }
             return model3D_group;
         }
 

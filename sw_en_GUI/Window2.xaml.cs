@@ -90,6 +90,11 @@ namespace sw_en_GUI
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
+                bool displayLoads = true;
+                Model3DGroup loadsModel3DGroup = null;
+                if (displayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(null);
+                if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
+
                 Drawing3D.AddLightsToModel3D(gr);
 
                 float fModel_Length_X = 0;

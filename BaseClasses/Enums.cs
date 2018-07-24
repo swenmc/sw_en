@@ -340,6 +340,8 @@ namespace BaseClasses
         public bool bDisplayWireFrameModel;
 
         public bool bDisplayGlobalAxis;
+
+        public bool bDisplayLoads;
     }
 
     public struct BuildingDataInput
