@@ -1032,8 +1032,11 @@ namespace sw_en_GUI
             sDisplayOptions.bUseLightAmbient = true;
 
             sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayWireFrameModel = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
 
             Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
