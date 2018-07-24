@@ -547,7 +547,11 @@ namespace sw_en_GUI
 
         private void menuItemViewShowModel_Click(object sender, RoutedEventArgs e)
         {
-            Window2 win = new Window2(model, m_bDebugging);
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
 
             list_trackports.Add(win._trackport);
 
@@ -646,7 +650,13 @@ namespace sw_en_GUI
             CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
 
             model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 9.3f);
-            Window2 win = new Window2(model, m_bDebugging);
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Door in bay" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -666,7 +676,13 @@ namespace sw_en_GUI
             CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
 
             model = new EXAMPLES._3D.CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
-            Window2 win = new Window2(model, m_bDebugging);
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 002 Window in bay" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -676,8 +692,14 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_01_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._2D.CExample_2D_01();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._2D.CExample_2D_01();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 2D 01" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -685,8 +707,14 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_02_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._2D.CExample_2D_02();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._2D.CExample_2D_02();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 2D 02" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -694,8 +722,14 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_03_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._2D.CExample_2D_03();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._2D.CExample_2D_03();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 2D 03" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -703,8 +737,14 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_04_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._2D.CExample_2D_04();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._2D.CExample_2D_04();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 2D 04" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -714,8 +754,14 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_11_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._2D.CExample_2D_11();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._2D.CExample_2D_11();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 2D 11" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -724,8 +770,14 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_12_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._2D.CExample_2D_12();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._2D.CExample_2D_12();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 2D 12" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -737,8 +789,14 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_01_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_01();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_01();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 01" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -746,8 +804,14 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_02_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_02();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_02();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 02" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -755,8 +819,14 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_03_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_03();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_03();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 03" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -764,8 +834,14 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_04_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_04();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_04();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 04" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -773,8 +849,14 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_05_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_05();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_05();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 05" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -782,8 +864,14 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_06_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_06();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_06();
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 06" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -791,8 +879,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_07_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_07();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_07();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 07" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -800,8 +893,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_08_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_08();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_08();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 08" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -809,8 +907,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_09_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_09();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_09();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 09" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -818,8 +921,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_10_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_10();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_10();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 10" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -827,8 +935,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_11_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_11();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_11();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 11" + " - Window " + (Container.Children.Count + 1) });
 
@@ -838,8 +951,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_21_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_21();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_21();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 21" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -847,8 +965,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_50_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_50();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_50();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 50" + " - Window " + (Container.Children.Count + 1) });
 
@@ -858,8 +981,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_80_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_80();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_80();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 80" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -867,8 +995,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_90_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_90();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_90();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 90" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -876,8 +1009,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_901_PF_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null);
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null);
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 901 PF" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
@@ -885,8 +1023,13 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_902_OM_Click(object sender, RoutedEventArgs e)
         {
-            model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_902_OM();
-            Window2 win = new Window2(model, m_bDebugging);
+            model = new EXAMPLES._3D.CExample_3D_902_OM();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 902 OM" + " - Window " + (Container.Children.Count + 1) });
             win.Close();

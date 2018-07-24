@@ -23,6 +23,7 @@ namespace sw_en_GUI
     public partial class Window2 : Window
     {
         private bool bDebugging;
+        public DisplayOptions sDisplayOptions;
         public Model3DGroup gr = new Model3DGroup();
         public EGCS eGCS = EGCS.eGCSLeftHanded;
         //EGCS eGCS = EGCS.eGCSRightHanded;
@@ -60,28 +61,28 @@ namespace sw_en_GUI
             _trackport.SetupScene();
         }
 
-        public Window2(CModel cmodel, bool bDebugging_temp)
+        // TODO - Ondrej Konstruktor je identicky s PFD Page3DModel - zjednotit
+        public Window2(CModel cmodel, DisplayOptions sDisplayOptions_temp, bool bDebugging_temp)
         {
+            sDisplayOptions = sDisplayOptions_temp;
+            bDebugging = bDebugging_temp;
+
             InitializeComponent();
 
-            bDebugging = bDebugging_temp;
+            // Color of Trackport
+            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+
+            // Global coordinate system - axis
+            if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
 
             if (cmodel != null)
             {
-                // Default color
-                SolidColorBrush brushDefault = new SolidColorBrush(Colors.Red);
-
-                bool bShowGlobalAxis = true;
-                if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
-
-                bool bDisplayMembersSurface = true;
                 Model3D membersModel3D = null;
-                if (bDisplayMembersSurface) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
-                bool displayConnectionJoints = true;
                 Model3DGroup jointsModel3DGroup = null;
-                if (displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel, sDisplayOptions);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
                 bool displayOtherObjects3D = true;
@@ -91,33 +92,30 @@ namespace sw_en_GUI
 
                 Drawing3D.AddLightsToModel3D(gr);
 
-                // Camera Position for Model
-                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(cmodel, 0, 300, 100);
-
-                //IMPORTANT: this is the best way to do it, but we can't use it because of trackball
-                //because camera is set by trackball Transform this.Camera.Transform = _trackball.Transform;
-                //and headlite too:  this.Headlight.Transform = _trackball.Transform;
+                float fModel_Length_X = 0;
+                float fModel_Length_Y = 0;
+                float fModel_Length_Z = 0;
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(cmodel, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(cmodel, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                //_trackport.PerspectiveCamera.LookDirection = new Vector3D(cameraPosition.X, cameraPosition.Y, cameraPosition.Z - 100);
-
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, -1, -0.2);
-
                 _trackport.Model = (Model3D)gr;
 
-                bool bDisplayMembers_WireFrame = true;
-                if (bDisplayMembers_WireFrame) Drawing3D.DrawModelMembersinOneWireFrame(cmodel, _trackport.ViewPort);
+                // Add centerline member model
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(cmodel, _trackport.ViewPort);
 
-                bool bDisplayConnectionJointsWireFrame = true;
+                // Add WireFrame Model
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(cmodel, _trackport.ViewPort);
 
-                if (bDisplayConnectionJointsWireFrame)
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
-                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel);
+                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel, sDisplayOptions);
                     Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
                 }
-
-                _trackport.SetupScene();
             }
+
+            _trackport.SetupScene();
         }
     }
 }

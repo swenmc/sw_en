@@ -36,6 +36,7 @@ namespace PFD
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window
     {
         ////////////////////////////////////////////////////////////////////////
@@ -52,6 +53,7 @@ namespace PFD
         public CPFDViewModel vm;
         public CPFDLoadInput loadinput;
 
+        public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
@@ -171,8 +173,11 @@ namespace PFD
             // Kitset Steel Gable Enclosed Buildings
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
 
+            // Update display options
+            UpdateDisplayOptions();
+
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model, (bool)chbLightDirectional.IsChecked, (bool)chbLightPoint.IsChecked, (bool)chbLightSpot.IsChecked, (bool)chbLightAmbient.IsChecked);
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -724,6 +729,27 @@ namespace PFD
             zoznamMenuJednotky.Clear();
         }
 
+        private void UpdateDisplayOptions()
+        {
+            // Get display options from GUI
+
+            sDisplayOptions.bUseLightDirectional = chbLightDirectional.IsChecked == true;
+            sDisplayOptions.bUseLightPoint = chbLightPoint.IsChecked == true;
+            sDisplayOptions.bUseLightSpot = chbLightSpot.IsChecked == true;
+            sDisplayOptions.bUseLightAmbient = chbLightAmbient.IsChecked == true;
+
+            sDisplayOptions.bDisplayMembers = chbDisplayMembers.IsChecked == true;
+            sDisplayOptions.bDisplayJoints = chbDisplayJoints.IsChecked == true;
+            sDisplayOptions.bDisplayPlates = chbDisplayPlates.IsChecked == true;
+            sDisplayOptions.bDisplayConnectors = chbDisplayConnectors.IsChecked == true;
+
+            sDisplayOptions.bDisplayMembersCenterLines = chbDisplayMembersCenterLines.IsChecked == true;
+            sDisplayOptions.bDisplaySolidModel = chbDisplaySolidModel.IsChecked == true;
+            sDisplayOptions.bDisplayWireFrameModel = chbDisplayWireFrameModel.IsChecked == true;
+
+            sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
+        }
+
         private void UpdateAll()
         {
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
@@ -732,7 +758,8 @@ namespace PFD
             model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
 
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model, (bool)chbLightDirectional.IsChecked, (bool)chbLightPoint.IsChecked, (bool)chbLightSpot.IsChecked, (bool)chbLightAmbient.IsChecked);
+            UpdateDisplayOptions();
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -857,6 +884,123 @@ namespace PFD
             }
         }
         private void chbLightAmbient_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayMembers_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayJoints_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayPlates_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayConnectors_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayMembers_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayJoints_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayPlates_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayConnectors_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayMembersCenterLines_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplaySolidModel_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayWireFrameModel_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayMembersCenterLines_UnChecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplaySolidModel_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayWireFrameModel_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayGlobalAxis_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+        private void chbDisplayGlobalAxis_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {

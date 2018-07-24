@@ -321,7 +321,27 @@ namespace BaseClasses
         eTwoPlates       // 2 plates in joint (one on the left and one on the right side of cross-section)
     }
 
-    // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre zatazenie a lokalizaciu budovy
+    // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
+
+    public struct DisplayOptions
+    {
+        public bool bUseLightDirectional;
+        public bool bUseLightPoint;
+        public bool bUseLightSpot;
+        public bool bUseLightAmbient;
+
+        public bool bDisplayMembers;
+        public bool bDisplayJoints;
+        public bool bDisplayPlates;
+        public bool bDisplayConnectors;
+
+        public bool bDisplayMembersCenterLines;
+        public bool bDisplaySolidModel;
+        public bool bDisplayWireFrameModel;
+
+        public bool bDisplayGlobalAxis;
+    }
+
     public struct BuildingDataInput
     {
         public ELocation location; // City / Town

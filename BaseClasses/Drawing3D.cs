@@ -68,25 +68,25 @@ namespace BaseClasses
             return new Point3D(centerPoint.X + x, centerPoint.Y + y, centerPoint.Z + z);
         }
 
-        public static Model3DGroup CreateModel3DGroup(CModel model, EGCS egcs = EGCS.eGCSLeftHanded,
-            bool displayMembersSurface = true, bool displayConnectionJoints = true, bool displayOtherObjects3D = true, bool directionalLight = false, bool pointLight = false, bool spotLight = false, bool ambientLight = true)
+        public static Model3DGroup CreateModel3DGroup(CModel model, DisplayOptions sDisplayOptions, EGCS egcs = EGCS.eGCSLeftHanded)
         {
             Model3DGroup gr = new Model3DGroup();
-            if (model != null)
+            if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (displayMembersSurface) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, false, egcs);
+                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, false, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
-                if (displayConnectionJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model);
+                if (sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
                 Model3DGroup othersModel3DGroup = null;
+                bool displayOtherObjects3D = true; // Temporary TODO
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
-                Drawing3D.AddLightsToModel3D(gr, directionalLight, pointLight, spotLight, ambientLight);
+                Drawing3D.AddLightsToModel3D(gr, sDisplayOptions.bUseLightDirectional, sDisplayOptions.bUseLightPoint, sDisplayOptions.bUseLightSpot, sDisplayOptions.bUseLightAmbient);
             }
             return gr;
         }
@@ -153,7 +153,7 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Connection joints model 3d group
-        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, SolidColorBrush brushPlates = null, SolidColorBrush brushConnectors = null, SolidColorBrush brushWelds = null)
+        public static Model3DGroup CreateConnectionJointsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions, SolidColorBrush brushPlates = null, SolidColorBrush brushConnectors = null, SolidColorBrush brushWelds = null)
         {
             if (brushPlates == null) brushPlates = new SolidColorBrush(Colors.Gray);
             if (brushConnectors == null) brushConnectors = new SolidColorBrush(Colors.Red);
@@ -161,9 +161,7 @@ namespace BaseClasses
 
             Model3DGroup JointsModel3DGroup = null;
 
-            bool bDrawConnectors = true;
-
-            if (cmodel.m_arrConnectionJoints != null) // Some joints exist
+            if (cmodel.m_arrConnectionJoints != null && sDisplayOptions.bDisplayJoints) // Some joints exist
             {
                 for (int i = 0; i < cmodel.m_arrConnectionJoints.Count; i++)
                 {
@@ -185,9 +183,14 @@ namespace BaseClasses
                             {
                                 GeometryModel3D plateGeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].CreateGeomModel3D(brushPlates);
                                 cmodel.m_arrConnectionJoints[i].m_arrPlates[l].Visual_Plate = plateGeom;
-                                JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
 
-                                if (bDrawConnectors)
+                                if (sDisplayOptions.bDisplayPlates)
+                                {
+                                    // Add plates
+                                    JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
+                                }
+
+                                if (sDisplayOptions.bDisplayConnectors)
                                 {
                                     // Add plate connectors
                                     if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
@@ -496,6 +499,36 @@ namespace BaseClasses
             viewPort.Children.Add(sAxisZ_3D);
         }
         //-------------------------------------------------------------------------------------------------------------
+
+        // Draw Members Centerlines
+        public static void DrawModelMembersCenterLines(CModel model, Viewport3D viewPort)
+        {
+            ScreenSpaceLines3D lines = new ScreenSpaceLines3D();
+
+            // Members
+            if (model.m_arrMembers != null)
+            {
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+                    {
+                        Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
+                        Point3D pEndStart = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
+
+                        // Create centerline of member
+                        lines.Points.Add(pNodeStart); // Add Start Node
+                        lines.Points.Add(pEndStart); // Add End Node
+                    }
+                }
+
+                viewPort.Children.Add(lines);
+            }
+        }
+
         // Draw Members Wire Frame
         public static void DrawModelMembersWireFrame_temp(CModel model, Viewport3D viewPort)
         {
@@ -650,8 +683,8 @@ namespace BaseClasses
                                 var transPoints_Plate = jointPlatePoints.Select(p => model.m_arrConnectionJoints[i].m_arrPlates[j].Visual_Plate.Transform.Transform(p));
                                 jointPoints.AddRange(transPoints_Plate);
                             }
-                        }                                        
-                        
+                        }
+
                         // Joint is defined in LCS of first secondary member
                         //if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
                         //model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
@@ -670,7 +703,7 @@ namespace BaseClasses
                         //else
                         //{
                         //    // There is no rotation
-                        //}                        
+                        //}
 
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
@@ -717,8 +750,7 @@ namespace BaseClasses
                         //        tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_MainMember);
                         //    }
                         //    jointPoints = jointPoints.Select(p => tr.Transform(p)).ToList();
-                        //}                        
-
+                        //}
 
                         //23.7.2018
                         //Mato - otestuj,ci vsetko funguje ako ma
@@ -769,15 +801,12 @@ namespace BaseClasses
         }
 
         /*
-                    The following lights derive from the base class Light:
-                    AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
-                    DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
-                    PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
-                    SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
+        The following lights derive from the base class Light:
+        AmbientLight : Provides ambient lighting that illuminates all objects uniformly regardless of their location or orientation.
+        DirectionalLight : Illuminates like a distant light source. Directional lights have a Direction specified as a Vector3D, but no specified location.
+        PointLight : Illuminates like a nearby light source. PointLights have a position and cast light from that position. Objects in the scene are illuminated depending on their position and distance with respect to the light. PointLightBase exposes a Range property, which determines a distance beyond which models will not be illuminated by the light. PointLight also exposes attenuation properties which determine how the light's intensity diminishes over distance. You can specify constant, linear, or quadratic interpolations for the light's attenuation.
+        SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
          */
-
-        // Mato - To tam naozaj potrebujeme tolko roznych svetiel, ci su to len pokusy?
-        // TODO - To Ondrej: su to len pokusy a typy svetiel, doporucujem zapracovat do GUI moznosti nastavovania osvetlenia, pridavanie svetiel a podobne, nie je to urgentne
 
         public static void AddLightsToModel3D(Model3DGroup gr, bool directionalLight = false, bool pointLight = false, bool spotLight = false, bool ambientLight = true)
         {

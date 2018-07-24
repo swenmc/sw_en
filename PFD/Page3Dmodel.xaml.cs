@@ -26,24 +26,40 @@ namespace PFD
     public partial class Page3Dmodel : Page
     {
         //bool bDebugging = false;
-        bool bShowGlobalAxis = true;
-        public bool bDisplay_WireFrame = true;
-        public bool bDisplay_SurfaceModel = true;
+        public DisplayOptions sDisplayOptions;
+        public Model3DGroup gr = new Model3DGroup();
+        public EGCS eGCS = EGCS.eGCSLeftHanded;
+        //EGCS eGCS = EGCS.eGCSRightHanded;
 
-        public Page3Dmodel(CModel model, bool directionalLigth, bool pointLight, bool spotLight, bool ambientLight)
+        // TODO - Ondrej Konstruktor je identicky s swen_GUI Window 2 - zjednotit
+        public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp)
         {
+            sDisplayOptions = sDisplayOptions_temp;
+
             InitializeComponent();
 
-            //Color of Trackport
+            // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
 
             // Global coordinate system - axis
-            if (bShowGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
+            if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
             
             if (model != null)
             {
-                // Frame Model
-                Model3DGroup gr = Drawing3D.CreateModel3DGroup(model, EGCS.eGCSLeftHanded, true, true, true, directionalLigth, pointLight, spotLight, ambientLight);
+                Model3D membersModel3D = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model);
+                if (membersModel3D != null) gr.Children.Add(membersModel3D);
+
+                Model3DGroup jointsModel3DGroup = null;
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
+
+                bool displayOtherObjects3D = true;
+                Model3DGroup othersModel3DGroup = null;
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
+                if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
+
+                Drawing3D.AddLightsToModel3D(gr);
 
                 float fModel_Length_X = 0;
                 float fModel_Length_Y = 0;
@@ -65,10 +81,19 @@ namespace PFD
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("1234 mm", new SolidColorBrush(Colors.Red), true, 0.1, textPoint2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row1", new SolidColorBrush(Colors.Gold), true, 0.1, tp, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
                 _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row2", new SolidColorBrush(Colors.Gold), true, 0.05, tp2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-            }
 
-            // Add WireFrame Model
-            if (bDisplay_WireFrame) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
+                // Add centerline member model
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
+
+                // Add WireFrame Model
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
+
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
+                {
+                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
+                }
+            }
 
             _trackport.SetupScene();
         }
@@ -107,7 +132,7 @@ namespace PFD
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
 
-                if (bDisplay_SurfaceModel)
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                 {
                     _trackport.Model = (Model3D)ComponentGeomModel;
                 }
@@ -116,7 +141,7 @@ namespace PFD
                 // Todo - Zjednotit funckie pre vykreslovanie v oknach WIN 2, AAC a PORTAL FRAME (PAGE3D)
 
                 // Component - Wire Frame
-                if (bDisplay_WireFrame && model != null)
+                if (sDisplayOptions.bDisplayWireFrameModel && model != null)
                 {
                     // Create WireFrime in LCS
                     ScreenSpaceLines3D wireFrame = model.CreateWireFrameModel();
@@ -153,26 +178,26 @@ namespace PFD
                 //_trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
                 _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
 
-                if (bDisplay_SurfaceModel)
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
                 {
                     _trackport.Model = (Model3D)ComponentGeomModel;
                 }
 
                 // Add WireFrame Model
-                if (bDisplay_WireFrame) Drawing3D.DrawMemberWireFrame(member_temp, _trackport.ViewPort, fLengthMember);
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawMemberWireFrame(member_temp, _trackport.ViewPort, fLengthMember);
             }
 
             _trackport.SetupScene();
         }
 
         public void CalculateModelLimits(CConnectionComponentEntity3D componentmodel,
-     out float fTempMax_X,
-     out float fTempMin_X,
-     out float fTempMax_Y,
-     out float fTempMin_Y,
-     out float fTempMax_Z,
-     out float fTempMin_Z
-     )
+        out float fTempMax_X,
+        out float fTempMin_X,
+        out float fTempMax_Y,
+        out float fTempMin_Y,
+        out float fTempMax_Z,
+        out float fTempMin_Z
+         )
         {
             // TODO upravit tak aby sme vedeli ziskat obecne rozmery z modelu, z pruta, z plechu, telesa atd
             // Pripadne riesit vsetko ako cmodel, ale to je pre preview jedneho dielcieho objektu neumerne velke
