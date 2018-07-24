@@ -179,7 +179,7 @@ namespace BaseClasses
                     {
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
-                            bool bFastRendering = false;
+                            bool bFastRendering = true;
                             if (bFastRendering ||
                                     (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null || model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)) // Check if are particular surfaces defined
@@ -247,21 +247,21 @@ namespace BaseClasses
                                     // Add plates
                                     JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
                                 }
-
-                                if (sDisplayOptions.bDisplayConnectors)
+                                                                
+                                // Add plate connectors
+                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
+                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
                                 {
-                                    // Add plate connectors
-                                    if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
+                                    Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
+                                    for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m++)
                                     {
-                                        Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
-                                        for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m++)
-                                        {
-                                            GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors);
-                                            cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].Visual_Connector = plateConnectorgeom;
-                                            plateConnectorsModelGroup.Children.Add(plateConnectorgeom);                                            
-                                        }
-                                        plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                        GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors);
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].Visual_Connector = plateConnectorgeom;
+                                        plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+                                    }
+                                    plateConnectorsModelGroup.Transform = plateGeom.Transform;
+                                    if (sDisplayOptions.bDisplayConnectors)
+                                    {
                                         JointModelGroup.Children.Add(plateConnectorsModelGroup);
                                     }
                                 }
@@ -723,7 +723,7 @@ namespace BaseClasses
                 for (int i = 0; i < model.m_arrConnectionJoints.Count; i++)
                 {
                     if (model.m_arrConnectionJoints[i] != null) // Joint object is valid (not empty)
-                    {                        
+                    {
                         // Wireframe Points of one joint (all components in joint)
                         List<Point3D> jointPoints = new List<Point3D>();
 
@@ -734,7 +734,7 @@ namespace BaseClasses
                             {
                                 // Create WireFrame in LCS
                                 List<Point3D> jointPlatePoints = model.m_arrConnectionJoints[i].m_arrPlates[j].CreateWireFrameModel().Points.ToList();
-                                                   
+
                                 if (drawConnectors)
                                 {
                                     // Add plate connectors
@@ -826,17 +826,17 @@ namespace BaseClasses
                         //Mato - otestuj,ci vsetko funguje ako ma
                         //prerobil som Transform3D_OnMemberEntity_fromLCStoGCS metodu na Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal a jednym riadkom to funguje...takze chyba bola tam
                         //vsetko prerobene do jedneho riadku kodu - narocky som nechal zakomentovane riadky,aby bolo vidno ktore riadky to nahradza
-                        jointPoints = jointPoints.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p)).ToList();
-                        jointsWireFramePoints.AddRange(jointPoints);
+                        var transPoints = jointPoints.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
+                        jointsWireFramePoints.AddRange(transPoints);
                     }
                 }
 
                 ScreenSpaceLines3D jointsWireFrameTotal = new ScreenSpaceLines3D();
-                jointsWireFrameTotal.AddPoints(jointsWireFramePoints);
+                jointsWireFrameTotal.Points = new Point3DCollection(jointsWireFramePoints);                
                 viewPort.Children.Add(jointsWireFrameTotal);
             }
         }
-        
+
         public static GeometryModel3D GetGeoMetryModel3DFrom(Model3DGroup model3DGroup)
         {
             GeometryModel3D gm = null;
@@ -888,7 +888,7 @@ namespace BaseClasses
                 Dir_Light.Direction = new Vector3D(0, 0, -1);
                 gr.Children.Add(Dir_Light);
             }
-                        
+
             if (pointLight)
             {
                 PointLight Point_Light = new PointLight();
@@ -919,7 +919,7 @@ namespace BaseClasses
                 AmbientLight Ambient_Light = new AmbientLight();
                 Ambient_Light.Color = Color.FromRgb(250, 250, 230);
                 gr.Children.Add(new AmbientLight());
-            }            
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------
