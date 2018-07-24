@@ -99,6 +99,7 @@ namespace CRSC
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+            loadCrScIndices();
 
             // Wireframe Indices
             loadCrScWireFrameIndicesFrontSide();

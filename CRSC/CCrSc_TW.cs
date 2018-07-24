@@ -245,6 +245,12 @@ namespace CRSC
 
         protected override void loadCrScIndices()
         {
+            int capacity = TriangleIndicesFrontSide.Count + TriangleIndicesShell.Count + TriangleIndicesBackSide.Count;            
+            List<int> list = new List<int>(capacity);
+            list.AddRange(TriangleIndicesFrontSide);
+            list.AddRange(TriangleIndicesShell);
+            list.AddRange(TriangleIndicesBackSide);
+            TriangleIndices = new Int32Collection(list);
         }
 
         protected override void loadCrScIndicesFrontSide()
