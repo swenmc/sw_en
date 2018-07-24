@@ -438,6 +438,7 @@ namespace BaseClasses
             model.Geometry = mesh;
 
             model.Material = new DiffuseMaterial(brush);  // Set MemberModel Material
+            //model.Material = new EmissiveMaterial(brush);
 
             return model;
         }
@@ -459,17 +460,23 @@ namespace BaseClasses
             modelShell.Geometry = meshShell;
             modelBackSide.Geometry = meshBackSide;
 
+            // Optimalizacia - bolo by to rychlejsie ak by sa pouzil EmissiveMaterial
             // Set MemberModel parts Material
-            modelFrontSide.Material = new DiffuseMaterial(brushFrontSide);
-            modelShell.Material = new DiffuseMaterial(brushShell);
-            modelBackSide.Material = new DiffuseMaterial(brushBackSide);
+            //modelFrontSide.Material = new DiffuseMaterial(brushFrontSide);
+            //modelShell.Material = new DiffuseMaterial(brushShell);
+            //modelBackSide.Material = new DiffuseMaterial(brushBackSide);
+            modelFrontSide.Material = new EmissiveMaterial(brushFrontSide);
+            modelShell.Material = new EmissiveMaterial(brushShell);
+            modelBackSide.Material = new EmissiveMaterial(brushBackSide);
         }
 
         private MeshGeometry3D getMeshMemberGeometry3DFromCrSc(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x)
         {
             // All in one mesh
             MeshGeometry3D mesh = new MeshGeometry3D();
-            mesh.Positions = new Point3DCollection();
+
+            //tu je kvoli optimalizacii potrebne este inicializovat velkost kolekcie
+            Point3DCollection meshPositions = new Point3DCollection();  
 
             // Realna dlzka prvku // Length of member - straigth segment of member
             // Prečo je záporná ???
@@ -508,7 +515,7 @@ namespace BaseClasses
                         fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
                         fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
 
-                        mesh.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
@@ -529,7 +536,7 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
                         else
                         {
@@ -547,7 +554,7 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
                     }
                 }
@@ -586,7 +593,7 @@ namespace BaseClasses
                         // Rotate about local x-axis
                         Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                        mesh.Positions.Add(new Point3D(-FAlignment_Start,fy, fz));
+                        meshPositions.Add(new Point3D(-FAlignment_Start,fy, fz));
                     }
                 }
                 else
@@ -615,7 +622,7 @@ namespace BaseClasses
                         // Rotate about local x-axis
                         Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                        mesh.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                 }
                 else
@@ -646,7 +653,7 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
                         else
                         {
@@ -664,7 +671,7 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
                     }
                 }
@@ -695,7 +702,7 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
                         else
                         {
@@ -713,7 +720,7 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            mesh.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
                     }
                 }
@@ -729,59 +736,61 @@ namespace BaseClasses
 
                 iNoCrScPoints2D = 0; // Temp
             }
-
-            // Dislay data in the output window
-
-            string sOutput = "Before transformation \n\n"; // create temporary string
-
-            for (int i = 0; i < 2 * iNoCrScPoints2D; i++) // for all mesh positions (start and end of member, number of edge points of whole member = 2 * number in one section)
-            {
-                Point3D p3D = mesh.Positions[i]; // Get mesh element/item (returns Point3D)
-
-                sOutput += "Node ID: " + i.ToString();
-                sOutput += "\t"; // New Tab between columns
-                sOutput += p3D.X.ToString("0.0000");
-                sOutput += "\t"; // New Tab between columns
-                sOutput += p3D.Y.ToString("0.0000");
-                sOutput += "\t"; // New Tab between columns
-                sOutput += p3D.Z.ToString("0.0000");
-                sOutput += "\t"; // New Tab between columns
-
-                sOutput += "\n"; // New row
-            }
-
+            
             if (BIsDebugging)
+            {
+                // Dislay data in the output window
+                string sOutput = "Before transformation \n\n"; // create temporary string
+                for (int i = 0; i < 2 * iNoCrScPoints2D; i++) // for all mesh positions (start and end of member, number of edge points of whole member = 2 * number in one section)
+                {
+                    Point3D p3D = meshPositions[i]; // Get mesh element/item (returns Point3D)
+
+                    sOutput += "Node ID: " + i.ToString();
+                    sOutput += "\t"; // New Tab between columns
+                    sOutput += p3D.X.ToString("0.0000");
+                    sOutput += "\t"; // New Tab between columns
+                    sOutput += p3D.Y.ToString("0.0000");
+                    sOutput += "\t"; // New Tab between columns
+                    sOutput += p3D.Z.ToString("0.0000");
+                    sOutput += "\t"; // New Tab between columns
+
+                    sOutput += "\n"; // New row
+                }
                 System.Console.Write(sOutput); // Write in console window
+            }            
 
             // Transform coordinates
-            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, mesh.Positions);
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshPositions);
 
+            meshPositions.Freeze();
+            mesh.Positions = meshPositions;
             // Mesh Triangles - various cross-sections shapes defined
             mesh.TriangleIndices = obj_CrScA.TriangleIndices;
-
-            // Dislay data in the output window
-
-            sOutput = null;
-            sOutput = "After transformation \n\n"; // create temporary string
-
-            for (int i = 0; i < 2 * iNoCrScPoints2D; i++) // for all mesh positions (start and end of member, number of edge points of whole member = 2 * number in one section)
-            {
-                Point3D p3D = mesh.Positions[i]; // Get mesh element/item (returns Point3D)
-
-                sOutput += "Node ID: " + i.ToString();
-                sOutput += "\t"; // New Tab between columns
-                sOutput += p3D.X.ToString("0.0000");
-                sOutput += "\t"; // New Tab between columns
-                sOutput += p3D.Y.ToString("0.0000");
-                sOutput += "\t"; // New Tab between columns
-                sOutput += p3D.Z.ToString("0.0000");
-                sOutput += "\t"; // New Tab between columns
-
-                sOutput += "\n"; // New row
-            }
+            
 
             if (BIsDebugging)
+            {
+                // Dislay data in the output window
+                string sOutput = null;
+                sOutput = "After transformation \n\n"; // create temporary string
+                for (int i = 0; i < 2 * iNoCrScPoints2D; i++) // for all mesh positions (start and end of member, number of edge points of whole member = 2 * number in one section)
+                {
+                    Point3D p3D = mesh.Positions[i]; // Get mesh element/item (returns Point3D)
+
+                    sOutput += "Node ID: " + i.ToString();
+                    sOutput += "\t"; // New Tab between columns
+                    sOutput += p3D.X.ToString("0.0000");
+                    sOutput += "\t"; // New Tab between columns
+                    sOutput += p3D.Y.ToString("0.0000");
+                    sOutput += "\t"; // New Tab between columns
+                    sOutput += p3D.Z.ToString("0.0000");
+                    sOutput += "\t"; // New Tab between columns
+
+                    sOutput += "\n"; // New row
+                }
                 System.Console.Write(sOutput); // Write in console window
+            }
+            
 
             // Change mesh triangle indices
             // Change orientation of normals
@@ -793,6 +802,7 @@ namespace BaseClasses
             if(bIndicesCW)
               ChangeIndices(mesh.TriangleIndices);
             //}
+                        
             return mesh;
         }
 
@@ -821,14 +831,15 @@ namespace BaseClasses
         private void getMeshMemberGeometry3DFromCrSc_1(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
         {
             // Separate mesh for front, back and shell surfaces of member
-
             meshFrontSide = new MeshGeometry3D();
             meshShell = new MeshGeometry3D();
             meshBackSide = new MeshGeometry3D();
-
-            meshFrontSide.Positions = new Point3DCollection();
-            meshShell.Positions = new Point3DCollection();
-            meshBackSide.Positions = new Point3DCollection();
+            
+            //24.7.2018
+            //Mato - pre optimalizaciu je potrebne inicializovat velkost kolekcie
+            Point3DCollection meshFrontSidePositions = new Point3DCollection();
+            Point3DCollection meshShellPositions = new Point3DCollection();
+            Point3DCollection meshBackSidePositions = new Point3DCollection();
 
             // Number of Points per section
             int iNoCrScPoints2D;
@@ -861,8 +872,8 @@ namespace BaseClasses
                         // Rotate about local x-axis
                         Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
-                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshFrontSidePositions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshShellPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
 
                     for (int j = 0; j < iNoCrScPoints2D; j++)
@@ -884,8 +895,8 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End,fy, fz)); // Constant size member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                            meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End,fy, fz)); // Constant size member
+                            meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
@@ -903,8 +914,8 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                            meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                     }
                 }
@@ -943,8 +954,8 @@ namespace BaseClasses
                         // Rotate about local x-axis
                         Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
-                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshFrontSidePositions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshShellPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                 }
                 else
@@ -973,8 +984,8 @@ namespace BaseClasses
                         // Rotate about local x-axis
                         Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                        meshFrontSide.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
-                        meshShell.Positions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshFrontSidePositions.Add(new Point3D(-FAlignment_Start, fy, fz));
+                        meshShellPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                 }
                 else
@@ -1005,8 +1016,8 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                            meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
@@ -1024,8 +1035,8 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                            meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                     }
                 }
@@ -1056,8 +1067,8 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                            meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
+                            meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                         else
                         {
@@ -1075,8 +1086,8 @@ namespace BaseClasses
                             // Rotate about local x-axis
                             Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                            meshBackSide.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
-                            meshShell.Positions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
+                            meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
+                            meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
                         }
                     }
                 }
@@ -1094,9 +1105,17 @@ namespace BaseClasses
             }
 
             // Transform coordinates
-            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y,NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshFrontSide.Positions); // Posun voci povodnemu definicnemu uzlu pruta
-            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshShell.Positions);
-            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshBackSide.Positions);
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y,NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshFrontSidePositions); // Posun voci povodnemu definicnemu uzlu pruta
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshShellPositions);
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshBackSidePositions);
+
+
+            meshFrontSidePositions.Freeze();
+            meshShellPositions.Freeze();
+            meshBackSidePositions.Freeze();
+            meshFrontSide.Positions = meshFrontSidePositions;
+            meshShell.Positions = meshShellPositions;
+            meshBackSide.Positions = meshBackSidePositions;
 
             // Mesh Triangles - various cross-sections shapes defined
             //mesh.TriangleIndices = obj_CrScA.TriangleIndices;
@@ -1107,7 +1126,6 @@ namespace BaseClasses
             // Change mesh triangle indices
             // Change orientation of normals
             bool bIndicesCW = false; // Clockwise or counter-clockwise system
-
             if(bIndicesCW)
             {
                 ChangeIndices(meshFrontSide.TriangleIndices);
@@ -1119,7 +1137,6 @@ namespace BaseClasses
         public Point3DCollection TransformMember_LCStoGCS(EGCS eGCS, Point3D pA, double dDeltaX, double dDeltaY, double dDeltaZ, double dTheta_x, Point3DCollection pointsCollection)
         {
             // Returns transformed coordinates of member nodes
-
             // Angles
             double dAlphaX = 0, dBetaY = 0, dGammaZ = 0;
 
