@@ -99,7 +99,7 @@ namespace sw_en_GUI
                 Point3D cameraPosition = Drawing3D.GetModelCameraPosition(cmodel, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                _trackport.PerspectiveCamera.LookDirection = new Vector3D(0, -1, -0.2);
+                _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 _trackport.Model = (Model3D)gr;
 
                 // Add centerline member model

@@ -652,6 +652,7 @@ namespace sw_en_GUI
             model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 9.3f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplayJoints = true;
@@ -678,6 +679,7 @@ namespace sw_en_GUI
             model = new EXAMPLES._3D.CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplayJoints = true;
@@ -1011,6 +1013,8 @@ namespace sw_en_GUI
         {
             model = new EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null);
             DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseLightAmbient = true;
+
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplayJoints = true;
@@ -1025,6 +1029,8 @@ namespace sw_en_GUI
         {
             model = new EXAMPLES._3D.CExample_3D_902_OM();
             DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseLightAmbient = true;
+
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
             sDisplayOptions.bDisplayJoints = true;
