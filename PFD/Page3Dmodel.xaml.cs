@@ -31,76 +31,78 @@ namespace PFD
         public EGCS eGCS = EGCS.eGCSLeftHanded;
         //EGCS eGCS = EGCS.eGCSRightHanded;
 
-        // TODO - Ondrej Konstruktor je identicky s swen_GUI Window 2 - zjednotit
+        
         public Page3Dmodel(CModel model, DisplayOptions sDisplayOptions_temp, CLoadCase loadcase)
         {
             sDisplayOptions = sDisplayOptions_temp;
 
             InitializeComponent();
 
-            // Color of Trackport
-            _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
-            //_trackport.ViewPort.ClipToBounds = false; //nemozne pouzit,lebo vychadza model mimo plochu
-
-            // Global coordinate system - axis
-            if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions);
             
-            if (model != null)
-            {
-                Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model);
-                if (membersModel3D != null) gr.Children.Add(membersModel3D);
+            //// Color of Trackport
+            //_trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
+            ////_trackport.ViewPort.ClipToBounds = false; //nemozne pouzit,lebo vychadza model mimo plochu
 
-                Model3DGroup jointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
+            //// Global coordinate system - axis
+            //if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
+            
+            //if (model != null)
+            //{
+            //    Model3D membersModel3D = null;
+            //    if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model);
+            //    if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
-                bool displayOtherObjects3D = true;
-                Model3DGroup othersModel3DGroup = null;
-                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
-                if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
+            //    Model3DGroup jointsModel3DGroup = null;
+            //    if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+            //    if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
-                Model3DGroup loadsModel3DGroup = null;
-                if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase);
-                if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
+            //    bool displayOtherObjects3D = true;
+            //    Model3DGroup othersModel3DGroup = null;
+            //    if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
+            //    if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
-                Drawing3D.AddLightsToModel3D(gr);
+            //    Model3DGroup loadsModel3DGroup = null;
+            //    if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase);
+            //    if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
 
-                float fModel_Length_X = 0;
-                float fModel_Length_Y = 0;
-                float fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
-                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+            //    Drawing3D.AddLightsToModel3D(gr);
+
+            //    float fModel_Length_X = 0;
+            //    float fModel_Length_Y = 0;
+            //    float fModel_Length_Z = 0;
+            //    Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+            //    Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
                 
-                _trackport.PerspectiveCamera.Position = cameraPosition;
-                _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
-                _trackport.Model = (Model3D)gr;
+            //    _trackport.PerspectiveCamera.Position = cameraPosition;
+            //    _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
+            //    _trackport.Model = (Model3D)gr;
 
-                //testing texts in 3D
-                Point3D textPoint = new Point3D(pModelGeomCentre.X - fModel_Length_X / 2 - fModel_Length_X/10, pModelGeomCentre.Y - fModel_Length_Y / 2, pModelGeomCentre.Z);
-                Point3D textPoint2 = new Point3D(pModelGeomCentre.X + fModel_Length_X / 2 + fModel_Length_X / 10, pModelGeomCentre.Y - fModel_Length_Y / 2, pModelGeomCentre.Z);
-                Point3D tp = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 + 0.3, pModelGeomCentre.Z);
-                Point3D tp2 = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 - 0.2, pModelGeomCentre.Z);
+            //    //testing texts in 3D
+            //    Point3D textPoint = new Point3D(pModelGeomCentre.X - fModel_Length_X / 2 - fModel_Length_X/10, pModelGeomCentre.Y - fModel_Length_Y / 2, pModelGeomCentre.Z);
+            //    Point3D textPoint2 = new Point3D(pModelGeomCentre.X + fModel_Length_X / 2 + fModel_Length_X / 10, pModelGeomCentre.Y - fModel_Length_Y / 2, pModelGeomCentre.Z);
+            //    Point3D tp = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 + 0.3, pModelGeomCentre.Z);
+            //    Point3D tp2 = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y - fModel_Length_Y / 2 - 0.2, pModelGeomCentre.Z);
 
-                _trackport.ViewPort.Children.Add(CreateTextLabel3D("10 m", new SolidColorBrush(Colors.White), true, 0.1, textPoint, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-                _trackport.ViewPort.Children.Add(CreateTextLabel3D("1234 mm", new SolidColorBrush(Colors.Red), true, 0.1, textPoint2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-                _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row1", new SolidColorBrush(Colors.Gold), true, 0.1, tp, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
-                _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row2", new SolidColorBrush(Colors.Gold), true, 0.05, tp2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
+            //    _trackport.ViewPort.Children.Add(CreateTextLabel3D("10 m", new SolidColorBrush(Colors.White), true, 0.1, textPoint, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
+            //    _trackport.ViewPort.Children.Add(CreateTextLabel3D("1234 mm", new SolidColorBrush(Colors.Red), true, 0.1, textPoint2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
+            //    _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row1", new SolidColorBrush(Colors.Gold), true, 0.1, tp, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
+            //    _trackport.ViewPort.Children.Add(CreateTextLabel3D("TestText-row2", new SolidColorBrush(Colors.Gold), true, 0.05, tp2, new Vector3D(1, 0, 0), new Vector3D(0, 0, 1)));
 
-                // Add centerline member model
-                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
+            //    // Add centerline member model
+            //    if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
 
-                // Add WireFrame Model
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
+            //    // Add WireFrame Model
+            //    if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
 
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
-                {
-                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
-                }
-            }
+            //    if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
+            //    {
+            //        if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+            //        Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
+            //    }
+            //}
 
-            _trackport.SetupScene();
+            //_trackport.SetupScene();
         }
 
         public Page3Dmodel(CConnectionComponentEntity3D model)
