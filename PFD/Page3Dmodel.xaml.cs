@@ -38,7 +38,7 @@ namespace PFD
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions);
+            Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase);
         }
 
         public Page3Dmodel(CConnectionComponentEntity3D model)

@@ -11,7 +11,7 @@ namespace BaseClasses
 {
     public static class Drawing3D
     {
-        public static void DrawToTrackPort(Trackport3D _trackport, CModel cmodel, DisplayOptions sDisplayOptions)
+        public static void DrawToTrackPort(Trackport3D _trackport, CModel cmodel, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
@@ -36,9 +36,8 @@ namespace BaseClasses
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
-                bool displayLoads = true;
                 Model3DGroup loadsModel3DGroup = null;
-                if (displayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(null);
+                if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase);
                 if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);

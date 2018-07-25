@@ -719,41 +719,104 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrNLoads[1] = new CNLoadAll(m_arrNodes[2], 0, 0, -4f, 0, 0, 0, true, 0);
             m_arrNLoads[2] = new CNLoadAll(m_arrNodes[3], 0, 0, -4f, 0, 0, 0, true, 0);
 
-            // Rafters
-            float fValueLoadRafterDead = -0.3f;
+            float fValueLoadRafterDead1 = -0.2f;
+            float fValueLoadRafterDead2 = -0.1f;
             float fValueLoadRafterImposed = -0.1f;
             float fValueLoadRafterSnow1 = -0.8f;
             float fValueLoadRafterSnow2 = -0.4f;
 
-            // Columns
-            float fValueLoadColumnWind1PlusX = -0.5f;
-            float fValueLoadColumnWind2PlusX = 0.2f;
+            // Wind load
 
-            float fValueLoadColumnWind1MinusX = -0.2f;
-            float fValueLoadColumnWind2MinusX = 0.5f;
+            // Cpe,min
+            float fValueLoadColumnWind1PlusX_CpeMin = -0.5f;
+            float fValueLoadColumnWind2PlusX_CpeMin = 0.2f;
+            float fValueLoadRafterWind1PlusX_CpeMin = 0.3f;
+            float fValueLoadRafterWind2PlusX_CpeMin = 0.2f;
 
-            List<CMLoad> memberLoadDeadRafters = new List<CMLoad>();
+            float fValueLoadColumnWind1MinusX_CpeMin = fValueLoadColumnWind2PlusX_CpeMin;
+            float fValueLoadColumnWind2MinusX_CpeMin = fValueLoadColumnWind1PlusX_CpeMin;
+            float fValueLoadRafterWind1MinusX_CpeMin = fValueLoadRafterWind2PlusX_CpeMin;
+            float fValueLoadRafterWind2MinusX_CpeMin = fValueLoadRafterWind1PlusX_CpeMin;
+
+            float fValueLoadColumnnWindPlusY_CpeMin = 0.2f;
+            float fValueLoadRafterWindPlusY_CpeMin = 0.3f;
+            float fValueLoadColumnnWindMinusY_CpeMin = fValueLoadColumnnWindPlusY_CpeMin;
+            float fValueLoadRafterWindMinusY_CpeMin = fValueLoadRafterWindPlusY_CpeMin;
+
+            // Cpe,max
+            float fValueLoadColumnWind1PlusX_CpeMax = -0.5f;
+            float fValueLoadColumnWind2PlusX_CpeMax = 0.2f;
+            float fValueLoadRafterWind1PlusX_CpeMax = 0.3f;
+            float fValueLoadRafterWind2PlusX_CpeMax = 0.2f;
+
+            float fValueLoadColumnWind1MinusX_CpeMax = fValueLoadColumnWind2PlusX_CpeMax;
+            float fValueLoadColumnWind2MinusX_CpeMax = fValueLoadColumnWind1PlusX_CpeMax;
+            float fValueLoadRafterWind1MinusX_CpeMax = fValueLoadRafterWind2PlusX_CpeMax;
+            float fValueLoadRafterWind2MinusX_CpeMax = fValueLoadRafterWind1PlusX_CpeMax;
+
+            float fValueLoadColumnnWindPlusY_CpeMax = 0.2f;
+            float fValueLoadRafterWindPlusY_CpeMax = 0.3f;
+            float fValueLoadColumnnWindMinusY_CpeMax = fValueLoadColumnnWindPlusY_CpeMax;
+            float fValueLoadRafterWindMinusY_CpeMax = fValueLoadRafterWindPlusY_CpeMax;
+
+            List<CMLoad> memberLoadDead1Rafters = new List<CMLoad>();
+            List<CMLoad> memberLoadDead2Rafters = new List<CMLoad>();
             List<CMLoad> memberLoadImposedRafters = new List<CMLoad>();
             List<CMLoad> memberMaxLoadSnowAllRafters = new List<CMLoad>();
             List<CMLoad> memberMaxLoadSnowLeftRafters = new List<CMLoad>();
             List<CMLoad> memberMaxLoadSnowRightRafters = new List<CMLoad>();
 
-            List<CMLoad> memberMaxLoadWindColumnPlusX = new List<CMLoad>();
-            List<CMLoad> memberMaxLoadWindColumnMinusX = new List<CMLoad>();
+            List<CMLoad> memberLoadWindFramesPlusX_CpeMin = new List<CMLoad>();
+            List<CMLoad> memberLoadWindFramesMinusX_CpeMin = new List<CMLoad>();
 
-            GenerateLoadOnRafters(fValueLoadRafterDead, fValueLoadRafterDead, ref memberLoadDeadRafters);
+            List<CMLoad> memberLoadWindFramesPlusY_CpeMin = new List<CMLoad>();
+            List<CMLoad> memberLoadWindFramesMinusY_CpeMin = new List<CMLoad>();
+
+            List<CMLoad> memberLoadWindFramesPlusX_CpeMax = new List<CMLoad>();
+            List<CMLoad> memberLoadWindFramesMinusX_CpeMax = new List<CMLoad>();
+
+            List<CMLoad> memberLoadWindFramesPlusY_CpeMax = new List<CMLoad>();
+            List<CMLoad> memberLoadWindFramesMinusY_CpeMax = new List<CMLoad>();
+
+            GenerateLoadOnRafters(fValueLoadRafterDead1, fValueLoadRafterDead1, ref memberLoadDead1Rafters);
+            GenerateLoadOnRafters(fValueLoadRafterDead2, fValueLoadRafterDead2, ref memberLoadDead2Rafters);
             GenerateLoadOnRafters(fValueLoadRafterImposed, fValueLoadRafterImposed, ref memberLoadImposedRafters);
             GenerateLoadOnRafters(fValueLoadRafterSnow1, fValueLoadRafterSnow1, ref memberMaxLoadSnowAllRafters);
             GenerateLoadOnRafters(fValueLoadRafterSnow1, fValueLoadRafterSnow2, ref memberMaxLoadSnowLeftRafters);
             GenerateLoadOnRafters(fValueLoadRafterSnow2, fValueLoadRafterSnow1, ref memberMaxLoadSnowRightRafters);
 
-            GenerateLoadOnMainColumns(fValueLoadColumnWind1PlusX, fValueLoadColumnWind2PlusX, ref memberMaxLoadWindColumnPlusX);
-            GenerateLoadOnMainColumns(fValueLoadColumnWind1MinusX, fValueLoadColumnWind2MinusX, ref memberMaxLoadWindColumnMinusX);
+            // Wind
+
+            // Cpe,min
+            // + X
+            GenerateLoadOnFrames(fValueLoadColumnWind1PlusX_CpeMin, fValueLoadColumnWind2PlusX_CpeMin, fValueLoadRafterWind1PlusX_CpeMin, fValueLoadRafterWind2PlusX_CpeMin, ref memberLoadWindFramesPlusX_CpeMin);
+
+            // - X
+            GenerateLoadOnFrames(fValueLoadColumnWind1MinusX_CpeMin, fValueLoadColumnWind2MinusX_CpeMin, fValueLoadRafterWind1MinusX_CpeMin, fValueLoadRafterWind2MinusX_CpeMin, ref memberLoadWindFramesMinusX_CpeMin);
+
+            // + Y
+            GenerateLoadOnFrames(fValueLoadColumnnWindPlusY_CpeMin, fValueLoadColumnnWindPlusY_CpeMin, fValueLoadRafterWindPlusY_CpeMin, fValueLoadRafterWindPlusY_CpeMin, ref memberLoadWindFramesPlusY_CpeMin);
+
+            // - Y
+            GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMin, fValueLoadColumnnWindMinusY_CpeMin, fValueLoadRafterWindMinusY_CpeMin, fValueLoadRafterWindMinusY_CpeMin, ref memberLoadWindFramesMinusY_CpeMin);
+
+            // Cpe,max
+            // + X
+            GenerateLoadOnFrames(fValueLoadColumnWind1PlusX_CpeMax, fValueLoadColumnWind2PlusX_CpeMax, fValueLoadRafterWind1PlusX_CpeMax, fValueLoadRafterWind2PlusX_CpeMax, ref memberLoadWindFramesPlusX_CpeMax);
+
+            // - X
+            GenerateLoadOnFrames(fValueLoadColumnWind1MinusX_CpeMax, fValueLoadColumnWind2MinusX_CpeMax, fValueLoadRafterWind1MinusX_CpeMax, fValueLoadRafterWind2MinusX_CpeMax, ref memberLoadWindFramesMinusX_CpeMax);
+
+            // + Y
+            GenerateLoadOnFrames(fValueLoadColumnnWindPlusY_CpeMax, fValueLoadColumnnWindPlusY_CpeMax, fValueLoadRafterWindPlusY_CpeMax, fValueLoadRafterWindPlusY_CpeMax, ref memberLoadWindFramesPlusY_CpeMax);
+
+            // - Y
+            GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMax, fValueLoadColumnnWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, ref memberLoadWindFramesMinusY_CpeMax);
 
             // Load Cases
             m_arrLoadCases = new CLoadCase[20];
-            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load", memberLoadDeadRafters);                                     // 1
-            m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load");                                      // 2
+            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load", memberLoadDead1Rafters);                                    // 1
+            m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load", memberLoadDead2Rafters);              // 2
             m_arrLoadCases[2] = new CLoadCase(3, "Imposed load Q", "Imposed load", memberLoadImposedRafters);                                 // 3
             m_arrLoadCases[3] = new CLoadCase(4, "Snow load Su - full", "Snow load", memberMaxLoadSnowAllRafters);                            // 4
             m_arrLoadCases[4] = new CLoadCase(5, "Snow load Su - left", "Snow load", memberMaxLoadSnowLeftRafters);                           // 5
@@ -762,16 +825,16 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLoadCases[7] = new CLoadCase(8, "Wind load Wu - Cpi - Right - X-", "Wind load");                                             // 8
             m_arrLoadCases[8] = new CLoadCase(9, "Wind load Wu - Cpi - Front - Y+", "Wind load");                                             // 9
             m_arrLoadCases[9] = new CLoadCase(10, "Wind load Wu - Cpi - Rear - Y-", "Wind load");                                             // 10
-            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Left - X+", "Wind load", memberMaxLoadWindColumnPlusX);          // 11
-            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Right - X-", "Wind load", memberMaxLoadWindColumnMinusX);        // 12
-            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Wu - Cpe,min - Front - Y+", "Wind load");        // 13
-            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Wu - Cpe,min - Rear - Y-", "Wind load");         // 14
-            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Wu - Cpe,max - Left - X+", "Wind load");         // 15
-            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Wu - Cpe,max - Right - X-", "Wind load");        // 16
-            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Wu - Cpe,max - Front - Y+", "Wind load");        // 17
-            m_arrLoadCases[17] = new CLoadCase(18, "Wind load Wu - Cpe,max - Rear - Y-", "Wind load");         // 18
-            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - X", "Earthquake load");               // 19
-            m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load Eu - Y", "Earthquake load");               // 20
+            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Left - X+", "Wind load", memberLoadWindFramesPlusX_CpeMin);      // 11
+            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Right - X-", "Wind load", memberLoadWindFramesMinusX_CpeMin);    // 12
+            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Wu - Cpe,min - Front - Y+", "Wind load", memberLoadWindFramesPlusY_CpeMin);     // 13
+            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Wu - Cpe,min - Rear - Y-", "Wind load", memberLoadWindFramesMinusY_CpeMin);     // 14
+            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Wu - Cpe,max - Left - X+", "Wind load", memberLoadWindFramesPlusX_CpeMax);      // 15
+            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Wu - Cpe,max - Right - X-", "Wind load", memberLoadWindFramesMinusX_CpeMax);    // 16
+            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Wu - Cpe,max - Front - Y+", "Wind load", memberLoadWindFramesPlusY_CpeMax);     // 17
+            m_arrLoadCases[17] = new CLoadCase(18, "Wind load Wu - Cpe,max - Rear - Y-", "Wind load", memberLoadWindFramesMinusY_CpeMax);     // 18
+            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - X", "Earthquake load");                                              // 19
+            m_arrLoadCases[19] = new CLoadCase(20, "Earthquake load Eu - Y", "Earthquake load");                                              // 20
 
             // Load Combinations
             m_arrLoadCombs = new CLoadCombination[6];
@@ -1208,6 +1271,20 @@ namespace sw_en_GUI.EXAMPLES._3D
         }
 
         // Loading
+
+            // Main Columns
+        public void GenerateLoadOnMainColumns(float fValue1, float fValue2, ref List<CMLoad> list)
+        {
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                CMLoad loadleft = new CMLoad_21(fValue1, m_arrMembers[i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadright = new CMLoad_21(fValue2, m_arrMembers[3 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                list.Add(loadleft);
+                list.Add(loadright);
+            }
+        }
+
+        // Rafters
         public void GenerateLoadOnRafters(float fValue1, float fValue2, ref List<CMLoad> list)
         {
             for (int i = 0; i < iFrameNo; i++)
@@ -1219,15 +1296,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             }
         }
 
-        public void GenerateLoadOnMainColumns(float fValue1, float fValue2, ref List<CMLoad> list)
+        // Frames
+        public void GenerateLoadOnFrames(float fValueColumn1, float fValueColumn2, float fValueRafter1, float fValueRafter2, ref List<CMLoad> list)
         {
-            for (int i = 0; i < iFrameNo; i++)
-            {
-                CMLoad loadleft = new CMLoad_21(fValue1, m_arrMembers[i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-                CMLoad loadright = new CMLoad_21(fValue2, m_arrMembers[3 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-                list.Add(loadleft);
-                list.Add(loadright);
-            }
+            GenerateLoadOnMainColumns(fValueColumn1, fValueColumn2, ref list);
+            GenerateLoadOnRafters(fValueRafter1, fValueRafter2, ref list);
         }
     }
 }

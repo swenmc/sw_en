@@ -69,7 +69,7 @@ namespace sw_en_GUI
 
             InitializeComponent();
 
-            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions);
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, null);
         }
     }
 }
