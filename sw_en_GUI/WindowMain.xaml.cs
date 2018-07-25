@@ -1038,6 +1038,10 @@ namespace sw_en_GUI
             sDisplayOptions.bDisplayPlates = true;
             sDisplayOptions.bDisplayConnectors = true;
 
+            sDisplayOptions.bDisplayGlobalAxis = true;
+            sDisplayOptions.bDisplayMembersCenterLines = true;
+            sDisplayOptions.bDistinguishedColor = false;
+
             Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 902 OM" + " - Window " + (Container.Children.Count + 1) });

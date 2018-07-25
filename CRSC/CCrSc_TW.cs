@@ -292,9 +292,9 @@ namespace CRSC
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, INoAuxPoints + i, INoAuxPoints + i + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut) + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut));
+                        AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, INoAuxPoints + i, INoAuxPoints + i + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut) + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut));
                     else
-                        AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, INoAuxPoints + i, INoAuxPoints + 0, INoAuxPoints + i + INoAuxPoints + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut)); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, INoAuxPoints + i, INoAuxPoints + 0, INoAuxPoints + i + INoAuxPoints + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut)); // Last Element
                 }
             }
         }
@@ -324,18 +324,18 @@ namespace CRSC
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CW_1234(TriangleIndicesShell, INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1, INoAuxPoints + i + 1);
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1, INoAuxPoints + i + 1);
                     else
-                        AddRectangleIndices_CW_1234(TriangleIndicesShell, INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints, INoAuxPoints + 0); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints, INoAuxPoints + 0); // Last Element
                 }
 
                 // Shell Surface Inside
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CW_1234(TriangleIndicesShell, INoAuxPoints + INoPointsOut + INoAuxPoints + i, INoAuxPoints + INoPointsOut + INoAuxPoints + i + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut);
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, INoAuxPoints + INoPointsOut + INoAuxPoints + i, INoAuxPoints + INoPointsOut + INoAuxPoints + i + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut);
                     else
-                        AddRectangleIndices_CW_1234(TriangleIndicesShell, 2 * (INoAuxPoints + INoPointsOut) + 2 * INoAuxPoints + i + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, INoAuxPoints + INoPointsOut + INoAuxPoints + i, 2 * INoAuxPoints + INoPointsOut); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, 2 * (INoAuxPoints + INoPointsOut) + 2 * INoAuxPoints + i + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, INoAuxPoints + INoPointsOut + INoAuxPoints + i, 2 * INoAuxPoints + INoPointsOut); // Last Element
                 }
             }
         }
@@ -360,9 +360,9 @@ namespace CRSC
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CW_1234(TriangleIndicesBackSide, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1);
+                        AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1);
                     else
-                        AddRectangleIndices_CW_1234(TriangleIndicesBackSide, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + 1, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + 0); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + 1, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + 0); // Last Element
                 }
             }
         }

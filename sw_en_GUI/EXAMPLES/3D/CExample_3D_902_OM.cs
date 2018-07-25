@@ -19,8 +19,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new CNode[2];
-            m_arrMembers = new CMember[1];
+            m_arrNodes = new CNode[3];
+            m_arrMembers = new CMember[2];
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[1];
             m_arrNSupports = new CNSupport[2];
@@ -40,8 +40,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
-            //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.20f, 0.001f, 0.001f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.01f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.01f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -51,17 +51,18 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Nodes
             //m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
             //m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
-            m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
-            //m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
-            //m_arrNodes[01] = new CNode(02, 1f, 2f, 0000.0f, 0);
+            //m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
+            //m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
+            m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
+            m_arrNodes[01] = new CNode(02, 2f, 1f, 0000.0f, 0);
+            m_arrNodes[02] = new CNode(02, 3f, 1f, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
 
             // Member eccentricity
 
-            CMemberEccentricity eccmember = new CMemberEccentricity(0.0f, 0.0f);
+            CMemberEccentricity eccmember = new CMemberEccentricity(-0.2f, -0.3f);
             // Members Automatic Generation
             // Members List - Members Array
 
@@ -69,7 +70,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eG, eccmember, eccmember, 0f, 0f, 0.7f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eG, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
+            m_arrMembers[001] = new CMember(002, m_arrNodes[01], m_arrNodes[02], m_arrCrSc[0], EMemberType_FormSteel.eG, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());

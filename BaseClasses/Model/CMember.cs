@@ -433,7 +433,9 @@ namespace BaseClasses
         {
             GeometryModel3D model = new GeometryModel3D();
 
-            MeshGeometry3D mesh = getMeshMemberGeometry3DFromCrSc_One(eGCS, CrScStart, CrScEnd, DTheta_x); // Mesh one member
+            MeshGeometry3D mesh;
+
+            getMeshMemberGeometry3DFromCrSc_One(eGCS, CrScStart, CrScEnd, DTheta_x, out mesh); // Mesh one member
 
             model.Geometry = mesh;
 
@@ -511,10 +513,10 @@ namespace BaseClasses
         // getMeshMemberGeometry3DFromCrSc_One (fast rendering, one color)
         // getMeshMemberGeometry3DFromCrSc_Three (distinguished colors)
 
-        private MeshGeometry3D getMeshMemberGeometry3DFromCrSc_One(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x)
+        private void getMeshMemberGeometry3DFromCrSc_One(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x, out MeshGeometry3D mesh)
         {
             // All in one mesh
-            MeshGeometry3D mesh = new MeshGeometry3D();
+            mesh = new MeshGeometry3D();
 
             // Kvoli optimalizacii potrebne este inicializovat velkost kolekcie
             Point3DCollection meshPositions = new Point3DCollection();
@@ -832,13 +834,13 @@ namespace BaseClasses
 
             //if (eGCS == EGCS.eGCSLeftHanded)
             //{
+            /*
             bool bIndicesCW = true; // Clockwise or counter-clockwise system
 
             if(bIndicesCW)
               ChangeIndices(mesh.TriangleIndices);
+            */
             //}
-
-            return mesh;
         }
 
         private void getMeshMemberGeometry3DFromCrSc_Three(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
@@ -857,6 +859,7 @@ namespace BaseClasses
             // Number of Points per section
             int iNoCrScPoints2D;
             float fy, fz;
+
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
             {
@@ -1138,13 +1141,15 @@ namespace BaseClasses
 
             // Change mesh triangle indices
             // Change orientation of normals
-            bool bIndicesCW = false; // Clockwise or counter-clockwise system
+            /*
+            bool bIndicesCW = true; // Clockwise or counter-clockwise system
             if(bIndicesCW)
             {
                 ChangeIndices(meshFrontSide.TriangleIndices);
                 ChangeIndices(meshShell.TriangleIndices);
                 ChangeIndices(meshBackSide.TriangleIndices);
             }
+            */
         }
 
         private void ChangeIndices(Int32Collection TriangleIndices)
