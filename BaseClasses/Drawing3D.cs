@@ -132,7 +132,7 @@ namespace BaseClasses
             if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, false, egcs);
+                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -151,11 +151,11 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Members Model3D
-        public static Model3DGroup CreateMembersModel3D(CModel model, SolidColorBrush front = null, SolidColorBrush shell = null, SolidColorBrush back = null, bool transpartentModel = false, EGCS egcs = EGCS.eGCSLeftHanded)
+        public static Model3DGroup CreateMembersModel3D(CModel model, SolidColorBrush front = null, SolidColorBrush shell = null, SolidColorBrush back = null, bool bFastRendering = true, bool transpartentModel = false, EGCS egcs = EGCS.eGCSLeftHanded)
         {
-            if (front == null) front = new SolidColorBrush(Color.FromRgb(255, 64, 64)); // Material color - Front Side (red)
-            if (shell == null) shell = new SolidColorBrush(Color.FromRgb(141, 238, 238)); // Material color - Shell (red)
-            if (back == null) back = new SolidColorBrush(Color.FromRgb(238, 154, 73)); // Material color - Back Side (orange)
+            if (front == null) front = new SolidColorBrush(Colors.OrangeRed); // Material color - Front Side
+            if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
+            if (back == null) back = new SolidColorBrush(Colors.OrangeRed); // Material color - Back Side
 
             if (transpartentModel)
             {
@@ -179,22 +179,26 @@ namespace BaseClasses
                     {
                         if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null) // CCrSc is abstract without geometrical properties (dimensions), only centroid line could be displayed
                         {
-                            bool bFastRendering = true;
+                            bool bUseCrossSectionColor = true;
+
+                            if (bUseCrossSectionColor && model.m_arrMembers[i].CrScStart.CSColor != null)
+                            {
+                                // Set color of shell
+                                shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
+                            }
+
                             if (bFastRendering ||
-                                    (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null || model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
+                                    (model.m_arrMembers[i].CrScStart.TriangleIndicesFrontSide == null ||
+                                     model.m_arrMembers[i].CrScStart.TriangleIndicesShell == null ||
                                      model.m_arrMembers[i].CrScStart.TriangleIndicesBackSide == null)) // Check if are particular surfaces defined
                             {
-                                if (model3D == null) model3D = new Model3DGroup();
                                 // Create Member model - one geometry model
-                                model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, front));
+                                if (model3D == null) model3D = new Model3DGroup();
+                                model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, shell)); // Use shell color for whole member
                             }
                             else
                             {
                                 // Create Member model - consist of 3 geometry models (member is one model group)
-                                bool bUseCrossSectionColor = true;
-                                if (bUseCrossSectionColor && model.m_arrMembers[i].CrScStart.CSColor != null)
-                                    shell = new SolidColorBrush(model.m_arrMembers[i].CrScStart.CSColor);
-
                                 if (model3D == null) model3D = new Model3DGroup();
                                 model3D.Children.Add(model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back));
                             }

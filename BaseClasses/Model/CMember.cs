@@ -433,7 +433,7 @@ namespace BaseClasses
         {
             GeometryModel3D model = new GeometryModel3D();
 
-            MeshGeometry3D mesh = getMeshMemberGeometry3DFromCrSc(eGCS, CrScStart, CrScEnd, DTheta_x); // Mesh one member
+            MeshGeometry3D mesh = getMeshMemberGeometry3DFromCrSc_One(eGCS, CrScStart, CrScEnd, DTheta_x); // Mesh one member
 
             model.Geometry = mesh;
 
@@ -454,7 +454,7 @@ namespace BaseClasses
             MeshGeometry3D meshShell= new MeshGeometry3D();
             MeshGeometry3D meshBackSide = new MeshGeometry3D();
 
-            getMeshMemberGeometry3DFromCrSc_1(eGCS, CrScStart, CrScEnd, DTheta_x, out meshFrontSide, out meshShell, out meshBackSide);
+            getMeshMemberGeometry3DFromCrSc_Three(eGCS, CrScStart, CrScEnd, DTheta_x, out meshFrontSide, out meshShell, out meshBackSide);
 
             modelFrontSide.Geometry = meshFrontSide;
             modelShell.Geometry = meshShell;
@@ -470,22 +470,22 @@ namespace BaseClasses
             modelBackSide.Material = new EmissiveMaterial(brushBackSide);
         }
 
-        private MeshGeometry3D getMeshMemberGeometry3DFromCrSc(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x)
+        // TODO Ondrej - 25/07/2018 refaktorovat a optimalizovat metody
+        // getMeshMemberGeometry3DFromCrSc_One (fast rendering, one color)
+        // getMeshMemberGeometry3DFromCrSc_Three (distinguished colors)
+
+        private MeshGeometry3D getMeshMemberGeometry3DFromCrSc_One(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x)
         {
             // All in one mesh
             MeshGeometry3D mesh = new MeshGeometry3D();
 
-            //tu je kvoli optimalizacii potrebne este inicializovat velkost kolekcie
-            Point3DCollection meshPositions = new Point3DCollection();  
-
-            // Realna dlzka prvku // Length of member - straigth segment of member
-            // Prečo je záporná ???
-            // double m_dLength = -Math.Sqrt(Math.Pow(m_dDelta_X, 2) + Math.Pow(m_dDelta_Y, 2) + Math.Pow(m_dDelta_Z, 2));
-            //double m_dLength = Math.Sqrt(Math.Pow(Delta_X, 2) + Math.Pow(Delta_Y, 2) + Math.Pow(Delta_Z, 2));
+            // Kvoli optimalizacii potrebne este inicializovat velkost kolekcie
+            Point3DCollection meshPositions = new Point3DCollection();
 
             // Number of Points per section
             int iNoCrScPoints2D;
             float fy, fz;
+
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
             {
@@ -580,8 +580,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsIn[j, 0];
-                        fz = obj_CrScA.CrScPointsIn[j, 1];
+                        fy = obj_CrScA.CrScPointsOut[j, 0];
+                        fz = obj_CrScA.CrScPointsOut[j, 1];
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -757,7 +757,7 @@ namespace BaseClasses
                     sOutput += "\n"; // New row
                 }
                 System.Console.Write(sOutput); // Write in console window
-            }            
+            }
 
             // Transform coordinates
             TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, m_dTheta_x, meshPositions);
@@ -766,7 +766,6 @@ namespace BaseClasses
             mesh.Positions = meshPositions;
             // Mesh Triangles - various cross-sections shapes defined
             mesh.TriangleIndices = obj_CrScA.TriangleIndices;
-            
 
             if (BIsDebugging)
             {
@@ -790,7 +789,6 @@ namespace BaseClasses
                 }
                 System.Console.Write(sOutput); // Write in console window
             }
-            
 
             // Change mesh triangle indices
             // Change orientation of normals
@@ -802,33 +800,11 @@ namespace BaseClasses
             if(bIndicesCW)
               ChangeIndices(mesh.TriangleIndices);
             //}
-                        
+
             return mesh;
         }
 
-        private void ChangeIndices(Int32Collection TriangleIndices)
-        {
-            if (TriangleIndices != null && TriangleIndices.Count > 0)
-            {
-                int iSecond = 1;
-                int iThird = 2;
-
-                int iTIcount = TriangleIndices.Count;
-                for (int i = 0; i < iTIcount / 3; i++)
-                {
-                    int iTI_2 = TriangleIndices[iSecond];
-                    int iTI_3 = TriangleIndices[iThird];
-
-                    TriangleIndices[iThird] = iTI_2;
-                    TriangleIndices[iSecond] = iTI_3;
-
-                    iSecond += 3;
-                    iThird += 3;
-                }
-            }
-        }
-
-        private void getMeshMemberGeometry3DFromCrSc_1(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
+        private void getMeshMemberGeometry3DFromCrSc_Three(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
         {
             // Separate mesh for front, back and shell surfaces of member
             meshFrontSide = new MeshGeometry3D();
@@ -1131,6 +1107,28 @@ namespace BaseClasses
                 ChangeIndices(meshFrontSide.TriangleIndices);
                 ChangeIndices(meshShell.TriangleIndices);
                 ChangeIndices(meshBackSide.TriangleIndices);
+            }
+        }
+
+        private void ChangeIndices(Int32Collection TriangleIndices)
+        {
+            if (TriangleIndices != null && TriangleIndices.Count > 0)
+            {
+                int iSecond = 1;
+                int iThird = 2;
+
+                int iTIcount = TriangleIndices.Count;
+                for (int i = 0; i < iTIcount / 3; i++)
+                {
+                    int iTI_2 = TriangleIndices[iSecond];
+                    int iTI_3 = TriangleIndices[iThird];
+
+                    TriangleIndices[iThird] = iTI_2;
+                    TriangleIndices[iSecond] = iTI_3;
+
+                    iSecond += 3;
+                    iThird += 3;
+                }
             }
         }
 

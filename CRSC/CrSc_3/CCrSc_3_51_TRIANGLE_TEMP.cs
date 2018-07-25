@@ -42,10 +42,49 @@ namespace CRSC
 
             // Fill list of indices for drawing of surface - triangles edges
 
-            // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
+            // Particular indices - distinguished colors of member surfaces
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            // Complex indices - one color or member
+            loadCrScIndices();
+
+            // Wireframe Indices
+            loadCrScWireFrameIndicesFrontSide();
+            loadCrScWireFrameIndicesBackSide();
+            loadCrScWireFrameIndicesLaterals();
+        }
+
+        public CCrSc_3_51_TRIANGLE_TEMP(float fh, float fb, float ft, Color color_temp)
+        {
+            CSColor = color_temp;
+
+            //ITotNoPoints = 3;
+            IsShapeSolid = false;
+            INoPointsIn = INoPointsOut = 3; // vykreslujeme ako n-uholnik, pocet bodov n
+            ITotNoPoints = INoPointsIn + INoPointsOut;
+
+            h = fh;
+            b = fb;
+            m_ft = ft;
+
+            // Create Array - allocate memory
+            CrScPointsOut = new float[INoPointsOut, 2];
+            CrScPointsIn = new float[INoPointsIn, 2];
+
+            // Fill Array Data
+            CalcCrSc_Coord();
+
+            // Fill list of indices for drawing of surface - triangles edges
+
+            // Particular indices - distinguished colors of member surfaces
+            loadCrScIndicesFrontSide();
+            loadCrScIndicesShell();
+            loadCrScIndicesBackSide();
+
+            // Complex indices - one color or member
+            loadCrScIndices();
 
             // Wireframe Indices
             loadCrScWireFrameIndicesFrontSide();

@@ -97,10 +97,14 @@ namespace CRSC
             ChangeCoordToCentroid(); // Temp - TODO doriesit zadavanie bodov (CW, CCW), osove systemy, orientaciu os a zjednotit zadanie pre vsetky prierezy
 
             // Fill list of indices for drawing of surface - triangles edges
-            // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
+
+            // Particular indices - distinguished colors of member surfaces
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
+
+            // Complex indices - one color or member
+            loadCrScIndices();
 
             // Wireframe Indices
             loadCrScWireFrameIndicesFrontSide();

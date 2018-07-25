@@ -754,6 +754,9 @@ namespace PFD
             sDisplayOptions.bDisplaySolidModel = chbDisplaySolidModel.IsChecked == true;
             sDisplayOptions.bDisplayWireFrameModel = chbDisplayWireFrameModel.IsChecked == true;
 
+            sDisplayOptions.bDistinguishedColor = chbDisplayDistinguishedColorMember.IsChecked == true;
+            sDisplayOptions.bTransparentMemberModel = chbDisplayTransparentModelMember.IsChecked == true;
+
             sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
 
             sDisplayOptions.bDisplayLoads = chbDisplayLoads.IsChecked == true;
@@ -1003,6 +1006,38 @@ namespace PFD
             }
         }
 
+        private void chbDisplayDistinguishedColorMember_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayTransparentModelMember_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayDistinguishedColorMember_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayTransparentModelMember_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
         private void chbDisplayGlobalAxis_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
@@ -1037,7 +1072,5 @@ namespace PFD
         {
             UpdateAll();
         }
-
-
     }
 }

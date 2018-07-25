@@ -245,11 +245,28 @@ namespace CRSC
 
         protected override void loadCrScIndices()
         {
-            int capacity = TriangleIndicesFrontSide.Count + TriangleIndicesShell.Count + TriangleIndicesBackSide.Count;            
+            int capacity = TriangleIndicesFrontSide.Count + TriangleIndicesShell.Count + TriangleIndicesBackSide.Count;
             List<int> list = new List<int>(capacity);
+
+            // Postup pridavania bodov (positions) do kolekcie
+            // Front side - outside
+            // Front side - inside
+
+            // Back side - outside
+            // Back side - inside
+
+            // Postup pridavania indices (indexov bodov) do kolekcie
+            // Front side
+            // Back side
+            // Shell - outside
+            // Shell - inside
+
+            // TODO Martin - bude potrebne skontrolovat ako to funguje pre auxiliary points ak je pocet vacsi nez nula (body v ploche prierezu, ktore nelezia na outline)
+
             list.AddRange(TriangleIndicesFrontSide);
-            list.AddRange(TriangleIndicesShell);
             list.AddRange(TriangleIndicesBackSide);
+            list.AddRange(TriangleIndicesShell);
+
             TriangleIndices = new Int32Collection(list);
         }
 
