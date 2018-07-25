@@ -11,29 +11,29 @@ namespace BaseClasses
 {
     public static class Drawing3D
     {
-        public static void DrawToTrackPort(Trackport3D _trackport, CModel cmodel, DisplayOptions sDisplayOptions, CLoadCase loadcase)
+        public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
 
             // Global coordinate system - axis
-            if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort);
+            if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
 
-            if (cmodel != null)
+            if (model != null)
             {
                 Model3DGroup gr = new Model3DGroup();
 
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel, sDisplayOptions);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
 
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
-                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(cmodel);
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
                 Model3DGroup loadsModel3DGroup = null;
@@ -45,23 +45,23 @@ namespace BaseClasses
                 float fModel_Length_X = 0;
                 float fModel_Length_Y = 0;
                 float fModel_Length_Z = 0;
-                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(cmodel, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
-                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(cmodel, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
+                Point3D pModelGeomCentre = Drawing3D.GetModelCentre(model, out fModel_Length_X, out fModel_Length_Y, out fModel_Length_Z);
+                Point3D cameraPosition = Drawing3D.GetModelCameraPosition(model, 1, -(2 * fModel_Length_Y), 2 * fModel_Length_Z);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
                 _trackport.Model = (Model3D)gr;
 
                 // Add centerline member model
-                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(cmodel, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
 
                 // Add WireFrame Model
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(cmodel, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
-                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(cmodel, sDisplayOptions);
-                    Drawing3D.DrawModelConnectionJointsWireFrame(cmodel, _trackport.ViewPort);
+                    if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
+                    Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
                 }
             }
 
@@ -554,7 +554,7 @@ namespace BaseClasses
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public static void DrawGlobalAxis(Viewport3D viewPort)
+        public static void DrawGlobalAxis(Viewport3D viewPort, CModel model)
         {
             // Global coordinate system - axis
             ScreenSpaceLines3D sAxisX_3D = new ScreenSpaceLines3D();
@@ -564,21 +564,28 @@ namespace BaseClasses
             Point3D pAxisX = new Point3D(1, 0, 0);
             Point3D pAxisY = new Point3D(0, 1, 0);
             Point3D pAxisZ = new Point3D(0, 0, 1);
-
+                        
             sAxisX_3D.Points.Add(pGCS_centre);
             sAxisX_3D.Points.Add(pAxisX);
             sAxisX_3D.Color = Colors.Red;
             sAxisX_3D.Thickness = 2;
+            sAxisX_3D.Name = "AxisX";
 
             sAxisY_3D.Points.Add(pGCS_centre);
             sAxisY_3D.Points.Add(pAxisY);
             sAxisY_3D.Color = Colors.Green;
             sAxisY_3D.Thickness = 2;
+            sAxisY_3D.Name = "AxisY";
 
             sAxisZ_3D.Points.Add(pGCS_centre);
             sAxisZ_3D.Points.Add(pAxisZ);
             sAxisZ_3D.Color = Colors.Blue;
             sAxisZ_3D.Thickness = 2;
+            sAxisZ_3D.Name = "AxisZ";
+
+            model.AxisX = sAxisX_3D;
+            model.AxisY = sAxisY_3D;
+            model.AxisZ = sAxisZ_3D;
 
             viewPort.Children.Add(sAxisX_3D);
             viewPort.Children.Add(sAxisY_3D);
@@ -723,7 +730,9 @@ namespace BaseClasses
                     }
                 }
 
-                // Add Wireframe Lines to the trackport
+                // Add Wireframe Lines to the trackport                
+                wireFrameAllMembers.Name = "WireFrame_Members";
+                model.WireFrameMembers = wireFrameAllMembers;
                 viewPort.Children.Add(wireFrameAllMembers);
             }
         }
@@ -848,7 +857,9 @@ namespace BaseClasses
                 }
 
                 ScreenSpaceLines3D jointsWireFrameTotal = new ScreenSpaceLines3D();
-                jointsWireFrameTotal.Points = new Point3DCollection(jointsWireFramePoints);                
+                jointsWireFrameTotal.Points = new Point3DCollection(jointsWireFramePoints);
+                jointsWireFrameTotal.Name = "WireFrame_Joints";
+                model.WireFrameJoints = jointsWireFrameTotal;
                 viewPort.Children.Add(jointsWireFrameTotal);
             }
         }
