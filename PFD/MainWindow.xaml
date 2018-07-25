@@ -204,7 +204,7 @@
                         <CheckBox Name="chbLightDirectional" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Checked="chbLightDirectional_Checked" Unchecked="chbLightDirectional_Unchecked">Directional Light</CheckBox>
                         <CheckBox Name="chbLightPoint" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightpoint_Unchecked" Checked="chbLightpoint_Checked">Point Light</CheckBox>
                         <CheckBox Name="chbLightSpot" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightSpot_Unchecked" Checked="chbLightSpot_Checked">SpotLight</CheckBox>
-                        <CheckBox Name="chbLightAmbient" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbLightAmbient_Unchecked" Checked="chbLightAmbient_Checked" >Ambient Light</CheckBox>
+                        <CheckBox Name="chbLightAmbient" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightAmbient_Unchecked" Checked="chbLightAmbient_Checked" >Ambient Light</CheckBox>
 
                         <CheckBox Name="chbDisplayMembers" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembers_Unchecked" Checked="chbDisplayMembers_Checked">Display Members</CheckBox>
                         <CheckBox Name="chbDisplayJoints" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayJoints_Unchecked" Checked="chbDisplayJoints_Checked">Display Joints</CheckBox>

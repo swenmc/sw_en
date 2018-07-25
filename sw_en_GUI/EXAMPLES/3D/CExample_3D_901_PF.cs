@@ -118,14 +118,14 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Violet);     // Main Column
-            m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.LightGreen); // Rafter
-            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.Thistle);                 // Eaves Purlin
+            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);  // Main Column
+            m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);      // Rafter
+            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                 // Eaves Purlin
             m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                // Girt - Wall
             m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);             // Purlin
-            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.Beige);                  // Front Column
+            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Front Column
             m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Back Column
-            m_arrCrSc[7] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Aquamarine);            // Front Girt
+            m_arrCrSc[7] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Brown);                 // Front Girt
             m_arrCrSc[8] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);           // Back Girt
 
             // Member Eccentricities

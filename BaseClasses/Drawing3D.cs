@@ -46,7 +46,7 @@ namespace BaseClasses
                 if (displayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(null);
                 if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
 
-                Drawing3D.AddLightsToModel3D(gr);
+                Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
                 float fModel_Length_X = 0;
                 float fModel_Length_Y = 0;
@@ -154,7 +154,7 @@ namespace BaseClasses
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
-                Drawing3D.AddLightsToModel3D(gr, sDisplayOptions.bUseLightDirectional, sDisplayOptions.bUseLightPoint, sDisplayOptions.bUseLightSpot, sDisplayOptions.bUseLightAmbient);
+                Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
             }
             return gr;
         }
@@ -892,7 +892,7 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_Lateral);
         }
 
-        public static void AddLightsToModel3D(Model3DGroup gr, bool directionalLight = false, bool pointLight = false, bool spotLight = false, bool ambientLight = true)
+        public static void AddLightsToModel3D(Model3DGroup gr, DisplayOptions sDisplayOptions)
         {
             /*
             The following lights derive from the base class Light:
@@ -902,8 +902,7 @@ namespace BaseClasses
             SpotLight : Inherits from PointLight. Spotlights illuminate like PointLight and have both position and direction. They project light in a cone-shaped area set by InnerConeAngle and OuterConeAngle properties, specified in degrees.
             */
 
-            // Directional Light
-            if (directionalLight)
+            if (sDisplayOptions.bUseLightDirectional)
             {
                 DirectionalLight Dir_Light = new DirectionalLight();
                 Dir_Light.Color = Colors.White;
@@ -911,7 +910,7 @@ namespace BaseClasses
                 gr.Children.Add(Dir_Light);
             }
 
-            if (pointLight)
+            if (sDisplayOptions.bUseLightPoint)
             {
                 PointLight Point_Light = new PointLight();
                 Point_Light.Position = new Point3D(0, 0, 30);
@@ -924,7 +923,7 @@ namespace BaseClasses
                 gr.Children.Add(Point_Light);
             }
 
-            if (spotLight)
+            if (sDisplayOptions.bUseLightSpot)
             {
                 SpotLight Spot_Light = new SpotLight();
                 Spot_Light.InnerConeAngle = 30;
@@ -936,10 +935,10 @@ namespace BaseClasses
                 gr.Children.Add(Spot_Light);
             }
 
-            if (ambientLight)
+            if (sDisplayOptions.bUseLightAmbient)
             {
                 AmbientLight Ambient_Light = new AmbientLight();
-                Ambient_Light.Color = Color.FromRgb(250, 250, 230);
+                Ambient_Light.Color = Colors.Gray;
                 gr.Children.Add(new AmbientLight());
             }
         }

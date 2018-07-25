@@ -53,6 +53,7 @@ namespace CRSC
         {
             Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
             Name = "Box " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
+            CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 40;
             IsShapeSolid = false;
@@ -63,8 +64,6 @@ namespace CRSC
             b = fb;
             m_ft_f = ft_flange;
             m_ft_w = ft;
-
-            CSColor = color_temp;
 
             m_fd = fh - 2 * ft;
 

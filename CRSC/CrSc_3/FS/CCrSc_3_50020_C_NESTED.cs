@@ -60,7 +60,7 @@ namespace CRSC
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 34;
-            IsShapeSolid = true;
+            IsShapeSolid = false;
             ITotNoPoints = INoPointsOut = 34;
             ITotNoPoints = INoPointsIn + INoPointsOut;
 
