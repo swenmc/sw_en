@@ -37,11 +37,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             //m_arrCrSc[0] = new CCrSc_3_51_C_LIP2_FS50020(1f, 0.3f, 0.01f, 0.05f, 0.005f);
             //m_arrCrSc[0] = new CCrSc_3_51_BOX_TEMP(1f, 0.3f, 0.003f);
 
-            m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.20f, 0.001f, 0.001f, Colors.Orange);
-            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.01f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.01f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -49,10 +49,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Nodes List - Nodes Array
 
             // Nodes
-            m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
-            //m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
-            //m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
+            //m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
+            //m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
+            m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
+            m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
             //m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
             //m_arrNodes[01] = new CNode(02, 1f, 2f, 0000.0f, 0);
 
@@ -61,7 +61,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Member eccentricity
 
-            CMemberEccentricity eccmember = new CMemberEccentricity(0.0f, 0.5f);
+            CMemberEccentricity eccmember = new CMemberEccentricity(0.0f, 0.0f);
             // Members Automatic Generation
             // Members List - Members Array
 
@@ -81,11 +81,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             bool[] bSupport2 = { false, false, true, true, false, false };
 
             // Create Support Objects
-            m_arrNSupports[0] = new CNSupport(6, 1, m_arrNodes[00], bSupport1, 0);
-            m_arrNSupports[1] = new CNSupport(6, 2, m_arrNodes[01], bSupport2, 0);
+            //m_arrNSupports[0] = new CNSupport(6, 1, m_arrNodes[00], bSupport1, 0);
+            //m_arrNSupports[1] = new CNSupport(6, 2, m_arrNodes[01], bSupport2, 0);
 
             // Setridit pole podle ID
-            Array.Sort(m_arrNSupports, new CCompare_NSupportID());
+            //Array.Sort(m_arrNSupports, new CCompare_NSupportID());
 
             // Member Releases / hinges - fill values
 
@@ -100,7 +100,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Joints
             //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeStart, m_arrMembers[0], true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeEnd, m_arrMembers[0], true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeEnd, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0.003f, true));
 

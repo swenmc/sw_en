@@ -412,7 +412,7 @@ namespace BaseClasses
             m_PointEnd = temp[0];
         }
 
-        public Model3DGroup getM_3D_G_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide)
+        public Model3DGroup getM_3D_G_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, bool bUseDiffuseMaterial, bool bUseEmissiveMaterial)
         {
             Model3DGroup MObject3DModel = new Model3DGroup(); // Whole member
 
@@ -420,7 +420,7 @@ namespace BaseClasses
             GeometryModel3D modelShell = new GeometryModel3D();
             GeometryModel3D modelBackSide = new GeometryModel3D();
 
-            getG_M_3D_Member(eGCS, brushFrontSide, brushShell, brushBackSide, out modelFrontSide, out  modelShell, out modelBackSide);
+            getG_M_3D_Member(eGCS, brushFrontSide, brushShell, brushBackSide, bUseDiffuseMaterial, bUseEmissiveMaterial, out modelFrontSide, out  modelShell, out modelBackSide);
 
             MObject3DModel.Children.Add((Model3D)modelFrontSide);
             MObject3DModel.Children.Add((Model3D)modelShell);
@@ -429,7 +429,7 @@ namespace BaseClasses
             return MObject3DModel;
         }
 
-        public GeometryModel3D getG_M_3D_Member(EGCS eGCS, SolidColorBrush brush)
+        public GeometryModel3D getG_M_3D_Member(EGCS eGCS, SolidColorBrush brush, bool bUseDiffuseMaterial, bool bUseEmissiveMaterial)
         {
             GeometryModel3D model = new GeometryModel3D();
 
@@ -437,13 +437,26 @@ namespace BaseClasses
 
             model.Geometry = mesh;
 
-            //model.Material = new DiffuseMaterial(brush);  // Set MemberModel Material
-            model.Material = new EmissiveMaterial(brush);
+            MaterialGroup materialGroup = new MaterialGroup();
 
+            if (bUseDiffuseMaterial || bUseEmissiveMaterial)
+            {
+                if (bUseDiffuseMaterial)
+                    materialGroup.Children.Add(new DiffuseMaterial(brush));
+
+                if (bUseEmissiveMaterial)
+                    materialGroup.Children.Add(new EmissiveMaterial(brush));
+            }
+            else
+            {
+                throw new Exception("Exception - material is not valid");
+            }
+
+            model.Material = materialGroup;
             return model;
         }
 
-        public void getG_M_3D_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, 
+        public void getG_M_3D_Member(EGCS eGCS, SolidColorBrush brushFrontSide, SolidColorBrush brushShell, SolidColorBrush brushBackSide, bool bUseDiffuseMaterial, bool bUseEmissiveMaterial,
             out GeometryModel3D modelFrontSide, out GeometryModel3D modelShell, out GeometryModel3D modelBackSide)
         {
             modelFrontSide = new GeometryModel3D();
@@ -460,14 +473,38 @@ namespace BaseClasses
             modelShell.Geometry = meshShell;
             modelBackSide.Geometry = meshBackSide;
 
-            // Optimalizacia - bolo by to rychlejsie ak by sa pouzil EmissiveMaterial
-            // Set MemberModel parts Material
-            //modelFrontSide.Material = new DiffuseMaterial(brushFrontSide);
-            //modelShell.Material = new DiffuseMaterial(brushShell);
-            //modelBackSide.Material = new DiffuseMaterial(brushBackSide);
             modelFrontSide.Material = new EmissiveMaterial(brushFrontSide);
             modelShell.Material = new EmissiveMaterial(brushShell);
             modelBackSide.Material = new EmissiveMaterial(brushBackSide);
+
+            MaterialGroup materialGroupFrontSide = new MaterialGroup();
+            MaterialGroup materialGroupShell = new MaterialGroup();
+            MaterialGroup materialGroupBackSide = new MaterialGroup();
+
+            if (bUseDiffuseMaterial || bUseEmissiveMaterial)
+            {
+                if (bUseDiffuseMaterial)
+                {
+                    materialGroupFrontSide.Children.Add(new DiffuseMaterial(brushFrontSide));
+                    materialGroupShell.Children.Add(new DiffuseMaterial(brushShell));
+                    materialGroupBackSide.Children.Add(new DiffuseMaterial(brushBackSide));
+                }
+
+                if (bUseEmissiveMaterial)
+                {
+                    materialGroupFrontSide.Children.Add(new EmissiveMaterial(brushFrontSide));
+                    materialGroupShell.Children.Add(new EmissiveMaterial(brushShell));
+                    materialGroupBackSide.Children.Add(new EmissiveMaterial(brushBackSide));
+                }
+            }
+            else
+            {
+                throw new Exception("Exception - material is not valid");
+            }
+
+            modelFrontSide.Material = materialGroupFrontSide;
+            modelShell.Material = materialGroupShell;
+            modelBackSide.Material = materialGroupBackSide;
         }
 
         // TODO Ondrej - 25/07/2018 refaktorovat a optimalizovat metody

@@ -128,11 +128,16 @@ namespace BaseClasses
 
         public static Model3DGroup CreateModel3DGroup(CModel model, DisplayOptions sDisplayOptions, EGCS egcs = EGCS.eGCSLeftHanded)
         {
+            // TODO - Ondrej - pridat do nastaveni, default = (emissive???)
+
+            bool bUseDiffusiveMaterial = true;
+            bool bUseEmissiveMaterial = true;
+
             Model3DGroup gr = new Model3DGroup();
             if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, egcs);
+                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, null, null, null, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, bUseDiffusiveMaterial, bUseEmissiveMaterial, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -151,13 +156,21 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Members Model3D
-        public static Model3DGroup CreateMembersModel3D(CModel model, SolidColorBrush front = null, SolidColorBrush shell = null, SolidColorBrush back = null, bool bFastRendering = true, bool transpartentModel = false, EGCS egcs = EGCS.eGCSLeftHanded)
+        public static Model3DGroup CreateMembersModel3D(CModel model,
+            SolidColorBrush front = null,
+            SolidColorBrush shell = null,
+            SolidColorBrush back = null,
+            bool bFastRendering = true,
+            bool bTranspartentModel = false,
+            bool bUseDiffuseMaterial = true,
+            bool bUseEmissiveMaterial = true,
+            EGCS egcs = EGCS.eGCSLeftHanded)
         {
             if (front == null) front = new SolidColorBrush(Colors.OrangeRed); // Material color - Front Side
             if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
             if (back == null) back = new SolidColorBrush(Colors.OrangeRed); // Material color - Back Side
 
-            if (transpartentModel)
+            if (bTranspartentModel)
             {
                 front.Opacity = back.Opacity = 0.8;
                 shell.Opacity = 0.4;
@@ -194,13 +207,13 @@ namespace BaseClasses
                             {
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
-                                model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, shell)); // Use shell color for whole member
+                                model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial)); // Use shell color for whole member
                             }
                             else
                             {
                                 // Create Member model - consist of 3 geometry models (member is one model group)
                                 if (model3D == null) model3D = new Model3DGroup();
-                                model3D.Children.Add(model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back));
+                                model3D.Children.Add(model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial));
                             }
                         }
                         else
@@ -698,7 +711,7 @@ namespace BaseClasses
                                 // Vyriesit co sa stane, ak budeme chciet zobrazit len samostatny wireframe a surface model teda nebude k dispozicii (vygeneruje sa, ale nepouzije sa pri vykresleni?)
 
                                 Model3DGroup model3D = new Model3DGroup();
-                                model3D = model.m_arrMembers[i].getM_3D_G_Member(EGCS.eGCSLeftHanded, Brushes.AliceBlue, Brushes.AliceBlue, Brushes.AliceBlue);
+                                model3D = model.m_arrMembers[i].getM_3D_G_Member(EGCS.eGCSLeftHanded, Brushes.AliceBlue, Brushes.AliceBlue, Brushes.AliceBlue, true, true);
 
                                 // Potrebujeme sa nejako dostat k bodom siete, asi sa to da urobit aj elegantnejsie :-/
                                 GeometryModel3D m = new GeometryModel3D();
