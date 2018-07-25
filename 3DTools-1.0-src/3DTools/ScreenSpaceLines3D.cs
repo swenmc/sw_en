@@ -41,6 +41,7 @@ namespace _3DTools
     /// </summary>
     public class ScreenSpaceLines3D : ModelVisual3D
     {
+        public string Name;
         public ScreenSpaceLines3D()
         {
             _mesh = new MeshGeometry3D();

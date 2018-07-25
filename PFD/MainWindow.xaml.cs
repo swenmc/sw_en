@@ -30,6 +30,7 @@ using sw_en_GUI.EXAMPLES._3D;
 using M_AS4600;
 using M_EC1.AS_NZS;
 using SharedLibraries.EXPIMP;
+using _3DTools;
 
 namespace PFD
 {
@@ -1032,6 +1033,17 @@ namespace PFD
                     chbDisplaySolidModel.SetCurrentValue(CheckBox.IsCheckedProperty, true);
 
                 UpdateAll();
+
+
+                //if (model.WireFrameJoints != null)
+                //{
+                //    //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.WireFrameMembers);
+                //    //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.WireFrameJoints);
+                //}
+                //else
+                //{
+                    
+                //}
             }
         }
 
@@ -1052,8 +1064,30 @@ namespace PFD
         private void chbDisplayWireFrameModel_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
+            {                
+                int index = 0;
+                foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
+                {
+                    if (visual is ScreenSpaceLines3D)
+                    {
+                        if (((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.StartsWith("WireFrame")) break;
+                    }
+
+                    index++;
+                }
+                if(index < ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Count) ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+
+                index = 0;
+                foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
+                {
+                    if (visual is ScreenSpaceLines3D)
+                    {
+                        if (((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.StartsWith("WireFrame")) break;
+                    }
+
+                    index++;
+                }
+                if (index < ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Count) ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
             }
         }
 
@@ -1093,14 +1127,38 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                UpdateAll();
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.AxisX);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.AxisY);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.AxisZ);
+
+
+                //neviem refreshnut viewport
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Focus();
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.UpdateLayout();
+                //((Page3Dmodel)Frame1.Content)._trackport.SetupScene();
+                //Frame1.UpdateLayout();
+                //UpdateAll();
             }
         }
         private void chbDisplayGlobalAxis_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                UpdateAll();
+                int index = 0;
+                foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
+                {
+                    if (visual is ScreenSpaceLines3D)
+                    {
+                        if(((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.Equals("AxisX")) break;
+                    }
+
+                    index++;
+                }
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                
+                //UpdateAll();
             }
         }
 

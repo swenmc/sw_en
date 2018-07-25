@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
+using _3DTools;
 
 namespace BaseClasses
 {
@@ -74,6 +75,13 @@ namespace BaseClasses
 
         //Grouped Members
         Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
+
+        //Visuals
+        public ScreenSpaceLines3D AxisX;
+        public ScreenSpaceLines3D AxisY;
+        public ScreenSpaceLines3D AxisZ;
+        public ScreenSpaceLines3D WireFrameJoints;
+        public ScreenSpaceLines3D WireFrameMembers;
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
