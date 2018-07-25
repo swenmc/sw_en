@@ -330,6 +330,9 @@ namespace BaseClasses
         public bool bUseLightSpot;
         public bool bUseLightAmbient;
 
+        public bool bUseDiffuseMaterial;
+        public bool bUseEmissiveMaterial;
+
         public bool bDisplayMembers;
         public bool bDisplayJoints;
         public bool bDisplayPlates;

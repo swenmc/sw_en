@@ -745,6 +745,9 @@ namespace PFD
             sDisplayOptions.bUseLightSpot = chbLightSpot.IsChecked == true;
             sDisplayOptions.bUseLightAmbient = chbLightAmbient.IsChecked == true;
 
+            sDisplayOptions.bUseDiffuseMaterial = chbMaterialDiffuse.IsChecked == true;
+            sDisplayOptions.bUseEmissiveMaterial = chbMaterialEmissive.IsChecked == true;
+
             sDisplayOptions.bDisplayMembers = chbDisplayMembers.IsChecked == true;
             sDisplayOptions.bDisplayJoints = chbDisplayJoints.IsChecked == true;
             sDisplayOptions.bDisplayPlates = chbDisplayPlates.IsChecked == true;
@@ -904,6 +907,44 @@ namespace PFD
             }
         }
 
+        private void chbMaterialDiffuse_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbMaterialEmissive_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbMaterialDiffuse_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                if (chbMaterialEmissive.IsChecked == false)
+                    chbMaterialEmissive.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
+                UpdateAll();
+            }
+        }
+
+        private void chbMaterialEmissive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                if (chbMaterialDiffuse.IsChecked == false)
+                    chbMaterialDiffuse.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
+                UpdateAll();
+            }
+        }
+
         private void chbDisplayMembers_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
@@ -922,6 +963,9 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
+                if (chbDisplayJoints.IsChecked == false)
+                    chbDisplayJoints.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
                 UpdateAll();
             }
         }
@@ -929,6 +973,9 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
+                if (chbDisplayJoints.IsChecked == false)
+                    chbDisplayJoints.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
                 UpdateAll();
             }
         }
@@ -980,6 +1027,10 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
+                // TODO Ondrej - odstranit zavislost na solid model
+                if (chbDisplaySolidModel.IsChecked == false)
+                    chbDisplaySolidModel.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
                 UpdateAll();
             }
         }

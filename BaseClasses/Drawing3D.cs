@@ -13,11 +13,6 @@ namespace BaseClasses
     {
         public static void DrawToTrackPort(Trackport3D _trackport, CModel cmodel, DisplayOptions sDisplayOptions)
         {
-            // TODO - Ondrej - pridat do nastaveni, default = (emissive???)
-
-            bool bUseDiffusiveMaterial = true;
-            bool bUseEmissiveMaterial = true;
-
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
 
@@ -29,7 +24,7 @@ namespace BaseClasses
                 Model3DGroup gr = new Model3DGroup();
 
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, bUseDiffusiveMaterial, bUseEmissiveMaterial);
+                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(cmodel, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -135,14 +130,14 @@ namespace BaseClasses
         {
             // TODO - Ondrej - pridat do nastaveni, default = (emissive???)
 
-            bool bUseDiffusiveMaterial = true;
+            bool bUseDiffuseMaterial = true;
             bool bUseEmissiveMaterial = true;
 
             Model3DGroup gr = new Model3DGroup();
             if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, bUseDiffusiveMaterial, bUseEmissiveMaterial, null, null, null, egcs);
+                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, bUseDiffuseMaterial, bUseEmissiveMaterial, null, null, null, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;

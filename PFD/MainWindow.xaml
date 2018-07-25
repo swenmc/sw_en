@@ -201,17 +201,20 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <CheckBox Name="chbLightDirectional" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Checked="chbLightDirectional_Checked" Unchecked="chbLightDirectional_Unchecked">Directional Light</CheckBox>
+                        <CheckBox Name="chbLightDirectional" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightDirectional_Unchecked" Checked="chbLightDirectional_Checked">Directional Light</CheckBox>
                         <CheckBox Name="chbLightPoint" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightpoint_Unchecked" Checked="chbLightpoint_Checked">Point Light</CheckBox>
                         <CheckBox Name="chbLightSpot" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightSpot_Unchecked" Checked="chbLightSpot_Checked">SpotLight</CheckBox>
                         <CheckBox Name="chbLightAmbient" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightAmbient_Unchecked" Checked="chbLightAmbient_Checked" >Ambient Light</CheckBox>
 
+                        <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbMaterialDiffuse_Unchecked" Checked="chbMaterialDiffuse_Checked">Diffuse Material</CheckBox>
+                        <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbMaterialEmissive_Unchecked" Checked="chbMaterialEmissive_Checked">Emissive Material</CheckBox>
+                        
                         <CheckBox Name="chbDisplayMembers" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembers_Unchecked" Checked="chbDisplayMembers_Checked">Display Members</CheckBox>
                         <CheckBox Name="chbDisplayJoints" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayJoints_Unchecked" Checked="chbDisplayJoints_Checked">Display Joints</CheckBox>
                         <CheckBox Name="chbDisplayPlates" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayPlates_Unchecked" Checked="chbDisplayPlates_Checked">Display Plates</CheckBox>
                         <CheckBox Name="chbDisplayConnectors" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayConnectors_Unchecked" Checked="chbDisplayConnectors_Checked" >Display Connectors</CheckBox>
 
-                        <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Checked="chbDisplayMembersCenterLines_Checked" Unchecked="chbDisplayMembersCenterLines_UnChecked">Display Members Centerlines</CheckBox>
+                        <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembersCenterLines_UnChecked" Checked="chbDisplayMembersCenterLines_Checked">Display Members Centerlines</CheckBox>
                         <CheckBox Name="chbDisplaySolidModel" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplaySolidModel_Unchecked" Checked="chbDisplaySolidModel_Checked">Display Solid Model</CheckBox>
                         <CheckBox Name="chbDisplayWireFrameModel" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayWireFrameModel_Unchecked" Checked="chbDisplayWireFrameModel_Checked" >Display Wireframe Model</CheckBox>
 
