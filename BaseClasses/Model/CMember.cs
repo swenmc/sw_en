@@ -551,9 +551,6 @@ namespace BaseClasses
                         // Rotate about local x-axis
                         Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
 
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1], dTheta_x);
-
                         meshPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
                     for (int j = 0; j < iNoCrScPoints2D; j++)
