@@ -267,11 +267,16 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
             // Alignments
+
+            float fallignment_column, fallignment_knee_rafter, fallignment_apex_rafter;
+
+            GetJointAllignments((float)m_arrCrSc[0].h, (float)m_arrCrSc[1].h, out fallignment_column, out fallignment_knee_rafter, out fallignment_apex_rafter);
+
             float fMainColumnStart = 0.0f;
-            float fMainColumnEnd = -0.20f * (float)m_arrCrSc[1].h - fCutOffOneSide; // ??? // TODO - dopocitat
-            float fRafterStart = -0.50f * (float)m_arrCrSc[0].h - fCutOffOneSide;     // TODO - dopocitat
-            float fRafterEnd = -0.25f * (float)m_arrCrSc[1].h - fCutOffOneSide;       // TODO - Calculate according to h of rafter and roof pitch
-            float fEavesPurlinStart = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;  // Just in case that cross-section of rafter is symmetric about z-z
+            float fMainColumnEnd = -fallignment_column - fCutOffOneSide;
+            float fRafterStart = fallignment_knee_rafter - fCutOffOneSide;
+            float fRafterEnd = -fallignment_apex_rafter - fCutOffOneSide;             // Calculate according to h of rafter and roof pitch
+            float fEavesPurlinStart = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Just in case that cross-section of rafter is symmetric about z-z
             float fEavesPurlinEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;   // Just in case that cross-section of rafter is symmetric about z-z
             float fGirtStart = -0.5f * (float)m_arrCrSc[0].b - fCutOffOneSide;        // Just in case that cross-section of main column is symmetric about z-z
             float fGirtEnd = -0.5f * (float)m_arrCrSc[0].b - fCutOffOneSide;          // Just in case that cross-section of main column is symmetric about z-z
@@ -925,14 +930,17 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Prepocita suradnicu podla hodnoty X a uhlu, ktory je nastaveny medzi globalnou osou X a prednym (prvym) alebo zadnym (poslednym) ramom
             // Tato uprava umoznuje zosikmenie prveho / posledneho ramu voci mezilahlym
 
-            if (MathF.d_equal(node_temp.Y, 0) && !MathF.d_equal(fFrontFrameRakeAngle_temp_rad, 0)) // Front Frame
+            if (node_temp != null)
             {
-                node_temp.Y += node_temp.X * (float)Math.Tan(fFrontFrameRakeAngle_temp_rad);
-            }
+                if (MathF.d_equal(node_temp.Y, 0) && !MathF.d_equal(fFrontFrameRakeAngle_temp_rad, 0)) // Front Frame
+                {
+                    node_temp.Y += node_temp.X * (float)Math.Tan(fFrontFrameRakeAngle_temp_rad);
+                }
 
-            if (MathF.d_equal(node_temp.Y, fL_tot) && !MathF.d_equal(fBackFrameRakeAngle_temp_rad, 0)) // Back Frame
-            {
-                node_temp.Y += node_temp.X * (float)Math.Tan(fBackFrameRakeAngle_temp_rad);
+                if (MathF.d_equal(node_temp.Y, fL_tot) && !MathF.d_equal(fBackFrameRakeAngle_temp_rad, 0)) // Back Frame
+                {
+                    node_temp.Y += node_temp.X * (float)Math.Tan(fBackFrameRakeAngle_temp_rad);
+                }
             }
         }
 
@@ -1123,6 +1131,27 @@ namespace sw_en_GUI.EXAMPLES._3D
                 }
             }
         }
+
+        public void GetJointAllignments(float fh_column, float fh_rafter, out float allignment_column, out float allignment_knee_rafter, out float allignment_apex_rafter)
+        {
+            float cosAlpha = (float)Math.Cos(fRoofPitch_rad);
+            float sinAlpha = (float)Math.Sin(fRoofPitch_rad);
+            float tanAlpha = (float)Math.Tan(fRoofPitch_rad);
+
+            float y = fh_rafter / cosAlpha;
+            float a = sinAlpha * 0.5f * y;
+            float x1 = cosAlpha * 2 * a;
+            float x2 = 0.5f * fh_column - x1;
+            float y2 = tanAlpha * x2;
+            allignment_column = 0.5f * y + y2;
+
+            float x3 = 0.5f * x1;
+            float x4 = 0.5f * fh_column - x3;
+            allignment_knee_rafter = x4 / cosAlpha;
+
+            allignment_apex_rafter = a;
+        }
+
 
         public void AddDoorBlock(DoorProperties prop, float fLimitDistanceFromColumn)
         {
