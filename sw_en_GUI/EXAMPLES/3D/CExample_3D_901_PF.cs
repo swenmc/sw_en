@@ -1138,18 +1138,26 @@ namespace sw_en_GUI.EXAMPLES._3D
             float sinAlpha = (float)Math.Sin(fRoofPitch_rad);
             float tanAlpha = (float)Math.Tan(fRoofPitch_rad);
 
+            /*
             float y = fh_rafter / cosAlpha;
             float a = sinAlpha * 0.5f * y;
-            float x1 = cosAlpha * 2 * a;
-            float x2 = 0.5f * fh_column - x1;
+            float x = cosAlpha * 2f * a;
+            float x2 = 0.5f * fh_column - x;
             float y2 = tanAlpha * x2;
             allignment_column = 0.5f * y + y2;
 
-            float x3 = 0.5f * x1;
+            float x3 = 0.5f * x;
             float x4 = 0.5f * fh_column - x3;
             allignment_knee_rafter = x4 / cosAlpha;
 
             allignment_apex_rafter = a;
+            */
+
+            float y = fh_rafter / cosAlpha;
+            allignment_apex_rafter = sinAlpha * 0.5f * y;
+            float x = cosAlpha * 2f * allignment_apex_rafter;
+            allignment_column = 0.5f * y + (tanAlpha * (0.5f * fh_column - x));
+            allignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
         }
 
 
