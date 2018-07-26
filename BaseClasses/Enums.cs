@@ -314,6 +314,21 @@ namespace BaseClasses
         eGibsborne
     }
 
+    public enum EWindRegion
+    {
+        eA1,
+        eA2,
+        eA3,
+        eA4,
+        eA5,
+        eA6,
+        eA7,
+        eW,
+        eB,
+        eC,
+        eD
+    }
+
     public enum EPlateNumberAndPositionInJoint
     {
         eOneLeftPlate,   // 1 plate on the left side of cross-section (- y local axis)
@@ -352,16 +367,27 @@ namespace BaseClasses
 
     public struct BuildingDataInput
     {
-        public ELocation location; // City / Town
-        public int iDesignLife; // Years
-        public int iImportanceClass; // Importance Level
-        public float fAnnualProbability_R_ULS; // Annual Probability of Exceedence R_ULS
-        public float fAnnualProbability_R_SLS; // Annual Probability of Exceedence R_SLS
+        public ELocation location;               // City / Town
+        public int iDesignLife;                  // Years
+        public int iImportanceClass;             // Importance Level
+
+        public float fAnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
+        public float fAnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
+        public float fAnnualProbabilityULS_EQ;   // Annual Probability of Exceedence ULS - EQ
+        public float fAnnualProbabilitySLS;      // Annual Probability of Exceedence SLS
+
+        public float fR_ULS_Snow;                // Number of years - ULS - Snow
+        public float fR_ULS_Wind;                // Number of years - ULS - Wind
+        public float fR_ULS_EQ;                  // Number of years - ULS - EQ
+        public float fR_SLS;                     // Number of years - SLS
     }
 
     public struct WindLoadDataInput
     {
         public string sWindRegion; // Wind region // Wind region CI 3.2. Fig 3.1(A)
+        public EWindRegion eWindRegion;
+        public int iWindDirectionIndex;
+        public float fTerrainCategory;
         public float fh; // Height
     }
 
@@ -402,6 +428,8 @@ namespace BaseClasses
         public int DesignLifeIndex;
         public int SiteSubSoilClassIndex;
         public int TerrainRoughnessIndex;
+        public int WindDirectionIndex;
+        public float SiteElevation;
         public float FaultDistanceDmin;
         public float FaultDistanceDmax;
         public float PeriodAlongXDirectionTx;

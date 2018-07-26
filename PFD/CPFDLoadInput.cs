@@ -23,13 +23,15 @@ namespace PFD
         private int MLocationIndex;
         private int MDesignLifeIndex;
         private int MImportanceClassIndex; // Clause A3—Building importance levels
-        private float MAnnualProbabilityULS_Wind;
         private float MAnnualProbabilityULS_Snow;
+        private float MAnnualProbabilityULS_Wind;
         private float MAnnualProbabilityULS_EQ;
         private float MAnnualProbabilitySLS;
+        private float MSiteElevation;
         private int MSnowRegionIndex;
         private int MWindRegionIndex;
         private int MTerrainRoughnessIndex;
+        private int MWindDirectionIndex;
         private int MSiteSubSoilClassIndex;
         private float MFaultDistanceDmin;
         private float MFaultDistanceDmax;
@@ -38,6 +40,13 @@ namespace PFD
         private float MPeriodAlongYDirectionTy;
         private float MSpectralShapeFactorChTx;
         private float MSpectralShapeFactorChTy;
+
+        // Not in GUI
+        private float MR_ULS_Snow;
+        private float MR_ULS_Wind;
+        private float MR_ULS_EQ;
+        private float MR_SLS;
+        private EWindRegion MEWind_Region;
 
         //-------------------------------------------------------------------------------------------------------------
         public int LocationIndex
@@ -161,6 +170,22 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float SiteElevation
+        {
+            get
+            {
+                return MSiteElevation;
+            }
+
+            set
+            {
+                MSiteElevation = value;
+
+                NotifyPropertyChanged("SiteElevation");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public int SnowRegionIndex
         {
             get
@@ -205,6 +230,22 @@ namespace PFD
                 MTerrainRoughnessIndex = value;
 
                 NotifyPropertyChanged("TerrainRoughnessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WindDirectionIndex
+        {
+            get
+            {
+                return MWindDirectionIndex;
+            }
+
+            set
+            {
+                MWindDirectionIndex = value;
+
+                NotifyPropertyChanged("WindDirectionIndex");
             }
         }
 
@@ -355,6 +396,76 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float R_ULS_Snow
+        {
+            get
+            {
+                return MR_ULS_Snow;
+            }
+
+            set
+            {
+                MR_ULS_Snow = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float R_ULS_Wind
+        {
+            get
+            {
+                return MR_ULS_Wind;
+            }
+
+            set
+            {
+                MR_ULS_Wind = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float R_ULS_EQ
+        {
+            get
+            {
+                return MR_ULS_EQ;
+            }
+
+            set
+            {
+                MR_ULS_EQ = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float R_SLS
+        {
+            get
+            {
+                return MR_SLS;
+            }
+
+            set
+            {
+                MR_SLS = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public EWindRegion Wind_Region
+        {
+            get
+            {
+                return MEWind_Region;
+            }
+
+            set
+            {
+                MEWind_Region = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDLoadInput(loadInputComboboxIndexes sloadInput)
@@ -365,6 +476,8 @@ namespace PFD
             SiteSubSoilClassIndex = sloadInput.SiteSubSoilClassIndex;
             ImportanceClassIndex = sloadInput.ImportanceLevelIndex;
             TerrainRoughnessIndex = sloadInput.TerrainRoughnessIndex;
+            WindDirectionIndex = sloadInput.WindDirectionIndex;
+            SiteElevation = sloadInput.SiteElevation;
             FaultDistanceDmin = sloadInput.FaultDistanceDmin;
             FaultDistanceDmax = sloadInput.FaultDistanceDmax;
             PeriodAlongXDirectionTx = sloadInput.PeriodAlongXDirectionTx;
@@ -459,6 +572,7 @@ namespace PFD
 
                         SnowRegionIndex = int.Parse(reader["snow_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("snow_zone"));
                         WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
+                        Wind_Region = (EWindRegion)WindRegionIndex;
 
                         // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
                         //23.7.2018 O.P.
@@ -477,6 +591,18 @@ namespace PFD
 
                         int iRainZone = int.Parse(reader["rain_zone"].ToString());
                         int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
+
+                        // Site elevation
+                        /*
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("D_min_km")))
+                            {
+                                FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException) { }
+                        */
 
                         // Earthquake
                         ZoneFactorZ = float.Parse(reader["eqFactorZ"].ToString(), nfi);
@@ -580,6 +706,19 @@ namespace PFD
 
                         //TODO Martin - doriesit SLS1 a SLS2
                         //AnnualProbabilitySLS2 = (float)FractionConverter.Convert(sAnnualProbabilitySLS2);
+
+                        R_ULS_Wind = float.Parse(reader["R_ULS_Wind_inyears"].ToString());
+                        R_ULS_Snow = float.Parse(reader["R_ULS_Snow_inyears"].ToString());
+                        R_ULS_EQ = float.Parse(reader["R_ULS_Earthquake_inyears"].ToString());
+
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("R_SLS1_inyears")))
+                            {
+                                R_SLS = float.Parse(reader["R_SLS1_inyears"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException) { }
                     }
                 }
 

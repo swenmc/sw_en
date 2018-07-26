@@ -81,6 +81,13 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
+        <!--site elevation above mean sea level, in meters -->
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Site Elevation:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="7" Grid.Column="1" Name ="TextBox_SiteElevation" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=SiteElevation, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+
         <TextBlock Grid.Row="8" Grid.Column="0" Text="Snow Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <ComboBox Grid.Row="8" Grid.Column="1" Name ="Combobox_SnowRegion" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -95,6 +102,11 @@
                          VerticalAlignment="Top" />
         <ComboBox Grid.Row="10" Grid.Column="1" Name ="Combobox_TerrainRoughness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=TerrainRoughnessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="11" Grid.Column="0" Text="Wind Direction:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="11" Grid.Column="1" Name ="Combobox_WindDirection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WindDirectionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="12" Grid.Column="0" Text="Site Subsoil Class:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />

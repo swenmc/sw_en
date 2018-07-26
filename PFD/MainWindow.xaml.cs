@@ -251,9 +251,6 @@ namespace PFD
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            CPFDViewModel vm = this.DataContext as CPFDViewModel;
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
-
             // Clear results of previous calculation
             DeleteCalculationResults();
 
@@ -261,11 +258,20 @@ namespace PFD
             // Self-weigth (1170.1)
 
             //Temporary
-            sBuildingInputData.location = ELocation.eAuckland;
-            sBuildingInputData.iDesignLife = 50; // years
-            sBuildingInputData.iImportanceClass = 3; // Importance Level
-            sBuildingInputData.fAnnualProbability_R_ULS = 1f / 500f; // Annual Probability of Exceedence R_ULS
-            sBuildingInputData.fAnnualProbability_R_SLS = 1f / 25f; // Annual Probability of Exceedence R_SLS
+            
+            sBuildingInputData.location = (ELocation)loadinput.LocationIndex;
+            sBuildingInputData.iDesignLife = loadinput.DesignLifeIndex; // Database years ????
+            sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level
+
+            sBuildingInputData.fAnnualProbabilityULS_Snow = loadinput.AnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
+            sBuildingInputData.fAnnualProbabilityULS_Wind = loadinput.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
+            sBuildingInputData.fAnnualProbabilityULS_EQ = loadinput.AnnualProbabilityULS_EQ;     // Annual Probability of Exceedence ULS - EQ
+            sBuildingInputData.fAnnualProbabilitySLS = loadinput.AnnualProbabilitySLS;           // Annual Probability of Exceedence SLS
+
+            sBuildingInputData.fR_ULS_Snow = loadinput.R_ULS_Snow;
+            sBuildingInputData.fR_ULS_Wind = loadinput.R_ULS_Wind;
+            sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
+            sBuildingInputData.fR_SLS = loadinput.R_SLS;
 
             // General loading
             CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
@@ -277,6 +283,10 @@ namespace PFD
             //2.terrain roughness
             //3.topography
             //4.pressure coefficients
+            sWindInputData.eWindRegion = loadinput.Wind_Region;
+            //sWindInputData.sWindRegion
+            sWindInputData.iWindDirectionIndex = loadinput.WindDirectionIndex;
+            sWindInputData.fTerrainCategory = loadinput.TerrainRoughnessIndex; // Database
             sWindInputData.fh = vm.fh2;
             CCalcul_1170_2 wind = new CCalcul_1170_2(sBuildingInputData, sWindInputData);
 
