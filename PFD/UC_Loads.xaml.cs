@@ -41,7 +41,7 @@ namespace PFD
                 FillComboboxValues("ASNZS1170_Tab3_2_IL", "importanceLevelInt", ref reader, ref Combobox_ImportanceClass);
                 FillComboboxValues("SnowRegions", "snowZone", ref reader, ref Combobox_SnowRegion);
                 FillComboboxValues("WindRegions", "windRegion", ref reader, ref Combobox_WindRegion);
-                FillComboboxValues("TerrainMultiplier", "terrainCategory", ref reader, ref Combobox_TerrainRoughness);
+                FillComboboxValues("ASNZS1170_2_421_THM_category", "terrainCategory_abb", ref reader, ref Combobox_TerrainRoughness);
                 FillComboboxValues("SiteSubSoilClass", "class", ref reader, ref Combobox_SiteSubSoilClass);
                 reader.Close();
             }
