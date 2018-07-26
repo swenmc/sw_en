@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MATH;
-//using System.Data.SQLite;
+using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
 
@@ -11,7 +11,7 @@ namespace M_EC1.AS_NZS
 {
     public class CCalcul_1170_2
     {
-        //public SQLiteConnection conn;
+        public SQLiteConnection conn;
         BuildingDataInput sBuildInput;
         WindLoadDataInput sWindInput;
 

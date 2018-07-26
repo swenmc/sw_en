@@ -258,7 +258,9 @@ namespace PFD
             // Self-weigth (1170.1)
 
             //Temporary
-            
+
+            UC_Loads uc = new UC_Loads();
+
             sBuildingInputData.location = (ELocation)loadinput.LocationIndex;
             sBuildingInputData.iDesignLife = loadinput.DesignLifeIndex; // Database years ????
             sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level
