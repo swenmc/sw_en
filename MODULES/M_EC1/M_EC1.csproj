@@ -71,6 +71,7 @@
     </Reference>
     <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net46\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -130,10 +131,6 @@
     <ProjectReference Include="..\..\BaseClasses\BaseClasses.csproj">
       <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
       <Name>BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DATABASE\DATABASE.csproj">
-      <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
-      <Name>DATABASE</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
