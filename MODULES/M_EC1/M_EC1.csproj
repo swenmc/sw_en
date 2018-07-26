@@ -132,6 +132,10 @@
       <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
       <Name>BaseClasses</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DATABASE\DATABASE.csproj">
+      <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
       <Name>MATH</Name>
