@@ -101,6 +101,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Resources\MDB.db3" />
+    <Content Include="Resources\MDBMaterials.db3" />
+    <Content Include="Resources\MDBSections.db3" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
