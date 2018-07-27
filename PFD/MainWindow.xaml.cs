@@ -276,16 +276,16 @@ namespace PFD
             // Temporary
             sBuildingInputData.location = ELocation.eAuckland;
             sBuildingInputData.iDesignLife = 50;
-            sBuildingInputData.iImportanceClass = 1;
+            sBuildingInputData.iImportanceClass = 2;
 
-            sBuildingInputData.fAnnualProbabilityULS_Snow = 1f / 50f;
-            sBuildingInputData.fAnnualProbabilityULS_Wind = 1f / 50f;
-            sBuildingInputData.fAnnualProbabilityULS_EQ = 1f / 50f;
+            sBuildingInputData.fAnnualProbabilityULS_Snow = 1f / 500f;
+            sBuildingInputData.fAnnualProbabilityULS_Wind = 1f / 500f;
+            sBuildingInputData.fAnnualProbabilityULS_EQ = 1f / 500f;
             sBuildingInputData.fAnnualProbabilitySLS = 1f / 25f;
 
-            sBuildingInputData.fR_ULS_Snow = 50f;
-            sBuildingInputData.fR_ULS_Wind = 50f;
-            sBuildingInputData.fR_ULS_EQ = 50f;
+            sBuildingInputData.fR_ULS_Snow = 500f;
+            sBuildingInputData.fR_ULS_Wind = 500f;
+            sBuildingInputData.fR_ULS_EQ = 500f;
             sBuildingInputData.fR_SLS = 25f;
 
             // Load Generation
@@ -301,7 +301,7 @@ namespace PFD
             sWindInputData.fTerrainCategory = loadinput.TerrainRoughnessIndex; // Database
             */
 
-            sWindInputData.eWindRegion = EWindRegion.eA7;
+            sWindInputData.eWindRegion = EWindRegion.eA6;
             sWindInputData.iWindDirectionIndex = 8;
             sWindInputData.fTerrainCategory = 2.5f;
             sWindInputData.fh = vm.fh2;

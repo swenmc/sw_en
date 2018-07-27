@@ -153,7 +153,29 @@ namespace MATH.ARRAY
         // Interpolation - aby fungovalo obecne, je potrebne doriesit kladne a zaporne hodnoty
         public static float GetLinearInterpolationValuePositive(float x, float[] xd, float[] yd)
         {
-            return (float)GetLinearInterpolationValuePositive(x, xd, yd);
+            // Convert arrays items from float to double
+
+            double x_val = x;
+            double[] xd_val;
+            double[] yd_val;
+
+            if (xd.Length != yd.Length)
+            {
+                throw new ArgumentException("Arrays must be of equal length.");
+            }
+            else
+            {
+                xd_val = new double[xd.Length];
+                yd_val = new double[yd.Length];
+
+                for (int i = 0; i< xd.Length;i++)
+                {
+                    xd_val[i] = xd[i];
+                    yd_val[i] = yd[i];
+                }
+            }
+
+            return (float)GetLinearInterpolationValuePositive(x_val, xd_val, yd_val); // Return result as double
         }
         public static double GetLinearInterpolationValuePositive(double x, double[] xd, double[] yd)
         {
@@ -165,7 +187,11 @@ namespace MATH.ARRAY
             {
                 for (int i = 0; i < xd.Length; i++)
                 {
-                    if (x > xd[0])
+                    if (x < xd[0])
+                        return yd[0]; // Minimum
+                    else if(x > xd[xd.Length - 1])
+                        return yd[xd.Length - 1]; // Maximum
+                    else
                     {
                         // Find nearest higher value
                         if (x - xd[i] == 0)
@@ -182,8 +208,6 @@ namespace MATH.ARRAY
                                 return yd[i] + (xd[i] - x) * ((yd[i - 1] - yd[i]) / (xd[i] - xd[i - 1]));
                         }
                     }
-                    else
-                        return yd[0]; // Minimum
                 }
 
                 return 0; // Error

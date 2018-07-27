@@ -108,9 +108,9 @@ namespace M_EC1.AS_NZS
 
             // M_s
             float fl_s = 1000f; // Average spacing of shielding buildings
-            float fh_s = 0;     // Average roof height of shielding buildings
-            float fb_s = 0f;    // Average breadth of shielding buildings, normal to the wind stream
-            int in_s = 0;       // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
+            float fh_s = 0.1f;     // Average roof height of shielding buildings
+            float fb_s = 0.1f;    // Average breadth of shielding buildings, normal to the wind stream
+            int in_s = 1;       // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
             fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sWindInput.fh, in_s);
             SetShieldingMultiplier();
 
@@ -125,9 +125,16 @@ namespace M_EC1.AS_NZS
                 fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, fE_meters);
             }
 
-            // Site Wind speed
+            // 2.2 Site wind speed
             float fV_sit_ULS = AS_NZS_1170_2.Eq_22______(fV_R_ULS, fM_D, fM_z_cat, fM_s, fM_t);
             float fV_sit_SLS = AS_NZS_1170_2.Eq_22______(fV_R_SLS, fM_D, fM_z_cat, fM_s, fM_t);
+
+            // 2.3 Design wind speed
+            // TODO Martin
+            // Ak by sme chceli navrhovat efektivnejsie je potrebne urobit prepocet rychlosti podla orientacie budovy voci svetovym stranam, vid obrazky 2.2 a 2.3 v norme
+            // Temporary - zatial nastavujeme konzervativne
+            float fV_des_ULS = MathF.Max(30, fV_sit_ULS); // Minimum 30 m/s, see Note A1 in Cl. 2.3
+            float fV_des_SLS = fV_sit_SLS;
 
             float fq_ULS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
             float fq_SLS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa

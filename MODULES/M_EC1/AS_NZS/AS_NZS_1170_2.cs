@@ -161,7 +161,7 @@ namespace M_EC1.AS_NZS
             float fH_2Lu_ratio = (float)Math.Tan((fHillSlope_degrees / 180) * Math.PI);
             return Get_Mh_442_(bIsEscarpment, fH, fH_2Lu_ratio, fx, fz);
         }
-            public static float Get_Mt_factor_alt(float fH_hill, float fD_c_hill, float fD_s_hill)
+        public static float Get_Mt_factor_alt(float fH_hill, float fD_c_hill, float fD_s_hill)
         {
             // return Mt value
 
