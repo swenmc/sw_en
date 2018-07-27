@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MATH;
+using MATH.ARRAY;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
@@ -19,14 +20,15 @@ namespace M_EC1.AS_NZS
         float fV_R_ULS; // m / s (ULS)
         float fV_R_SLS; // m / s (SLS)
 
-        float fM_D = 1.0f; // Wind direction multiplier (CI 3.3) Table 3.2
-        float fM_s = 1.0f; // Shielding multiplier (CI 4.3) Table 4.3
-        float fM_t = 1.0f; // Topographic multiplier (CI 4.4)
+        float fM_D = 1.0f;  // Wind direction multiplier (Cl 3.3) Table 3.2
+        float fs_shielding; // Shielding parameter Table 4.3 
+        float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
+        float fM_t = 1.0f;  // Topographic multiplier (Cl 4.4)
 
         float fSiteTerrainSlope_Phi = 1/20; // 3 deg
         float fSiteTerrainSlope_Phi_deg = 3;
 
-        float fM_z_cat; // Terrain multiplier // Database - TODO
+        float fM_z_cat; // Terrain multiplier
         float fz_max; // m
         float fz;
         float fRho_air = 1.2f; // kgm^3
@@ -94,22 +96,23 @@ namespace M_EC1.AS_NZS
 
             fz = sWindInput.fh; // Set height of building
 
-
-
             // Regional wind speed - AS/NZS 1170.2 Table 3.1
             fV_R_ULS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_ULS_Wind, sWindInput.eWindRegion); //m /s (ULS)
             fV_R_SLS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_SLS, sWindInput.eWindRegion);      //m /s (SLS)
 
-            // fM_D =
-            fM_z_cat = fz / sWindInput.fTerrainCategory;
+            // M_D
+            SetWindDirectionFactor();
 
+            // M_z_cat
+            SetTerrainHeightMultiplier();
+
+            // M_s
             float fl_s = 1000f; // Average spacing of shielding buildings
             float fh_s = 0;     // Average roof height of shielding buildings
             float fb_s = 0f;    // Average breadth of shielding buildings, normal to the wind stream
             int in_s = 0;       // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
-
-            float fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sWindInput.fh, in_s);
-            // fM_s = // Database and interpolation
+            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sWindInput.fh, in_s);
+            SetShieldingMultiplier();
 
             // M_t
             bool bConsiderHillSlope = false;
@@ -147,14 +150,8 @@ namespace M_EC1.AS_NZS
             fp_SLS = (0.5f * fRho_air) * MathF.Pow2(fv_des_theta_SLS) * fC_fig_e * fC_dyn;
         }
 
-        // Table 5.3A
-
-        // TODO - Ondrej - zapracovat pristup k databaze z tohto projektu
-        // Presunut databazovy subor ??? a napojit DLL pre SQL
 
         // Table 3.2 - Wind Direction Factor
-
-        /*
         protected void SetWindDirectionFactor()
         {
             // Connect to database
@@ -162,23 +159,41 @@ namespace M_EC1.AS_NZS
             {
                 conn.Open();
                 SQLiteDataReader reader = null;
+                string sTableName;
+                SQLiteCommand command;
 
-                string sTableName = "ASNZS1170_2_Tab3_2_WDM";
+                // Set wind region string
+                sTableName = "WindRegions";
 
-                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + sWindInput.WindDirectionIndex + "'", conn);
+                command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + (int)sWindInput.eWindRegion + "'", conn);
+
+                string sWindRegion="";
 
                 using (reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                       // 3.3.1 Regions A and W
-                        fM_D = reader[sWindInput.sWindRegion].ToString();
+                        sWindRegion = reader["windRegion"].ToString();
+                    }
+                }
+
+                // Set wind direction factor
+                sTableName = "ASNZS1170_2_Tab3_2_WDM";
+
+                command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + sWindInput.iWindDirectionIndex + "'", conn);
+
+                using (reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // 3.3.1 Regions A and W
+                        fM_D = float.Parse(reader[sWindRegion].ToString());
 
                         // 3.3.2 - Regions B,C and D
-                        if(sWindInput.eWindDirection == EWindDirection.eB ||
-                        sWindInput.eWindDirection == EWindDirection.eC ||
-                        sWindInput.eWindDirection == EWindDirection.eD)
-                        fM_D = 0.95f;
+                        if(sWindInput.eWindRegion == EWindRegion.eB ||
+                           sWindInput.eWindRegion == EWindRegion.eC ||
+                           sWindInput.eWindRegion == EWindRegion.eD)
+                           fM_D = 0.95f;
                     }
                 }
 
@@ -186,12 +201,77 @@ namespace M_EC1.AS_NZS
             }
         }
 
-        protected void SetTerrainHeightMultiplier()
+        protected void SetShieldingMultiplier()
         {
-        // Table 4.1
-        // TODO
+            // Table 4.3
+
+            float[] Table_4_3_Column1 = new float[4];
+            float[] Table_4_3_Column2 = new float[4];
+
+            // Connect to database
+            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteDataReader reader = null;
+
+                string sTableName = "ASNZS1170_2_Tab4_3_SM";
+
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName, conn);
+
+                using (reader = command.ExecuteReader())
+                {
+                    int i = 0;
+                    while (reader.Read())
+                    {
+                        Table_4_3_Column1[i] = float.Parse(reader["shieldingParameter"].ToString());
+                        Table_4_3_Column2[i] = float.Parse(reader["shieldingMultiplierMs"].ToString());
+                        i++;
+                    }
+                }
+
+                reader.Close();
+            }
+
+            // Interpolation
+            fM_s = (float)ArrayF.GetLinearInterpolationValuePositive(fs_shielding, Table_4_3_Column1, Table_4_3_Column2);
         }
 
-     */
+        protected void SetTerrainHeightMultiplier()
+        {
+            // Table 4.1
+
+            float[,] Table_4_1 = new float[12,5];
+
+            // Connect to database
+            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteDataReader reader = null;
+
+                string sTableName = "ASNZS1170_2_Tab4_1_THM";
+
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName , conn);
+
+                using (reader = command.ExecuteReader())
+                {
+                    int i = 0;
+                    while (reader.Read())
+                    {
+                        Table_4_1[i, 0] = float.Parse(reader["height_z_m"].ToString());
+                        Table_4_1[i, 1] = float.Parse(reader["tercat_1_Mzcat"].ToString());
+                        Table_4_1[i, 2] = float.Parse(reader["tercat_2_Mzcat"].ToString());
+                        Table_4_1[i, 3] = float.Parse(reader["tercat_3_Mzcat"].ToString());
+                        Table_4_1[i, 4] = float.Parse(reader["tercat_4_Mzcat"].ToString());
+                        i++;
+                    }
+                }
+
+                reader.Close();
+            }
+
+            // Bilinear Interpolation
+            float[] arrayHeaderColumnValues = new float[] { 1, 2, 3, 4 }; // Terrain categories in table 4.1
+            fM_z_cat = ArrayF.GetBilinearInterpolationValuePositive(Table_4_1, arrayHeaderColumnValues, fz, sWindInput.fTerrainCategory);
+        }
     }
 }

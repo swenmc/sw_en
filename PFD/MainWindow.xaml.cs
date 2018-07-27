@@ -254,13 +254,10 @@ namespace PFD
             // Clear results of previous calculation
             DeleteCalculationResults();
 
-            // Load Generation
-            // Self-weigth (1170.1)
+            // TODO - Ondrej - spristupnit data nastavene v TabItem Loads, pripadne je potrebne tuto zalozku interne naplnit aj ked nie je zobrazena
 
-            //Temporary
-
-            UC_Loads uc = new UC_Loads();
-
+            // Basic data
+            /*
             sBuildingInputData.location = (ELocation)loadinput.LocationIndex;
             sBuildingInputData.iDesignLife = loadinput.DesignLifeIndex; // Database years ????
             sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level
@@ -274,21 +271,39 @@ namespace PFD
             sBuildingInputData.fR_ULS_Wind = loadinput.R_ULS_Wind;
             sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
             sBuildingInputData.fR_SLS = loadinput.R_SLS;
+            */
 
+            // Temporary
+            sBuildingInputData.location = ELocation.eAuckland;
+            sBuildingInputData.iDesignLife = 50;
+            sBuildingInputData.iImportanceClass = 1;
+
+            sBuildingInputData.fAnnualProbabilityULS_Snow = 1f / 50f;
+            sBuildingInputData.fAnnualProbabilityULS_Wind = 1f / 50f;
+            sBuildingInputData.fAnnualProbabilityULS_EQ = 1f / 50f;
+            sBuildingInputData.fAnnualProbabilitySLS = 1f / 25f;
+
+            sBuildingInputData.fR_ULS_Snow = 50f;
+            sBuildingInputData.fR_ULS_Wind = 50f;
+            sBuildingInputData.fR_ULS_EQ = 50f;
+            sBuildingInputData.fR_SLS = 25f;
+
+            // Load Generation
             // General loading
             CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
             float fLiveLoad_Roof = 250f; // N/m2
-            float fSuperImposed_DeadLoad = 450f;
+            float fSuperImposed_DeadLoad = 450f; // N/m2
 
             // Wind
-            //1.wind region
-            //2.terrain roughness
-            //3.topography
-            //4.pressure coefficients
+            /*
             sWindInputData.eWindRegion = loadinput.Wind_Region;
-            //sWindInputData.sWindRegion
             sWindInputData.iWindDirectionIndex = loadinput.WindDirectionIndex;
             sWindInputData.fTerrainCategory = loadinput.TerrainRoughnessIndex; // Database
+            */
+
+            sWindInputData.eWindRegion = EWindRegion.eA7;
+            sWindInputData.iWindDirectionIndex = 8;
+            sWindInputData.fTerrainCategory = 2.5f;
             sWindInputData.fh = vm.fh2;
             CCalcul_1170_2 wind = new CCalcul_1170_2(sBuildingInputData, sWindInputData);
 

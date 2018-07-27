@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MATH.ARRAY;
 
 namespace AAC
 {
@@ -104,7 +105,7 @@ namespace AAC
         {
             for (int i = 0; i < 6; i++)
             {
-                AAC_value_array_for_1000md[i] = Interpolation_positive(value_1000md, Get_1D_Array(0), Get_1D_Array(i + 1));
+                AAC_value_array_for_1000md[i] = ArrayF.GetLinearInterpolationValuePositive(value_1000md, Get_1D_Array(0), Get_1D_Array(i + 1));
             }
         }
 
@@ -121,42 +122,6 @@ namespace AAC
             }
 
             return array;
-        }
-
-        // Interpolation - aby fungovalo obecne, je potrebne doriesit kladne a zaporne hodnoty
-        static public double Interpolation_positive(double x, double[] xd, double[] yd)
-        {
-            if (xd.Length != yd.Length)
-            {
-                throw new ArgumentException("Arrays must be of equal length.");
-            }
-            else
-            {
-                for (int i = 0; i < xd.Length; i++)
-                {
-                    if (x > xd[0])
-                    {
-                        // Find nearest higher value
-                        if (x - xd[i] == 0)
-                        {
-                            return yd[i];
-                        }
-                        else if (x - xd[i] < 0) // xi > xi-1
-                        {
-                            if (yd[i] - yd[i - 1] > 0) // yi > yi-1
-                            {
-                            return yd[i - 1] + ((x - xd[i - 1]) * ((yd[i] - yd[i - 1]) / (xd[i] - xd[i - 1])));
-                            }
-                        else  // yi < yi-1
-                            return yd[i] + (xd[i] - x) * ((yd[i - 1] - yd[i]) / (xd[i] - xd[i - 1]));
-                        }
-                    }
-                    else
-                        return yd[0]; // Minimum
-                }
-
-                return 0; // Error
-            }
         }
     }
 }

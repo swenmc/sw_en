@@ -189,7 +189,6 @@ namespace M_EC1.AS_NZS
             }
         }
 
-
         static int[,] arrTable3_1 = new int[15, 6]
             {
             {1, 30, 34, 26, 23, 23},
@@ -208,7 +207,6 @@ namespace M_EC1.AS_NZS
             {5000, 50, 56, 67, 78, 95},
             {10000, 51, 58, 69, 81, 99}
             };
-
 
         // Interpolation - aby fungovalo obecne, je potrebne doriesit kladne a zaporne hodnoty
         public static int Table31_Interpolation_positive(int x, EWindRegion eRegion, int[,] TableValues)

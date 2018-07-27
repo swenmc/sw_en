@@ -384,8 +384,7 @@ namespace BaseClasses
 
     public struct WindLoadDataInput
     {
-        public string sWindRegion; // Wind region // Wind region CI 3.2. Fig 3.1(A)
-        public EWindRegion eWindRegion;
+        public EWindRegion eWindRegion; // Wind region // Wind region Cl 3.2. Fig 3.1(A)
         public int iWindDirectionIndex;
         public float fTerrainCategory;
         public float fh; // Height
