@@ -20,7 +20,11 @@ namespace M_EC1.AS_NZS
         float fV_R_ULS; // m / s (ULS)
         float fV_R_SLS; // m / s (SLS)
 
-        float fM_D = 1.0f;  // Wind direction multiplier (Cl 3.3) Table 3.2
+        public float[] fAnglesForV_sit;
+        public float[] fM_D_array360;
+        public float[] fV_sit_ULS_Theta;
+        public float[] fV_sit_SLS_Theta;
+
         float fs_shielding; // Shielding parameter Table 4.3 
         float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
         float fM_t = 1.0f;  // Topographic multiplier (Cl 4.4)
@@ -101,7 +105,8 @@ namespace M_EC1.AS_NZS
             fV_R_SLS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_SLS, sWindInput.eWindRegion);      //m /s (SLS)
 
             // M_D
-            SetWindDirectionFactor();
+            float [] fM_D_array_angles = new float[9] { 0, 45, 90, 135, 180, 225, 270, 315, 360 };
+            float [] fM_D_array_values = GetWindDirectionFactors_9_Items();
 
             // M_z_cat
             SetTerrainHeightMultiplier();
@@ -126,18 +131,50 @@ namespace M_EC1.AS_NZS
             }
 
             // 2.2 Site wind speed
-            float fV_sit_ULS = AS_NZS_1170_2.Eq_22______(fV_R_ULS, fM_D, fM_z_cat, fM_s, fM_t);
-            float fV_sit_SLS = AS_NZS_1170_2.Eq_22______(fV_R_SLS, fM_D, fM_z_cat, fM_s, fM_t);
+            fAnglesForV_sit = new float[360];
+            fM_D_array360 = new float[360];
+            fV_sit_ULS_Theta = new float[360];
+            fV_sit_SLS_Theta = new float[360];
+
+            // Calculate value of V_sit for each angle (0-360 deg)
+            for (int i = 0; i < 360; i++)
+            {
+                fAnglesForV_sit[i] = i;
+                // Wind direction multiplier (Cl. 3.3) Table 3.2
+                fM_D_array360[i] = ArrayF.GetLinearInterpolationValuePositive(i, fM_D_array_angles, fM_D_array_values);
+                fV_sit_ULS_Theta[i] = AS_NZS_1170_2.Eq_22______(fV_R_ULS, fM_D_array360[i], fM_z_cat, fM_s, fM_t);
+                fV_sit_SLS_Theta[i] = AS_NZS_1170_2.Eq_22______(fV_R_SLS, fM_D_array360[i], fM_z_cat, fM_s, fM_t);
+            }
+
+            float fV_sit_ULS_Theta_0 = 0;
+            float fV_sit_ULS_Theta_90 = 0;
+            float fV_sit_ULS_Theta_180 = 0;
+            float fV_sit_ULS_Theta_270 = 0;
+
+            float fV_sit_SLS_Theta_0 = 0;
+            float fV_sit_SLS_Theta_90 = 0;
+            float fV_sit_SLS_Theta_180 = 0;
+            float fV_sit_SLS_Theta_270 = 0;
 
             // 2.3 Design wind speed
             // TODO Martin
             // Ak by sme chceli navrhovat efektivnejsie je potrebne urobit prepocet rychlosti podla orientacie budovy voci svetovym stranam, vid obrazky 2.2 a 2.3 v norme
             // Temporary - zatial nastavujeme konzervativne
-            float fV_des_ULS = MathF.Max(30, fV_sit_ULS); // Minimum 30 m/s, see Note A1 in Cl. 2.3
-            float fV_des_SLS = fV_sit_SLS;
 
+            float fV_des_ULS_Theta_0 = MathF.Max(30, fV_sit_ULS_Theta_0); // Minimum 30 m/s, see Note A1 in Cl. 2.3
+            float fV_des_ULS_Theta_90 = MathF.Max(30, fV_sit_ULS_Theta_90);
+            float fV_des_ULS_Theta_180 = MathF.Max(30, fV_sit_ULS_Theta_180);
+            float fV_des_ULS_Theta_270 = MathF.Max(30, fV_sit_ULS_Theta_270);
+
+            float fV_des_SLS_Theta_0 = fV_sit_SLS_Theta_0;
+            float fV_des_SLS_Theta_90 = fV_sit_SLS_Theta_90;
+            float fV_des_SLS_Theta_180 = fV_sit_SLS_Theta_180;
+            float fV_des_SLS_Theta_270 = fV_sit_SLS_Theta_270;
+
+            /*
             float fq_ULS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
             float fq_SLS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
+            */
 
             float fC_pe = 0f;
             float fC_pi = 0f;
@@ -158,9 +195,11 @@ namespace M_EC1.AS_NZS
         }
 
 
-        // Table 3.2 - Wind Direction Factor
-        protected void SetWindDirectionFactor()
+        // Table 3.2 - Wind Direction Factors
+        protected float[] GetWindDirectionFactors_9_Items()
         {
+            float [] fM_D_temp = new float [9]; // 8 wind directions (N (0 deg), NE (45 deg), E (90 deg), SE (135 deg), S (180 deg), SW (225 deg), W (270 deg), NW (315 deg)) + 1 for 360 deg
+
             // Connect to database
             using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
             {
@@ -187,25 +226,33 @@ namespace M_EC1.AS_NZS
                 // Set wind direction factor
                 sTableName = "ASNZS1170_2_Tab3_2_WDM";
 
-                command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + sWindInput.iWindDirectionIndex + "'", conn);
+                command = new SQLiteCommand("Select * from " + sTableName, conn);
 
                 using (reader = command.ExecuteReader())
                 {
+                    int i = 0;
                     while (reader.Read())
                     {
                         // 3.3.1 Regions A and W
-                        fM_D = float.Parse(reader[sWindRegion].ToString());
+                        fM_D_temp[i] = float.Parse(reader[sWindRegion].ToString());
 
                         // 3.3.2 - Regions B,C and D
                         if(sWindInput.eWindRegion == EWindRegion.eB ||
                            sWindInput.eWindRegion == EWindRegion.eC ||
                            sWindInput.eWindRegion == EWindRegion.eD)
-                           fM_D = 0.95f;
+                            fM_D_temp[i] = 0.95f;
+
+                        i++;
                     }
                 }
 
                 reader.Close();
             }
+
+            // Copy first item for Beta = 0 deg (Notrth) to the last item for Beta = 360 deg
+            fM_D_temp[8] = fM_D_temp[0];
+
+            return fM_D_temp;
         }
 
         protected void SetShieldingMultiplier()

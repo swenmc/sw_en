@@ -100,6 +100,9 @@
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UC_InternalForces.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindSpeedChart.xaml.cs">
+      <DependentUpon>WindSpeedChart.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -161,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UC_InternalForces.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindSpeedChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

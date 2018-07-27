@@ -208,7 +208,7 @@
 
                         <CheckBox Name="chbMaterialDiffuse" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbMaterialDiffuse_Unchecked" Checked="chbMaterialDiffuse_Checked">Diffuse Material</CheckBox>
                         <CheckBox Name="chbMaterialEmissive" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbMaterialEmissive_Unchecked" Checked="chbMaterialEmissive_Checked">Emissive Material</CheckBox>
-                        
+
                         <CheckBox Name="chbDisplayMembers" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembers_Unchecked" Checked="chbDisplayMembers_Checked">Display Members</CheckBox>
                         <CheckBox Name="chbDisplayJoints" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayJoints_Unchecked" Checked="chbDisplayJoints_Checked">Display Joints</CheckBox>
                         <CheckBox Name="chbDisplayPlates" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayPlates_Unchecked" Checked="chbDisplayPlates_Checked">Display Plates</CheckBox>
@@ -272,12 +272,18 @@
                 VerticalAlignment="Center" Width="100"  Margin="0,35,20,35" Click="Calculate_Click" Height="20"/>
         <Button Grid.Row="1" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
             VerticalAlignment="Center" Width="120" Margin="0,35,140,35" Click="SystemComponentViewer_Click"/>
+
         <Button Grid.Row="1" Grid.Column="0" Name="ExportDXF_3D" Content="Export DXF" 
                 HorizontalAlignment="Right" Height="20"
             VerticalAlignment="Center" Width="100" Margin="0,35,270,35" Click="ExportDXF_3D_Click"/>
-        <Button Grid.Row="1" Grid.Column="0" Name="View_2D" Content="2D View" HorizontalAlignment="Left" 
+        
+        <Button Grid.Row="1" Grid.Column="0" Name="View_2D" Content ="View 2D" HorizontalAlignment="Left" 
                 Height="20" VerticalAlignment="Center" Width="70" Margin="90,35,0,35" Click="View_2D_Click"/>
+ 
         <Button Name="Clear3DModel" Grid.Row="1" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
                 VerticalAlignment="Center" Width="70" Margin="5,35,0,35" Click="Clear3DModel_Click" Height="20" />
+
+        <Button Name="WindSpeedChart" Grid.Row="1" Grid.Column="0" Content="WindSpeed" HorizontalAlignment="Left" 
+                VerticalAlignment="Center" Width="70" Margin="175,35,0,35" Click="WindSpeedChart_Click" Height="20" />
     </Grid>
 </Window>

@@ -42,10 +42,12 @@ namespace PFD
                 FillComboboxValues("SnowRegions", "snowZone", ref reader, ref Combobox_SnowRegion);
                 FillComboboxValues("WindRegions", "windRegion", ref reader, ref Combobox_WindRegion);
                 FillComboboxValues("ASNZS1170_2_421_THM_category", "terrainCategory_abb", ref reader, ref Combobox_TerrainRoughness);
-                FillComboboxValues("ASNZS1170_2_Tab3_2_WDM", "cardinalDirection", ref reader, ref Combobox_WindDirection);
                 FillComboboxValues("SiteSubSoilClass", "class", ref reader, ref Combobox_SiteSubSoilClass);
                 reader.Close();
             }
+
+            for (int i = 0; i < 360; i++)
+                Combobox_AngleWindDirection.Items.Add(i);
 
             loadInputComboboxIndexes sloadInput;
 
@@ -54,7 +56,7 @@ namespace PFD
             sloadInput.SiteSubSoilClassIndex = 1;
             sloadInput.ImportanceLevelIndex = 1;
             sloadInput.TerrainRoughnessIndex = 0;
-            sloadInput.WindDirectionIndex = 8;
+            sloadInput.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
             sloadInput.SiteElevation = 0; // m above sea level
             sloadInput.FaultDistanceDmin = 20f; // km
             sloadInput.FaultDistanceDmax = 20f; // km

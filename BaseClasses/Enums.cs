@@ -427,7 +427,7 @@ namespace BaseClasses
         public int DesignLifeIndex;
         public int SiteSubSoilClassIndex;
         public int TerrainRoughnessIndex;
-        public int WindDirectionIndex;
+        public int AngleWindDirectionIndex;
         public float SiteElevation;
         public float FaultDistanceDmin;
         public float FaultDistanceDmax;

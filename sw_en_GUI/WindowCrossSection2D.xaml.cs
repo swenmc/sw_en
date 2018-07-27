@@ -84,7 +84,7 @@ namespace sw_en_GUI
                 CalculateModelLimits(plate.PointsOut2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             }
 
-            PointsIn = null; // Todo - dopracovat (pole viacerych poli bodov pre definovanie otvorov), teoreticky moze mat plech okreme dier pre skrutky aj vacsie vyrezy a rozne otvory
+            PointsIn = null; // Todo - dopracovat (pole viacerych poli bodov pre definovanie otvorov), teoreticky moze mat plech okrem dier pre skrutky aj vacsie vyrezy a rozne otvory
 
             PointsHoles = plate.HolesCentersPoints2D;
 

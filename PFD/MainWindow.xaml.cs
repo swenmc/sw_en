@@ -53,6 +53,9 @@ namespace PFD
         public List<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
         public CPFDLoadInput loadinput;
+        public CCalcul_1170_2 wind;
+        public CCalcul_1170_3 snow;
+        public CCalcul_1170_5 eq;
 
         public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
@@ -295,30 +298,13 @@ namespace PFD
             float fSuperImposed_DeadLoad = 450f; // N/m2
 
             // Wind
-            /*
-            sWindInputData.eWindRegion = loadinput.Wind_Region;
-            sWindInputData.iWindDirectionIndex = loadinput.WindDirectionIndex;
-            sWindInputData.fTerrainCategory = loadinput.TerrainRoughnessIndex; // Database
-            */
-
-            sWindInputData.eWindRegion = EWindRegion.eA6;
-            sWindInputData.iWindDirectionIndex = 8;
-            sWindInputData.fTerrainCategory = 2.5f;
-            sWindInputData.fh = vm.fh2;
-            CCalcul_1170_2 wind = new CCalcul_1170_2(sBuildingInputData, sWindInputData);
+            CalculateWindLoad();
 
             // Snow
-            CCalcul_1170_3 snow = new CCalcul_1170_3();
+            CalculateSnowLoad();
 
             // Earthquake / Seismic Design
-            sSeisInputData.sSiteSubsoilClass = "D";
-            sSeisInputData.fProximityToFault = 20000; // m
-            sSeisInputData.fZoneFactor_Z = 0.13f;
-            sSeisInputData.fPeriodAlongXDirection_Tx = 0.4f; //sec
-            sSeisInputData.fPeriodAlongYDirection_Ty = 0.4f; //sec
-            sSeisInputData.fSpectralShapeFactor_Ch_T = 3.0f;
-
-            CCalcul_1170_5 eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
+            CalculateEQParameters();
 
             // TODO  - toto je potrebne presunut niekam k prierezom
             // Nastavit hodnoty pre vypocet
@@ -754,6 +740,38 @@ namespace PFD
             Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
             Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
             */
+        }
+
+        public void CalculateSnowLoad()
+        {
+            snow = new CCalcul_1170_3();
+        }
+
+        public void CalculateWindLoad()
+        {
+            /*
+            sWindInputData.eWindRegion = loadinput.Wind_Region;
+            sWindInputData.iWindDirectionIndex = loadinput.WindDirectionIndex;
+            sWindInputData.fTerrainCategory = loadinput.TerrainRoughnessIndex; // Database
+            */
+
+            sWindInputData.eWindRegion = EWindRegion.eA6;
+            sWindInputData.iWindDirectionIndex = 8;
+            sWindInputData.fTerrainCategory = 2.5f;
+            sWindInputData.fh = vm.fh2;
+            wind = new CCalcul_1170_2(sBuildingInputData, sWindInputData);
+        }
+
+        public void CalculateEQParameters()
+        {
+            sSeisInputData.sSiteSubsoilClass = "D";
+            sSeisInputData.fProximityToFault = 20000; // m
+            sSeisInputData.fZoneFactor_Z = 0.13f;
+            sSeisInputData.fPeriodAlongXDirection_Tx = 0.4f; //sec
+            sSeisInputData.fPeriodAlongYDirection_Ty = 0.4f; //sec
+            sSeisInputData.fSpectralShapeFactor_Ch_T = 3.0f;
+
+            eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
         }
 
         private void DeleteLists()
@@ -1207,6 +1225,14 @@ namespace PFD
         private void Combobox_LoadCase_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateAll();
+        }
+
+        private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateWindLoad();
+
+            WindSpeedChart wind_chart = new WindSpeedChart(wind);
+            wind_chart.Show();
         }
     }
 }

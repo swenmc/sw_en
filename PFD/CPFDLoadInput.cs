@@ -31,7 +31,7 @@ namespace PFD
         private int MSnowRegionIndex;
         private int MWindRegionIndex;
         private int MTerrainRoughnessIndex;
-        private int MWindDirectionIndex;
+        private int MAngleWindDirectionIndex;
         private int MSiteSubSoilClassIndex;
         private float MFaultDistanceDmin;
         private float MFaultDistanceDmax;
@@ -234,18 +234,18 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int WindDirectionIndex
+        public int AngleWindDirectionIndex
         {
             get
             {
-                return MWindDirectionIndex;
+                return MAngleWindDirectionIndex;
             }
 
             set
             {
-                MWindDirectionIndex = value;
+                MAngleWindDirectionIndex = value;
 
-                NotifyPropertyChanged("WindDirectionIndex");
+                NotifyPropertyChanged("AngleWindDirectionIndex");
             }
         }
 
@@ -476,7 +476,7 @@ namespace PFD
             SiteSubSoilClassIndex = sloadInput.SiteSubSoilClassIndex;
             ImportanceClassIndex = sloadInput.ImportanceLevelIndex;
             TerrainRoughnessIndex = sloadInput.TerrainRoughnessIndex;
-            WindDirectionIndex = sloadInput.WindDirectionIndex;
+            AngleWindDirectionIndex = sloadInput.AngleWindDirectionIndex;
             SiteElevation = sloadInput.SiteElevation;
             FaultDistanceDmin = sloadInput.FaultDistanceDmin;
             FaultDistanceDmax = sloadInput.FaultDistanceDmax;
