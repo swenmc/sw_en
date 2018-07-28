@@ -28,7 +28,10 @@ namespace PFD
         public Canvas Canvas2D = null;
         public CCalcul_1170_2 windCalculationData;
         public float modelMarginLeft_x;
+        public float modelMarginRight_x;
+        public float modelMarginTop_y;
         public float modelMarginBottom_y;
+        public float modelBottomPosition_y;
         public float fReal_Model_Zoom_FactorX;
         public float fReal_Model_Zoom_FactorY;
         public double dWidth;
@@ -38,52 +41,94 @@ namespace PFD
         float[] farrayValuesY1;
         float[] farrayValuesY2;
 
+        string[] arrayTextX1_CardinalDirections;
+
         public WindSpeedChart(CCalcul_1170_2 windCalculationData_temp)
         {
             InitializeComponent();
 
             windCalculationData = windCalculationData_temp;
 
-            modelMarginLeft_x = 10;
-            modelMarginBottom_y = 400;
-
-            farrayValuesX = windCalculationData.fAnglesForV_sit;
-
-            bool bDisplayFactor_M_D = true;
-
             dWidth = this.Width;
             dHeight = this.Height;
 
-            fReal_Model_Zoom_FactorX = 0.9f * (float)(dWidth / farrayValuesX[farrayValuesX.Length - 1]);
+            modelMarginLeft_x = 10;
+            modelMarginRight_x = 10;
+            modelMarginTop_y = 50;
+            modelMarginBottom_y = 10;
+            modelBottomPosition_y = (float)dHeight - modelMarginBottom_y;
+
+            arrayTextX1_CardinalDirections = windCalculationData.sWindDirections_9;
+
+            bool bUse_9_Values = true;
+            bool bDisplayFactor_M_D = false;
+
+            if (bUse_9_Values)
+                farrayValuesX = windCalculationData.fM_D_array_angles_9;
+            else
+                farrayValuesX = windCalculationData.fM_D_array_angles_360;
+
+            fReal_Model_Zoom_FactorX = (float)((dWidth - modelMarginLeft_x - modelMarginRight_x) / farrayValuesX[farrayValuesX.Length - 1]);
 
             if (bDisplayFactor_M_D)
             {
-                farrayValuesY1 = windCalculationData.fM_D_array360;
+                if (bUse_9_Values)
+                    farrayValuesY1 = windCalculationData.fM_D_array_values_9;
+                else
+                    farrayValuesY1 = windCalculationData.fM_D_array_values_360;
+
                 farrayValuesY2 = null;
 
-                fReal_Model_Zoom_FactorY = 0.7f * (float)(dHeight / farrayValuesY1[0]);
+                fReal_Model_Zoom_FactorY = (float)((dHeight - modelMarginTop_y - modelMarginTop_y) / farrayValuesY1[0]);
             }
             else
             {
-                farrayValuesY1 = windCalculationData.fV_sit_ULS_Theta;
-                farrayValuesY2 = windCalculationData.fV_sit_SLS_Theta;
+                if (bUse_9_Values)
+                {
+                    farrayValuesY1 = windCalculationData.fV_sit_ULS_Theta_9;
+                    farrayValuesY2 = windCalculationData.fV_sit_SLS_Theta_9;
+                }
+                else
+                {
+                    farrayValuesY1 = windCalculationData.fV_sit_ULS_Theta_360;
+                    farrayValuesY2 = windCalculationData.fV_sit_SLS_Theta_360;
+                }
 
-                float fReal_Model_Zoom_FactorY_temp1 = 0.7f * (float)(dHeight / farrayValuesY1[0]);
-                float fReal_Model_Zoom_FactorY_temp2 = 0.7f * (float)(dHeight / farrayValuesY2[0]);
+                float fReal_Model_Zoom_FactorY_temp1 = (float)((dHeight - modelMarginTop_y - modelMarginTop_y) / farrayValuesY1[0]);
+                float fReal_Model_Zoom_FactorY_temp2 = (float)((dHeight - modelMarginTop_y - modelMarginTop_y) / farrayValuesY2[0]);
 
                 fReal_Model_Zoom_FactorY = MathF.Min(fReal_Model_Zoom_FactorY_temp1, fReal_Model_Zoom_FactorY_temp2);
             }
 
             if (farrayValuesY1 != null)
-                DrawPolyLine(farrayValuesX, farrayValuesY1, 10, 10, Brushes.Red, new PenLineCap(), new PenLineCap(), 1, canvasForImage);
+                DrawPolyLine(farrayValuesX, farrayValuesY1, modelMarginTop_y, modelMarginLeft_x, Brushes.Red, new PenLineCap(), new PenLineCap(), 1, canvasForImage);
 
             if(farrayValuesY2 != null)
-                DrawPolyLine(farrayValuesX, farrayValuesY2, 10, 10, Brushes.Blue, new PenLineCap(), new PenLineCap(), 1, canvasForImage);
+                DrawPolyLine(farrayValuesX, farrayValuesY2, modelMarginTop_y, modelMarginLeft_x, Brushes.Blue, new PenLineCap(), new PenLineCap(), 1, canvasForImage);
 
             // x-axis
-            DrawPolyLine(new float[2] { 0, 1.02f * 360}, new float[2] { modelMarginBottom_y, modelMarginBottom_y }, modelMarginBottom_y, 10, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+            DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x + 1.02f * 360}, new float[2] { modelBottomPosition_y, modelBottomPosition_y }, modelBottomPosition_y, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             // y-axis
-            DrawPolyLine(new float[2] { 0, 0 }, new float[2] { 0, 1.2f * farrayValuesY1[0] }, modelMarginBottom_y - fReal_Model_Zoom_FactorY * 1.2f * farrayValuesY1[0], 10, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+            DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { 0, 1.1f * farrayValuesY1[0] }, modelBottomPosition_y - fReal_Model_Zoom_FactorY * 1.1f * farrayValuesY1[0], modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+
+            // x- axis description
+            // Angles of Cardinal Directions
+            DrawTexts(farrayValuesX, farrayValuesX, 0.01f, Brushes.Blue);
+
+            // Cardinal Directions
+            DrawTexts(arrayTextX1_CardinalDirections, farrayValuesX, -0.04f, Brushes.Red);
+
+            // y-axis description
+            float[] arrYDescription_Factors = new float[12] { 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f };
+            float[] arrYDescription_Speed = new float[9] { 0f, 10f, 20f, 30f, 40f, 50f, 60f, 70f, 80f };
+
+            if (bDisplayFactor_M_D)
+                DrawTexts(arrYDescription_Factors, 0, arrYDescription_Factors, Brushes.ForestGreen);
+            else
+                DrawTexts(arrYDescription_Speed, 0, arrYDescription_Speed, Brushes.ForestGreen);
+
+            // Values description
+            DrawTexts(farrayValuesY1, farrayValuesX, farrayValuesY1, Brushes.Firebrick);
 
             Canvas2D = canvasForImage;
         }
@@ -94,7 +139,7 @@ namespace PFD
 
             for (int i = 0; i < arrPointsCoordX.Length; i++)
             {
-                points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * arrPointsCoordX[i], modelMarginBottom_y - fReal_Model_Zoom_FactorY * arrPointsCoordY[i]));
+                points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * arrPointsCoordX[i], modelBottomPosition_y - fReal_Model_Zoom_FactorY * arrPointsCoordY[i]));
             }
 
             Polyline myLine = new Polyline();
@@ -109,6 +154,73 @@ namespace PFD
             Canvas.SetTop(myLine, dCanvasTopTemp);
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
+        }
+
+        public void DrawTexts(string[] array_text, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color)
+        {
+            float[] arrPointsCoordY = new float[arrPointsCoordX.Length];
+            for (int i = 0; i < arrPointsCoordY.Length; i++)
+                arrPointsCoordY[i] = fPointsCoordY; // Fill array Items with same value
+
+            DrawTexts(array_text, arrPointsCoordX, arrPointsCoordY, color);
+        }
+
+        public void DrawTexts(string[] array_text, float fPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color)
+        {
+            float[] arrPointsCoordX = new float[arrPointsCoordY.Length];
+            for (int i = 0; i < arrPointsCoordX.Length; i++)
+                arrPointsCoordX[i] = fPointsCoordX; // Fill array Items with same value
+
+            DrawTexts(array_text, arrPointsCoordX, arrPointsCoordY, color);
+        }
+
+        public void DrawTexts(string [] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color)
+        {
+            for (int i = 0; i < array_text.Length; i++)
+            {
+                DrawText(array_text[i], modelMarginLeft_x + fReal_Model_Zoom_FactorX * arrPointsCoordX[i], modelBottomPosition_y - fReal_Model_Zoom_FactorY * arrPointsCoordY[i], 16, color, canvasForImage);
+            }
+        }
+
+        public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color)
+        {
+            DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, fPointsCoordY, color);
+        }
+
+        public void DrawTexts(float[] array_ValuesToDisplay, float fPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color)
+        {
+            DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), fPointsCoordX, arrPointsCoordY, color);
+        }
+
+        public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color)
+        {
+            DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay),arrPointsCoordX, arrPointsCoordY, color);
+        }
+
+        public string[] ConvertArrayFloatToString(float[] array_float, int iDecimalPlaces = 3)
+        {
+            if (array_float != null)
+            {
+                string[] array_string = new string[array_float.Length];
+                for (int i = 0; i < array_string.Length; i++)
+                    array_string[i] = (Math.Round(array_float[i], iDecimalPlaces)).ToString();
+
+                        return array_string;
+
+            }
+            return null;
+        }
+
+        public void DrawText(string text, double posx, double posy, double fontSize, SolidColorBrush color, Canvas imageCanvas)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Foreground = color;
+            Canvas.SetLeft(textBlock, posx);
+            Canvas.SetTop(textBlock, posy);
+            textBlock.Margin = new Thickness(2, 2, 0, 0);
+            textBlock.FontSize = fontSize;
+            imageCanvas.Children.Add(textBlock);
         }
     }
 }
