@@ -459,48 +459,48 @@ namespace sw_en_GUI
         /// Draw methods for each Draw Element Type
         /// </summary>
         public void DrawRectangle(SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas, Point lt, Point br)
-		{
-			Rectangle rect = new Rectangle();
-			rect.Stretch = Stretch.Fill;
-			rect.Fill = fillColor;
-			rect.Stroke = strokeColor;
-			rect.Width = br.X - lt.X;
-			rect.Height = br.Y - lt.Y;
-			Canvas.SetTop(rect, lt.Y);
-			Canvas.SetLeft(rect, lt.X);
-			imageCanvas.Children.Add(rect);
-		}
+        {
+            Rectangle rect = new Rectangle();
+            rect.Stretch = Stretch.Fill;
+            rect.Fill = fillColor;
+            rect.Stroke = strokeColor;
+            rect.Width = br.X - lt.X;
+            rect.Height = br.Y - lt.Y;
+            Canvas.SetTop(rect, lt.Y);
+            Canvas.SetLeft(rect, lt.X);
+            imageCanvas.Children.Add(rect);
+        }
 
-		private void Window_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.OemPlus) 
-			{
-				zoomIn2D();
-				Console.WriteLine("zoomIn");
-			}
-			else if (e.Key == Key.OemMinus) 
-			{
-				zoomOut2D();
-				Console.WriteLine("zoomOut");
-			}
-			//else MessageBox.Show("else");
-		}
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.OemPlus)
+            {
+                zoomIn2D();
+                Console.WriteLine("zoomIn");
+            }
+            else if (e.Key == Key.OemMinus)
+            {
+                zoomOut2D();
+                Console.WriteLine("zoomOut");
+            }
+            //else MessageBox.Show("else");
+        }
 
-		private void zoomIn2D() 
-		{
-			Line l = (Line)canvasForImage.Children[0];
-			l.X2 *= 2;
-			l.Y2 *= 2;
-		}
+        private void zoomIn2D()
+        {
+            Line l = (Line)canvasForImage.Children[0];
+            l.X2 *= 2;
+            l.Y2 *= 2;
+        }
 
-		private void zoomOut2D()
-		{
-			Line l = (Line)canvasForImage.Children[0];
-			l.X2 /= 2;
-			l.Y2 /= 2;
-		}
+        private void zoomOut2D()
+        {
+            Line l = (Line)canvasForImage.Children[0];
+            l.X2 /= 2;
+            l.Y2 /= 2;
+        }
 
-        public void CalculateModelLimits(float [,] Points_temp, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
+        public void CalculateModelLimits(float[,] Points_temp, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
         {
             fTempMax_X = float.MinValue;
             fTempMin_X = float.MaxValue;

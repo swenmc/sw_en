@@ -31,6 +31,13 @@ namespace M_EC1.AS_NZS
         public float[] fV_sit_SLS_Theta_9;
         public string[] sWindDirections_9;
 
+        public float[] fV_sit_Theta_angles_8;
+        public float[] fV_sit_ULS_Theta_4;
+        public float[] fV_sit_SLS_Theta_4;
+
+        public float[] fV_des_ULS_Theta_4;
+        public float[] fV_des_SLS_Theta_4;
+
         float fs_shielding; // Shielding parameter Table 4.3 
         float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
         float fM_t = 1.0f;  // Topographic multiplier (Cl 4.4)
@@ -42,13 +49,6 @@ namespace M_EC1.AS_NZS
         float fz_max; // m
         float fz;
         float fRho_air = 1.2f; // kgm^3
-
-        // Table 4.1
-        // Terrain category
-
-
-        float fv_des_theta_ULS = 41; // m/s    // Site wind speed
-        float fv_des_theta_SLS = 34; // m/s    // Site wind speed
 
         // Design wind pressure
 
@@ -165,30 +165,46 @@ namespace M_EC1.AS_NZS
             fV_sit_ULS_Theta_9[8] = fV_sit_ULS_Theta_9[0];
             fV_sit_SLS_Theta_9[8] = fV_sit_SLS_Theta_9[0];
 
-            float fV_sit_ULS_Theta_0 = 0;
-            float fV_sit_ULS_Theta_90 = 0;
-            float fV_sit_ULS_Theta_180 = 0;
-            float fV_sit_ULS_Theta_270 = 0;
+            fV_sit_ULS_Theta_4 = new float[4];
+            fV_sit_SLS_Theta_4 = new float[4];
 
-            float fV_sit_SLS_Theta_0 = 0;
-            float fV_sit_SLS_Theta_90 = 0;
-            float fV_sit_SLS_Theta_180 = 0;
-            float fV_sit_SLS_Theta_270 = 0;
+            for (int i = 0; i < fV_sit_ULS_Theta_4.Length; i++)
+            {
+                fV_sit_ULS_Theta_4[i] = 0;
+                fV_sit_SLS_Theta_4[i] = 0;
+            }
+
+            fV_sit_Theta_angles_8 = new float[8]
+            {sWindInput.iWindDirectionIndex + 000 - 45,
+             sWindInput.iWindDirectionIndex + 000 + 45,
+             sWindInput.iWindDirectionIndex + 090 - 45,
+             sWindInput.iWindDirectionIndex + 090 + 45,
+             sWindInput.iWindDirectionIndex + 180 - 45,
+             sWindInput.iWindDirectionIndex + 180 + 45,
+             sWindInput.iWindDirectionIndex + 270 - 45,
+             sWindInput.iWindDirectionIndex + 270 + 45
+            };
+
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 000, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[0]); // 000
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 090, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[1]); // 090
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 180, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[2]); // 180
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 270, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[3]); // 270
+
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 000, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[0]); // 000
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 090, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[1]); // 090
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 180, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[2]); // 180
+            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 270, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[3]); // 270
 
             // 2.3 Design wind speed
-            // TODO Martin
-            // Ak by sme chceli navrhovat efektivnejsie je potrebne urobit prepocet rychlosti podla orientacie budovy voci svetovym stranam, vid obrazky 2.2 a 2.3 v norme
-            // Temporary - zatial nastavujeme konzervativne
+            fV_des_ULS_Theta_4 = new float[4];
+            fV_des_SLS_Theta_4 = new float[4];
 
-            float fV_des_ULS_Theta_0 = MathF.Max(30, fV_sit_ULS_Theta_0); // Minimum 30 m/s, see Note A1 in Cl. 2.3
-            float fV_des_ULS_Theta_90 = MathF.Max(30, fV_sit_ULS_Theta_90);
-            float fV_des_ULS_Theta_180 = MathF.Max(30, fV_sit_ULS_Theta_180);
-            float fV_des_ULS_Theta_270 = MathF.Max(30, fV_sit_ULS_Theta_270);
-
-            float fV_des_SLS_Theta_0 = fV_sit_SLS_Theta_0;
-            float fV_des_SLS_Theta_90 = fV_sit_SLS_Theta_90;
-            float fV_des_SLS_Theta_180 = fV_sit_SLS_Theta_180;
-            float fV_des_SLS_Theta_270 = fV_sit_SLS_Theta_270;
+            // Minimum 30 m/s, see Note A1 in Cl. 2.3
+            for (int i = 0; i < fV_des_ULS_Theta_4.Length; i++)
+            {
+                fV_des_ULS_Theta_4[i] = MathF.Max(30, fV_sit_ULS_Theta_4[i]);
+                fV_des_SLS_Theta_4[i] = fV_sit_SLS_Theta_4[i];
+            }
 
             /*
             float fq_ULS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
@@ -209,8 +225,8 @@ namespace M_EC1.AS_NZS
 
             float fC_dyn = 1.0f; // Dynamic response factor
 
-            fp_ULS = (0.5f * fRho_air) * MathF.Pow2(fv_des_theta_ULS) * fC_fig_e * fC_dyn;
-            fp_SLS = (0.5f * fRho_air) * MathF.Pow2(fv_des_theta_SLS) * fC_fig_e * fC_dyn;
+            fp_ULS = (0.5f * fRho_air) * MathF.Pow2(fV_des_ULS_Theta_4[0]) * fC_fig_e * fC_dyn;
+            fp_SLS = (0.5f * fRho_air) * MathF.Pow2(fV_des_SLS_Theta_4[0]) * fC_fig_e * fC_dyn;
         }
 
 
@@ -347,6 +363,31 @@ namespace M_EC1.AS_NZS
             // Bilinear Interpolation
             float[] arrayHeaderColumnValues = new float[] { 1, 2, 3, 4 }; // Terrain categories in table 4.1
             fM_z_cat = ArrayF.GetBilinearInterpolationValuePositive(Table_4_1, arrayHeaderColumnValues, fz, sWindInput.fTerrainCategory);
+        }
+
+        protected void SetDesignWindSpeedValue(int initialAngleBetweenBetaAndTheta_deg, float [] fV_sit_Theta_360, ref float fV_des_Theta)
+        {
+            int intervalMinimum_deg = initialAngleBetweenBetaAndTheta_deg - 45;
+            int intervalMaximum_deg = initialAngleBetweenBetaAndTheta_deg + 45;
+
+            for (int i = intervalMinimum_deg; i < intervalMaximum_deg; i++)
+            {
+                if (i < 0)
+                {
+                    if (fV_sit_Theta_360[360 + intervalMinimum_deg + i] > fV_des_Theta)
+                        fV_des_Theta = fV_sit_Theta_360[360 + intervalMinimum_deg + i];
+                }
+                else if (i < intervalMaximum_deg)
+                {
+                    if (fV_sit_Theta_360[i] > fV_des_Theta)
+                        fV_des_Theta = fV_sit_Theta_360[i];
+                }
+                else // intervalMaximum_deg > 360
+                {
+                    if (fV_sit_Theta_360[-360 + intervalMaximum_deg + i] > fV_des_Theta)
+                        fV_des_Theta = fV_sit_Theta_360[-360 + intervalMaximum_deg + i];
+                }
+            }
         }
     }
 }

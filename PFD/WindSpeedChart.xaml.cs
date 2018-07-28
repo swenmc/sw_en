@@ -100,6 +100,7 @@ namespace PFD
                 fReal_Model_Zoom_FactorY = MathF.Min(fReal_Model_Zoom_FactorY_temp1, fReal_Model_Zoom_FactorY_temp2);
             }
 
+            // Values
             if (farrayValuesY1 != null)
                 DrawPolyLine(farrayValuesX, farrayValuesY1, modelMarginTop_y, modelMarginLeft_x, Brushes.Red, new PenLineCap(), new PenLineCap(), 1, canvasForImage);
 
@@ -120,7 +121,7 @@ namespace PFD
 
             // y-axis description
             float[] arrYDescription_Factors = new float[12] { 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f };
-            float[] arrYDescription_Speed = new float[9] { 0f, 10f, 20f, 30f, 40f, 50f, 60f, 70f, 80f };
+            float[] arrYDescription_Speed = new float[17] { 0f, 5f, 10f, 15f, 20f, 25f, 30f, 35f, 40f, 45f, 50f, 55f, 60f, 65f, 70f, 75f, 80f };
 
             if (bDisplayFactor_M_D)
                 DrawTexts(arrYDescription_Factors, 0, arrYDescription_Factors, Brushes.ForestGreen);
@@ -129,6 +130,10 @@ namespace PFD
 
             // Values description
             DrawTexts(farrayValuesY1, farrayValuesX, farrayValuesY1, Brushes.Firebrick);
+
+            // Draw wind zones Design Wind Speed for Theta
+            if (!bDisplayFactor_M_D)
+                DrawWindSpeedValues(windCalculationData.fV_sit_ULS_Theta_4, windCalculationData.fV_sit_Theta_angles_8);
 
             Canvas2D = canvasForImage;
         }
@@ -221,6 +226,63 @@ namespace PFD
             textBlock.Margin = new Thickness(2, 2, 0, 0);
             textBlock.FontSize = fontSize;
             imageCanvas.Children.Add(textBlock);
+        }
+
+        public void DrawRectangle(SolidColorBrush strokeColor, SolidColorBrush fillColor, double fillColorOpacity, double thickness, Canvas imageCanvas, Point lt, Point br)
+        {
+            SolidColorBrush brush = new SolidColorBrush(fillColor.Color) { Opacity = fillColorOpacity };
+
+            Rectangle rect = new Rectangle();
+            rect.Stretch = Stretch.Fill;
+            rect.Fill = brush;
+            rect.Stroke = strokeColor;
+            rect.Width = br.X - lt.X;
+            rect.Height = br.Y - lt.Y;
+            Canvas.SetTop(rect, lt.Y);
+            Canvas.SetLeft(rect, lt.X);
+            imageCanvas.Children.Add(rect);
+        }
+
+        public void DrawWindSpeedValues(float [] fWindSpeedValues, float [] fWindSpeedAngles)
+        {
+            float fillColorOpacity = 0.5f;
+            float thickness = 1;
+
+            Color[] colors = new Color[4] { Colors.DeepSkyBlue, Colors.DarkGreen, Colors.DarkOrange, Colors.DeepPink };
+            Point lt;
+            Point br;
+            float fx_coord_lt;
+            float fx_coord_br;
+
+            // 4 basic segments
+            for (int i = 0; i < fWindSpeedValues.Length; i++)
+            {
+                if (fWindSpeedAngles[i * 2] < 0)
+                    fx_coord_lt = 0;
+                else
+                    fx_coord_lt = fWindSpeedAngles[i * 2];
+
+                if (fWindSpeedAngles[i * 2 + 1] > 360)
+                    fx_coord_br = 360;
+                else
+                    fx_coord_br = fWindSpeedAngles[i * 2 + 1];
+
+                lt = new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * fx_coord_lt, modelBottomPosition_y - fReal_Model_Zoom_FactorY * fWindSpeedValues[i]);
+                br = new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * fx_coord_br, modelBottomPosition_y);
+
+                DrawRectangle(new SolidColorBrush(colors[i]), new SolidColorBrush(colors[i]), fillColorOpacity, thickness, canvasForImage, lt, br);
+            }
+
+            if(fWindSpeedAngles[0] < 0 || fWindSpeedAngles[7] > 360) // We need to draw 5th segment
+            {
+                fx_coord_lt = fWindSpeedAngles[7];
+                fx_coord_br = 360;
+
+                lt = new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * fx_coord_lt, modelBottomPosition_y - fReal_Model_Zoom_FactorY * fWindSpeedValues[0]);
+                br = new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * fx_coord_br, modelBottomPosition_y);
+
+                DrawRectangle(new SolidColorBrush(colors[0]), new SolidColorBrush(colors[0]), fillColorOpacity, thickness, canvasForImage, lt, br);
+            }
         }
     }
 }
