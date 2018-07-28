@@ -61,7 +61,7 @@ namespace PFD
             arrayTextX1_CardinalDirections = windCalculationData.sWindDirections_9;
 
             bool bUse_9_Values = true;
-            bool bDisplayFactor_M_D = false;
+            bool bDisplayFactor_M_D = true; // TODO - combobox - nastavitelne uzivatelsky ci chce zobrazit faktor M_D [-] alebo rychlosti V_R [m/s]
 
             if (bUse_9_Values)
                 farrayValuesX = windCalculationData.fM_D_array_angles_9;
@@ -120,6 +120,7 @@ namespace PFD
             DrawTexts(arrayTextX1_CardinalDirections, farrayValuesX, -0.04f, Brushes.Red);
 
             // y-axis description
+            // TODO - obmezit maximum podla dlzky osi y
             float[] arrYDescription_Factors = new float[12] { 0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f };
             float[] arrYDescription_Speed = new float[17] { 0f, 5f, 10f, 15f, 20f, 25f, 30f, 35f, 40f, 45f, 50f, 55f, 60f, 65f, 70f, 75f, 80f };
 
