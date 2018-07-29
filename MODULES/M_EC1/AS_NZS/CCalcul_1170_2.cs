@@ -14,6 +14,7 @@ namespace M_EC1.AS_NZS
     {
         public SQLiteConnection conn;
         BuildingDataInput sBuildInput;
+        BuildingGeometryDataInput sGeometryInput;
         WindLoadDataInput sWindInput;
 
         // Table 3.1
@@ -37,6 +38,9 @@ namespace M_EC1.AS_NZS
 
         public float[] fV_des_ULS_Theta_4;
         public float[] fV_des_SLS_Theta_4;
+
+        public float[] fp_ULS_Theta_4;
+        public float[] fp_SLS_Theta_4;
 
         float fs_shielding; // Shielding parameter Table 4.3 
         float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
@@ -96,12 +100,13 @@ namespace M_EC1.AS_NZS
 
         float fC_pe_ac_1 = 0.7f;
 
-        public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, WindLoadDataInput sWindData_temp)
+        public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp)
         {
             sBuildInput = sBuildingData_temp;
+            sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sWindInput.fh; // Set height of building
+            fz = sGeometryInput.fH_2; // Set height of building
 
             // Regional wind speed - AS/NZS 1170.2 Table 3.1
             fV_R_ULS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_ULS_Wind, sWindInput.eWindRegion); //m /s (ULS)
@@ -119,7 +124,7 @@ namespace M_EC1.AS_NZS
             float fh_s = 0.1f;     // Average roof height of shielding buildings
             float fb_s = 0.1f;     // Average breadth of shielding buildings, normal to the wind stream
             int in_s = 1;          // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
-            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sWindInput.fh, in_s);
+            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fH_2, in_s);
             SetShieldingMultiplier();
 
             // M_t
@@ -211,29 +216,574 @@ namespace M_EC1.AS_NZS
             float fq_SLS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
             */
 
-            float fC_pe = 0f;
-            float fC_pi = 0f;
-            float fK_a = 0f;
-            float fK_l = 0f;
-            float fK_p = 0f;
+            /*
+            An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
+            than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
+            total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
+            to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
+            */
 
-            float fK_ce = 0.8f;
-            float fK_ci = 0.0f;
+            // TODO Martin - vypocty faktorov su zjednodusene, po vydani prvej verzie tomu venovat viac casu a prepracovat
 
-            float fC_fig_e = fC_pe * fK_a * fK_ce * fK_l * fK_p; // Aerodynamic shape factor
-            float fC_fig_i = fC_pi * fK_ci; // Aerodynamic shape factor
+            // Internal pressure
+            float fC_pi_min = -0.2f;
+            float fC_pi_max = 0.0f;
+
+            // External pressure
+
+            // Gable Roof (TODO - change for other roof shape, see Fig. 5.2)
+            float fb; // Width perpendicular to the wind direction
+            float fd; // Length in wind direction;
+            float fh = 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) + sGeometryInput.fH_1;
+
+            float fRatioDtoB_Theta0or180 = sGeometryInput.fL / sGeometryInput.fW;
+            float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fL;
+
+            float fRatioDtoB_Theta90or270 = sGeometryInput.fW / sGeometryInput.fL;
+            float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fW;
+
+            // Table 5.2(A) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - windward wall (W)
+            bool bIsBuildingOnGround = true;
+            bool bIsVariableWindSpeedinHeight = false;
+
+            float fC_pe_W_wall;
+
+            if (fh > 25 || (fh <= 25f && bIsVariableWindSpeedinHeight) || !bIsBuildingOnGround)
+                fC_pe_W_wall = 0.8f;
+            else
+                fC_pe_W_wall = 0.7f;
+
+            // Table 5.2(B) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - leeward wall (L)
+            float fC_pe_L_wall_Theta0or180;
+            float fC_pe_L_wall_Theta90or270;
+
+            float[] fx;
+            float[] fy;
+
+            // 0 deg
+            if (sGeometryInput.fRoofPitch_deg < 10)
+            {
+                fx = new float[5] { 0, 1, 2, 4, 9999 };
+                fy = new float[5] { -0.5f, -0.5f, -0.3f, -0.2f, -0.2f };
+            }
+            else if (sGeometryInput.fRoofPitch_deg < 25)
+            {
+                fx = new float[4] { 10, 15, 20, 25 };
+                fy = new float[4] { -0.3f, -0.3f, -0.4f, -0.5f }; // - 0.5 for 25 deg ???
+            }
+            else
+            {
+                fx = new float[4] { 0, 0.1f, 0.3f, 9999 };
+                fy = new float[4] { -0.75f, -0.75f, -0.5f, -0.5f };
+            }
+
+            fC_pe_L_wall_Theta0or180 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta0or180, fx, fy);
+
+            // 90 deg
+            fx = new float[5] { 0, 1, 2, 4, 9999 };
+            fy = new float[5] { -0.5f, -0.5f, -0.3f, -0.2f, -0.2f };
+            fC_pe_L_wall_Theta90or270 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta90or270, fx, fy);
+
+            // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
+            float[] fC_pe_S_wall_dimensions = new float[5] {0, fh, 2 * fh, 3 * fh, 9999 };
+            float[] fC_pe_S_wall_values = new float[5] { -0.65f, -0.65f, -0.5f, -0.3f, -0.2f };
+
+            // Roof
+            float[] fC_pe_U_roof_dimensions;
+            float[] fC_pe_U_roof_values_min;
+            float[] fC_pe_U_roof_values_max;
+
+            float[] fC_pe_D_roof_dimensions;
+            float[] fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
+            float[] fC_pe_D_roof_values_max = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
+
+            float[] fC_pe_R_roof_dimensions;
+            float[] fC_pe_R_roof_values_min;
+            float[] fC_pe_R_roof_values_max;
+
+            if(sGeometryInput.fRoofPitch_deg < 10) // Table 5.3(A)
+            {
+                // TODO Martin - Interpolation shall only be carried out on values of the same sign ???? To bude neprijemne !!!!
+
+                // Table 5.3(A) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U), and downwind slope (D) and (R) for gable roofs, for Alpha < 10°
+                float[] fC_pe_UD_roof_dimensions = new float[6];
+                float[] fC_pe_UD_roof_values_min = new float[6];
+                float[] fC_pe_UD_roof_values_max = new float[6];
+
+                Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta0or180, ref fC_pe_UD_roof_dimensions, ref fC_pe_UD_roof_values_min, ref fC_pe_UD_roof_values_max);
+
+                fC_pe_U_roof_dimensions = fC_pe_UD_roof_dimensions;
+                fC_pe_U_roof_values_min = fC_pe_UD_roof_values_min;
+                fC_pe_U_roof_values_max = fC_pe_UD_roof_values_max;
+
+                for (int i = 0; i < fC_pe_UD_roof_dimensions.Length; i++)
+                {
+                    // Find dimension corresponding to the half of building width (change of gable roof slope from U to D)
+                    // and set factor for U
+                    if (fC_pe_UD_roof_dimensions[i] < (fC_pe_UD_roof_dimensions.Length - 1) && fC_pe_UD_roof_dimensions[i+1] >= 0.5f * sGeometryInput.fW)
+                    {
+                        fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
+                        fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
+                        fC_pe_D_roof_values_max = new float[fC_pe_UD_roof_values_max.Length - i];
+
+                        for (int k = i; k < fC_pe_UD_roof_dimensions.Length - i; k++)
+                        {
+                            fC_pe_D_roof_dimensions[k] = fC_pe_UD_roof_dimensions[i + k];
+                            fC_pe_D_roof_values_min[k] = fC_pe_UD_roof_values_min[i + k];
+                            fC_pe_D_roof_values_max[k] = fC_pe_UD_roof_values_max[i + k];
+                        }
+                        
+                    }
+
+                    break; // Do not continue in cycle
+                }
+            }
+            else // More or equal to 10°
+            {
+                fC_pe_U_roof_dimensions = new float[1] { sGeometryInput.fW };
+                fC_pe_U_roof_values_min = new float[1];
+                fC_pe_U_roof_values_max = new float[1];
+
+                fC_pe_D_roof_dimensions = new float[1] { sGeometryInput.fW };
+                fC_pe_D_roof_values_min = new float[1];
+                fC_pe_D_roof_values_max = new float[1];
+
+                // Table 5.3(B) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U) Alpha >= 10°
+                Calculate_Cpe_Table_5_3_B(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, ref fC_pe_U_roof_values_min, ref fC_pe_U_roof_values_max);
+
+                // Table 5.3(C) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - downhill slope (D), and (R) for hip roofs, for Alpha >= 10°
+                Calculate_Cpe_Table_5_3_C(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, fRatioDtoB_Theta0or180, ref fC_pe_D_roof_values_min, ref fC_pe_D_roof_values_max);
+            }
+
+            // Wind 90 or 270 deg
+            fC_pe_R_roof_dimensions = new float[6];
+            fC_pe_R_roof_values_min = new float[6];
+            fC_pe_R_roof_values_max = new float[6];
+            Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
+
+            // 5.4.2 Area reduction factor(Ka) for roofs and side walls
+            float fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
+            float fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
+            float fWallArea_90or270 = sGeometryInput.fH_1 * sGeometryInput.fW + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) * sGeometryInput.fW; // Gable Roof
+
+            fx = new float[5] { 0, 10, 25, 100, 9999 };
+            fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
+
+            float fK_a_roof = ArrayF.GetLinearInterpolationValuePositive(fRoofArea, fx, fy);
+            float fK_a_wall_0or180 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_0or180, fx, fy);
+            float fK_a_wall_90or270 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_90or270, fx, fy);
+
+            // 5.4.4 Local pressure factor(K l) for cladding
+            float fK_l = 1f; // K_l - local pressure factor, as given in Paragraph D1.3
+            // Table 5.7 - reduction factor(Kr) due to parapets
+            // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
+            float fK_p = 1f; // K_p - net porosity factor, as given in Paragraph D1.4
+
+            float fK_ce = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            float fK_ci = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+
+            // Aerodynamic shape factor (C fig)
+            // Internal and external pressure factors
+
+            // Internal presssure
+            float fC_fig_i_min = AS_NZS_1170_2.Eq_52_1____(fC_pi_min, fK_ci); // Aerodynamic shape factor
+            float fC_fig_i_max = AS_NZS_1170_2.Eq_52_1____(fC_pi_max, fK_ci); // Aerodynamic shape factor
+
+            // External pressure
+            // Walls
+
+            float fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            float fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+
+            float fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            float fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+
+            float[] fC_fig_e_S_wall_0or180 = new float[fC_pe_S_wall_values.Length];
+
+            for (int i = 0; i < fC_fig_e_S_wall_0or180.Length; i++)
+                fC_fig_e_S_wall_0or180[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+
+            float[] fC_fig_e_S_wall_90or270 = new float[fC_pe_S_wall_values.Length];
+
+            for(int i = 0; i< fC_fig_e_S_wall_90or270.Length; i++)
+                fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+
+            // Roof
+            float[] fC_fig_e_U_roof_values_min = new float[fC_pe_U_roof_values_min.Length];
+            float[] fC_fig_e_U_roof_values_max = new float[fC_pe_U_roof_values_max.Length];
+
+            for (int i = 0; i < fC_fig_e_U_roof_values_min.Length; i++)
+            {
+                fC_fig_e_U_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_U_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            }
+
+            float[] fC_fig_e_D_roof_values_min = new float[fC_pe_D_roof_values_min.Length];
+            float[] fC_fig_e_D_roof_values_max = new float[fC_pe_D_roof_values_max.Length];
+
+            for (int i = 0; i < fC_fig_e_D_roof_values_min.Length; i++)
+            {
+                fC_fig_e_D_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_D_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            }
+
+            float[] fC_fig_e_R_roof_values_min = new float[fC_pe_R_roof_values_min.Length];
+            float[] fC_fig_e_R_roof_values_max = new float[fC_pe_R_roof_values_max.Length];
+
+            for (int i = 0; i < fC_fig_e_R_roof_values_min.Length; i++)
+            {
+                fC_fig_e_R_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_R_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            }
 
             float fC_dyn = 1.0f; // Dynamic response factor
 
-            fp_ULS = (0.5f * fRho_air) * MathF.Pow2(fV_des_ULS_Theta_4[0]) * fC_fig_e * fC_dyn;
-            fp_SLS = (0.5f * fRho_air) * MathF.Pow2(fV_des_SLS_Theta_4[0]) * fC_fig_e * fC_dyn;
+            // Surface pressures
+            // Internal presssure
+
+            float[] fp_i_min_ULS_Theta_4 = new float[4];
+            float[] fp_i_min_SLS_Theta_4 = new float[4];
+
+            for (int i = 0; i < fp_i_min_ULS_Theta_4.Length; i++)
+            {
+                fp_i_min_ULS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_i_min, fC_dyn);
+                fp_i_min_SLS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_i_min, fC_dyn);
+            }
+
+            float[] fp_i_max_ULS_Theta_4 = new float[4];
+            float[] fp_i_max_SLS_Theta_4 = new float[4];
+
+            for (int i = 0; i < fp_i_max_ULS_Theta_4.Length; i++)
+            {
+                fp_i_max_ULS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_i_min, fC_dyn);
+                fp_i_max_SLS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_i_min, fC_dyn);
+            }
+
+            // External pressure
+            // Walls
+
+            float[] fp_e_W_wall_ULS_Theta_4 = new float[4];
+            float[] fp_e_W_wall_SLS_Theta_4 = new float[4];
+
+            fp_e_W_wall_ULS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[0], fC_fig_e_W_wall_0or180, fC_dyn);
+            fp_e_W_wall_ULS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[1], fC_fig_e_W_wall_90or270, fC_dyn);
+            fp_e_W_wall_ULS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[2], fC_fig_e_W_wall_0or180, fC_dyn);
+            fp_e_W_wall_ULS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[3], fC_fig_e_W_wall_90or270, fC_dyn);
+
+            fp_e_W_wall_SLS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[0], fC_fig_e_W_wall_0or180, fC_dyn);
+            fp_e_W_wall_SLS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[1], fC_fig_e_W_wall_90or270, fC_dyn);
+            fp_e_W_wall_SLS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[2], fC_fig_e_W_wall_0or180, fC_dyn);
+            fp_e_W_wall_SLS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[3], fC_fig_e_W_wall_90or270, fC_dyn);
+
+            float[] fp_e_L_wall_ULS_Theta_4 = new float[4];
+            float[] fp_e_L_wall_SLS_Theta_4 = new float[4];
+
+            fp_e_L_wall_ULS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[0], fC_fig_e_L_wall_0or180, fC_dyn);
+            fp_e_L_wall_ULS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[1], fC_fig_e_L_wall_90or270, fC_dyn);
+            fp_e_L_wall_ULS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[2], fC_fig_e_L_wall_0or180, fC_dyn);
+            fp_e_L_wall_ULS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[3], fC_fig_e_L_wall_90or270, fC_dyn);
+
+            fp_e_L_wall_SLS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[0], fC_fig_e_L_wall_0or180, fC_dyn);
+            fp_e_L_wall_SLS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[1], fC_fig_e_L_wall_90or270, fC_dyn);
+            fp_e_L_wall_SLS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[2], fC_fig_e_L_wall_0or180, fC_dyn);
+            fp_e_L_wall_SLS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[3], fC_fig_e_L_wall_90or270, fC_dyn);
+
+            float[,] fp_e_S_wall_ULS_Theta_4 = new float[4, fC_fig_e_S_wall_0or180.Length];
+            float[,] fp_e_S_wall_SLS_Theta_4 = new float[4, fC_fig_e_S_wall_0or180.Length];
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int k = 0; k < fC_fig_e_S_wall_0or180.Length; k++)
+                {
+                    if (i == 0 || i == 2)
+                    {
+                        fp_e_S_wall_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_S_wall_0or180[k], fC_dyn);
+                        fp_e_S_wall_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_S_wall_0or180[k], fC_dyn);
+                    }
+                    else
+                    {
+                        fp_e_S_wall_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_S_wall_90or270[k], fC_dyn);
+                        fp_e_S_wall_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_S_wall_90or270[k], fC_dyn);
+                    }
+                }
+            }
+
+            // Roof
+            float[,] fp_e_min_U_roof_ULS_Theta_4 = new float[4, fC_fig_e_U_roof_values_min.Length];
+            float[,] fp_e_min_U_roof_SLS_Theta_4 = new float[4, fC_fig_e_U_roof_values_min.Length];
+
+            float[,] fp_e_max_U_roof_ULS_Theta_4 = new float[4, fC_fig_e_U_roof_values_max.Length];
+            float[,] fp_e_max_U_roof_SLS_Theta_4 = new float[4, fC_fig_e_U_roof_values_max.Length];
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int k = 0; k < fC_fig_e_U_roof_values_min.Length; k++)
+                {
+                    fp_e_min_U_roof_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_U_roof_values_min[k], fC_dyn);
+                    fp_e_min_U_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_U_roof_values_min[k], fC_dyn);
+                }
+
+                for (int k = 0; k < fC_fig_e_U_roof_values_max.Length; k++)
+                {
+                    fp_e_max_U_roof_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_U_roof_values_max[k], fC_dyn);
+                    fp_e_max_U_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_U_roof_values_max[k], fC_dyn);
+                }
+            }
+
+            float[,] fp_e_min_D_roof_ULS_Theta_4 = new float[4, fC_fig_e_D_roof_values_min.Length];
+            float[,] fp_e_min_D_roof_SLS_Theta_4 = new float[4, fC_fig_e_D_roof_values_min.Length];
+
+            float[,] fp_e_max_D_roof_ULS_Theta_4 = new float[4, fC_fig_e_D_roof_values_max.Length];
+            float[,] fp_e_max_D_roof_SLS_Theta_4 = new float[4, fC_fig_e_D_roof_values_max.Length];
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int k = 0; k < fC_fig_e_D_roof_values_min.Length; k++)
+                {
+                    fp_e_min_D_roof_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_D_roof_values_min[k], fC_dyn);
+                    fp_e_min_D_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_D_roof_values_min[k], fC_dyn);
+                }
+
+                for (int k = 0; k < fC_fig_e_D_roof_values_max.Length; k++)
+                {
+                    fp_e_max_D_roof_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_D_roof_values_max[k], fC_dyn);
+                    fp_e_max_D_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_D_roof_values_max[k], fC_dyn);
+                }
+            }
+
+            float[,] fp_e_min_R_roof_ULS_Theta_4 = new float[4, fC_fig_e_R_roof_values_min.Length];
+            float[,] fp_e_min_R_roof_SLS_Theta_4 = new float[4, fC_fig_e_R_roof_values_min.Length];
+
+            float[,] fp_e_max_R_roof_ULS_Theta_4 = new float[4, fC_fig_e_R_roof_values_max.Length];
+            float[,] fp_e_max_R_roof_SLS_Theta_4 = new float[4, fC_fig_e_R_roof_values_max.Length];
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int k = 0; k < fC_fig_e_R_roof_values_min.Length; k++)
+                {
+                    fp_e_min_R_roof_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_R_roof_values_min[k], fC_dyn);
+                    fp_e_min_R_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_R_roof_values_min[k], fC_dyn);
+                }
+
+                for (int k = 0; k < fC_fig_e_R_roof_values_max.Length; k++)
+                {
+                    fp_e_max_R_roof_ULS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_e_R_roof_values_max[k], fC_dyn);
+                    fp_e_max_R_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_R_roof_values_max[k], fC_dyn);
+                }
+            }
         }
 
+        protected void Calculate_Cpe_Table_5_3_A(float fh, float fRatioHtoD, ref float []fC_pe_roof_dimensions, ref float []fC_pe_roof_values_min, ref float []fC_pe_roof_values_max)
+        {
+            float[] fx = new float[6] { 0, 0.5f * fh, fh, 2 * fh, 3 * fh, 9999 };
+            float[] fy_min_htod_05 = new float[6] { -0.9f, -0.9f, -0.9f, -0.5f, -0.3f, -0.2f };
+            float[] fy_min_htod_10 = new float[6] { -1.3f, -1.3f, -0.7f, -0.7f, -0.7f, -0.7f }; //???
 
+            float[] fy_max_htod_05 = new float[6] { -0.4f, -0.4f, -0.4f, -0.0f, 0.1f, 0.2f };
+            float[] fy_max_htod_10 = new float[6] { -0.6f, -0.6f, -0.3f, -0.3f, -0.3f, -0.3f }; //???
+
+            if (fRatioHtoD <= 0.5f)
+            {
+                fC_pe_roof_dimensions = fx;
+                fC_pe_roof_values_min = fy_min_htod_05;
+                fC_pe_roof_values_max = fy_max_htod_05;
+            }
+            else if (fRatioHtoD < 1.0f)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    fC_pe_roof_dimensions[i] = fx[i];
+
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(0.5f, 1.0f, fy_min_htod_05[i], fy_min_htod_10[i], fRatioHtoD);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = ArrayF.GetLinearInterpolationValuePositive(0.5f, 1.0f, fy_max_htod_05[i], fy_max_htod_10[i], fRatioHtoD);
+                }
+            }
+            else
+            {
+                fC_pe_roof_dimensions = fx;
+                fC_pe_roof_values_min = fy_min_htod_10;
+                fC_pe_roof_values_max = fy_max_htod_10;
+            }
+        }
+
+        protected void Calculate_Cpe_Table_5_3_B(float fh, float fAlpha_deg, float fRatioHtoD, ref float[] fC_pe_roof_values_min, ref float[] fC_pe_roof_values_max)
+        {
+            float[] fx = new float[8] { 10, 15, 20, 25, 30, 35, 45, 9999 };
+            float[] fy_min_htod_025 = new float[8] { -0.7f, -0.5f, -0.3f, -0.2f, -0.2f,  0.0f, 0, 0};
+            float[] fy_min_htod_050 = new float[8] { -0.9f, -0.9f, -0.4f, -0.3f, -0.2f, -0.2f, 0, 0};
+            float[] fy_min_htod_100 = new float[8] { -1.3f, -1.3f, -0.7f, -0.5f, -0.3f, -0.2f, 0, 0}; //???
+
+            float[] fy_max_htod_025 = new float[8] { -0.3f,  0.0f,  0.2f,  0.3f,  0.4f,  0.5f, 0.57f ,0.57f};
+            float[] fy_max_htod_050 = new float[8] { -0.4f, -0.3f,  0.0f,  0.2f,  0.3f,  0.4f, 0.57f, 0.57f};
+            float[] fy_max_htod_100 = new float[8] { -0.6f, -0.5f, -0.3f,  0.0f,  0.2f,  0.3f, 0.57f, 0.57f}; //???
+
+            if (fRatioHtoD <= 0.25f)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_min_htod_025);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_max_htod_025);
+                }
+            }
+            else if (fRatioHtoD < 0.5f)
+            {
+                float[] fValuesMinTemp = new float[8];
+                float[] fValuesMaxTemp = new float[8];
+
+                // Interpolate h to d
+                for (int i = 0; i < 8; i++)
+                {
+                    // Interpolate Cpe min
+                    fValuesMinTemp[i] = ArrayF.GetLinearInterpolationValuePositive(0.25f, 0.50f, fy_min_htod_025[i], fy_min_htod_050[i], fRatioHtoD);
+
+                    // Interpolate Cpe max
+                    fValuesMaxTemp[i] = ArrayF.GetLinearInterpolationValuePositive(0.25f, 0.50f, fy_max_htod_025[i], fy_max_htod_050[i], fRatioHtoD);
+                }
+
+                // Interpolate - angle (roof pitch)
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesMinTemp);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesMaxTemp);
+                }
+            }
+            else if (fRatioHtoD < 1.0f)
+            {
+                float[] fValuesMinTemp = new float[8];
+                float[] fValuesMaxTemp = new float[8];
+
+                // Interpolate h to d
+                for (int i = 0; i < 8; i++)
+                {
+                    // Interpolate Cpe min
+                    fValuesMinTemp[i] = ArrayF.GetLinearInterpolationValuePositive(0.5f, 1.0f, fy_min_htod_050[i], fy_min_htod_100[i], fRatioHtoD);
+
+                    // Interpolate Cpe max
+                    fValuesMaxTemp[i] = ArrayF.GetLinearInterpolationValuePositive(0.5f, 1.0f, fy_max_htod_050[i], fy_max_htod_100[i], fRatioHtoD);
+                }
+
+                // Interpolate - angle (roof pitch)
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesMinTemp);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesMaxTemp);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_min_htod_100);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_max_htod_100);
+                }
+            }
+
+            if (fAlpha_deg >= 45)
+            {
+                fC_pe_roof_values_min[0] = 0;
+                fC_pe_roof_values_max[0] = 0.8f * (float)Math.Sin(fAlpha_deg / 180 * Math.PI);
+            }
+        }
+
+        protected void Calculate_Cpe_Table_5_3_C(float fh, float fAlpha_deg, float fRatioHtoD, float fRatioBtoD, ref float[] fC_pe_roof_values_min, ref float[] fC_pe_roof_values_max)
+        {
+            float[] fx = new float[5] { 10, 15, 20, 25, 9999 };
+            float[] fy_htod_025 = new float[5] { -0.3f, -0.5f, -0.6f, -0.6f, -0.6f };
+            float[] fy_htod_050 = new float[5] { -0.5f, -0.5f, -0.6f, -0.6f, -0.6f };
+            float[] fy_htod_100 = new float[5] { -0.7f, -0.6f, -0.6f, -0.6f, -0.6f }; 
+
+            if (fRatioHtoD <= 0.25f)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_htod_025);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = fC_pe_roof_values_min[i];
+                }
+            }
+            else if (fRatioHtoD < 0.5f)
+            {
+                float[] fValuesTemp = new float[5];
+
+                // Interpolate h to d
+                for (int i = 0; i < 5; i++)
+                {
+                    fValuesTemp[i] = ArrayF.GetLinearInterpolationValuePositive(0.25f, 0.50f, fy_htod_025[i], fy_htod_050[i], fRatioHtoD);
+                }
+
+                // Interpolate - angle (roof pitch)
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesTemp);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = fC_pe_roof_values_min[i];
+                }
+            }
+            else if (fRatioHtoD < 1.0f)
+            {
+                float[] fValuesTemp = new float[5];
+
+                // Interpolate h to d
+                for (int i = 0; i < 5; i++)
+                {
+                    fValuesTemp[i] = ArrayF.GetLinearInterpolationValuePositive(0.5f, 1.0f, fy_htod_050[i], fy_htod_100[i], fRatioHtoD);
+                }
+
+                // Interpolate - angle (roof pitch)
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesTemp);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = fC_pe_roof_values_min[i];
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    // Interpolate Cpe min
+                    fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_htod_100);
+
+                    // Interpolate Cpe max
+                    fC_pe_roof_values_max[i] = fC_pe_roof_values_min[i];
+                }
+            }
+
+            if (fAlpha_deg >= 25)
+            {
+                if (fRatioBtoD <= 3)
+                    fC_pe_roof_values_min[0] = fC_pe_roof_values_max[0] = -0.6f;
+                else if (fRatioBtoD < 8)
+                    fC_pe_roof_values_min[0] = fC_pe_roof_values_max[0] = -0.06f * (7.0f + fRatioBtoD);
+                else
+                    fC_pe_roof_values_min[0] = fC_pe_roof_values_max[0] = -0.9f;
+            }
+        }
         // Table 3.2 - Wind Direction Factors
         protected void SetWindDirectionFactors_9_Items()
         {
-            fM_D_array_values_9 = new float [9]; // 8 wind directions (N (0 deg), NE (45 deg), E (90 deg), SE (135 deg), S (180 deg), SW (225 deg), W (270 deg), NW (315 deg)) + 1 for 360 deg
+            fM_D_array_values_9 = new float[9]; // 8 wind directions (N (0 deg), NE (45 deg), E (90 deg), SE (135 deg), S (180 deg), SW (225 deg), W (270 deg), NW (315 deg)) + 1 for 360 deg
             sWindDirections_9 = new string[9];
 
             // Connect to database
@@ -249,7 +799,7 @@ namespace M_EC1.AS_NZS
 
                 command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + (int)sWindInput.eWindRegion + "'", conn);
 
-                string sWindRegion="";
+                string sWindRegion = "";
 
                 using (reader = command.ExecuteReader())
                 {
@@ -273,7 +823,7 @@ namespace M_EC1.AS_NZS
                         fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString());
 
                         // 3.3.2 - Regions B,C and D
-                        if(sWindInput.eWindRegion == EWindRegion.eB ||
+                        if (sWindInput.eWindRegion == EWindRegion.eB ||
                            sWindInput.eWindRegion == EWindRegion.eC ||
                            sWindInput.eWindRegion == EWindRegion.eD)
                             fM_D_array_values_9[i] = 0.95f;
@@ -331,7 +881,7 @@ namespace M_EC1.AS_NZS
         {
             // Table 4.1
 
-            float[,] Table_4_1 = new float[12,5];
+            float[,] Table_4_1 = new float[12, 5];
 
             // Connect to database
             using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
@@ -341,7 +891,7 @@ namespace M_EC1.AS_NZS
 
                 string sTableName = "ASNZS1170_2_Tab4_1_THM";
 
-                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName , conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName, conn);
 
                 using (reader = command.ExecuteReader())
                 {
@@ -365,7 +915,7 @@ namespace M_EC1.AS_NZS
             fM_z_cat = ArrayF.GetBilinearInterpolationValuePositive(Table_4_1, arrayHeaderColumnValues, fz, sWindInput.fTerrainCategory);
         }
 
-        protected void SetDesignWindSpeedValue(int initialAngleBetweenBetaAndTheta_deg, float [] fV_sit_Theta_360, ref float fV_des_Theta)
+        protected void SetDesignWindSpeedValue(int initialAngleBetweenBetaAndTheta_deg, float[] fV_sit_Theta_360, ref float fV_des_Theta)
         {
             int intervalMinimum_deg = initialAngleBetweenBetaAndTheta_deg - 45;
             int intervalMaximum_deg = initialAngleBetweenBetaAndTheta_deg + 45;

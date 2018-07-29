@@ -59,6 +59,7 @@ namespace PFD
 
         public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
+        public BuildingGeometryDataInput sGeometryInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
@@ -127,6 +128,12 @@ namespace PFD
             vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
+
+            sGeometryInputData.fH_2 = vm.fh2;
+            sGeometryInputData.fH_1 = vm.WallHeight;
+            sGeometryInputData.fW = vm.GableWidth;
+            sGeometryInputData.fL = vm.Length;
+            sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
             DataTable dt;
             // Prepare data for generating of door blocks
@@ -758,8 +765,7 @@ namespace PFD
             sWindInputData.eWindRegion = EWindRegion.eA6;
             sWindInputData.iWindDirectionIndex = 8;
             sWindInputData.fTerrainCategory = 2.5f;
-            sWindInputData.fh = vm.fh2;
-            wind = new CCalcul_1170_2(sBuildingInputData, sWindInputData);
+            wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
 
         public void CalculateEQParameters()

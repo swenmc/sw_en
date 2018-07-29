@@ -207,6 +207,7 @@ namespace MATH.ARRAY
                             else  // yi < yi-1
                                 return yd[i] + (xd[i] - x) * ((yd[i - 1] - yd[i]) / (xd[i] - xd[i - 1]));
                         }
+
                     }
                 }
 

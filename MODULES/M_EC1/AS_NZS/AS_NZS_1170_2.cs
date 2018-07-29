@@ -122,6 +122,18 @@ namespace M_EC1.AS_NZS
         {
             return 1.0f + 0.7f * (1.0f - (Math.Abs(fx) / fL_2)); // Eq. (4.4(3)) // fM_h
         }
+        public static float Eq_52_1____(float fC_pi, float fK_ci)
+        {
+            return fC_pi * fK_ci; // Eq. (5.2(1)) // fC_fig_i
+        }
+        public static float Eq_52_2____(float fC_pe, float fK_a, float fK_ce, float fK_l, float fK_p)
+        {
+            return fC_pe * fK_a * fK_ce * fK_l * fK_p; // Eq. (5.2(2)) // fC_fig_e
+        }
+        public static float Eq_52_3____(float fC_f, float fK_a, float fK_c)
+        {
+            return fC_f * fK_a * fK_c; // Eq. (5.2(3)) // fC_fig
+        }
         public static float Get_Mh_442_(bool bIsEscarpment, float fH, float fH_2Lu_ratio, float fx, float fz)
         {
             /*

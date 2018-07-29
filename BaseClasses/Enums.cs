@@ -382,12 +382,20 @@ namespace BaseClasses
         public float fR_SLS;                     // Number of years - SLS
     }
 
+    public struct BuildingGeometryDataInput
+    {
+        public float fW;     // Width X -axis
+        public float fL;     // Length Y -axis
+        public float fH_2;   // Height of building
+        public float fH_1;   // Height of wall
+        public float fRoofPitch_deg;
+    }
+
     public struct WindLoadDataInput
     {
         public EWindRegion eWindRegion; // Wind region // Wind region Cl 3.2. Fig 3.1(A)
         public int iWindDirectionIndex;
         public float fTerrainCategory;
-        public float fh; // Height
     }
 
     public struct SeisLoadDataInput

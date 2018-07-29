@@ -19,7 +19,7 @@ namespace PFD
         private float MGableWidth;
         private float MLength;
         private float MWallHeight;
-        private float MRoofPitch;
+        private float MRoofPitch_deg;
         private int MFrames;
         private float MGirtDistance;
         private float MPurlinDistance;
@@ -57,7 +57,7 @@ namespace PFD
                 Length = dmodel.fL;
                 WallHeight = dmodel.fh;
                 Frames = dmodel.iFrNo;
-                RoofPitch = dmodel.fRoof_Pitch_deg;
+                RoofPitch_deg = dmodel.fRoof_Pitch_deg;
                 GirtDistance = dmodel.fdist_girt;
                 PurlinDistance = dmodel.fdist_purlin;
                 ColumnDistance = dmodel.fdist_frontcolumn;
@@ -69,7 +69,7 @@ namespace PFD
 
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fL1 = MLength / (MFrames - 1);
-                fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
+                fRoofPitch_radians = MRoofPitch_deg * MATH.MathF.fPI / 180f;
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                 RoofCladdingIndex = 1;
@@ -99,7 +99,7 @@ namespace PFD
                     // Recalculate roof pitch
                     fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));
                     // Set new value in GUI
-                    MRoofPitch = (fRoofPitch_radians * 180f / MATH.MathF.fPI);
+                    MRoofPitch_deg = (fRoofPitch_radians * 180f / MATH.MathF.fPI);
                 }
 
                 NotifyPropertyChanged("GableWidth");
@@ -155,11 +155,11 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float RoofPitch
+        public float RoofPitch_deg
         {
             get
             {
-                return MRoofPitch;
+                return MRoofPitch_deg;
             }
 
             set
@@ -170,11 +170,11 @@ namespace PFD
 
                 if (value < 3 || value > 35)
                     throw new ArgumentException("Roof Pitch must be between 2 and 35 degrees");
-                MRoofPitch = value;
+                MRoofPitch_deg = value;
 
                 if (MModelIndex != 0)
                 {
-                    fRoofPitch_radians = MRoofPitch * MATH.MathF.fPI / 180f;
+                    fRoofPitch_radians = MRoofPitch_deg * MATH.MathF.fPI / 180f;
                     // Recalculate h2
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
