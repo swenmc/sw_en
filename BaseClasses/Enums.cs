@@ -436,6 +436,11 @@ namespace BaseClasses
         public int SiteSubSoilClassIndex;
         public int TerrainRoughnessIndex;
         public int AngleWindDirectionIndex;
+    }
+
+
+    public struct loadInputTextBoxValues
+    {
         public float SiteElevation;
         public float FaultDistanceDmin;
         public float FaultDistanceDmax;

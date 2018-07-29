@@ -49,22 +49,25 @@ namespace PFD
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
 
-            loadInputComboboxIndexes sloadInput;
+            loadInputComboboxIndexes sloadInputComboBoxes;
 
-            sloadInput.LocationIndex = 0;
-            sloadInput.DesignLifeIndex = 4;
-            sloadInput.SiteSubSoilClassIndex = 1;
-            sloadInput.ImportanceLevelIndex = 1;
-            sloadInput.TerrainRoughnessIndex = 0;
-            sloadInput.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
-            sloadInput.SiteElevation = 0; // m above sea level
-            sloadInput.FaultDistanceDmin = 20f; // km
-            sloadInput.FaultDistanceDmax = 20f; // km
-            sloadInput.PeriodAlongXDirectionTx = 0.4f;
-            sloadInput.PeriodAlongYDirectionTy = 0.4f;
+            sloadInputComboBoxes.LocationIndex = 0;
+            sloadInputComboBoxes.DesignLifeIndex = 4;
+            sloadInputComboBoxes.SiteSubSoilClassIndex = 1;
+            sloadInputComboBoxes.ImportanceLevelIndex = 1;
+            sloadInputComboBoxes.TerrainRoughnessIndex = 0;
+            sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
+
+            loadInputTextBoxValues sloadInputTextBoxes;
+
+            sloadInputTextBoxes.SiteElevation = 30;      // m  // nastavovat tu - zavisi od Location Index
+            sloadInputTextBoxes.FaultDistanceDmin = 0f; // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
+            sloadInputTextBoxes.FaultDistanceDmax = 0f; // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
+            sloadInputTextBoxes.PeriodAlongXDirectionTx = 0.4f;
+            sloadInputTextBoxes.PeriodAlongYDirectionTy = 0.4f;
 
             // Loading
-            CPFDLoadInput loadinput = new CPFDLoadInput(sloadInput);
+            CPFDLoadInput loadinput = new CPFDLoadInput(sloadInputComboBoxes, sloadInputTextBoxes);
             loadinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = loadinput;
         }

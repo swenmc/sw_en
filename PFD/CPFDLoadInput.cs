@@ -179,6 +179,8 @@ namespace PFD
 
             set
             {
+                if (value < 0 || value > 2000)
+                    throw new ArgumentException("Site elevation must be between 0 and 2000 meters");
                 MSiteElevation = value;
 
                 NotifyPropertyChanged("SiteElevation");
@@ -468,20 +470,21 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDLoadInput(loadInputComboboxIndexes sloadInput)
+        public CPFDLoadInput(loadInputComboboxIndexes sloadInputComboBoxes, loadInputTextBoxValues sloadInputTextBoxes)
         {
             // Set default location
-            LocationIndex = sloadInput.LocationIndex;
-            DesignLifeIndex = sloadInput.DesignLifeIndex;
-            SiteSubSoilClassIndex = sloadInput.SiteSubSoilClassIndex;
-            ImportanceClassIndex = sloadInput.ImportanceLevelIndex;
-            TerrainRoughnessIndex = sloadInput.TerrainRoughnessIndex;
-            AngleWindDirectionIndex = sloadInput.AngleWindDirectionIndex;
-            SiteElevation = sloadInput.SiteElevation;
-            FaultDistanceDmin = sloadInput.FaultDistanceDmin;
-            FaultDistanceDmax = sloadInput.FaultDistanceDmax;
-            PeriodAlongXDirectionTx = sloadInput.PeriodAlongXDirectionTx;
-            PeriodAlongYDirectionTy = sloadInput.PeriodAlongYDirectionTy;
+            LocationIndex = sloadInputComboBoxes.LocationIndex;
+            DesignLifeIndex = sloadInputComboBoxes.DesignLifeIndex;
+            SiteSubSoilClassIndex = sloadInputComboBoxes.SiteSubSoilClassIndex;
+            ImportanceClassIndex = sloadInputComboBoxes.ImportanceLevelIndex;
+            TerrainRoughnessIndex = sloadInputComboBoxes.TerrainRoughnessIndex;
+            AngleWindDirectionIndex = sloadInputComboBoxes.AngleWindDirectionIndex;
+
+            SiteElevation = sloadInputTextBoxes.SiteElevation;
+            FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin;
+            FaultDistanceDmax = sloadInputTextBoxes.FaultDistanceDmax;
+            PeriodAlongXDirectionTx = sloadInputTextBoxes.PeriodAlongXDirectionTx;
+            PeriodAlongYDirectionTy = sloadInputTextBoxes.PeriodAlongYDirectionTy;
 
             IsSetFromCode = false;
         }
@@ -577,32 +580,23 @@ namespace PFD
                         // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
                         //23.7.2018 O.P.
 
-                        int fMultiplier_M_lee_ID = 1; // Could be empty
+                        int iMultiplier_M_lee_ID = 1; // Could be empty
                         try
                         {
                             if (!reader.IsDBNull(reader.GetOrdinal("windMultiplierM_lee")))
                             {
-                                fMultiplier_M_lee_ID = reader.GetInt32(reader.GetOrdinal("windMultiplierM_lee"));
+                                iMultiplier_M_lee_ID = reader.GetInt32(reader.GetOrdinal("windMultiplierM_lee"));
 
                                 // TODO nacitat data pre index fMultiplier_M_lee_ID z databazy - tabulka multiplierM_lee, vzdialenost (zone_min a zone_max)
                             }
                         }
-                        catch (ArgumentNullException) { }
+                        catch (ArgumentNullException) { iMultiplier_M_lee_ID = 0; }
 
                         int iRainZone = int.Parse(reader["rain_zone"].ToString());
                         int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
 
                         // Site elevation
-                        /*
-                        try
-                        {
-                            if (!reader.IsDBNull(reader.GetOrdinal("D_min_km")))
-                            {
-                                FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
-                            }
-                        }
-                        catch (ArgumentNullException) { }
-                        */
+                        SiteElevation = float.Parse(reader["E_average_m"].ToString());
 
                         // Earthquake
                         ZoneFactorZ = float.Parse(reader["eqFactorZ"].ToString(), nfi);
@@ -614,7 +608,7 @@ namespace PFD
                                 FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { }
+                        catch (ArgumentNullException) { FaultDistanceDmin = 0.00f; }
 
                         try
                         {
@@ -623,7 +617,7 @@ namespace PFD
                                 FaultDistanceDmax = float.Parse(reader["D_max_km"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { }
+                        catch (ArgumentNullException) { FaultDistanceDmax = 0.00f; }
                     }
                 }
 

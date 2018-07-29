@@ -107,7 +107,7 @@
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=RoofPitch, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=RoofPitch_deg, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
                         <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
