@@ -264,8 +264,13 @@ namespace PFD
             // Clear results of previous calculation
             DeleteCalculationResults();
 
-            // TODO - Ondrej - spristupnit data nastavene v TabItem Loads, pripadne je potrebne tuto zalozku interne naplnit aj ked nie je zobrazena
 
+            // TODO - Ondrej - spristupnit data nastavene v TabItem Loads, pripadne je potrebne tuto zalozku interne naplnit aj ked nie je zobrazena
+            UC_Loads loadInput_UC = null;            
+            if (Loads.Content == null) loadInput_UC = new UC_Loads();
+            else loadInput_UC = (UC_Loads)Loads.Content;
+            CPFDLoadInput loadinput = loadInput_UC.DataContext as CPFDLoadInput;
+            
             // Basic data
             /*
             sBuildingInputData.location = (ELocation)loadinput.LocationIndex;
@@ -283,7 +288,7 @@ namespace PFD
             sBuildingInputData.fR_SLS = loadinput.R_SLS;
             */
 
-            // Temporary
+                // Temporary
             sBuildingInputData.location = ELocation.eAuckland;
             sBuildingInputData.iDesignLife = 50;
             sBuildingInputData.iImportanceClass = 2;
@@ -311,6 +316,16 @@ namespace PFD
             CalculateSnowLoad();
 
             // TODO - napojit vstupy z TabItem Components a TabItem Main (rozmery, hmotnosti, pocet prvkov)
+            // 30.7.2018
+            //TabItem Main dostupny cez vm
+            float gableWidth = vm.GableWidth;
+
+            UC_ComponentList componentList_UC = null;
+            if (Model_Component.Content == null) componentList_UC = new UC_ComponentList();
+            else componentList_UC = (UC_ComponentList)Model_Component.Content;
+            //tu som nenasiel ziaden ViewModel napojeny na dany User Control
+            DataGrid grid = componentList_UC.Datagrid_Components;
+
 
             // Temporary values - napojit na vm model a spocitat presne hmotnost ramu a zatazenie
             float fLoadingWidth_Frame = 5; // Zatazovacia sirka ramu

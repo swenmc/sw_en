@@ -268,22 +268,15 @@
                HorizontalContentAlignment="Stretch" 
                VerticalContentAlignment="Stretch" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Margin="5,5,5,88" Grid.Column="1"/>
-        <Button Grid.Row="1" Grid.Column="0" Content="Calculate" HorizontalAlignment="Right" 
-                VerticalAlignment="Center" Width="100"  Margin="0,35,20,35" Click="Calculate_Click" Height="20"/>
-        <Button Grid.Row="1" Grid.Column="0" Name="SystemComponentViewer" Content="Component Viewer" HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="120" Margin="0,35,140,35" Click="SystemComponentViewer_Click"/>
-
-        <Button Grid.Row="1" Grid.Column="0" Name="ExportDXF_3D" Content="Export DXF" 
-                HorizontalAlignment="Right" Height="20"
-            VerticalAlignment="Center" Width="100" Margin="0,35,270,35" Click="ExportDXF_3D_Click"/>
         
-        <Button Grid.Row="1" Grid.Column="0" Name="View_2D" Content ="View 2D" HorizontalAlignment="Left" 
-                Height="20" VerticalAlignment="Center" Width="70" Margin="90,35,0,35" Click="View_2D_Click"/>
- 
-        <Button Name="Clear3DModel" Grid.Row="1" Grid.Column="0" Content="Clear" HorizontalAlignment="Left" 
-                VerticalAlignment="Center" Width="70" Margin="5,35,0,35" Click="Clear3DModel_Click" Height="20" />
-
-        <Button Name="WindSpeedChart" Grid.Row="1" Grid.Column="0" Content="WindSpeed" HorizontalAlignment="Left" 
-                VerticalAlignment="Center" Width="70" Margin="175,35,0,35" Click="WindSpeedChart_Click" Height="20" />
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
+            <Button Name="Clear3DModel" Content="Clear" Width="70" Margin="0 0 10 0" Click="Clear3DModel_Click" Height="20" />
+            <Button Name="WindSpeedChart" Content="WindSpeed" Width="70" Margin="0 0 10 0" Click="WindSpeedChart_Click" Height="20" />
+            <Button Content="Calculate" Width="100"  Margin="0 0 10 0" Click="Calculate_Click" Height="20"/>
+            <Button Name="SystemComponentViewer" Content="Component Viewer" Height="20" Width="120" Margin="0 0 10 0" Click="SystemComponentViewer_Click"/>
+            <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>
+            
+        </StackPanel>
     </Grid>
 </Window>

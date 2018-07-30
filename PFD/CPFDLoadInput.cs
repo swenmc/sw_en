@@ -513,6 +513,9 @@ namespace PFD
 
         protected void SetSpectralShapeFactorsFromDatabaseValues()
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
             // Connect to database
             using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
             {
@@ -543,7 +546,7 @@ namespace PFD
                     while (reader.Read())
                     {
                         sSpectralShapeFactorChTx = reader[sSiteSubSoilClass].ToString();
-                        SpectralShapeFactorChTx = float.Parse(sSpectralShapeFactorChTx);
+                        SpectralShapeFactorChTx = float.Parse(sSpectralShapeFactorChTx, nfi);
                     }
                 }
 
@@ -557,7 +560,7 @@ namespace PFD
                     while (reader.Read())
                     {
                         sSpectralShapeFactorChTy = reader[sSiteSubSoilClass].ToString();
-                        SpectralShapeFactorChTy = float.Parse(sSpectralShapeFactorChTy);
+                        SpectralShapeFactorChTy = float.Parse(sSpectralShapeFactorChTy, nfi);
                     }
                 }
 

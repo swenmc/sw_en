@@ -7,6 +7,7 @@ using MATH.ARRAY;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
+using System.Globalization;
 
 namespace M_EC1.AS_NZS
 {
@@ -114,6 +115,8 @@ namespace M_EC1.AS_NZS
 
         protected float GetReturnPeriodFactor_R(float fRequiredAnnualProbabilityOfExceedance)
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             // Table 3.5
 
             float[] Table_3_5_Column1 = new float[9];
@@ -134,8 +137,8 @@ namespace M_EC1.AS_NZS
                     int i = 0;
                     while (reader.Read())
                     {
-                        Table_3_5_Column1[i] = float.Parse(reader["rapoe_decimal"].ToString());
-                        Table_3_5_Column2[i] = float.Parse(reader["FactorR"].ToString());
+                        Table_3_5_Column1[i] = float.Parse(reader["rapoe_decimal"].ToString(), nfi);
+                        Table_3_5_Column2[i] = float.Parse(reader["FactorR"].ToString(), nfi);
                         i++;
                     }
                 }
@@ -148,6 +151,8 @@ namespace M_EC1.AS_NZS
         }
         protected float GetNearFaultFactor_N_TD(float fRequiredAnnualProbabilityOfExceedance, float fD_km, float fT)
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             // 3.1.6 Near-fault Factor
             if (fRequiredAnnualProbabilityOfExceedance >= 1f / 250f) // 3.1.6.1
                 return 1.0f;
@@ -172,8 +177,8 @@ namespace M_EC1.AS_NZS
                         int i = 0;
                         while (reader.Read())
                         {
-                            Table_3_7_Column1[i] = float.Parse(reader["periodT_sec"].ToString());
-                            Table_3_7_Column2[i] = float.Parse(reader["N_max_T"].ToString());
+                            Table_3_7_Column1[i] = float.Parse(reader["periodT_sec"].ToString(), nfi);
+                            Table_3_7_Column2[i] = float.Parse(reader["N_max_T"].ToString(), nfi);
                             i++;
                         }
                     }

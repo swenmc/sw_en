@@ -7,6 +7,7 @@ using MATH.ARRAY;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
+using System.Globalization;
 
 namespace M_EC1.AS_NZS
 {
@@ -861,6 +862,9 @@ namespace M_EC1.AS_NZS
         // Table 3.2 - Wind Direction Factors
         protected void SetWindDirectionFactors_9_Items()
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
             fM_D_array_values_9 = new float[9]; // 8 wind directions (N (0 deg), NE (45 deg), E (90 deg), SE (135 deg), S (180 deg), SW (225 deg), W (270 deg), NW (315 deg)) + 1 for 360 deg
             sWindDirections_9 = new string[9];
 
@@ -898,7 +902,7 @@ namespace M_EC1.AS_NZS
                     while (reader.Read())
                     {
                         // 3.3.1 Regions A and W
-                        fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString());
+                        fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString(), nfi);
 
                         // 3.3.2 - Regions B,C and D
                         if (sWindInput.eWindRegion == EWindRegion.eB ||
@@ -922,6 +926,8 @@ namespace M_EC1.AS_NZS
 
         protected void SetShieldingMultiplier()
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             // Table 4.3
 
             float[] Table_4_3_Column1 = new float[4];
@@ -942,8 +948,8 @@ namespace M_EC1.AS_NZS
                     int i = 0;
                     while (reader.Read())
                     {
-                        Table_4_3_Column1[i] = float.Parse(reader["shieldingParameter"].ToString());
-                        Table_4_3_Column2[i] = float.Parse(reader["shieldingMultiplierMs"].ToString());
+                        Table_4_3_Column1[i] = float.Parse(reader["shieldingParameter"].ToString(), nfi);
+                        Table_4_3_Column2[i] = float.Parse(reader["shieldingMultiplierMs"].ToString(), nfi);
                         i++;
                     }
                 }
@@ -957,6 +963,9 @@ namespace M_EC1.AS_NZS
 
         protected void SetTerrainHeightMultiplier()
         {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
             // Table 4.1
 
             float[,] Table_4_1 = new float[12, 5];
@@ -976,11 +985,11 @@ namespace M_EC1.AS_NZS
                     int i = 0;
                     while (reader.Read())
                     {
-                        Table_4_1[i, 0] = float.Parse(reader["height_z_m"].ToString());
-                        Table_4_1[i, 1] = float.Parse(reader["tercat_1_Mzcat"].ToString());
-                        Table_4_1[i, 2] = float.Parse(reader["tercat_2_Mzcat"].ToString());
-                        Table_4_1[i, 3] = float.Parse(reader["tercat_3_Mzcat"].ToString());
-                        Table_4_1[i, 4] = float.Parse(reader["tercat_4_Mzcat"].ToString());
+                        Table_4_1[i, 0] = float.Parse(reader["height_z_m"].ToString(), nfi);
+                        Table_4_1[i, 1] = float.Parse(reader["tercat_1_Mzcat"].ToString(), nfi);
+                        Table_4_1[i, 2] = float.Parse(reader["tercat_2_Mzcat"].ToString(), nfi);
+                        Table_4_1[i, 3] = float.Parse(reader["tercat_3_Mzcat"].ToString(), nfi);
+                        Table_4_1[i, 4] = float.Parse(reader["tercat_4_Mzcat"].ToString(), nfi);
                         i++;
                     }
                 }
