@@ -301,14 +301,31 @@ namespace PFD
             // Load Generation
             // General loading
             CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
-            float fLiveLoad_Roof = 250f; // N/m2
-            float fSuperImposed_DeadLoad = 450f; // N/m2
+            float fLiveLoad_Roof = 250f; // N/m2 (napojit na databazu tr. plechov)
+            float fSuperImposed_DeadLoad = 450f; // N/m2 asi moze definovat uzivatel ... v Tab Item Loads
 
             // Wind
             CalculateWindLoad();
 
             // Snow
             CalculateSnowLoad();
+
+            // TODO - napojit vstupy z TabItem Components a TabItem Main (rozmery, hmotnosti, pocet prvkov)
+
+            // Temporary values - napojit na vm model a spocitat presne hmotnost ramu a zatazenie
+            float fLoadingWidth_Frame = 5; // Zatazovacia sirka ramu
+
+            float fMass_Purlins = 5000f;
+            float fMass_Girts = 2500f;
+
+            float fMass_Frame = 3000f;
+            float fMass_Wall = 2000f;
+            float fMass_Roof = fLoadingWidth_Frame * (fLiveLoad_Roof + fSuperImposed_DeadLoad);
+
+            float fMass_Total = fMass_Frame + fMass_Girts + fMass_Wall + fMass_Purlins  + fMass_Roof;
+
+            float fT_1x = GetPeriod(2, vm.WallHeight,  2.5e+6f, 2.1e+8f, fMass_Total); // Iy(AS 4600 - Ix)
+            float fT_1y = GetPeriod(5, vm.WallHeight, 1.3e+6f, 2.1e+8f, fMass_Total);  // Iz(AS 4600 - Iy)
 
             // Earthquake / Seismic Design
             CalculateEQParameters();
@@ -770,14 +787,34 @@ namespace PFD
 
         public void CalculateEQParameters()
         {
+            sSeisInputData.eSiteSubsoilClass = ESiteSubSoilClass.eD;
             sSeisInputData.sSiteSubsoilClass = "D";
-            sSeisInputData.fProximityToFault = 20000; // m
+            sSeisInputData.fProximityToFault_D_km = 20; // km
             sSeisInputData.fZoneFactor_Z = 0.13f;
             sSeisInputData.fPeriodAlongXDirection_Tx = 0.4f; //sec
             sSeisInputData.fPeriodAlongYDirection_Ty = 0.4f; //sec
-            sSeisInputData.fSpectralShapeFactor_Ch_T = 3.0f;
+            sSeisInputData.fSpectralShapeFactor_Ch_Tx = 3.0f;
+            sSeisInputData.fSpectralShapeFactor_Ch_Ty = 3.0f;
 
             eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
+        }
+
+        // Priblizne riesenie (tuhy prievlak)
+        public float GetPeriod(int iNumberOfColumns, float fL, float fI_column, float fE, float fMass_Total)
+        {
+             // Equivalent Stiffness
+            float fk_e = iNumberOfColumns * (3 * fE * fI_column / MathF.Pow3(fL));
+
+            // Natural circular frequency
+            float fOmega = MathF.Sqrt(fk_e / fMass_Total);
+
+            // Natural frequency
+            float fFrequency = fOmega / (2f * MathF.fPI);
+
+            // Natural period
+            float fPeriod_T = 1f / fFrequency;
+
+            return fPeriod_T;
         }
 
         private void DeleteLists()

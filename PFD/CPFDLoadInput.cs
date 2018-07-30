@@ -47,6 +47,7 @@ namespace PFD
         private float MR_ULS_EQ;
         private float MR_SLS;
         private EWindRegion MEWind_Region;
+        private ESiteSubSoilClass MESiteSubSoilClass;
 
         //-------------------------------------------------------------------------------------------------------------
         public int LocationIndex
@@ -468,6 +469,20 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public ESiteSubSoilClass SiteSubSoilClass
+        {
+            get
+            {
+                return MESiteSubSoilClass;
+            }
+
+            set
+            {
+                MESiteSubSoilClass = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDLoadInput(loadInputComboboxIndexes sloadInputComboBoxes, loadInputTextBoxValues sloadInputTextBoxes)
@@ -481,8 +496,8 @@ namespace PFD
             AngleWindDirectionIndex = sloadInputComboBoxes.AngleWindDirectionIndex;
 
             SiteElevation = sloadInputTextBoxes.SiteElevation;
-            FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin;
-            FaultDistanceDmax = sloadInputTextBoxes.FaultDistanceDmax;
+            FaultDistanceDmin = sloadInputTextBoxes.FaultDistanceDmin_km;
+            FaultDistanceDmax = sloadInputTextBoxes.FaultDistanceDmax_km;
             PeriodAlongXDirectionTx = sloadInputTextBoxes.PeriodAlongXDirectionTx;
             PeriodAlongYDirectionTy = sloadInputTextBoxes.PeriodAlongYDirectionTy;
 
@@ -608,7 +623,7 @@ namespace PFD
                                 FaultDistanceDmin = float.Parse(reader["D_min_km"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { FaultDistanceDmin = 0.00f; }
+                        catch (ArgumentNullException) { FaultDistanceDmin = 9999.00f; }
 
                         try
                         {
@@ -617,7 +632,7 @@ namespace PFD
                                 FaultDistanceDmax = float.Parse(reader["D_max_km"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { FaultDistanceDmax = 0.00f; }
+                        catch (ArgumentNullException) { FaultDistanceDmax = 9999.00f; }
                     }
                 }
 

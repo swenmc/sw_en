@@ -329,6 +329,15 @@ namespace BaseClasses
         eD
     }
 
+    public enum ESiteSubSoilClass
+    {
+        eA, // Strong rock
+        eB, // Rock
+        eC, // Shallow soil
+        eD, // Deep and soft soil
+        eE  // Very soft soil
+    }
+
     public enum EPlateNumberAndPositionInJoint
     {
         eOneLeftPlate,   // 1 plate on the left side of cross-section (- y local axis)
@@ -400,12 +409,14 @@ namespace BaseClasses
 
     public struct SeisLoadDataInput
     {
+        public ESiteSubSoilClass eSiteSubsoilClass;
         public string sSiteSubsoilClass;
-        public float fProximityToFault; // m
+        public float fProximityToFault_D_km; // km
         public float fZoneFactor_Z;
-        public float fPeriodAlongXDirection_Tx; //sec
-        public float fPeriodAlongYDirection_Ty;//sec
-        public float fSpectralShapeFactor_Ch_T;
+        public float fPeriodAlongXDirection_Tx; // sec
+        public float fPeriodAlongYDirection_Ty; // sec
+        public float fSpectralShapeFactor_Ch_Tx;
+        public float fSpectralShapeFactor_Ch_Ty;
     }
 
     public struct DoorProperties
@@ -442,8 +453,8 @@ namespace BaseClasses
     public struct loadInputTextBoxValues
     {
         public float SiteElevation;
-        public float FaultDistanceDmin;
-        public float FaultDistanceDmax;
+        public float FaultDistanceDmin_km;
+        public float FaultDistanceDmax_km;
         public float PeriodAlongXDirectionTx;
         public float PeriodAlongYDirectionTy;
     }

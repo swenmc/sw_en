@@ -61,8 +61,8 @@ namespace PFD
             loadInputTextBoxValues sloadInputTextBoxes;
 
             sloadInputTextBoxes.SiteElevation = 30;      // m  // nastavovat tu - zavisi od Location Index
-            sloadInputTextBoxes.FaultDistanceDmin = 0f; // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
-            sloadInputTextBoxes.FaultDistanceDmax = 0f; // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
+            sloadInputTextBoxes.FaultDistanceDmin_km = 0f;  // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
+            sloadInputTextBoxes.FaultDistanceDmax_km = 0f;  // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
             sloadInputTextBoxes.PeriodAlongXDirectionTx = 0.4f;
             sloadInputTextBoxes.PeriodAlongYDirectionTy = 0.4f;
 
