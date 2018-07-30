@@ -103,6 +103,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netDxf", "SharedLibraries\n
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDxfDocument", "SharedLibraries\TestDxfDocument\TestDxfDocument.csproj", "{65B33B00-93CE-484A-8023-7A9BA972D4D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3D", "3D", "{53B3F288-7428-42E5-9436-E45EB1F373DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Petzold.Media3D", "3D\Petzold.Media3D.csproj", "{BEBED159-4DB6-4550-8342-7F3607177B71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -414,6 +418,18 @@ Global
 		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|x86.ActiveCfg = Release|Any CPU
 		{65B33B00-93CE-484A-8023-7A9BA972D4D1}.Release|x86.Build.0 = Release|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Debug|x86.Build.0 = Debug|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Release|x86.ActiveCfg = Release|Any CPU
+		{BEBED159-4DB6-4550-8342-7F3607177B71}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -449,10 +465,11 @@ Global
 		{F53DE883-CBC6-4E3B-9455-0DD480CA6CC1} = {F2584B6B-5FDD-4F8C-8FD8-23E0A348DF13}
 		{785380E0-CEB9-4C34-82E5-60D0E33E848E} = {912C220B-4C7E-4D26-B181-8023F3E884AA}
 		{65B33B00-93CE-484A-8023-7A9BA972D4D1} = {912C220B-4C7E-4D26-B181-8023F3E884AA}
+		{BEBED159-4DB6-4550-8342-7F3607177B71} = {53B3F288-7428-42E5-9436-E45EB1F373DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
