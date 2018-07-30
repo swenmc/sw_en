@@ -12,6 +12,15 @@ namespace M_EC1.AS_NZS
 {
     public class CCalcul_1170_2
     {
+        public enum EFrictionalDragCoeff
+        {
+            eRibsAcross,
+            eCorrugationAcross,
+            eRibsParallel,
+            eCorrugationParallel,
+            eSmooth
+        }
+
         public SQLiteConnection conn;
         BuildingDataInput sBuildInput;
         BuildingGeometryDataInput sGeometryInput;
@@ -571,6 +580,75 @@ namespace M_EC1.AS_NZS
                     fp_e_max_R_roof_SLS_Theta_4[i, k] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_e_R_roof_values_max[k], fC_dyn);
                 }
             }
+
+            // 5.5 Frictional drag forces for enclosed buildings
+            float fRatioDtoH_Theta0or180 = 1.0f / fRatioHtoD_Theta0or180;
+            float fRatioDtoH_Theta90or270 = 1.0f / fRatioHtoD_Theta90or270;
+
+            float fC_f_Theta0or180 = 0.0f;
+            float fC_f_Theta90or270 = 0.0f;
+            float fArea_Theta0or180 = 0.0f;
+            float fArea_Theta90or270 = 0.0f;
+
+            EFrictionalDragCoeff eSurfaceDescription = EFrictionalDragCoeff.eRibsAcross; // Todo nastavit podle typu cladding a roofing (plechy)
+
+            // 0 or 180 deg
+            if (fRatioDtoH_Theta0or180 > 4 || fRatioDtoB_Theta0or180 > 4)
+            {
+                fb = sGeometryInput.fL;
+                fd = sGeometryInput.fW;
+
+                float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
+
+                fArea_Theta0or180 = GetArea_Table_5_9(fh, fb, fd);
+
+                fC_f_Theta0or180 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh, fb, eSurfaceDescription);
+            }
+
+            if (fRatioDtoH_Theta90or270 > 4 || fRatioDtoB_Theta90or270 > 4)
+            {
+                fb = sGeometryInput.fW;
+                fd = sGeometryInput.fL;
+
+                float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
+
+                fArea_Theta90or270 = GetArea_Table_5_9(fh, fb, fd);
+
+                fC_f_Theta90or270 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh, sGeometryInput.fW, eSurfaceDescription);
+            }
+
+            float fK_c = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+
+            float fC_fig_wall_Theta0or180 = AS_NZS_1170_2.Eq_52_3____(fC_f_Theta0or180, fK_a_wall_90or270, fK_c);
+            float fC_fig_wall_Theta90or270 = AS_NZS_1170_2.Eq_52_3____(fC_f_Theta90or270, fK_a_wall_0or180, fK_c);
+            float fC_fig_roof_Theta0or180 = AS_NZS_1170_2.Eq_52_3____(fC_f_Theta0or180, fK_a_roof, fK_c);
+            float fC_fig_roof_Theta90or270 = AS_NZS_1170_2.Eq_52_3____(fC_f_Theta90or270, fK_a_roof, fK_c);
+
+            float[] fp_e_drag_wall_ULS_Theta_4 = new float[4];
+            float[] fp_e_drag_wall_SLS_Theta_4 = new float[4];
+
+            fp_e_drag_wall_ULS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[0], fC_fig_wall_Theta0or180, fC_dyn);
+            fp_e_drag_wall_ULS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[1], fC_fig_wall_Theta90or270, fC_dyn);
+            fp_e_drag_wall_ULS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[2], fC_fig_wall_Theta0or180, fC_dyn);
+            fp_e_drag_wall_ULS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[3], fC_fig_wall_Theta90or270, fC_dyn);
+
+            fp_e_drag_wall_SLS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[0], fC_fig_wall_Theta0or180, fC_dyn);
+            fp_e_drag_wall_SLS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[1], fC_fig_wall_Theta90or270, fC_dyn);
+            fp_e_drag_wall_SLS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[2], fC_fig_wall_Theta0or180, fC_dyn);
+            fp_e_drag_wall_SLS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[3], fC_fig_wall_Theta90or270, fC_dyn);
+
+            float[] fp_e_drag_roof_ULS_Theta_4 = new float[4];
+            float[] fp_e_drag_roof_SLS_Theta_4 = new float[4];
+
+            fp_e_drag_roof_ULS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[0], fC_fig_roof_Theta0or180, fC_dyn);
+            fp_e_drag_roof_ULS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[1], fC_fig_roof_Theta90or270, fC_dyn);
+            fp_e_drag_roof_ULS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[2], fC_fig_roof_Theta0or180, fC_dyn);
+            fp_e_drag_roof_ULS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[3], fC_fig_roof_Theta90or270, fC_dyn);
+
+            fp_e_drag_roof_SLS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[0], fC_fig_roof_Theta0or180, fC_dyn);
+            fp_e_drag_roof_SLS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[1], fC_fig_roof_Theta90or270, fC_dyn);
+            fp_e_drag_roof_SLS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[2], fC_fig_roof_Theta0or180, fC_dyn);
+            fp_e_drag_roof_SLS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[3], fC_fig_roof_Theta90or270, fC_dyn);
         }
 
         protected void Calculate_Cpe_Table_5_3_A(float fh, float fRatioHtoD, ref float []fC_pe_roof_dimensions, ref float []fC_pe_roof_values_min, ref float []fC_pe_roof_values_max)
@@ -938,6 +1016,33 @@ namespace M_EC1.AS_NZS
                         fV_des_Theta = fV_sit_Theta_360[-360 + intervalMaximum_deg + i];
                 }
             }
+        }
+
+        // Table 5.9
+        protected float GetFrictionalDragCoefficient_Table_5_9(float fx, float fh, float fb, EFrictionalDragCoeff eSurfaceDescription)
+        {
+            if (fx >= Math.Min(4 * fh, 4 * fb))
+            {
+                switch (eSurfaceDescription)
+                {
+                    case EFrictionalDragCoeff.eRibsAcross:
+                        return 0.04f;
+                    case EFrictionalDragCoeff.eCorrugationAcross:
+                        return 0.02f;
+                    default:
+                        return 0.01f;
+                }
+            }
+            else
+                return 0;
+        }
+
+        protected float GetArea_Table_5_9(float fh, float fb, float fd)
+        {
+            if (fh <= fb)
+                return (fb + 2 * fh) / (fd - 4 * fh);
+            else
+                return (fb + 2 * fh) / (fd - 4 * fb);
         }
     }
 }
