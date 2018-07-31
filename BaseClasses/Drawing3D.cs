@@ -65,7 +65,12 @@ namespace BaseClasses
                 System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
 
                 // Add WireFrame Model
-                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
+                if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
+                {
+                    if(membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
+                    //Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelMembersWireFrame_OP(model, _trackport.ViewPort);
+                } 
                 System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
@@ -217,13 +222,19 @@ namespace BaseClasses
                             {
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
-                                model3D.Children.Add(model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial)); // Use shell color for whole member
+                                GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
+                                model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)geom3D.Geometry).Positions);
+                                model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else
                             {
                                 // Create Member model - consist of 3 geometry models (member is one model group)
                                 if (model3D == null) model3D = new Model3DGroup();
-                                model3D.Children.Add(model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial));
+                                Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
+                                model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[0]).Geometry).Positions);
+                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
+                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions));
+                                model3D.Children.Add(mgr);
                             }
                         }
                         else
@@ -234,6 +245,17 @@ namespace BaseClasses
                 }
             }
             return model3D;
+        }
+
+        private static List<Point3D> GetWireFramePointsFromGeometryPositions(Point3DCollection positions)
+        {
+            List<Point3D> wireframePoints = new List<Point3D>();
+            for (int i = 0; i < positions.Count - 1; i++)
+            {
+                wireframePoints.Add(positions[i]);
+                wireframePoints.Add(positions[i + 1]);
+            }
+            return wireframePoints;
         }
 
         //-------------------------------------------------------------------------------------------------------------
@@ -757,8 +779,7 @@ namespace BaseClasses
                                 // Potrebujeme sa nejako dostat k bodom siete, asi sa to da urobit aj elegantnejsie :-/
                                 GeometryModel3D m = new GeometryModel3D();
                                 m = (GeometryModel3D)model3D.Children[j];
-                                MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;
-
+                                MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;                                                               
                                 wireFrameAllMembers.Points.Add(geom.Positions[no]); // Add Point3D to the collection
                             }
                         }
@@ -767,6 +788,37 @@ namespace BaseClasses
 
                 // Add Wireframe Lines to the trackport                
                 wireFrameAllMembers.Name = "WireFrame_Members";
+                model.WireFrameMembers = wireFrameAllMembers;
+                viewPort.Children.Add(wireFrameAllMembers);
+            }
+        }
+
+        // Add all members in one wireframe collection of ScreenSpaceLines3D
+        public static void DrawModelMembersWireFrame_OP(CModel model, Viewport3D viewPort)
+        {
+            // Members - Wire Frame
+            if (model.m_arrMembers != null)
+            {
+                Color wireFrameColor = Color.FromRgb(60, 60, 60);
+                double thickness = 1.0;
+                ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
+                List<Point3D> wireFramePoints = new List<Point3D>();                
+
+                for (int i = 0; i < model.m_arrMembers.Length; i++) // Per each member
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+                    {
+                        wireFramePoints.AddRange(model.m_arrMembers[i].WireFramePoints);
+                    }
+                }
+
+                // Add Wireframe Lines to the trackport                
+                wireFrameAllMembers.Name = "WireFrame_Members";
+                wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
                 model.WireFrameMembers = wireFrameAllMembers;
                 viewPort.Children.Add(wireFrameAllMembers);
             }
