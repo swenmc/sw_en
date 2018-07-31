@@ -2,97 +2,102 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
+using System.Data.SQLite;
+using System.Configuration;
+using BaseClasses;
 
 namespace M_EC1.AS_NZS
 {
     public class CCalcul_1170_3
     {
-        int iSoilClass; // Site subsoil class
+        public SQLiteConnection conn;
+        BuildingDataInput sBuildInput;
+        BuildingGeometryDataInput sGeometryInput;
+        SnowLoadDataInput sSnowInput;
 
-
-        int iBuildingImportanceLevel = 2;
-        float fAnnualProbability_ULS = 1f / 500f;
-        float fAnnualProbability_SLS = 1f / 25f;
-
-        float fHazardFactor = 0.13f;
-
-        float fReturnPeriodFactor_R_ULS = 1.00f; // ULS
-        float fReturnPeriodFactor_R_SLS = 0.25f; // SLS
-        float fNear_fault_N = 1.0f; // Near-fault factor
-
-        // Elastic site spectra
-
-        float fT_period = 0.4f;
-        float fC_h = 3f; // Spectral shape factor
-
-        float fC_ULS = 0.39f;
-        float fC_SLS = 0.1f; // Horizontal elastic site spectra coefficient
-
-        // Peak ground acceleration
-        float fT_period_PGA = 0f;
-        float fC_h_PGA = 1.12f; // Spectral shape factor
-
-        float fC_PGA_ULS = 0.39f;
-        float fC_PGA_SLS = 0.1f; // Peak ground coefficient
-
-        float fC_v_ULS;
-        float fC_v_SLS;
-
-        float fNu_ULS = 1.25f; // Structural ductility factor
-        float fNu_SLS = 1.00f;
-
-        float fkNu_ULS = 1.14f; // Ductility coefficient
-        float fkNu_SLS = 1.00f;
-
-        float fS_p_ULS_stab = 1.00f; // Structural performance factor
-        float fS_p_ULS_strength = 0.90f;
-        float fS_p_SLS = 0.70f;
-
-        float fC_T1 = 0; // ??????????????
-        float fCv_T1 = 0; // ?????????????
-
-        float fC_d_T1_ULS_stab;
-        float fC_d_T1_ULS_strength;
-        float fC_d_T1_SLS;
-
-        float fC_v_Tv_ULS_stab;
-        float fC_v_Tv_ULS_strength;
-        float fC_v_Tv_SLS;
-
-        public CCalcul_1170_3()
+        public CCalcul_1170_3(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, SnowLoadDataInput sSnowData_temp)
         {
-            // Seismic Weight
-            float fg_roof = 200f; // kN / m^2
-            float fg_walls = 200f; // kN / m^2
+            sBuildInput = sBuildingData_temp;
+            sGeometryInput = sGeometryData_temp;
+            sSnowInput = sSnowData_temp;
 
-            float fq_roof = 250f; // kN / m^2
+            // Determine snow elevation region (alpine, sub-alpine, not significant snow)
+            ESnowElevationRegions eSnowElevationRegion = GetSnowElevationRegion(sSnowInput.eCountry, sSnowInput.eSnowRegion, sSnowInput.fh_0_SiteElevation_meters);
 
-            // One Portal Frame
-            float fW = 60; // Width
-            float fL1_PF_spacing = 5.765f; // L1
-            float fH1_columns = 6f;
+            // 5 Ground snow load
+            float fs_g_ULS = AS_NZS_1170_3.Get_sg_5___(sSnowInput.eCountry, sSnowInput.eSnowRegion, eSnowElevationRegion, sSnowInput.fh_0_SiteElevation_meters, sBuildInput.fAnnualProbabilityULS_Snow);
+            float fs_g_SLS = AS_NZS_1170_3.Get_sg_5___(sSnowInput.eCountry, sSnowInput.eSnowRegion, eSnowElevationRegion, sSnowInput.fh_0_SiteElevation_meters, sBuildInput.fAnnualProbabilitySLS);
 
-            float fG_roof = fg_roof * fL1_PF_spacing * fW;
-            float fG_walls = fg_roof * fH1_columns * fL1_PF_spacing;
+            // 4.2.1 Roof snow load
+            float fC_e = AS_NZS_1170_3.Get_Ce_422_(eSnowElevationRegion, sSnowInput.eExposureCategory);
 
-            float fG_tot = fG_roof + fG_walls;
+            float fNu1_Alpha1;
+            float fNu2_Alpha1;
 
-            float fCdCT_ULS = 0.536f;
-            float fCdCT_SLS = 0.116f;
+            AS_NZS_1170_3.Set_Nu_64(sGeometryInput.fRoofPitch_deg, ref fC_e, out fNu1_Alpha1, out fNu2_Alpha1);
 
-            float fG_tot_ULS = fCdCT_ULS * fG_tot;
-            float fG_tot_SLS = fCdCT_SLS * fG_tot;
+            float fs_g_ULS_Nu_1 = AS_NZS_1170_3.Eq_42_1____(fs_g_ULS, fC_e, fNu1_Alpha1);
+            float fs_g_ULS_Nu_2 = AS_NZS_1170_3.Eq_42_1____(fs_g_ULS, fC_e, fNu2_Alpha1);
 
-            fC_v_ULS = 0.7f * fC_PGA_ULS;
-            fC_v_ULS = 0.7f * fC_PGA_SLS;
+            float fs_g_SLS_Nu_1 = AS_NZS_1170_3.Eq_42_1____(fs_g_SLS, fC_e, fNu1_Alpha1);
+            float fs_g_SLS_Nu_2 = AS_NZS_1170_3.Eq_42_1____(fs_g_SLS, fC_e, fNu2_Alpha1);
 
-            fC_d_T1_ULS_stab = fC_T1 * fS_p_ULS_stab / fkNu_ULS;
-            fC_d_T1_ULS_strength = fC_T1 * fS_p_ULS_strength / fkNu_ULS;
-            fC_d_T1_SLS = fC_T1 * fS_p_SLS / fkNu_SLS;
+            // 4.2.3 Snow overhanging the edge of a roof
+            float fs_e_ULS_Nu_1 = AS_NZS_1170_3.Eq_42_2____(fs_g_ULS_Nu_1, eSnowElevationRegion);
+            float fs_e_ULS_Nu_2 = AS_NZS_1170_3.Eq_42_2____(fs_g_ULS_Nu_2, eSnowElevationRegion);
 
-            fC_v_Tv_ULS_stab = fCv_T1 * fS_p_ULS_stab / fkNu_ULS;
-            fC_v_Tv_ULS_strength = fCv_T1 * fS_p_ULS_strength / fkNu_ULS;
-            fC_v_Tv_SLS = fCv_T1 * fS_p_SLS / fkNu_SLS;
+            float fs_e_SLS_Nu_1 = AS_NZS_1170_3.Eq_42_2____(fs_g_SLS_Nu_1, eSnowElevationRegion);
+            float fs_e_SLS_Nu_2 = AS_NZS_1170_3.Eq_42_2____(fs_g_SLS_Nu_2, eSnowElevationRegion);
+        }
+
+        public ESnowElevationRegions GetSnowElevationRegion(ECountry country, ESnowRegion snowRegion, float fSiteElevation)
+        {
+            ESnowElevationRegions eSnowElevationRegion;
+
+            if (sSnowInput.eCountry == ECountry.eNewZealand)
+            {
+                float fLimitSubAlpine_min = 0;
+                float fLimitSubAlpine_max = 0;
+
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+
+                // Connect to database
+                using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+                {
+                    conn.Open();
+                    SQLiteDataReader reader = null;
+
+                    string sTableName = "SnowRegions";
+
+                    SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + (int)sSnowInput.eSnowRegion + "'", conn);
+
+                    using (reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            fLimitSubAlpine_min = float.Parse(reader["subalpine_min"].ToString(), nfi);
+                            fLimitSubAlpine_max = float.Parse(reader["subalpine_max"].ToString(), nfi);
+                        }
+                    }
+
+                    reader.Close();
+                }
+
+                if (fSiteElevation < fLimitSubAlpine_min)
+                    eSnowElevationRegion = ESnowElevationRegions.eNoSignificantSnow;
+                else if (fSiteElevation <= fLimitSubAlpine_max)
+                    eSnowElevationRegion = ESnowElevationRegions.eSubAlpine;
+                else
+                    eSnowElevationRegion = ESnowElevationRegions.eAlpine;
+            }
+            else
+            {
+                eSnowElevationRegion = ESnowElevationRegions.eNoSignificantSnow; // Exception - not implemented for Australia (or other country)
+            }
+
+            return eSnowElevationRegion;
         }
     }
 }

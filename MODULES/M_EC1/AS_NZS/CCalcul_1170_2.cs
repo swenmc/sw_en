@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MATH;
-using MATH.ARRAY;
+using System.Globalization;
 using System.Data.SQLite;
 using System.Configuration;
+using MATH;
+using MATH.ARRAY;
 using BaseClasses;
-using System.Globalization;
+
 
 namespace M_EC1.AS_NZS
 {
@@ -190,25 +191,25 @@ namespace M_EC1.AS_NZS
             }
 
             fV_sit_Theta_angles_8 = new float[8]
-            {sWindInput.iWindDirectionIndex + 000 - 45,
-             sWindInput.iWindDirectionIndex + 000 + 45,
-             sWindInput.iWindDirectionIndex + 090 - 45,
-             sWindInput.iWindDirectionIndex + 090 + 45,
-             sWindInput.iWindDirectionIndex + 180 - 45,
-             sWindInput.iWindDirectionIndex + 180 + 45,
-             sWindInput.iWindDirectionIndex + 270 - 45,
-             sWindInput.iWindDirectionIndex + 270 + 45
+            {sWindInput.iAngleWindDirection + 000 - 45,
+             sWindInput.iAngleWindDirection + 000 + 45,
+             sWindInput.iAngleWindDirection + 090 - 45,
+             sWindInput.iAngleWindDirection + 090 + 45,
+             sWindInput.iAngleWindDirection + 180 - 45,
+             sWindInput.iAngleWindDirection + 180 + 45,
+             sWindInput.iAngleWindDirection + 270 - 45,
+             sWindInput.iAngleWindDirection + 270 + 45
             };
 
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 000, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[0]); // 000
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 090, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[1]); // 090
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 180, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[2]); // 180
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 270, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[3]); // 270
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 000, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[0]); // 000
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 090, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[1]); // 090
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 180, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[2]); // 180
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 270, fV_sit_ULS_Theta_360, ref fV_sit_ULS_Theta_4[3]); // 270
 
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 000, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[0]); // 000
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 090, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[1]); // 090
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 180, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[2]); // 180
-            SetDesignWindSpeedValue(sWindInput.iWindDirectionIndex + 270, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[3]); // 270
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 000, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[0]); // 000
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 090, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[1]); // 090
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 180, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[2]); // 180
+            SetDesignWindSpeedValue(sWindInput.iAngleWindDirection + 270, fV_sit_SLS_Theta_360, ref fV_sit_SLS_Theta_4[3]); // 270
 
             // 2.3 Design wind speed
             fV_des_ULS_Theta_4 = new float[4];
@@ -1014,15 +1015,15 @@ namespace M_EC1.AS_NZS
                     if (fV_sit_Theta_360[360 + intervalMinimum_deg + i] > fV_des_Theta)
                         fV_des_Theta = fV_sit_Theta_360[360 + intervalMinimum_deg + i];
                 }
-                else if (i < intervalMaximum_deg)
+                else if (i < 360)
                 {
                     if (fV_sit_Theta_360[i] > fV_des_Theta)
                         fV_des_Theta = fV_sit_Theta_360[i];
                 }
                 else // intervalMaximum_deg > 360
                 {
-                    if (fV_sit_Theta_360[-360 + intervalMaximum_deg + i] > fV_des_Theta)
-                        fV_des_Theta = fV_sit_Theta_360[-360 + intervalMaximum_deg + i];
+                    if (fV_sit_Theta_360[-360 + i] > fV_des_Theta)
+                        fV_des_Theta = fV_sit_Theta_360[-360 + i];
                 }
             }
         }

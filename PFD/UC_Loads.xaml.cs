@@ -40,8 +40,9 @@ namespace PFD
                 FillComboboxValues("ASNZS1170_Tab3_3_DWL", "design_working_life", ref reader, ref Combobox_DesignLife);
                 FillComboboxValues("ASNZS1170_Tab3_2_IL", "importanceLevelInt", ref reader, ref Combobox_ImportanceClass);
                 FillComboboxValues("SnowRegions", "snowZone", ref reader, ref Combobox_SnowRegion);
+                FillComboboxValues("ExposureReductionCoefficient", "categoryName", ref reader, ref Combobox_ExposureCategory);
                 FillComboboxValues("WindRegions", "windRegion", ref reader, ref Combobox_WindRegion);
-                FillComboboxValues("ASNZS1170_2_421_THM_category", "terrainCategory_abb", ref reader, ref Combobox_TerrainRoughness);
+                FillComboboxValues("ASNZS1170_2_421_THM_category", "terrainCategory_abb", ref reader, ref Combobox_TerrainCategory);
                 FillComboboxValues("SiteSubSoilClass", "class", ref reader, ref Combobox_SiteSubSoilClass);
                 reader.Close();
             }
@@ -53,9 +54,10 @@ namespace PFD
 
             sloadInputComboBoxes.LocationIndex = 0;
             sloadInputComboBoxes.DesignLifeIndex = 4;
+            sloadInputComboBoxes.ExposureCategoryIndex = 0;
             sloadInputComboBoxes.SiteSubSoilClassIndex = 1;
             sloadInputComboBoxes.ImportanceLevelIndex = 1;
-            sloadInputComboBoxes.TerrainRoughnessIndex = 0;
+            sloadInputComboBoxes.TerrainCategoryIndex = 0;
             sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
 
             loadInputTextBoxValues sloadInputTextBoxes;

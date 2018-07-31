@@ -60,6 +60,7 @@ namespace PFD
         public DisplayOptions sDisplayOptions;
         public BuildingDataInput sBuildingInputData;
         public BuildingGeometryDataInput sGeometryInputData;
+        public SnowLoadDataInput sSnowInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
@@ -264,18 +265,23 @@ namespace PFD
             // Clear results of previous calculation
             DeleteCalculationResults();
 
+            // Input - TabItem Components
+            UC_ComponentList componentList_UC = null;
+            if (Model_Component.Content == null) componentList_UC = new UC_ComponentList();
+            else componentList_UC = (UC_ComponentList)Model_Component.Content;
+            //tu som nenasiel ziaden ViewModel napojeny na dany User Control
+            DataGrid grid = componentList_UC.Datagrid_Components;
 
-            // TODO - Ondrej - spristupnit data nastavene v TabItem Loads, pripadne je potrebne tuto zalozku interne naplnit aj ked nie je zobrazena
-            UC_Loads loadInput_UC = null;            
+            // Input - TabItem Loads
+            UC_Loads loadInput_UC = null;
             if (Loads.Content == null) loadInput_UC = new UC_Loads();
             else loadInput_UC = (UC_Loads)Loads.Content;
-            CPFDLoadInput loadinput = loadInput_UC.DataContext as CPFDLoadInput;
-            
+            loadinput = loadInput_UC.DataContext as CPFDLoadInput;
+
             // Basic data
-            /*
-            sBuildingInputData.location = (ELocation)loadinput.LocationIndex;
-            sBuildingInputData.iDesignLife = loadinput.DesignLifeIndex; // Database years ????
-            sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level
+            sBuildingInputData.location = (ELocation)loadinput.LocationIndex;                    // locations (cities) enum
+            sBuildingInputData.fDesignLife_Value = loadinput.DesignLife_Value;                   // Database value in years
+            sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level (index + 1)
 
             sBuildingInputData.fAnnualProbabilityULS_Snow = loadinput.AnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
             sBuildingInputData.fAnnualProbabilityULS_Wind = loadinput.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
@@ -286,22 +292,6 @@ namespace PFD
             sBuildingInputData.fR_ULS_Wind = loadinput.R_ULS_Wind;
             sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
             sBuildingInputData.fR_SLS = loadinput.R_SLS;
-            */
-
-                // Temporary
-            sBuildingInputData.location = ELocation.eAuckland;
-            sBuildingInputData.iDesignLife = 50;
-            sBuildingInputData.iImportanceClass = 2;
-
-            sBuildingInputData.fAnnualProbabilityULS_Snow = 1f / 500f;
-            sBuildingInputData.fAnnualProbabilityULS_Wind = 1f / 500f;
-            sBuildingInputData.fAnnualProbabilityULS_EQ = 1f / 500f;
-            sBuildingInputData.fAnnualProbabilitySLS = 1f / 25f;
-
-            sBuildingInputData.fR_ULS_Snow = 500f;
-            sBuildingInputData.fR_ULS_Wind = 500f;
-            sBuildingInputData.fR_ULS_EQ = 500f;
-            sBuildingInputData.fR_SLS = 25f;
 
             // Load Generation
             // General loading
@@ -320,15 +310,8 @@ namespace PFD
             //TabItem Main dostupny cez vm
             float gableWidth = vm.GableWidth;
 
-            UC_ComponentList componentList_UC = null;
-            if (Model_Component.Content == null) componentList_UC = new UC_ComponentList();
-            else componentList_UC = (UC_ComponentList)Model_Component.Content;
-            //tu som nenasiel ziaden ViewModel napojeny na dany User Control
-            DataGrid grid = componentList_UC.Datagrid_Components;
-
-
             // Temporary values - napojit na vm model a spocitat presne hmotnost ramu a zatazenie
-            float fLoadingWidth_Frame = 5; // Zatazovacia sirka ramu
+            float fLoadingWidth_Frame = vm.fL1; // Zatazovacia sirka ramu
 
             float fMass_Purlins = 5000f;
             float fMass_Girts = 2500f;
@@ -783,33 +766,31 @@ namespace PFD
 
         public void CalculateSnowLoad()
         {
-            snow = new CCalcul_1170_3();
+            sSnowInputData.eCountry = ECountry.eNewZealand; // Temporary - zatial nie je implementovana Australia
+            sSnowInputData.eSnowRegion = (ESnowRegion) loadinput.SnowRegionIndex; // indexovane od 0, takze postacuje len previest na enum
+            sSnowInputData.eExposureCategory = (ERoofExposureCategory) loadinput.ExposureCategoryIndex;
+            sSnowInputData.fh_0_SiteElevation_meters = loadinput.SiteElevation;
+            snow = new CCalcul_1170_3(sBuildingInputData, sGeometryInputData, sSnowInputData);
         }
 
         public void CalculateWindLoad()
         {
-            /*
-            sWindInputData.eWindRegion = loadinput.Wind_Region;
-            sWindInputData.iWindDirectionIndex = loadinput.WindDirectionIndex;
-            sWindInputData.fTerrainCategory = loadinput.TerrainRoughnessIndex; // Database
-            */
+            sWindInputData.eWindRegion = loadinput.WindRegion;
+            sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
+            sWindInputData.fTerrainCategory = loadinput.TerrainCategoryIndex;
 
-            sWindInputData.eWindRegion = EWindRegion.eA6;
-            sWindInputData.iWindDirectionIndex = 8;
-            sWindInputData.fTerrainCategory = 2.5f;
             wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
 
         public void CalculateEQParameters()
         {
-            sSeisInputData.eSiteSubsoilClass = ESiteSubSoilClass.eD;
-            sSeisInputData.sSiteSubsoilClass = "D";
-            sSeisInputData.fProximityToFault_D_km = 20; // km
-            sSeisInputData.fZoneFactor_Z = 0.13f;
-            sSeisInputData.fPeriodAlongXDirection_Tx = 0.4f; //sec
-            sSeisInputData.fPeriodAlongYDirection_Ty = 0.4f; //sec
-            sSeisInputData.fSpectralShapeFactor_Ch_Tx = 3.0f;
-            sSeisInputData.fSpectralShapeFactor_Ch_Ty = 3.0f;
+            sSeisInputData.eSiteSubsoilClass = loadinput.SiteSubSoilClass;
+            sSeisInputData.fProximityToFault_D_km = loadinput.FaultDistanceDmin; // km
+            sSeisInputData.fZoneFactor_Z = loadinput.ZoneFactorZ;
+            sSeisInputData.fPeriodAlongXDirection_Tx = loadinput.PeriodAlongXDirectionTx; //sec
+            sSeisInputData.fPeriodAlongYDirection_Ty = loadinput.PeriodAlongYDirectionTy; //sec
+            sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadinput.SpectralShapeFactorChTx;
+            sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadinput.SpectralShapeFactorChTy;
 
             eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
         }

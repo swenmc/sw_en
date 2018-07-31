@@ -295,6 +295,12 @@ namespace BaseClasses
         eMC, // Main Column
     }
 
+    public enum ECountry
+    {
+        eAustralia,
+        eNewZealand
+    }
+
     public enum ELocation
     {
         eAuckland,
@@ -329,6 +335,16 @@ namespace BaseClasses
         eD
     }
 
+    public enum ESnowRegion
+    {
+        eN0,
+        eN1,
+        eN2,
+        eN3,
+        eN4,
+        eN5
+    }
+
     public enum ESiteSubSoilClass
     {
         eA, // Strong rock
@@ -340,9 +356,24 @@ namespace BaseClasses
 
     public enum EPlateNumberAndPositionInJoint
     {
-        eOneLeftPlate,   // 1 plate on the left side of cross-section (- y local axis)
-        eOneRightPlate,  // 1 plate on the right side of cross-section (+ y local axis)
-        eTwoPlates       // 2 plates in joint (one on the left and one on the right side of cross-section)
+        eOneLeftPlate,       // 1 plate on the left side of cross-section (- y local axis)
+        eOneRightPlate,      // 1 plate on the right side of cross-section (+ y local axis)
+        eTwoPlates           // 2 plates in joint (one on the left and one on the right side of cross-section)
+    }
+
+    public enum ESnowElevationRegions
+    {
+        eNoSignificantSnow,  // No significant snowfall.
+        eSubAlpine,          // Sub-alpine - Regions where the maximum snow load is usually due to a single snowfall.
+        eAlpine              // Alpine - Regions where the maximum snow load is usually due to accumulation from a number of successive snowfalls.
+    }
+
+    public enum ERoofExposureCategory
+    {
+        // See AS / NZS 1170.3 - cl. 4.2.2 - exposure reduction coefficient (Ce)
+        eSheltered,          // (a)Sheltered Sites where the roof is protected from the wind by obstructions such as other structures, terrain features or numbers of closely spaced trees higher than the roof.
+        eSemiSheltered,      // (b) Semi-sheltered Sites where the roof is only partially protected by numbers of scattered obstructions higher than the roof(e.g., scattered trees).
+        eWindswept           // (c) Windswept Sites where the roof is exposed on all sides, with no protection provided by obstructions, trees, or terrain features higher than the roof.
     }
 
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
@@ -377,7 +408,7 @@ namespace BaseClasses
     public struct BuildingDataInput
     {
         public ELocation location;               // City / Town
-        public int iDesignLife;                  // Years
+        public float fDesignLife_Value;          // Years
         public int iImportanceClass;             // Importance Level
 
         public float fAnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
@@ -400,11 +431,19 @@ namespace BaseClasses
         public float fRoofPitch_deg;
     }
 
+    public struct SnowLoadDataInput
+    {
+        public ECountry eCountry;
+        public ESnowRegion eSnowRegion; // Snow region // Wind region Cl 2.3 - Fig 2.2
+        public ERoofExposureCategory eExposureCategory;
+        public float fh_0_SiteElevation_meters;
+    }
+
     public struct WindLoadDataInput
     {
-        public EWindRegion eWindRegion; // Wind region // Wind region Cl 3.2. Fig 3.1(A)
-        public int iWindDirectionIndex;
-        public float fTerrainCategory;
+        public EWindRegion eWindRegion; // Wind region // Wind region Cl 3.2 - Fig 3.1(A)
+        public int iAngleWindDirection; // Clockwise angle between Notrth  cardinal direction (Beta = 0) and Theta = 0 (building side L)
+        public float fTerrainCategory;  // float value 1-4 see Tab 4.2
     }
 
     public struct SeisLoadDataInput
@@ -444,8 +483,9 @@ namespace BaseClasses
         public int LocationIndex;
         public int ImportanceLevelIndex;
         public int DesignLifeIndex;
+        public int ExposureCategoryIndex;
         public int SiteSubSoilClassIndex;
-        public int TerrainRoughnessIndex;
+        public int TerrainCategoryIndex;
         public int AngleWindDirectionIndex;
     }
 

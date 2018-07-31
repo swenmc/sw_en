@@ -29,8 +29,9 @@ namespace PFD
         private float MAnnualProbabilitySLS;
         private float MSiteElevation;
         private int MSnowRegionIndex;
+        private int MExposureCategory;
         private int MWindRegionIndex;
-        private int MTerrainRoughnessIndex;
+        private int MTerrainCategoryIndex;
         private int MAngleWindDirectionIndex;
         private int MSiteSubSoilClassIndex;
         private float MFaultDistanceDmin;
@@ -42,11 +43,13 @@ namespace PFD
         private float MSpectralShapeFactorChTy;
 
         // Not in GUI
+        private float MDesignLife_Value;
         private float MR_ULS_Snow;
         private float MR_ULS_Wind;
         private float MR_ULS_EQ;
         private float MR_SLS;
-        private EWindRegion MEWind_Region;
+        private ERoofExposureCategory MEExposureCategory;
+        private EWindRegion MEWindRegion;
         private ESiteSubSoilClass MESiteSubSoilClass;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -82,6 +85,7 @@ namespace PFD
             {
                 MDesignLifeIndex = value;
 
+                SetDesignLifeValueFromDatabaseValues();
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
                 NotifyPropertyChanged("DesignLife");
@@ -205,6 +209,24 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public int ExposureCategoryIndex
+        {
+            get
+            {
+                return MExposureCategory;
+            }
+
+            set
+            {
+                MExposureCategory = value;
+
+                MEExposureCategory = (ERoofExposureCategory)MExposureCategory;
+
+                NotifyPropertyChanged("ExposureCategoryIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public int WindRegionIndex
         {
             get
@@ -216,23 +238,25 @@ namespace PFD
             {
                 MWindRegionIndex = value;
 
+                WindRegion = (EWindRegion)MWindRegionIndex;
+
                 NotifyPropertyChanged("WindRegionIndex");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int TerrainRoughnessIndex
+        public int TerrainCategoryIndex
         {
             get
             {
-                return MTerrainRoughnessIndex;
+                return MTerrainCategoryIndex;
             }
 
             set
             {
-                MTerrainRoughnessIndex = value;
+                MTerrainCategoryIndex = value;
 
-                NotifyPropertyChanged("TerrainRoughnessIndex");
+                NotifyPropertyChanged("TerrainCategoryIndex");
             }
         }
 
@@ -265,6 +289,8 @@ namespace PFD
                 if (value < 0 || value > 4)
                     throw new ArgumentException("Site subsoil class must be between A and E");
                 MSiteSubSoilClassIndex = value;
+
+                SiteSubSoilClass = (ESiteSubSoilClass)MSiteSubSoilClassIndex;
 
                 SetSpectralShapeFactorsFromDatabaseValues();
 
@@ -399,6 +425,20 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float DesignLife_Value
+        {
+            get
+            {
+                return MDesignLife_Value;
+            }
+
+            set
+            {
+                MDesignLife_Value = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float R_ULS_Snow
         {
             get
@@ -455,16 +495,16 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public EWindRegion Wind_Region
+        public EWindRegion WindRegion
         {
             get
             {
-                return MEWind_Region;
+                return MEWindRegion;
             }
 
             set
             {
-                MEWind_Region = value;
+                MEWindRegion = value;
             }
         }
 
@@ -490,9 +530,9 @@ namespace PFD
             // Set default location
             LocationIndex = sloadInputComboBoxes.LocationIndex;
             DesignLifeIndex = sloadInputComboBoxes.DesignLifeIndex;
-            SiteSubSoilClassIndex = sloadInputComboBoxes.SiteSubSoilClassIndex;
             ImportanceClassIndex = sloadInputComboBoxes.ImportanceLevelIndex;
-            TerrainRoughnessIndex = sloadInputComboBoxes.TerrainRoughnessIndex;
+            SiteSubSoilClassIndex = sloadInputComboBoxes.SiteSubSoilClassIndex;
+            TerrainCategoryIndex = sloadInputComboBoxes.TerrainCategoryIndex;
             AngleWindDirectionIndex = sloadInputComboBoxes.AngleWindDirectionIndex;
 
             SiteElevation = sloadInputTextBoxes.SiteElevation;
@@ -568,6 +608,33 @@ namespace PFD
             }
         }
 
+        protected void SetDesignLifeValueFromDatabaseValues()
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            // Connect to database
+            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteDataReader reader = null;
+                string sTableName = "ASNZS1170_Tab3_3_DWL";
+
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + DesignLifeIndex + "'", conn);
+
+                using (reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DesignLife_Value = float.Parse(reader["time_in_years"].ToString(), nfi);
+                    }
+                }
+
+                reader.Close();
+            }
+
+        }
+
         protected void SetLocationDependentDataFromDatabaseValues()
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -587,13 +654,13 @@ namespace PFD
                 {
                     while (reader.Read())
                     {
-                        //Co tak v databaze dat spravny typ ???
+                        // Co tak v databaze dat spravny typ ???
                         // TO Ondrej - potrebujem najst conventor ktory to urobi automaticky a nebude tam pridavat ako prvy stlpec svoje ID
                         // Teraz pouzivam convertor ktory vsetko nastavi ako default na string
 
                         SnowRegionIndex = int.Parse(reader["snow_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("snow_zone"));
                         WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
-                        Wind_Region = (EWindRegion)WindRegionIndex;
+                        WindRegion = (EWindRegion)WindRegionIndex;
 
                         // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
                         //23.7.2018 O.P.
