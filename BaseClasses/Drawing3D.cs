@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using MATH;
+using Petzold.Media3D;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -587,9 +588,33 @@ namespace BaseClasses
             model.AxisY = sAxisY_3D;
             model.AxisZ = sAxisZ_3D;
 
-            viewPort.Children.Add(sAxisX_3D);
-            viewPort.Children.Add(sAxisY_3D);
-            viewPort.Children.Add(sAxisZ_3D);
+            //temp skuska
+            WireLine wX = new WireLine();
+            wX.Point1 = pGCS_centre;
+            wX.Point2 = pAxisX;
+            wX.Thickness = 2;
+            wX.Color = Colors.Red;
+
+            WireLine wY = new WireLine();
+            wY.Point1 = pGCS_centre;
+            wY.Point2 = pAxisY;
+            wY.Thickness = 2;
+            wY.Color = Colors.Green;
+
+            WireLine wZ = new WireLine();
+            wZ.Point1 = pGCS_centre;
+            wZ.Point2 = pAxisZ;
+            wZ.Thickness = 2;
+            wZ.Color = Colors.Blue;
+
+            viewPort.Children.Add(wX);
+            viewPort.Children.Add(wY);
+            viewPort.Children.Add(wZ);
+            //end temp skuska
+
+            //viewPort.Children.Add(sAxisX_3D);
+            //viewPort.Children.Add(sAxisY_3D);
+            //viewPort.Children.Add(sAxisZ_3D);
         }
         //-------------------------------------------------------------------------------------------------------------
 
@@ -856,11 +881,18 @@ namespace BaseClasses
                     }
                 }
 
-                ScreenSpaceLines3D jointsWireFrameTotal = new ScreenSpaceLines3D();
-                jointsWireFrameTotal.Points = new Point3DCollection(jointsWireFramePoints);
-                jointsWireFrameTotal.Name = "WireFrame_Joints";
-                model.WireFrameJoints = jointsWireFrameTotal;
-                viewPort.Children.Add(jointsWireFrameTotal);
+                //ScreenSpaceLines3D jointsWireFrameTotal = new ScreenSpaceLines3D();
+                //jointsWireFrameTotal.Points = new Point3DCollection(jointsWireFramePoints);
+                //jointsWireFrameTotal.Name = "WireFrame_Joints";
+                //model.WireFrameJoints = jointsWireFrameTotal;
+                //viewPort.Children.Add(jointsWireFrameTotal);
+
+                WireLines wl = new WireLines();
+                wl.Lines = new Point3DCollection(jointsWireFramePoints);
+                wl.Color = Colors.White;
+                viewPort.Children.Add(wl);
+                
+
             }
         }
 

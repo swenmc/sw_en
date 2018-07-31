@@ -169,6 +169,10 @@
       <Project>{5F603892-DE40-4246-A969-1C6717AFE35D}</Project>
       <Name>3DTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\3D\Petzold.Media3D.csproj">
+      <Project>{BEBED159-4DB6-4550-8342-7F3607177B71}</Project>
+      <Name>Petzold.Media3D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
       <Name>MATH</Name>
