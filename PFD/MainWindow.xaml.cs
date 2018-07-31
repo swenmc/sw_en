@@ -98,42 +98,17 @@ namespace PFD
             // Cladding
             FillComboboxTrapezoidalSheeting();
             // Colors
-            // TODO No 42 Ondrej - pridat do comboboxu len vybrane farby
-            // Nazvy a vlastnosti RGB farieb su v databaze Trapezoidal Sheeting vid subor MDBTrapezoidalSheeting, tabulka colours
-
-            /*
-            Desert Sand
-            Bone White
-            Titania
-            Smooth Cream
-            New Denim Blue
-            Grey Friars
-            Sandstone Grey
-            Gull Grey
-            Permanent Green
-            Scoria
-            Pioneer Red
-            Mist Green
-            Rivergum
-            Lichen
-            */
-
-            Combobox_RoofCladdingColor.ItemsSource = typeof(Colors).GetProperties();
-            Combobox_WallCladdingColor.ItemsSource = typeof(Colors).GetProperties();
+            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_RoofCladdingColor);
+            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_WallCladdingColor);            
 
             // Model Geometry
             vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
-
-            // TODO No 42 Ondrej - nastavit a updatovat obsah comboboxov pre vyber thickness podla vyberu zakladneho typu v comboboxe Combobox_RoofCladding / Combobox_WallCladding
-            // Vstupne udaje su v databaze vid subor MDBTrapezoidalSheeting
-
-            /*
-            FillComboboxTrapezoidalSheetingThickness((string)Combobox_RoofCladding.SelectedItem, ref Combobox_RoofCladdingThickness);
-            FillComboboxTrapezoidalSheetingThickness((string)Combobox_WallCladding.SelectedItem, ref Combobox_WallCladdingThickness);
-            */
-
+            
+            FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+            FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+            
             sGeometryInputData.fH_2 = vm.fh2;
             sGeometryInputData.fH_1 = vm.WallHeight;
             sGeometryInputData.fW = vm.GableWidth;
@@ -215,6 +190,15 @@ namespace PFD
             if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
 
             //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
+            if (e.PropertyName == "RoofCladdingIndex")
+            {
+                FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+            }
+            else if (e.PropertyName == "WallCladdingIndex")
+            {
+                FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+            }
+
 
             //waiting = true;
             //BackgroundWorker bckWrk = new BackgroundWorker();

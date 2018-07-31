@@ -32,6 +32,36 @@ namespace PFD
             combobox.ItemsSource = items;
         }
 
+        public static void FillComboboxWithColors(string sDBName, string sTableName, string sColumnText, string sColumnColor, ComboBox combobox)
+        {
+            List<ComboBoxItem> items = new List<ComboBoxItem>();
+            // Connect to database and fill items of all comboboxes
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[sDBName].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName, conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ComboBoxItem cbi = new ComboBoxItem();
+                        try
+                        {
+                            string[] splitArray = reader[sColumnColor].ToString().Split(',');
+                            cbi.Background = new SolidColorBrush(Color.FromRgb(byte.Parse(splitArray[0]), byte.Parse(splitArray[1]), byte.Parse(splitArray[2])));
+                        }
+                        catch (Exception) {/*tha mne sa nechce riesit ze su debilne data v DB*/ }
+                        
+                        cbi.Content = reader[sColumnText].ToString();
+                        items.Add(cbi);
+                    }
+                }
+            }
+            combobox.ItemsSource = items;
+        }
+
+
+        
 
     }
 }
