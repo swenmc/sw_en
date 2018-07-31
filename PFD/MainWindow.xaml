@@ -184,12 +184,16 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
 
-                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="14" Grid.Column="0" Text="Roof Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_RoofCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=RoofCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Wall Cladding:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_WallCladding" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-                        <TextBlock Grid.Row="15" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
-                        <ComboBox Grid.Row="15" Grid.Column="1" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wall Cladding Color:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_WallCladdingColor" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingColorIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -200,6 +204,11 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wall Cladding Thickness:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <ComboBox Grid.Row="17" Grid.Column="1" Name ="Combobox_WallCladdingThickness" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=WallCladdingThicknessIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
 
                         <CheckBox Name="chbLightDirectional" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightDirectional_Unchecked" Checked="chbLightDirectional_Checked">Directional Light</CheckBox>
                         <CheckBox Name="chbLightPoint" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbLightpoint_Unchecked" Checked="chbLightpoint_Checked">Point Light</CheckBox>

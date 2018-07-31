@@ -15,7 +15,6 @@ namespace DATABASE
             //OleDbConnection aConnection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=c:\\ACCESS+TAB+POKUS.mdb;");
              this.dat_connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Password=;User ID=Admin;Data Source=DATA1.mdb;Jet OLEDB:Database Password='cudo';");
             dat_connection.Open();
-
         }
 
         public static DatabaseConnection getInstance()

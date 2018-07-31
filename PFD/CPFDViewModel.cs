@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
+using System.Configuration;
 
 namespace PFD
 {
@@ -29,8 +31,10 @@ namespace PFD
         private float MBackFrameRakeAngle;
         private int MRoofCladdingIndex;
         private int MRoofCladdingColorIndex;
+        private int MRoofCladdingThicknessIndex;
         private int MWallCladdingIndex;
         private int MWallCladdingColorIndex;
+        private int MWallCladdingThicknessIndex;
         private int MLoadCaseIndex;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -381,6 +385,22 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public int RoofCladdingThicknessIndex
+        {
+            get
+            {
+                return MRoofCladdingThicknessIndex;
+            }
+
+            set
+            {
+                MRoofCladdingThicknessIndex = value;
+
+                NotifyPropertyChanged("RoofCladdingThicknessIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public int WallCladdingIndex
         {
             get
@@ -409,6 +429,22 @@ namespace PFD
                 MWallCladdingColorIndex = value;
 
                 NotifyPropertyChanged("WallCladdingColorIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int WallCladdingThicknessIndex
+        {
+            get
+            {
+                return MWallCladdingThicknessIndex;
+            }
+
+            set
+            {
+                MWallCladdingThicknessIndex = value;
+
+                NotifyPropertyChanged("WallCladdingThicknessIndex");
             }
         }
 
