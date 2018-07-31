@@ -98,8 +98,8 @@ namespace PFD
             // Cladding
             FillComboboxTrapezoidalSheeting();
             // Colors
-            // TODO Ondrej - pridat do comboboxu len vybrane farby
-            // Nazvy a vlastnosti RGB farieb su v databaze Trapezoidal Sheeting
+            // TODO No 42 Ondrej - pridat do comboboxu len vybrane farby
+            // Nazvy a vlastnosti RGB farieb su v databaze Trapezoidal Sheeting vid subor MDBTrapezoidalSheeting, tabulka colours
 
             /*
             Desert Sand
@@ -126,7 +126,7 @@ namespace PFD
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
 
-            // TODO Ondrej - nastavit a updatovat obsah comboboxov pre vyber thickness podla vyberu zakladneho typu v comboboxe Combobox_RoofCladding / Combobox_WallCladding
+            // TODO No 42 Ondrej - nastavit a updatovat obsah comboboxov pre vyber thickness podla vyberu zakladneho typu v comboboxe Combobox_RoofCladding / Combobox_WallCladding
             // Vstupne udaje su v databaze vid subor MDBTrapezoidalSheeting
 
             /*
