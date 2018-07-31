@@ -662,50 +662,17 @@ namespace PFD
             return fPeriod_T;
         }
 
-        // TODO - Ondrej
-        // Refaktorovat s UC Load, funkcia by mala byt len jedna globalna
         public void FillComboboxTrapezoidalSheeting()
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteDataReader reader = null;
-
-                FillComboboxValues("trapezoidalSheeting", "name", ref reader, ref Combobox_RoofCladding, conn);
-                FillComboboxValues("trapezoidalSheeting", "name", ref reader, ref Combobox_WallCladding, conn);
-
-                reader.Close();
-            }
+            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
+            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
         }
 
-        public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ref ComboBox combobox)
+        public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TrapezoidalSheetingSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteDataReader reader = null;
-
-                FillComboboxValues(sTableName, "name", ref reader, ref combobox, conn);
-
-                reader.Close();
-            }
+            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
         }
-
-        // TODO - Ondrej
-        // Refaktorovat s UC Load, funkcia by mala byt len jedna globalna
-        protected void FillComboboxValues(string sTableName, string sColumnName, ref SQLiteDataReader reader, ref ComboBox combobox, SQLiteConnection conn)
-        {
-            SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName, conn);
-
-            using (reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    combobox.Items.Add(reader[sColumnName].ToString());
-                }
-            }
-        }
-
+        
         public void SetMaterialValuesFromDatabase()
         {
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))

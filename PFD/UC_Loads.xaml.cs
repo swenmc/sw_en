@@ -31,21 +31,14 @@ namespace PFD
             InitializeComponent();
 
             // Connect to database and fill items of all comboboxes
-            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteDataReader reader = null;
-
-                FillComboboxValues("nzLocations", "city", ref reader, ref Combobox_Location);
-                FillComboboxValues("ASNZS1170_Tab3_3_DWL", "design_working_life", ref reader, ref Combobox_DesignLife);
-                FillComboboxValues("ASNZS1170_Tab3_2_IL", "importanceLevelInt", ref reader, ref Combobox_ImportanceClass);
-                FillComboboxValues("SnowRegions", "snowZone", ref reader, ref Combobox_SnowRegion);
-                FillComboboxValues("ExposureReductionCoefficient", "categoryName", ref reader, ref Combobox_ExposureCategory);
-                FillComboboxValues("WindRegions", "windRegion", ref reader, ref Combobox_WindRegion);
-                FillComboboxValues("ASNZS1170_2_421_THM_category", "terrainCategory_abb", ref reader, ref Combobox_TerrainCategory);
-                FillComboboxValues("SiteSubSoilClass", "class", ref reader, ref Combobox_SiteSubSoilClass);
-                reader.Close();
-            }
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life", Combobox_DesignLife);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt", Combobox_ImportanceClass);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "SnowRegions", "snowZone", Combobox_SnowRegion);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
+            DatabaseManager.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);            
 
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
@@ -79,17 +72,6 @@ namespace PFD
             CPFDLoadInput loadInput = sender as CPFDLoadInput;
             if (loadInput != null && loadInput.IsSetFromCode) return;
         }
-        protected void FillComboboxValues(string sTableName, string sColumnName, ref SQLiteDataReader reader, ref ComboBox combobox)
-        {
-            SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName, conn);
-
-            using (reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    combobox.Items.Add(reader[sColumnName].ToString());
-                }
-            }
-        }
+        
     }
 }
