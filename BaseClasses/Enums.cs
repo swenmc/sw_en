@@ -497,5 +497,8 @@ namespace BaseClasses
         public float FaultDistanceDmax_km;
         public float PeriodAlongXDirectionTx;
         public float PeriodAlongYDirectionTy;
+        public float AdditionalDeadActionRoof;
+        public float AdditionalDeadActionWall;
+        public float ImposedActionRoof;
     }
 }

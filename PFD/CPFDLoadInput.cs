@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Configuration;
-using BaseClasses;
 using System.Globalization;
+using BaseClasses;
 
 namespace PFD
 {
@@ -41,6 +41,9 @@ namespace PFD
         private float MPeriodAlongYDirectionTy;
         private float MSpectralShapeFactorChTx;
         private float MSpectralShapeFactorChTy;
+        private float MAdditionalDeadActionRoof;
+        private float MAdditionalDeadActionWall;
+        private float MImposedActionRoof;
 
         // Not in GUI
         private float MDesignLife_Value;
@@ -425,6 +428,60 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float AdditionalDeadActionRoof
+        {
+            get
+            {
+                return MAdditionalDeadActionRoof;
+            }
+
+            set
+            {
+                if (value < 0.0f || value > 10.00f)
+                    throw new ArgumentException("Additional dead action value must be between 0.0 and 10.0 kN/m²");
+                MAdditionalDeadActionRoof = value;
+
+                NotifyPropertyChanged("AdditionalDeadActionRoof");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float AdditionalDeadActionWall
+        {
+            get
+            {
+                return MAdditionalDeadActionWall;
+            }
+
+            set
+            {
+                if (value < 0.0f || value > 10.00f)
+                    throw new ArgumentException("Additional dead action value must be between 0.0 and 10.0 kN/m²");
+                MAdditionalDeadActionWall = value;
+
+                NotifyPropertyChanged("AdditionalDeadActionWall");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ImposedActionRoof
+        {
+            get
+            {
+                return MImposedActionRoof;
+            }
+
+            set
+            {
+                if (value < 0.0f || value > 5.00f)
+                    throw new ArgumentException("Imposed action value must be between 0.0 and 5.0 kN/m²");
+                MImposedActionRoof = value;
+
+                NotifyPropertyChanged("ImposedActionRoof");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float DesignLife_Value
         {
             get
@@ -523,6 +580,20 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public ERoofExposureCategory ExposureCategory
+        {
+            get
+            {
+                return MEExposureCategory;
+            }
+
+            set
+            {
+                MEExposureCategory = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDLoadInput(loadInputComboboxIndexes sloadInputComboBoxes, loadInputTextBoxValues sloadInputTextBoxes)
@@ -540,6 +611,9 @@ namespace PFD
             FaultDistanceDmax = sloadInputTextBoxes.FaultDistanceDmax_km;
             PeriodAlongXDirectionTx = sloadInputTextBoxes.PeriodAlongXDirectionTx;
             PeriodAlongYDirectionTy = sloadInputTextBoxes.PeriodAlongYDirectionTy;
+            AdditionalDeadActionRoof = sloadInputTextBoxes.AdditionalDeadActionRoof;
+            AdditionalDeadActionWall = sloadInputTextBoxes.AdditionalDeadActionWall;
+            ImposedActionRoof = sloadInputTextBoxes.ImposedActionRoof;
 
             IsSetFromCode = false;
         }

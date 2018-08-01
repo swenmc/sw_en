@@ -8,6 +8,7 @@ using BaseClasses;
 using System.Data.SQLite;
 using System.Configuration;
 using System.Windows.Controls;
+using System.Globalization;
 
 namespace PFD
 {
@@ -28,7 +29,7 @@ namespace PFD
                         items.Add(reader[sColumnName].ToString());
                     }
                 }
-            }            
+            }
             combobox.ItemsSource = items;
         }
 
@@ -50,8 +51,11 @@ namespace PFD
                             string[] splitArray = reader[sColumnColor].ToString().Split(',');
                             cbi.Background = new SolidColorBrush(Color.FromRgb(byte.Parse(splitArray[0]), byte.Parse(splitArray[1]), byte.Parse(splitArray[2])));
                         }
-                        catch (Exception) {/*tha mne sa nechce riesit ze su debilne data v DB*/ }
-                        
+                        catch (Exception)
+                        {
+                            // Invalid database data
+                        }
+
                         cbi.Content = reader[sColumnText].ToString();
                         items.Add(cbi);
                     }
@@ -60,8 +64,34 @@ namespace PFD
             combobox.ItemsSource = items;
         }
 
+        public static float GetValueFromDatabasebyRowID(string sDBName, string sTableName, string sColumnName, int IDValue, string sKeyColumnName = "ID")
+        {
+            // TODO Ondrej - ak je mozne zobecnit tuto funkciu tak, aby to vracalo rozne typy podla typu, aky zistilo v stlpci "sColumnName"
 
-        
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+            float fValue = float.NaN;
 
+            // Connect to database
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[sDBName].ConnectionString))
+            {
+                conn.Open();
+                SQLiteDataReader reader = null;
+
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where " + sKeyColumnName + " = '" + IDValue + "'", conn);
+
+                using (reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        fValue = float.Parse(reader[sColumnName].ToString(), nfi);
+                    }
+                }
+
+                reader.Close();
+            }
+
+            return fValue;
+        }
     }
 }

@@ -64,6 +64,9 @@ namespace PFD
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
 
+        // TODO - Ondrej zaviest staticku triedu pre fyzikalne konstanty, prevody jednotiek a podobne
+        public const float fg_acceleration = 9.80665f; // gravitational acceleration [m/s^2] 
+
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
         //float fL; // 3 - 150 m
@@ -110,10 +113,10 @@ namespace PFD
             vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
-            
+
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
-            
+
             sGeometryInputData.fH_2 = vm.fh2;
             sGeometryInputData.fH_1 = vm.WallHeight;
             sGeometryInputData.fW = vm.GableWidth;
@@ -288,9 +291,24 @@ namespace PFD
 
             // Load Generation
             // General loading
-            CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
-            float fLiveLoad_Roof = 250f; // N/m2 (napojit na databazu tr. plechov)
-            float fSuperImposed_DeadLoad = 450f; // N/m2 asi moze definovat uzivatel ... v Tab Item Loads
+            //CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
+
+            float fDeadLoad_Roof = DatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", Combobox_RoofCladdingThickness.SelectedIndex);
+            float fDeadLoad_Wall = DatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", Combobox_WallCladdingThickness.SelectedIndex);
+
+            fDeadLoad_Roof *= fg_acceleration; // Change from mass kg/m^2 to weight
+            fDeadLoad_Wall *= fg_acceleration; // Change from mass kg/m^2 to weight
+
+            // Additional dead loads
+            // Additional dead load - roof
+            float fDeadLoadAdditional_Roof = loadinput.AdditionalDeadActionRoof / 1000f; // change units from kN/m2 to N/m2
+            float fDeadLoadAdditional_Wall = loadinput.AdditionalDeadActionWall / 1000f; // change units from kN/m2 to N/m2
+
+            // Additional roof imposed load
+            float fImposedLoad_Roof = loadinput.ImposedActionRoof / 1000f; // change units from kN/m2 to N/m2
+
+            float fDeadLoadTotal_Roof = fDeadLoad_Roof + fDeadLoadAdditional_Roof;
+            float fDeadLoadTotal_Wall = fDeadLoad_Wall + fDeadLoadAdditional_Wall;
 
             // Wind
             CalculateWindLoad();
@@ -311,7 +329,7 @@ namespace PFD
 
             float fMass_Frame = 3000f;
             float fMass_Wall = 2000f;
-            float fMass_Roof = fLoadingWidth_Frame * (fLiveLoad_Roof + fSuperImposed_DeadLoad);
+            float fMass_Roof = fLoadingWidth_Frame /** (fLiveLoad_Roof + fSuperImposed_DeadLoad)*/;
 
             float fMass_Total = fMass_Frame + fMass_Girts + fMass_Wall + fMass_Purlins  + fMass_Roof;
 

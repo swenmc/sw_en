@@ -24,8 +24,6 @@ namespace PFD
     /// </summary>
     public partial class UC_Loads : UserControl
     {
-        SQLiteConnection conn;
-
         public UC_Loads()
         {
             InitializeComponent();
@@ -55,11 +53,14 @@ namespace PFD
 
             loadInputTextBoxValues sloadInputTextBoxes;
 
-            sloadInputTextBoxes.SiteElevation = 30;      // m  // nastavovat tu - zavisi od Location Index
-            sloadInputTextBoxes.FaultDistanceDmin_km = 0f;  // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
-            sloadInputTextBoxes.FaultDistanceDmax_km = 0f;  // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
+            sloadInputTextBoxes.SiteElevation = 30;               // m  // nastavovat tu - zavisi od Location Index
+            sloadInputTextBoxes.FaultDistanceDmin_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
+            sloadInputTextBoxes.FaultDistanceDmax_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
             sloadInputTextBoxes.PeriodAlongXDirectionTx = 0.4f;
             sloadInputTextBoxes.PeriodAlongYDirectionTy = 0.4f;
+            sloadInputTextBoxes.AdditionalDeadActionRoof = 0f;    // kN / m^2
+            sloadInputTextBoxes.AdditionalDeadActionWall = 0f;    // kN / m^2
+            sloadInputTextBoxes.ImposedActionRoof = 0.25f; // kN / m^2
 
             // Loading
             CPFDLoadInput loadinput = new CPFDLoadInput(sloadInputComboBoxes, sloadInputTextBoxes);
