@@ -99,7 +99,12 @@ namespace PFD
             FillComboboxTrapezoidalSheeting();
             // Colors
             DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_RoofCladdingColor);
-            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_WallCladdingColor);            
+            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_WallCladdingColor);
+
+            Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
+            Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
+
+            // TODO Ondrej - Bug No 43 - polozky farieb v comboboxe stratia farbu, ak boli vybrane
 
             // Model Geometry
             vm = new CPFDViewModel(1);
