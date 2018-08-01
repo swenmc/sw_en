@@ -65,51 +65,43 @@ namespace M_EC1.AS_NZS
         float fz;
         float fRho_air = 1.2f; // kgm^3
 
-        // Design wind pressure
+        // Output
+        // Internal pressure
+        public float[] fp_i_min_ULS_Theta_4;
+        public float[] fp_i_min_SLS_Theta_4;
 
-        float fp_ULS;
-        float fp_SLS;
+        public float[] fp_i_max_ULS_Theta_4;
+        public float[] fp_i_max_SLS_Theta_4;
 
-        // Wind factors
-        // ROOF
-        // Along
-        float fC_pe_r_al_2_min = -0.9f;
-        float fC_pe_r_al_2_max = -0.4f;
+        // External pressure
+        // Walls
+        public float[] fp_e_W_wall_ULS_Theta_4;
+        public float[] fp_e_W_wall_SLS_Theta_4;
 
-        float fC_pe_al_3_min = -0.9f;
-        float fC_pe_al_3_max = -0.4f;
+        public float[] fp_e_L_wall_ULS_Theta_4;
+        public float[] fp_e_L_wall_SLS_Theta_4;
 
-        float fC_pe_al_4_min = -0.5f;
-        float fC_pe_al_4_max =  0.0f;
+        public float[,] fp_e_S_wall_ULS_Theta_4;
+        public float[,] fp_e_S_wall_SLS_Theta_4;
 
-        float fC_pe_al_5_min = -0.3f;
-        float fC_pe_al_5_max = 0.1f;
+        // Roof
+        public float[,] fp_e_min_U_roof_ULS_Theta_4;
+        public float[,] fp_e_min_U_roof_SLS_Theta_4;
 
-        float fC_pe_al_6_min = -0.2f;
-        float fC_pe_al_6_max = 0.2f;
+        public float[,] fp_e_max_U_roof_ULS_Theta_4;
+        public float[,] fp_e_max_U_roof_SLS_Theta_4;
 
-        // Across
+        public float[,] fp_e_min_D_roof_ULS_Theta_4;
+        public float[,] fp_e_min_D_roof_SLS_Theta_4;
 
-        float fC_pe_ac_2_min = -0.9f;
-        float fC_pe_ac_2_max = -0.4f;
+        public float[,] fp_e_max_D_roof_ULS_Theta_4;
+        public float[,] fp_e_max_D_roof_SLS_Theta_4;
 
-        float fC_pe_ac_3_min = -0.9f;
-        float fC_pe_ac_3_max = -0.4f;
+        public float[,] fp_e_min_R_roof_ULS_Theta_4;
+        public float[,] fp_e_min_R_roof_SLS_Theta_4;
 
-        float fC_pe_ac_4_min = -0.5f;
-        float fC_pe_ac_4_max = 0.0f;
-
-        float fC_pe_ac_5_min = -0.3f;
-        float fC_pe_ac_5_max = 0.1f;
-
-        float fC_pe_ac_6_min = -0.2f;
-        float fC_pe_ac_6_max = 0.2f;
-
-        // WALLS
-
-        float fC_pe_r_al_1 = 0.7f;
-
-        float fC_pe_ac_1 = 0.7f;
+        public float[,] fp_e_max_R_roof_ULS_Theta_4;
+        public float[,] fp_e_max_R_roof_SLS_Theta_4;
 
         public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp)
         {
@@ -452,8 +444,8 @@ namespace M_EC1.AS_NZS
             // Surface pressures
             // Internal presssure
 
-            float[] fp_i_min_ULS_Theta_4 = new float[4];
-            float[] fp_i_min_SLS_Theta_4 = new float[4];
+            fp_i_min_ULS_Theta_4 = new float[4];
+            fp_i_min_SLS_Theta_4 = new float[4];
 
             for (int i = 0; i < fp_i_min_ULS_Theta_4.Length; i++)
             {
@@ -461,8 +453,8 @@ namespace M_EC1.AS_NZS
                 fp_i_min_SLS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_i_min, fC_dyn);
             }
 
-            float[] fp_i_max_ULS_Theta_4 = new float[4];
-            float[] fp_i_max_SLS_Theta_4 = new float[4];
+            fp_i_max_ULS_Theta_4 = new float[4];
+            fp_i_max_SLS_Theta_4 = new float[4];
 
             for (int i = 0; i < fp_i_max_ULS_Theta_4.Length; i++)
             {
@@ -473,8 +465,8 @@ namespace M_EC1.AS_NZS
             // External pressure
             // Walls
 
-            float[] fp_e_W_wall_ULS_Theta_4 = new float[4];
-            float[] fp_e_W_wall_SLS_Theta_4 = new float[4];
+            fp_e_W_wall_ULS_Theta_4 = new float[4];
+            fp_e_W_wall_SLS_Theta_4 = new float[4];
 
             fp_e_W_wall_ULS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[0], fC_fig_e_W_wall_0or180, fC_dyn);
             fp_e_W_wall_ULS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[1], fC_fig_e_W_wall_90or270, fC_dyn);
@@ -486,8 +478,8 @@ namespace M_EC1.AS_NZS
             fp_e_W_wall_SLS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[2], fC_fig_e_W_wall_0or180, fC_dyn);
             fp_e_W_wall_SLS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[3], fC_fig_e_W_wall_90or270, fC_dyn);
 
-            float[] fp_e_L_wall_ULS_Theta_4 = new float[4];
-            float[] fp_e_L_wall_SLS_Theta_4 = new float[4];
+            fp_e_L_wall_ULS_Theta_4 = new float[4];
+            fp_e_L_wall_SLS_Theta_4 = new float[4];
 
             fp_e_L_wall_ULS_Theta_4[0] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[0], fC_fig_e_L_wall_0or180, fC_dyn);
             fp_e_L_wall_ULS_Theta_4[1] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[1], fC_fig_e_L_wall_90or270, fC_dyn);
@@ -499,8 +491,8 @@ namespace M_EC1.AS_NZS
             fp_e_L_wall_SLS_Theta_4[2] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[2], fC_fig_e_L_wall_0or180, fC_dyn);
             fp_e_L_wall_SLS_Theta_4[3] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[3], fC_fig_e_L_wall_90or270, fC_dyn);
 
-            float[,] fp_e_S_wall_ULS_Theta_4 = new float[4, fC_fig_e_S_wall_0or180.Length];
-            float[,] fp_e_S_wall_SLS_Theta_4 = new float[4, fC_fig_e_S_wall_0or180.Length];
+            fp_e_S_wall_ULS_Theta_4 = new float[4, fC_fig_e_S_wall_0or180.Length];
+            fp_e_S_wall_SLS_Theta_4 = new float[4, fC_fig_e_S_wall_0or180.Length];
 
             for (int i = 0; i < 4; i++)
             {
@@ -520,11 +512,11 @@ namespace M_EC1.AS_NZS
             }
 
             // Roof
-            float[,] fp_e_min_U_roof_ULS_Theta_4 = new float[4, fC_fig_e_U_roof_values_min.Length];
-            float[,] fp_e_min_U_roof_SLS_Theta_4 = new float[4, fC_fig_e_U_roof_values_min.Length];
+            fp_e_min_U_roof_ULS_Theta_4 = new float[4, fC_fig_e_U_roof_values_min.Length];
+            fp_e_min_U_roof_SLS_Theta_4 = new float[4, fC_fig_e_U_roof_values_min.Length];
 
-            float[,] fp_e_max_U_roof_ULS_Theta_4 = new float[4, fC_fig_e_U_roof_values_max.Length];
-            float[,] fp_e_max_U_roof_SLS_Theta_4 = new float[4, fC_fig_e_U_roof_values_max.Length];
+            fp_e_max_U_roof_ULS_Theta_4 = new float[4, fC_fig_e_U_roof_values_max.Length];
+            fp_e_max_U_roof_SLS_Theta_4 = new float[4, fC_fig_e_U_roof_values_max.Length];
 
             for (int i = 0; i < 4; i++)
             {
@@ -541,11 +533,11 @@ namespace M_EC1.AS_NZS
                 }
             }
 
-            float[,] fp_e_min_D_roof_ULS_Theta_4 = new float[4, fC_fig_e_D_roof_values_min.Length];
-            float[,] fp_e_min_D_roof_SLS_Theta_4 = new float[4, fC_fig_e_D_roof_values_min.Length];
+            fp_e_min_D_roof_ULS_Theta_4 = new float[4, fC_fig_e_D_roof_values_min.Length];
+            fp_e_min_D_roof_SLS_Theta_4 = new float[4, fC_fig_e_D_roof_values_min.Length];
 
-            float[,] fp_e_max_D_roof_ULS_Theta_4 = new float[4, fC_fig_e_D_roof_values_max.Length];
-            float[,] fp_e_max_D_roof_SLS_Theta_4 = new float[4, fC_fig_e_D_roof_values_max.Length];
+            fp_e_max_D_roof_ULS_Theta_4 = new float[4, fC_fig_e_D_roof_values_max.Length];
+            fp_e_max_D_roof_SLS_Theta_4 = new float[4, fC_fig_e_D_roof_values_max.Length];
 
             for (int i = 0; i < 4; i++)
             {
@@ -562,11 +554,11 @@ namespace M_EC1.AS_NZS
                 }
             }
 
-            float[,] fp_e_min_R_roof_ULS_Theta_4 = new float[4, fC_fig_e_R_roof_values_min.Length];
-            float[,] fp_e_min_R_roof_SLS_Theta_4 = new float[4, fC_fig_e_R_roof_values_min.Length];
+            fp_e_min_R_roof_ULS_Theta_4 = new float[4, fC_fig_e_R_roof_values_min.Length];
+            fp_e_min_R_roof_SLS_Theta_4 = new float[4, fC_fig_e_R_roof_values_min.Length];
 
-            float[,] fp_e_max_R_roof_ULS_Theta_4 = new float[4, fC_fig_e_R_roof_values_max.Length];
-            float[,] fp_e_max_R_roof_SLS_Theta_4 = new float[4, fC_fig_e_R_roof_values_max.Length];
+            fp_e_max_R_roof_ULS_Theta_4 = new float[4, fC_fig_e_R_roof_values_max.Length];
+            fp_e_max_R_roof_SLS_Theta_4 = new float[4, fC_fig_e_R_roof_values_max.Length];
 
             for (int i = 0; i < 4; i++)
             {

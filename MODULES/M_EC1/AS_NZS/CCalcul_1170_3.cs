@@ -16,6 +16,15 @@ namespace M_EC1.AS_NZS
         BuildingGeometryDataInput sGeometryInput;
         SnowLoadDataInput sSnowInput;
 
+        public float fs_ULS_Nu_1;
+        public float fs_ULS_Nu_2;
+        public float fs_SLS_Nu_1;
+        public float fs_SLS_Nu_2;
+        public float fs_e_ULS_Nu_1;
+        public float fs_e_ULS_Nu_2;
+        public float fs_e_SLS_Nu_1;
+        public float fs_e_SLS_Nu_2;
+
         public CCalcul_1170_3(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, SnowLoadDataInput sSnowData_temp)
         {
             sBuildInput = sBuildingData_temp;
@@ -37,18 +46,18 @@ namespace M_EC1.AS_NZS
 
             AS_NZS_1170_3.Set_Nu_64(sGeometryInput.fRoofPitch_deg, ref fC_e, out fNu1_Alpha1, out fNu2_Alpha1);
 
-            float fs_g_ULS_Nu_1 = AS_NZS_1170_3.Eq_42_1____(fs_g_ULS, fC_e, fNu1_Alpha1);
-            float fs_g_ULS_Nu_2 = AS_NZS_1170_3.Eq_42_1____(fs_g_ULS, fC_e, fNu2_Alpha1);
+            fs_ULS_Nu_1 = AS_NZS_1170_3.Eq_42_1____(fs_g_ULS, fC_e, fNu1_Alpha1);
+            fs_ULS_Nu_2 = AS_NZS_1170_3.Eq_42_1____(fs_g_ULS, fC_e, fNu2_Alpha1);
 
-            float fs_g_SLS_Nu_1 = AS_NZS_1170_3.Eq_42_1____(fs_g_SLS, fC_e, fNu1_Alpha1);
-            float fs_g_SLS_Nu_2 = AS_NZS_1170_3.Eq_42_1____(fs_g_SLS, fC_e, fNu2_Alpha1);
+            fs_SLS_Nu_1 = AS_NZS_1170_3.Eq_42_1____(fs_g_SLS, fC_e, fNu1_Alpha1);
+            fs_SLS_Nu_2 = AS_NZS_1170_3.Eq_42_1____(fs_g_SLS, fC_e, fNu2_Alpha1);
 
             // 4.2.3 Snow overhanging the edge of a roof
-            float fs_e_ULS_Nu_1 = AS_NZS_1170_3.Eq_42_2____(fs_g_ULS_Nu_1, eSnowElevationRegion);
-            float fs_e_ULS_Nu_2 = AS_NZS_1170_3.Eq_42_2____(fs_g_ULS_Nu_2, eSnowElevationRegion);
+            fs_e_ULS_Nu_1 = AS_NZS_1170_3.Eq_42_2____(fs_ULS_Nu_1, eSnowElevationRegion);
+            fs_e_ULS_Nu_2 = AS_NZS_1170_3.Eq_42_2____(fs_ULS_Nu_2, eSnowElevationRegion);
 
-            float fs_e_SLS_Nu_1 = AS_NZS_1170_3.Eq_42_2____(fs_g_SLS_Nu_1, eSnowElevationRegion);
-            float fs_e_SLS_Nu_2 = AS_NZS_1170_3.Eq_42_2____(fs_g_SLS_Nu_2, eSnowElevationRegion);
+            fs_e_SLS_Nu_1 = AS_NZS_1170_3.Eq_42_2____(fs_SLS_Nu_1, eSnowElevationRegion);
+            fs_e_SLS_Nu_2 = AS_NZS_1170_3.Eq_42_2____(fs_SLS_Nu_2, eSnowElevationRegion);
         }
 
         public ESnowElevationRegions GetSnowElevationRegion(ECountry country, ESnowRegion snowRegion, float fSiteElevation)

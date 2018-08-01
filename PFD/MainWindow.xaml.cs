@@ -65,7 +65,8 @@ namespace PFD
         public SeisLoadDataInput sSeisInputData;
 
         // TODO - Ondrej zaviest staticku triedu pre fyzikalne konstanty, prevody jednotiek a podobne
-        public const float fg_acceleration = 9.80665f; // gravitational acceleration [m/s^2] 
+        public const float fg_acceleration = 9.80665f; // gravitational acceleration [m/s^2]
+        public float fMaterial_density = 7850f; //  [kg /m^3] (malo by byt zadane v databaze materialov)
 
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
@@ -342,6 +343,33 @@ namespace PFD
             // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();
             SetCrossSectionValuesFromDatabase();
+
+            // Temporary solution
+            // Purlin
+
+            // Loading Width
+            // Dead Load
+
+            //int index = 0;
+
+            // TODO Ondrej - ziskat z gridview components typ prierezu (polozka v stlpci cross-section
+            // grid
+
+            // TODO Ondrej - ziskat hodnotu z databazy
+            //float fA_g = DatabaseManager.GetValueFromDatabasebyRowID("MDBSections", "tableSections_m", "A_g", 1, "section");
+            float fA_g = 0.0001f;
+            float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
+            float fPurlinDeadLoadLinear = fDeadLoad_Roof * vm.PurlinDistance + fPurlinSelfWeight;
+            float fPurlinImposedLoadLinear = fImposedLoad_Roof * vm.PurlinDistance;
+            float fPurlinSnowLoadLinear = snow.fs_ULS_Nu_1 * vm.PurlinDistance;
+
+            // Find minimum and maximum wind pressure
+            float fPurlinWindPressureMin = 0;
+            float fPurlinWindPressureMax = 0;
+
+            // TODO - Martin, prejst vsetky hodnoty a nastavit min a a max wind pressure
+            float fPurlinWindLoadLinear = wind.fp_e_max_D_roof_ULS_Theta_4[0,0];
+
 
             // Calculate Internal Forces
             // Todo - napojit FEM vypocet
