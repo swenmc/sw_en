@@ -232,7 +232,7 @@ namespace BaseClasses
                                 if (model3D == null) model3D = new Model3DGroup();
                                 Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
                                 model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[0]).Geometry).Positions);
-                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
+                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
                                 model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions));
                                 model3D.Children.Add(mgr);
                             }
@@ -254,6 +254,17 @@ namespace BaseClasses
             {
                 wireframePoints.Add(positions[i]);
                 wireframePoints.Add(positions[i + 1]);
+            }
+            return wireframePoints;
+        }
+        private static List<Point3D> GetWireFramePointsFromGeometryShellPositions(Point3DCollection positions)
+        {
+            List<Point3D> wireframePoints = new List<Point3D>();
+            int halfIndex = positions.Count / 2;
+            for (int i = 0; i < halfIndex; i++)
+            {
+                wireframePoints.Add(positions[i]);
+                wireframePoints.Add(positions[i + halfIndex]);
             }
             return wireframePoints;
         }
@@ -817,10 +828,16 @@ namespace BaseClasses
                 }
 
                 // Add Wireframe Lines to the trackport                
-                wireFrameAllMembers.Name = "WireFrame_Members";
-                wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
-                model.WireFrameMembers = wireFrameAllMembers;
-                viewPort.Children.Add(wireFrameAllMembers);
+                //wireFrameAllMembers.Name = "WireFrame_Members";
+                //wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
+                //model.WireFrameMembers = wireFrameAllMembers;
+                //viewPort.Children.Add(wireFrameAllMembers);
+
+                WireLines wl = new WireLines();
+                wl.Lines = new Point3DCollection(wireFramePoints);
+                wl.Color = Colors.White;
+                viewPort.Children.Add(wl);
+
             }
         }
 
