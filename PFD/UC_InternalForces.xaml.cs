@@ -29,11 +29,7 @@ namespace PFD
         public float modelBottomPosition_y;
         const float fCanvasHeight = 150; // Size of Canvas // Same size of of diagrams ???
         const float fCanvasWidth = 600;  // Size of Canvas
-
-        public float fReal_Model_Zoom_FactorX;
-        public float fReal_Model_Zoom_FactorY;
-
-        float xValueMax = 10; // Temporary - Member theoretical length [m], nacitat z CMember
+        float fMemberLength_xMax = 10; // Temporary - Member theoretical length [m], nacitat z CMember
 
         // Number of x-axis points (result sections)
         // TODO - napojit na results - metoda calculate click pre kazdy prut, kazdu CO (oad combination) a kazdy Limit State
@@ -59,7 +55,7 @@ namespace PFD
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
             for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
-                arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * xValueMax; // Int must be converted to the float to get decimal numbers
+                arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * fMemberLength_xMax; // Int must be converted to the float to get decimal numbers
 
             // Temporary Data
             float[] fArr_AxialForceValuesN = new float[iNumberOfDesignSections] { 10000, 10000, 9000, 0000, 0000, -3000, -3000, -4000, -4500, -5000, -5000 }; // Temporary data - napojit na vysledky vypoctu
@@ -71,13 +67,13 @@ namespace PFD
 
             // Draw axis (x, y)
 
-            DrawAxisInCanvas(true, xValueMax, fArr_AxialForceValuesN , Canvas_AxialForceDiagram);
-            DrawAxisInCanvas(true, xValueMax, fArr_ShearForceValuesVx, Canvas_ShearForceDiagramVx);
-            DrawAxisInCanvas(true, xValueMax, fArr_ShearForceValuesVy, Canvas_ShearForceDiagramVy);
+            DrawAxisInCanvas(true, fArr_AxialForceValuesN , Canvas_AxialForceDiagram);
+            DrawAxisInCanvas(true, fArr_ShearForceValuesVx, Canvas_ShearForceDiagramVx);
+            DrawAxisInCanvas(true, fArr_ShearForceValuesVy, Canvas_ShearForceDiagramVy);
 
-            DrawAxisInCanvas(false, xValueMax, fArr_TorsionMomentValuesT , Canvas_TorsionMomentDiagram);
-            DrawAxisInCanvas(false, xValueMax, fArr_BendingMomentValuesMx, Canvas_BendingMomentDiagramMx);
-            DrawAxisInCanvas(false, xValueMax, fArr_BendingMomentValuesMy, Canvas_BendingMomentDiagramMy);
+            DrawAxisInCanvas(false, fArr_TorsionMomentValuesT , Canvas_TorsionMomentDiagram);
+            DrawAxisInCanvas(false, fArr_BendingMomentValuesMx, Canvas_BendingMomentDiagramMx);
+            DrawAxisInCanvas(false, fArr_BendingMomentValuesMy, Canvas_BendingMomentDiagramMy);
 
             // TODO
             // Vysledky by mali byt v N a Nm (pocitame v zakladnych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
@@ -94,12 +90,13 @@ namespace PFD
 
             // Draw values description
             DrawTexts(fArr_AxialForceValuesN , arrPointsCoordX, fArr_AxialForceValuesN , Brushes.BlueViolet, Canvas_AxialForceDiagram);
-            DrawTexts(fArr_ShearForceValuesVx, arrPointsCoordX, fArr_ShearForceValuesVx, Brushes.BlueViolet, Canvas_AxialForceDiagram);
-            DrawTexts(fArr_ShearForceValuesVy, arrPointsCoordX, fArr_ShearForceValuesVy, Brushes.BlueViolet, Canvas_AxialForceDiagram);
+            DrawTexts(fArr_ShearForceValuesVx, arrPointsCoordX, fArr_ShearForceValuesVx, Brushes.BlueViolet, Canvas_ShearForceDiagramVx);
+            DrawTexts(fArr_ShearForceValuesVy, arrPointsCoordX, fArr_ShearForceValuesVy, Brushes.BlueViolet, Canvas_ShearForceDiagramVy);
 
-            DrawTexts(fArr_TorsionMomentValuesT , arrPointsCoordX, fArr_TorsionMomentValuesT , Brushes.BlueViolet, Canvas_AxialForceDiagram);
-            DrawTexts(fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_AxialForceDiagram);
-            DrawTexts(fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_AxialForceDiagram);
+            DrawTexts(fArr_TorsionMomentValuesT , arrPointsCoordX, fArr_TorsionMomentValuesT , Brushes.BlueViolet, Canvas_TorsionMomentDiagram);
+            DrawTexts(fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_BendingMomentDiagramMx);
+            DrawTexts(fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_BendingMomentDiagramMy);
+
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)
@@ -120,32 +117,13 @@ namespace PFD
         }
 
         // Todo Ondrej - vytvorit bazovu triedu pre kreslenie 2D objektov a grafov pristupnu vo vsetkych projektoch
-        public void DrawAxisInCanvas(bool bYOrientationIsUp, float xValueMax, float[] arrPointsCoordY, Canvas canvasForImage)
+        public void DrawAxisInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordY, Canvas canvasForImage)
         {
-            fReal_Model_Zoom_FactorX = (float)((fCanvasWidth - modelMarginLeft_x - modelMarginRight_x) / xValueMax);
+            float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
+            float fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
 
-            // y-values range (TODO - spocitat presne z pola hodnot, ak su vsetky kladne brat y_max, ak su vsetky zaporne tak abs(y_min)
-
-            float yValueMin, yValueMax;
-            GetMinAndMaxValue(arrPointsCoordY, out yValueMin, out yValueMax);
-
-            float fYAxisLength;
-            float fRangeOfYValues;
-
-            if (yValueMin * yValueMax < 0)
-                fYAxisLength = fRangeOfYValues = Math.Abs(yValueMin) + Math.Abs(yValueMax);
-            else if (yValueMax > 0)
-            {
-                fYAxisLength = yValueMax;
-                fRangeOfYValues = yValueMax - yValueMin;
-            }
-            else
-            {
-                fYAxisLength = Math.Abs(yValueMin);
-                fRangeOfYValues = yValueMax - yValueMin;
-            }
-
-            fReal_Model_Zoom_FactorY = (float)((fCanvasHeight - modelMarginTop_y - modelMarginBottom_y) / fYAxisLength);
+            float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
+            float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
 
             float fPositionOfXaxisToTheEndOfYAxis = 0;
 
@@ -156,44 +134,29 @@ namespace PFD
             {
                 // x-axis (middle)
                 fPositionOfXaxisToTheEndOfYAxis = yValueMax < 0 ? 0 : yValueMax;
-                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x + 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fReal_Model_Zoom_FactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x, fFactorX, fFactorY, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
 
                 // y-axis (oriented upwards)
-                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + fRangeOfYValues }, modelMarginTop_y, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x, fFactorX, fFactorY, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             }
             else // Down (Torsion and bending moments T, Mx, My)
             {
                 fPositionOfXaxisToTheEndOfYAxis = yValueMin < 0 ? Math.Abs(yValueMin) : 0;
                 // x-axis (middle)
-                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x + 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fReal_Model_Zoom_FactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x, fFactorX, fFactorY, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
 
                 // y-axis (oriented downwards)
-                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + fRangeOfYValues }, modelMarginTop_y, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x, fFactorX, fFactorY, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             }
         }
 
         public void DrawYValuesCurveInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, Canvas canvasForImage)
         {
-            float yValueMin, yValueMax;
-            GetMinAndMaxValue(arrPointsCoordY, out yValueMin, out yValueMax);
+            float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
+            float fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
 
-            float fYAxisLength;
-            float fRangeOfYValues;
-
-            if (yValueMin * yValueMax < 0)
-                fYAxisLength = fRangeOfYValues = Math.Abs(yValueMin) + Math.Abs(yValueMax);
-            else if (yValueMax > 0)
-            {
-                fYAxisLength = yValueMax;
-                fRangeOfYValues = yValueMax - yValueMin;
-            }
-            else
-            {
-                fYAxisLength = Math.Abs(yValueMin);
-                fRangeOfYValues = yValueMax - yValueMin;
-            }
-
-            fReal_Model_Zoom_FactorY = (float)((fCanvasHeight - modelMarginTop_y - modelMarginBottom_y) / fYAxisLength);
+            float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
+            float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
 
             if (arrPointsCoordY != null)
             {
@@ -203,17 +166,37 @@ namespace PFD
                         arrPointsCoordY[i] *= -1f;
                 }
 
-                DrawPolyLine(arrPointsCoordX, arrPointsCoordY, modelMarginTop_y/*modelBottomPosition_y*/, modelMarginLeft_x, Brushes.Blue, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(arrPointsCoordX, arrPointsCoordY, modelMarginTop_y, modelMarginLeft_x, fFactorX, fFactorY, Brushes.Blue, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             }
         }
 
-        public void DrawPolyLine(float[] arrPointsCoordX, float[] arrPointsCoordY, double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public float CalculateZoomFactor(float[] arrPointsCoord, float fCanvasDimension, float fMarginValue1, float fMarginValue2, out float fValueMin, out float fValueMax, out float fRangeOfValues, out float fAxisLength)
+        {
+            GetMinAndMaxValue(arrPointsCoord, out fValueMin, out fValueMax);
+ 
+            if (fValueMin * fValueMax < 0)
+                fAxisLength = fRangeOfValues = Math.Abs(fValueMin) + Math.Abs(fValueMax);
+            else if (fValueMax > 0)
+            {
+                fAxisLength = fValueMax;
+                fRangeOfValues = fValueMax - fValueMin;
+            }
+            else
+            {
+                fAxisLength = Math.Abs(fValueMin);
+                fRangeOfValues = fValueMax - fValueMin;
+            }
+
+            return (float)((fCanvasDimension - fMarginValue1 - fMarginValue2) / fAxisLength);
+        }
+
+        public void DrawPolyLine(float[] arrPointsCoordX, float[] arrPointsCoordY, double dCanvasTopTemp, double dCanvasLeftTemp, float fFactorX, float fFactorY, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             PointCollection points = new PointCollection();
 
             for (int i = 0; i < arrPointsCoordX.Length; i++)
             {
-                points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_FactorX * arrPointsCoordX[i], modelBottomPosition_y - fReal_Model_Zoom_FactorY * arrPointsCoordY[i]));
+                points.Add(new Point(modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i]));
             }
 
             Polyline myLine = new Polyline();
@@ -248,7 +231,7 @@ namespace PFD
             }
         }
 
-        // Funkcie su rovnake ako u windspeed, len je pridany parameter parameter
+        // Funkcie su rovnake ako u windspeed, len je pridany parameter pre canvas a vypocet FactorX a FactorY
 
         public void DrawTexts(string[] array_text, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
         {
@@ -270,9 +253,15 @@ namespace PFD
 
         public void DrawTexts(string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
         {
+            float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
+            float fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
+
+            float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
+            float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+
             for (int i = 0; i < array_text.Length; i++)
             {
-                DrawText(array_text[i], modelMarginLeft_x + fReal_Model_Zoom_FactorX * arrPointsCoordX[i], modelBottomPosition_y - fReal_Model_Zoom_FactorY * arrPointsCoordY[i], 16, color, canvasForImage);
+                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 12, color, canvasForImage);
             }
         }
 
@@ -287,7 +276,7 @@ namespace PFD
         }
 
         public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
-        {
+        { 
             DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, arrPointsCoordY, color, canvasForImage);
         }
 
