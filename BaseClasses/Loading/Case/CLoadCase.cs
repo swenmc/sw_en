@@ -5,17 +5,10 @@ using System.Text;
 
 namespace BaseClasses
 {
-	[Serializable]
-	public class CLoadCase
-	{
-		//----------------------------------------------------------------------------
-		private int m_ID;
-
-		public int ID
-		{
-			get { return m_ID; }
-			set { m_ID = value; }
-		}
+    [Serializable]
+    public class CLoadCase : CObject
+    {
+        //----------------------------------------------------------------------------
 
         /*
         // Nepouzije sa, pretoze kazda kombinacia ma vlastny faktor pre dany LC
@@ -27,14 +20,6 @@ namespace BaseClasses
             set { m_fFactor = value; }
         }
         */
-
-        private string m_Name;
-
-        public string Name
-        {
-            get { return m_Name; }
-            set { m_Name = value; }
-        }
 
         // TODO - zmenit na ENUM
         private string m_Type;

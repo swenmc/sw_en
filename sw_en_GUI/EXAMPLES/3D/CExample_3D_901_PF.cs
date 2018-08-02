@@ -120,7 +120,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);  // Main Column
             m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);      // Rafter
-            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                 // Eaves Purlin
+            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
             m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                // Girt - Wall
             m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);             // Purlin
             m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Front Column
@@ -897,7 +897,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[10]);
             m_arrLoadCombs[4].LoadCasesFactorsList.Add(1.00f);
 
-            // G + Cpi front + W Cpe,min lef
+            // G + Cpi front + W Cpe,min left
             m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[0]);
             m_arrLoadCombs[5].LoadCasesFactorsList.Add(0.90f);
             m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[6]);
@@ -906,9 +906,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_arrLoadCombs[5].LoadCasesFactorsList.Add(1.00f);
 
             // Limit States
-            m_arrLimitStates = new CLimitState[2];
-            m_arrLimitStates[0] = new CLimitState(ELSType.eLS_ULS);
-            m_arrLimitStates[1] = new CLimitState(ELSType.eLS_SLS);
+            m_arrLimitStates = new CLimitState[3];
+            m_arrLimitStates[0] = new CLimitState("Ultimate Limit State - Stability", ELSType.eLS_ULS);
+            m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength" , ELSType.eLS_ULS);
+            m_arrLimitStates[2] = new CLimitState("Serviceability Limit State"      , ELSType.eLS_SLS);
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)

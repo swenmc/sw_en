@@ -43,6 +43,9 @@ namespace PFD
 
         string[] arrayTextX1_CardinalDirections;
 
+        public WindSpeedChart()
+        { }
+
         public WindSpeedChart(CCalcul_1170_2 windCalculationData_temp)
         {
             InitializeComponent();
@@ -61,7 +64,7 @@ namespace PFD
             arrayTextX1_CardinalDirections = windCalculationData.sWindDirections_9;
 
             bool bUse_9_Values = true;
-            bool bDisplayFactor_M_D = true; // TODO - combobox - nastavitelne uzivatelsky ci chce zobrazit faktor M_D [-] alebo rychlosti V_R [m/s]
+            bool bDisplayFactor_M_D = true; // TODO Ondrej - pridat combobox - nastavitelne uzivatelsky, ci chce zobrazit faktor M_D [-] alebo rychlosti V_R [m/s]
 
             if (bUse_9_Values)
                 farrayValuesX = windCalculationData.fM_D_array_angles_9;

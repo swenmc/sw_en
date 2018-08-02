@@ -6,7 +6,7 @@ using System.Text;
 namespace BaseClasses
 {
     [Serializable]
-    public class CLoadCombination
+    public class CLoadCombination : CObject
     {
         /*
         ULS Strength Load Combinations:
@@ -91,22 +91,6 @@ namespace BaseClasses
         */
 
         //----------------------------------------------------------------------------
-        private int m_ID;
-
-        public int ID
-        {
-            get { return m_ID; }
-            set { m_ID = value; }
-        }
-
-        private string m_Name;
-
-        public string Name
-        {
-            get { return m_Name; }
-            set { m_Name = value; }
-        }
-
         // TODO - zmenit na ENUM
         /*
         private string m_Type;

@@ -501,4 +501,42 @@ namespace BaseClasses
         public float AdditionalDeadActionWall;
         public float ImposedActionRoof;
     }
+
+    public struct basicInternalForces
+    {
+        public float fN;
+        public float fV_yu;
+        public float fV_zv;
+        public float fV_yy;
+        public float fV_zz;
+        public float fT;
+        public float fM_yu;
+        public float fM_zv;
+        public float fM_yy;
+        public float fM_zz;
+    }
+
+    public struct designInternalForces
+    {
+        public float fN;
+        public float fN_c;
+        public float fN_t;
+        public float fV_yu;
+        public float fV_zv;
+        public float fV_yy;
+        public float fV_zz;
+        public float fT;
+        public float fM_yu;
+        public float fM_zv;
+        public float fM_yy;
+        public float fM_zz;
+    }
+
+    public struct designMomentValuesForCb
+    {
+        public float fM_max;
+        public float fM_14;
+        public float fM_24;
+        public float fM_34;
+    }
 }

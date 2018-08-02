@@ -195,6 +195,7 @@
     <Compile Include="EXAMPLES\2D\CExample_2D_03.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_04.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_11.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_51_SB.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_13_PF.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_12.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_01.cs" />

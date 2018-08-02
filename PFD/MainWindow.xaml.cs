@@ -45,6 +45,7 @@ namespace PFD
         ////////////////////////////////////////////////////////////////////////
 
         DataSet ds;
+        bool bDebugging = false;
 
         public CModel model;
         public DatabaseModels dmodels; // Todo nahradit databazov modelov
@@ -257,6 +258,45 @@ namespace PFD
             Results_GridView.Items.Refresh();
         }
 
+        private void RunFEMSOlver()
+        {
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // Calculate Internal Forces
+            // Todo - napojit FEM vypocet
+
+            // TODO - Ondrej Task No 41
+            // Todo - nefunguje implementovany 2D solver, asi je chybna detekcia zakladnej tuhostnej matici pruta
+            // Treba sa na to pozriet podrobnejsie
+            // Navrhujem napojit nejaky externy solver
+
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(model.m_arrMat[0], model.m_arrCrSc[0], model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2, 1000, 1000, 1000, 1000);
+            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
+
+            // Auxialiary string - result data
+            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
+            string sDOFResults = null;
+
+            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
+            {
+                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
+                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
+
+                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
+                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
+                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
+                               + "\n";
+            }
+
+            // Main String
+            string sMessageCalc =
+                "Calculation was successful!" + "\n\n" +
+                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
+
+            // Display Message
+            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
+        }
+
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             // Clear results of previous calculation
@@ -357,295 +397,154 @@ namespace PFD
 
             // TODO Ondrej - ziskat hodnotu z databazy
             //float fA_g = DatabaseManager.GetValueFromDatabasebyRowID("MDBSections", "tableSections_m", "A_g", 1, "section");
-            float fA_g = 0.0001f;
+
+            float fA_g = (float)model.m_arrCrSc[4].A_g;
             float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
             float fPurlinDeadLoadLinear = fDeadLoad_Roof * vm.PurlinDistance + fPurlinSelfWeight;
             float fPurlinImposedLoadLinear = fImposedLoad_Roof * vm.PurlinDistance;
             float fPurlinSnowLoadLinear = snow.fs_ULS_Nu_1 * vm.PurlinDistance;
 
-            // Find minimum and maximum wind pressure
-            float fPurlinWindPressureMin = 0;
-            float fPurlinWindPressureMax = 0;
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TEMPORARY - vypocet na modeli jedneho pruta
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // TODO - Martin, prejst vsetky hodnoty a nastavit min a a max wind pressure
             float fPurlinWindLoadLinear = wind.fp_e_max_D_roof_ULS_Theta_4[0,0];
 
+            float fp_i_min_min;
+            float fp_i_min_max;
+            float fp_i_max_min;
+            float fp_i_max_max;
 
-            // Calculate Internal Forces
-            // Todo - napojit FEM vypocet
-            bool bDebugging = false;
+            GetMinAndMaxValueInTheArray(wind.fp_i_min_ULS_Theta_4, out fp_i_min_min, out fp_i_min_max);
+            GetMinAndMaxValueInTheArray(wind.fp_i_max_ULS_Theta_4, out fp_i_max_min, out fp_i_max_max);
 
-            // TODO - Ondrej Task No 41
-            // Todo - nefunguje implementovany 2D solver, asi je chybna detekcia zakladnej tuhostnej matici pruta
-            // Treba sa na to pozriet podrobnejsie
-            // Navrhujem napojit nejaky externy solver
+            float[] fp_e_min_min = new float[3];
+            float[] fp_e_min_max = new float[3];
+            float[] fp_e_max_min = new float[3];
+            float[] fp_e_max_max = new float[3];
 
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(model.m_arrMat[0], model.m_arrCrSc[0], model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2,1000,1000,1000,1000);
-            FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
+            GetMinAndMaxValueInTheArray(wind.fp_e_min_D_roof_ULS_Theta_4, out fp_e_min_min[0], out fp_e_min_max[0]);
+            GetMinAndMaxValueInTheArray(wind.fp_e_min_U_roof_ULS_Theta_4, out fp_e_min_min[1], out fp_e_min_max[1]);
+            GetMinAndMaxValueInTheArray(wind.fp_e_min_R_roof_ULS_Theta_4, out fp_e_min_min[2], out fp_e_min_max[2]);
 
-            // Auxialiary string - result data
-            int iDispDecPrecision = 3; // Precision of numerical values of displacement and rotations
-            string sDOFResults = null;
+            GetMinAndMaxValueInTheArray(wind.fp_e_max_D_roof_ULS_Theta_4, out fp_e_max_min[0], out fp_e_max_max[0]);
+            GetMinAndMaxValueInTheArray(wind.fp_e_max_U_roof_ULS_Theta_4, out fp_e_max_min[1], out fp_e_max_max[1]);
+            GetMinAndMaxValueInTheArray(wind.fp_e_max_R_roof_ULS_Theta_4, out fp_e_max_min[2], out fp_e_max_max[2]);
 
-            for (int i = 0; i < obj_Calc.m_V_Displ.FVectorItems.Length; i++)
+            float fp_e_min_min_value;
+            float fp_e_min_max_value;
+            float fp_e_max_min_value;
+            float fp_e_max_max_value;
+
+            GetMinAndMaxValueInTheArray(fp_e_min_min, out fp_e_min_min_value, out fp_e_min_max_value);
+            GetMinAndMaxValueInTheArray(fp_e_max_max, out fp_e_max_min_value, out fp_e_max_max_value);
+
+            float fp_min = fp_i_min_min + fp_e_min_min_value;
+            float fp_max = fp_i_max_max + fp_e_max_max_value;
+
+            float fWu_min_linear = fp_min * vm.PurlinDistance;
+            float fWu_max_linear = fp_max * vm.PurlinDistance;
+
+            // Transform loads from global coordinate system to the purlin coordinate system
+            float fSinAlpha = (float)Math.Sin((vm.RoofPitch_deg / 180f) * MathF.fPI);
+            float fCosAlpha = (float)Math.Cos((vm.RoofPitch_deg / 180f) * MathF.fPI);
+
+            float fPurlinDeadLoadLinear_LCS_y = fPurlinDeadLoadLinear * fSinAlpha;
+            float fPurlinDeadLoadLinear_LCS_z = fPurlinDeadLoadLinear * fCosAlpha;
+
+            float fPurlinImposedLoadLinear_LCS_y = fPurlinImposedLoadLinear * fSinAlpha;
+            float fPurlinImposedLoadLinear_LCS_z = fPurlinImposedLoadLinear * fCosAlpha;
+
+            float fPurlinSnowLoadLinear_LCS_y = fPurlinSnowLoadLinear * fSinAlpha;
+            float fPurlinSnowLoadLinear_LCS_z = fPurlinSnowLoadLinear * fCosAlpha;
+
+            // Combinations of action
+            // 4.2.2 Strength
+            // Purlin (a) (b) (d) (e) (g)
+
+            int iNumberOfLoadCombinations = 5;
+            float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
+
+            fE_d_load_values_LCS_y[0] = 1.35f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (a)
+            fE_d_load_values_LCS_y[1] = 1.20f * fPurlinDeadLoadLinear_LCS_y + 1.50f * fPurlinImposedLoadLinear_LCS_y;     // 4.2.2 (b)
+            fE_d_load_values_LCS_y[2] = 1.20f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (d)
+            fE_d_load_values_LCS_y[3] = 0.90f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (e)
+            fE_d_load_values_LCS_y[4] = 1.20f * fPurlinDeadLoadLinear_LCS_y + fPurlinSnowLoadLinear_LCS_y;                // 4.2.2 (g)
+
+            float[] fE_d_load_values_LCS_z = new float[iNumberOfLoadCombinations];
+
+            fE_d_load_values_LCS_z[0] = 1.35f * fPurlinDeadLoadLinear_LCS_z;                                              // 4.2.2 (a)
+            fE_d_load_values_LCS_z[1] = 1.20f * fPurlinDeadLoadLinear_LCS_z + 1.50f * fPurlinImposedLoadLinear_LCS_z;     // 4.2.2 (b)
+            fE_d_load_values_LCS_z[2] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fWu_max_linear;                             // 4.2.2 (d)
+            fE_d_load_values_LCS_z[3] = 0.90f * fPurlinDeadLoadLinear_LCS_z + Math.Abs(fWu_min_linear);                   // 4.2.2 (e)
+            fE_d_load_values_LCS_z[4] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fPurlinSnowLoadLinear_LCS_z;                // 4.2.2 (g)
+
+            const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
+            const int iNumberOfSegments = iNumberOfDesignSections - 1;
+
+            float[] fx_positions = new float[iNumberOfDesignSections];
+
+            for (int i = 0; i < iNumberOfDesignSections; i++)
+                fx_positions[i] = ((float)i / (float)iNumberOfSegments) * vm.fL1; // Int must be converted to the float to get decimal numbers
+
+            designMomentValuesForCb [] sMomentValuesforCb = new designMomentValuesForCb[iNumberOfLoadCombinations];
+
+            basicInternalForces[,] sBIF_x = new basicInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
+
+            // Tu by sa mal napojit FEM vypocet
+            //RunFEMSOlver();
+
+            // Temporary calculation of internal forces - each combination
+            for (int i = 0; i < iNumberOfLoadCombinations; i++)
             {
-                int iNodeNumber = obj_Calc.m_fDisp_Vector_CN[i, 1] + 1; // Increase index (1st member "0" to "1"
-                int iNodeDOFNumber = obj_Calc.m_fDisp_Vector_CN[i, 2] + 1;
+                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(model.m_arrCrSc[4], vm.fL1, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y[i]);
+                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(model.m_arrCrSc[4], vm.fL1, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z[i]);
 
-                sDOFResults += "Node No:" + "\t" + iNodeNumber + "\t" +
-                               "Node DOF No:" + "\t" + iNodeDOFNumber + "\t" +
-                               "Value:" + "\t" + String.Format("{0:0.000}", Math.Round(obj_Calc.m_V_Displ.FVectorItems[i], iDispDecPrecision))
-                               + "\n";
-            }
+                float fM_abs_max = 0;
 
-            // Main String
-            string sMessageCalc =
-                "Calculation was successful!" + "\n\n" +
-                "Result - vector of calculated values of unrestraint DOF displacement or rotation" + "\n\n" + sDOFResults;
-
-            // Display Message
-            MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
-
-
-
-            float fN = -5000f;
-            float fN_c = fN > 0 ? 0f : Math.Abs(fN);
-            float fN_t = fN < 0 ? 0f : fN;
-            float fV_xu = 4100;
-            float fV_yv = 564556;
-            float fV_xx = 0;
-            float fV_yy = 0;
-            float fT = 0;
-            float fM_xu = 54548;
-            float fM_yv = 5454;
-            float fM_xx = 0;
-            float fM_yy = 0;
-
-            // Design Members
-            //for (int i = 0; i < model.m_arrMembers.Length; i++)
-            //{
-            // skontrolovat co sa pocita, ostatne nastavit
-
-
-
-
-
-            CCalcul obj_CalcDesign = new CCalcul(fN, fN_c, fN_t, fV_xu, fV_yv, fT, fM_xu, fM_yv, (CCrSc_TW) model.m_arrCrSc[0]);
-            //}
-
-            // Display results in datagrid
-            // AS 4600 output variables
-
-            // Compression
-            // Global Buckling
-            zoznamMenuNazvy.Add("f oc");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oc.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ c");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_c.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("f oz");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oz.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("f ox");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ox.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("f oy");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("N y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_y.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N oc");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_oc.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N ce");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ce.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            // Local Buckling
-            zoznamMenuNazvy.Add("f ol");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ l");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_l.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("N ol");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ol.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N cl");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cl.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            // Distorsial Buckling
-            zoznamMenuNazvy.Add("f od");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ d");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_d.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("N od");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_od.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N cd");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cd.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N c,min");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_c_min.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("φ c");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_c.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("Eta max");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fDesignRatio_N.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Tension
-            zoznamMenuNazvy.Add("φ t");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Bending
-            zoznamMenuNazvy.Add("M p,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M y,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M p,y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_yv.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M y,y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_yv.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("C b");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fC_b.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("M be,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_be_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            // Local Buckling
-            zoznamMenuNazvy.Add("f ol,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ol_bend.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ l,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_l_xu.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("M bl,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bl_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            // Distrosial buckling
-            zoznamMenuNazvy.Add("f od,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od_bend.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ d,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_d_xu.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("M bd,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bd_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("φ b");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_b.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Shear
-            zoznamMenuNazvy.Add("φ v");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_v.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("Eta max");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Create Table
-            DataTable table = new DataTable("Table");
-            // Create Table Rows
-
-            table.Columns.Add("Symbol", typeof(String));
-            table.Columns.Add("Value", typeof(String));
-            table.Columns.Add("Unit", typeof(String));
-
-            table.Columns.Add("Symbol1", typeof(String));
-            table.Columns.Add("Value1", typeof(String));
-            table.Columns.Add("Unit1", typeof(String));
-
-            table.Columns.Add("Symbol2", typeof(String));
-            table.Columns.Add("Value2", typeof(String));
-            table.Columns.Add("Unit2", typeof(String));
-
-            // Set Column Caption
-            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
-            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
-            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
-
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
-
-            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
-            {
-                DataRow row = table.NewRow();
-
-                try
+                for (int j = 0; j < iNumberOfDesignSections; j++)
                 {
-                    row["Symbol"] = zoznamMenuNazvy[i];
-                    row["Value"] = zoznamMenuHodnoty[i];
-                    row["Unit"] = zoznamMenuJednotky[i];
-                    i++;
-                    row["Symbol1"] = zoznamMenuNazvy[i];
-                    row["Value1"] = zoznamMenuHodnoty[i];
-                    row["Unit1"] = zoznamMenuJednotky[i];
-                    i++;
-                    row["Symbol2"] = zoznamMenuNazvy[i];
-                    row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];
+                    sBIF_x[i,j].fV_yu = memberModel_qy.GetV_x(fx_positions[j]);
+                    sBIF_x[i,j].fM_zv = memberModel_qy.GetM_x(fx_positions[j]);
+
+                    sBIF_x[i,j].fV_zv = memberModel_qz.GetV_x(fx_positions[j]);
+                    sBIF_x[i,j].fM_yu = memberModel_qz.GetM_x(fx_positions[j]);
+
+                    sBIF_x[i,j].fN = 0f; // TODO - doplnit vypocet
+                    sBIF_x[i,j].fT = 0f; // TODO - doplnit vypocet
+
+                    if (Math.Abs(sBIF_x[i, j].fM_yu) > Math.Abs(fM_abs_max))
+                        fM_abs_max = sBIF_x[i, j].fM_yu;
                 }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
+
+                sMomentValuesforCb[i].fM_max = fM_abs_max;
+                sMomentValuesforCb[i].fM_14 = memberModel_qz.GetM_x(0.25f * vm.fL1);
+                sMomentValuesforCb[i].fM_24 = memberModel_qz.GetM_x(0.50f * vm.fL1);
+                sMomentValuesforCb[i].fM_34 = memberModel_qz.GetM_x(0.75f * vm.fL1);
             }
 
-            Results_GridView.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            // Design
+            designInternalForces [,] sDIF_x = new designInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
 
-            /*
-            // Set Column Header
-            Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
-            Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
-            Results_GridView.Columns[2].Header = Results_GridView.Columns[5].Header = Results_GridView.Columns[8].Header = "Unit";
+            for (int i = 0; i < iNumberOfLoadCombinations; i++)
+            {
+                for (int j = 0; j < iNumberOfDesignSections; j++)
+                {
+                    sDIF_x[i, j].fN = sBIF_x[i, j].fN;
+                    sDIF_x[i, j].fN_c = sDIF_x[i, j].fN > 0 ? 0f : Math.Abs(sDIF_x[i, j].fN);
+                    sDIF_x[i, j].fN_t = sDIF_x[i, j].fN < 0 ? 0f : sDIF_x[i, j].fN;
+                    sDIF_x[i, j].fT = sBIF_x[i, j].fT;
 
-            // Set Column Width
-            Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
-            Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
-            Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
-            */
+                    sDIF_x[i, j].fV_yu = sBIF_x[i, j].fV_yu;
+                    sDIF_x[i, j].fM_zv = sBIF_x[i, j].fM_zv;
+
+                    sDIF_x[i, j].fV_zv = sBIF_x[i, j].fV_zv;
+                    sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
+
+                    CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], (CCrSc_TW)model.m_arrCrSc[4], vm.fL1, sMomentValuesforCb[i]);
+                }
+            }
         }
 
         public void CalculateSnowLoad()
@@ -929,6 +828,265 @@ namespace PFD
 
         }
 
+        private void DisplayDesignResultsInGridView(CCalcul obj_CalcDesign)
+        {
+            // Display results in datagrid
+            // AS 4600 output variables
+
+            // Compression
+            // Global Buckling
+            zoznamMenuNazvy.Add("f oc");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oc.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("λ c");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_c.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("f oz");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oz.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("f ox");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ox.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("f oy");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("N y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_y.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("N oc");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_oc.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("N ce");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ce.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            // Local Buckling
+            zoznamMenuNazvy.Add("f ol");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("λ l");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_l.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("N ol");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ol.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("N cl");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cl.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            // Distorsial Buckling
+            zoznamMenuNazvy.Add("f od");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("λ d");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_d.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("N od");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_od.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("N cd");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cd.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("N c,min");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_c_min.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("φ c");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_c.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta max");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fDesignRatio_N.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            // Tension
+            zoznamMenuNazvy.Add("φ t");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            // Bending
+            zoznamMenuNazvy.Add("M p,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("M y,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("M p,y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_yv.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("M y,y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_yv.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("C b");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fC_b.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("M be,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_be_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            // Local Buckling
+            zoznamMenuNazvy.Add("f ol,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ol_bend.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("λ l,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_l_xu.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("M bl,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bl_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            // Distrosial buckling
+            zoznamMenuNazvy.Add("f od,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od_bend.ToString());
+            zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("λ d,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_d_xu.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("M bd,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bd_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("φ b");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_b.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            // Shear
+            zoznamMenuNazvy.Add("φ v");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_v.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta max");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            // Create Table
+            DataTable table = new DataTable("Table");
+            // Create Table Rows
+
+            table.Columns.Add("Symbol", typeof(String));
+            table.Columns.Add("Value", typeof(String));
+            table.Columns.Add("Unit", typeof(String));
+
+            table.Columns.Add("Symbol1", typeof(String));
+            table.Columns.Add("Value1", typeof(String));
+            table.Columns.Add("Unit1", typeof(String));
+
+            table.Columns.Add("Symbol2", typeof(String));
+            table.Columns.Add("Value2", typeof(String));
+            table.Columns.Add("Unit2", typeof(String));
+
+            // Set Column Caption
+            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
+            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
+            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
+
+            // Create Datases
+            ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
+            {
+                DataRow row = table.NewRow();
+
+                try
+                {
+                    row["Symbol"] = zoznamMenuNazvy[i];
+                    row["Value"] = zoznamMenuHodnoty[i];
+                    row["Unit"] = zoznamMenuJednotky[i];
+                    i++;
+                    row["Symbol1"] = zoznamMenuNazvy[i];
+                    row["Value1"] = zoznamMenuHodnoty[i];
+                    row["Unit1"] = zoznamMenuJednotky[i];
+                    i++;
+                    row["Symbol2"] = zoznamMenuNazvy[i];
+                    row["Value2"] = zoznamMenuHodnoty[i];
+                    row["Unit2"] = zoznamMenuJednotky[i];
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+
+            Results_GridView.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+
+            /*
+            // Set Column Header
+            Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
+            Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
+            Results_GridView.Columns[2].Header = Results_GridView.Columns[5].Header = Results_GridView.Columns[8].Header = "Unit";
+
+            // Set Column Width
+            Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
+            Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
+            Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
+            */
+        }
+
+        private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
+        {
+            if (array != null)
+            {
+                min = max = array[0, 0];
+
+                foreach (float f in array)
+                {
+                    if (Math.Abs(f) > Math.Abs(min))
+                        min = f;
+
+                    if (Math.Abs(f) > Math.Abs(max))
+                        max = f;
+                }
+            }
+            else // Exception
+            {
+                min = max = float.MaxValue;
+            }
+        }
+
+        private void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)
+        {
+            if (array != null)
+            {
+                min = max = array[0];
+
+                foreach (float f in array)
+                {
+                    if (Math.Abs(f) > Math.Abs(min))
+                        min = f;
+
+                    if (Math.Abs(f) > Math.Abs(max))
+                        max = f;
+                }
+            }
+            else // Exception
+            {
+                min = max = float.MaxValue;
+            }
+        }
+
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
             Page3Dmodel page3D = (Page3Dmodel) Frame1.Content;
@@ -983,10 +1141,15 @@ namespace PFD
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
             else if (MainTabControl.SelectedIndex == 4)
                 Load_Combinations.Content = new UC_LoadCombinationList(model).Content;
+            else if (MainTabControl.SelectedIndex == 5)
+            {
+               UC_ComponentList component = new UC_ComponentList();
+                Internal_Forces.Content = new UC_InternalForces(model, component).Content;
+            }
             else if (MainTabControl.SelectedIndex == 8)
                 Part_List.Content = new UC_MaterialList(model).Content;
             else
-            { 
+            {
                 // Not implemented like UC;
             };
         }

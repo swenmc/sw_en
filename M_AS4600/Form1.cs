@@ -79,7 +79,7 @@ namespace M_AS4600
             cso.D_y_s = 0.043f;
             cso.D_z_s = 0.0f;
 
-            CCalcul calculate = new CCalcul(fN, fN_c, fN_t, fV_xu, fV_yv, fT, fM_xu, fM_yv, cso);
+            //CCalcul calculate = new CCalcul(fN, fN_c, fN_t, fV_xu, fV_yv, fT, fM_xu, fM_yv, cso);
         }
     }
 }

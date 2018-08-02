@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CConnectionJointTypes.cs" />
+    <Compile Include="CObject.cs" />
     <Compile Include="Drawing3D.cs" />
     <Compile Include="Model\CCrSc.cs" />
     <Compile Include="Model\CMat.cs" />
