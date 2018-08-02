@@ -223,7 +223,7 @@ namespace BaseClasses
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
                                 GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
-                                model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)geom3D.Geometry).Positions);
+                                model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromMemberGeometryPositions(((MeshGeometry3D)geom3D.Geometry).Positions);
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else
@@ -265,6 +265,36 @@ namespace BaseClasses
             {
                 wireframePoints.Add(positions[i]);
                 wireframePoints.Add(positions[i + halfIndex]);
+            }
+            return wireframePoints;
+        }
+        private static List<Point3D> GetWireFramePointsFromMemberGeometryPositions(Point3DCollection positions)
+        {
+            List<Point3D> wireframePoints = new List<Point3D>();
+            int shift = positions.Count / 4;
+
+            for (int i = 0; i < positions.Count - 1; i++)
+            {
+                if (i < positions.Count / 4)  //1/4 front
+                {
+                    wireframePoints.Add(positions[i]);
+                    wireframePoints.Add(positions[i + 1]);
+                }
+                else if (i >= positions.Count / 4 * 3) // 3/4 Back side
+                {
+                    wireframePoints.Add(positions[i]);
+                    wireframePoints.Add(positions[i + 1]);
+                }
+                else //between 1/4 and 3/4 is Shell
+                {
+                    //zase raz je to standardne spravene takze raz su body pre Shell pridavane tak a raz tak - nutne je to zjednotit
+
+                    wireframePoints.Add(positions[i]);
+                    wireframePoints.Add(positions[i + shift]);
+
+                    //wireframePoints.Add(positions[i]);
+                    //wireframePoints.Add(positions[positions.Count - 1 - i]);
+                }
             }
             return wireframePoints;
         }
