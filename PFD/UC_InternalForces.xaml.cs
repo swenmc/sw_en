@@ -63,30 +63,32 @@ namespace PFD
 
             // Temporary Data
             float[] fArr_AxialForceValues = new float[iNumberOfDesignSections] { 10000, 10000, 9000, 0000, 0000, -3000, -3000, -4000, -4500, -5000, -5000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_ShearForceValuesVx = new float[iNumberOfDesignSections] { 10000, 8000, 3000, 5000, 5000, 4600, -2000, -12000, -8000, -20000, -30000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_ShearForceValuesVy = new float[iNumberOfDesignSections] { 15000, 8000, 3000, 5000, 5000, 4600, -2000, -12000, -8000, -20000, -30000 }; // Temporary data - napojit na vysledky vypoctu
+            float[] fArr_ShearForceValuesVx = new float[iNumberOfDesignSections] { -10000, -8000, -3000, -5000, -5000, -4600, -2000, -12000, -8000, -20000, 3000 }; // Temporary data - napojit na vysledky vypoctu
+            float[] fArr_ShearForceValuesVy = new float[iNumberOfDesignSections] { 15000, 8000, 3000, 5000, 5000, 4600, 2000, 12000, 8000, 20000, 5000 }; // Temporary data - napojit na vysledky vypoctu
             float[] fArr_TorsionMomentValues = new float[iNumberOfDesignSections] { 5000, 8000, 3000, 5000, 5000, 4600, -2000, -1000, -8000, -200, -1000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_BendingMomentValuesMx = new float[iNumberOfDesignSections] { 0, 8000, 30000, 50000, 50000, 14600, 20000, 12000, 8000, 4000, 300 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_BendingMomentValuesMy = new float[iNumberOfDesignSections] { 500, 1000, 2000, 3000, 4000, 4600, 4800, 3000, 2000, 1000, 200 }; // Temporary data - napojit na vysledky vypoctu
+            float[] fArr_BendingMomentValuesMx = new float[iNumberOfDesignSections] { 100, 8000, 30000, 50000, 20000, 14600, 13000, 12000, 8000, 4000, 300 }; // Temporary data - napojit na vysledky vypoctu
+            float[] fArr_BendingMomentValuesMy = new float[iNumberOfDesignSections] { -500, -1000, -2000, -3000, -4000, -4600, -4800, -3000, -2000, -1000, -200 }; // Temporary data - napojit na vysledky vypoctu
 
             // Draw axis (x, y)
-            DrawAxisInCanvas(true, xValueMax, -5000, 10000, Canvas_AxialForceDiagram);
-            DrawAxisInCanvas(true, xValueMax, -30000, 10000, Canvas_ShearForceDiagramVx);
-            DrawAxisInCanvas(true, xValueMax, -30000, 15000, Canvas_ShearForceDiagramVy);
-            DrawAxisInCanvas(true, xValueMax, -2000, 8000, Canvas_TorsionMomentDiagram);
-            DrawAxisInCanvas(true, xValueMax, 0, 50000, Canvas_BendingMomentDiagramMx);
-            DrawAxisInCanvas(true, xValueMax, 0, 4800, Canvas_BendingMomentDiagramMy);
+            DrawAxisInCanvas(true, xValueMax, fArr_AxialForceValues, Canvas_AxialForceDiagram);
+            DrawAxisInCanvas(true, xValueMax, fArr_ShearForceValuesVx, Canvas_ShearForceDiagramVx);
+            DrawAxisInCanvas(true, xValueMax, fArr_ShearForceValuesVy, Canvas_ShearForceDiagramVy);
+            DrawAxisInCanvas(false, xValueMax, fArr_TorsionMomentValues,Canvas_TorsionMomentDiagram);
+            DrawAxisInCanvas(false, xValueMax, fArr_BendingMomentValuesMx, Canvas_BendingMomentDiagramMx);
+            DrawAxisInCanvas(false, xValueMax, fArr_BendingMomentValuesMy, Canvas_BendingMomentDiagramMy);
 
             // TODO
-            // Vysledky by mali byt v N a Nm (pocitame v zaklanych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
+            // Vysledky by mali byt v N a Nm (pocitame v zakladnych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
 
             // Draw y values
             DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_AxialForceValues, Canvas_AxialForceDiagram);
             DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, Canvas_ShearForceDiagramVx);
             DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, Canvas_ShearForceDiagramVy);
-            DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_TorsionMomentValues, Canvas_TorsionMomentDiagram);
-            DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_BendingMomentValuesMx, Canvas_BendingMomentDiagramMx);
-            DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_BendingMomentValuesMy, Canvas_BendingMomentDiagramMy);
+
+            DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_TorsionMomentValues, Canvas_TorsionMomentDiagram);
+            DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMx, Canvas_BendingMomentDiagramMx);
+            DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, Canvas_BendingMomentDiagramMy);
+
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)
@@ -95,8 +97,8 @@ namespace PFD
             {
                 foreach (CObject obj in array)
                 {
-                    if(obj.Name != null || obj.Name != "")
-                    combobox.Items.Add(obj.Name);
+                    if (obj.Name != null || obj.Name != "")
+                        combobox.Items.Add(obj.Name);
                     else
                     {
                         // Exception
@@ -107,36 +109,77 @@ namespace PFD
         }
 
         // Todo Ondrej - vytvorit bazovu triedu pre kreslenie 2D objektov a grafov pristupnu vo vsetkych projektoch
-        public void DrawAxisInCanvas(bool bYOrientationIsUp, float xValueMax, float yValueMin, float yValueMax, Canvas canvasForImage)
+        public void DrawAxisInCanvas(bool bYOrientationIsUp, float xValueMax, float[] arrPointsCoordY, Canvas canvasForImage)
         {
             fReal_Model_Zoom_FactorX = (float)((fCanvasWidth - modelMarginLeft_x - modelMarginRight_x) / xValueMax);
 
             // y-values range (TODO - spocitat presne z pola hodnot, ak su vsetky kladne brat y_max, ak su vsetky zaporne tak abs(y_min)
 
-            float fRangeOfYValues = Math.Abs(yValueMin) + Math.Abs(yValueMax);
+            float yValueMin, yValueMax;
+            GetMinAndMaxValue(arrPointsCoordY, out yValueMin, out yValueMax);
 
-            fReal_Model_Zoom_FactorY = (float)((fCanvasHeight - modelMarginTop_y - modelMarginTop_y) / fRangeOfYValues);
+            float fYAxisLength;
+            float fRangeOfYValues;
+
+            if (yValueMin * yValueMax < 0)
+                fYAxisLength = fRangeOfYValues = Math.Abs(yValueMin) + Math.Abs(yValueMax);
+            else if (yValueMax > 0)
+            {
+                fYAxisLength = yValueMax;
+                fRangeOfYValues = yValueMax - yValueMin;
+            }
+            else
+            {
+                fYAxisLength = Math.Abs(yValueMin);
+                fRangeOfYValues = yValueMax - yValueMin;
+            }
+
+            fReal_Model_Zoom_FactorY = (float)((fCanvasHeight - modelMarginTop_y - modelMarginBottom_y) / fYAxisLength);
 
             // TODO No 44 Ondrej
             // Temporary - TODO Ondrej zjednotit metody pre vykreslovanie v 2D do nejakej zakladnej triedy (mozno uz nejaka aj existuje v inom projekte "SW_EN\GRAPHICS\PAINT" alebo swen_GUI\WindowPaint)
 
-            // x-axis (middle)
-            DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x + 1.02f * xValueMax }, new float[2] { 0, 0 }, 0.5f * modelBottomPosition_y, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
-
             if (bYOrientationIsUp) // Up (Forces N, Vx, Vy)
             {
+                // x-axis (middle)
+                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x + 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fReal_Model_Zoom_FactorY * Math.Abs(yValueMax), modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+
                 // y-axis (oriented upwards)
-                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { 0, 1.1f * yValueMax }, modelBottomPosition_y - fReal_Model_Zoom_FactorY * 1.1f * yValueMax, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { yValueMin, yValueMin + fRangeOfYValues }, modelMarginTop_y, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             }
             else // Down (Torsion and bending moments T, Mx, My)
             {
-                 // y-axis (oriented downwards)
-                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { 1.1f * yValueMax, 0 }, modelBottomPosition_y - fReal_Model_Zoom_FactorY * 1.1f * yValueMax, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                // x-axis (middle)
+                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x + 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fReal_Model_Zoom_FactorY * Math.Abs(yValueMin), modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+
+                // y-axis (oriented downwards)
+                DrawPolyLine(new float[2] { modelMarginLeft_x, modelMarginLeft_x }, new float[2] { yValueMin + fRangeOfYValues, yValueMin }, modelMarginTop_y, modelMarginLeft_x, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             }
         }
 
         public void DrawYValuesCurveInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, Canvas canvasForImage)
         {
+            float yValueMin, yValueMax;
+            GetMinAndMaxValue(arrPointsCoordY, out yValueMin, out yValueMax);
+
+            float fYAxisLength;
+            float fRangeOfYValues;
+
+            if (yValueMin * yValueMax < 0)
+                fYAxisLength = fRangeOfYValues = Math.Abs(yValueMin) + Math.Abs(yValueMax);
+            else if (yValueMax > 0)
+            {
+                fYAxisLength = yValueMax;
+                fRangeOfYValues = yValueMax - yValueMin;
+            }
+            else
+            {
+                fYAxisLength = Math.Abs(yValueMin);
+                fRangeOfYValues = yValueMax - yValueMin;
+            }
+
+            fReal_Model_Zoom_FactorY = (float)((fCanvasHeight - modelMarginTop_y - modelMarginBottom_y) / fYAxisLength);
+
             if (arrPointsCoordY != null)
             {
                 if (!bYOrientationIsUp) // Draw positive values bellow x-axis
@@ -145,7 +188,7 @@ namespace PFD
                         arrPointsCoordY[i] *= -1f;
                 }
 
-                DrawPolyLine(arrPointsCoordX, arrPointsCoordY, 0.5f * modelBottomPosition_y, modelMarginLeft_x, Brushes.Blue, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
+                DrawPolyLine(arrPointsCoordX, arrPointsCoordY, modelMarginTop_y/*modelBottomPosition_y*/, modelMarginLeft_x, Brushes.Blue, new PenLineCap(), PenLineCap.Triangle, 1, canvasForImage);
             }
         }
 
@@ -170,6 +213,24 @@ namespace PFD
             Canvas.SetTop(myLine, dCanvasTopTemp);
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
+        }
+
+        public void GetMinAndMaxValue(float[] arrValues, out float min, out float max)
+        {
+            min = float.MaxValue;
+            max = float.MinValue;
+
+            if (arrValues != null)
+            {
+                for (int i = 0; i < arrValues.Length; i++)
+                {
+                    if (arrValues[i] < min)
+                        min = arrValues[i];
+
+                    if (arrValues[i] > max)
+                        max = arrValues[i];
+                }
+            }
         }
     }
 }
