@@ -52,6 +52,7 @@ namespace PFD
         public List<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
         public CPFDLoadInput loadinput;
+        public CCalcul_1170_1 generalLoad;
         public CCalcul_1170_2 wind;
         public CCalcul_1170_3 snow;
         public CCalcul_1170_5 eq;
@@ -113,6 +114,12 @@ namespace PFD
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
 
+            // Set default values for cladding
+            Combobox_RoofCladding.SelectedIndex = 0;
+            Combobox_WallCladding.SelectedIndex = 0;
+            Combobox_RoofCladdingThickness.SelectedIndex = 0;
+            Combobox_WallCladdingThickness.SelectedIndex = 0;
+
             sGeometryInputData.fH_2 = vm.fh2;
             sGeometryInputData.fH_1 = vm.WallHeight;
             sGeometryInputData.fW = vm.GableWidth;
@@ -166,7 +173,31 @@ namespace PFD
 
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
+
+            // TODO Ondrej - zaroven by sa malo vygenerovat a nastavit aj zatazenie v modeli, pripadne sa to ma urobit po vygenerovani zakladnej geometrie
+            // vid 3 nove parametre na konci
+            // polozky z vm by asi bolo lepsie predavat ako nejaku strukturu zakladnej geometrie
+            // vid public BuildingGeometryDataInput sGeometryInputData;
+
+            CalculateLoadingValues();
+
+            model = new CExample_3D_901_PF(
+                    vm.WallHeight,
+                    vm.GableWidth,
+                    vm.fL1, vm.Frames,
+                    vm.fh2,
+                    vm.GirtDistance,
+                    vm.PurlinDistance,
+                    vm.ColumnDistance,
+                    vm.BottomGirtPosition,
+                    vm.FrontFrameRakeAngle,
+                    vm.BackFrameRakeAngle,
+                    DoorBlocksProperties,
+                    WindowBlocksProperties,
+                    generalLoad,
+                    wind,
+                    snow,
+                    eq);
 
             // Load cases
             // Fill combobox items
@@ -296,11 +327,8 @@ namespace PFD
             MessageBox.Show(sMessageCalc, "Solver Message", MessageBoxButton.OK);
         }
 
-        private void Calculate_Click(object sender, RoutedEventArgs e)
+        private void CalculateLoadingValues()
         {
-            // Clear results of previous calculation
-            DeleteCalculationResults();
-
             // Input - TabItem Components
             UC_ComponentList componentList_UC = null;
             if (Model_Component.Content == null) componentList_UC = new UC_ComponentList();
@@ -331,29 +359,17 @@ namespace PFD
 
             // Load Generation
             // General loading
-            //CCalcul_1170_1 generalLoad = new CCalcul_1170_1();
 
-            float fDeadLoad_Roof = DatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", Combobox_RoofCladdingThickness.SelectedIndex);
-            float fDeadLoad_Wall = DatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", Combobox_WallCladdingThickness.SelectedIndex);
+            float fMass_Roof = DatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", Combobox_RoofCladdingThickness.SelectedIndex);
+            float fMass_Wall = DatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", Combobox_WallCladdingThickness.SelectedIndex);
 
-            fDeadLoad_Roof *= fg_acceleration; // Change from mass kg/m^2 to weight
-            fDeadLoad_Wall *= fg_acceleration; // Change from mass kg/m^2 to weight
+            // General Load (AS / NZS 1170.1)
+            CalculateBasicLoad(fMass_Roof, fMass_Wall);
 
-            // Additional dead loads
-            // Additional dead load - roof
-            float fDeadLoadAdditional_Roof = loadinput.AdditionalDeadActionRoof / 1000f; // change units from kN/m2 to N/m2
-            float fDeadLoadAdditional_Wall = loadinput.AdditionalDeadActionWall / 1000f; // change units from kN/m2 to N/m2
-
-            // Additional roof imposed load
-            float fImposedLoad_Roof = loadinput.ImposedActionRoof / 1000f; // change units from kN/m2 to N/m2
-
-            float fDeadLoadTotal_Roof = fDeadLoad_Roof + fDeadLoadAdditional_Roof;
-            float fDeadLoadTotal_Wall = fDeadLoad_Wall + fDeadLoadAdditional_Wall;
-
-            // Wind
+            // Wind  (AS / NZS 1170.2)
             CalculateWindLoad();
 
-            // Snow
+            // Snow  (AS / NZS 1170.3)
             CalculateSnowLoad();
 
             // TODO - napojit vstupy z TabItem Components a TabItem Main (rozmery, hmotnosti, pocet prvkov)
@@ -366,18 +382,24 @@ namespace PFD
 
             float fMass_Purlins = 5000f;
             float fMass_Girts = 2500f;
-
             float fMass_Frame = 3000f;
-            float fMass_Wall = 2000f;
-            float fMass_Roof = fLoadingWidth_Frame /** (fLiveLoad_Roof + fSuperImposed_DeadLoad)*/;
 
-            float fMass_Total = fMass_Frame + fMass_Girts + fMass_Wall + fMass_Purlins  + fMass_Roof;
+            float fMass_Wall_kg = fLoadingWidth_Frame * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / fg_acceleration);
+            float fMass_Roof_kg = fLoadingWidth_Frame * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / fg_acceleration);
 
-            float fT_1x = GetPeriod(2, vm.WallHeight,  2.5e+6f, 2.1e+8f, fMass_Total); // Iy(AS 4600 - Ix)
+            float fMass_Total = fMass_Frame + fMass_Girts + fMass_Wall + fMass_Purlins + fMass_Roof;
+
+            float fT_1x = GetPeriod(2, vm.WallHeight, 2.5e+6f, 2.1e+8f, fMass_Total); // Iy(AS 4600 - Ix)
             float fT_1y = GetPeriod(5, vm.WallHeight, 1.3e+6f, 2.1e+8f, fMass_Total);  // Iz(AS 4600 - Iy)
 
-            // Earthquake / Seismic Design
+            // Earthquake / Seismic Design  (NZS 1170.5)
             CalculateEQParameters();
+        }
+
+        private void Calculate_Click(object sender, RoutedEventArgs e)
+        {
+            // Clear results of previous calculation
+            DeleteCalculationResults();
 
             // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();
@@ -389,8 +411,6 @@ namespace PFD
             // Loading Width
             // Dead Load
 
-            //int index = 0;
-
             // TODO Ondrej - ziskat z gridview components typ prierezu (polozka v stlpci cross-section
             // grid
 
@@ -399,15 +419,14 @@ namespace PFD
 
             float fA_g = (float)model.m_arrCrSc[4].A_g;
             float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
-            float fPurlinDeadLoadLinear = fDeadLoad_Roof * vm.PurlinDistance + fPurlinSelfWeight;
-            float fPurlinImposedLoadLinear = fImposedLoad_Roof * vm.PurlinDistance;
+            float fPurlinDeadLoadLinear = generalLoad.fDeadLoadTotal_Roof * vm.PurlinDistance + fPurlinSelfWeight;
+            float fPurlinImposedLoadLinear = loadinput.ImposedActionRoof * 1000 * vm.PurlinDistance;
             float fPurlinSnowLoadLinear = snow.fs_ULS_Nu_1 * vm.PurlinDistance;
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // TEMPORARY - vypocet na modeli jedneho pruta
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            // TODO - Martin, prejst vsetky hodnoty a nastavit min a a max wind pressure
             float fPurlinWindLoadLinear = wind.fp_e_max_D_roof_ULS_Theta_4[0,0];
 
             float fp_i_min_min;
@@ -464,6 +483,8 @@ namespace PFD
 
             int iNumberOfLoadCombinations = 5;
             float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
+
+            // Ukazka generovania kombinacii
 
             fE_d_load_values_LCS_y[0] = 1.35f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (a)
             fE_d_load_values_LCS_y[1] = 1.20f * fPurlinDeadLoadLinear_LCS_y + 1.50f * fPurlinImposedLoadLinear_LCS_y;     // 4.2.2 (b)
@@ -544,6 +565,17 @@ namespace PFD
                     CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], (CCrSc_TW)model.m_arrCrSc[4], vm.fL1, sMomentValuesforCb[i]);
                 }
             }
+        }
+
+        public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
+        {
+            generalLoad = new CCalcul_1170_1(
+                fMass_Roof,
+                fMass_Wall,
+                loadinput.AdditionalDeadActionRoof,
+                loadinput.AdditionalDeadActionWall,
+                loadinput.ImposedActionRoof,
+                fg_acceleration);
         }
 
         public void CalculateSnowLoad()
@@ -802,7 +834,28 @@ namespace PFD
             CPFDViewModel vm = this.DataContext as CPFDViewModel;
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
-            model = new CExample_3D_901_PF(vm.WallHeight, vm.GableWidth, vm.fL1, vm.Frames, vm.fh2, vm.GirtDistance, vm.PurlinDistance, vm.ColumnDistance, vm.BottomGirtPosition, vm.FrontFrameRakeAngle, vm.BackFrameRakeAngle, DoorBlocksProperties, WindowBlocksProperties);
+
+            CalculateLoadingValues();
+
+            // TODO - nove parametre pre nastavenie hodnot zatazenia
+            model = new CExample_3D_901_PF(
+                vm.WallHeight,
+                vm.GableWidth,
+                vm.fL1,
+                vm.Frames,
+                vm.fh2,
+                vm.GirtDistance,
+                vm.PurlinDistance,
+                vm.ColumnDistance,
+                vm.BottomGirtPosition,
+                vm.FrontFrameRakeAngle,
+                vm.BackFrameRakeAngle,
+                DoorBlocksProperties,
+                WindowBlocksProperties,
+                generalLoad,
+                wind,
+                snow,
+                eq);
 
             // Create 3D window
             UpdateDisplayOptions();

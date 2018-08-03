@@ -10,6 +10,7 @@ using MATH;
 using MATERIAL;
 using CRSC;
 using Combinatorics.Collections;
+using M_EC1.AS_NZS;
 
 namespace sw_en_GUI.EXAMPLES._3D
 {
@@ -59,7 +60,11 @@ namespace sw_en_GUI.EXAMPLES._3D
                 float fFrontFrameRakeAngle_temp_deg,
                 float fBackFrameRakeAngle_temp_deg,
                 List<DoorProperties> doorBlocksProperties,
-                List<WindowProperties> windowBlocksProperties
+                List<WindowProperties> windowBlocksProperties,
+                CCalcul_1170_1 generalLoad,
+                CCalcul_1170_2 wind,
+                CCalcul_1170_3 snow,
+                CCalcul_1170_5 eq
             )
         {
         // Todo asi prepracovat na zoznam tried objektov

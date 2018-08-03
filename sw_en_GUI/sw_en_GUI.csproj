@@ -411,6 +411,10 @@
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
       <Name>MATH</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_EC1\M_EC1.csproj">
+      <Project>{9764d1bf-a2b3-45d6-ab93-050dce30830c}</Project>
+      <Name>M_EC1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharedLibraries\SharedLibraries\SharedLibraries.csproj">
       <Project>{28044445-E8DD-4041-B534-3FEE5C07237F}</Project>
       <Name>SharedLibraries</Name>

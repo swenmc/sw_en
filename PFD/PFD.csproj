@@ -119,7 +119,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CRangeValidator.cs" />
-    <Compile Include="DatabaseMaterials.cs" />
     <Compile Include="DatabaseModels.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
