@@ -44,7 +44,6 @@ namespace PFD
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
 
-        DataSet ds;
         bool bDebugging = false;
 
         public CModel model;
@@ -81,10 +80,6 @@ namespace PFD
         //float fdist_purlin; // 0.5 - 5 m
         //float fdist_frontcolumn; // 1 - 10 m
         //float fdist_girt_bottom; // 1 - 10 m
-
-        List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
-        List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
-        List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
 
         public MainWindow()
         {
@@ -251,11 +246,16 @@ namespace PFD
 
         private void DeleteCalculationResults()
         {
+            // TODO - Ondrej - je potrebne zmazat vysledky a updatovat UC_InternalForces, UC_MemberDesign, UC_JointDesign (tieto UC by sa nemali zobrazovat pokial nie su k dispozicii vysledky)
+            // tj. nebola spustena metoda Calculate_Click, vysledky boli z dovodu zmeny topologickeho 3D modelu zmazane a pod
+
             //Todo - asi sa to da jednoduchsie
+            /*
             DeleteLists();
             Results_GridView.ItemsSource = null;
             Results_GridView.Items.Clear();
             Results_GridView.Items.Refresh();
+            */
         }
 
         private void RunFEMSOlver()
@@ -769,14 +769,6 @@ namespace PFD
             }
         }
 
-        private void DeleteLists()
-        {
-            // Deleting lists for updating actual values
-            zoznamMenuNazvy.Clear();
-            zoznamMenuHodnoty.Clear();
-            zoznamMenuJednotky.Clear();
-        }
-
         private void UpdateDisplayOptions()
         {
             // Get display options from GUI
@@ -821,228 +813,6 @@ namespace PFD
             // Display model in 3D preview frame
             Frame1.Content = page1;
             Frame1.UpdateLayout();
-        }
-
-        private void Results_GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void DisplayDesignResultsInGridView(CCalcul obj_CalcDesign)
-        {
-            // Display results in datagrid
-            // AS 4600 output variables
-
-            // Compression
-            // Global Buckling
-            zoznamMenuNazvy.Add("f oc");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oc.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ c");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_c.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("f oz");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oz.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("f ox");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ox.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("f oy");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("N y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_y.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N oc");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_oc.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N ce");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ce.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            // Local Buckling
-            zoznamMenuNazvy.Add("f ol");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ l");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_l.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("N ol");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ol.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N cl");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cl.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            // Distorsial Buckling
-            zoznamMenuNazvy.Add("f od");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ d");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_d.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("N od");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_od.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N cd");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cd.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("N c,min");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_c_min.ToString());
-            zoznamMenuJednotky.Add("[N]");
-
-            zoznamMenuNazvy.Add("φ c");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_c.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("Eta max");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fDesignRatio_N.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Tension
-            zoznamMenuNazvy.Add("φ t");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Bending
-            zoznamMenuNazvy.Add("M p,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M y,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M p,y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_yv.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M y,y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_yv.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("C b");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fC_b.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("M be,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_be_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            // Local Buckling
-            zoznamMenuNazvy.Add("f ol,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ol_bend.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ l,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_l_xu.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("M bl,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bl_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            // Distrosial buckling
-            zoznamMenuNazvy.Add("f od,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od_bend.ToString());
-            zoznamMenuJednotky.Add("[Pa]");
-
-            zoznamMenuNazvy.Add("λ d,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_d_xu.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("M bd,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bd_xu.ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("φ b");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_b.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Shear
-            zoznamMenuNazvy.Add("φ v");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_v.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            zoznamMenuNazvy.Add("Eta max");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
-            // Create Table
-            DataTable table = new DataTable("Table");
-            // Create Table Rows
-
-            table.Columns.Add("Symbol", typeof(String));
-            table.Columns.Add("Value", typeof(String));
-            table.Columns.Add("Unit", typeof(String));
-
-            table.Columns.Add("Symbol1", typeof(String));
-            table.Columns.Add("Value1", typeof(String));
-            table.Columns.Add("Unit1", typeof(String));
-
-            table.Columns.Add("Symbol2", typeof(String));
-            table.Columns.Add("Value2", typeof(String));
-            table.Columns.Add("Unit2", typeof(String));
-
-            // Set Column Caption
-            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
-            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
-            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
-
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
-
-            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
-            {
-                DataRow row = table.NewRow();
-
-                try
-                {
-                    row["Symbol"] = zoznamMenuNazvy[i];
-                    row["Value"] = zoznamMenuHodnoty[i];
-                    row["Unit"] = zoznamMenuJednotky[i];
-                    i++;
-                    row["Symbol1"] = zoznamMenuNazvy[i];
-                    row["Value1"] = zoznamMenuHodnoty[i];
-                    row["Unit1"] = zoznamMenuJednotky[i];
-                    i++;
-                    row["Symbol2"] = zoznamMenuNazvy[i];
-                    row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
-
-            Results_GridView.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
-            /*
-            // Set Column Header
-            Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
-            Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
-            Results_GridView.Columns[2].Header = Results_GridView.Columns[5].Header = Results_GridView.Columns[8].Header = "Unit";
-
-            // Set Column Width
-            Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
-            Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
-            Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
-            */
         }
 
         private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
@@ -1143,9 +913,16 @@ namespace PFD
                 Load_Combinations.Content = new UC_LoadCombinationList(model).Content;
             else if (MainTabControl.SelectedIndex == 5)
             {
-               UC_ComponentList component = new UC_ComponentList();
+                UC_ComponentList component = new UC_ComponentList(); // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
                 Internal_Forces.Content = new UC_InternalForces(model, component).Content;
             }
+            else if (MainTabControl.SelectedIndex == 6)
+            {
+                UC_ComponentList component = new UC_ComponentList(); // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
+                Member_Design.Content = new UC_MemberDesign(model, component).Content;
+            }
+            else if (MainTabControl.SelectedIndex == 7)
+                Joint_Design.Content = new UC_JointDesign().Content;
             else if (MainTabControl.SelectedIndex == 8)
                 Part_List.Content = new UC_MaterialList(model).Content;
             else

@@ -252,17 +252,9 @@
             <TabItem Name ="Load_Combinations" Header="Load Combinations"/>
             <TabItem Name ="Internal_Forces" Header="Internal Forces"/>
             <TabItem Name ="Member_Design" Header="Member Design">
-                <Grid Name="Results" Margin="0,10,0,0">
-                    <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  IsReadOnly="True">
-                    </DataGrid>
-                </Grid>
+
             </TabItem>
-            <TabItem Name ="Joint_Design" Header="Joint Design">
-                <Grid Name="Joint_Results" Margin="0,10,0,0">
-                </Grid>
-            </TabItem>
+            <TabItem Name ="Joint_Design" Header="Joint Design"/>
             <TabItem Name ="Part_List" Header="Parts List">
             </TabItem>
             <TabItem Name ="Quotation">
