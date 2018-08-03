@@ -9,13 +9,13 @@
         d:DesignHeight="1140" d:DesignWidth="365">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
-        <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </UserControl.Resources>
     <Grid Name="LoadParamsGrid" Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="170"/>
-            <ColumnDefinition Width="130"/>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

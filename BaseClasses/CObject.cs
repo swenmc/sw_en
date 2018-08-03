@@ -24,12 +24,44 @@ namespace BaseClasses
             set { m_fTime = value; }
         }
 
+        bool m_bIsGenerated;
+
+        public bool BIsGenerated
+        {
+            get { return m_bIsGenerated; }
+            set { m_bIsGenerated = value; }
+        }
+
         bool m_bIsDisplayed;
 
         public bool BIsDisplayed
         {
             get { return m_bIsDisplayed; }
             set { m_bIsDisplayed = value; }
+        }
+
+        bool m_bIsSelectedForIFCalculation;
+
+        public bool BIsDSelectedForIFCalculation
+        {
+            get { return m_bIsSelectedForIFCalculation; }
+            set { m_bIsSelectedForIFCalculation = value; }
+        }
+
+        bool m_bIsSelectedForDesign;
+
+        public bool BIsDSelectedForDesign
+        {
+            get { return m_bIsSelectedForDesign; }
+            set { m_bIsSelectedForDesign = value; }
+        }
+
+        bool m_bIsSelectedForMaterialList;
+
+        public bool BIsSelectedForMaterialList
+        {
+            get { return m_bIsSelectedForMaterialList; }
+            set { m_bIsSelectedForMaterialList = value; }
         }
 
         private bool m_bIsDebugging;

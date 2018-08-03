@@ -48,7 +48,6 @@ namespace PFD
 
         public CModel model;
         public DatabaseModels dmodels; // Todo nahradit databazov modelov
-        public DatabaseLocations dlocations; // Todo nahradit databazov miest - pokial mozno skusit pripravit mapu ktora by bola schopna identifikovat polohu podla kliknutia
         public List<DoorProperties> DoorBlocksProperties;
         public List<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
