@@ -91,13 +91,11 @@ namespace PFD
             InitializeComponent();
             splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
-            // Fill combobox items
-            foreach (string modelname in dmodels.arr_ModelNames)
-              Combobox_Models.Items.Add(modelname);
-
-            // Cladding
-            FillComboboxTrapezoidalSheeting();
-            // Colors
+            // Fill model combobox items
+            DatabaseManager.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
+            // Cladding (type and colors)
+            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
+            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
             DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_RoofCladdingColor);
             DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_WallCladdingColor);
 
@@ -625,12 +623,6 @@ namespace PFD
             float fPeriod_T = 1f / fFrequency;
 
             return fPeriod_T;
-        }
-
-        public void FillComboboxTrapezoidalSheeting()
-        {
-            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
-            DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
         }
 
         public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)

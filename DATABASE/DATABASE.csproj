@@ -104,6 +104,7 @@
     <Content Include="Resources\MDB.db3" />
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBSections.db3" />
+    <None Include="Resources\MDBModels.db3" />
     <None Include="Resources\MDBTrapezoidalSheeting.db3" />
   </ItemGroup>
   <ItemGroup>
