@@ -62,16 +62,16 @@ namespace PFD
             listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
             listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
 
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1]);
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1]);
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1]);
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  1]);
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP,  1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  1]);
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP,  1]);
 
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side");
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side");
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side");
-            ListMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side");
+            listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side");
 
             // Creating new DataGridComboBoxColumn
             DataGridComboBoxColumn myDGCBC_crsc = new DataGridComboBoxColumn();
@@ -141,7 +141,7 @@ namespace PFD
                 try
                 {
                     row["Prefix"] = listMemberPrefix[i];
-                    row["ComponentName"] = ListMemberComponentName[i];
+                    row["ComponentName"] = listMemberComponentName[i];
                     //row["Section"] = listMemberCrScName[i];
                     row["Material"] = listMemberMaterialName[i];
                     row["Generate"] = listMemberGenerate[i];
@@ -219,7 +219,7 @@ namespace PFD
         private void DeleteLists()
         {
             listMemberPrefix.Clear();
-            ListMemberComponentName.Clear();
+            listMemberComponentName.Clear();
             listMemberCrScName.Clear();
             listMemberMaterialName.Clear();
             listMemberGenerate.Clear();
