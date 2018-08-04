@@ -177,7 +177,7 @@ namespace PFD
             // polozky z vm by asi bolo lepsie predavat ako nejaku strukturu zakladnej geometrie
             // vid public BuildingGeometryDataInput sGeometryInputData;
 
-            CalculateLoadingValues();
+            //CalculateLoadingValues();
 
             model = new CExample_3D_901_PF(
                     vm.WallHeight,
@@ -327,10 +327,9 @@ namespace PFD
 
         private void CalculateLoadingValues()
         {
-            // Input - TabItem Components
-            UC_ComponentList componentList_UC = null;
-            if (Model_Component.Content == null) componentList_UC = new UC_ComponentList();
-            else componentList_UC = (UC_ComponentList)Model_Component.Content;
+            // Input - TabItem Components            
+            if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
+            UC_ComponentList componentList_UC = (UC_ComponentList)Model_Component.Content;
             //tu som nenasiel ziaden ViewModel napojeny na dany User Control
             DataGrid grid = componentList_UC.Datagrid_Components;
 
@@ -949,21 +948,30 @@ namespace PFD
             if (!(e.OriginalSource is TabControl)) return; //pozor selection changed event buble smerom nahor
 
             if (MainTabControl.SelectedIndex == 1)
-                Model_Component.Content = new UC_ComponentList().Content;
+            {
+                if(Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
+            }                
             else if (MainTabControl.SelectedIndex == 2)
-                Loads.Content = new UC_Loads();
+            {
+                if(Loads.Content == null) Loads.Content = new UC_Loads();
+            }                
             else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
             else if (MainTabControl.SelectedIndex == 4)
                 Load_Combinations.Content = new UC_LoadCombinationList(model).Content;
             else if (MainTabControl.SelectedIndex == 5)
             {
-                UC_ComponentList component = new UC_ComponentList(); // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
+                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();                
+                UC_ComponentList component = Model_Component.Content as UC_ComponentList;
+                
+                // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
                 Internal_Forces.Content = new UC_InternalForces(model, component).Content;
             }
             else if (MainTabControl.SelectedIndex == 6)
             {
-                UC_ComponentList component = new UC_ComponentList(); // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
+                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
+                UC_ComponentList component = Model_Component.Content as UC_ComponentList;
+                // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
                 Member_Design.Content = new UC_MemberDesign(model, component).Content;
             }
             else if (MainTabControl.SelectedIndex == 7)
