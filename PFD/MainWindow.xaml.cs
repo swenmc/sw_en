@@ -331,7 +331,7 @@ namespace PFD
             if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
             UC_ComponentList componentList_UC = (UC_ComponentList)Model_Component.Content;
             //tu som nenasiel ziaden ViewModel napojeny na dany User Control
-            DataGrid grid = componentList_UC.Datagrid_Components;
+            //DataGrid grid = componentList_UC.Datagrid_Components;
 
             // Input - TabItem Loads
             UC_Loads loadInput_UC = null;

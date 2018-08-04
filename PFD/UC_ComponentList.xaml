@@ -11,20 +11,22 @@
             <RowDefinition Height="220"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="false" AutoGenerateColumns="False" ItemsSource="{Binding Source=componentsList}">
+                  IsReadOnly="false" AutoGenerateColumns="False" ItemsSource="{Binding ComponentList}">
+            <DataGrid.Resources>
+                <CollectionViewSource x:Key="Sections" Source="{Binding Sections}"/>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Prefix}" Header="Prefix" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ComponentName}" Header="ComponentName" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Section}" Header="Section" Width="*"></DataGridTextColumn>
-                <!--<DataGridComboBoxColumn SelectedItemBinding="{Binding Path=Section}"
-                                ItemsSource="{Binding Path=Sections}" Header="Section" Width="*">
-                </DataGridComboBoxColumn>-->
-                <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="*"></DataGridTextColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Generate}" Header="Generate" Width="*"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="*"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="*"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="*"></DataGridCheckBoxColumn>
-                <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="*"></DataGridCheckBoxColumn>
+                <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" Header="Prefix" Width="Auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ComponentName}" Header="ComponentName" Width="Auto"></DataGridTextColumn>                
+                <DataGridComboBoxColumn Header="Section" Width="Auto"
+                                SelectedItemBinding="{Binding Path=Section}"
+                                ItemsSource="{Binding Source={StaticResource Sections}}" />
+                <DataGridTextColumn Binding="{Binding Material}" Header="Material" Width="Auto"></DataGridTextColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Generate}" Header="Generate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Display}" Header="Display" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Calculate}" Header="Calculate" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Design}" Header="Design" Width="Auto"></DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
         

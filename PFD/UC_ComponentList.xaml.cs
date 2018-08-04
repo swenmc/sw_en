@@ -15,6 +15,7 @@ using System.Data.SqlClient;
 using System.Data;
 using BaseClasses;
 using MATH;
+using System.ComponentModel;
 
 namespace PFD
 {
@@ -42,39 +43,37 @@ namespace PFD
             get { return listMemberComponentName; }
             set { listMemberComponentName = value; }
         }
-        public List<CComponentInfo> componentsList = new List<CComponentInfo>();
-
+        
         public UC_ComponentList()
         {
             InitializeComponent();
-
+                        
             // Clear all lists
             //DeleteAllLists();
-
-            CComponentInfo ci = null;            
+            CComponentInfo ci = null;
+            CComponentListVM cl = new CComponentListVM();            
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], "Box 63020", "G550", true, true, true, true, true);
-            componentsList.Add(ci);
+            cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1], "Box 63020", "G550", true, true, true, true, true);
-            componentsList.Add(ci);
+            cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], "C 50020", "G550", true, true, true, true, true);
-            componentsList.Add(ci);
+            cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], "C 27095", "G550", true, true, true, true, true);
-            componentsList.Add(ci);
+            cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 1], "C 270115", "G550", true, true, true, true, true);
-            componentsList.Add(ci);
+            cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side", "Box 10075", "G550", true, true, true, true, true);
-            componentsList.Add(ci);
-            //ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", "Box 10075", "G550", true, true, true, true, true);
-            //componentsList.Add(ci);
-            //ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", "C 27095", "G550", true, true, true, true, true);
-            //componentsList.Add(ci);
-            //ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", "C 27095", "G550", true, true, true, true, true);
-            //componentsList.Add(ci);
-            //this.DataContext = this;
-            //Datagrid_Components.DataContext = componentsList;
-            Datagrid_Components.ItemsSource = componentsList;
+            cl.ComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", "Box 10075", "G550", true, true, true, true, true);
+            cl.ComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", "C 27095", "G550", true, true, true, true, true);
+            cl.ComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", "C 27095", "G550", true, true, true, true, true);
+            cl.ComponentList.Add(ci);
 
-
+            cl.PropertyChanged += HandleComponentListPropertyChangedEvent;
+            this.DataContext = cl;
+            
 
             // For each component add one row
             //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0]);   // "MC"
@@ -232,14 +231,19 @@ namespace PFD
             */
         }
 
+        protected void HandleComponentListPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;            
+        }
+
         private void DeleteAllLists()
         {
             //Todo - asi sa to da jednoduchsie
             DeleteLists();
 
-            Datagrid_Components.ItemsSource = null;
-            Datagrid_Components.Items.Clear();
-            Datagrid_Components.Items.Refresh();
+            //Datagrid_Components.ItemsSource = null;
+            //Datagrid_Components.Items.Clear();
+            //Datagrid_Components.Items.Refresh();
         }
 
         // Deleting lists for updating actual values
@@ -255,5 +259,6 @@ namespace PFD
             listMemberDesign.Clear();
             listMemberMaterialList.Clear();
         }
+        
     }
 }
