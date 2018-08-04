@@ -419,7 +419,8 @@ namespace PFD
             float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
             float fPurlinDeadLoadLinear = generalLoad.fDeadLoadTotal_Roof * vm.PurlinDistance + fPurlinSelfWeight;
             float fPurlinImposedLoadLinear = loadinput.ImposedActionRoof * 1000 * vm.PurlinDistance;
-            float fPurlinSnowLoadLinear = snow.fs_ULS_Nu_1 * vm.PurlinDistance;
+            float fsnowValue = snow.fs_ULS_Nu_1 * ((0.5f * vm.GableWidth) / ((0.5f * vm.GableWidth) / (float)Math.Cos(vm.fRoofPitch_radians))); // Consider projection acc. to Figure 4.1
+            float fPurlinSnowLoadLinear = fsnowValue * vm.PurlinDistance;
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // TEMPORARY - vypocet na modeli jedneho pruta
