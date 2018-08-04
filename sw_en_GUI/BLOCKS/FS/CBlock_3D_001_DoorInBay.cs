@@ -11,8 +11,11 @@ namespace sw_en_GUI.EXAMPLES._3D
 {
     public class CBlock_3D_001_DoorInBay : CBlock
     {
-        public CBlock_3D_001_DoorInBay(string sBuildingSide, float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, CMember Colummn, float fL1_bayofframe)
+        public CBlock_3D_001_DoorInBay(string sBuildingSide_temp, float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt_temp, CMember Colummn, float fL1_bayofframe, bool bIsReverseGirtSession = false, bool bIsLastBayInFrontorBackSide = false)
         {
+            BuildingSide = sBuildingSide_temp;
+            ReferenceGirt = referenceGirt_temp;
+
             // TODO napojit premennu na hlavny model a pripadne dat moznost uzivatelovi nastavit hodnotu 0 - 30 mm
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
             /*
@@ -36,7 +39,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to cross-section parameters
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = referenceGirt.CrScStart; // Girts
+            m_arrCrSc[0] = ReferenceGirt.CrScStart; // Girts
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
             m_arrCrSc[1].Name = "Box 10075";
 
@@ -116,13 +119,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Block Members
             // TODO - add to block parameters
 
-            float fGirtAllignmentStart = referenceGirt.FAlignment_Start; // Main column of a frame
+            float fGirtAllignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
             float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Door column
-            CMemberEccentricity eccentricityGirtStart = referenceGirt.EccentricityStart;
-            CMemberEccentricity eccentricityGirtEnd = referenceGirt.EccentricityEnd;
+            CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
+            CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart: ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
             CMemberEccentricity eccentricityGirtEnd_temp;
-            float fGirtsRotation = (float)referenceGirt.DTheta_x;
+            float fGirtsRotation = bIsReverseGirtSession ? (float)(ReferenceGirt.DTheta_x + Math.PI): (float)ReferenceGirt.DTheta_x;
 
             // Girt Members
             for (int i = 0; i < iNumberOfGirtsSequences; i++) // (Girts on the left side and the right side of door)
@@ -137,13 +140,18 @@ namespace sw_en_GUI.EXAMPLES._3D
                     // Alignment - switch start and end allignment for girts on the left side of door and the right side of door
                     float fGirtStartTemp = fGirtAllignmentStart;
                     float fGirtEndTemp = fGirtAllignmentEnd;
+
                     eccentricityGirtStart_temp = eccentricityGirtStart;
                     eccentricityGirtEnd_temp = eccentricityGirtEnd;
 
                     if (i == 1 || bDoorToCloseToLeftColumn) // If just right sequence of girts is generated switch allignment and eccentricity (???) need testing;
                     {
-                        fGirtStartTemp = fGirtAllignmentEnd;
-                        fGirtEndTemp = fGirtAllignmentStart;
+                        if (!bIsLastBayInFrontorBackSide) // Change allignment (different columns on bay sides)
+                        {
+                            fGirtStartTemp = fGirtAllignmentEnd;
+                            fGirtEndTemp = fGirtAllignmentStart;
+                        }
+
                         eccentricityGirtStart_temp = eccentricityGirtEnd; // TODO - we need probably to change signs of values
                         eccentricityGirtEnd_temp = eccentricityGirtStart; // TODO - we need probably to change signs of values
                     }
@@ -153,15 +161,17 @@ namespace sw_en_GUI.EXAMPLES._3D
                 }
             }
 
+            INumberOfGirtsGeneratedInBlock = iNumberOfGirtsSequences * INumberOfGirtsToDeactivate;
+
             // TODO - add to block parameters
             float fDoorColumnStart = 0.0f;
-            float fDoorColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b - fCutOffOneSide;
+            float fDoorColumnEnd = -0.5f * (float)ReferenceGirt.CrScStart.b - fCutOffOneSide;
             CMemberEccentricity feccentricityDoorColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
             CMemberEccentricity feccentricityDoorColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
             float fDoorColumnRotation = (float)Math.PI;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (sBuildingSide == "Left")
+            if (BuildingSide == "Left")
             {
                 feccentricityDoorColumnStart.MFz_local *= -1.0f;
                 feccentricityDoorColumnEnd.MFz_local *= -1.0f;
@@ -183,7 +193,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fDoorLintelRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (sBuildingSide == "Left")
+            if (BuildingSide == "Left")
             {
                 feccentricityDoorLintelStart.MFz_local *= -1.0f;
                 feccentricityDoorLintelEnd.MFz_local *= -1.0f;
@@ -218,7 +228,7 @@ namespace sw_en_GUI.EXAMPLES._3D
                 // Bottom - columns is connected to the concrete foundation (use different type of plate ???)
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, null, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
                 // Top
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, referenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }
 
             // Lintel (header) Joint

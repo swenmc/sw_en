@@ -13,8 +13,11 @@ namespace sw_en_GUI.EXAMPLES._3D
     {
         public int iNumberOfGirtsUnderWindow;
 
-        public CBlock_3D_002_WindowInBay(string sBuildingSide, float fWindowHeight, float fWindowWidth, float fWindowCoordinateXinBay, float fWindowCoordinateZinBay, int iNumberOfWindowColumns, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt, CMember Colummn, float fL1_bayofframe, float fH1_frame)
+        public CBlock_3D_002_WindowInBay(string sBuildingSide_temp, float fWindowHeight, float fWindowWidth, float fWindowCoordinateXinBay, float fWindowCoordinateZinBay, int iNumberOfWindowColumns, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt_temp, CMember Colummn, float fL1_bayofframe, float fH1_frame)
         {
+            BuildingSide = sBuildingSide_temp;
+            ReferenceGirt = referenceGirt_temp;
+
             //iNumberOfWindowColumns = 2; // Minimum is 2
             int iNumberOfHeaders = iNumberOfWindowColumns - 1;
             int iNumberOfSills = iNumberOfWindowColumns - 1;
@@ -42,7 +45,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to cross-section parameters
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = referenceGirt.CrScStart; // Girts
+            m_arrCrSc[0] = ReferenceGirt.CrScStart; // Girts
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
             m_arrCrSc[1].Name = "Box 10075";
 
@@ -146,13 +149,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Block Members
             // TODO - add to block parameters
 
-            float fGirtAllignmentStart = referenceGirt.FAlignment_Start; // Main column of a frame
+            float fGirtAllignmentStart = ReferenceGirt.FAlignment_Start; // Main column of a frame
             float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Window column
-            CMemberEccentricity eccentricityGirtStart = referenceGirt.EccentricityStart;
-            CMemberEccentricity eccentricityGirtEnd = referenceGirt.EccentricityEnd;
+            CMemberEccentricity eccentricityGirtStart = ReferenceGirt.EccentricityStart;
+            CMemberEccentricity eccentricityGirtEnd = ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
             CMemberEccentricity eccentricityGirtEnd_temp;
-            float fGirtsRotation = (float)referenceGirt.DTheta_x;
+            float fGirtsRotation = (float)ReferenceGirt.DTheta_x;
 
             // Girt Members
             for (int i = 0; i < iNumberOfGirtsSequences; i++) // (Girts on the left side and the right side of window)
@@ -183,19 +186,21 @@ namespace sw_en_GUI.EXAMPLES._3D
                 }
             }
 
+            INumberOfGirtsGeneratedInBlock = iNumberOfGirtsSequences * INumberOfGirtsToDeactivate;
+
             // TODO - add to block parameters
             float fWindowColumnStart = 0.0f;
 
             if(fBottomGirtPosition > fCoordinateZOfGirtUnderWindow) // Window column is connected to the girt
-                fWindowColumnStart = -0.5f * (float)referenceGirt.CrScStart.b - fCutOffOneSide;
+                fWindowColumnStart = -0.5f * (float)ReferenceGirt.CrScStart.b - fCutOffOneSide;
 
-            float fWindowColumnEnd = -0.5f * (float)referenceGirt.CrScStart.b - fCutOffOneSide;
+            float fWindowColumnEnd = -0.5f * (float)ReferenceGirt.CrScStart.b - fCutOffOneSide;
             CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
             CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
             float fWindowColumnRotation = (float)Math.PI;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (sBuildingSide == "Left")
+            if (BuildingSide == "Left")
             {
                 feccentricityWindowColumnStart.MFz_local *= -1.0f;
                 feccentricityWindowColumnEnd.MFz_local *= -1.0f;
@@ -217,7 +222,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fWindowHeaderRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (sBuildingSide == "Left")
+            if (BuildingSide == "Left")
             {
                 feccentricityWindowHeaderStart.MFz_local *= -1.0f;
                 feccentricityWindowHeaderEnd.MFz_local *= -1.0f;
@@ -238,7 +243,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fWindowSillRotation = (float)Math.PI / 2;
 
             // Set eccentricity sign depending on global rotation angle and building side (left / right)
-            if (sBuildingSide == "Left")
+            if (BuildingSide == "Left")
             {
                 feccentricityWindowSillStart.MFz_local *= -1.0f;
                 feccentricityWindowSillEnd.MFz_local *= -1.0f;
@@ -271,9 +276,9 @@ namespace sw_en_GUI.EXAMPLES._3D
                 // TODO - dopracovat moznosti kedy je stlpik okna pripojeny k eave purlin, main rafter a podobne (nemusi to byt vzdy girt)
 
                 // Bottom - columns is connected to the concrete foundation of girt (use different type of plate ???)
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, iNumberOfGirtsUnderWindow == 0 ? null : referenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, iNumberOfGirtsUnderWindow == 0 ? null : ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, iNumberOfGirtsUnderWindow == 0 ? false : true, true));
                 // Top
-                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, referenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
+                m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, ReferenceGirt, current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }
 
             // Window Header Joint

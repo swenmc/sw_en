@@ -39,13 +39,13 @@ namespace PFD
             DeleteAllLists();
 
             // For each component add one row
-            listBuildingSide.Add("Left");
-            listBuildingSide.Add("Right");
+            listBuildingSide.Add("Front");
+            listBuildingSide.Add("Back");
             listBuildingSide.Add("Left");
             listBuildingSide.Add("Right");
 
+            listBayNumber.Add(5);
             listBayNumber.Add(1);
-            listBayNumber.Add(2);
             listBayNumber.Add(3);
             listBayNumber.Add(1);
 
@@ -54,13 +54,13 @@ namespace PFD
             listDoorHeight.Add(2.4f);
             listDoorHeight.Add(2.6f);
 
-            listDoorWidth.Add(0.9f);
-            listDoorWidth.Add(1.2f);
+            listDoorWidth.Add(0.7f);
+            listDoorWidth.Add(0.7f);
             listDoorWidth.Add(1.2f);
             listDoorWidth.Add(2.0f);
 
-            listDoorCoordinateXinBlock.Add(1.1f);
-            listDoorCoordinateXinBlock.Add(1.3f);
+            listDoorCoordinateXinBlock.Add(0.6f);
+            listDoorCoordinateXinBlock.Add(0.6f);
             listDoorCoordinateXinBlock.Add(1.2f);
             listDoorCoordinateXinBlock.Add(0.6f);
 

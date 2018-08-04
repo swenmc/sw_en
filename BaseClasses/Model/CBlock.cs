@@ -33,6 +33,51 @@ namespace BaseClasses
             }
         }
 
+        private int m_iNumberOfGirtsGeneratedInBlock;
+
+        public int INumberOfGirtsGeneratedInBlock
+        {
+            get
+            {
+                return m_iNumberOfGirtsGeneratedInBlock;
+            }
+
+            set
+            {
+                m_iNumberOfGirtsGeneratedInBlock = value;
+            }
+        }
+
+        private CMember m_ReferenceGirt;
+
+        public CMember ReferenceGirt
+        {
+            get
+            {
+                return m_ReferenceGirt;
+            }
+
+            set
+            {
+                m_ReferenceGirt = value;
+            }
+        }
+
+        private string m_sBuildingSide;
+
+        public string BuildingSide
+        {
+            get
+            {
+                return m_sBuildingSide;
+            }
+
+            set
+            {
+                m_sBuildingSide = value;
+            }
+        }
+
         // Physical Model / Structural data
         // Collection of references to objects
 
