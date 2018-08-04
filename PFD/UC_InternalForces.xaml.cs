@@ -44,9 +44,8 @@ namespace PFD
 
             // Add items into comboboxes
             FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
-            FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
-            // TODO Ondrej - fill combobox with UC_ComponentList Names
-            //FillComboboxValues(Combobox_ComponentType, components);
+            FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);            
+            FillComboboxValues(Combobox_ComponentType, components.MemberComponentName);
 
             // Set default values of combobox index
             Combobox_LimitState.SelectedIndex = 0;
@@ -113,6 +112,13 @@ namespace PFD
                         MessageBox.Show("Object ID = " + obj.ID + "." + " Object name is not defined correctly.");
                     }
                 }
+            }
+        }
+        public void FillComboboxValues(ComboBox combobox, List<string> values)
+        {
+            foreach (string s in values)
+            {
+                combobox.Items.Add(s);
             }
         }
 
