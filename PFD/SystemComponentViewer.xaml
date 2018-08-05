@@ -19,13 +19,13 @@
         <TextBlock Text="Serie:" HorizontalAlignment="Left" Height="20" Margin="10,35,0,0" VerticalAlignment="Top" Width="100"/>
         <ComboBox Name ="Combobox_Series" HorizontalAlignment="Left" Height="20" 
                   Margin="115,35,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
-                  SelectionChanged="Combobox_Series_SelectionChanged"                   
+                  SelectionChanged="Combobox_Series_SelectionChanged"
                   DropDownClosed="Combobox_Series_DropDownClosed"/>
 
         <TextBlock Text="Component:" HorizontalAlignment="Left" Height="20" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
         <ComboBox Name ="Combobox_Component" HorizontalAlignment="Left" Height="20" 
                   Margin="115,60,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
-                  SelectionChanged="Combobox_Component_SelectionChanged"                   
+                  SelectionChanged="Combobox_Component_SelectionChanged"
                   DropDownClosed="Combobox_Component_DropDownClosed"/>
 
         <Frame Name ="Frame2D" Content="2D Preview" HorizontalAlignment="Left" 

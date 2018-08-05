@@ -17,11 +17,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new BaseClasses.CNode[12];
+            m_arrNodes = new CNode[12];
             m_arrMembers = new CMember[21];
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[1];
-            m_arrNSupports = new BaseClasses.CNSupport[2];
+            m_arrNSupports = new CNSupport[2];
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
             m_arrMat[0] = new CMat_03_00();
@@ -91,8 +91,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             bool[] bSupport3 = { true, false, false, false, false, false };
 
             // Create Support Objects
-            m_arrNSupports[0] = new BaseClasses.CNSupport(6, 1, m_arrNodes[0], bSupport2, 0);
-            m_arrNSupports[1] = new BaseClasses.CNSupport(6, 2, m_arrNodes[6], bSupport3, 0);
+            m_arrNSupports[0] = new CNSupport(6, 1, m_arrNodes[0], bSupport2, 0);
+            m_arrNSupports[1] = new CNSupport(6, 2, m_arrNodes[6], bSupport3, 0);
 
 
             // Setridit pole podle ID

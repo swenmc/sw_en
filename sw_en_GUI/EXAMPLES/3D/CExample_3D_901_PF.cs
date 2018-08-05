@@ -7,6 +7,7 @@ using System.Windows.Media.Media3D;
 using BaseClasses;
 using BaseClasses.GraphObj;
 using MATH;
+using DATABASE;
 using MATERIAL;
 using CRSC;
 using Combinatorics.Collections;
@@ -1419,5 +1420,14 @@ namespace sw_en_GUI.EXAMPLES._3D
             GenerateLoadOnMainColumns(fValueColumn1, fValueColumn2, ref list);
             GenerateLoadOnRafters(fValueRafter1, fValueRafter2, ref list);
         }
+
+        // Load model component cross-sections
+        public void SetCrossSectionsFromDatabase()
+        {
+
+
+        }
+
+
     }
 }

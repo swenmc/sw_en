@@ -22,6 +22,7 @@ using System.Threading;
 using System.Data.SQLite;
 using System.Configuration;
 using BaseClasses;
+using DATABASE;
 using MATH;
 using MATERIAL;
 using CRSC;
@@ -47,7 +48,7 @@ namespace PFD
         bool bDebugging = false;
 
         public CModel model;
-        public DatabaseModels dmodels; // Todo nahradit databazov modelov
+        public CDatabaseModels dmodels; // Todo nahradit databazov modelov
         public List<DoorProperties> DoorBlocksProperties;
         public List<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
@@ -83,7 +84,7 @@ namespace PFD
 
         public MainWindow()
         {
-            dmodels = new DatabaseModels();
+            dmodels = new CDatabaseModels();
 
             // Initial Screen
             SplashScreen splashScreen = new SplashScreen("formsteel-screen.jpg");

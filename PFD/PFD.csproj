@@ -64,7 +64,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CComponentInfo.cs" />
-    <Compile Include="CDatabaseManager.cs" />
     <Compile Include="CComponentListVM.cs" />
     <Compile Include="FractionConverter.cs" />
     <Compile Include="CPFDLoadInput.cs" />
@@ -121,7 +120,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CRangeValidator.cs" />
-    <Compile Include="DatabaseModels.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

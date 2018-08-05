@@ -391,6 +391,10 @@
       <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
       <Name>CRSC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DATABASE\DATABASE.csproj">
+      <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
       <Project>{602C8862-99F4-4595-A033-84194DDFE00A}</Project>
       <Name>FEM_CALC_1Din2D</Name>
