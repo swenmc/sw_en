@@ -405,6 +405,7 @@ namespace PFD
                 {180, 630, 1.95f, 7.95f}
         };
 
+        // TODO nahradit vstupmi z databazy
         public string[,] arr_Member_Types_Prefix = new string[15, 2]
         {
             {"G", "Girt"},             // 00
@@ -422,22 +423,6 @@ namespace PFD
             {"BG","Base Girt"},        // 12
             {"MR","Main Rafter"},      // 13
             {"MC","Main Column"}       // 14
-        };
-
-        public string[] arr_Crsc_Types = new string[]
-        { "Box 63020",      // 00
-          "Box 63020s1",    // 01
-          "Box 63020s2",    // 02
-          "C 50020n",       // 03
-          "C 270115n",      // 04
-          "C 27095n",       // 05
-          "C 27055n",       // 06
-          "C 50020",        // 07
-          "C 270115",       // 08
-          "C 27095",        // 09
-          "C 27055",        // 10
-          "C 270115btb",    // 11
-          "Box 10075"       // 12
         };
 
         public float[,] arr_Screws_TEK_Dimensions = new float[7, 2]

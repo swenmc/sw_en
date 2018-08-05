@@ -71,21 +71,6 @@ namespace sw_en_GUI.EXAMPLES._3D
                 CCalcul_1170_5 eq
             )
         {
-        // Todo asi prepracovat na zoznam tried objektov
-
-        string[,] componentTypesList = new string[9, 3]
-            {
-                {"Main Column","2x50020","AS"},
-                {"Rafter","2x50020",""},
-                {"Eaves Purlin","2x50020",""},
-                {"Purlin","2x50020",""},
-                {"Purlin Brace","2x50020",""},
-                {"Girt","2x50020",""},
-                {"Girt Brace","2x50020",""},
-                {"Roofing","2x50020",""},
-                {"Wall Cladding","2x50020",""}
-            };
-
             fH1_frame = fH1_temp;
             fW_frame = fW_temp;
             fL1_frame = fL1_temp;
@@ -127,6 +112,8 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
+
+            // TODO Nastavit podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
             m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);  // Main Column
             m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);      // Rafter
             m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin

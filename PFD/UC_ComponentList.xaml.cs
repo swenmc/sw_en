@@ -47,11 +47,14 @@ namespace PFD
         public UC_ComponentList()
         {
             InitializeComponent();
-                        
+
             // Clear all lists
             //DeleteAllLists();
+
+            // TODO Ondrej - zrusit napojenie na objekt DatabaseComponents database a nahradit vstupmi z SQL databazy - MDBModels, tabulka componentPrefixes
+            // Obsah tejto tabulky co sa tyka prierezovby sa mal prebrat z modelu CExample_3D_901_PF - m_arrSections
             CComponentInfo ci = null;
-            CComponentListVM cl = new CComponentListVM();            
+            CComponentListVM cl = new CComponentListVM();
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], "Box 63020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1], "Box 63020", "G550", true, true, true, true, true);

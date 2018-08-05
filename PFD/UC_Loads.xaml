@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        d:DesignHeight="1140" d:DesignWidth="365">
+        d:DesignHeight="1140" d:DesignWidth="385">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -15,7 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="170"/>
             <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

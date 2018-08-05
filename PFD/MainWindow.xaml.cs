@@ -105,7 +105,7 @@ namespace PFD
             // TODO Ondrej - Bug No 43 - polozky farieb v comboboxe stratia farbu, ak boli vybrane
 
             // Model Geometry
-            vm = new CPFDViewModel(1);
+            vm = new CPFDViewModel(2);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
 
