@@ -72,6 +72,11 @@ namespace PFD
             }
         }
 
+        // TODO No 47 - Ondrej - nastavit pre rozne riadky iny obsah comboboxu "sections"
+        // Pre prefixy MC, MR, C nastavit SectionsForColumnsOrRafters
+        // Pre prefixy EP, G, P nastavit SectionsForGirtsOrPurlins
+        // mozno by to mohlo byt pripravene v nejakom zozname sectionID v databaze pre kazdy prefix, vid MDBModels - tabulka componentPrefixes a tabulka sections
+
         public List<string> SectionsForColumnsOrRafters
         {
             get
