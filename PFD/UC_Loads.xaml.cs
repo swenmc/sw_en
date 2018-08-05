@@ -24,9 +24,12 @@ namespace PFD
     /// </summary>
     public partial class UC_Loads : UserControl
     {
-        public UC_Loads()
-        {
+        BuildingGeometryDataInput sGeometryInputData;
+        public UC_Loads(BuildingGeometryDataInput geometryInputData)
+        {            
             InitializeComponent();
+
+            sGeometryInputData = geometryInputData;
 
             // Connect to database and fill items of all comboboxes
             DatabaseManager.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
@@ -73,6 +76,35 @@ namespace PFD
             CPFDLoadInput loadInput = sender as CPFDLoadInput;
             if (loadInput != null && loadInput.IsSetFromCode) return;
         }
-        
+
+        private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
+        {
+            CPFDLoadInput loadinput = this.DataContext as CPFDLoadInput;
+            // Basic data
+            BuildingDataInput sBuildingInputData;
+            sBuildingInputData.location = (ELocation)loadinput.LocationIndex;                    // locations (cities) enum
+            sBuildingInputData.fDesignLife_Value = loadinput.DesignLife_Value;                   // Database value in years
+            sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level (index + 1)
+
+            sBuildingInputData.fAnnualProbabilityULS_Snow = loadinput.AnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
+            sBuildingInputData.fAnnualProbabilityULS_Wind = loadinput.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
+            sBuildingInputData.fAnnualProbabilityULS_EQ = loadinput.AnnualProbabilityULS_EQ;     // Annual Probability of Exceedence ULS - EQ
+            sBuildingInputData.fAnnualProbabilitySLS = loadinput.AnnualProbabilitySLS;           // Annual Probability of Exceedence SLS
+
+            sBuildingInputData.fR_ULS_Snow = loadinput.R_ULS_Snow;
+            sBuildingInputData.fR_ULS_Wind = loadinput.R_ULS_Wind;
+            sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
+            sBuildingInputData.fR_SLS = loadinput.R_SLS;
+
+            WindLoadDataInput sWindInputData;
+            sWindInputData.eWindRegion = loadinput.WindRegion;
+            sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
+            sWindInputData.fTerrainCategory = loadinput.TerrainCategoryIndex;
+
+            M_EC1.AS_NZS.CCalcul_1170_2 wind = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
+
+            WindSpeedChart wind_chart = new WindSpeedChart(wind);
+            wind_chart.Show();
+        }
     }
 }

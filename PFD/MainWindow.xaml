@@ -273,7 +273,7 @@
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
             <Button Name="Clear3DModel" Content="Clear" Width="70" Margin="0 0 10 0" Click="Clear3DModel_Click" Height="20" />
-            <Button Name="WindSpeedChart" Content="WindSpeed" Width="70" Margin="0 0 10 0" Click="WindSpeedChart_Click" Height="20" />
+            <!--<Button Name="WindSpeedChart" Content="WindSpeed" Width="70" Margin="0 0 10 0" Click="WindSpeedChart_Click" Height="20" />-->
             <Button Content="Calculate" Width="100"  Margin="0 0 10 0" Click="Calculate_Click" Height="20"/>
             <Button Name="SystemComponentViewer" Content="Component Viewer" Height="20" Width="120" Margin="0 0 10 0" Click="SystemComponentViewer_Click"/>
             <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>

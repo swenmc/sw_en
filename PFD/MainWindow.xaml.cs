@@ -335,7 +335,7 @@ namespace PFD
 
             // Input - TabItem Loads
             UC_Loads loadInput_UC = null;
-            if (Loads.Content == null) loadInput_UC = new UC_Loads();
+            if (Loads.Content == null) loadInput_UC = new UC_Loads(sGeometryInputData);
             else loadInput_UC = (UC_Loads)Loads.Content;
             loadinput = loadInput_UC.DataContext as CPFDLoadInput;
 
@@ -953,7 +953,7 @@ namespace PFD
             }                
             else if (MainTabControl.SelectedIndex == 2)
             {
-                if(Loads.Content == null) Loads.Content = new UC_Loads();
+                if(Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
             }                
             else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
@@ -1318,12 +1318,12 @@ namespace PFD
             UpdateAll();
         }
 
-        private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
-        {
-            CalculateWindLoad();
+        //private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
+        //{
+        //    CalculateWindLoad();
 
-            WindSpeedChart wind_chart = new WindSpeedChart(wind);
-            wind_chart.Show();
-        }
+        //    WindSpeedChart wind_chart = new WindSpeedChart(wind);
+        //    wind_chart.Show();
+        //}
     }
 }
