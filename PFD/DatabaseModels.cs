@@ -27,10 +27,10 @@ namespace PFD
 
         public DatabaseModels(int iSelectedIndex)
         {
-            fb = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "width", iSelectedIndex);
-            fL = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "length", iSelectedIndex);
-            fh = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex);
-            iFrNo = (int)DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex);
+            fb = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "width", iSelectedIndex+1);
+            fL = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "length", iSelectedIndex+1);
+            fh = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex+1);
+            iFrNo = (int)DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex+1);
             fL1 = fL / (iFrNo - 1);
             fRoof_Pitch_deg = 15;
             fdist_girt = 0.25f * fL1;
