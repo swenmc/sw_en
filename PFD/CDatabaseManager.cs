@@ -35,7 +35,8 @@ namespace PFD
 
         public static void FillComboboxWithColors(string sDBName, string sTableName, string sColumnText, string sColumnColor, ComboBox combobox)
         {
-            List<ComboBoxItem> items = new List<ComboBoxItem>();
+            List<Tuple<string, string>> color_items = new List<Tuple<string, string>>();
+            
             // Connect to database and fill items of all comboboxes
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[sDBName].ConnectionString))
             {
@@ -44,24 +45,12 @@ namespace PFD
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
-                        ComboBoxItem cbi = new ComboBoxItem();
-                        try
-                        {
-                            string[] splitArray = reader[sColumnColor].ToString().Split(',');
-                            cbi.Background = new SolidColorBrush(Color.FromRgb(byte.Parse(splitArray[0]), byte.Parse(splitArray[1]), byte.Parse(splitArray[2])));
-                        }
-                        catch (Exception)
-                        {
-                            // Invalid database data
-                        }
-
-                        cbi.Content = reader[sColumnText].ToString();
-                        items.Add(cbi);
+                    {                        
+                        color_items.Add(Tuple.Create<string, string>(reader[sColumnText].ToString(), "#"+reader[sColumnColor].ToString()));                        
                     }
                 }
             }
-            combobox.ItemsSource = items;
+            combobox.ItemsSource = color_items;
         }
 
         public static float GetValueFromDatabasebyRowID(string sDBName, string sTableName, string sColumnName, int IDValue, string sKeyColumnName = "ID")

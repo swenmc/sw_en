@@ -177,8 +177,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Rectangle Fill="{Binding Name}" Width="62" Height="12" Margin="0,1,5,1" />
-                                        <!--<TextBlock Text="{Binding Name}" /> -->
+                                        <Rectangle Fill="{Binding Item2}" Width="62" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Item1}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -198,8 +198,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Rectangle Fill="{Binding Name}" Width="62" Height="12" Margin="0,1,5,1" />
-                                        <!--<TextBlock Text="{Binding Name}" /> -->
+                                        <Rectangle Fill="{Binding Item2}" Width="62" Height="12" Margin="0,1,5,1" />
+                                        <TextBlock Text="{Binding Item1}" /> 
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

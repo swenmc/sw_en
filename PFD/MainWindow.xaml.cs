@@ -96,8 +96,8 @@ namespace PFD
             // Cladding (type and colors)
             DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
             DatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
-            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_RoofCladdingColor);
-            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeRGB", Combobox_WallCladdingColor);
+            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeHEX", Combobox_RoofCladdingColor);
+            DatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeHEX", Combobox_WallCladdingColor);
 
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
