@@ -10,9 +10,9 @@ using System.Configuration;
 using System.Windows.Controls;
 using System.Globalization;
 
-namespace DATABASE
+namespace PFD
 {
-    public static class DatabaseManager
+    public static class CDatabaseManager
     {
         public static List<string> GetStringList(string sDBName, string sTableName, string sColumnName)
         {

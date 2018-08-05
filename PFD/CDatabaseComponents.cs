@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace PFD
 {
-    public class DatabaseComponents
+    public class CDatabaseComponents
     {
         public float fbXR_mm; // Rafter Width
         public float fbX_mm;
@@ -20,10 +20,10 @@ namespace PFD
         public float ft_mm; // Not used in 2D model
         public int iHolesNoumber;
 
-        public DatabaseComponents()
+        public CDatabaseComponents()
         { }
 
-        public DatabaseComponents(int iSerieIndex, int iComponentIndex)
+        public CDatabaseComponents(int iSerieIndex, int iComponentIndex)
         {
             ESerieTypePlate eSerieIndex = (ESerieTypePlate)iSerieIndex;
 

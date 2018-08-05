@@ -71,7 +71,7 @@ namespace PFD
         // For output
         List<string> listConnectorWeightPerPiece = new List<string>(1);
 
-        DatabaseComponents databaseCopm = new DatabaseComponents();
+        CDatabaseComponents databaseCopm = new CDatabaseComponents();
 
         public UC_MaterialList(CModel model)
         {

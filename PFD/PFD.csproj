@@ -65,10 +65,12 @@
     </ApplicationDefinition>
     <Compile Include="CComponentInfo.cs" />
     <Compile Include="CComponentListVM.cs" />
+    <Compile Include="CDatabaseManager.cs" />
+    <Compile Include="CDatabaseModels.cs" />
     <Compile Include="FractionConverter.cs" />
     <Compile Include="CPFDLoadInput.cs" />
     <Compile Include="CPFDViewModel.cs" />
-    <Compile Include="DatabaseComponents.cs" />
+    <Compile Include="CDatabaseComponents.cs" />
     <Compile Include="UC_InternalForces.xaml.cs">
       <DependentUpon>UC_InternalForces.xaml</DependentUpon>
     </Compile>

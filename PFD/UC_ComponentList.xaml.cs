@@ -25,7 +25,7 @@ namespace PFD
     public partial class UC_ComponentList : UserControl
     {
         DataSet ds;
-        DatabaseComponents database = new DatabaseComponents(); // System components database
+        CDatabaseComponents database = new CDatabaseComponents(); // System components database
 
         List<string> listMemberPrefix = new List<string>(0);
         List<string> listMemberComponentName = new List<string>();

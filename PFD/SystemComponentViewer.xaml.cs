@@ -27,7 +27,7 @@ namespace PFD
     /// </summary>
     public partial class SystemComponentViewer : Window
     {
-        public DatabaseComponents dcomponents; // Todo nahradit databazov component
+        public CDatabaseComponents dcomponents; // Todo nahradit databazov component
         public WindowCrossSection2D page2D;
         public Page3Dmodel page3D;
 
@@ -52,7 +52,7 @@ namespace PFD
         public SystemComponentViewer()
         {
             InitializeComponent();
-            dcomponents = new DatabaseComponents();
+            dcomponents = new CDatabaseComponents();
 
             Combobox_Type.Items.Add("Cross-section");
             Combobox_Type.Items.Add("Plate");

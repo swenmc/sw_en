@@ -66,7 +66,7 @@ namespace PFD
                 if (MSections == null)
                 {
                     //MSections = new List<string> { "Box 63020", "Box 63020", "C 50020", "C 27095", "C 270115", "Box 10075", "Box 10075", "C 27095", "C 27095" };
-                    MSections = DatabaseManager.GetStringList("ModelsSQLiteDB", "sections", "sectionName");
+                    MSections = CDatabaseManager.GetStringList("ModelsSQLiteDB", "sections", "sectionName");
                 }
                 return MSections;
             }

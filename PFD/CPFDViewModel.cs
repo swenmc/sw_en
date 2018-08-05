@@ -55,7 +55,7 @@ namespace PFD
                 MModelIndex = value;
 
                 //dolezite je volat private fields a nie Properties pokial nechceme aby sa volali setter metody
-                DatabaseModels dmodel = new DatabaseModels(MModelIndex);
+                CDatabaseModels dmodel = new CDatabaseModels(MModelIndex);
                 IsSetFromCode = true;
                 GableWidth = dmodel.fb;
                 Length = dmodel.fL;

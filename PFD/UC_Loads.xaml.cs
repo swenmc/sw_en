@@ -32,14 +32,14 @@ namespace PFD
             sGeometryInputData = geometryInputData;
 
             // Connect to database and fill items of all comboboxes
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life", Combobox_DesignLife);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt", Combobox_ImportanceClass);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "SnowRegions", "snowZone", Combobox_SnowRegion);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
-            DatabaseManager.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);            
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "nzLocations", "city", Combobox_Location);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_3_DWL", "design_working_life", Combobox_DesignLife);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_Tab3_2_IL", "importanceLevelInt", Combobox_ImportanceClass);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "SnowRegions", "snowZone", Combobox_SnowRegion);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
+            CDatabaseManager.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);            
 
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);

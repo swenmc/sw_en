@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DATABASE
+namespace PFD
 {
     public class CDatabaseModels
     {
@@ -27,10 +27,10 @@ namespace DATABASE
 
         public CDatabaseModels(int iSelectedIndex)
         {
-            fb = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "width", iSelectedIndex+1);
-            fL = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "length", iSelectedIndex+1);
-            fh = DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex+1);
-            iFrNo = (int)DatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex+1);
+            fb = CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "width", iSelectedIndex+1);
+            fL = CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "length", iSelectedIndex+1);
+            fh = CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex+1);
+            iFrNo = (int)CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex+1);
             fL1 = fL / (iFrNo - 1);
             fRoof_Pitch_deg = 15;
             fdist_girt = 0.25f * fL1;
