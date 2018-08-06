@@ -1,5 +1,8 @@
-﻿using System;
+﻿using DATABASE;
+using DATABASE.DTO;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +30,20 @@ namespace PFD
 
         public CDatabaseModels(int iSelectedIndex)
         {
-            fb = CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "width", iSelectedIndex+1);
-            fL = CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "length", iSelectedIndex+1);
-            fh = CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex+1);
-            iFrNo = (int)CDatabaseManager.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex+1);
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            CKitsetGableRoofEnclosed model = CModelsManager.LoadModelKitsetGableRoofEnclosed(iSelectedIndex + 1);
+            if (model == null) throw new Exception("Model is null");
+
+            fb = float.Parse(model.Width, nfi);
+            fL = float.Parse(model.Length, nfi); 
+            fh = float.Parse(model.Wall_height, nfi); 
+            iFrNo = int.Parse(model.IFrames);
+            //fb = CComboBoxHelper.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "width", iSelectedIndex+1);
+            //fL = CComboBoxHelper.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "length", iSelectedIndex+1);
+            //fh = CComboBoxHelper.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex+1);
+            //iFrNo = (int)CComboBoxHelper.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex+1);
             fL1 = fL / (iFrNo - 1);
             fRoof_Pitch_deg = 15;
             fdist_girt = 0.25f * fL1;

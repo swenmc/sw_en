@@ -6,7 +6,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DATABASE</RootNamespace>
     <AssemblyName>DATABASE</AssemblyName>
@@ -54,10 +54,17 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\sw_en_GUI\bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,14 +79,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CModelsManager.cs" />
+    <Compile Include="CTrapezoidalSheetingManager.cs" />
+    <Compile Include="CDatabaseManager.cs" />
     <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="DATABASE_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DATABASE_Form.Designer.cs">
-      <DependentUpon>DATABASE_Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="DTO\CKitsetGableRoofEnclosed.cs" />
+    <Compile Include="DTO\CTrapezoidalSheetingColours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

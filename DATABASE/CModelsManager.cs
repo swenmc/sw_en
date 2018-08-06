@@ -1,0 +1,90 @@
+﻿using DATABASE.DTO;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Common;
+using System.Data.SQLite;
+
+namespace DATABASE
+{
+    public static class CModelsManager
+    {        
+        public static List<CKitsetGableRoofEnclosed> LoadModelKitsetGableRoofEnclosed()
+        {
+            CKitsetGableRoofEnclosed model;
+            List<CKitsetGableRoofEnclosed> items = new List<CKitsetGableRoofEnclosed>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from KitsetGableRoofEnclosed", conn);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+
+                        model = new CKitsetGableRoofEnclosed();
+                        model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        model.ModelName = reader["modelName"].ToString();
+                        model.Width = reader["width"].ToString();
+                        model.Length = reader["length"].ToString();
+                        model.Wall_height = reader["wall_height"].ToString();
+                        model.Distance_L1 = reader["distance_L1"].ToString();
+                        model.IFrames = reader["iFrames"].ToString();
+                        model.C_array_code = reader["c_array_code"].ToString();
+                        model.Column8 = reader["Column8"].ToString();
+                        model.MainColumn = reader["mainColumn"].ToString();
+                        model.MainRafter = reader["mainRafter"].ToString();
+                        model.EdgePurlin = reader["edgePurlin"].ToString();
+                        model.Girt = reader["girt"].ToString();
+                        model.Purlin = reader["purlin"].ToString();
+                        model.ColumnFrontSide = reader["columnFrontSide"].ToString();
+                        model.ColumnBackSide = reader["columnBackSide"].ToString();
+                        model.GirtFrontSide = reader["girtFrontSide"].ToString();
+                        model.GirtBackSide = reader["girtBackSide"].ToString();
+                        items.Add(model);
+                    }
+                }
+            }
+            return items;
+        }
+        public static CKitsetGableRoofEnclosed LoadModelKitsetGableRoofEnclosed(int ID)
+        {
+            CKitsetGableRoofEnclosed model = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from KitsetGableRoofEnclosed WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", ID);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        model = new CKitsetGableRoofEnclosed();
+                        model.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        model.ModelName = reader["modelName"].ToString();
+                        model.Width = reader["width"].ToString();
+                        model.Length = reader["length"].ToString();
+                        model.Wall_height = reader["wall_height"].ToString();
+                        model.Distance_L1 = reader["distance_L1"].ToString();
+                        model.IFrames = reader["iFrames"].ToString();
+                        model.C_array_code = reader["c_array_code"].ToString();
+                        model.Column8 = reader["Column8"].ToString();
+                        model.MainColumn = reader["mainColumn"].ToString();
+                        model.MainRafter = reader["mainRafter"].ToString();
+                        model.EdgePurlin = reader["edgePurlin"].ToString();
+                        model.Girt = reader["girt"].ToString();
+                        model.Purlin = reader["purlin"].ToString();
+                        model.ColumnFrontSide = reader["columnFrontSide"].ToString();
+                        model.ColumnBackSide = reader["columnBackSide"].ToString();
+                        model.GirtFrontSide = reader["girtFrontSide"].ToString();
+                        model.GirtBackSide = reader["girtBackSide"].ToString();                        
+                    }
+                }
+            }
+            return model;
+        }
+        
+
+    }
+}

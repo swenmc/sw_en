@@ -65,7 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="CComponentInfo.cs" />
     <Compile Include="CComponentListVM.cs" />
-    <Compile Include="CDatabaseManager.cs" />
+    <Compile Include="CComboBoxHelper.cs" />
     <Compile Include="CDatabaseModels.cs" />
     <Compile Include="FractionConverter.cs" />
     <Compile Include="CPFDLoadInput.cs" />

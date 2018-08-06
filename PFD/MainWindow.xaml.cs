@@ -95,12 +95,12 @@ namespace PFD
             splashScreen.Close(TimeSpan.FromMilliseconds(1000));
 
             // Fill model combobox items
-            CDatabaseManager.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
+            CComboBoxHelper.FillComboboxValues("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "modelName", Combobox_Models);
             // Cladding (type and colors)
-            CDatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
-            CDatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
-            CDatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeHEX", Combobox_RoofCladdingColor);
-            CDatabaseManager.FillComboboxWithColors("TrapezoidalSheetingSQLiteDB", "colours", "name", "codeHEX", Combobox_WallCladdingColor);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_WallCladding);
+            CComboBoxHelper.FillComboboxWithColors(Combobox_RoofCladdingColor);
+            CComboBoxHelper.FillComboboxWithColors(Combobox_WallCladdingColor);
 
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
@@ -374,8 +374,8 @@ namespace PFD
             // Load Generation
             // General loading
 
-            float fMass_Roof = CDatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", Combobox_RoofCladdingThickness.SelectedIndex);
-            float fMass_Wall = CDatabaseManager.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", Combobox_WallCladdingThickness.SelectedIndex);
+            float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", Combobox_RoofCladdingThickness.SelectedIndex);
+            float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", Combobox_WallCladdingThickness.SelectedIndex);
 
             // General Load (AS / NZS 1170.1)
             CalculateBasicLoad(fMass_Roof, fMass_Wall);
@@ -644,7 +644,7 @@ namespace PFD
 
         public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
         {
-            CDatabaseManager.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
         }
         
         public void SetMaterialValuesFromDatabase()
