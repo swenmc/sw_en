@@ -11,6 +11,15 @@ namespace BaseClasses
     [Serializable]
     abstract public class CLoad : CEntity3D
     {
+        private ELoadCoordSystem m_eLoadCS;
+
+        //----------------------------------------------------------------------------
+        public ELoadCoordSystem ELoadCS
+        {
+            get { return m_eLoadCS; }
+            set { m_eLoadCS = value; }
+        }
+
         public CLoad()
         { }
 

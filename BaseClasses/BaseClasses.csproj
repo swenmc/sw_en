@@ -84,6 +84,8 @@
     <Compile Include="CObject.cs" />
     <Compile Include="Drawing2D.cs" />
     <Compile Include="Drawing3D.cs" />
+    <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniform.cs" />
+    <Compile Include="Loading\Loads\Surface\CSLoad_Free.cs" />
     <Compile Include="Model\CCrSc.cs" />
     <Compile Include="Model\CMat.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />

@@ -25,6 +25,7 @@ namespace BaseClasses
 
         public CPoint m_pControlPoint = new CPoint();
         public CMat m_Mat;
+        public DiffuseMaterial m_Material3DGraphics;
         public string m_Shape;
 
         //----------------------------------------------------------------------------------------------------------------

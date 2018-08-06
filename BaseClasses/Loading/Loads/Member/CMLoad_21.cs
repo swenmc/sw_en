@@ -52,8 +52,8 @@ namespace BaseClasses
 
             // Set Load Model "material" Color and Opacity - default
             m_Color = Colors.Cyan;
-            m_Material.Brush = new SolidColorBrush(m_Color);
-            m_Material.Brush.Opacity = m_fOpacity = 0.9f;
+            m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
+            m_Material3DGraphics.Brush.Opacity = m_fOpacity = 0.9f;
         }
 
         public override Model3DGroup CreateM_3D_G_Load()
@@ -64,15 +64,15 @@ namespace BaseClasses
 
             // Set Load Model "material" Color and Opacity - default
             m_Color = Colors.Cyan;
-            m_Material.Brush = new SolidColorBrush(m_Color);
-            m_Material.Brush.Opacity = m_fOpacity = 0.9f;
+            m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
+            m_Material3DGraphics.Brush.Opacity = m_fOpacity = 0.9f;
 
             float floadarrowsgapcount = 10.0f; // Number of gap arrows (10 gaps, 11 arrows) per member length (not int because we use it to calculate double coordinates)
 
             for (int i = 0; i <= floadarrowsgapcount; i++)
             {
                 Model3DGroup model_temp = new Model3DGroup();
-                model_temp = CreateM_3D_G_SimpleLoad(new Point3D(i / floadarrowsgapcount * Member.FLength, 0, 0), nLoadType, m_Color, Fq, m_fOpacity, m_Material); // Model of one Arrow
+                model_temp = CreateM_3D_G_SimpleLoad(new Point3D(i / floadarrowsgapcount * Member.FLength, 0, 0), nLoadType, m_Color, Fq, m_fOpacity, m_Material3DGraphics); // Model of one Arrow
                 model_gr.Children.Add(model_temp);
             }
 
@@ -87,8 +87,8 @@ namespace BaseClasses
                 else
                     pPoint = new Point3D(0, -Fq, 0);
 
-                Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(Fq), Member.FLength, m_Material);
-                model_gr.Children.Add(cConnectLine.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(Fq), Member.FLength, m_Material));
+                Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(Fq), Member.FLength, m_Material3DGraphics);
+                model_gr.Children.Add(cConnectLine.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(Fq), Member.FLength, m_Material3DGraphics));
             }
 
             // Trasnform position of load on member (consider eccentricity of load / member / cross-section dimensions)

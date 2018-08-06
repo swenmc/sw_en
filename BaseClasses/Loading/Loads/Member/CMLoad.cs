@@ -41,7 +41,6 @@ namespace BaseClasses
         public CMember Member = new CMember(); // Temporary
         public float m_fOpacity;
         public Color m_Color = new Color(); // Default
-        public DiffuseMaterial m_Material = new DiffuseMaterial();
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
@@ -52,8 +51,9 @@ namespace BaseClasses
         {
             // Set Load Model "material" Color and Opacity - default
             m_Color = Colors.Cyan;
-            m_Material.Brush = new SolidColorBrush(m_Color);
-            m_Material.Brush.Opacity = 0.9f;
+            m_Material3DGraphics = new DiffuseMaterial();
+            m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
+            m_Material3DGraphics.Brush.Opacity = 0.9f;
         }
 
         public ENLoadType TransformLoadTypefroMemberToPoint(EMLoadDirPCC1 eDirPPC, EMLoadType eMLoadType)

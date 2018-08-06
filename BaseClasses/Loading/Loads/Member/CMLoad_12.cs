@@ -58,7 +58,7 @@ namespace BaseClasses
 
             ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(EDirPPC, MLoadType);
 
-            return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(0.5f * Member.FLength, 0, 0), nLoadType, m_Color, FF, m_fOpacity, m_Material);
+            return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(0.5f * Member.FLength, 0, 0), nLoadType, m_Color, FF, m_fOpacity, m_Material3DGraphics);
         }
     }
 }

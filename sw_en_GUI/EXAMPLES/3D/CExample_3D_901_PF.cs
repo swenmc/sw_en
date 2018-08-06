@@ -834,9 +834,16 @@ namespace sw_en_GUI.EXAMPLES._3D
             // - Y
             GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMax, fValueLoadColumnnWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, ref memberLoadWindFramesMinusY_CpeMax);
 
+            // Surface Free Loads
+            // TODO - Pokus
+            m_arrSLoads = new CSLoad_Free[1];
+            m_arrSLoads[0] = new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, new CPoint (0,0,0, fH1_frame, 0), new Point3DCollection { new Point3D(0, 0, 0), new Point3D(0.5f * fW_frame / Math.Cos(fRoofPitch_rad), 0, 0), new Point3D(0.5f * fW_frame / Math.Cos(fRoofPitch_rad), fL_tot, 0), new Point3D( 0, fL_tot, 0) }, 0.5f, true, 0);
+            List<CSLoad_Free> surfaceDeadLoad = new List<CSLoad_Free>();
+            surfaceDeadLoad.Add(m_arrSLoads[0]);
+
             // Load Cases
             m_arrLoadCases = new CLoadCase[20];
-            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load", memberLoadDead1Rafters);                                    // 1
+            m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load", memberLoadDead1Rafters, surfaceDeadLoad);                   // 1
             m_arrLoadCases[1] = new CLoadCase(2, "Dead load Gs", "Services and superimposed dead load", memberLoadDead2Rafters);              // 2
             m_arrLoadCases[2] = new CLoadCase(3, "Imposed load Q", "Imposed load", memberLoadImposedRafters);                                 // 3
             m_arrLoadCases[3] = new CLoadCase(4, "Snow load Su - full", "Snow load", memberMaxLoadSnowAllRafters);                            // 4

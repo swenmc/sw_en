@@ -52,6 +52,8 @@ namespace BaseClasses
         public CNLoad[] m_arrNLoads;
         // Member Loads
         public CMLoad[] m_arrMLoads;
+        // Surface Loads
+        public CSLoad_Free[] m_arrSLoads;
         // Load Cases
         public CLoadCase[] m_arrLoadCases;
         // Load Combinations

@@ -67,6 +67,16 @@ namespace BaseClasses
     }
 
     //----------------------------------------------------------------------------
+    // Load Definition Coordinate System
+    //----------------------------------------------------------------------------
+    public enum ELoadCoordSystem
+    {
+        eGCS, // Nodes (members, surfaces)
+        eLCS, // Members, surfaces
+        ePCS  // Members
+    }
+
+    //----------------------------------------------------------------------------
     // Nodes
     //----------------------------------------------------------------------------
     public enum ENLoadType
@@ -89,6 +99,7 @@ namespace BaseClasses
         eNST_Ry = 4,
         eNST_Rz = 5
     }
+
     // Nodes and Members
     //----------------------------------------------------------------------------
     // Define load direction or orientation in GCC (global coordinate system)
@@ -99,7 +110,6 @@ namespace BaseClasses
         eLD_GCC_Y = 1,
         eLD_GCC_Z = 2
     }
-
 
     //----------------------------------------------------------------------------
     // Members
@@ -129,6 +139,15 @@ namespace BaseClasses
         eMLD_LCC_FX_MX = 0,
         eMLD_LCC_Y = 1,
         eMLD_LCC_Z = 2
+    }
+    //----------------------------------------------------------------------------
+    // Define load direction or orientation in LCC (local coordinate system) of surfaces
+    //----------------------------------------------------------------------------
+    public enum ESLoadDirLCC1
+    {
+        eSLD_LCC_FX = 0,
+        eMLD_LCC_FY = 1,
+        eMLD_LCC_FZ = 2
     }
     //----------------------------------------------------------------------------
     // Define load direction or orientation in PCC (principal coordinate system) of members
@@ -183,6 +202,14 @@ namespace BaseClasses
         eMLT_TMP_UNQ_Wy_52 = 52    // Temperature loading on whole member, two temperatures (different for upper and bottom surface of member)
     }
     //----------------------------------------------------------------------------
+    // Types of surface loading
+    // Typy zatazenia plochy
+    //----------------------------------------------------------------------------
+    public enum ESLoadTypeDistr
+    {
+        eSLT_QUF_W
+    }
+    //----------------------------------------------------------------------------
     // Define load type
     //----------------------------------------------------------------------------
     public enum EMLoadType
@@ -190,6 +217,15 @@ namespace BaseClasses
         eMLT_F = 0, // Force
         eMLT_M = 1, // Moment
         eMLD_Temperature = 2 // Temperature
+    }
+
+    public enum ESLoadType
+    {
+        eSLT_F = 0, // Force
+        /*
+        eSLT_M = 1, // Moment
+        eSLD_Temperature = 2 // Temperature
+        */
     }
 
     //----------------------------------------------------------------------------

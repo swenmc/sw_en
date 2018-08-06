@@ -515,6 +515,26 @@ namespace BaseClasses
                         }
                     }
                 }
+
+                if (selectedLoadCase.SurfaceLoadsList != null) // Some surface loads exist
+                {
+                    // Model Groups of Surface Loads
+                    for (int i = 0; i < selectedLoadCase.SurfaceLoadsList.Count; i++)
+                    {
+                        if (selectedLoadCase.SurfaceLoadsList[i] != null && selectedLoadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            Model3DGroup model_gr = new Model3DGroup();
+                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load();
+                            // Transform modelgroup from LCS to GCS
+                            //model_gr = selectedLoadCase.SurfaceLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member);
+
+                            model3D_group.Children.Add(model_gr); // Add Release to model group
+
+                            // Set load for all assigned surfaces
+
+                        }
+                    }
+                }
             }
             return model3D_group;
         }
