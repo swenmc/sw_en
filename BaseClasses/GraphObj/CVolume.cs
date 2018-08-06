@@ -574,7 +574,7 @@ namespace BaseClasses.GraphObj
             // Sides
             for (int i = 0; i < points_z0.Count; i++)
             {
-                if (i < points_z0.Count)
+                if (i < points_z0.Count-1)
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, i + 1, points_z0.Count + i + 1, points_z0.Count + i);
                 else // Last rectangle
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, 0, points_z0.Count, points_z0.Count + i);
