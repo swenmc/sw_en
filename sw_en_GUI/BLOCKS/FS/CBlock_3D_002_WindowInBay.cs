@@ -13,7 +13,23 @@ namespace sw_en_GUI.EXAMPLES._3D
     {
         public int iNumberOfGirtsUnderWindow;
 
-        public CBlock_3D_002_WindowInBay(string sBuildingSide_temp, float fWindowHeight, float fWindowWidth, float fWindowCoordinateXinBay, float fWindowCoordinateZinBay, int iNumberOfWindowColumns, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt_temp, CMember Colummn, float fL1_bayofframe, float fH1_frame)
+        public CBlock_3D_002_WindowInBay(
+            string sBuildingSide_temp,
+            float fWindowHeight,
+            float fWindowWidth,
+            float fWindowCoordinateXinBay,
+            float fWindowCoordinateZinBay,
+            int iNumberOfWindowColumns,
+            float fLimitDistanceFromColumn,
+            float fBottomGirtPosition,
+            float fDist_Girt,
+            CMember referenceGirt_temp,
+            CMember Colummn,
+            float fBayWidth,
+            float fBayHeight,
+            bool bIsReverseGirtSession = false,
+            bool bIsFirstBayInFrontorBackSide = false,
+            bool bIsLastBayInFrontorBackSide = false)
         {
             BuildingSide = sBuildingSide_temp;
             ReferenceGirt = referenceGirt_temp;
@@ -26,10 +42,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
             // Basic validation
-            if ((fWindowWidth + fWindowCoordinateXinBay) > fL1_bayofframe)
+            if ((fWindowWidth + fWindowCoordinateXinBay) > fBayWidth)
                 throw new Exception(); // Window is defined out of frame bay
 
-            if ((fWindowHeight + fWindowCoordinateZinBay) > fH1_frame)
+            if ((fWindowHeight + fWindowCoordinateZinBay) > fBayHeight)
                 throw new Exception(); // Window is defined out of frame height
 
             float fDistanceBetweenWindowColumns = fWindowWidth / (iNumberOfWindowColumns - 1);
@@ -66,7 +82,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             if (fWindowCoordinateXinBay < fLimitDistanceFromColumn)
                 bWindowToCloseToLeftColumn = true; // Window is to close to the left column
 
-            if((fL1_bayofframe - (fWindowCoordinateXinBay + fWindowWidth)) < fLimitDistanceFromColumn)
+            if((fBayWidth - (fWindowCoordinateXinBay + fWindowWidth)) < fLimitDistanceFromColumn)
                 bWindowToCloseToRightColumn = true; // Window is to close to the right column
 
             int iNumberOfGirtsSequences;
@@ -109,12 +125,12 @@ namespace sw_en_GUI.EXAMPLES._3D
                 int iNumberOfNodesOnOneSide = INumberOfGirtsToDeactivate * 2;
 
                 float fxcoordinate_start = i * (fWindowCoordinateXinBay + fWindowWidth);
-                float fxcoordinate_end = i == 0 ? fWindowCoordinateXinBay : fL1_bayofframe;
+                float fxcoordinate_end = i == 0 ? fWindowCoordinateXinBay : fBayWidth;
 
                 if (bWindowToCloseToLeftColumn) // Generate only second sequence of girt nodes
                 {
                     fxcoordinate_start = fWindowCoordinateXinBay + fWindowWidth;
-                    fxcoordinate_end = fL1_bayofframe;
+                    fxcoordinate_end = fBayWidth;
                 }
 
                 for (int j = 0; j < INumberOfGirtsToDeactivate; j++)
@@ -149,13 +165,13 @@ namespace sw_en_GUI.EXAMPLES._3D
             // Block Members
             // TODO - add to block parameters
 
-            float fGirtAllignmentStart = ReferenceGirt.FAlignment_Start; // Main column of a frame
+            float fGirtAllignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
             float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Window column
-            CMemberEccentricity eccentricityGirtStart = ReferenceGirt.EccentricityStart;
-            CMemberEccentricity eccentricityGirtEnd = ReferenceGirt.EccentricityEnd;
+            CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
+            CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart : ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
             CMemberEccentricity eccentricityGirtEnd_temp;
-            float fGirtsRotation = (float)ReferenceGirt.DTheta_x;
+            float fGirtsRotation = bIsReverseGirtSession ? (float)(ReferenceGirt.DTheta_x + Math.PI) : (float)ReferenceGirt.DTheta_x;
 
             // Girt Members
             for (int i = 0; i < iNumberOfGirtsSequences; i++) // (Girts on the left side and the right side of window)
@@ -170,13 +186,21 @@ namespace sw_en_GUI.EXAMPLES._3D
                     // Alignment - switch start and end allignment for girts on the left side of window and the right side of window
                     float fGirtStartTemp = fGirtAllignmentStart;
                     float fGirtEndTemp = fGirtAllignmentEnd;
+
                     eccentricityGirtStart_temp = eccentricityGirtStart;
                     eccentricityGirtEnd_temp = eccentricityGirtEnd;
 
                     if (i == 1 || bWindowToCloseToLeftColumn) // If just right sequence of girts is generated switch allignment and eccentricity (???) need testing;
                     {
-                        fGirtStartTemp = fGirtAllignmentEnd;
-                        fGirtEndTemp = fGirtAllignmentStart;
+                        if (!bIsLastBayInFrontorBackSide) // Change allignment (different columns on bay sides)
+                        {
+                            fGirtStartTemp = fGirtAllignmentEnd;
+                            fGirtEndTemp = fGirtAllignmentStart;
+
+                            if (bIsFirstBayInFrontorBackSide) // First bay, right side, end connection to the intermediate column
+                                fGirtEndTemp = ReferenceGirt.FAlignment_End;
+                        }
+
                         eccentricityGirtStart_temp = eccentricityGirtEnd; // TODO - we need probably to change signs of values
                         eccentricityGirtEnd_temp = eccentricityGirtStart; // TODO - we need probably to change signs of values
                     }
@@ -191,10 +215,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - add to block parameters
             float fWindowColumnStart = 0.0f;
 
-            if(fBottomGirtPosition > fCoordinateZOfGirtUnderWindow) // Window column is connected to the girt
-                fWindowColumnStart = -0.5f * (float)ReferenceGirt.CrScStart.b - fCutOffOneSide;
+            if(fBottomGirtPosition >= fCoordinateZOfGirtUnderWindow) // Window column is connected to the girt
+                fWindowColumnStart = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
 
-            float fWindowColumnEnd = -0.5f * (float)ReferenceGirt.CrScStart.b - fCutOffOneSide;
+            float fWindowColumnEnd = (float)ReferenceGirt.CrScStart.y_min - fCutOffOneSide;
             CMemberEccentricity feccentricityWindowColumnStart = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
             CMemberEccentricity feccentricityWindowColumnEnd = new CMemberEccentricity(0f, eccentricityGirtStart.MFz_local > 0 ? eccentricityGirtStart.MFz_local + 0.5f * (float)m_arrCrSc[1].h : -eccentricityGirtStart.MFz_local - 0.5f * (float)m_arrCrSc[1].h);
             float fWindowColumnRotation = (float)Math.PI;

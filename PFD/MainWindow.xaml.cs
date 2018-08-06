@@ -49,6 +49,8 @@ namespace PFD
 
         public CModel model;
         public CDatabaseModels dmodels; // Todo nahradit databazov modelov
+        public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
+        public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
         public List<DoorProperties> DoorBlocksProperties;
         public List<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
@@ -129,16 +131,22 @@ namespace PFD
             // Prepare data for generating of door blocks
             dt = ((DataView)UC_doors.Datagrid_DoorsAndGates.ItemsSource).ToTable();
 
+            DoorBlocksToInsertProperties = new List<PropertiesToInsertOpening>();
             DoorBlocksProperties = new List<DoorProperties>();
             // Fill list of door blocks
+            PropertiesToInsertOpening insertOpeningDoors_temp;
             DoorProperties dp_temp;
             foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
             {
                 if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
                 {
+                    insertOpeningDoors_temp = new PropertiesToInsertOpening();
+                    insertOpeningDoors_temp.sBuildingSide = (string)row.ItemArray[0];
+                    insertOpeningDoors_temp.iBayNumber = (int)row.ItemArray[1];
+
+                    DoorBlocksToInsertProperties.Add(insertOpeningDoors_temp);
+
                     dp_temp = new DoorProperties();
-                    dp_temp.sBuildingSide = (string)row.ItemArray[0];
-                    dp_temp.iBayNumber = (int)row.ItemArray[1];
                     dp_temp.fDoorsHeight = float.Parse(row.ItemArray[2].ToString());
                     dp_temp.fDoorsWidth = float.Parse(row.ItemArray[3].ToString());
                     dp_temp.fDoorCoordinateXinBlock = float.Parse(row.ItemArray[4].ToString());
@@ -150,16 +158,22 @@ namespace PFD
             // Prepare data for generating of window blocks
             dt = ((DataView)UC_windows.Datagrid_Windows.ItemsSource).ToTable();
 
+            WindowBlocksToInsertProperties = new List<PropertiesToInsertOpening>();
             WindowBlocksProperties = new List<WindowProperties>();
             // Fill list of window blocks
+            PropertiesToInsertOpening insertOpeningWindows_temp;
             WindowProperties wp_temp;
             foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
             {
                 if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
                 {
+                    insertOpeningWindows_temp = new PropertiesToInsertOpening();
+                    insertOpeningWindows_temp.sBuildingSide = (string)row.ItemArray[0];
+                    insertOpeningWindows_temp.iBayNumber = (int)row.ItemArray[1];
+
+                    WindowBlocksToInsertProperties.Add(insertOpeningWindows_temp);
+
                     wp_temp = new WindowProperties();
-                    wp_temp.sBuildingSide = (string)row.ItemArray[0];
-                    wp_temp.iBayNumber = (int)row.ItemArray[1];
                     wp_temp.fWindowsHeight = float.Parse(row.ItemArray[2].ToString());
                     wp_temp.fWindowsWidth = float.Parse(row.ItemArray[3].ToString());
                     wp_temp.fWindowCoordinateXinBay = float.Parse(row.ItemArray[4].ToString());
@@ -191,6 +205,8 @@ namespace PFD
                     vm.BottomGirtPosition,
                     vm.FrontFrameRakeAngle,
                     vm.BackFrameRakeAngle,
+                    DoorBlocksToInsertProperties,
+                    WindowBlocksToInsertProperties,
                     DoorBlocksProperties,
                     WindowBlocksProperties,
                     generalLoad,
@@ -843,6 +859,8 @@ namespace PFD
                 vm.BottomGirtPosition,
                 vm.FrontFrameRakeAngle,
                 vm.BackFrameRakeAngle,
+                DoorBlocksToInsertProperties,
+                WindowBlocksToInsertProperties,
                 DoorBlocksProperties,
                 WindowBlocksProperties,
                 generalLoad,

@@ -44,7 +44,7 @@ namespace PFD
             listBuildingSide.Add("Left");
             listBuildingSide.Add("Right");
 
-            listBayNumber.Add(5);
+            listBayNumber.Add(1);
             listBayNumber.Add(1);
             listBayNumber.Add(3);
             listBayNumber.Add(1);
@@ -54,7 +54,7 @@ namespace PFD
             listDoorHeight.Add(2.4f);
             listDoorHeight.Add(2.6f);
 
-            listDoorWidth.Add(0.7f);
+            listDoorWidth.Add(0.3f);
             listDoorWidth.Add(0.7f);
             listDoorWidth.Add(1.2f);
             listDoorWidth.Add(2.0f);

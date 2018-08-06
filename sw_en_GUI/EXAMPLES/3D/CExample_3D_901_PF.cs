@@ -64,6 +64,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                 float fBottomGirtPosition_temp,
                 float fFrontFrameRakeAngle_temp_deg,
                 float fBackFrameRakeAngle_temp_deg,
+                List<PropertiesToInsertOpening> doorBlocksPropertiesToInsert,
+                List<PropertiesToInsertOpening> windowBlocksPropertiesToInsert,
                 List<DoorProperties> doorBlocksProperties,
                 List<WindowProperties> windowBlocksProperties,
                 CCalcul_1170_1 generalLoad,
@@ -697,19 +699,33 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO - pokusny blok dveri, je potreba refaktorovat, napojit na GUI, vytvorit zoznam tychto objektov -> viacero dveri v budove na roznych poziciach a s roznymi parametrami
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            if (doorBlocksProperties != null)
+            if (doorBlocksPropertiesToInsert != null && doorBlocksProperties != null)
             {
-                foreach (DoorProperties prop in doorBlocksProperties)
+                if (doorBlocksPropertiesToInsert.Count == doorBlocksProperties.Count)
                 {
-                    AddDoorBlock(prop, 0.5f);
+                    for (int i = 0; i < doorBlocksProperties.Count; i++)
+                    {
+                        AddDoorBlock(doorBlocksPropertiesToInsert[i], doorBlocksProperties[i], 0.5f);
+                    }
+                }
+                else
+                {
+                    // Exception
                 }
             }
 
-            if (windowBlocksProperties != null)
+            if (windowBlocksPropertiesToInsert != null && windowBlocksProperties != null)
             {
-                foreach (WindowProperties prop in windowBlocksProperties)
+                if (windowBlocksPropertiesToInsert.Count == windowBlocksProperties.Count)
                 {
-                    AddWindowBlock(prop, 0.5f);
+                    for (int i = 0; i < windowBlocksProperties.Count; i++)
+                    {
+                        AddWindowBlock(windowBlocksPropertiesToInsert[i], windowBlocksProperties[i], 0.5f);
+                    }
+                }
+                else
+                {
+                    // Exception
                 }
             }
 
@@ -1161,31 +1177,107 @@ namespace sw_en_GUI.EXAMPLES._3D
             allignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
         }
 
-        public void AddDoorBlock(DoorProperties prop, float fLimitDistanceFromColumn)
+        public void AddDoorBlock(PropertiesToInsertOpening insertprop, DoorProperties prop, float fLimitDistanceFromColumn)
         {
             CMember mReferenceGirt;
             CMember mColumn;
-            CBlock door;
+            CBlock_3D_001_DoorInBay door;
             CPoint pControlPointBlock;
+            float fBayWidth;
             int iFirstMemberToDeactivate;
+            bool bIsReverseSession;
+            bool bIsFirstBayInFrontorBackSide;
+            bool bIsLastBayInFrontorBackSide;
 
-            if (prop.sBuildingSide == "Left" || prop.sBuildingSide == "Right")
+            DeterminateBasicPropertiesToInsertBlock(insertprop, out mReferenceGirt, out mColumn, out pControlPointBlock, out fBayWidth, out iFirstMemberToDeactivate, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+
+            door = new CBlock_3D_001_DoorInBay(
+                insertprop.sBuildingSide,
+                prop.fDoorsHeight,
+                prop.fDoorsWidth,
+                prop.fDoorCoordinateXinBlock,
+                fLimitDistanceFromColumn,
+                fBottomGirtPosition,
+                fDist_Girt,
+                mReferenceGirt,
+                mColumn,
+                fBayWidth,
+                bIsReverseSession,
+                bIsFirstBayInFrontorBackSide,
+                bIsLastBayInFrontorBackSide);
+
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door);
+        }
+
+        public void AddWindowBlock(PropertiesToInsertOpening insertprop, WindowProperties prop, float fLimitDistanceFromColumn)
+        {
+            CMember mReferenceGirt;
+            CMember mColumn;
+            CBlock_3D_002_WindowInBay window;
+            CPoint pControlPointBlock;
+            float fBayWidth;
+            float fBayHeight = fH1_frame;
+            int iFirstGirtInBay;
+            int iFirstMemberToDeactivate;
+            bool bIsReverseSession;
+            bool bIsFirstBayInFrontorBackSide;
+            bool bIsLastBayInFrontorBackSide;
+
+            DeterminateBasicPropertiesToInsertBlock(insertprop, out mReferenceGirt, out mColumn, out pControlPointBlock, out fBayWidth, out iFirstGirtInBay, out bIsReverseSession, out bIsFirstBayInFrontorBackSide, out bIsLastBayInFrontorBackSide);
+
+            window = new CBlock_3D_002_WindowInBay(
+                insertprop.sBuildingSide,
+                prop.fWindowsHeight,
+                prop.fWindowsWidth,
+                prop.fWindowCoordinateXinBay,
+                prop.fWindowCoordinateZinBay,
+                prop.iNumberOfWindowColumns,
+                fLimitDistanceFromColumn,
+                fBottomGirtPosition,
+                fDist_Girt,
+                mReferenceGirt,
+                mColumn,
+                fBayWidth,
+                fBayHeight,
+                bIsReverseSession,
+                bIsFirstBayInFrontorBackSide,
+                bIsLastBayInFrontorBackSide);
+
+            iFirstMemberToDeactivate = iFirstGirtInBay + window.iNumberOfGirtsUnderWindow;
+
+            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window);
+        }
+
+        public void DeterminateBasicPropertiesToInsertBlock(
+            PropertiesToInsertOpening insertprop,
+            out CMember mReferenceGirt,
+            out CMember mColumn,
+            out CPoint pControlPointBlock,
+            out float fBayWidth,
+            out int iFirstMemberToDeactivate,
+            out bool bIsReverseSession,
+            out bool bIsFirstBayInFrontorBackSide,
+            out bool bIsLastBayInFrontorBackSide
+            )
+        {
+            bIsReverseSession = false;            // Set to true value just for front or back wall (right part of wall)
+            bIsFirstBayInFrontorBackSide = false; // Set to true value just for front or back wall (first bay)
+            bIsLastBayInFrontorBackSide = false;  // Set to true value just for front or back wall (last bay)
+
+            if (insertprop.sBuildingSide == "Left" || insertprop.sBuildingSide == "Right")
             {
                 // Left side X = 0, Right Side X = GableWidth
                 // Insert after frame ID
-                int iSideMultiplier = prop.sBuildingSide == "Left" ? 0 : 1; // 0 left side X = 0, 1 - right side X = Gable Width
-                int iBlockFrame = prop.iBayNumber - 1; // ID of frame in the bay, starts with zero
+                int iSideMultiplier = insertprop.sBuildingSide == "Left" ? 0 : 1; // 0 left side X = 0, 1 - right side X = Gable Width
+                int iBlockFrame = insertprop.iBayNumber - 1; // ID of frame in the bay, starts with zero
 
                 int iBayColumn = (iBlockFrame * 6) + (iSideMultiplier == 0 ? 0 : (4 - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
 
+                fBayWidth = fL1_frame;
                 iFirstMemberToDeactivate = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
 
                 mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
                 mColumn = m_arrMembers[iBayColumn];
-
-                door = new CBlock_3D_001_DoorInBay(prop.sBuildingSide, prop.fDoorsHeight, prop.fDoorsWidth, prop.fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, mColumn, fL1_frame);
-
-                pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
             }
             else // Front or Back Side
             {
@@ -1193,10 +1285,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                 int iNumberOfIntermediateColumns;
                 int[] iArrayOfGirtsPerColumnCount;
                 //int iNumberOfGirtsInWall;
-                float fBayWidth;
-                bool bIsLastBayInFrontorBackSide = false; // Just for front or back wall (last bay)
 
-                if (prop.sBuildingSide == "Front")  // Front side properties
+                if (insertprop.sBuildingSide == "Front")  // Front side properties
                 {
                     iNumberOfIntermediateColumns = iFrontColumnNoInOneFrame;
                     iArrayOfGirtsPerColumnCount = iArrNumberOfNodesPerFrontColumn;
@@ -1211,15 +1301,15 @@ namespace sw_en_GUI.EXAMPLES._3D
                     fBayWidth = fDist_BackColumns;
                 }
 
-                int iSideMultiplier = prop.sBuildingSide == "Front" ? 0 : 1; // 0 front side Y = 0, 1 - back side Y = Length
-                int iBlockSequence = prop.iBayNumber - 1; // ID of sequence, starts with zero
+                int iSideMultiplier = insertprop.sBuildingSide == "Front" ? 0 : 1; // 0 front side Y = 0, 1 - back side Y = Length
+                int iBlockSequence = insertprop.iBayNumber - 1; // ID of sequence, starts with zero
                 int iColumnNumber;
                 int iNumberOfFirstGirtInWallToDeactivate = 0;
                 int iNumberOfMembers_tempForGirts = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + iBackColumnNoInOneFrame + iSideMultiplier * iFrontGirtsNoInOneFrame;
 
                 if (iBlockSequence == 0) // Main Column
                 {
-                    if (prop.sBuildingSide == "Front")
+                    if (insertprop.sBuildingSide == "Front")
                     {
                         iColumnNumber = 0;
                     }
@@ -1229,6 +1319,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     }
 
                     iFirstMemberToDeactivate = iNumberOfMembers_tempForGirts + iNumberOfFirstGirtInWallToDeactivate;
+
+                    bIsFirstBayInFrontorBackSide = true; // First bay
                 }
                 else
                 {
@@ -1236,7 +1328,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                     if (iBlockSequence < (int)(iNumberOfIntermediateColumns / 2) + 1) // Left session
                     {
-                        iColumnNumber = iNumberOfMembers_tempForColumns + iBlockSequence-1;
+                        iColumnNumber = iNumberOfMembers_tempForColumns + iBlockSequence - 1;
 
                         iNumberOfFirstGirtInWallToDeactivate += iOneColumnGirtNo;
 
@@ -1245,6 +1337,8 @@ namespace sw_en_GUI.EXAMPLES._3D
                     }
                     else // Right session
                     {
+                        bIsReverseSession = true; // Nodes and members are numbered from right to the left
+
                         iColumnNumber = iNumberOfMembers_tempForColumns + (int)(iNumberOfIntermediateColumns / 2) + iNumberOfIntermediateColumns - iBlockSequence;
 
                         // Number of girts in left session
@@ -1253,13 +1347,13 @@ namespace sw_en_GUI.EXAMPLES._3D
                         for (int i = 0; i < (int)(iNumberOfIntermediateColumns / 2); i++)
                             iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i];
 
-                        if(iBlockSequence < iNumberOfIntermediateColumns)
+                        if (iBlockSequence < iNumberOfIntermediateColumns)
                             iNumberOfFirstGirtInWallToDeactivate += iOneColumnGirtNo;
 
                         for (int i = 0; i < iNumberOfIntermediateColumns - iBlockSequence - 1; i++)
                             iNumberOfFirstGirtInWallToDeactivate += iArrayOfGirtsPerColumnCount[i];
 
-                        if(iBlockSequence == iNumberOfIntermediateColumns) // Last bay
+                        if (iBlockSequence == iNumberOfIntermediateColumns) // Last bay
                         {
                             bIsLastBayInFrontorBackSide = true;
                         }
@@ -1270,35 +1364,9 @@ namespace sw_en_GUI.EXAMPLES._3D
 
                 mReferenceGirt = m_arrMembers[iFirstMemberToDeactivate]; // Deactivated member properties define properties of block girts
                 mColumn = m_arrMembers[iColumnNumber];
-
-                door = new CBlock_3D_001_DoorInBay(prop.sBuildingSide, prop.fDoorsHeight, prop.fDoorsWidth, prop.fDoorCoordinateXinBlock, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, mColumn, fBayWidth, bIsLastBayInFrontorBackSide);
-
-                pControlPointBlock = new CPoint(0, mColumn.NodeStart.X, mColumn.NodeStart.Y, mColumn.NodeStart.Z, 0);
             }
 
-            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, door);
-        }
-
-        public void AddWindowBlock(WindowProperties prop, float fLimitDistanceFromColumn)
-        {
-            // Left side X = 0, Right Side X = GableWidth
-            // Insert after frame ID
-
-            int iSideMultiplier = prop.sBuildingSide == "Left" ? 0 : 1; // 0 lef side X = 0, 1 - right side X = Gable Width
-            int iBlockFrame = prop.iBayNumber - 1; // ID of frame in the bay
-
-            int iBayColumn = (iBlockFrame * 6) + (iSideMultiplier == 0 ? 0 : (4 - 1)); // (2 columns + 2 rafters + 2 eaves purlins) = 6, For Y = GableWidth + 4 number of members in one frame - 1 (index)
-            int iFirstGirtInBay = iMainColumnNo + iRafterNo + iEavesPurlinNo + iBlockFrame * iGirtNoInOneFrame + iSideMultiplier * (iGirtNoInOneFrame / 2);
-
-            CMember mReferenceGirt = m_arrMembers[iFirstGirtInBay]; // First girt in bay member properties define properties of block girts
-            CMember mFrameColumn = m_arrMembers[iBayColumn];
-
-            CBlock_3D_002_WindowInBay window = new CBlock_3D_002_WindowInBay(prop.sBuildingSide, prop.fWindowsHeight, prop.fWindowsWidth, prop.fWindowCoordinateXinBay, prop.fWindowCoordinateZinBay, prop.iNumberOfWindowColumns, fLimitDistanceFromColumn, fBottomGirtPosition, fDist_Girt, mReferenceGirt, mFrameColumn, fL1_frame, fH1_frame);
-
-            CPoint pControlPointBlock = new CPoint(0, iSideMultiplier * fW_frame, iBlockFrame * fL1_frame, 0, 0);
-            int iFirstMemberToDeactivate = iFirstGirtInBay + window.iNumberOfGirtsUnderWindow;
-
-            AddDoorOrWindowBlockProperties(pControlPointBlock, iFirstMemberToDeactivate, window);
+            pControlPointBlock = new CPoint(0, mColumn.NodeStart.X, mColumn.NodeStart.Y, mColumn.NodeStart.Z, 0);
         }
 
         public void AddDoorOrWindowBlockProperties(CPoint pControlPointBlock, int iFirstMemberToDeactivate, CBlock block)
@@ -1424,6 +1492,15 @@ namespace sw_en_GUI.EXAMPLES._3D
         // Load model component cross-sections
         public void SetCrossSectionsFromDatabase()
         {
+            // Todo - Ondrej
+            // Chcel som napojit obsah m_arrCrSc podla 
+            // MDBModels tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
+            // ale stroskotol som na tom, ze vsetko co sa tyka databaz by malo byt v projekte DATABASE a ked som to chcel presunut tak 
+            // mi v DATABASE napriklad chybal objekt combobox a aj dalsie referencie pretoze je to WINDOWS.FORMS a nie WPF
+            // Vysledok bol taky ze som to akurat dobabral
+            // Triedy CDatabaseComponents, CDatabaseModels a CDatabaseManager ako aj connectionStrings z app.config by asi mali byt v projekte DATABASE
+
+
 
 
         }

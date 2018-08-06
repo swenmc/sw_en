@@ -11,7 +11,20 @@ namespace sw_en_GUI.EXAMPLES._3D
 {
     public class CBlock_3D_001_DoorInBay : CBlock
     {
-        public CBlock_3D_001_DoorInBay(string sBuildingSide_temp, float fDoorHeight, float fDoorWidth, float fDoorCoordinateXinBlock, float fLimitDistanceFromColumn , float fBottomGirtPosition, float fDist_Girt, CMember referenceGirt_temp, CMember Colummn, float fL1_bayofframe, bool bIsReverseGirtSession = false, bool bIsLastBayInFrontorBackSide = false)
+        public CBlock_3D_001_DoorInBay(
+            string sBuildingSide_temp,
+            float fDoorHeight,
+            float fDoorWidth,
+            float fDoorCoordinateXinBlock,
+            float fLimitDistanceFromColumn,
+            float fBottomGirtPosition,
+            float fDist_Girt,
+            CMember referenceGirt_temp,
+            CMember Colummn,
+            float fBayWidth,
+            bool bIsReverseGirtSession = false,
+            bool bIsFirstBayInFrontorBackSide = false,
+            bool bIsLastBayInFrontorBackSide = false)
         {
             BuildingSide = sBuildingSide_temp;
             ReferenceGirt = referenceGirt_temp;
@@ -25,7 +38,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             */
 
             // Basic validation
-            if ((fDoorWidth + fDoorCoordinateXinBlock) > fL1_bayofframe)
+            if ((fDoorWidth + fDoorCoordinateXinBlock) > fBayWidth)
                 throw new Exception(); // Door is defined out of frame bay
 
             m_arrMat = new CMat[1];
@@ -51,7 +64,7 @@ namespace sw_en_GUI.EXAMPLES._3D
             if (fDoorCoordinateXinBlock < fLimitDistanceFromColumn)
                 bDoorToCloseToLeftColumn = true; // Door is to close to the left column
 
-            if((fL1_bayofframe - (fDoorCoordinateXinBlock + fDoorWidth)) < fLimitDistanceFromColumn)
+            if((fBayWidth - (fDoorCoordinateXinBlock + fDoorWidth)) < fLimitDistanceFromColumn)
                 bDoorToCloseToRightColumn = true; // Door is to close to the right column
 
             int iNumberOfGirtsSequences;
@@ -83,12 +96,12 @@ namespace sw_en_GUI.EXAMPLES._3D
                 int iNumberOfNodesOnOneSide = INumberOfGirtsToDeactivate * 2;
 
                 float fxcoordinate_start = i * (fDoorCoordinateXinBlock + fDoorWidth);
-                float fxcoordinate_end = i == 0 ? fDoorCoordinateXinBlock : fL1_bayofframe;
+                float fxcoordinate_end = i == 0 ? fDoorCoordinateXinBlock : fBayWidth;
 
                 if (bDoorToCloseToLeftColumn) // Generate only second sequence of girt nodes
                 {
                     fxcoordinate_start = fDoorCoordinateXinBlock + fDoorWidth;
-                    fxcoordinate_end = fL1_bayofframe;
+                    fxcoordinate_end = fBayWidth;
                 }
 
                 for (int j = 0; j < INumberOfGirtsToDeactivate; j++)
@@ -122,10 +135,10 @@ namespace sw_en_GUI.EXAMPLES._3D
             float fGirtAllignmentStart = bIsReverseGirtSession ? ReferenceGirt.FAlignment_End : ReferenceGirt.FAlignment_Start; // Main column of a frame
             float fGirtAllignmentEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide; // Door column
             CMemberEccentricity eccentricityGirtStart = bIsReverseGirtSession ? ReferenceGirt.EccentricityEnd : ReferenceGirt.EccentricityStart;
-            CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart: ReferenceGirt.EccentricityEnd;
+            CMemberEccentricity eccentricityGirtEnd = bIsReverseGirtSession ? ReferenceGirt.EccentricityStart : ReferenceGirt.EccentricityEnd;
             CMemberEccentricity eccentricityGirtStart_temp;
             CMemberEccentricity eccentricityGirtEnd_temp;
-            float fGirtsRotation = bIsReverseGirtSession ? (float)(ReferenceGirt.DTheta_x + Math.PI): (float)ReferenceGirt.DTheta_x;
+            float fGirtsRotation = bIsReverseGirtSession ? (float)(ReferenceGirt.DTheta_x + Math.PI) : (float)ReferenceGirt.DTheta_x;
 
             // Girt Members
             for (int i = 0; i < iNumberOfGirtsSequences; i++) // (Girts on the left side and the right side of door)
@@ -150,6 +163,9 @@ namespace sw_en_GUI.EXAMPLES._3D
                         {
                             fGirtStartTemp = fGirtAllignmentEnd;
                             fGirtEndTemp = fGirtAllignmentStart;
+
+                            if (bIsFirstBayInFrontorBackSide) // First bay, right side, end connection to the intermediate column
+                                fGirtEndTemp = ReferenceGirt.FAlignment_End;
                         }
 
                         eccentricityGirtStart_temp = eccentricityGirtEnd; // TODO - we need probably to change signs of values

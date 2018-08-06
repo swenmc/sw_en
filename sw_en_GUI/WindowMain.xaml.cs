@@ -1011,7 +1011,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_901_PF_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null, null, null, null, null);
+            model = new EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null, null, null, null, null, null, null);
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
 

@@ -458,10 +458,14 @@ namespace BaseClasses
         public float fSpectralShapeFactor_Ch_Ty;
     }
 
-    public struct DoorProperties
+    public struct PropertiesToInsertOpening
     {
         public string sBuildingSide;
         public int iBayNumber;
+    }
+
+    public struct DoorProperties
+    {
         public float fDoorsHeight;
         public float fDoorsWidth;
         public float fDoorCoordinateXinBlock;
@@ -469,8 +473,6 @@ namespace BaseClasses
 
     public struct WindowProperties
     {
-        public string sBuildingSide;
-        public int iBayNumber;
         public float fWindowsHeight;
         public float fWindowsWidth;
         public float fWindowCoordinateXinBay;
