@@ -556,7 +556,7 @@ namespace BaseClasses.GraphObj
             Int32Collection TriangleIndices = new Int32Collection();
 
             // Bottom
-            for (int i = 0; i < points_z0.Count - 2; i++)
+            for (int i = 0; i < points_z0.Count - 2; i++)  
             {
                 TriangleIndices.Add(0);
                 TriangleIndices.Add(i + 2);

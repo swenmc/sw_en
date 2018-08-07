@@ -104,11 +104,11 @@ namespace BaseClasses
     //----------------------------------------------------------------------------
     // Define load direction or orientation in GCC (global coordinate system)
     //----------------------------------------------------------------------------
-    public enum ELoadDirGCC1
+    public enum ELoadDir
     {
-        eLD_GCC_X = 0,
-        eLD_GCC_Y = 1,
-        eLD_GCC_Z = 2
+        eLD_X = 0,
+        eLD_Y = 1,
+        eLD_Z = 2
     }
 
     //----------------------------------------------------------------------------
@@ -139,15 +139,6 @@ namespace BaseClasses
         eMLD_LCC_FX_MX = 0,
         eMLD_LCC_Y = 1,
         eMLD_LCC_Z = 2
-    }
-    //----------------------------------------------------------------------------
-    // Define load direction or orientation in LCC (local coordinate system) of surfaces
-    //----------------------------------------------------------------------------
-    public enum ESLoadDirLCC1
-    {
-        eSLD_LCC_FX = 0,
-        eMLD_LCC_FY = 1,
-        eMLD_LCC_FZ = 2
     }
     //----------------------------------------------------------------------------
     // Define load direction or orientation in PCC (principal coordinate system) of members

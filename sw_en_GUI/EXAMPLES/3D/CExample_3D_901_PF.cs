@@ -836,11 +836,12 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Surface Free Loads
             // TODO - Pokus
-            m_arrSLoads = new CSLoad_Free[1];
-            m_arrSLoads[0] = new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, new CPoint (0,0,0, fH1_frame, 0), new Point3DCollection { new Point3D(0, 0, 0), new Point3D(0.5f * fW_frame / Math.Cos(fRoofPitch_rad), 0, 0), new Point3D(0.5f * fW_frame / Math.Cos(fRoofPitch_rad), fL_tot, 0), new Point3D( 0, fL_tot, 0) }, 0.5f, true, 0);
+            m_arrSLoads = new CSLoad_Free[2];
+            m_arrSLoads[0] = new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, new CPoint (0, 0.5f * fW_frame, 0, fH2_frame, 0), fL_tot, 0.5f * fW_frame / (float)Math.Cos(fRoofPitch_rad), 0.5f, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, 0);
+            m_arrSLoads[1] = new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, new CPoint(0,fW_frame, 0, fH1_frame, 0), fL_tot, 0.5f * fW_frame / (float)Math.Cos(fRoofPitch_rad), 0.5f, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, 0);
             List<CSLoad_Free> surfaceDeadLoad = new List<CSLoad_Free>();
             surfaceDeadLoad.Add(m_arrSLoads[0]);
-
+            surfaceDeadLoad.Add(m_arrSLoads[1]);
             // Load Cases
             m_arrLoadCases = new CLoadCase[20];
             m_arrLoadCases[0] = new CLoadCase(1, "Dead Load G", "Permanent load", memberLoadDead1Rafters, surfaceDeadLoad);                   // 1

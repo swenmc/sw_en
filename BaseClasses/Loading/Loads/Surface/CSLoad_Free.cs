@@ -15,8 +15,7 @@ namespace BaseClasses
         //private int [] m_iSurfaceCollection;
         private ESLoadTypeDistr m_sLoadTypeDistr; // Type of external force distribution
         private ESLoadType m_sLoadType; // Type of external force
-        private ESLoadDirLCC1 m_eDirLCC;
-        private ELoadCoordSystem m_eLoadCS;
+        private ELoadDir m_eLoadDirection;
 
         //----------------------------------------------------------------------------
         /*public int[] ISurfaceCollection
@@ -34,15 +33,10 @@ namespace BaseClasses
             get { return m_sLoadType; }
             set { m_sLoadType = value; }
         }
-        public ESLoadDirLCC1 EDirLCC
+        public ELoadDir ELoadDirection
         {
-            get { return m_eDirLCC; }
-            set { m_eDirLCC = value; }
-        }
-        public ELoadCoordSystem ELoadCS
-        {
-            get { return m_eLoadCS; }
-            set { m_eLoadCS = value; }
+            get { return m_eLoadDirection; }
+            set { m_eLoadDirection = value; }
         }
 
         public float m_fOpacity;
@@ -52,17 +46,12 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
 
-        public CSLoad_Free(ELoadCoordSystem eLoadCS_temp, bool bIsDisplayed, float fTime)
+        public CSLoad_Free(ELoadCoordSystem eLoadCS_temp, ELoadDir eLoadDirection_temp, bool bIsDisplayed, float fTime)
         {
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
+            ELoadDirection = eLoadDirection_temp;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
-
-           // Set Load Model "material" Color and Opacity - default
-           m_Color = Colors.Cyan;
-           m_Material3DGraphics = new DiffuseMaterial();
-           m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
-           m_Material3DGraphics.Brush.Opacity = 0.9f;
         }
     }
 }
