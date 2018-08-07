@@ -273,9 +273,9 @@ namespace BaseClasses
     public enum ELCGType
     {
         // Load groups define "how the individual load cases may be combined together" if inserted into a load case combination
-        //eStandard,  // este neviem presne ako to funguje :-/
-        eTogether,    // do Load Combination sa pridaju vsetky Load Case z Load Case Group
-        eExclusive    // do Load Combination sa prida vzdy len jeden Load Case z Load Case Group
+        eStandard,    // do Load Combination moze ist jedna alebo viacero rozne nakombinovanych load cases z jednej load group, kombinuje sa kazda s kazdou a prenasobene su potom v danej kombinacii jednym faktorom (faktor * LCi) alebo faktor * (LCi + LCii) alebo faktor * (LCi + LCiii) alebo faktor * (LCi + LCii + LCiii)
+        eTogether,    // do Load Combination sa pridaju vzdy vsetky Load Case z Load Case Group - faktor * (LCi + LCii + LCiii)
+        eExclusive    // do Load Combination sa prida vzdy len jeden Load Case z Load Case Group - faktor * LCi) alebo (faktor * LCii) alebo (faktor * LCiii)
     }
 
     //----------------------------------------------------------------------------
