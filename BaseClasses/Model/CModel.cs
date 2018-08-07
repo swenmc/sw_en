@@ -56,6 +56,8 @@ namespace BaseClasses
         public CSLoad_Free[] m_arrSLoads;
         // Load Cases
         public CLoadCase[] m_arrLoadCases;
+        // Load Case Groups
+        public CLoadCaseGroup[] m_arrLoadCaseGroups;
         // Load Combinations
         public CLoadCombination[] m_arrLoadCombs;
         // Limit States

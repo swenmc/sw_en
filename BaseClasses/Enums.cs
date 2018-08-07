@@ -258,6 +258,17 @@ namespace BaseClasses
     }
 
     //----------------------------------------------------------------------------
+    // Define limit state type
+    //----------------------------------------------------------------------------
+    public enum ELCGType
+    {
+        // Load groups define "how the individual load cases may be combined together" if inserted into a load case combination
+        //eStandard,  // este neviem presne ako to funguje :-/
+        eTogether,    // do Load Combination sa pridaju vsetky Load Case z Load Case Group
+        eExclusive    // do Load Combination sa prida vzdy len jeden Load Case z Load Case Group
+    }
+
+    //----------------------------------------------------------------------------
     // Define window shape type (3D)
     //----------------------------------------------------------------------------
     public enum EWindowShapeType
