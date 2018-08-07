@@ -21,7 +21,7 @@ namespace BaseClasses
             combinationsLoadCases = new List<List<CLoadCase>>();
             permutationsLoadCases = new List<List<CLoadCase>>();
 
-            List<List<int>> combos = GetAllCombos(new int[] { 1, 2, 3 }.ToList());
+            List<List<int>> combos = GetAllCombos(new int[] { 1, 2, 3, 4, 5, 6 }.ToList());
         }
 
         public void Generate()
