@@ -13,7 +13,6 @@ namespace BaseClasses
     {
         private ELoadCoordSystem m_eLoadCS;
 
-        //----------------------------------------------------------------------------
         public ELoadCoordSystem ELoadCS
         {
             get { return m_eLoadCS; }

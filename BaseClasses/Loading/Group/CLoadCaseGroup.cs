@@ -24,6 +24,14 @@ namespace BaseClasses
             set { m_Name = value; }
         }
 
+        private ELCGTypeForLimitState m_Type_LS;
+
+        public ELCGTypeForLimitState MType_LS
+        {
+            get { return m_Type_LS; }
+            set { m_Type_LS = value; }
+        }
+
         private ELCGType m_Type;
 
         public ELCGType MType
@@ -40,18 +48,20 @@ namespace BaseClasses
             set { m_loadCasesList = value; }
         }
 
-        public CLoadCaseGroup(int id_temp, string name_temp, ELCGType type_temp)
+        public CLoadCaseGroup(int id_temp, string name_temp, ELCGTypeForLimitState type_LS_temp, ELCGType type_temp)
         {
             ID = id_temp;
             MName = name_temp;
+            MType_LS = type_LS_temp;
             MType = type_temp;
             MLoadCasesList = new List<CLoadCase>(1);
         }
 
-        public CLoadCaseGroup(int id_temp, string name_temp, ELCGType type_temp, List<CLoadCase> listLoadCases_temp)
+        public CLoadCaseGroup(int id_temp, string name_temp, ELCGTypeForLimitState type_LS_temp, ELCGType type_temp, List<CLoadCase> listLoadCases_temp)
         {
             ID = id_temp;
             MName = name_temp;
+            MType_LS = type_LS_temp;
             MType = type_temp;
             MLoadCasesList = listLoadCases_temp;
         }

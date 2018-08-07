@@ -258,7 +258,17 @@ namespace BaseClasses
     }
 
     //----------------------------------------------------------------------------
-    // Define limit state type
+    // Define load case group type
+    //----------------------------------------------------------------------------
+    public enum ELCGTypeForLimitState
+    {
+        eUniversal,
+        eULSOnly,
+        eSLSOnly
+    }
+
+    //----------------------------------------------------------------------------
+    // Define load case group type by limit state
     //----------------------------------------------------------------------------
     public enum ELCGType
     {
@@ -266,6 +276,33 @@ namespace BaseClasses
         //eStandard,  // este neviem presne ako to funguje :-/
         eTogether,    // do Load Combination sa pridaju vsetky Load Case z Load Case Group
         eExclusive    // do Load Combination sa prida vzdy len jeden Load Case z Load Case Group
+    }
+
+    //----------------------------------------------------------------------------
+    // Define load case type
+    //----------------------------------------------------------------------------
+    public enum ELCType
+    {
+        ePermanentLoad,  // Permanent or dead load
+        eImposedLoad_ST, // Short-term
+        eImposedLoad_LT, // Long-term
+        eSnow,
+        eWind,
+        eEarthquake
+    }
+
+    //----------------------------------------------------------------------------
+    // Define load case load source position or direction in global coordinate system (wind, earthquake)
+    //----------------------------------------------------------------------------
+    public enum ELCSourcePosition
+    {
+        eGeneral,
+        eMinusX,
+        ePlusX,
+        eMinusY,
+        ePlusY,
+        eMinusZ,
+        ePlusZ
     }
 
     //----------------------------------------------------------------------------

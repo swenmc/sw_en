@@ -41,7 +41,7 @@ namespace PFD
             {
                 listLoadCaseID.Add(model.m_arrLoadCases[i].ID);
                 listLoadCaseName.Add(model.m_arrLoadCases[i].Name);
-                listLoadCaseType.Add(model.m_arrLoadCases[i].Type);
+                listLoadCaseType.Add(arrLoadCaseTypes[(int)model.m_arrLoadCases[i].Type]);
             }
 
             // Create Table
@@ -92,6 +92,17 @@ namespace PFD
             Datagrid_Members.Columns[2].Width = 100;
             */
         }
+
+
+        private string[] arrLoadCaseTypes = new string[6]
+        {
+        "Permanent load",
+        "Imposed load - short-term",
+        "Imposed load - long-term",
+        "Snow",
+        "Wind",
+        "Earthquake"
+        };
 
         private void DeleteAllLists()
         {
