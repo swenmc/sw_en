@@ -21,9 +21,9 @@ namespace BaseClasses
             combinationsLoadCases = new List<List<CLoadCase>>();
             permutationsLoadCases = new List<List<CLoadCase>>();
 
-            List<List<int>> combos = GetAllCombos(new int[] { 1, 2, 3, 4, 5, 6 }.ToList());
+            //List<List<int>> combos = GetAllCombos(new int[] { 1, 2, 3, 4, 5, 6 }.ToList());
         }
-
+        
         public void Generate()
         {
             combinationsLoadCases.Add(new List<CLoadCase>());
@@ -39,7 +39,9 @@ namespace BaseClasses
                 }
                 else if (loadCaseGr.MType == ELCGType.eExclusive)
                 {
-                    for(int i = 0; i < loadCaseGr.MLoadCasesList.Count; i++)
+                    List<List<CLoadCase>> newCombinationsLoadCases = new List<List<CLoadCase>>();
+
+                    for (int i = 0; i < loadCaseGr.MLoadCasesList.Count; i++)
                     {
                         if (i == 0)  //first element add to all lists
                         {
@@ -50,24 +52,39 @@ namespace BaseClasses
                         }
                         else //for all other elements create new list and add list to all combinations
                         {
-                            List<CLoadCase> newList = new List<CLoadCase>();
-                            foreach (List<CLoadCase> list in combinationsLoadCases.ToList())
+                            List<CLoadCase> newList = new List<CLoadCase>();                            
+                            foreach (List<CLoadCase> list in combinationsLoadCases)
                             {
                                 newList = list.GetRange(0, list.Count - 1);  //get copy without last element
                                 newList.Add(loadCaseGr.MLoadCasesList[i]);   //put element to newList
-                                combinationsLoadCases.Add(newList);
+                                newCombinationsLoadCases.Add(newList);
                             }
-                        }                       
-                        
+                        }                        
                     }
+                    combinationsLoadCases.AddRange(newCombinationsLoadCases);
                 }
-
             }
 
             //we have all full combinations, we need to make Permutations for each list from combinationsLoadCases
+            //foreach (List<CLoadCase> l in combinationsLoadCases)
+            //{
+            //    permutationsLoadCases.AddRange(GetAllCombos(l));
+            //}
+        }
+
+        public void WriteCombinations()
+        {
+            int count = 0;
             foreach (List<CLoadCase> l in combinationsLoadCases)
             {
-                permutationsLoadCases.AddRange(GetAllCombos(l));
+                count++;
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("{0}. ", count);
+                foreach (CLoadCase lc in l)
+                {
+                    sb.AppendFormat("{0},", lc.ID);
+                }
+                System.Diagnostics.Trace.WriteLine(sb.ToString());
             }
         }
 
