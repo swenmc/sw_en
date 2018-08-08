@@ -221,13 +221,13 @@ namespace PFD
             foreach (CLoadCase loadcase in model.m_arrLoadCases)
                 Combobox_LoadCase.Items.Add(loadcase.Name);
 
-            Combobox_LoadCase.SelectedIndex = 0; // Selected load case
+            //Combobox_LoadCase.SelectedIndex = 0; // Selected load case  - TOto spusti UpdateAll a model sa vytvara znovu
 
             // Update display options
             UpdateDisplayOptions();
 
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[0]);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
