@@ -1045,6 +1045,54 @@ namespace sw_en_GUI.EXAMPLES._3D
             generator.WriteCombinations();
             generator.WritePermutations();
 
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TODO 40 komentar Martin
+            /*
+            Urobil by som to asi tak, ze do samotneho generovania by nevstupovali uplne vsetky load groups,
+            ale vzdy len zoznam load case groups, kazda group by mala definovany aj faktor vid nizsie
+            Generovanie by sa podla nizsie uvedenych predpisov spustilo pre ULS 11x a pre SLS 8x
+
+            To ake groups vstupuju do kombinovania mozeme urobit zatial natvrdo vid nizsie,
+            alebo identifikaciou typu lc group (G -permanent, Q - imposed, W - wind, S - snow, EQ - earthquake)
+
+            Vytvorene kombinacie by sa vzdy pridali do nejakeho zoznamu pre ULS, resp. SLS
+            Ak by prebehlo generovanie, tak by bolo dobre este na zaver spustit nejaky nastroj, ktory skontroluje
+            ci v zoznamoch kombinacii ULS a SLS nie su nejake duplicitne kombinacie (rovnake LC, rovnake faktory)
+            kedze vela faktorov bude ψ = 0, tak mozu vzniknut aj rovnake kombinacie
+
+            Mozes to urobit tak ze ak je faktor nula tak dana skupinka sa do generatora ani neposle
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // ULS
+            1 - [0.9 * m_arrLoadCaseGroups[0]] [0.9 G]
+            2 - [1.2 * m_arrLoadCaseGroups[0] x 1.5 * m_arrLoadCaseGroups[1]] [1.2G, 1.5Q]
+            ψc = 0;
+            3 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_min, ψc Q]
+            4 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_max, ψc Q]
+            5 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e_min, ψc Q]
+            6 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e_max, ψc Q]
+            ψE = 0;
+            7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]] [G, Eu, ψE Q]
+            ψc = 0;
+            8 - [1.20 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψc * m_arrLoadCaseGroups[1]] [1.2G, Su, ψc Q]
+            9 - [1.35 * m_arrLoadCaseGroups[0]] [1.35 G]
+           10 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4]] [0.9G, Wu_i, Wu_e_min]
+           11 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5]] [0.9G, Wu_i, Wu_e_max]
+
+            // SLS
+            1 - [1.0 * m_arrLoadCaseGroups[0]] [1.0 G]
+            ψs = 0.7;
+            2 - [1.0 * m_arrLoadCaseGroups[0] x ψs * m_arrLoadCaseGroups[1]] [1.0G, ψs Q]
+            3 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψs * m_arrLoadCaseGroups[1]] [G, Ws_i, Ws_e_min, Q]
+            4 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψs * m_arrLoadCaseGroups[1]] [G, Ws_i, Ws_e_max, Q]
+            5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4]] [G, Ws_i, Ws_e_min]
+            6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5]] [G, Ws_i, Ws_e_max]
+            7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψs * m_arrLoadCaseGroups[1]] [G, Ss, ψs Q]
+            ψE = 0;
+            8 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]] [G, Eu, ψE Q]
+            */
+
             m_arrLoadCombs = new CLoadCombination[6];
             m_arrLoadCombs[0] = new CLoadCombination(1, "CO 1", ELSType.eLS_ULS);
             m_arrLoadCombs[1] = new CLoadCombination(2, "CO 2", ELSType.eLS_ULS);
