@@ -21,7 +21,7 @@ namespace BaseClasses
 
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
-            
+
             System.Diagnostics.Trace.WriteLine("Begining: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
@@ -337,7 +337,7 @@ namespace BaseClasses
                                     // Add plates
                                     JointModelGroup.Children.Add(plateGeom); // Add plate 3D model to the model group
                                 }
-                                                                
+
                                 // Add plate connectors
                                 if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
                                     cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)

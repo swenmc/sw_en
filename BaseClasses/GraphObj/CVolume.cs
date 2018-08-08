@@ -556,7 +556,7 @@ namespace BaseClasses.GraphObj
             Int32Collection TriangleIndices = new Int32Collection();
 
             // Bottom
-            for (int i = 0; i < points_z0.Count - 2; i++)  
+            for (int i = 0; i < points_z0.Count - 2; i++)
             {
                 TriangleIndices.Add(0);
                 TriangleIndices.Add(i + 2);
@@ -575,6 +575,69 @@ namespace BaseClasses.GraphObj
             for (int i = 0; i < points_z0.Count; i++)
             {
                 if (i < points_z0.Count-1)
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, i + 1, points_z0.Count + i + 1, points_z0.Count + i);
+                else // Last rectangle
+                    AddRectangleIndices_CCW_1234(TriangleIndices, i, 0, points_z0.Count, points_z0.Count + i);
+            }
+
+            meshGeom3D.TriangleIndices = TriangleIndices;
+
+            GeometryModel3D geomModel3D = new GeometryModel3D();
+
+            geomModel3D.Geometry = meshGeom3D; // Set mesh to model
+
+            geomModel3D.Material = mat;
+
+            return geomModel3D;
+        }
+
+        public GeometryModel3D CreateM_G_M_3D_Volume_nEdges(Point3D solidControlEdge, Point3DCollection points_z0, Point3DCollection points_zh, DiffuseMaterial mat)
+        {
+            MeshGeometry3D meshGeom3D = new MeshGeometry3D(); // Create geometry mesh
+            meshGeom3D.Positions = new Point3DCollection();
+
+            // Base (0)
+            foreach (Point3D point in points_z0)
+            {
+                Point3D point_temp = point;
+                point_temp.X += solidControlEdge.X;
+                point_temp.Y += solidControlEdge.Y;
+                point_temp.Z += solidControlEdge.Z;
+                meshGeom3D.Positions.Add(point_temp);
+            }
+
+            // Top (h)
+            foreach (Point3D point in points_zh)
+            {
+                Point3D point_temp = point;
+                point_temp.X += solidControlEdge.X;
+                point_temp.Y += solidControlEdge.Y;
+                point_temp.Z += solidControlEdge.Z;
+                meshGeom3D.Positions.Add(point_temp);
+            }
+
+            Int32Collection TriangleIndices = new Int32Collection();
+
+            // Bottom
+            for (int i = 0; i < points_z0.Count - 2; i++)
+            {
+                TriangleIndices.Add(0);
+                TriangleIndices.Add(i + 2);
+                TriangleIndices.Add(i + 1);
+            }
+
+            // Top
+            for (int i = 0; i < points_zh.Count - 2; i++)
+            {
+                TriangleIndices.Add(points_z0.Count + 0);
+                TriangleIndices.Add(points_z0.Count + i + 1);
+                TriangleIndices.Add(points_z0.Count + i + 2);
+            }
+
+            // Sides
+            for (int i = 0; i < points_z0.Count; i++)
+            {
+                if (i < points_z0.Count - 1)
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, i + 1, points_z0.Count + i + 1, points_z0.Count + i);
                 else // Last rectangle
                     AddRectangleIndices_CCW_1234(TriangleIndices, i, 0, points_z0.Count, points_z0.Count + i);

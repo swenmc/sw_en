@@ -192,8 +192,10 @@ namespace PFD
             // polozky z vm by asi bolo lepsie predavat ako nejaku strukturu zakladnej geometrie
             // vid public BuildingGeometryDataInput sGeometryInputData;
 
-            //CalculateLoadingValues();
+            // Calculate loading values as an input to draw loads in 3D
+            CalculateLoadingValues();
 
+            // Create 3D model of structure including loading
             model = new CExample_3D_901_PF(
                     vm.WallHeight,
                     vm.GableWidth,

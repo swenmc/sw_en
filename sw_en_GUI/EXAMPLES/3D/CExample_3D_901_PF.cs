@@ -835,56 +835,102 @@ namespace sw_en_GUI.EXAMPLES._3D
             GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMax, fValueLoadColumnnWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, ref memberLoadWindFramesMinusY_CpeMax);
 
             // Surface Free Loads
-            // TODO - Pokus
-            m_arrSLoads = new CSLoad_Free[2];
-            m_arrSLoads[0] = new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, new CPoint (0, 0.5f * fW_frame, 0, fH2_frame, 0), fL_tot, 0.5f * fW_frame / (float)Math.Cos(fRoofPitch_rad), 0.5f, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, 0);
-            m_arrSLoads[1] = new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, new CPoint(0,fW_frame, 0, fH1_frame, 0), fL_tot, 0.5f * fW_frame / (float)Math.Cos(fRoofPitch_rad), 0.5f, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, 0);
-            List<CSLoad_Free> surfaceDeadLoad = new List<CSLoad_Free>();
-            surfaceDeadLoad.Add(m_arrSLoads[0]);
-            surfaceDeadLoad.Add(m_arrSLoads[1]);
+            // Roof Surface Geometry
+            // Control Point - Left Side
+            CPoint pRoofLeft = new CPoint(0, 0.5f * fW_frame, 0, fH2_frame, 0);
+            // Control Point - Right Side
+            CPoint pRoofRight = new CPoint(0, fW_frame, 0, fH1_frame, 0);
+            // Dimensions
+            float fRoof_X = fL_tot;
+            float fRoof_Y = 0.5f * fW_frame / (float)Math.Cos(fRoofPitch_rad);
+
+            // Wall Surface Geometry
+            // Control Point
+            CPoint pWallLeftOrFront = new CPoint(0, 0, 0, 0, 0);
+
+            // Dimensions
+            float fWallLeftOrRight_X = fL_tot;
+            float fWallLeftOrRight_Y = fH1_frame;
+
+            CPoint pWallRightOrBack = new CPoint(0, fW_frame, fL_tot, 0, 0);
+
+            // Dimensions
+            float fWallFrontOrBack_X = fW_frame;
+            float fWallFrontOrBack_Y1 = fH1_frame;
+            float fWallFrontOrBack_Y2 = fH2_frame;
+
+            // Permanent load
+            List<CSLoad_Free> surfaceDeadLoad = new List<CSLoad_Free>(5);
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofLeft, fRoof_X, fRoof_Y, generalLoad.fDeadLoadTotal_Roof, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofRight, fRoof_X, fRoof_Y, generalLoad.fDeadLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallLeftOrFront, fWallLeftOrRight_X, fWallLeftOrRight_Y, generalLoad.fDeadLoadTotal_Wall, 90, 0, 90, Colors.DeepPink, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallRightOrBack, fWallLeftOrRight_X, fWallLeftOrRight_Y, generalLoad.fDeadLoadTotal_Wall, 90, 0, 180+90, Colors.DeepPink, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallLeftOrFront, fWallFrontOrBack_X, fWallFrontOrBack_Y1, fWallFrontOrBack_Y2, generalLoad.fDeadLoadTotal_Wall, 90, 0, 0, Colors.DeepPink, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallRightOrBack, fWallFrontOrBack_X, fWallFrontOrBack_Y1, fWallFrontOrBack_Y2, generalLoad.fDeadLoadTotal_Wall, 90, 0, 180, Colors.DeepPink, true, 0));
+
+            // Imposed Load - Roof
+            List<CSLoad_Free> surfaceRoofImposedLoad = new List<CSLoad_Free>(2);
+            surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofLeft, fRoof_X, fRoof_Y, generalLoad.fImposedLoadTotal_Roof, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, true, 0));
+            surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofRight, fRoof_X, fRoof_Y, generalLoad.fImposedLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, true, 0));
+
+            // Snow Load - Roof
+            float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+            float fsnowULS_Nu_1 = snow.fs_ULS_Nu_1 * fSlopeFactor; // Design value (projection on roof)
+            float fsnowULS_Nu_2 = snow.fs_ULS_Nu_2 * fSlopeFactor;
+            float fsnowSLS_Nu_1 = snow.fs_SLS_Nu_1 * fSlopeFactor;
+            float fsnowSLS_Nu_2 = snow.fs_SLS_Nu_2 * fSlopeFactor;
+
+            List <CSLoad_Free> surfaceRoofSnowLoad_Nu_1 = new List<CSLoad_Free>(2);
+            surfaceRoofSnowLoad_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofLeft, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, 0));
+            surfaceRoofSnowLoad_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofRight, fRoof_X, fRoof_Y, fsnowULS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, 0));
+
+            List<CSLoad_Free> surfaceRoofSnowLoad_Nu_2_Left = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofLeft, fRoof_X, fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, 0));
+            List<CSLoad_Free> surfaceRoofSnowLoad_Nu_2_Right = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofRight, fRoof_X, fRoof_Y, fsnowULS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, 0));
 
             // Load Cases
             m_arrLoadCases = new CLoadCase[36];
-            m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCType.ePermanentLoad, ELCSourcePosition.eGeneral, memberLoadDead1Rafters, surfaceDeadLoad);             // 01
-            m_arrLoadCases[01] = new CLoadCase(02, "Imposed load Q", ELCType.eImposedLoad_ST, ELCSourcePosition.eGeneral, memberLoadImposedRafters);                        // 02
+            m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCType.ePermanentLoad, ELCSourcePosition.eGeneral, memberLoadDead1Rafters, surfaceDeadLoad);                         // 01
+            m_arrLoadCases[01] = new CLoadCase(02, "Imposed load Q", ELCType.eImposedLoad_ST, ELCSourcePosition.eGeneral, memberLoadImposedRafters, surfaceRoofImposedLoad);            // 02
 
             // ULS - Load Case
-            m_arrLoadCases[02] = new CLoadCase(03, "Snow load Su - full", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowAllRafters);                            // 03
-            m_arrLoadCases[03] = new CLoadCase(04, "Snow load Su - left", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowLeftRafters);                           // 04
-            m_arrLoadCases[04] = new CLoadCase(05, "Snow load Su - right", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowRightRafters);                         // 05
-            m_arrLoadCases[05] = new CLoadCase(06, "Wind load Wu - Cpi - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX);                                              // 06
-            m_arrLoadCases[06] = new CLoadCase(07, "Wind load Wu - Cpi - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX);                                            // 07
-            m_arrLoadCases[07] = new CLoadCase(08, "Wind load Wu - Cpi - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY);                                             // 08
-            m_arrLoadCases[08] = new CLoadCase(09, "Wind load Wu - Cpi - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY);                                             // 09
-            m_arrLoadCases[09] = new CLoadCase(10, "Wind load Wu - Cpe,min - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMin);        // 10
-            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMin);     // 11
-            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMin);       // 12
-            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Wu - Cpe,min - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMin);       // 13
-            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Wu - Cpe,max - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMax);        // 14
-            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Wu - Cpe,max - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMax);     // 15
-            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Wu - Cpe,max - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMax);       // 16
-            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Wu - Cpe,max - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMax);       // 17
-            m_arrLoadCases[17] = new CLoadCase(18, "Earthquake load Eu - X", ELCType.eEarthquake, ELCSourcePosition.ePlusX);                                                // 18
-            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - Y", ELCType.eEarthquake, ELCSourcePosition.ePlusY);                                                // 19
+            m_arrLoadCases[02] = new CLoadCase(03, "Snow load Su - full", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowAllRafters, surfaceRoofSnowLoad_Nu_1);              // 03
+            m_arrLoadCases[03] = new CLoadCase(04, "Snow load Su - left", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowLeftRafters, surfaceRoofSnowLoad_Nu_2_Left);        // 04
+            m_arrLoadCases[04] = new CLoadCase(05, "Snow load Su - right", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowRightRafters, surfaceRoofSnowLoad_Nu_2_Right);     // 05
+            m_arrLoadCases[05] = new CLoadCase(06, "Wind load Wu - Cpi - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX);                                                          // 06
+            m_arrLoadCases[06] = new CLoadCase(07, "Wind load Wu - Cpi - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX);                                                        // 07
+            m_arrLoadCases[07] = new CLoadCase(08, "Wind load Wu - Cpi - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY);                                                         // 08
+            m_arrLoadCases[08] = new CLoadCase(09, "Wind load Wu - Cpi - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY);                                                         // 09
+            m_arrLoadCases[09] = new CLoadCase(10, "Wind load Wu - Cpe,min - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMin);                    // 10
+            m_arrLoadCases[10] = new CLoadCase(11, "Wind load Wu - Cpe,min - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMin);                 // 11
+            m_arrLoadCases[11] = new CLoadCase(12, "Wind load Wu - Cpe,min - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMin);                   // 12
+            m_arrLoadCases[12] = new CLoadCase(13, "Wind load Wu - Cpe,min - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMin);                   // 13
+            m_arrLoadCases[13] = new CLoadCase(14, "Wind load Wu - Cpe,max - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMax);                    // 14
+            m_arrLoadCases[14] = new CLoadCase(15, "Wind load Wu - Cpe,max - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMax);                 // 15
+            m_arrLoadCases[15] = new CLoadCase(16, "Wind load Wu - Cpe,max - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMax);                   // 16
+            m_arrLoadCases[16] = new CLoadCase(17, "Wind load Wu - Cpe,max - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMax);                   // 17
+            m_arrLoadCases[17] = new CLoadCase(18, "Earthquake load Eu - X", ELCType.eEarthquake, ELCSourcePosition.ePlusX);                                                            // 18
+            m_arrLoadCases[18] = new CLoadCase(19, "Earthquake load Eu - Y", ELCType.eEarthquake, ELCSourcePosition.ePlusY);                                                            // 19
 
             // SLS - Load Case
-            m_arrLoadCases[19] = new CLoadCase(20, "Snow load Ss - full", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowAllRafters);                            // 20
-            m_arrLoadCases[20] = new CLoadCase(21, "Snow load Ss - left", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowLeftRafters);                           // 21
-            m_arrLoadCases[21] = new CLoadCase(22, "Snow load Ss - right", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowRightRafters);                         // 22
-            m_arrLoadCases[22] = new CLoadCase(23, "Wind load Ws - Cpi - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX);                                              // 23
-            m_arrLoadCases[23] = new CLoadCase(24, "Wind load Ws - Cpi - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX);                                            // 24
-            m_arrLoadCases[24] = new CLoadCase(25, "Wind load Ws - Cpi - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY);                                             // 25
-            m_arrLoadCases[25] = new CLoadCase(26, "Wind load Ws - Cpi - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY);                                             // 26
-            m_arrLoadCases[26] = new CLoadCase(27, "Wind load Ws - Cpe,min - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMin);        // 27
-            m_arrLoadCases[27] = new CLoadCase(28, "Wind load Ws - Cpe,min - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMin);     // 28
-            m_arrLoadCases[28] = new CLoadCase(29, "Wind load Ws - Cpe,min - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMin);       // 29
-            m_arrLoadCases[29] = new CLoadCase(30, "Wind load Ws - Cpe,min - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMin);       // 30
-            m_arrLoadCases[30] = new CLoadCase(31, "Wind load Ws - Cpe,max - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMax);        // 31
-            m_arrLoadCases[31] = new CLoadCase(32, "Wind load Ws - Cpe,max - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMax);     // 32
-            m_arrLoadCases[32] = new CLoadCase(33, "Wind load Ws - Cpe,max - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMax);       // 33
-            m_arrLoadCases[33] = new CLoadCase(34, "Wind load Ws - Cpe,max - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMax);       // 34
-            m_arrLoadCases[34] = new CLoadCase(35, "Earthquake load Es - X", ELCType.eEarthquake, ELCSourcePosition.ePlusX);                                                // 35
-            m_arrLoadCases[35] = new CLoadCase(36, "Earthquake load Es - Y", ELCType.eEarthquake, ELCSourcePosition.ePlusY);                                                // 36
+            m_arrLoadCases[19] = new CLoadCase(20, "Snow load Ss - full", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowAllRafters);                                        // 20
+            m_arrLoadCases[20] = new CLoadCase(21, "Snow load Ss - left", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowLeftRafters);                                       // 21
+            m_arrLoadCases[21] = new CLoadCase(22, "Snow load Ss - right", ELCType.eSnow, ELCSourcePosition.ePlusZ, memberMaxLoadSnowRightRafters);                                     // 22
+            m_arrLoadCases[22] = new CLoadCase(23, "Wind load Ws - Cpi - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX);                                                          // 23
+            m_arrLoadCases[23] = new CLoadCase(24, "Wind load Ws - Cpi - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX);                                                        // 24
+            m_arrLoadCases[24] = new CLoadCase(25, "Wind load Ws - Cpi - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY);                                                         // 25
+            m_arrLoadCases[25] = new CLoadCase(26, "Wind load Ws - Cpi - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY);                                                         // 26
+            m_arrLoadCases[26] = new CLoadCase(27, "Wind load Ws - Cpe,min - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMin);                    // 27
+            m_arrLoadCases[27] = new CLoadCase(28, "Wind load Ws - Cpe,min - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMin);                 // 28
+            m_arrLoadCases[28] = new CLoadCase(29, "Wind load Ws - Cpe,min - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMin);                   // 29
+            m_arrLoadCases[29] = new CLoadCase(30, "Wind load Ws - Cpe,min - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMin);                   // 30
+            m_arrLoadCases[30] = new CLoadCase(31, "Wind load Ws - Cpe,max - Left - X+", ELCType.eWind, ELCSourcePosition.ePlusX, memberLoadWindFramesPlusX_CpeMax);                    // 31
+            m_arrLoadCases[31] = new CLoadCase(32, "Wind load Ws - Cpe,max - Right - X-", ELCType.eWind, ELCSourcePosition.eMinusX, memberLoadWindFramesMinusX_CpeMax);                 // 32
+            m_arrLoadCases[32] = new CLoadCase(33, "Wind load Ws - Cpe,max - Front - Y+", ELCType.eWind, ELCSourcePosition.ePlusY, memberLoadWindFramesPlusY_CpeMax);                   // 33
+            m_arrLoadCases[33] = new CLoadCase(34, "Wind load Ws - Cpe,max - Rear - Y-", ELCType.eWind, ELCSourcePosition.eMinusY,memberLoadWindFramesMinusY_CpeMax);                   // 34
+            m_arrLoadCases[34] = new CLoadCase(35, "Earthquake load Es - X", ELCType.eEarthquake, ELCSourcePosition.ePlusX);                                                            // 35
+            m_arrLoadCases[35] = new CLoadCase(36, "Earthquake load Es - Y", ELCType.eEarthquake, ELCSourcePosition.ePlusY);                                                            // 36
 
             // Load Case Groups
             m_arrLoadCaseGroups = new CLoadCaseGroup[12];

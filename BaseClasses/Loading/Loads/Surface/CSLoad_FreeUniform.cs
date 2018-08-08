@@ -43,20 +43,27 @@ namespace BaseClasses
             fValue = fValue_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
+
+            bool bUseDifferentColorForNegativeValue = true;
+            m_Color = Colors.OrangeRed;
+
+            if (bUseDifferentColorForNegativeValue && fValue < 0)
+                m_Color = Colors.LightSkyBlue;
         }
 
+        // Constructor used for rectangular surface (4 edges)
         public CSLoad_FreeUniform(
-            ELoadCoordSystem eLoadCS_temp,
-            ELoadDir eLoadDirection_temp,
-            CPoint pControlPoint_temp,
-            float fX_dimension,
-            float fY_dimension,
-            float fValue_temp,
-            float m_fRotationX_deg_temp,
-            float m_fRotationY_deg_temp,
-            float m_fRotationZ_deg_temp,
-            bool bIsDisplayed,
-            float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+               ELoadCoordSystem eLoadCS_temp,
+               ELoadDir eLoadDirection_temp,
+               CPoint pControlPoint_temp,
+               float fX_dimension,
+               float fY_dimension,
+               float fValue_temp,
+               float m_fRotationX_deg_temp,
+               float m_fRotationY_deg_temp,
+               float m_fRotationZ_deg_temp,
+               bool bIsDisplayed,
+               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
@@ -70,58 +77,139 @@ namespace BaseClasses
             m_fRotationZ_deg = m_fRotationZ_deg_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
-        }
 
-        public void Set3DModelColorAndMaterial()
-        {
             bool bUseDifferentColorForNegativeValue = true;
-
-            // Set Load Model "material" Color and Opacity - default
             m_Color = Colors.OrangeRed;
 
             if (bUseDifferentColorForNegativeValue && fValue < 0)
                 m_Color = Colors.LightSkyBlue;
+        }
 
-            m_Material3DGraphics = new DiffuseMaterial();
-            m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
-            m_fOpacity = 0.3f;
-            m_Material3DGraphics.Brush.Opacity = m_fOpacity;
+        // Constructor used for rectangular surface (4 edges)
+        public CSLoad_FreeUniform(
+               ELoadCoordSystem eLoadCS_temp,
+               ELoadDir eLoadDirection_temp,
+               CPoint pControlPoint_temp,
+               float fX_dimension,
+               float fY_dimension,
+               float fValue_temp,
+               float m_fRotationX_deg_temp,
+               float m_fRotationY_deg_temp,
+               float m_fRotationZ_deg_temp,
+               Color color_temp,
+               bool bIsDisplayed,
+               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+        {
+            ELoadCS = eLoadCS_temp; // GCS or LCS surface load
+            ELoadDirection = eLoadDirection_temp;
+            m_pControlPoint = pControlPoint_temp;
+
+            pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
+
+            fValue = fValue_temp;
+            m_fRotationX_deg = m_fRotationX_deg_temp;
+            m_fRotationY_deg = m_fRotationY_deg_temp;
+            m_fRotationZ_deg = m_fRotationZ_deg_temp;
+            BIsDisplayed = BIsDisplayed;
+            FTime = fTime;
+
+            bool bUseDifferentColorForNegativeValue = true;
+            m_Color = color_temp;
+
+            if (bUseDifferentColorForNegativeValue && fValue < 0)
+                m_Color = Colors.LightSkyBlue;
+        }
+
+        // Constructor used for Gable Roof Building - wall (5 edges)
+        public CSLoad_FreeUniform(
+               ELoadCoordSystem eLoadCS_temp,
+               ELoadDir eLoadDirection_temp,
+               CPoint pControlPoint_temp,
+               float fX_dimension,
+               float fY1_dimension,
+               float fY2_dimension,
+               float fValue_temp,
+               float m_fRotationX_deg_temp,
+               float m_fRotationY_deg_temp,
+               float m_fRotationZ_deg_temp,
+               Color color_temp,
+               bool bIsDisplayed,
+               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+        {
+            ELoadCS = eLoadCS_temp; // GCS or LCS surface load
+            ELoadDirection = eLoadDirection_temp;
+            m_pControlPoint = pControlPoint_temp;
+
+            pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(0.5f * fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
+
+            fValue = fValue_temp;
+            m_fRotationX_deg = m_fRotationX_deg_temp;
+            m_fRotationY_deg = m_fRotationY_deg_temp;
+            m_fRotationZ_deg = m_fRotationZ_deg_temp;
+            BIsDisplayed = BIsDisplayed;
+            FTime = fTime;
+
+            bool bUseDifferentColorForNegativeValue = true;
+            m_Color = color_temp;
+
+            if (bUseDifferentColorForNegativeValue && fValue < 0)
+                m_Color = Colors.LightSkyBlue;
         }
 
         public override Model3DGroup CreateM_3D_G_Load()
         {
-            Set3DModelColorAndMaterial();
+            m_Material3DGraphics = new DiffuseMaterial();
+            m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
+            m_fOpacity = 0.3f;
+            m_Material3DGraphics.Brush.Opacity = m_fOpacity;
 
             Model3DGroup model_gr = new Model3DGroup();
-            CVolume volume = new CVolume();
 
-            bool bChangePositionForNegativeValue = true;
-
-            double fz_coord = m_pControlPoint.Z;
-
-            if(bChangePositionForNegativeValue && fValue < 0)
-               fz_coord = m_pControlPoint.Z - fValue;
-
-            GeometryModel3D model = volume.CreateM_G_M_3D_Volume_nEdges(new Point3D(0,0,0), pSurfacePoints, fValue, m_Material3DGraphics);
-
-            if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDirection == ELoadDir.eLD_Z) // Load defined in GCS in global Z direction
+            if (Math.Abs(fValue) > 0) // Create and determine model data only in load value is not zero
             {
-                // Move Coordinates in y direction
-                float fy = (float)Math.Tan(m_fRotationX_deg / 180 * Math.PI) * fValue;
+                CVolume volume = new CVolume();
 
+                bool bChangePositionForNegativeValue = true;
+                float fValueFor3D = fValue * m_fDisplayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m)
 
+                double fz_coord = m_pControlPoint.Z;
 
+                if (bChangePositionForNegativeValue && fValue < 0)
+                    fz_coord = m_pControlPoint.Z - fValueFor3D;
+
+                Point3DCollection pSurfacePoints_h = new Point3DCollection(pSurfacePoints.Count);
+
+                float fy = 0.0f;
+
+                // Todo limit 35 stupnov je tak trosku riskantny, asi by to malo byt zadane jednoznacne ci sa maju skosit hrany kvadra, resp ze normala plochy zviera s osou Z uhol mensi nez 90 stupnov
+                if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDirection == ELoadDir.eLD_Z && Math.Abs(m_fRotationX_deg) < 35) // Load defined in GCS in global Z direction, rotation is less than 35 deg in absolute value - so we know that it is roof pitch angle
+                {
+                    // Move coordinates in y-direction
+                    fy = (float)Math.Tan(m_fRotationX_deg / 180 * Math.PI) * fValueFor3D;
+                }
+
+                // Set point coordinates
+                for (int i = 0; i < pSurfacePoints.Count; i++)
+                {
+                    Point3D pa = new Point3D();
+                    pa = pSurfacePoints[i];
+
+                    pa.Y += fy; // fy is currently used only for GCS and Z direction
+                    pa.Z = fValueFor3D;
+                    pSurfacePoints_h.Add(pa);
+                }
+
+                //GeometryModel3D model = volume.CreateM_G_M_3D_Volume_nEdges(new Point3D(0, 0, 0), pSurfacePoints, fValue, m_Material3DGraphics);
+                GeometryModel3D model = volume.CreateM_G_M_3D_Volume_nEdges(new Point3D(0, 0, 0), pSurfacePoints, pSurfacePoints_h, m_Material3DGraphics);
+
+                model_gr.Children.Add(model);
+
+                // Create Transform3DGroup
+                Transform3DGroup loadTransform3DGroup = CreateTransformCoordGroup();
+
+                // Set the Transform property of the GeometryModel to the Transform3DGroup
+                model_gr.Transform = loadTransform3DGroup;
             }
-
-
-            model_gr.Children.Add(model);
-
-             // Create Transform3DGroup
-            Transform3DGroup loadTransform3DGroup = CreateTransformCoordGroup();
-
-            // Set the Transform property of the GeometryModel to the Transform3DGroup
-            model_gr.Transform = loadTransform3DGroup;
-
             return model_gr;
         }
 
