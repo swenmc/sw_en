@@ -294,7 +294,7 @@ namespace BaseClasses
     //----------------------------------------------------------------------------
     // Define load case load source position or direction in global coordinate system (wind, earthquake)
     //----------------------------------------------------------------------------
-    public enum ELCSourcePosition
+    public enum ELCMainDirection
     {
         eGeneral,
         eMinusX,

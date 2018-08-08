@@ -88,6 +88,7 @@
     <Compile Include="Loading\Group\CLoadCaseGroup.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniform.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_Free.cs" />
+    <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniformGroup.cs" />
     <Compile Include="Model\CCrSc.cs" />
     <Compile Include="Model\CMat.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />

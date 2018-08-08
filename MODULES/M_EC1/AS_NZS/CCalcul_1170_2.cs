@@ -65,6 +65,56 @@ namespace M_EC1.AS_NZS
         float fz;
         float fRho_air = 1.2f; // kgm^3
 
+        // Cp factors and segments
+        public float fC_pi_min;
+        public float fC_pi_max;
+
+        // Wall
+        public float fC_pe_W_wall;
+
+        public float fC_pe_L_wall_Theta0or180;
+        public float fC_pe_L_wall_Theta90or270;
+
+        // Roof
+        public float[] fC_pe_S_wall_dimensions;
+        public float[] fC_pe_S_wall_values;
+
+        public float[] fC_pe_U_roof_dimensions;
+        public float[] fC_pe_U_roof_values_min;
+        public float[] fC_pe_U_roof_values_max;
+
+        public float[] fC_pe_D_roof_dimensions;
+        public float[] fC_pe_D_roof_values_min;
+        public float[] fC_pe_D_roof_values_max;
+
+        public float[] fC_pe_R_roof_dimensions;
+        public float[] fC_pe_R_roof_values_min;
+        public float[] fC_pe_R_roof_values_max;
+
+        // Cfig factors and segments
+        float fC_fig_i_min;
+        float fC_fig_i_max;
+
+        // Wall
+        float fC_fig_e_W_wall_0or180;
+        float fC_fig_e_W_wall_90or270;
+
+        float fC_fig_e_L_wall_0or180;
+        float fC_fig_e_L_wall_90or270;
+
+        // Roof
+        float[] fC_fig_e_S_wall_0or180;
+        float[] fC_fig_e_S_wall_90or270;
+
+        float[] fC_fig_e_U_roof_values_min;
+        float[] fC_fig_e_U_roof_values_max;
+
+        float[] fC_fig_e_D_roof_values_min;
+        float[] fC_fig_e_D_roof_values_max;
+
+        float[] fC_fig_e_R_roof_values_min;
+        float[] fC_fig_e_R_roof_values_max;
+
         // Output
         // Internal pressure
         public float[] fp_i_min_ULS_Theta_4;
@@ -226,11 +276,9 @@ namespace M_EC1.AS_NZS
             to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
             */
 
-            // TODO Martin - vypocty faktorov su zjednodusene, po vydani prvej verzie tomu venovat viac casu a prepracovat
-
             // Internal pressure
-            float fC_pi_min = -0.2f;
-            float fC_pi_max = 0.0f;
+            fC_pi_min = -0.2f;
+            fC_pi_max = 0.0f;
 
             // External pressure
 
@@ -249,17 +297,12 @@ namespace M_EC1.AS_NZS
             bool bIsBuildingOnGround = true;
             bool bIsVariableWindSpeedinHeight = false;
 
-            float fC_pe_W_wall;
-
             if (fh > 25 || (fh <= 25f && bIsVariableWindSpeedinHeight) || !bIsBuildingOnGround)
                 fC_pe_W_wall = 0.8f;
             else
                 fC_pe_W_wall = 0.7f;
 
             // Table 5.2(B) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - leeward wall (L)
-            float fC_pe_L_wall_Theta0or180;
-            float fC_pe_L_wall_Theta90or270;
-
             float[] fx;
             float[] fy;
 
@@ -288,21 +331,12 @@ namespace M_EC1.AS_NZS
             fC_pe_L_wall_Theta90or270 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta90or270, fx, fy);
 
             // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
-            float[] fC_pe_S_wall_dimensions = new float[5] {0, fh, 2 * fh, 3 * fh, 9999 };
-            float[] fC_pe_S_wall_values = new float[5] { -0.65f, -0.65f, -0.5f, -0.3f, -0.2f };
+            fC_pe_S_wall_dimensions = new float[5] {0, fh, 2 * fh, 3 * fh, 9999 };
+            fC_pe_S_wall_values = new float[5] { -0.65f, -0.65f, -0.5f, -0.3f, -0.2f };
 
             // Roof
-            float[] fC_pe_U_roof_dimensions;
-            float[] fC_pe_U_roof_values_min;
-            float[] fC_pe_U_roof_values_max;
-
-            float[] fC_pe_D_roof_dimensions;
-            float[] fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
-            float[] fC_pe_D_roof_values_max = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
-
-            float[] fC_pe_R_roof_dimensions;
-            float[] fC_pe_R_roof_values_min;
-            float[] fC_pe_R_roof_values_max;
+            fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
+            fC_pe_D_roof_values_max = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
 
             if(sGeometryInput.fRoofPitch_deg < 10) // Table 5.3(A)
             {
@@ -389,31 +423,31 @@ namespace M_EC1.AS_NZS
             // Internal and external pressure factors
 
             // Internal presssure
-            float fC_fig_i_min = AS_NZS_1170_2.Eq_52_1____(fC_pi_min, fK_ci); // Aerodynamic shape factor
-            float fC_fig_i_max = AS_NZS_1170_2.Eq_52_1____(fC_pi_max, fK_ci); // Aerodynamic shape factor
+            fC_fig_i_min = AS_NZS_1170_2.Eq_52_1____(fC_pi_min, fK_ci); // Aerodynamic shape factor
+            fC_fig_i_max = AS_NZS_1170_2.Eq_52_1____(fC_pi_max, fK_ci); // Aerodynamic shape factor
 
             // External pressure
             // Walls
 
-            float fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-            float fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
-            float fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-            float fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
-            float[] fC_fig_e_S_wall_0or180 = new float[fC_pe_S_wall_values.Length];
+            fC_fig_e_S_wall_0or180 = new float[fC_pe_S_wall_values.Length];
 
             for (int i = 0; i < fC_fig_e_S_wall_0or180.Length; i++)
                 fC_fig_e_S_wall_0or180[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
-            float[] fC_fig_e_S_wall_90or270 = new float[fC_pe_S_wall_values.Length];
+            fC_fig_e_S_wall_90or270 = new float[fC_pe_S_wall_values.Length];
 
             for(int i = 0; i< fC_fig_e_S_wall_90or270.Length; i++)
                 fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
             // Roof
-            float[] fC_fig_e_U_roof_values_min = new float[fC_pe_U_roof_values_min.Length];
-            float[] fC_fig_e_U_roof_values_max = new float[fC_pe_U_roof_values_max.Length];
+            fC_fig_e_U_roof_values_min = new float[fC_pe_U_roof_values_min.Length];
+            fC_fig_e_U_roof_values_max = new float[fC_pe_U_roof_values_max.Length];
 
             for (int i = 0; i < fC_fig_e_U_roof_values_min.Length; i++)
             {
@@ -421,8 +455,8 @@ namespace M_EC1.AS_NZS
                 fC_fig_e_U_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
             }
 
-            float[] fC_fig_e_D_roof_values_min = new float[fC_pe_D_roof_values_min.Length];
-            float[] fC_fig_e_D_roof_values_max = new float[fC_pe_D_roof_values_max.Length];
+            fC_fig_e_D_roof_values_min = new float[fC_pe_D_roof_values_min.Length];
+            fC_fig_e_D_roof_values_max = new float[fC_pe_D_roof_values_max.Length];
 
             for (int i = 0; i < fC_fig_e_D_roof_values_min.Length; i++)
             {
@@ -430,8 +464,8 @@ namespace M_EC1.AS_NZS
                 fC_fig_e_D_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
             }
 
-            float[] fC_fig_e_R_roof_values_min = new float[fC_pe_R_roof_values_min.Length];
-            float[] fC_fig_e_R_roof_values_max = new float[fC_pe_R_roof_values_max.Length];
+            fC_fig_e_R_roof_values_min = new float[fC_pe_R_roof_values_min.Length];
+            fC_fig_e_R_roof_values_max = new float[fC_pe_R_roof_values_max.Length];
 
             for (int i = 0; i < fC_fig_e_R_roof_values_min.Length; i++)
             {
