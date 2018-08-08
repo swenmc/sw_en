@@ -139,5 +139,40 @@ namespace BaseClasses
             LoadCasesFactorsList = LoadCasesFactors_temp;
             LoadCasesList = LoadCases_temp;
         }
+
+        
+        public override bool Equals(object obj)
+        {
+            //       
+            // See the full list of guidelines at
+            //   http://go.microsoft.com/fwlink/?LinkID=85237  
+            // and also the guidance for operator== at
+            //   http://go.microsoft.com/fwlink/?LinkId=85238
+            //
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            CLoadCombination c = (CLoadCombination)obj;
+
+
+            if (this.LoadCasesList.SequenceEqual(c.LoadCasesList) && this.LoadCasesFactorsList.SequenceEqual(c.LoadCasesFactorsList)) return true;
+            else return false;
+            
+
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+
+            // TODO: write your implementation of GetHashCode() here
+            //throw new NotImplementedException();
+            return base.GetHashCode();
+        }
+
+        
     }
 }

@@ -1040,10 +1040,12 @@ namespace sw_en_GUI.EXAMPLES._3D
             // TODO No 40 - Ondrej
             // Vysledkom ma byt toto pole Load Combinations, kombinacie maju obsahovat zoznam load cases a prislusne faktory ktorymi treba load cases prenasobovat
             CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
-            generator.GenerateULS();
+            generator.GenerateAll();
+            //generator.GenerateULS();
             //generator.GenerateSLS();
-            generator.WriteCombinations();
+            //generator.WriteCombinationsLoadCases();
             generator.WritePermutations();
+            generator.WriteCombinations();
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
             // TODO 40 komentar Martin

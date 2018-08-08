@@ -10,8 +10,9 @@ namespace BaseClasses
     {
         //----------------------------------------------------------------------------
 
-        /*
+
         // Nepouzije sa, pretoze kazda kombinacia ma vlastny faktor pre dany LC
+        // Pouzije sa, lebo sa pri danej kombinacii nastavi tento faktor
         private float m_fFactor;
 
         public float Factor
@@ -19,7 +20,7 @@ namespace BaseClasses
             get { return m_fFactor; }
             set { m_fFactor = value; }
         }
-        */
+
 
         private ELCType m_eType;
 
@@ -103,6 +104,27 @@ namespace BaseClasses
             MainDirection = MainDirection_temp;
             MemberLoadsList = MemberLoads_temp;
             SurfaceLoadsList = SurfaceLoads_temp;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            CLoadCase c = (CLoadCase)obj;
+            if (c.ID == this.ID) return true;
+            else return false;
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+
+            // TODO: write your implementation of GetHashCode() here
+            //throw new NotImplementedException();
+            return base.GetHashCode();
         }
     }
 }
