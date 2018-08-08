@@ -5,18 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Height="600" Width="750">
+        Height="1300" Width="750">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="1260"/>
         </Grid.RowDefinitions>
         <!--
         <CheckBox Name ="chbDisplayLoads" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Unchecked="chbLightAmbient_Unchecked" Checked="chbLightAmbient_Checked">Display Loads</CheckBox>
         <TextBlock Grid.Row="1" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
         <ComboBox Name ="loadCases_Combobox" Grid.Row="1" HorizontalAlignment="Left" Margin="130,0,0,0" VerticalAlignment="Top" Width="130" SelectionChanged="loadCases_Combobox_SelectionChanged"/>
         -->
-        <DataGrid Name ="Datagrid_LoadCases" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="false"/>
+        <DataGrid Name ="Datagrid_LoadCases" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="false"/>
     </Grid>
 </UserControl>

@@ -1047,114 +1047,43 @@ namespace sw_en_GUI.EXAMPLES._3D
             generator.WritePermutations();
             generator.WriteCombinations();
 
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // TODO 40 komentar Martin
-            /*
-            Urobil by som to asi tak, ze do samotneho generovania by nevstupovali uplne vsetky load groups,
-            ale vzdy len zoznam load case groups, kazda group by mala definovany aj faktor vid nizsie
-            Generovanie by sa podla nizsie uvedenych predpisov spustilo pre ULS 11x a pre SLS 8x
+            // TODO No 40  Notes to Ondrej
+            // Zopar navrhov na vylepsenie
 
-            To ake groups vstupuju do kombinovania mozeme urobit zatial natvrdo vid nizsie,
-            alebo identifikaciou typu lc group (G -permanent, Q - imposed, W - wind, S - snow, EQ - earthquake)
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Snazil som sa napojit objekt generator.Combinations na GUI, dufam ze je to ten spravny pre output:)
+            // Pridal som SLS groups, ale zobrazuje sa vsade len typ ULS, tak asi si tam nastaveny zly typ limit state?
 
-            Vytvorene kombinacie by sa vzdy pridali do nejakeho zoznamu pre ULS, resp. SLS
-            Ak by prebehlo generovanie, tak by bolo dobre este na zaver spustit nejaky nastroj, ktory skontroluje
-            ci v zoznamoch kombinacii ULS a SLS nie su nejake duplicitne kombinacie (rovnake LC, rovnake faktory)
-            kedze vela faktorov bude ψ = 0, tak mozu vzniknut aj rovnake kombinacie
+            // (A) Priorita 4
+            // Bolo by super zobrazit v dalsom stlpci v UC_LoadCombinationsList predpis "Combination Key", podla ktoreho sa to vygenerovalo
+            // pripadne aj clanok normy v dalsom stlpci, lahsie by sa to potom kontrolovalo a vyzeralo viac profi :)
+            // Napr.:
+            // [0.9*G + Wu,Cpi + Wu,Cpe,max + ψc*Q] ψc = 0    | AS/NZS 1170.0, cl. 4.2.1(a)
+            // [1.2*G + 1.5*Q]                                | AS/NZS 1170.0, cl. 4.2.1(b)(ii)
+            // [G + Eu + ψE*Q] ψE = 0                         | AS/NZS 1170.0, cl. 4.2.2(f)
+            // Prosim skus mi ich tam zopar pridat, ostatne si postupne dorobim. Ak je to zlozite/pracne tak to nechame na neskor.
 
-            Mozes to urobit tak ze ak je faktor nula tak dana skupinka sa do generatora ani neposle
+            // (B) Priorita 1
+            // V kombinaciach by asi mal byt vzdy aspon jeden load case z kazdej zadanej skupinky (load group), ktore vstupuju do generovania,
+            // teraz tam mame napr. aj 0.7 LC2 co nema velmi zmysel. Dolezite je vyfiltrovat zo vsetkeho co sa vygeneruje len, tie ktore su naozaj dolezite a podla predpisu
+            // aby tam nebolo zbytocne vela objektov. Cim ich bude menej tym to bude jednoduchsie pre dalsie vypocty.
 
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // (C) Priorita 1
+            // Pre vietor by sa mali kombinovat len LC s rovnakym smerom -X, +X, -Y, +Y
+            // Kombinuje sa (Wcpi + Wcpemin) alebo (Wcpi + Wcpemax), takze ak je napriklad nakombinovany Wcpi +X s Wcpe_min -Y tak to treba vyhodit
 
-            // ULS
-            1 - [0.9 * m_arrLoadCaseGroups[0]] [0.9 G]
-            2 - [1.2 * m_arrLoadCaseGroups[0] x 1.5 * m_arrLoadCaseGroups[1]] [1.2G, 1.5Q]
-            ψc = 0;
-            3 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_min, ψc Q]
-            4 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_max, ψc Q]
-            5 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e_min, ψc Q]
-            6 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e_max, ψc Q]
-            ψE = 0;
-            7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]] [G, Eu, ψE Q]
-            ψc = 0;
-            8 - [1.20 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψc * m_arrLoadCaseGroups[1]] [1.2G, Su, ψc Q]
-            9 - [1.35 * m_arrLoadCaseGroups[0]] [1.35 G]
-           10 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4]] [0.9G, Wu_i, Wu_e_min]
-           11 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5]] [0.9G, Wu_i, Wu_e_max]
+            // (D) Priorita 2
+            // Mozeme zozname load cases v kombinacii preusporiadat load cases tak, aby to zacinalo LC s najnizsim ID
+            // Teraz mame napr. 1 x LC11 + 1 x LC5 + 1 x LC1
+            // Chceme 1 x LC1 + 1 x LC5 + 1 x LC11
 
-            // SLS
-            1 - [1.0 * m_arrLoadCaseGroups[0]] [1.0 G]
-            ψs = 0.7;
-            2 - [1.0 * m_arrLoadCaseGroups[0] x ψs * m_arrLoadCaseGroups[1]] [1.0G, ψs Q]
-            3 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψs * m_arrLoadCaseGroups[1]] [G, Ws_i, Ws_e_min, Q]
-            4 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψs * m_arrLoadCaseGroups[1]] [G, Ws_i, Ws_e_max, Q]
-            5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4]] [G, Ws_i, Ws_e_min]
-            6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5]] [G, Ws_i, Ws_e_max]
-            7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψs * m_arrLoadCaseGroups[1]] [G, Ss, ψs Q]
-            ψE = 0;
-            8 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]] [G, Eu, ψE Q]
-            */
+            // (E) Priorita 4
+            // V GUI by bolo elegantne zobrazovat vsetky faktory na jedno alebo dve desatinne miesta (aj ak je hodnota = 1)
 
-            m_arrLoadCombs = new CLoadCombination[6];
-            m_arrLoadCombs[0] = new CLoadCombination(1, "CO 1", ELSType.eLS_ULS);
-            m_arrLoadCombs[1] = new CLoadCombination(2, "CO 2", ELSType.eLS_ULS);
-            m_arrLoadCombs[2] = new CLoadCombination(3, "CO 3", ELSType.eLS_ULS);
-            m_arrLoadCombs[3] = new CLoadCombination(4, "CO 4", ELSType.eLS_ULS);
-            m_arrLoadCombs[4] = new CLoadCombination(5, "CO 5", ELSType.eLS_SLS);
-            m_arrLoadCombs[5] = new CLoadCombination(6, "CO 6", ELSType.eLS_SLS);
+            m_arrLoadCombs = new CLoadCombination[generator.Combinations.Count];
 
-            // Create combinations
-            //TODO - vytvorit kombinacie podla predpisu v CLoadCombinations
-
-            /*
-            // TODO No 40 - Ondrej
-            Combinations<CLoadCase> a = new Combinations<CLoadCase>(m_arrLoadCases,3, GenerateOption.WithoutRepetition);
-            Permutations<CLoadCase> b = new Permutations<CLoadCase>(m_arrLoadCases,GenerateOption.WithoutRepetition);
-            */
-
-            // UKAZKA
-
-            // G
-            m_arrLoadCombs[0].LoadCasesList.Add(m_arrLoadCases[0]);
-            m_arrLoadCombs[0].LoadCasesFactorsList.Add(1.35f);
-
-            // G + Q
-            m_arrLoadCombs[1].LoadCasesList.Add(m_arrLoadCases[0]);
-            m_arrLoadCombs[1].LoadCasesFactorsList.Add(1.20f);
-            m_arrLoadCombs[1].LoadCasesList.Add(m_arrLoadCases[2]);
-            m_arrLoadCombs[1].LoadCasesFactorsList.Add(1.50f);
-
-            // G + Cpi front + W Cpe,max  front
-            m_arrLoadCombs[2].LoadCasesList.Add(m_arrLoadCases[0]);
-            m_arrLoadCombs[2].LoadCasesFactorsList.Add(0.90f);
-            m_arrLoadCombs[2].LoadCasesList.Add(m_arrLoadCases[7]);
-            m_arrLoadCombs[2].LoadCasesFactorsList.Add(0.70f);
-            m_arrLoadCombs[2].LoadCasesList.Add(m_arrLoadCases[15]);
-            m_arrLoadCombs[2].LoadCasesFactorsList.Add(1.00f);
-
-            // G + Cpi front + W Cpe,min  front
-            m_arrLoadCombs[3].LoadCasesList.Add(m_arrLoadCases[0]);
-            m_arrLoadCombs[3].LoadCasesFactorsList.Add(0.90f);
-            m_arrLoadCombs[3].LoadCasesList.Add(m_arrLoadCases[7]);
-            m_arrLoadCombs[3].LoadCasesFactorsList.Add(0.70f);
-            m_arrLoadCombs[3].LoadCasesList.Add(m_arrLoadCases[11]);
-            m_arrLoadCombs[3].LoadCasesFactorsList.Add(1.00f);
-
-            // G + Cpi front + W Cpe,max left
-            m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[0]);
-            m_arrLoadCombs[4].LoadCasesFactorsList.Add(0.90f);
-            m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[5]);
-            m_arrLoadCombs[4].LoadCasesFactorsList.Add(0.70f);
-            m_arrLoadCombs[4].LoadCasesList.Add(m_arrLoadCases[9]);
-            m_arrLoadCombs[4].LoadCasesFactorsList.Add(1.00f);
-
-            // G + Cpi front + W Cpe,min left
-            m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[0]);
-            m_arrLoadCombs[5].LoadCasesFactorsList.Add(0.90f);
-            m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[5]);
-            m_arrLoadCombs[5].LoadCasesFactorsList.Add(0.70f);
-            m_arrLoadCombs[5].LoadCasesList.Add(m_arrLoadCases[13]);
-            m_arrLoadCombs[5].LoadCasesFactorsList.Add(1.00f);
+            for (int i = 0; i < m_arrLoadCombs.Length; i++)
+                m_arrLoadCombs[i] = generator.Combinations[i];
 
             // Limit States
             m_arrLimitStates = new CLimitState[3];

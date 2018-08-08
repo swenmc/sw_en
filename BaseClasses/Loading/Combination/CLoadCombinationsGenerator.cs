@@ -8,7 +8,7 @@ namespace BaseClasses
     [Serializable]
     public class CLoadCombinationsGenerator
     {
-        private List<CLoadCombination> MCombinations;               
+        private List<CLoadCombination> MCombinations;
 
         private CLoadCaseGroup[] m_arrLoadCaseGroups;
         List<List<CLoadCase>> combinationsLoadCases;
@@ -40,18 +40,20 @@ namespace BaseClasses
             //List<List<int>> combos = GetAllCombos(new int[] { 1, 2, 3, 4, 5, 6 }.ToList());
         }
 
-
         public void GenerateAll()
-        {  
+        {
             combinationsLoadCases = new List<List<CLoadCase>>();
             permutationsLoadCases = new List<List<CLoadCase>>();
 
             List<CLoadCaseGroup> loadCaseGroups = new List<CLoadCaseGroup>();
+
+            // Types of load cases (G - permanent, Q - imposed, W - wind, S - snow, EQ - earthquake)
+            // ULS
             // 1 - [0.9 * m_arrLoadCaseGroups[0]][0.9 G]
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             Generate(loadCaseGroups);
-            // 2 - [1.2 * m_arrLoadCaseGroups[0] x 1.5 * m_arrLoadCaseGroups[1]][1.2G, 1.5Q]
+            // 2 - [1.2 * m_arrLoadCaseGroups[0], 1.5 * m_arrLoadCaseGroups[1]][1.2G, 1.5Q]
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.2f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
@@ -67,7 +69,7 @@ namespace BaseClasses
             SetFactorForLoadCases(m_arrLoadCaseGroups[4].MLoadCasesList, 1f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[4]);
             Generate(loadCaseGroups);
-            // 4 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_max, ψc Q]
+            // 4 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_max, ψc Q] ψc = 0
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
@@ -94,12 +96,12 @@ namespace BaseClasses
             SetFactorForLoadCases(m_arrLoadCaseGroups[5].MLoadCasesList, 1f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[5]);
             Generate(loadCaseGroups);
-            // 7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q]ψc = 0;            
+            // 7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q] ψE = 0;
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[6].MLoadCasesList, 1f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[6]);            
+            loadCaseGroups.Add(m_arrLoadCaseGroups[6]);
             Generate(loadCaseGroups);
             // 8 - [1.20 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψc * m_arrLoadCaseGroups[1]][1.2G, Su, ψc Q]
             loadCaseGroups.Clear();
@@ -132,18 +134,75 @@ namespace BaseClasses
             loadCaseGroups.Add(m_arrLoadCaseGroups[5]);
             Generate(loadCaseGroups);
 
-            //TODO
-            // // SLS 
+            // SLS
             // 1 - [1.0 * m_arrLoadCaseGroups[0]][1.0 G]
-            // ψs = 0.7;
-            // 2 - [1.0 * m_arrLoadCaseGroups[0] x ψs * m_arrLoadCaseGroups[1]][1.0G, ψs Q]
-            // 3 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e_min, Q]
-            // 4 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e_max, Q]
-            // 5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4]][G, Ws_i, Ws_e_min]
-            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5]][G, Ws_i, Ws_e_max]
-            // 7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψs * m_arrLoadCaseGroups[1]][G, Ss, ψs Q]
-            // ψE = 0;
-            // 8 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q]
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            Generate(loadCaseGroups);
+            // 2 - [1.0 * m_arrLoadCaseGroups[0] x ψs * m_arrLoadCaseGroups[1]][G, ψs Q] ψs = 0.7;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
+            Generate(loadCaseGroups);
+            // 3 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[9], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e_min, Q] ψs = 0.7;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
+            Generate(loadCaseGroups);
+            // 4 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[10], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e_max, Q] ψs = 0.7;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[10].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[10]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
+            Generate(loadCaseGroups);
+            // 5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[9]][G, Ws_i, Ws_e_min]
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
+            Generate(loadCaseGroups);
+            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[10]][G, Ws_i, Ws_e_max]
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[10].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[10]);
+            Generate(loadCaseGroups);
+            // 7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[7], ψs * m_arrLoadCaseGroups[1]][G, Ss, ψs Q] ψs = 0.7;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[7].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[7]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
+            Generate(loadCaseGroups);
+            // 8 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[11], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q] ψE = 0;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[11].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[11]);
+            Generate(loadCaseGroups);
 
             CreateCombinations();
         }
@@ -153,18 +212,26 @@ namespace BaseClasses
             Combinations.Clear();
             CLoadCombination combination;
 
+            int i = 1; // Combination ID
+
             foreach (List<CLoadCase> l in permutationsLoadCases)
             {
                 combination = new CLoadCombination();
-                List<float> factors = new List<float>();                
+                List<float> factors = new List<float>();
                 foreach (CLoadCase lc in l)
                 {
                     factors.Add(lc.Factor);
                 }
                 combination.LoadCasesFactorsList = factors;
                 combination.LoadCasesList = l;
+                combination.ID = i;
+                combination.Name = "CO " + i.ToString();
 
-                if(!Combinations.Contains(combination)) Combinations.Add(combination);
+                if (!Combinations.Contains(combination))
+                {
+                    Combinations.Add(combination);
+                    i++; // Increase ID for next combination
+                }
                 else SameCombinations.Add(combination);
             }
         }
@@ -217,7 +284,6 @@ namespace BaseClasses
                     }
                     combinationsLoadCases.AddRange(newCombinationsLoadCases);
                 }
-
             }
 
             //we have all full combinations, we need to make Permutations for each list from combinationsLoadCases
@@ -225,7 +291,6 @@ namespace BaseClasses
             {
                 permutationsLoadCases.AddRange(GetAllCombos(l));
             }
-
         }
 
         public void GenerateULS()
@@ -338,13 +403,13 @@ namespace BaseClasses
             sb.Append("\nCombinations: \n\n");
             foreach (CLoadCombination lc in MCombinations)
             {
-                count++;                
+                count++;
                 sb.AppendFormat("{0}. ", count);
                 for (int i = 0; i < lc.LoadCasesList.Count; i++)
                 {
                     sb.AppendFormat("[ID:{0} Factor:{1}], ", lc.LoadCasesList[i].ID, lc.LoadCasesFactorsList[i]);
                 }
-                sb.Append(Environment.NewLine);                
+                sb.Append(Environment.NewLine);
             }
             System.Diagnostics.Trace.WriteLine(sb.ToString());
         }
@@ -371,13 +436,13 @@ namespace BaseClasses
             sb.Append("\nPermutations:\n\n");
             foreach (List<CLoadCase> l in permutationsLoadCases)
             {
-                count++;                
+                count++;
                 sb.AppendFormat("{0}. ", count);
                 foreach (CLoadCase lc in l)
                 {
                     sb.AppendFormat("{0},", lc.ID);
                 }
-                sb.Append(Environment.NewLine);                
+                sb.Append(Environment.NewLine);
             }
             System.Diagnostics.Trace.WriteLine(sb.ToString());
         }
@@ -419,6 +484,5 @@ namespace BaseClasses
         //    }
         //    return result;
         //}
-
     }
 }
