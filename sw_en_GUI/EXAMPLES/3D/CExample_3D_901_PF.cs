@@ -1052,7 +1052,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////
             // Snazil som sa napojit objekt generator.Combinations na GUI, dufam ze je to ten spravny pre output:)
-            // Pridal som SLS groups, ale zobrazuje sa vsade len typ ULS, tak asi si tam nastaveny zly typ limit state?
+            // Pridal som SLS groups, ale zobrazuje sa vsade len typ ULS, tak asi je tam nastaveny zly typ limit state?
 
             // (A) Priorita 4
             // Bolo by super zobrazit v dalsom stlpci v UC_LoadCombinationsList predpis "Combination Key", podla ktoreho sa to vygenerovalo
@@ -1066,14 +1066,14 @@ namespace sw_en_GUI.EXAMPLES._3D
             // (B) Priorita 1
             // V kombinaciach by asi mal byt vzdy aspon jeden load case z kazdej zadanej skupinky (load group), ktore vstupuju do generovania,
             // teraz tam mame napr. aj 0.7 LC2 co nema velmi zmysel. Dolezite je vyfiltrovat zo vsetkeho co sa vygeneruje len, tie ktore su naozaj dolezite a podla predpisu
-            // aby tam nebolo zbytocne vela objektov. Cim ich bude menej tym to bude jednoduchsie pre dalsie vypocty.
+            // aby tam nebolo zbytocne vela objektov. Cim ich bude menej, tym to bude jednoduchsie pre dalsie vypocty.
 
             // (C) Priorita 1
             // Pre vietor by sa mali kombinovat len LC s rovnakym smerom -X, +X, -Y, +Y
             // Kombinuje sa (Wcpi + Wcpemin) alebo (Wcpi + Wcpemax), takze ak je napriklad nakombinovany Wcpi +X s Wcpe_min -Y tak to treba vyhodit
 
             // (D) Priorita 2
-            // Mozeme zozname load cases v kombinacii preusporiadat load cases tak, aby to zacinalo LC s najnizsim ID
+            // Mozeme zoznam load cases v kombinacii preusporiadat load cases tak, aby to zacinalo LC s najnizsim ID
             // Teraz mame napr. 1 x LC11 + 1 x LC5 + 1 x LC1
             // Chceme 1 x LC1 + 1 x LC5 + 1 x LC11
 
