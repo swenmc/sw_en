@@ -1083,10 +1083,11 @@ namespace sw_en_GUI.EXAMPLES._3D
             // (E) Priorita 4
             // V GUI by bolo elegantne zobrazovat vsetky faktory na jedno alebo dve desatinne miesta (aj ak je hodnota = 1)
 
-            m_arrLoadCombs = new CLoadCombination[generator.Combinations.Count];
-
-            for (int i = 0; i < m_arrLoadCombs.Length; i++)
-                m_arrLoadCombs[i] = generator.Combinations[i];
+            
+            //m_arrLoadCombs = new CLoadCombination[generator.Combinations.Count];
+            //for (int i = 0; i < m_arrLoadCombs.Length; i++)
+            //    m_arrLoadCombs[i] = generator.Combinations[i];
+            m_arrLoadCombs = generator.Combinations.ToArray();
 
             // Limit States
             m_arrLimitStates = new CLimitState[3];
