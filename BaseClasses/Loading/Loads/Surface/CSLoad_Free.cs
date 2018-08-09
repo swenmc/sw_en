@@ -16,6 +16,9 @@ namespace BaseClasses
         private ESLoadTypeDistr m_sLoadTypeDistr; // Type of external force distribution
         private ESLoadType m_sLoadType; // Type of external force
         private ELoadDir m_eLoadDirection;
+        private float m_fRotationX_deg;
+        private float m_fRotationY_deg;
+        private float m_fRotationZ_deg;
 
         //----------------------------------------------------------------------------
         /*public int[] ISurfaceCollection
@@ -37,6 +40,24 @@ namespace BaseClasses
         {
             get { return m_eLoadDirection; }
             set { m_eLoadDirection = value; }
+        }
+
+        public float RotationX_deg
+        {
+            get { return m_fRotationX_deg; }
+            set { m_fRotationX_deg = value; }
+        }
+
+        public float RotationY_deg
+        {
+            get { return m_fRotationY_deg; }
+            set { m_fRotationY_deg = value; }
+        }
+
+        public float RotationZ_deg
+        {
+            get { return m_fRotationZ_deg; }
+            set { m_fRotationZ_deg = value; }
         }
 
         // TODO - zapracovat do GUI option uzivatelske nastavenie, aku velkost v 3D zobrazeni ma mat 1kN , 1 kN / m, 1 kN / m2 (rozne typy zatazenia, bodove, liniove, plosne)

@@ -847,14 +847,14 @@ namespace BaseClasses
                                 // Potrebujeme sa nejako dostat k bodom siete, asi sa to da urobit aj elegantnejsie :-/
                                 GeometryModel3D m = new GeometryModel3D();
                                 m = (GeometryModel3D)model3D.Children[j];
-                                MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;                                                               
+                                MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;
                                 wireFrameAllMembers.Points.Add(geom.Positions[no]); // Add Point3D to the collection
                             }
                         }
                     }
                 }
 
-                // Add Wireframe Lines to the trackport                
+                // Add Wireframe Lines to the trackport
                 wireFrameAllMembers.Name = "WireFrame_Members";
                 model.WireFrameMembers = wireFrameAllMembers;
                 viewPort.Children.Add(wireFrameAllMembers);

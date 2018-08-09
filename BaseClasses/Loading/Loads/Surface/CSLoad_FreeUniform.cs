@@ -15,9 +15,6 @@ namespace BaseClasses
         Point3DCollection pSurfacePoints;
 
         float fValue;
-        float m_fRotationX_deg;
-        float m_fRotationY_deg;
-        float m_fRotationZ_deg;
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
@@ -43,7 +40,7 @@ namespace BaseClasses
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
-            bool bUseDifferentColorForNegativeValue = true;
+            bool bUseDifferentColorForNegativeValue = true;  // TODO - uzivatelsky nastavitelne
             m_Color = Colors.OrangeRed;
 
             if (bUseDifferentColorForNegativeValue && fValue < 0)
@@ -71,13 +68,13 @@ namespace BaseClasses
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
 
             fValue = fValue_temp;
-            m_fRotationX_deg = m_fRotationX_deg_temp;
-            m_fRotationY_deg = m_fRotationY_deg_temp;
-            m_fRotationZ_deg = m_fRotationZ_deg_temp;
+            RotationX_deg = m_fRotationX_deg_temp;
+            RotationY_deg = m_fRotationY_deg_temp;
+            RotationZ_deg = m_fRotationZ_deg_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
-            bool bUseDifferentColorForNegativeValue = true;
+            bool bUseDifferentColorForNegativeValue = true;  // TODO - uzivatelsky nastavitelne
             m_Color = Colors.OrangeRed;
 
             if (bUseDifferentColorForNegativeValue && fValue < 0)
@@ -106,17 +103,21 @@ namespace BaseClasses
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
 
             fValue = fValue_temp;
-            m_fRotationX_deg = m_fRotationX_deg_temp;
-            m_fRotationY_deg = m_fRotationY_deg_temp;
-            m_fRotationZ_deg = m_fRotationZ_deg_temp;
+            RotationX_deg = m_fRotationX_deg_temp;
+            RotationY_deg = m_fRotationY_deg_temp;
+            RotationZ_deg = m_fRotationZ_deg_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
-            bool bUseDifferentColorForNegativeValue = true;
+            bool bUseDifferentColorForNegativeValue = false; // TODO - uzivatelsky nastavitelne
             m_Color = color_temp;
 
             if (bUseDifferentColorForNegativeValue && fValue < 0)
-                m_Color = Colors.LightSkyBlue;
+            {
+                // TODO Ondrej - zapracovat nejaky algoritmus, ktory zmeni farbu m_Color, ak je hodnota negativna
+                // Nastavit napriklad nejaky posun v skale alebo zaviest skalu farieb pre kladne (odtiene cervenej) a zaporne (odtiene modrej) hodnoty a z tych potom vyberat
+                m_Color = Colors.LightSkyBlue; 
+            }
         }
 
         // Constructor used for Gable Roof Building - wall (5 edges)
@@ -142,17 +143,21 @@ namespace BaseClasses
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(0.5f * fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
 
             fValue = fValue_temp;
-            m_fRotationX_deg = m_fRotationX_deg_temp;
-            m_fRotationY_deg = m_fRotationY_deg_temp;
-            m_fRotationZ_deg = m_fRotationZ_deg_temp;
+            RotationX_deg = m_fRotationX_deg_temp;
+            RotationY_deg = m_fRotationY_deg_temp;
+            RotationZ_deg = m_fRotationZ_deg_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
-            bool bUseDifferentColorForNegativeValue = true;
+            bool bUseDifferentColorForNegativeValue = false; // TODO - uzivatelsky nastavitelne
             m_Color = color_temp;
 
             if (bUseDifferentColorForNegativeValue && fValue < 0)
+            {
+                // TODO Ondrej - zapracovat nejaky algoritmus, ktory zmeni farbu m_Color, ak je hodnota negativna
+                // Nastavit napriklad nejaky posun v skale alebo zaviest skalu farieb pre kladne (odtiene cervenej) a zaporne (odtiene modrej) hodnoty a z tych potom vyberat
                 m_Color = Colors.LightSkyBlue;
+            }
         }
 
         public override Model3DGroup CreateM_3D_G_Load()
@@ -181,10 +186,10 @@ namespace BaseClasses
                 float fy = 0.0f;
 
                 // Todo limit 35 stupnov je tak trosku riskantny, asi by to malo byt zadane jednoznacne ci sa maju skosit hrany kvadra, resp ze normala plochy zviera s osou Z uhol mensi nez 90 stupnov
-                if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDirection == ELoadDir.eLD_Z && Math.Abs(m_fRotationX_deg) < 35) // Load defined in GCS in global Z direction, rotation is less than 35 deg in absolute value - so we know that it is roof pitch angle
+                if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDirection == ELoadDir.eLD_Z && Math.Abs(RotationX_deg) < 35) // Load defined in GCS in global Z direction, rotation is less than 35 deg in absolute value - so we know that it is roof pitch angle
                 {
                     // Move coordinates in y-direction
-                    fy = (float)Math.Tan(m_fRotationX_deg / 180 * Math.PI) * fValueFor3D;
+                    fy = (float)Math.Tan(RotationX_deg / 180 * Math.PI) * fValueFor3D;
                 }
 
                 // Set point coordinates
@@ -219,9 +224,9 @@ namespace BaseClasses
             RotateTransform3D RotateTrans3D_AUX_Y = new RotateTransform3D();
             RotateTransform3D RotateTrans3D_AUX_Z = new RotateTransform3D();
 
-            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), m_fRotationX_deg); // Rotation in degrees
-            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), m_fRotationY_deg); // Rotation in degrees
-            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), m_fRotationZ_deg); // Rotation in degrees
+            RotateTrans3D_AUX_X.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), RotationX_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Y.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), RotationY_deg); // Rotation in degrees
+            RotateTrans3D_AUX_Z.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), RotationZ_deg); // Rotation in degrees
 
             // Move 0,0,0 to control point in GCS
             TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z);
