@@ -11,6 +11,6 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="1260"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="false"/>
+        <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true"/>
     </Grid>
 </UserControl>

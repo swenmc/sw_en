@@ -5,19 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Height="220" Width="750">
+        Height="260" Width="750">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="220"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_Components" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                   IsReadOnly="false" AutoGenerateColumns="False" ItemsSource="{Binding ComponentList}">
             <DataGrid.Resources>
                 <CollectionViewSource x:Key="Sections" Source="{Binding Sections}"/>
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Visible" Binding="{Binding Prefix}" Header="Prefix" Width="Auto"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ComponentName}" Header="ComponentName" Width="Auto"></DataGridTextColumn>                
+                <DataGridTextColumn Binding="{Binding ComponentName}" Header="ComponentName" Width="Auto"></DataGridTextColumn>
                 <DataGridComboBoxColumn Header="Section" Width="Auto"
                                 SelectedItemBinding="{Binding Path=Section}"
                                 ItemsSource="{Binding Source={StaticResource Sections}}" />
@@ -29,7 +30,5 @@
                 <DataGridCheckBoxColumn Binding="{Binding MaterialList}" Header="MaterialList" Width="Auto"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
-        
-        
     </Grid>
 </UserControl>

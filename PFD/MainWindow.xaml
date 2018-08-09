@@ -253,12 +253,9 @@
             <TabItem Name ="Load_Cases" Header="Load Cases"/>
             <TabItem Name ="Load_Combinations" Header="Load Combinations"/>
             <TabItem Name ="Internal_Forces" Header="Internal Forces"/>
-            <TabItem Name ="Member_Design" Header="Member Design">
-
-            </TabItem>
+            <TabItem Name ="Member_Design" Header="Member Design"/>
             <TabItem Name ="Joint_Design" Header="Joint Design"/>
-            <TabItem Name ="Part_List" Header="Parts List">
-            </TabItem>
+            <TabItem Name ="Part_List" Header="Parts List"/>
             <TabItem Name ="Quotation">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
