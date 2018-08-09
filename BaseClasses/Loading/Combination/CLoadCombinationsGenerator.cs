@@ -261,11 +261,10 @@ namespace BaseClasses
         }
         private void SetIDandNameForCombinations()
         {
-            int i = 1;
-            foreach (CLoadCombination combination in Combinations)
+            for(int i = 0; i < Combinations.Count; i++)
             {
-                combination.ID = i;
-                combination.Name = "CO " + i.ToString();
+                Combinations[i].ID = i + 1;
+                Combinations[i].Name = string.Format("CO {0}", (i+1));                
             }
         }
 
