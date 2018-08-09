@@ -61,13 +61,14 @@ namespace DATABASE
             }
             return items;
         }
+
         public static CSectionProperties LoadSectionProperties(int ID)
         {
             CSectionProperties properties = null;
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from KitsetGableRoofEnclosed WHERE ID = @id", conn);
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_mm WHERE ID = @id", conn);
                 command.Parameters.AddWithValue("@id", ID);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -113,7 +114,48 @@ namespace DATABASE
             }
             return properties;
         }
-        public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
+
+        public static List<string> LoadSectionPropertiesStringList(int ID)
+        {
+            CSectionProperties properties = LoadSectionProperties(ID);
+
+            List<string> list = new List<string>();
+            list.Add(properties.h);
+            list.Add(properties.b);
+            list.Add(properties.t);
+            list.Add(properties.A_g);
+            list.Add(properties.I_y0);
+            list.Add(properties.I_z0);
+            list.Add(properties.W_el_y0);
+            list.Add(properties.W_el_z0);
+            list.Add(properties.Iyz0);
+            list.Add(properties.Iy);
+            list.Add(properties.Iz);
+            list.Add(properties.W_el_y);
+            list.Add(properties.W_el_z);
+            list.Add(properties.It);
+            list.Add(properties.Iw);
+            list.Add(properties.yc);
+            list.Add(properties.zc);
+            list.Add(properties.ys);
+            list.Add(properties.zs);
+            list.Add(properties.ycs);
+            list.Add(properties.zcs);
+            list.Add(properties.betay);
+            list.Add(properties.betaz);
+            list.Add(properties.alpha_deg);
+            list.Add(properties.Bending_curve_x1);
+            list.Add(properties.Bending_curve_x2);
+            list.Add(properties.Bending_curve_x3);
+            list.Add(properties.Bending_curve_y);
+            list.Add(properties.Compression_curve_1);
+            list.Add(properties.Compression_curve_2);
+            list.Add(properties.Compression_curve_3);
+
+            return list;
+        }
+
+            public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
         {
             CSectionPropertiesText properties;
             List<CSectionPropertiesText> items = new List<CSectionPropertiesText>();

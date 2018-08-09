@@ -14,7 +14,7 @@
             <RowDefinition Height="950"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_Components" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="false" AutoGenerateColumns="False" ItemsSource="{Binding ComponentList}">
+                  IsReadOnly="false" AutoGenerateColumns="False" ItemsSource="{Binding ComponentList}" SelectionChanged="Datagrid_Components_SelectionChanged">
             <DataGrid.Resources>
                 <CollectionViewSource x:Key="Sections" Source="{Binding Sections}"/>
             </DataGrid.Resources>
@@ -35,7 +35,7 @@
 
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Component Details" VerticalAlignment="Top" Width="200" Margin="10,2,0,0" FontSize="16"/>
         <DataGrid Name ="Datagrid_ComponentDetails" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                  IsReadOnly="false" AutoGenerateColumns="True" ItemsSource="{Binding ComponentDeailsList}">
+                  IsReadOnly="true" AutoGenerateColumns="True" ItemsSource="{Binding ComponentDetailsList}">
             </DataGrid>
     </Grid>
 </UserControl>
