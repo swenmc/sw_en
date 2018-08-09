@@ -10,7 +10,7 @@ namespace DATABASE
     {
         public static List<string> GetStringList(string connStringDBName, string tableName, string columnName)
         {
-            List<string> items = new List<string>();            
+            List<string> items = new List<string>();
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings[connStringDBName].ConnectionString))
             {
                 conn.Open();

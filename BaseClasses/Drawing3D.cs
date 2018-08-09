@@ -24,7 +24,7 @@ namespace BaseClasses
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
 
-            System.Diagnostics.Trace.WriteLine("Begining: " + (DateTime.Now - start).TotalMilliseconds);
+            System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
                 Model3DGroup gr = new Model3DGroup();
@@ -660,6 +660,7 @@ namespace BaseClasses
         // Draw GCS Axis
         public static void DrawGlobalAxis(Viewport3D viewPort, CModel model)
         {
+            float flineThickness = 3;
             // Global coordinate system - axis
             ScreenSpaceLines3D sAxisX_3D = new ScreenSpaceLines3D();
             ScreenSpaceLines3D sAxisY_3D = new ScreenSpaceLines3D();
@@ -672,19 +673,19 @@ namespace BaseClasses
             sAxisX_3D.Points.Add(pGCS_centre);
             sAxisX_3D.Points.Add(pAxisX);
             sAxisX_3D.Color = Colors.Red;
-            sAxisX_3D.Thickness = 2;
+            sAxisX_3D.Thickness = flineThickness;
             sAxisX_3D.Name = "AxisX";
 
             sAxisY_3D.Points.Add(pGCS_centre);
             sAxisY_3D.Points.Add(pAxisY);
             sAxisY_3D.Color = Colors.Green;
-            sAxisY_3D.Thickness = 2;
+            sAxisY_3D.Thickness = flineThickness;
             sAxisY_3D.Name = "AxisY";
 
             sAxisZ_3D.Points.Add(pGCS_centre);
             sAxisZ_3D.Points.Add(pAxisZ);
             sAxisZ_3D.Color = Colors.Blue;
-            sAxisZ_3D.Thickness = 2;
+            sAxisZ_3D.Thickness = flineThickness;
             sAxisZ_3D.Name = "AxisZ";
 
             model.AxisX = sAxisX_3D;
@@ -695,19 +696,19 @@ namespace BaseClasses
             WireLine wX = new WireLine();
             wX.Point1 = pGCS_centre;
             wX.Point2 = pAxisX;
-            wX.Thickness = 2;
+            wX.Thickness = flineThickness;
             wX.Color = Colors.Red;
 
             WireLine wY = new WireLine();
             wY.Point1 = pGCS_centre;
             wY.Point2 = pAxisY;
-            wY.Thickness = 2;
+            wY.Thickness = flineThickness;
             wY.Color = Colors.Green;
 
             WireLine wZ = new WireLine();
             wZ.Point1 = pGCS_centre;
             wZ.Point2 = pAxisZ;
-            wZ.Thickness = 2;
+            wZ.Thickness = flineThickness;
             wZ.Color = Colors.Blue;
 
             viewPort.Children.Add(wX);
@@ -1129,7 +1130,8 @@ namespace BaseClasses
 
                         // TODO - Ondrej - vytvorit v GUI dialog options kde si uzivatel moze vybrat co chce na prute zobrazit a z toho vyskladat tento text;
                         string sTextToDisplay =
-                            model.m_arrMembers[i].ID.ToString() + " - " + // Number of member
+                            model.m_arrMembers[i].ID.ToString() + " - " +   // Number of member
+                            model.m_arrMembers[i].Prefix + " - " +          // Member prefix
                             model.m_arrMembers[i].CrScStart.Name + " - " +  // Member cross-section (start)
                             Math.Round(model.m_arrMembers[i].FLength_real,3).ToString() + "m"; // Member real length
 
@@ -1145,6 +1147,7 @@ namespace BaseClasses
                         tb.FontStyle = FontStyles.Normal;
                         tb.FontWeight = FontWeights.Thin;
                         tb.Foreground = Brushes.Coral;
+                        tb.Background = Brushes.Black; // TODO - In case that solid model is displayed it is reasonable to use black backround of text or offset texts usig cross-section dimension
 
                         float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
 
@@ -1267,7 +1270,7 @@ namespace BaseClasses
             // And that's all.  Return the result.
 
             ModelVisual3D mv3d = new ModelVisual3D();
-            mv3d.Content = new GeometryModel3D(mg, mat); ;
+            mv3d.Content = new GeometryModel3D(mg, mat);
             return mv3d;
         }
 

@@ -7,7 +7,7 @@ using System.Data.SQLite;
 namespace DATABASE
 {
     public static class CModelsManager
-    {        
+    {
         public static List<CKitsetGableRoofEnclosed> LoadModelKitsetGableRoofEnclosed()
         {
             CKitsetGableRoofEnclosed model;
@@ -78,13 +78,34 @@ namespace DATABASE
                         model.ColumnFrontSide = reader["columnFrontSide"].ToString();
                         model.ColumnBackSide = reader["columnBackSide"].ToString();
                         model.GirtFrontSide = reader["girtFrontSide"].ToString();
-                        model.GirtBackSide = reader["girtBackSide"].ToString();                        
+                        model.GirtBackSide = reader["girtBackSide"].ToString();
                     }
                 }
             }
             return model;
         }
-        
+        public static CComponentPrefixes LoadModelComponent(int ID)
+        {
+            CComponentPrefixes component = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from componentPrefixes WHERE ID = @id", conn);
+                command.Parameters.AddWithValue("@id", ID);
 
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        component = new CComponentPrefixes();
+                        component.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        component.ComponentPrefix = reader["componentPrefix"].ToString();
+                        component.ComponentName = reader["componentName"].ToString();
+                        component.ComponentColorCodeRGB = reader["componentColorRGB"].ToString();
+                    }
+                }
+            }
+            return component;
+        }
     }
 }

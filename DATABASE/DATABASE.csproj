@@ -83,6 +83,7 @@
     <Compile Include="CTrapezoidalSheetingManager.cs" />
     <Compile Include="CDatabaseManager.cs" />
     <Compile Include="DatabaseConnection.cs" />
+    <Compile Include="DTO\CComponentPrefixes.cs" />
     <Compile Include="DTO\CKitsetGableRoofEnclosed.cs" />
     <Compile Include="DTO\CTrapezoidalSheetingColours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

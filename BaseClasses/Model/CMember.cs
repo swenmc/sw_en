@@ -7,6 +7,8 @@ using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using MATH;
 using _3DTools;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
@@ -90,7 +92,13 @@ namespace BaseClasses
             set { m_EccentricityEnd = value; }
         }
 
-        public EMemberType_FormSteel eMemberType_FS;
+        private EMemberType_FormSteel eMemberType_FS;
+
+        public EMemberType_FormSteel EMemberType
+        {
+            get { return eMemberType_FS; }
+            set { eMemberType_FS = value; }
+        }
 
         // Priemet do osi GCS - rozdiel suradnic v GCS
         private double dDelta_X;
@@ -380,6 +388,12 @@ namespace BaseClasses
 
             if (m_CrScEnd != null)
                 m_CrScEnd.AssignedMembersList.Add(this);
+
+            // Set member name according to enum value of member type
+            CComponentPrefixes component = CModelsManager.LoadModelComponent((int)EMemberType + 1);
+
+            Prefix = component.ComponentPrefix;
+            Name = component.ComponentName;
 
             // Set as default property that member should be displayed
             BIsDisplayed = true;

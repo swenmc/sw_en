@@ -109,7 +109,7 @@ namespace PFD
                         if (model.m_arrCrSc[i].AssignedMembersList[j].BIsDisplayed)
                         {
                             // Define current member properties
-                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0];
+                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0];
                             string sCrScName = model.m_arrCrSc[i].Name;
                             int iQuantity = 1;
                             string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
@@ -126,7 +126,7 @@ namespace PFD
                             {
                                 for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
                                 {
-                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].eMemberType_FS, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].eMemberType_FS, 0]) &&
+                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0]) &&
                                     (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
                                     {
                                         // Add member to the one from already created groups
