@@ -76,7 +76,7 @@ namespace PFD
 
             cl.PropertyChanged += HandleComponentListPropertyChangedEvent;
             this.DataContext = cl;
-            
+
 
             // For each component add one row
             //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0]);   // "MC"
@@ -236,7 +236,7 @@ namespace PFD
 
         protected void HandleComponentListPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
-            if (sender == null) return;            
+            if (sender == null) return;
         }
 
         private void DeleteAllLists()

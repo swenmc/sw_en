@@ -80,11 +80,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CModelsManager.cs" />
+    <Compile Include="CSectionManager.cs" />
+    <Compile Include="DTO\CSectionPropertiesText.cs" />
     <Compile Include="CTrapezoidalSheetingManager.cs" />
     <Compile Include="CDatabaseManager.cs" />
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="DTO\CComponentPrefixes.cs" />
     <Compile Include="DTO\CKitsetGableRoofEnclosed.cs" />
+    <Compile Include="DTO\CSectionProperties.cs" />
     <Compile Include="DTO\CTrapezoidalSheetingColours.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
