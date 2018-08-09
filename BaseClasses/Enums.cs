@@ -296,6 +296,7 @@ namespace BaseClasses
     //----------------------------------------------------------------------------
     public enum ELCMainDirection
     {
+        eUndefined,
         eGeneral,
         eMinusX,
         ePlusX,
