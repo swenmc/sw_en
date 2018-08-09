@@ -828,6 +828,8 @@ namespace PFD
             sDisplayOptions.bDisplayPlates = chbDisplayPlates.IsChecked == true;
             sDisplayOptions.bDisplayConnectors = chbDisplayConnectors.IsChecked == true;
 
+            sDisplayOptions.bDisplayMemberDescription = chbDisplayMemberDescription.IsChecked == true;
+
             sDisplayOptions.bDisplayMembersCenterLines = chbDisplayMembersCenterLines.IsChecked == true;
             sDisplayOptions.bDisplaySolidModel = chbDisplaySolidModel.IsChecked == true;
             sDisplayOptions.bDisplayWireFrameModel = chbDisplayWireFrameModel.IsChecked == true;
@@ -1158,6 +1160,22 @@ namespace PFD
             }
         }
         private void chbDisplayConnectors_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayMemberDescription_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayMemberDescription_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {

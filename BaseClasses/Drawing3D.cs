@@ -4,6 +4,8 @@ using Petzold.Media3D;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -79,6 +81,13 @@ namespace BaseClasses
                     Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
                 }
                 System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
+
+                if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
+                {
+                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort);
+                    System.Diagnostics.Trace.WriteLine("After DrawMemberDescriptionTexts: " + (DateTime.Now - start).TotalMilliseconds);
+                }
+
             }
 
             _trackport.SetupScene();
@@ -648,6 +657,7 @@ namespace BaseClasses
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        // Draw GCS Axis
         public static void DrawGlobalAxis(Viewport3D viewPort, CModel model)
         {
             // Global coordinate system - axis
@@ -709,8 +719,6 @@ namespace BaseClasses
             //viewPort.Children.Add(sAxisY_3D);
             //viewPort.Children.Add(sAxisZ_3D);
         }
-        //-------------------------------------------------------------------------------------------------------------
-
         // Draw Members Centerlines
         public static void DrawModelMembersCenterLines(CModel model, Viewport3D viewPort)
         {
@@ -728,18 +736,17 @@ namespace BaseClasses
                         model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
                     {
                         Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
-                        Point3D pEndStart = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
+                        Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
 
                         // Create centerline of member
                         lines.Points.Add(pNodeStart); // Add Start Node
-                        lines.Points.Add(pEndStart); // Add End Node
+                        lines.Points.Add(pNodeEnd); // Add End Node
                     }
                 }
 
                 viewPort.Children.Add(lines);
             }
         }
-
         // Draw Members Wire Frame
         public static void DrawModelMembersWireFrame_temp(CModel model, Viewport3D viewPort)
         {
@@ -799,7 +806,6 @@ namespace BaseClasses
                 viewPort.Children.Add(wireFrame_Lateral);
             }
         }
-
         // Add all members in one wireframe collection of ScreenSpaceLines3D
         public static void DrawModelMembersinOneWireFrame(CModel model, Viewport3D viewPort)
         {
@@ -853,7 +859,6 @@ namespace BaseClasses
                 viewPort.Children.Add(wireFrameAllMembers);
             }
         }
-
         // Add all members in one wireframe collection of ScreenSpaceLines3D
         public static void DrawModelMembersWireFrame_OP(CModel model, Viewport3D viewPort)
         {
@@ -890,11 +895,10 @@ namespace BaseClasses
 
             }
         }
-
         // Draw Model Connection Joints Wire Frame
         public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, bool drawConnectors = true)
         {
-            //Wireframe Points of all joints            
+            //Wireframe Points of all joints
             List<Point3D> jointsWireFramePoints = new List<Point3D>();
 
             if (model.m_arrConnectionJoints != null)
@@ -1020,22 +1024,18 @@ namespace BaseClasses
                 wl.Lines = new Point3DCollection(jointsWireFramePoints);
                 wl.Color = Colors.White;
                 viewPort.Children.Add(wl);
-                
-
             }
         }
-
-        public static GeometryModel3D GetGeoMetryModel3DFrom(Model3DGroup model3DGroup)
+        public static GeometryModel3D GetGeometryModel3DFrom(Model3DGroup model3DGroup)
         {
             GeometryModel3D gm = null;
             foreach (Model3D m in model3DGroup.Children)
             {
-                if (m is Model3DGroup) gm = GetGeoMetryModel3DFrom(m as Model3DGroup);
+                if (m is Model3DGroup) gm = GetGeometryModel3DFrom(m as Model3DGroup);
                 else if (m is GeometryModel3D) gm = m as GeometryModel3D;
             }
             return gm;
         }
-
         // Draw Members Wire Frame
         public static void DrawMemberWireFrame(CMember member, Viewport3D viewPort, float memberLength)
         {
@@ -1057,7 +1057,7 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_BackSide);
             viewPort.Children.Add(wireFrame_Lateral);
         }
-
+        //  Lights
         public static void AddLightsToModel3D(Model3DGroup gr, DisplayOptions sDisplayOptions)
         {
             /*
@@ -1107,6 +1107,179 @@ namespace BaseClasses
                 Ambient_Light.Color = Colors.Gray;
                 gr.Children.Add(new AmbientLight());
             }
+        }
+        // Draw Text in 3D
+        public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort)
+        {
+            // Members
+            if (model.m_arrMembers != null)
+            {
+                ModelVisual3D textlabel = null;
+
+                for (int i = 0; i < model.m_arrMembers.Length; i++)
+                {
+                    if (model.m_arrMembers[i] != null &&
+                        model.m_arrMembers[i].NodeStart != null &&
+                        model.m_arrMembers[i].NodeEnd != null &&
+                        model.m_arrMembers[i].CrScStart != null &&
+                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+                    {
+                        Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
+                        Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
+
+                        // TODO - Ondrej - vytvorit v GUI dialog options kde si uzivatel moze vybrat co chce na prute zobrazit a z toho vyskladat tento text;
+                        string sTextToDisplay =
+                            model.m_arrMembers[i].ID.ToString() + " - " + // Number of member
+                            model.m_arrMembers[i].CrScStart.Name + " - " +  // Member cross-section (start)
+                            Math.Round(model.m_arrMembers[i].FLength_real,3).ToString() + "m"; // Member real length
+
+                        TextBlock tb = new TextBlock();
+                        tb.Text = sTextToDisplay;
+                        tb.FontFamily = new FontFamily("Arial");
+                        float fTextBlockVerticalSize = 0.1f;
+                        float fTextBlockVerticalSizeFactor = 0.8f;
+                        float fTextBlockHorizontalSizeFactor = 0.3f;
+
+                        // Tieto nastavenia sa nepouziju
+                        tb.FontStretch = FontStretches.UltraCondensed;
+                        tb.FontStyle = FontStyles.Normal;
+                        tb.FontWeight = FontWeights.Thin;
+                        tb.Foreground = Brushes.Coral;
+
+                        float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
+
+                        // TODO Ondrej - vylepsit vykreslovanie a odsadenie
+                        // Teraz to kreslime priamo do GCS, ale asi by bolo lepsie kreslit do LCS a potom text transformovat
+                        // pripadne vypocitat podla orientacie pruta vector z hodnot delta ako je prut orientovany v priestore a podla toho nastavit
+                        // hodnoty vektorov pre funkciu CreateTextLabel3D) :over" and "up"
+                        // Do user options by som dal nastavenie ci sa ma text kreslit horizontalne na obrazovke v rovine obrazovky
+                        // alebo podla polohy pruta (rovnobezne s lokalnou osou x pruta) horizontalne alebo vertikalne podla orientacie osi x pruta v lokanych rovinach x,y alebo x,z pruta
+
+                        float fOffsetZ = 0.07f;
+                        Point3D pTextPosition = new Point3D();
+                        pTextPosition.X = pNodeStart.X + fRelativePositionFactor * model.m_arrMembers[i].Delta_X;
+                        pTextPosition.Y = pNodeStart.Y + fRelativePositionFactor * model.m_arrMembers[i].Delta_Y;
+                        pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
+
+                        // Create text
+                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0,0),  new Vector3D (0,0, fTextBlockVerticalSizeFactor));
+                        viewPort.Children.Add(textlabel);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates a ModelVisual3D containing a text label.
+        /// </summary>
+        /// <param name="text">The string</param>
+        /// <param name="textColor">The color of the text.</param>
+        /// <param name="bDoubleSided">Visible from both sides?</param>
+        /// <param name="height">Height of the characters</param>
+        /// <param name="center">The center of the label</param>
+        /// <param name="over">Horizontal direction of the label</param>
+        /// <param name="up">Vertical direction of the label</param>
+        /// <returns>Suitable for adding to your Viewport3D</returns>
+        public static ModelVisual3D CreateTextLabel3D(
+            string text,
+            Brush textColor,
+            bool bDoubleSided,
+            FontFamily font,
+            double height,
+            Point3D center,
+            Vector3D over,
+            Vector3D up)
+        {
+            // First we need a textblock containing the text of our label
+            TextBlock tb = new TextBlock(new Run(text));
+            tb.Foreground = textColor;
+            tb.FontFamily = font;
+
+            // Now use that TextBlock as the brush for a material
+            DiffuseMaterial mat = new DiffuseMaterial();
+            mat.Brush = new VisualBrush(tb);
+
+            // We just assume the characters are square
+            double width = text.Length * height;
+
+            // Since the parameter coming in was the center of the label,
+            // we need to find the four corners
+            // p0 is the lower left corner
+            // p1 is the upper left
+            // p2 is the lower right
+            // p3 is the upper right
+            Point3D p0 = center - width / 2 * over - height / 2 * up;
+            Point3D p1 = p0 + up * 1 * height;
+            Point3D p2 = p0 + over * width;
+            Point3D p3 = p0 + up * 1 * height + over * width;
+
+            // Now build the geometry for the sign.  It's just a
+            // rectangle made of two triangles, on each side.
+
+            MeshGeometry3D mg = new MeshGeometry3D();
+            mg.Positions = new Point3DCollection();
+            mg.Positions.Add(p0);    // 0
+            mg.Positions.Add(p1);    // 1
+            mg.Positions.Add(p2);    // 2
+            mg.Positions.Add(p3);    // 3
+
+            if (bDoubleSided)
+            {
+                mg.Positions.Add(p0);    // 4
+                mg.Positions.Add(p1);    // 5
+                mg.Positions.Add(p2);    // 6
+                mg.Positions.Add(p3);    // 7
+            }
+
+            mg.TriangleIndices.Add(0);
+            mg.TriangleIndices.Add(3);
+            mg.TriangleIndices.Add(1);
+            mg.TriangleIndices.Add(0);
+            mg.TriangleIndices.Add(2);
+            mg.TriangleIndices.Add(3);
+
+            if (bDoubleSided)
+            {
+                mg.TriangleIndices.Add(4);
+                mg.TriangleIndices.Add(5);
+                mg.TriangleIndices.Add(7);
+                mg.TriangleIndices.Add(4);
+                mg.TriangleIndices.Add(7);
+                mg.TriangleIndices.Add(6);
+            }
+
+            // These texture coordinates basically stretch the
+            // TextBox brush to cover the full side of the label.
+
+            mg.TextureCoordinates.Add(new Point(0, 1));
+            mg.TextureCoordinates.Add(new Point(0, 0));
+            mg.TextureCoordinates.Add(new Point(1, 1));
+            mg.TextureCoordinates.Add(new Point(1, 0));
+
+            if (bDoubleSided)
+            {
+                mg.TextureCoordinates.Add(new Point(1, 1));
+                mg.TextureCoordinates.Add(new Point(1, 0));
+                mg.TextureCoordinates.Add(new Point(0, 1));
+                mg.TextureCoordinates.Add(new Point(0, 0));
+            }
+
+            // And that's all.  Return the result.
+
+            ModelVisual3D mv3d = new ModelVisual3D();
+            mv3d.Content = new GeometryModel3D(mg, mat); ;
+            return mv3d;
+        }
+
+        public static ModelVisual3D CreateTextLabel3D(
+            TextBlock tb,
+            bool bDoubleSided,
+            double height,
+            Point3D center,
+            Vector3D over,
+            Vector3D up)
+        {
+            return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up);
         }
 
         //-------------------------------------------------------------------------------------------------------------
