@@ -30,6 +30,7 @@ namespace PFD
         //List<string> listLoadCombinationType = new List<string>();
         List<string> listLoadCombinationLimitState = new List<string>();
         List<string> listLoadCombinationLoadCases = new List<string>();
+        List<string> listLoadCombinationKeys = new List<string>();
 
         public UC_LoadCombinationList(CModel model)
         {
@@ -44,20 +45,17 @@ namespace PFD
                 listLoadCombinationID.Add(model.m_arrLoadCombs[i].ID);
                 listLoadCombinationName.Add(model.m_arrLoadCombs[i].Name);
                 listLoadCombinationLimitState.Add(model.m_arrLoadCombs[i].eLComType == ELSType.eLS_ULS ? "ULS" : "SLS"); // ! Todo ak sa prida dalsi type LS je nutne upravit
+                listLoadCombinationKeys.Add(model.m_arrLoadCombs[i].CombinationKey);
 
-                string sLoadCases_temp = "";
+                StringBuilder sb = new StringBuilder();
                 for (int j = 0; j < model.m_arrLoadCombs[i].LoadCasesList.Count; j++)
                 {
-                    sLoadCases_temp +=
-                    Math.Round(model.m_arrLoadCombs[i].LoadCasesFactorsList[j], 2).ToString() +
-                    " * " +
-                    "LC" + model.m_arrLoadCombs[i].LoadCasesList[j].ID.ToString();
-
+                    sb.AppendFormat("{0:F2} * LC{1}", Math.Round(model.m_arrLoadCombs[i].LoadCasesFactorsList[j], 2), model.m_arrLoadCombs[i].LoadCasesList[j].ID);
+                    
                     if(j< model.m_arrLoadCombs[i].LoadCasesList.Count - 1) // All except the last LC
-                       sLoadCases_temp += " + ";
+                       sb.Append(" + ");
                 }
-
-                listLoadCombinationLoadCases.Add(sLoadCases_temp);
+                listLoadCombinationLoadCases.Add(sb.ToString());
             }
 
             // Create Table
@@ -68,12 +66,14 @@ namespace PFD
             table.Columns.Add("Name", typeof(String));
             table.Columns.Add("LimitState", typeof(String));
             table.Columns.Add("LoadCases", typeof(String));
+            table.Columns.Add("CombinationKey", typeof(String));
 
             // Set Column Caption
             table.Columns["ID"].Caption = "ID";
             table.Columns["Name"].Caption = "Name";
             table.Columns["LimitState"].Caption = "LimitState";
             table.Columns["LoadCases"].Caption = "LoadCases";
+            table.Columns["CombinationKey"].Caption = "CombinationKey";
 
             // Create Datases
             ds = new DataSet();
@@ -90,6 +90,7 @@ namespace PFD
                     row["Name"] = listLoadCombinationName[i];
                     row["LimitState"] = listLoadCombinationLimitState[i];
                     row["LoadCases"] = listLoadCombinationLoadCases[i];
+                    row["CombinationKey"] = listLoadCombinationKeys[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);

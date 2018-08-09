@@ -104,6 +104,7 @@ namespace BaseClasses
         public ELSType eLComType;
         public List<float> LoadCasesFactorsList = new List<float>();
         public List<CLoadCase> LoadCasesList = new List<CLoadCase>();
+        public string CombinationKey;
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
