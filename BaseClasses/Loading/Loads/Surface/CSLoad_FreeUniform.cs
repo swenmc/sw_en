@@ -13,8 +13,9 @@ namespace BaseClasses
     public class CSLoad_FreeUniform : CSLoad_Free
     {
         Point3DCollection pSurfacePoints;
-
         float fValue;
+        public bool bDrawPositiveValueOnPlusLocalZSide;
+        public bool bChangePositionForNegativeValue;
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
@@ -26,6 +27,8 @@ namespace BaseClasses
             CPoint pControlPoint_temp,
             Point3DCollection pSurfacePoints_temp,
             float fValue_temp,
+            bool bDrawPositiveValueOnPlusLocalZSide_temp,
+            bool bChangePositionForNegativeValue_temp,
             bool bIsDisplayed,
             float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
@@ -37,6 +40,8 @@ namespace BaseClasses
             m_pControlPoint = pControlPoint_temp;
             pSurfacePoints = pSurfacePoints_temp;
             fValue = fValue_temp;
+            bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
+            bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
@@ -58,6 +63,8 @@ namespace BaseClasses
                float m_fRotationX_deg_temp,
                float m_fRotationY_deg_temp,
                float m_fRotationZ_deg_temp,
+               bool bDrawPositiveValueOnPlusLocalZSide_temp,
+               bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
                float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
@@ -71,6 +78,8 @@ namespace BaseClasses
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;
             RotationZ_deg = m_fRotationZ_deg_temp;
+            bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
+            bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
@@ -93,6 +102,8 @@ namespace BaseClasses
                float m_fRotationY_deg_temp,
                float m_fRotationZ_deg_temp,
                Color color_temp,
+               bool bDrawPositiveValueOnPlusLocalZSide_temp,
+               bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
                float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
@@ -106,6 +117,8 @@ namespace BaseClasses
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;
             RotationZ_deg = m_fRotationZ_deg_temp;
+            bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
+            bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
@@ -133,6 +146,8 @@ namespace BaseClasses
                float m_fRotationY_deg_temp,
                float m_fRotationZ_deg_temp,
                Color color_temp,
+               bool bDrawPositiveValueOnPlusLocalZSide_temp,
+               bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
                float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
@@ -146,6 +161,8 @@ namespace BaseClasses
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;
             RotationZ_deg = m_fRotationZ_deg_temp;
+            bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
+            bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
@@ -173,13 +190,19 @@ namespace BaseClasses
             {
                 CVolume volume = new CVolume();
 
-                bool bChangePositionForNegativeValue = true;
                 float fValueFor3D = fValue * m_fDisplayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m)
 
-                double fz_coord = m_pControlPoint.Z;
+                float fz_coordTop = fValueFor3D;
+                float fz_coordBottom = 0;
+
+                if (!bDrawPositiveValueOnPlusLocalZSide)
+                {
+                    fz_coordTop = 0;
+                    fz_coordBottom = -fValueFor3D;
+                }
 
                 if (bChangePositionForNegativeValue && fValue < 0)
-                    fz_coord = m_pControlPoint.Z - fValueFor3D;
+                    m_pControlPoint.Z += fValueFor3D;
 
                 Point3DCollection pSurfacePoints_h = new Point3DCollection(pSurfacePoints.Count);
 
@@ -199,7 +222,7 @@ namespace BaseClasses
                     pa = pSurfacePoints[i];
 
                     pa.Y += fy; // fy is currently used only for GCS and Z direction
-                    pa.Z = fValueFor3D;
+                    pa.Z = Math.Abs(fValueFor3D);
                     pSurfacePoints_h.Add(pa);
                 }
 
