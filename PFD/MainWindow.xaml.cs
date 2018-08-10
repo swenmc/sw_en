@@ -32,6 +32,8 @@ using M_AS4600;
 using M_EC1.AS_NZS;
 using SharedLibraries.EXPIMP;
 using _3DTools;
+using FEM_CALC_BASE;
+using M_BASE;
 
 namespace PFD
 {
@@ -525,63 +527,18 @@ namespace PFD
             for (int i = 0; i < iNumberOfDesignSections; i++)
                 fx_positions[i] = ((float)i / (float)iNumberOfSegments) * vm.fL1; // Int must be converted to the float to get decimal numbers
 
-            designMomentValuesForCb [] sMomentValuesforCb = new designMomentValuesForCb[iNumberOfLoadCombinations];
-
-            basicInternalForces[,] sBIF_x = new basicInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
+            designMomentValuesForCb[] sMomentValuesforCb;
+            basicInternalForces[,] sBIF_x;
 
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
-
-            // Temporary calculation of internal forces - each combination
-            for (int i = 0; i < iNumberOfLoadCombinations; i++)
-            {
-                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(model.m_arrCrSc[4], vm.fL1, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y[i]);
-                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(model.m_arrCrSc[4], vm.fL1, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z[i]);
-
-                float fM_abs_max = 0;
-
-                for (int j = 0; j < iNumberOfDesignSections; j++)
-                {
-                    sBIF_x[i,j].fV_yu = memberModel_qy.GetV_x(fx_positions[j]);
-                    sBIF_x[i,j].fM_zv = memberModel_qy.GetM_x(fx_positions[j]);
-
-                    sBIF_x[i,j].fV_zv = memberModel_qz.GetV_x(fx_positions[j]);
-                    sBIF_x[i,j].fM_yu = memberModel_qz.GetM_x(fx_positions[j]);
-
-                    sBIF_x[i,j].fN = 0f; // TODO - doplnit vypocet
-                    sBIF_x[i,j].fT = 0f; // TODO - doplnit vypocet
-
-                    if (Math.Abs(sBIF_x[i, j].fM_yu) > Math.Abs(fM_abs_max))
-                        fM_abs_max = sBIF_x[i, j].fM_yu;
-                }
-
-                sMomentValuesforCb[i].fM_max = fM_abs_max;
-                sMomentValuesforCb[i].fM_14 = memberModel_qz.GetM_x(0.25f * vm.fL1);
-                sMomentValuesforCb[i].fM_24 = memberModel_qz.GetM_x(0.50f * vm.fL1);
-                sMomentValuesforCb[i].fM_34 = memberModel_qz.GetM_x(0.75f * vm.fL1);
-            }
+            SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
+            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)model.m_arrCrSc[4],  vm.fL1, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
 
             // Design
-            designInternalForces [,] sDIF_x = new designInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
-
-            for (int i = 0; i < iNumberOfLoadCombinations; i++)
-            {
-                for (int j = 0; j < iNumberOfDesignSections; j++)
-                {
-                    sDIF_x[i, j].fN = sBIF_x[i, j].fN;
-                    sDIF_x[i, j].fN_c = sDIF_x[i, j].fN > 0 ? 0f : Math.Abs(sDIF_x[i, j].fN);
-                    sDIF_x[i, j].fN_t = sDIF_x[i, j].fN < 0 ? 0f : sDIF_x[i, j].fN;
-                    sDIF_x[i, j].fT = sBIF_x[i, j].fT;
-
-                    sDIF_x[i, j].fV_yu = sBIF_x[i, j].fV_yu;
-                    sDIF_x[i, j].fM_zv = sBIF_x[i, j].fM_zv;
-
-                    sDIF_x[i, j].fV_zv = sBIF_x[i, j].fV_zv;
-                    sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
-
-                    CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], (CCrSc_TW)model.m_arrCrSc[4], vm.fL1, sMomentValuesforCb[i]);
-                }
-            }
+            designInternalForces[,] sDIF_x;
+            CMemberDesign designModel = new CMemberDesign();
+            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)model.m_arrCrSc[4], vm.fL1, sBIF_x, sMomentValuesforCb, out sDIF_x);
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
@@ -626,10 +583,15 @@ namespace PFD
             eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
         }
 
+
+
+
+
+
         // Priblizne riesenie (tuhy prievlak)
         public float GetPeriod(int iNumberOfColumns, float fL, float fI_column, float fE, float fMass_Total)
         {
-             // Equivalent Stiffness
+            // Equivalent Stiffness
             float fk_e = iNumberOfColumns * (3 * fE * fI_column / MathF.Pow3(fL));
 
             // Natural circular frequency

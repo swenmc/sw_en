@@ -266,6 +266,10 @@
       <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_BASE\M_BASE.csproj">
+      <Project>{ad3e14f4-72c6-476e-b67f-93cc194e0e02}</Project>
+      <Name>M_BASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MODULES\M_EC1\M_EC1.csproj">
       <Project>{9764d1bf-a2b3-45d6-ab93-050dce30830c}</Project>
       <Name>M_EC1</Name>

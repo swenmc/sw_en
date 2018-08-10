@@ -7,7 +7,7 @@ using BaseClasses;
 using MATERIAL;
 using CRSC;
 
-namespace sw_en_GUI.EXAMPLES._2D
+namespace FEM_CALC_BASE
 {
     public class CExample_2D_51_SB : CExample
     {

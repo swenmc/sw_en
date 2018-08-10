@@ -187,23 +187,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BLOCKS\FS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="BLOCKS\FS\CBlock_3D_001_DoorInBay.cs" />
+    <Compile Include="BLOCKS\FS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="CUIHelper.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_01.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_02.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_03.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_04.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_11.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_51_SB.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_13_PF.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_12.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_13_PF.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_01.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_02.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_03.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_04.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_902_OM.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_901_PF.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_05.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_06.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_07.cs" />
@@ -212,11 +209,12 @@
     <Compile Include="EXAMPLES\3D\CExample_3D_10.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_11.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_21.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_80.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_50.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_80.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_90.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_901_PF.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_902_OM.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_Ondro.cs" />
-    <Compile Include="EXAMPLES\CExample.cs" />
     <Compile Include="Viewer3D.xaml.cs">
       <DependentUpon>Viewer3D.xaml</DependentUpon>
     </Compile>

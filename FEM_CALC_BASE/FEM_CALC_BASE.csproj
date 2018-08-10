@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CE.cs" />
+    <Compile Include="CExample_2D_51_SB.cs" />
     <Compile Include="CE_1D_BASE.cs" />
     <Compile Include="CFEM_CALC.cs" />
     <Compile Include="CN.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Load\CMLoadPart_TRANS_F.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleBeamCalculation.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
