@@ -72,9 +72,6 @@ namespace SBD
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[,] sBIF_x;
 
-            // TODO - Ondrej, to je neprijemnost, potrebujem to nejako preusporiadat
-            // Chcel som tie funkcie vytiahnut z Main Window a dat ich do FEM_CALC, ale tam je zase krizova zavislost kvoli pouzitym Examples atd ...
-
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
             calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, (CCrSc_TW)section, fLength, fx_positions, fLoadValue_qy, fLoadValue_qz, out sBIF_x, out sMomentValuesforCb);
 
