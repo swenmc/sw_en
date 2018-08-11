@@ -105,6 +105,11 @@ namespace CRSC
                 cs = new CSC(this.ySuradniceDatagrid, this.zSuradniceDatagrid, this.tHodnoty);
             }
 
+            DisplaySectionPropertiesInDataGrid(dataGridView2, cs);
+        }
+
+        public void DisplaySectionPropertiesInDataGrid(DataGridView dataGridViewSectionProperties, CCrSc_TW cs)
+        {
             // Round numerical values
             int dec_place_num1 = 1;
             int dec_place_num2 = 2;
@@ -147,37 +152,38 @@ namespace CRSC
             double d_Beta_y = Math.Round(cs.Beta_y, dec_place_num2);
             double d_Beta_z = Math.Round(cs.Beta_z, dec_place_num2);
 
-            //vymazanie datagridview2
-            dataGridView2.Rows.Clear();
-            //Pridavanie Riadkov do Datagridview2 
-            //Potrebne popridavat vsetky premenne,ktore chceme zobrazit
+            // Vymazanie obsahu Datagridview
+            dataGridViewSectionProperties.Rows.Clear();
+
+            // Pridavanie riadkov do Datagridview
+            // Potrebne popridavat vsetky premenne, ktore chceme zobrazit
 
             string s_sup_2 = "\xB2";
             string s_sup_3 = "\xB3";
             string s_sup_4 = "\u2074";
             string s_sup_6 = "\u2076";
 
-            string s_unit_length = "mm";
+            string s_unit_length = "mm"; // TODO - zapracovat nastavitelne jednotky (napriec celou aplikaciou, vypocet v zakladnych jednotkach SI)
 
             string s_unit_area = s_unit_length + s_sup_2;
             string s_unit_first_moment_of_area = s_unit_length + s_sup_3;
             string s_unit_second_moment_of_area = s_unit_length + s_sup_4;
             string s_unit_moment_omega = s_unit_length + s_sup_6;
 
-            dataGridView2.Rows.Add("Ag ="     , d_A,       s_unit_area,                  "Avy ="       , d_A_vy, s_unit_area,                    "Avz ="         , d_A_vz     , s_unit_area);
-            dataGridView2.Rows.Add("ygc ="    , d_y_gc,    s_unit_length,                "SyO ="       , d_S_y0, s_unit_first_moment_of_area,    "Iy ="          , d_I_y      , s_unit_second_moment_of_area);
-            dataGridView2.Rows.Add("zgc ="    , d_z_gc,    s_unit_length,                "SzO ="       , d_S_z0, s_unit_first_moment_of_area,    "Iz ="          , d_I_z      , s_unit_second_moment_of_area);
-            dataGridView2.Rows.Add("Wyel1 ="  , d_Wy_el_1, s_unit_length,                "Wzel1 ="     , d_Wz_el_1, s_unit_first_moment_of_area, " "             , " "        , " "  );
-            dataGridView2.Rows.Add("Wyel2 ="  , d_Wy_el_2, s_unit_length,                "Wzel2 ="     , d_Wz_el_2, s_unit_first_moment_of_area, " "             , " "        , " "  );
-            dataGridView2.Rows.Add("α ="      , d_Alpha,   "rad",                        " "           , " ",                        " "  ,      "Iyz ="         , d_I_yz     , s_unit_second_moment_of_area);
-            dataGridView2.Rows.Add("Iξ ="     , d_I_eps,   s_unit_second_moment_of_area, "Iη ="        , d_I_eta, s_unit_second_moment_of_area,  " "             , " "        , " "  );
-            dataGridView2.Rows.Add("Iω ="     , d_I_ome,   s_unit_moment_omega,          "ω mean ="    , d_ome_mean, s_unit_area,                "ω max ="       , d_ome_max  , s_unit_area);
-            dataGridView2.Rows.Add("Iyω ="    , d_I_y_ome, s_unit_moment_omega,          "Izω ="       , d_I_z_ome, s_unit_moment_omega,         "Iωω ="         , d_I_ome_ome, s_unit_moment_omega);
-            dataGridView2.Rows.Add("ys ="     , d_y_s,     s_unit_length,                "zs ="        , d_z_s, s_unit_length,                   "Ip ="          , d_I_p      , s_unit_second_moment_of_area);
-            dataGridView2.Rows.Add("yj ="     , d_y_j,     s_unit_length,                "zj ="        , d_z_j, s_unit_length,                   " "             , " "        , " "  );
-            dataGridView2.Rows.Add("Iw ="     , d_I_w,     s_unit_moment_omega,          "Ww ="        , d_W_w, s_unit_first_moment_of_area,     " "             , " "        , " "  );
-            dataGridView2.Rows.Add("It ="     , d_I_t,     s_unit_second_moment_of_area, "Wt ="        , d_W_t, s_unit_first_moment_of_area,     " "             , " "        , " "  );
-            dataGridView2.Rows.Add("βy ="     , d_Beta_y,  s_unit_length,                "βz ="        , d_Beta_z, s_unit_length,                " "             , " "        , " "  );
+            dataGridViewSectionProperties.Rows.Add("Ag =", d_A, s_unit_area, "Avy =", d_A_vy, s_unit_area, "Avz =", d_A_vz, s_unit_area);
+            dataGridViewSectionProperties.Rows.Add("ygc =", d_y_gc, s_unit_length, "SyO =", d_S_y0, s_unit_first_moment_of_area, "Iy =", d_I_y, s_unit_second_moment_of_area);
+            dataGridViewSectionProperties.Rows.Add("zgc =", d_z_gc, s_unit_length, "SzO =", d_S_z0, s_unit_first_moment_of_area, "Iz =", d_I_z, s_unit_second_moment_of_area);
+            dataGridViewSectionProperties.Rows.Add("Wyel1 =", d_Wy_el_1, s_unit_length, "Wzel1 =", d_Wz_el_1, s_unit_first_moment_of_area, " ", " ", " ");
+            dataGridViewSectionProperties.Rows.Add("Wyel2 =", d_Wy_el_2, s_unit_length, "Wzel2 =", d_Wz_el_2, s_unit_first_moment_of_area, " ", " ", " ");
+            dataGridViewSectionProperties.Rows.Add("α =", d_Alpha, "rad", " ", " ", " ", "Iyz =", d_I_yz, s_unit_second_moment_of_area);
+            dataGridViewSectionProperties.Rows.Add("Iξ =", d_I_eps, s_unit_second_moment_of_area, "Iη =", d_I_eta, s_unit_second_moment_of_area, " ", " ", " ");
+            dataGridViewSectionProperties.Rows.Add("Iω =", d_I_ome, s_unit_moment_omega, "ω mean =", d_ome_mean, s_unit_area, "ω max =", d_ome_max, s_unit_area);
+            dataGridViewSectionProperties.Rows.Add("Iyω =", d_I_y_ome, s_unit_moment_omega, "Izω =", d_I_z_ome, s_unit_moment_omega, "Iωω =", d_I_ome_ome, s_unit_moment_omega);
+            dataGridViewSectionProperties.Rows.Add("ys =", d_y_s, s_unit_length, "zs =", d_z_s, s_unit_length, "Ip =", d_I_p, s_unit_second_moment_of_area);
+            dataGridViewSectionProperties.Rows.Add("yj =", d_y_j, s_unit_length, "zj =", d_z_j, s_unit_length, " ", " ", " ");
+            dataGridViewSectionProperties.Rows.Add("Iw =", d_I_w, s_unit_moment_omega, "Ww =", d_W_w, s_unit_first_moment_of_area, " ", " ", " ");
+            dataGridViewSectionProperties.Rows.Add("It =", d_I_t, s_unit_second_moment_of_area, "Wt =", d_W_t, s_unit_first_moment_of_area, " ", " ", " ");
+            dataGridViewSectionProperties.Rows.Add("βy =", d_Beta_y, s_unit_length, "βz =", d_Beta_z, s_unit_length, " ", " ", " ");
         }
 
         private void FillDataGridView()

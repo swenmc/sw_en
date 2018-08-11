@@ -79,6 +79,19 @@ namespace SBD
             designInternalForces[,] sDIF_x;
             CMemberDesign designModel = new CMemberDesign();
             designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, section, fLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+
+            // TODO - toto zobrazenie detailov v Gridview pre PFD a SBD treba refaktorovat a vytvorit jednotnu bazu pre zobrazovanie dat
+            // v datagrid napriec roznymi projektmi
+
+            // Display section properties
+            // TODO Vlozit detaily z vypoctu prierezu do datagrid - refaktorovat s projektom CRSC - metoda DisplaySectionPropertiesInDataGrid
+            // Najlepsie budes asi previest projekt CRSC na WPF
+
+            // DisplaySectionPropertiesInDataGrid(this.DataGrid_SectionProperties, section);
+
+            // Display results for maximum design ratio
+            PFD.UC_MemberDesign b_temp = new PFD.UC_MemberDesign(); // TODO - refaktoring, tento riadkoch by tu nemal byt, vyvotirit spolocnu bazovu triedu pre vlozenie dat do DATAGRIDu
+            b_temp.DisplayDesignResultsInGridView(this.DataGrid_Results, designModel.listOfMemberDesignInLocations[designModel.fMaximumDesignRatioLocationID]);
         }
 
         private void SetListValuesFromCrossSection(CCrSc_TW sectionTemp)

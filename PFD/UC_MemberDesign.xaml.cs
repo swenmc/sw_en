@@ -28,6 +28,8 @@ namespace PFD
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
         List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
 
+        public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
+
         public UC_MemberDesign(CModel model, UC_ComponentList components)
         {
             InitializeComponent();
@@ -64,8 +66,11 @@ namespace PFD
             }
         }
 
-        private void DisplayDesignResultsInGridView(CCalcul obj_CalcDesign)
+        // TODO - Display Data in DataGrid Results_GridView
+
+        public void DisplayDesignResultsInGridView(DataGrid dataGrid, CCalcul obj_CalcDesign)
         {
+            DeleteLists();
             // Display results in datagrid
             // AS 4600 output variables
 
@@ -145,8 +150,8 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_c.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta max");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fDesignRatio_N.ToString());
+            zoznamMenuNazvy.Add("Eta Nc");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_721_N.ToString());
             zoznamMenuJednotky.Add("[-]");
 
             // Tension
@@ -266,7 +271,7 @@ namespace PFD
                 table.Rows.Add(row);
             }
 
-            Results_GridView.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
             /*
             // Set Column Header

@@ -140,6 +140,10 @@
       <Project>{209738f7-cdb3-4c11-98a3-e345299d9191}</Project>
       <Name>M_AS4600</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PFD\PFD.csproj">
+      <Project>{f53de883-cbc6-4e3b-9455-0dd480ca6cc1}</Project>
+      <Name>PFD</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharedLibraries\netDxf\netDxf.csproj">
       <Project>{785380e0-ceb9-4c34-82e5-60d0e33e848e}</Project>
       <Name>netDxf</Name>

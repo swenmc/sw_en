@@ -11,13 +11,19 @@ namespace M_BASE
 {
     public class CMemberDesign
     {
-        bool bDebugging = true;
+        bool bDebugging;
+        public List<CCalcul> listOfMemberDesignInLocations;
+        public int fMaximumDesignRatioLocationID = 0;
+        public float fMaximumDesignRatio = 0;
 
-        float fMaximumDesignRatio = 0;
+        public CMemberDesign(bool bDebugging_temp = false)
+        {
+            bDebugging = bDebugging_temp;
+        }
 
-        public CMemberDesign() { }
         public void SetDesignForcesAndMemberDesign(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
+            listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
             // Design
             sDIF_x = new designInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
 
@@ -39,7 +45,12 @@ namespace M_BASE
                     CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], section, fTheoreticalLengthOfMember, sMomentValuesforCb[i]);
 
                     if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatioLocationID = j;
                         fMaximumDesignRatio = obj_CalcDesign.fEta_max;
+                    }
+
+                    listOfMemberDesignInLocations.Add(obj_CalcDesign);
                 }
             }
         }

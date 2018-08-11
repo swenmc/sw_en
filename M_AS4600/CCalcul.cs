@@ -159,7 +159,6 @@ namespace M_AS4600
         public float fN_cd;
 
         public float fN_c_min;
-        public float fDesignRatio_N;
 
         public float fM_p_xu, fM_y_xu;
         public float fM_p_yv, fM_y_yv;
@@ -175,6 +174,7 @@ namespace M_AS4600
         
         float fk;
 
+        public float fEta_721_N = 0.0f;
         public float fEta_max = 0.0f;
 
         public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)
@@ -310,8 +310,8 @@ namespace M_AS4600
 
             fN_c_min = MathF.Min(fN_ce, fN_cl, fN_cd);
 
-            fDesignRatio_N = Math.Abs(sDIF.fN_c / fN_c_min);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_N);
+            fEta_721_N = Math.Abs(sDIF.fN_c / fN_c_min);
+            fEta_max = MathF.Max(fEta_max, fEta_721_N);
 
             // 7.2.2 Design of members subject to bending
             fM_p_xu = eq.Eq_7222_6__(fS_f_xu, ff_y);
@@ -475,21 +475,21 @@ namespace M_AS4600
                 fM_s_xu = eq.Eq_7223____(fM_ol_xu, fM_y_xu, fLambda_l_xu); // TODO
             }
 
-            float fEta_M_xu,
-            fEta_V_yv,
-            fEta_7235_yv,
-            fEta_723_10_xu,
-            fEta_723_11_yv,
-            fEta_723_12_10,
-            fEta_723_12_13;
+            float fEta_M_xu, fEta_V_yv;
+
+            float fEta_723_9_xu_yv = 0.0f;
+            float fEta_723_10_xu = 0.0f;
+            float fEta_723_11_xu_yv = 0.0f;
+            float fEta_723_12_xu_yv_10 = 0.0f;
+            float fEta_723_12_xu_yv_13;
 
             float fM_b_xu =  MathF.Min(fM_be_xu, MathF.Min(fM_bl_xu, fM_bd_xu)); // Design resistance value 7.2.2
             float fM_b_xu_drv;
             float fV_v_yv_drv;
 
             // 7.2.3.5 Combined bending and shear
-            eq.Eq_723_9___(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_7235_yv);
-            fEta_max = MathF.Max(fEta_max, fEta_7235_yv);
+            eq.Eq_723_9___(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
+            fEta_max = MathF.Max(fEta_max, fEta_723_9_xu_yv);
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
             {
@@ -498,18 +498,18 @@ namespace M_AS4600
             }
 
             // Shear
-            eq.Eq_723_11__(sDIF.fV_yv, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_yv);
-            fEta_max = MathF.Max(fEta_max, fEta_723_11_yv);
+            eq.Eq_723_11__(sDIF.fV_yv, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_xu_yv);
+            fEta_max = MathF.Max(fEta_max, fEta_723_11_xu_yv);
 
             if ((Math.Abs(sDIF.fM_xu) / (fPhi_b * fM_s_xu)) > 0.5f && (Math.Abs(sDIF.fV_yv) / (fPhi_v * fV_v_yv)) > 0.7f)
             {
-                eq.Eq_723_12__(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_13, out fEta_723_12_10);
-                fEta_max = MathF.Max(fEta_max, fEta_723_12_10);
+                eq.Eq_723_12__(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_xu_yv_13, out fEta_723_12_xu_yv_10);
+                fEta_max = MathF.Max(fEta_max, fEta_723_12_xu_yv_10);
             }
 
             float fEta_N_724, fEta_Mxu_724, fEta_Myv_724, fEta_724 = 0f;
-            float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1, fEta_725_1;
-            float fEta_N_725_2, fEta_Mxu_725_2, fEta_Myv_725_2, fEta_725_2;
+            float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1, fEta_725_1 = 0f;
+            float fEta_N_725_2, fEta_Mxu_725_2, fEta_Myv_725_2, fEta_725_2 = 0f;
 
             float fN_t_min = fA_g * ff_y; // Resistance // Todo
             float fPhi_t = 0.9f; // Todo
@@ -533,13 +533,18 @@ namespace M_AS4600
                 fEta_max = MathF.Max(fEta_max, fEta_725_2);
             }
 
-            if(bIsDebugging)
-            MessageBox.Show("Calculation finished.\n"
-                          + "Design Ratio Nc η = " + fDesignRatio_N + " [-]" + " " + "\n"
-                          + "Design Ratio η = " + fEta_7235_yv + " [-]" + " 7.2.3.5" + "\n"
-                          + "Design Ratio η = " + fEta_723_11_yv + " [-]" + " 7.2.3(11)" + "\n"
-                          + "Design Ratio η = " + fEta_724 + " [-]" + " 7.2.4" + "\n"
-                          + "Design Ratio ηmax = "+ fEta_max + " [-]");
+            int iNumberOfDecimalPlaces = 3;
+            if (bIsDebugging)
+                MessageBox.Show("Calculation finished.\n"
+                              + "Design Ratio η = " + Math.Round(fEta_721_N, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.1" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_723_9_xu_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(9)" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_723_10_xu, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(10)" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_723_11_xu_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(11)" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(12)" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_724, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.4" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_725_1, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.5(1)" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_725_2, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.5(2)" + "\n"
+                              + "Design Ratio η max = " + Math.Round(fEta_max, iNumberOfDecimalPlaces) + " [-]");
         }
     }
 }
