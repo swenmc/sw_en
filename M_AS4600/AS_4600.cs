@@ -578,7 +578,7 @@ namespace M_AS4600
         // D3 Members in shear
         public float Eq_D3_1____(float fE, float fA_w, float fk_v, float fNu, float fd_1, float ft)
         {
-            return (MathF.Pow2(MathF.fPI) * fE * fA_w * fk_v) / (12.0f * (1.0f - MathF.Pow2(fNu) * MathF.Pow2(fd_1 / ft))); // Eq. (D3(1)) // fV_cr
+            return (MathF.Pow2(MathF.fPI) * fE * fA_w * fk_v) / (12.0f * (1.0f - MathF.Pow2(fNu)) * MathF.Pow2(fd_1 / ft)); // Eq. (D3(1)) // fV_cr
         }
         public float Eq_D3_2____(float fa, float fd_1)
         {

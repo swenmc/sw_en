@@ -73,12 +73,12 @@ namespace SBD
             basicInternalForces[,] sBIF_x;
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, (CCrSc_TW)section, fLength, fx_positions, fLoadValue_qy, fLoadValue_qz, out sBIF_x, out sMomentValuesforCb);
+            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, fLength, fx_positions, fLoadValue_qy, fLoadValue_qz, out sBIF_x, out sMomentValuesforCb);
 
             // Design
             designInternalForces[,] sDIF_x;
             CMemberDesign designModel = new CMemberDesign();
-            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)section, fLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, section, fLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
         }
 
         private void SetListValuesFromCrossSection(CCrSc_TW sectionTemp)

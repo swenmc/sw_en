@@ -314,11 +314,11 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fDesignRatio_N);
 
             // 7.2.2 Design of members subject to bending
-
-            // 7.2.2.2.2 Lateral-torsional buckling
-
             fM_p_xu = eq.Eq_7222_6__(fS_f_xu, ff_y);
             fM_y_xu = eq.Eq_7222_4__(fZ_f_xu, ff_y);
+
+            fM_p_yv = eq.Eq_7222_6__(fS_f_yv, ff_y);
+            fM_y_yv = eq.Eq_7222_4__(fZ_f_yv, ff_y);
 
             // Bending about xu-axis
             // Default values (used for design ratio in case that fM_xu = 0)
@@ -342,6 +342,8 @@ namespace M_AS4600
 
             // TODO - skontrolovat a overit vypocet unosnosti pre osu y/v
             float fM_b_yv = MathF.Min(fM_be_yv, MathF.Min(fM_bl_yv, fM_bd_yv)); // Design resistance value 7.2.2
+
+            // 7.2.2.2.2 Lateral-torsional buckling
 
             if (!MathF.d_equal(sDIF.fM_xu , 0.0f))
             {
