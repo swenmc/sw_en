@@ -9,7 +9,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_08 : CCrSc
+    public class CCrSc_3_08 : CSO
     {
         // Rolled mono-symmetric T section
 

@@ -17,18 +17,27 @@ namespace CRSC
 
         protected override void loadCrScIndices()
         {
+            throw new NotImplementedException();
         }
 
         protected override void loadCrScIndicesFrontSide()
         {
+            throw new NotImplementedException();
         }
 
         protected override void loadCrScIndicesShell()
         {
+            throw new NotImplementedException();
         }
 
         protected override void loadCrScIndicesBackSide()
         {
+            throw new NotImplementedException();
+        }
+
+        public override void CalculateSectionProperties()
+        {
+            throw new NotImplementedException();
         }
     }
 }

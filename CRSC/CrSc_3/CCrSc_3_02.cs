@@ -9,7 +9,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_02 : CCrSc
+    public class CCrSc_3_02 : CSO
     {
         // Rolled monosymmetric U section (channel) - tapered or paralel flanges
 

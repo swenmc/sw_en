@@ -20,37 +20,8 @@ namespace CRSC
         public CSO() { }
         public CSO(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
-            int count = y_suradnice.Count;
-
-            this.y_suradnice = y_suradnice;
-            this.z_suradnice = z_suradnice;
-            this.t_hodnoty = t_hodnoty;
-
-            this.J_Calc_Dimensions();
-
-            A_g = this.A_method(count);
-            this.A_vy_method(count);
-            this.A_vz_method(count);
-            this.Sy0_Sz0_method(count);
-            this.Iy0_Iz0_method(count);
-            this.omega0i = new double[count];
-            this.omega = new double[count];
-            this.d_omega_s = new double[count];
-            this.J_12_13_14_method();
-            this.J_15_method(count);
-            this.J_16_method(count);
-            this.J_17_18_19_method(count);
-            this.J_20_21_method();
-            this.J_22_method(count);
-            this.J_23_method(count);
-            this.J_24_25_26_method();
-            this.J_27_J_28_method(count);
-            this.J_W_el();
-            this.Calc_Radius_of_Gyration();
-            this.Calc_Beta_y_method(count);
-            this.Calc_Beta_z_method(count);
-            this.t_min_method();
-            this.t_max_method();
+            CalculateSectionProperties(y_suradnice, z_suradnice, t_hodnoty);
+            DetermineSectionBasicDimensions();
         }
 
         public void CrScDefPoints_EX_01()
@@ -236,7 +207,13 @@ namespace CRSC
         }
 
         // Methods for calculations...
-        public void calculate(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
+
+        public override void CalculateSectionProperties()
+        {
+            CalculateSectionProperties(this.y_suradnice, this.z_suradnice, this.t_hodnoty);
+        }
+
+        public void CalculateSectionProperties(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
             int count = y_suradnice.Count;
 
@@ -245,6 +222,12 @@ namespace CRSC
             this.t_hodnoty = t_hodnoty;
 
             A_g = this.A_method(count);
+
+            // TODO Elastic and Plastic Shear Areas
+            // See https://www.dlubal.com/-/media/976FCA1B8CEC499A9C03DE4F06E4E32F.ashx
+            // page 94, 95, 103, 105
+            A_vy = this.A_vy_method(count);
+            A_vz = this.A_vz_method(count);
             this.Sy0_Sz0_method(count);
             this.Iy0_Iz0_method(count);
             this.omega0i = new double[count];
@@ -260,11 +243,12 @@ namespace CRSC
             this.J_24_25_26_method();
             this.J_27_J_28_method(count);
             this.J_W_el();
+            this.W_pl_temporary();
             this.Calc_Radius_of_Gyration();
             this.Calc_Beta_y_method(count);
             this.Calc_Beta_z_method(count);
-            this.t_min_method();
-            this.t_max_method();
+            t_min = this.t_min_method();
+            t_max = this.t_max_method();
         }
         //(J.5) method
         public double dAi_method(int i)
@@ -438,7 +422,7 @@ namespace CRSC
                 W_t_el = I_t / min_more_than_zero;
             }
             else
-                MessageBox.Show("ERROR. Minimalny prvok v t_hodnoty je nula!!!!.");
+                MessageBox.Show("ERROR. Minimum value of thickness is zero in the array of thickness values!");
         }
         //J.23 method   ????? nerozumiem vzorcu...je potrebne upresnit
         public void J_23_method(int count)
@@ -516,6 +500,27 @@ namespace CRSC
 
             W_z_el_1 = I_z / (y_max - D_y_gc);
             W_z_el_2 = I_z / (D_y_gc - y_min);
+
+            // Minimum absolute value
+            W_y_el = MathF.Min(Math.Abs(W_y_el_1), Math.Abs(W_y_el_2));
+            W_z_el = MathF.Min(Math.Abs(W_z_el_1), Math.Abs(W_z_el_2));
+        }
+        public void W_pl_temporary()
+        {
+            // TODO - Wpl je urceny sucinom tlacenej plochy prierezu * vzdialenost k neutralnej osi + tahana plocha prierezu * vzdialnost taziska tejto plochy a neutralnej osi
+            // neutralna osa rozdeluje prierez na polovicu
+            // Wpl je vzdy vacsi nez W_el, niekedy je pre design pruta limitovany zhora hodnotou 1.5 * W_el
+
+            // See for example https://github.com/robbievanleeuwen/section-properties
+            // https://www.dlubal.com/-/media/976FCA1B8CEC499A9C03DE4F06E4E32F.ashx
+            // page 102 - Plastic Section Moduli Zy / Zz / Zu / Zv
+
+            // W_pl = AC * dC + AT * dT
+
+            float fpl_tempoerary = 1.05f;
+
+            W_y_pl = fpl_tempoerary * W_y_el;
+            W_z_pl = fpl_tempoerary * W_y_pl;
         }
         // Radius of gyration
         public void Calc_Radius_of_Gyration()
@@ -606,22 +611,6 @@ namespace CRSC
         public double t_max_method()
         {
             return MathF.Max(t_hodnoty);
-        }
-
-        protected override void loadCrScIndices()
-        {
-        }
-
-        protected override void loadCrScIndicesFrontSide()
-        {
-        }
-
-        protected override void loadCrScIndicesShell()
-        {
-        }
-
-        protected override void loadCrScIndicesBackSide()
-        {
         }
     }
 }

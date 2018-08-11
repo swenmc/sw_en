@@ -11,7 +11,9 @@ namespace M_BASE
 {
     public class CMemberDesign
     {
-        bool bDebugging = false;
+        bool bDebugging = true;
+
+        float fMaximumDesignRatio = 0;
 
         public CMemberDesign() { }
         public void SetDesignForcesAndMemberDesign(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
@@ -35,6 +37,9 @@ namespace M_BASE
                     sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
 
                     CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], section, fTheoreticalLengthOfMember, sMomentValuesforCb[i]);
+
+                    if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
+                        fMaximumDesignRatio = obj_CalcDesign.fEta_max;
                 }
             }
         }

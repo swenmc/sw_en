@@ -313,5 +313,10 @@ namespace CRSC
               AddRectangleIndices_CW_1234(TriangleIndicesBackSide, 0, 1, 2, 3);
         }
 
+        public override void CalculateSectionProperties()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

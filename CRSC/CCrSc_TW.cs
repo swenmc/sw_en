@@ -241,6 +241,22 @@ namespace CRSC
             this.y_suradnice = y_suradnice;
             this.z_suradnice = z_suradnice;
             this.t_hodnoty = t_hodnoty;
+
+            DetermineSectionBasicDimensions();
+        }
+
+        // Calculate properties
+        // CSO - open thin-walled cross-section
+        // CSC - closed thin-walled cross-section
+        //protected override void CalculateSectionProperties();
+
+        public void DetermineSectionBasicDimensions()
+        {
+            if (b <= 0)
+                b = MathF.Max(y_suradnice) - MathF.Min(y_suradnice);
+
+            if (h <= 0)
+                h = MathF.Max(z_suradnice) - MathF.Min(z_suradnice);
         }
 
         protected override void loadCrScIndices()

@@ -9,7 +9,7 @@ using MATERIAL;
 
 namespace CRSC
 {
-    public class CCrSc_3_63020_BOX : CCrSc_TW
+    public class CCrSc_3_63020_BOX : CSC
     {
         // Thin-walled box section - monosymmetrical or double symmetrical
 

@@ -318,5 +318,10 @@ namespace CRSC
                 }
             }
         }
+
+        public override void CalculateSectionProperties()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

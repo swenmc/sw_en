@@ -239,6 +239,8 @@ namespace M_AS4600
             fM_34  = sMomentValuesForCb.fM_34;
 
             fa = fl_member; // Todo
+            ft_w = ft_f = ft; // TODO
+            fb_f = fb; // TODO
 
             // Design
             // Compression
@@ -319,16 +321,29 @@ namespace M_AS4600
             fM_y_xu = eq.Eq_7222_4__(fZ_f_xu, ff_y);
 
             // Bending about xu-axis
-
-            float fM_o_xu = 0f;
-            float fM_ol_xu = 0f;
-            float fM_od_xu = 0f;
+            // Default values (used for design ratio in case that fM_xu = 0)
+            float fM_o_xu = fM_p_xu;
+            float fM_ol_xu = fM_p_xu;
+            float fM_od_xu = fM_p_xu;
 
             float fM_be_xu = fM_y_xu; // Default value
             float fM_bd_xu = fM_y_xu;
             float fM_bl_xu = fM_y_xu;
 
-            if (sDIF.fM_xu != 0.0f)
+            // Bending about yv-axis
+            // Default values (used for design ratio in case that fM_yv = 0)
+            float fM_o_yv = fM_p_yv;
+            float fM_ol_yv = fM_p_yv;
+            float fM_od_yv = fM_p_yv;
+
+            float fM_be_yv = fM_y_yv; // Default value
+            float fM_bd_yv = fM_y_yv;
+            float fM_bl_yv = fM_y_yv;
+
+            // TODO - skontrolovat a overit vypocet unosnosti pre osu y/v
+            float fM_b_yv = MathF.Min(fM_be_yv, MathF.Min(fM_bl_yv, fM_bd_yv)); // Design resistance value 7.2.2
+
+            if (!MathF.d_equal(sDIF.fM_xu , 0.0f))
             {
                 switch (eCb_option)
                 {
@@ -489,9 +504,6 @@ namespace M_AS4600
                 eq.Eq_723_12__(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_13, out fEta_723_12_10);
                 fEta_max = MathF.Max(fEta_max, fEta_723_12_10);
             }
-
-
-            float fM_b_yv = float.MaxValue; // Todo
 
             float fEta_N_724, fEta_Mxu_724, fEta_Myv_724, fEta_724 = 0f;
             float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1, fEta_725_1;

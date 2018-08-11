@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_50020_C_NESTED : CCrSc_TW
+    public class CCrSc_3_50020_C_NESTED : CSC
     {
         /// <summary>
         /// TODO - prepracovat - je to len kopia C 50020

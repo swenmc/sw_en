@@ -27,7 +27,7 @@ namespace SBD
     /// </summary>
     public partial class MainWindow : Window
     {
-        CCrSc section;
+        CCrSc_TW section;
         public List<double> y_coordinates = new List<double>();
         public List<double> z_coordinates = new List<double>();
         public List<double> t_thicknesses = new List<double>();
@@ -51,8 +51,8 @@ namespace SBD
                 section = new CSO(y_coordinates, z_coordinates, t_thicknesses); // Open cross-section
 
             // Uniform Load
-            float fLoadValue_qz = 5000; // N/m
-            float fLoadValue_qy = 1000; // N/m
+            float fLoadValue_qz = 1000; // N/m
+            float fLoadValue_qy =  200; // N/m
 
             // Beam length
             float fLength = 10f; // m
@@ -88,7 +88,7 @@ namespace SBD
             {
                 y_coordinates.Add(sectionTemp.CrScPointsOut[i, 0]);
                 z_coordinates.Add(sectionTemp.CrScPointsOut[i, 1]);
-                t_thicknesses.Add(0.005f); // TEMPORARY
+                t_thicknesses.Add(/*sectionTemp.t_min*/0.001); // TODO TEMPORARY
             }
         }
 

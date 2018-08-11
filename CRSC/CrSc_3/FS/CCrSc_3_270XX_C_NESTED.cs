@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_270XX_C_NESTED : CCrSc_TW
+    public class CCrSc_3_270XX_C_NESTED : CSC
     {
         // Thin-walled box section - monosymmetrical or double symmetrical
 

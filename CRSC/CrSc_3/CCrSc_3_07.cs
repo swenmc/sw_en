@@ -7,7 +7,7 @@ namespace CRSC
 {
     // Test cross-section class
     // Temporary Class - includes array of drawing points of cross-section in its coordinate system (LCS-for 2D yz)
-    public class CCrSc_3_07 : CCrSc
+    public class CCrSc_3_07 : CSO
     {
         // Rolled / Cold-formed rectangular / square hollow section
 

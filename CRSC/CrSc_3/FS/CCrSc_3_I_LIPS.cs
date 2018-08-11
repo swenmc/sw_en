@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_I_LIPS : CCrSc_TW
+    public class CCrSc_3_I_LIPS : CSO
     {
         // Thin-walled doubly symmetrical I-section with lips
 

@@ -9,7 +9,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_03 : CCrSc
+    public class CCrSc_3_03 : CSO
     {
         // Rolled monosymmetric L section (angle with equal legs)
 

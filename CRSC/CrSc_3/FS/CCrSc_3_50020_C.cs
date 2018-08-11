@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_50020_C : CCrSc_TW
+    public class CCrSc_3_50020_C : CSO
     {
         // Thin-walled mono-symmetrical C-section with lips
 

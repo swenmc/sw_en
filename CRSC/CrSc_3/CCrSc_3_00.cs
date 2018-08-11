@@ -9,7 +9,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_00 : CCrSc
+    public class CCrSc_3_00 : CSO
     {
         // Rolled doubly symmetric I section - parallel or tapered flanges
 

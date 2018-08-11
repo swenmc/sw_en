@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_51_TRIANGLE_TEMP : CCrSc_TW
+    public class CCrSc_3_51_TRIANGLE_TEMP : CSO
     {
         // Thin-walled triangle
 

@@ -842,6 +842,11 @@ namespace BaseClasses
         protected abstract void loadCrScIndicesShell();
         protected abstract void loadCrScIndicesBackSide();
 
+        // Calculate cross-section properties
+        // CCRSC_TW -thin-walled cross-section (defined by thickness and centerline points, could be combined with outline definition)
+        // CCRSC_SO (solid or massive cross-section (defined by outline)
+        public abstract void CalculateSectionProperties();
+
         // TODO - ONDREJ PROSIM REFAKTOROVAT
         // PREDNA A ZADNA STRANA BY MOHLI MAT SPOLOCNY KOD
         // VNUTORNY A VONKAJSI OBRYS BY MOHLI MAT SPOLOCNY KOD

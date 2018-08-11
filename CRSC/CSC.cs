@@ -35,33 +35,7 @@ namespace CRSC
         public CSC(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
             int count = y_suradnice.Count;
-
-            this.y_suradnice = y_suradnice;
-            this.z_suradnice = z_suradnice;
-            this.t_hodnoty = t_hodnoty;
-
-            this.J_Calc_Dimensions();
-
-            A_g = this.A_method(count);
-            this.A_vy_method(count);
-            this.A_vz_method(count);
-            this.Sy0_Sz0_method(count);
-            this.Iy0_Iz0_method(count);
-            this.omega0i = new double[count];
-            this.omega = new double[count];
-            this.d_omega_s = new double[count];
-            this.J_12_13_14_method();
-            this.J_15_method(count);
-            this.J_16_method(count);
-            this.J_17_18_19_method(count);
-            this.J_20_21_method();
-            this.J_30_31_32_method(count); //Closed Cross-section
-            this.J_23_method(count);
-            this.J_24_25_26_method();
-            this.J_27_J_28_method(count);
-            this.J_W_el();
-            this.Calc_Beta_y_method(count);
-            this.Calc_Beta_z_method(count);
+            this.J_30_31_32_method(count); // Closed Cross-section
         }
 
         //J.30-32 method

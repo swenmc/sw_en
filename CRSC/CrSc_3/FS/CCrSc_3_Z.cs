@@ -8,7 +8,7 @@ using BaseClasses;
 
 namespace CRSC
 {
-    public class CCrSc_3_Z : CCrSc_TW
+    public class CCrSc_3_Z : CSO
     {
         // Thin-walled centrally (point) - symmetrical Z-section with lips
 
