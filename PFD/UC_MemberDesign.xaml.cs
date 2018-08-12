@@ -74,6 +74,15 @@ namespace PFD
             // Display results in datagrid
             // AS 4600 output variables
 
+            // Tension
+            zoznamMenuNazvy.Add("φ t");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("N t,min");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fN_t_min.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
             // Compression
             // Global Buckling
             zoznamMenuNazvy.Add("f oc");
@@ -154,11 +163,6 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_721_N.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            // Tension
-            zoznamMenuNazvy.Add("φ t");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
-            zoznamMenuJednotky.Add("[-]");
-
             // Bending
             zoznamMenuNazvy.Add("M p,x");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_xu.ToString());
@@ -176,9 +180,14 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_yv.ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
+            // Bending about x/u axis
             zoznamMenuNazvy.Add("C b");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fC_b.ToString());
             zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("M o,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_o_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
 
             zoznamMenuNazvy.Add("M be,x");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fM_be_xu.ToString());
@@ -188,6 +197,10 @@ namespace PFD
             zoznamMenuNazvy.Add("f ol,x");
             zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ol_bend.ToString());
             zoznamMenuJednotky.Add("[Pa]");
+
+            zoznamMenuNazvy.Add("M ol,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_ol_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
 
             zoznamMenuNazvy.Add("λ l,x");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_l_xu.ToString());
@@ -202,6 +215,10 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od_bend.ToString());
             zoznamMenuJednotky.Add("[Pa]");
 
+            zoznamMenuNazvy.Add("M od,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_od_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
             zoznamMenuNazvy.Add("λ d,x");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_d_xu.ToString());
             zoznamMenuJednotky.Add("[-]");
@@ -215,10 +232,72 @@ namespace PFD
             zoznamMenuJednotky.Add("[-]");
 
             // Shear
+            zoznamMenuNazvy.Add("V y,y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fV_y_yv.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("V v,y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fV_v_yv.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("V cr,y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fV_cr_yv.ToString());
+            zoznamMenuJednotky.Add("[N]");
+
+            zoznamMenuNazvy.Add("λ v,y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_v_yv.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
             zoznamMenuNazvy.Add("φ v");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_v.ToString());
             zoznamMenuJednotky.Add("[-]");
 
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_9_xu_yv.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_10_xu.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_11_xu_yv.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_12_xu_yv_10.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            // Intercation of internal forces
+            zoznamMenuNazvy.Add("M s,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("M b,x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_b_xu.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("M s,x,f");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_xu_f.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("M s,y,f");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_yv_f.ToString());
+            zoznamMenuJednotky.Add("[Nm]");
+
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_724.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_725_1.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_725_2.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
+            // Maximum design ratio
             zoznamMenuNazvy.Add("Eta max");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
             zoznamMenuJednotky.Add("[-]");

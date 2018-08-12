@@ -132,12 +132,15 @@ namespace M_AS4600
         float fx_cfl_par, fy_cfl_par;
         public float fA_cfl, fJ_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fI_w_cfl;
 
+        public float fPhi_t = 0.9f; // Todo
         public float fPhi_b = 0.9f;
         public float fPhi_v = 0.9f;
-        public float fPhi_t = 0.9f;
         public float fPhi_c = 0.85f;
 
         // AS 4600 variables
+
+        public float fN_t_min;
+
         public float ff_oc;
         public float flambda_c;
         public float fN_y;
@@ -167,14 +170,33 @@ namespace M_AS4600
         public float fM_bl_xu;
 
         public float fC_b;
+        public float fM_o_xu;
         public float ff_ol_bend;
+        public float fM_ol_xu;
+        public float fM_od_xu;
         public float ff_od_bend;
         public float fLambda_l_xu;
         public float fLambda_d_xu;
         
         float fk;
+        public float fV_v_yv;
+        public float fV_y_yv;
+        public float fV_cr_yv;
+        public float fLambda_v_yv;
+
+        public float fM_s_xu;
+        public float fM_b_xu;
+        public float fM_s_xu_f;
+        public float fM_s_yv_f;
 
         public float fEta_721_N = 0.0f;
+        public float fEta_723_9_xu_yv = 0.0f;
+        public float fEta_723_10_xu = 0.0f;
+        public float fEta_723_11_xu_yv = 0.0f;
+        public float fEta_723_12_xu_yv_10 = 0.0f;
+        public float fEta_724 = 0f;
+        public float fEta_725_1 = 0f;
+        public float fEta_725_2 = 0f;
         public float fEta_max = 0.0f;
 
         public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)
@@ -322,13 +344,13 @@ namespace M_AS4600
 
             // Bending about xu-axis
             // Default values (used for design ratio in case that fM_xu = 0)
-            float fM_o_xu = fM_p_xu;
-            float fM_ol_xu = fM_p_xu;
-            float fM_od_xu = fM_p_xu;
+            fM_o_xu = fM_p_xu;
+            fM_ol_xu = fM_p_xu;
+            fM_od_xu = fM_p_xu;
 
-            float fM_be_xu = fM_y_xu; // Default value
-            float fM_bd_xu = fM_y_xu;
-            float fM_bl_xu = fM_y_xu;
+            fM_be_xu = fM_y_xu; // Default value
+            fM_bd_xu = fM_y_xu;
+            fM_bl_xu = fM_y_xu;
 
             // Bending about yv-axis
             // Default values (used for design ratio in case that fM_yv = 0)
@@ -412,9 +434,9 @@ namespace M_AS4600
 
                 // 7.2.2.4 Distorsional buckling
                 // 7.2.2.4.2 Beams without holes
-                float ff_od_bend = eq.Eq_D121_1_DB(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_f, fb_w, ft);
+                ff_od_bend = eq.Eq_D121_1_DB(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_f, fb_w, ft);
                 fM_od_xu = eq.Eq_7224_4__(fZ_f_xu, ff_od);
-                float fLambda_d_xu = eq.Eq_7224_3__(fM_y_xu, fM_od_xu);
+                fLambda_d_xu = eq.Eq_7224_3__(fM_y_xu, fM_od_xu);
                 fM_bd_xu = eq.Eq_7224____(fM_y_xu, fM_od_xu, fLambda_d_xu);
             }
 
@@ -424,8 +446,7 @@ namespace M_AS4600
             float ff_ol_D23 = eq.Eq_D131____(fk_LB_D23, fE, fNu, ft, fb);
 
             // 7.2.3 Design of member subject to shear, an combined bending and shear
-            float fV_v_yv;
-            float fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);
+            fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);
             float fk_v_yv;
 
             TransStiff_D3 eTrStiff = TransStiff_D3.eD3c_StiffFlanges; // Todo
@@ -444,9 +465,9 @@ namespace M_AS4600
                     break;
             }
 
-            float fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, fd_1, ft);
+            fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, fd_1, ft);
 
-            float fLambda_v_yv = eq.Eq_723_4___(fV_y_yv, fV_cr_yv);
+            fLambda_v_yv = eq.Eq_723_4___(fV_y_yv, fV_cr_yv);
 
             bool bIsMemberwithTransStiffeners = false;
 
@@ -461,8 +482,6 @@ namespace M_AS4600
                 fV_v_yv = eq.Eq_7233____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
             }
 
-            float fM_s_xu;
-
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
             {
                 float fLambda_l_xu = eq.Eq_7223_3__(fM_y_xu, fM_ol_xu);
@@ -476,14 +495,9 @@ namespace M_AS4600
             }
 
             float fEta_M_xu, fEta_V_yv;
-
-            float fEta_723_9_xu_yv = 0.0f;
-            float fEta_723_10_xu = 0.0f;
-            float fEta_723_11_xu_yv = 0.0f;
-            float fEta_723_12_xu_yv_10 = 0.0f;
             float fEta_723_12_xu_yv_13;
 
-            float fM_b_xu =  MathF.Min(fM_be_xu, MathF.Min(fM_bl_xu, fM_bd_xu)); // Design resistance value 7.2.2
+            fM_b_xu =  MathF.Min(fM_be_xu, MathF.Min(fM_bl_xu, fM_bd_xu)); // Design resistance value 7.2.2
             float fM_b_xu_drv;
             float fV_v_yv_drv;
 
@@ -507,15 +521,14 @@ namespace M_AS4600
                 fEta_max = MathF.Max(fEta_max, fEta_723_12_xu_yv_10);
             }
 
-            float fEta_N_724, fEta_Mxu_724, fEta_Myv_724, fEta_724 = 0f;
-            float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1, fEta_725_1 = 0f;
-            float fEta_N_725_2, fEta_Mxu_725_2, fEta_Myv_725_2, fEta_725_2 = 0f;
+            float fEta_N_724, fEta_Mxu_724, fEta_Myv_724; 
+            float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1;
+            float fEta_N_725_2, fEta_Mxu_725_2, fEta_Myv_725_2;
 
-            float fN_t_min = fA_g * ff_y; // Resistance // Todo
-            float fPhi_t = 0.9f; // Todo
+            fN_t_min = fA_g * ff_y; // Resistance // Todo
 
-            float fM_s_xu_f = eq.Eq_725_3___(fZ_ft_xu, ff_y);
-            float fM_s_yv_f = eq.Eq_725_3___(fZ_ft_yv, ff_y);
+            fM_s_xu_f = eq.Eq_725_3___(fZ_ft_xu, ff_y);
+            fM_s_yv_f = eq.Eq_725_3___(fZ_ft_yv, ff_y);
 
             if (sDIF.fN < 0.0f) // Compression
             {

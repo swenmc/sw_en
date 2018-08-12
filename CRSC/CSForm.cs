@@ -108,6 +108,7 @@ namespace CRSC
             DisplaySectionPropertiesInDataGrid(dataGridView2, cs);
         }
 
+        // TODO  refactoring DisplaySectionPropertiesInDataGrid a FillOutPutDataList (SBD)
         public void DisplaySectionPropertiesInDataGrid(DataGridView dataGridViewSectionProperties, CCrSc_TW cs)
         {
             // Round numerical values

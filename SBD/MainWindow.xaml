@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SBD"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
+        Title="MainWindow" Height="900" Width="1200">
     <Grid>
-        <Button Name ="Calculate_Button" Content="Calculate" HorizontalAlignment="Left" Margin="1100,740,0,0" VerticalAlignment="Top" Width="75" Click="Calculate_Button_Click"/>
-        <DataGrid Name ="DataGrid_SectionProperties" HorizontalAlignment="Left" Height="385" Margin="10,350,0,0" VerticalAlignment="Top" Width="580" IsReadOnly="True"/>
-        <DataGrid Name ="DataGrid_Results" HorizontalAlignment="Left" Height="725" VerticalAlignment="Top" Width="580" Margin="600,10,0,0" IsReadOnly="True"/>
+        <Button Name ="Calculate_Button" Content="Calculate" HorizontalAlignment="Left" Margin="1100,836,0,0" VerticalAlignment="Top" Width="75" Click="Calculate_Button_Click"/>
+        <DataGrid Name ="DataGrid_SectionCoordinates" HorizontalAlignment="Left" Height="400" Margin="600,10,0,0" VerticalAlignment="Top" Width="580" IsReadOnly="True"/>
+        <DataGrid Name ="DataGrid_SectionProperties" HorizontalAlignment="Left" Height="400" Margin="10,420,0,0" VerticalAlignment="Top" Width="580" IsReadOnly="True"/>
+        <DataGrid Name ="DataGrid_Results" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" Margin="600,420,0,0" IsReadOnly="True"/>
+        <Canvas Name ="Canvas_Section" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="580"/>
 
     </Grid>
 </Window>
