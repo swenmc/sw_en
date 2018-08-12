@@ -3,15 +3,68 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:SBD"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1200">
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="900" Width="1500">
+    <Window.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">130</System:Double>
+    </Window.Resources>
     <Grid>
-        <Button Name ="Calculate_Button" Content="Calculate" HorizontalAlignment="Left" Margin="1100,836,0,0" VerticalAlignment="Top" Width="75" Click="Calculate_Button_Click"/>
-        <DataGrid Name ="DataGrid_SectionCoordinates" HorizontalAlignment="Left" Height="400" Margin="600,10,0,0" VerticalAlignment="Top" Width="580" IsReadOnly="True"/>
-        <DataGrid Name ="DataGrid_SectionProperties" HorizontalAlignment="Left" Height="400" Margin="10,420,0,0" VerticalAlignment="Top" Width="580" IsReadOnly="True"/>
-        <DataGrid Name ="DataGrid_Results" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" Margin="600,420,0,0" IsReadOnly="True"/>
-        <Canvas Name ="Canvas_Section" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="580"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="580" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="500" />
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBox Grid.Row="0" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Load qy:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_qy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=Loadqy, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Load qz:" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_qz" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=Loadqz, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+        <Canvas Grid.Row="0" Grid.Column="3" Name ="Canvas_Section" HorizontalAlignment="Left" Height="400"  VerticalAlignment="Top" Width="580" Grid.RowSpan="5"/>
+        <DataGrid Grid.Row="0" Grid.Column="5" Name ="DataGrid_SectionCoordinates" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" Grid.RowSpan="5" Grid.ColumnSpan="2"/>
+        <DataGrid Grid.Row="5" Grid.Column="3" Name ="DataGrid_SectionProperties" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" IsReadOnly="True" Grid.RowSpan="4"/>
+        <DataGrid Grid.Row="5" Grid.Column="5" Name ="DataGrid_Results" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580"  IsReadOnly="True" Grid.RowSpan="5" Grid.ColumnSpan="2"/>
+        <Button Grid.Row="11" Grid.Column="6" Name ="Calculate_Button" Content="Calculate" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="Calculate_Button_Click"/>
     </Grid>
 </Window>

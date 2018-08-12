@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Globalization;
+using System.Data;
 using MATH;
 using BaseClasses;
 using MATERIAL;
@@ -28,6 +31,22 @@ namespace SBD
     /// </summary>
     /// 
 
+    public struct sInPutData
+    {
+        public int iPointID { set; get; }
+        public double fy_Coordinate { set; get; }
+        public double fz_Coordinate { set; get; }
+        public double ft_Thickness { set; get; }
+    }
+
+    public struct sInPutDataText
+    {
+        public string sPointID { set; get; }
+        public string sy_Coordinate { set; get; }
+        public string sz_Coordinate { set; get; }
+        public string st_Thickness { set; get; }
+    }
+
     public struct sOutPutData
     {
         public string sPropertyFullName { set; get; }
@@ -40,10 +59,9 @@ namespace SBD
     public partial class MainWindow : Window
     {
         CCrSc_TW section;
-        public List<double> y_coordinates = new List<double>();
-        public List<double> z_coordinates = new List<double>();
-        public List<double> t_thicknesses = new List<double>();
 
+        public List<sInPutData> listOfInputData = new List<sInPutData>(0);
+        public List<sInPutDataText> listOfInputDataText = new List<sInPutDataText>(0);
         public List<sOutPutData> listOfOutPutData = new List<sOutPutData>(0);
 
         public MainWindow()
@@ -59,10 +77,30 @@ namespace SBD
             // Temporary;
             SetListValuesFromCrossSection(sectionC_temp);
 
-            if (CoordinatesAreEqual(y_coordinates[0], z_coordinates[0], y_coordinates[y_coordinates.Count - 1], z_coordinates[z_coordinates.Count - 1])) // Closed cross-section
-                section = new CSC(y_coordinates, z_coordinates, t_thicknesses);
+            // Temporary for constructor
+            List<double> listOfyCoordinates = new List<double>();
+            List<double> listOfzCoordinates = new List<double>();
+            List<double> listOftCoordinates = new List<double>();
+
+            for(int i = 0; i< listOfInputData.Count; i++)
+            {
+                listOfyCoordinates.Add(listOfInputData[i].fy_Coordinate);
+                listOfzCoordinates.Add(listOfInputData[i].fz_Coordinate);
+                listOftCoordinates.Add(listOfInputData[i].ft_Thickness);
+            }
+
+            if (CoordinatesAreEqual(listOfInputData[0].fy_Coordinate, listOfInputData[0].fz_Coordinate, listOfInputData[listOfInputData.Count - 1].fy_Coordinate, listOfInputData[listOfInputData.Count - 1].fz_Coordinate)) // Closed cross-section
+                section = new CSC(listOfyCoordinates, listOfzCoordinates, listOftCoordinates);
             else
-                section = new CSO(y_coordinates, z_coordinates, t_thicknesses); // Open cross-section
+                section = new CSO(listOfyCoordinates, listOfzCoordinates, listOftCoordinates); // Open cross-section
+
+            List<string> colInputBinding = new List<string> {"sPointID", "sy_Coordinate", "sz_Coordinate", "st_Thickness" };
+            List<string> colInputHeader = new List<string> {"ID", "y-coordinate", "z-coordinate", "t"};
+
+            AddCordinateDataToDataGridRow(listOfInputDataText, 4, colInputBinding, colInputHeader, DataGrid_SectionCoordinates);
+
+            // Get Input data from datagrid
+            //getListsFromDatagrid();
 
             // Display section in GUI canvas
             // Primarny projekt by mal byt SW_EN, pre GUI sw_en_GUI
@@ -109,7 +147,11 @@ namespace SBD
             // TODO Vlozit detaily z vypoctu prierezu do datagrid - refaktorovat s projektom CRSC - metoda DisplaySectionPropertiesInDataGrid
             // Najlepsie budes asi previest projekt CRSC na WPF a cele to refaktorovat (tabulky, vykreslovanie atd)
             FillOutPutDataList(section);
-            AddSectionDataToDataGridRow();
+
+            List <string> colBinding = new List<string> { "sPropertyFullName", "sPropertySymbol", "sPropertyValue", "sPropertyUnit" };
+            List<string> colHeader = new List<string> { "Name", "Symbol", "Value", "Unit" };
+
+            AddSectionDataToDataGridRow(listOfOutPutData, 4, colBinding, colHeader, DataGrid_SectionProperties);
 
             // Display results for maximum design ratio
             PFD.UC_MemberDesign b_temp = new PFD.UC_MemberDesign(); // TODO - refaktoring, tento riadkoch by tu nemal byt, vyvotirit spolocnu bazovu triedu pre vlozenie dat do DATAGRIDu
@@ -229,6 +271,28 @@ namespace SBD
             listOfOutPutData.Add(SetOutPutDataProperties("Monosymmetry factor", "βz =", d_Beta_z.ToString(), s_unit_length, ""));
         }
 
+        private sInPutData SetInPutDataProperties(int iPoint, double y, double z, double t)
+        {
+            sInPutData sData = new sInPutData();
+            sData.iPointID = iPoint;
+            sData.fy_Coordinate = y;
+            sData.fz_Coordinate = z;
+            sData.ft_Thickness = t;
+
+            return sData;
+        }
+
+        private sInPutDataText SetInPutDataProperties(string iPoint, string y, string z, string t)
+        {
+            sInPutDataText sData = new sInPutDataText();
+            sData.sPointID = iPoint;
+            sData.sy_Coordinate = y;
+            sData.sz_Coordinate = z;
+            sData.st_Thickness = t;
+
+            return sData;
+        }
+
         private sOutPutData SetOutPutDataProperties(string name, string symbol, string value, string unit, string equation)
         {
             sOutPutData sData = new sOutPutData();
@@ -241,56 +305,82 @@ namespace SBD
             return sData;
         }
 
-        private void AddSectionDataToDataGridRow()
+        // TODO  - refactoring (iny typ zoznamu vstupnej struktury)
+        private void AddSectionDataToDataGridRow(List<sOutPutData> listOfData, int iNumberOfColumns, List<string> sColumnBinding, List<string> sColumnHeader, DataGrid dataGrid)
         {
-            DataGrid_SectionProperties.Items.Clear();
+            dataGrid.Items.Clear();
 
-            if (DataGrid_SectionProperties.Columns != null && DataGrid_SectionProperties.Columns.Count > 0) // Only in case that there are some columns remove them
+            if (dataGrid.Columns != null && dataGrid.Columns.Count > 0) // Only in case that there are some columns remove them
             {
-                DataGrid_SectionProperties.Columns.RemoveAt(0); // 4 columns (change of indexes after deleting of column)
-                DataGrid_SectionProperties.Columns.RemoveAt(0);
-                DataGrid_SectionProperties.Columns.RemoveAt(0);
-                DataGrid_SectionProperties.Columns.RemoveAt(0);
+                for(int i = 0; i < iNumberOfColumns; i++)
+                    dataGrid.Columns.RemoveAt(0); // 4 columns (change of indexes after deleting of column)
             }
 
-            if (DataGrid_SectionProperties.Columns.Count == 0) // In case there are no columns in datagrid
+            if (dataGrid.Columns.Count == 0) // In case there are no columns in datagrid
             {
-                DataGridTextColumn col1 = new DataGridTextColumn();
-                DataGridTextColumn col2 = new DataGridTextColumn();
-                DataGridTextColumn col3 = new DataGridTextColumn();
-                DataGridTextColumn col4 = new DataGridTextColumn();
-
-                DataGrid_SectionProperties.Columns.Add(col1);
-                DataGrid_SectionProperties.Columns.Add(col2);
-                DataGrid_SectionProperties.Columns.Add(col3);
-                DataGrid_SectionProperties.Columns.Add(col4);
-
-                col1.Binding = new Binding("sPropertyFullName");
-                col2.Binding = new Binding("sPropertySymbol");
-                col3.Binding = new Binding("sPropertyValue");
-                col4.Binding = new Binding("sPropertyUnit");
-
-                col1.Header = "Name";
-                col2.Header = "Symbol";
-                col3.Header = "Value";
-                col4.Header = "Unit";
-
-                for (int i = 0; i < listOfOutPutData.Count; i++)
+                // Create columns
+                for (int i = 0; i < iNumberOfColumns; i++)
                 {
-                    DataGrid_SectionProperties.Items.Add(listOfOutPutData[i]);
+                    DataGridTextColumn col = new DataGridTextColumn();
+                    dataGrid.Columns.Add(col);
+                    col.Binding = new Binding(sColumnBinding[i]);
+                    col.Header = sColumnHeader[i];
+                }
+
+                // Add Data
+                for (int i = 0; i < listOfData.Count; i++)
+                {
+                    dataGrid.Items.Add(listOfData[i]);
+                }
+            }
+        }
+
+        // TODO - refactoring (iny typ zoznamu vstupnej struktury)
+        private void AddCordinateDataToDataGridRow(List<sInPutDataText> listOfData, int iNumberOfColumns, List<string> sColumnBinding, List<string> sColumnHeader, DataGrid dataGrid)
+        {
+            dataGrid.Items.Clear();
+
+            if (dataGrid.Columns != null && dataGrid.Columns.Count > 0) // Only in case that there are some columns remove them
+            {
+                for (int i = 0; i < iNumberOfColumns; i++)
+                    dataGrid.Columns.RemoveAt(0); // 4 columns (change of indexes after deleting of column)
+            }
+
+            if (dataGrid.Columns.Count == 0) // In case there are no columns in datagrid
+            {
+                // Create columns
+                for (int i = 0; i < iNumberOfColumns; i++)
+                {
+                    DataGridTextColumn col = new DataGridTextColumn();
+                    dataGrid.Columns.Add(col);
+                    col.Binding = new Binding(sColumnBinding[i]);
+                    col.Header = sColumnHeader[i];
+                }
+
+                // Add Data
+                for (int i = 0; i < listOfData.Count; i++)
+                {
+                    dataGrid.Items.Add(listOfData[i]);
                 }
             }
         }
 
         private void SetListValuesFromCrossSection(CCrSc_TW sectionTemp)
         {
+            int iNumberOfDigits = 1;
+            float fUnitFactor = 1000; // m to mm
             // TODO - temporary
             // Priblizne riesenie, mala by sa nacitavat strednica
             for(int i = 0; i < sectionTemp.INoPointsOut; i++)
             {
-                y_coordinates.Add(sectionTemp.CrScPointsOut[i, 0]);
-                z_coordinates.Add(sectionTemp.CrScPointsOut[i, 1]);
-                t_thicknesses.Add(/*sectionTemp.t_min*/0.001); // TODO TEMPORARY
+                //TODO TEMPORARY Value of thickness
+                listOfInputData.Add(SetInPutDataProperties(i+1, sectionTemp.CrScPointsOut[i, 0], sectionTemp.CrScPointsOut[i, 1], 0.0095f));
+
+                listOfInputDataText.Add(SetInPutDataProperties(
+                    listOfInputData[i].iPointID.ToString(),
+                    Math.Round(listOfInputData[i].fy_Coordinate * fUnitFactor, iNumberOfDigits).ToString(),
+                    Math.Round(listOfInputData[i].fz_Coordinate  * fUnitFactor, iNumberOfDigits).ToString(),
+                    Math.Round(listOfInputData[i].ft_Thickness * fUnitFactor, iNumberOfDigits).ToString()));
             }
         }
 
@@ -300,6 +390,26 @@ namespace SBD
                 return true;
             else
                 return false;
+        }
+
+        private void getListsFromDatagrid()
+        {
+            int id;
+            double y, z, t;
+            listOfInputData.Clear();
+            listOfInputDataText.Clear();
+
+            for (int i = 0; i < DataGrid_SectionCoordinates.Items.Count - 1; i++)
+            {
+                string s = (DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString();
+
+                id = Convert.ToInt32((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString());
+                y = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[1].ToString().Replace(",", "."), new CultureInfo("en-us"));
+                z = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[2].ToString().Replace(",", "."), new CultureInfo("en-us"));
+                t = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[3].ToString().Replace(",", "."), new CultureInfo("en-us"));
+
+                listOfInputData.Add(SetInPutDataProperties(id, y, z, t));
+            }
         }
     }
 }
