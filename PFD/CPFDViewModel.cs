@@ -476,7 +476,6 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {

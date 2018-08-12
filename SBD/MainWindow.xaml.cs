@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.ComponentModel;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -64,15 +65,19 @@ namespace SBD
         public List<sInPutDataText> listOfInputDataText = new List<sInPutDataText>(0);
         public List<sOutPutData> listOfOutPutData = new List<sOutPutData>(0);
 
+        public CSBDViewModel vm;
+
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
-        {
+            // Model
+            vm = new CSBDViewModel();
+            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+            this.DataContext = vm;
+
             // Pomocny prierez pre testovanie
-            CCrSc_3_50020_C sectionC_temp = new CCrSc_3_50020_C(0.5f, 0.2f,  0.001f, Colors.Orange);
+            CCrSc_3_50020_C sectionC_temp = new CCrSc_3_50020_C(0.5f, 0.2f, 0.002f, Colors.Orange);
 
             // Temporary;
             SetListValuesFromCrossSection(sectionC_temp);
@@ -82,7 +87,7 @@ namespace SBD
             List<double> listOfzCoordinates = new List<double>();
             List<double> listOftCoordinates = new List<double>();
 
-            for(int i = 0; i< listOfInputData.Count; i++)
+            for (int i = 0; i < listOfInputData.Count; i++)
             {
                 listOfyCoordinates.Add(listOfInputData[i].fy_Coordinate);
                 listOfzCoordinates.Add(listOfInputData[i].fz_Coordinate);
@@ -94,8 +99,8 @@ namespace SBD
             else
                 section = new CSO(listOfyCoordinates, listOfzCoordinates, listOftCoordinates); // Open cross-section
 
-            List<string> colInputBinding = new List<string> {"sPointID", "sy_Coordinate", "sz_Coordinate", "st_Thickness" };
-            List<string> colInputHeader = new List<string> {"ID", "y-coordinate", "z-coordinate", "t"};
+            List<string> colInputBinding = new List<string> { "sPointID", "sy_Coordinate", "sz_Coordinate", "st_Thickness" };
+            List<string> colInputHeader = new List<string> { "ID", "y-coordinate", "z-coordinate", "t" };
 
             AddCordinateDataToDataGridRow(listOfInputDataText, 4, colInputBinding, colInputHeader, DataGrid_SectionCoordinates);
 
@@ -109,14 +114,10 @@ namespace SBD
             // TODO - refactoring
             sw_en_GUI.WindowCrossSection2D a = new sw_en_GUI.WindowCrossSection2D(sectionC_temp, Canvas_Section.Width, Canvas_Section.Height);
             Canvas_Section = a.CanvasSection2D;
+        }
 
-            // Uniform Load
-            float fLoadValue_qz = 1000; // N/m
-            float fLoadValue_qy =  200; // N/m
-
-            // Beam length
-            float fLength = 10f; // m
-
+        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
+        {
             // Calculation of internal forces and deflection
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
@@ -124,7 +125,7 @@ namespace SBD
             float[] fx_positions = new float[iNumberOfDesignSections];
 
             for (int i = 0; i < iNumberOfDesignSections; i++)
-                fx_positions[i] = ((float)i / (float)iNumberOfSegments) * fLength; // Int must be converted to the float to get decimal numbers
+                fx_positions[i] = ((float)i / (float)iNumberOfSegments) * vm.Length; // Int must be converted to the float to get decimal numbers
 
             int iNumberOfLoadCombinations = 1;
 
@@ -133,12 +134,12 @@ namespace SBD
             basicInternalForces[,] sBIF_x;
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, fLength, fx_positions, fLoadValue_qy, fLoadValue_qz, out sBIF_x, out sMomentValuesforCb);
+            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy, vm.Loadqz, out sBIF_x, out sMomentValuesforCb);
 
             // Design
             designInternalForces[,] sDIF_x;
             CMemberDesign designModel = new CMemberDesign();
-            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, section, fLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, section, vm.Length, sBIF_x, sMomentValuesforCb, out sDIF_x);
 
             // TODO - toto zobrazenie detailov v Gridview pre PFD a SBD treba refaktorovat a vytvorit jednotnu bazu pre zobrazovanie dat
             // v datagrid napriec roznymi projektmi
@@ -148,14 +149,21 @@ namespace SBD
             // Najlepsie budes asi previest projekt CRSC na WPF a cele to refaktorovat (tabulky, vykreslovanie atd)
             FillOutPutDataList(section);
 
-            List <string> colBinding = new List<string> { "sPropertyFullName", "sPropertySymbol", "sPropertyValue", "sPropertyUnit" };
+            List<string> colBinding = new List<string> { "sPropertyFullName", "sPropertySymbol", "sPropertyValue", "sPropertyUnit" };
             List<string> colHeader = new List<string> { "Name", "Symbol", "Value", "Unit" };
 
             AddSectionDataToDataGridRow(listOfOutPutData, 4, colBinding, colHeader, DataGrid_SectionProperties);
 
             // Display results for maximum design ratio
-            PFD.UC_MemberDesign b_temp = new PFD.UC_MemberDesign(); // TODO - refaktoring, tento riadkoch by tu nemal byt, vyvotirit spolocnu bazovu triedu pre vlozenie dat do DATAGRIDu
+            UC_MemberDesign b_temp = new UC_MemberDesign(); // TODO - refaktoring, tento riadkoch by tu nemal byt, vyvotirit spolocnu bazovu triedu pre vlozenie dat do DATAGRIDu
             b_temp.DisplayDesignResultsInGridView(this.DataGrid_Results, designModel.listOfMemberDesignInLocations[designModel.fMaximumDesignRatioLocationID]);
+        }
+
+        protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            CPFDViewModel viewModel = sender as CPFDViewModel;
+            if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
         }
 
         // TODO - refactoring
