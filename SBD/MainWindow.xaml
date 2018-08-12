@@ -62,7 +62,7 @@
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
         <Canvas Grid.Row="0" Grid.Column="3" Name ="Canvas_Section" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" Grid.RowSpan="5"/>
-        <DataGrid Grid.Row="0" Grid.Column="5" Name ="DataGrid_SectionCoordinates" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" Grid.RowSpan="5" Grid.ColumnSpan="2"/>
+        <DataGrid Grid.Row="0" Grid.Column="5" Name ="DataGrid_SectionCoordinates" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" Grid.RowSpan="5" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SectionCoordinates_SelectionChanged"/>
         <DataGrid Grid.Row="5" Grid.Column="3" Name ="DataGrid_SectionProperties" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" IsReadOnly="True" Grid.RowSpan="4"/>
         <DataGrid Grid.Row="5" Grid.Column="5" Name ="DataGrid_Results" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="580" IsReadOnly="True" Grid.RowSpan="5" Grid.ColumnSpan="2"/>
         <Button Grid.Row="11" Grid.Column="6" Name ="Calculate_Button" Content="Calculate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Calculate_Button_Click"/>

@@ -21,7 +21,6 @@ namespace CRSC
         public CSO(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
             CalculateSectionProperties(y_suradnice, z_suradnice, t_hodnoty);
-            DetermineSectionBasicDimensions();
         }
 
         public void CrScDefPoints_EX_01()
@@ -220,6 +219,9 @@ namespace CRSC
             this.y_suradnice = y_suradnice;
             this.z_suradnice = z_suradnice;
             this.t_hodnoty = t_hodnoty;
+
+            // Calculate basic dimensions of cross-section
+            J_Calc_Dimensions();
 
             A_g = this.A_method(count);
 

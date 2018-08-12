@@ -29,8 +29,8 @@ namespace SBD
             }
             set
             {
-                if (value < 0.1 || value > 30)
-                    throw new ArgumentException("Length must be between 0.1 and 30 [m]");
+                if (value < 0.01 || value > 30)
+                    throw new ArgumentException("Length must be between 0.01 and 30 [m]");
                 MLength = value;
 
                 NotifyPropertyChanged("Length");
@@ -47,8 +47,8 @@ namespace SBD
 
             set
             {
-                if (value < 0.01 || value > 30)
-                    throw new ArgumentException("Value must be between 0.01 and 30 [kN/m]");
+                if (value < 0.00 || value > 30)
+                    throw new ArgumentException("Value must be between 0.00 and 30 [kN/m]");
                 MLoadqy = value;
 
 
@@ -66,8 +66,8 @@ namespace SBD
 
             set
             {
-                if (value < 0.01 || value > 30)
-                    throw new ArgumentException("Value must be between 0.01 and 30 [kN/m]");
+                if (value < 0.00 || value > 30)
+                    throw new ArgumentException("Value must be between 0.00 and 30 [kN/m]");
                 MLoadqz = value;
 
 
@@ -80,9 +80,9 @@ namespace SBD
         //-------------------------------------------------------------------------------------------------------------
         public CSBDViewModel()
         {
-            Length = 5;
-            Loadqy = 0.2f;
-            Loadqz = 2;
+            Length = 10.0f;
+            Loadqy = 00.1f;
+            Loadqz = 01.5f;
         }
 
         //-------------------------------------------------------------------------------------------------------------

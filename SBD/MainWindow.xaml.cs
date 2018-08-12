@@ -77,11 +77,35 @@ namespace SBD
             this.DataContext = vm;
 
             // Pomocny prierez pre testovanie
-            CCrSc_3_50020_C sectionC_temp = new CCrSc_3_50020_C(0.5f, 0.2f, 0.002f, Colors.Orange);
+            CCrSc_3_50020_C sectionC_temp = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.Orange);
 
-            // Temporary;
+            // TODO Temporary
+            // Suradnice bodov na strednici C 50020
+            sectionC_temp.arrPointCoord = new float[11, 3]
+            {
+                {0.080f,  0.21f, 0.00195f},
+                {0.099f,  0.21f, 0.00195f},
+                {0.099f,  0.24f, 0.00195f},
+                {0.000f,  0.24f, 0.00195f},
+                {0.000f,  0.06f, 0.00195f},
+                {0.039f,  0.00f, 0.00195f},
+                {0.000f, -0.06f, 0.00195f},
+                {0.000f, -0.24f, 0.00195f},
+                {0.099f, -0.24f, 0.00195f},
+                {0.099f, -0.21f, 0.00195f},
+                {0.080f, -0.21f, 0.00195f}
+            };
+
             SetListValuesFromCrossSection(sectionC_temp);
 
+            List<string> colInputBinding = new List<string> { "sPointID", "sy_Coordinate", "sz_Coordinate", "st_Thickness" };
+            List<string> colInputHeader = new List<string> { "ID", "y-coordinate", "z-coordinate", "t" };
+
+            AddCordinateDataToDataGridRow(listOfInputDataText, 4, colInputBinding, colInputHeader, DataGrid_SectionCoordinates);
+        }
+
+        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
+        {
             // Temporary for constructor
             List<double> listOfyCoordinates = new List<double>();
             List<double> listOfzCoordinates = new List<double>();
@@ -112,12 +136,9 @@ namespace SBD
             // z toho by mali cerpat projekty PFD a SBD
 
             // TODO - refactoring
-            sw_en_GUI.WindowCrossSection2D a = new sw_en_GUI.WindowCrossSection2D(sectionC_temp, Canvas_Section.Width, Canvas_Section.Height);
-            Canvas_Section = a.CanvasSection2D;
-        }
+            //sw_en_GUI.WindowCrossSection2D a = new sw_en_GUI.WindowCrossSection2D(section, Canvas_Section.Width, Canvas_Section.Height);
+            //Canvas_Section = a.CanvasSection2D;
 
-        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
-        {
             // Calculation of internal forces and deflection
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
@@ -134,7 +155,9 @@ namespace SBD
             basicInternalForces[,] sBIF_x;
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy, vm.Loadqz, out sBIF_x, out sMomentValuesforCb);
+
+            float fLoadUnitMultiplier = 1000; // From kN to N
+            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy * fLoadUnitMultiplier, vm.Loadqz * fLoadUnitMultiplier, out sBIF_x, out sMomentValuesforCb);
 
             // Design
             designInternalForces[,] sDIF_x;
@@ -177,6 +200,7 @@ namespace SBD
 
             // TODO - zapracovat do GUI nastavenie jednotiek
             bool bDisplayInMM = true;
+            bool bDisplayAnglesInDegrees = true;
 
             float fUnitMultilier_Dim = 1;
             string s_unit_length = "m";
@@ -185,6 +209,15 @@ namespace SBD
             {
                 fUnitMultilier_Dim = 1000; // m to mm
                 s_unit_length = "mm"; // TODO - zapracovat nastavitelne jednotky (napriec celou aplikaciou, vypocet v zakladnych jednotkach SI)
+            }
+
+            float fUnitMultiplierAngle = 1f;
+            string s_unit_angle = "rad";
+
+            if(bDisplayAnglesInDegrees)
+            {
+                fUnitMultiplierAngle = 180f / MathF.fPI; // rad to deg
+                s_unit_angle = "deg";
             }
 
             float fUnitMultilier_Dim2 = MathF.Pow2(fUnitMultilier_Dim); // m^2 to mm^2
@@ -206,13 +239,13 @@ namespace SBD
             double d_Wy_el_2 = Math.Round(cs.W_y_el_2 * fUnitMultilier_Dim3, dec_place_num2);
             double d_Wz_el_2 = Math.Round(cs.W_z_el_2 * fUnitMultilier_Dim3, dec_place_num2);
 
-            double d_Alpha = Math.Round(cs.Alpha_rad, dec_place_num2);
+            double d_Alpha = Math.Round(cs.Alpha_rad * fUnitMultiplierAngle, dec_place_num2);
             double d_I_yz = Math.Round(cs.I_yz * fUnitMultilier_Dim4, dec_place_num2);
             double d_I_eps = Math.Round(cs.I_epsilon * fUnitMultilier_Dim4, dec_place_num2);
             double d_I_eta = Math.Round(cs.I_mikro * fUnitMultilier_Dim4, dec_place_num2);
             double d_I_ome = Math.Round(cs.Iomega * fUnitMultilier_Dim6, dec_place_num2);
-            double d_ome_mean = Math.Round(cs.Omega_mean, dec_place_num2);
-            double d_ome_max = Math.Round(cs.Omega_max, dec_place_num2);
+            double d_ome_mean = Math.Round(cs.Omega_mean * fUnitMultilier_Dim2, dec_place_num2);
+            double d_ome_max = Math.Round(cs.Omega_max * fUnitMultilier_Dim2, dec_place_num2);
             double d_I_y_ome = Math.Round(cs.Iy_omega * fUnitMultilier_Dim6, dec_place_num2);
             double d_I_z_ome = Math.Round(cs.Iz_omega * fUnitMultilier_Dim6, dec_place_num2);
             double d_I_ome_ome = Math.Round(cs.Iomega_omega, dec_place_num2);
@@ -256,7 +289,7 @@ namespace SBD
             listOfOutPutData.Add(SetOutPutDataProperties("Elastic modulus", "Wzel1 =", d_Wz_el_1.ToString(), s_unit_first_moment_of_area, ""));
             listOfOutPutData.Add(SetOutPutDataProperties("Elastic modulus", "Wyel2 =", d_Wy_el_2.ToString(), s_unit_length, ""));
             listOfOutPutData.Add(SetOutPutDataProperties("Elastic modulus", "Wzel2 =", d_Wz_el_2.ToString(), s_unit_first_moment_of_area, ""));
-            listOfOutPutData.Add(SetOutPutDataProperties("Angle of principal axes", "α =", d_Alpha.ToString(), "rad", ""));
+            listOfOutPutData.Add(SetOutPutDataProperties("Angle of principal axes", "α =", d_Alpha.ToString(), s_unit_angle, ""));
             listOfOutPutData.Add(SetOutPutDataProperties("Product moment of area", "Iyz =", d_I_yz.ToString(), s_unit_second_moment_of_area, ""));
             listOfOutPutData.Add(SetOutPutDataProperties("Moment of intertia", "Iξ =", d_I_eps.ToString(), s_unit_second_moment_of_area, ""));
             listOfOutPutData.Add(SetOutPutDataProperties("Moment of intertia", "Iη =", d_I_eta.ToString(), s_unit_second_moment_of_area, ""));
@@ -375,14 +408,12 @@ namespace SBD
 
         private void SetListValuesFromCrossSection(CCrSc_TW sectionTemp)
         {
-            int iNumberOfDigits = 1;
+            int iNumberOfDigits = 2;
             float fUnitFactor = 1000; // m to mm
-            // TODO - temporary
-            // Priblizne riesenie, mala by sa nacitavat strednica
-            for(int i = 0; i < sectionTemp.INoPointsOut; i++)
+
+            for(int i = 0; i < sectionTemp.arrPointCoord.Length / 3; i++)
             {
-                //TODO TEMPORARY Value of thickness
-                listOfInputData.Add(SetInPutDataProperties(i+1, sectionTemp.CrScPointsOut[i, 0], sectionTemp.CrScPointsOut[i, 1], 0.0095f));
+                listOfInputData.Add(SetInPutDataProperties(i+1, sectionTemp.arrPointCoord[i, 0], sectionTemp.arrPointCoord[i, 1], sectionTemp.arrPointCoord[i, 2]));
 
                 listOfInputDataText.Add(SetInPutDataProperties(
                     listOfInputData[i].iPointID.ToString(),
@@ -409,7 +440,7 @@ namespace SBD
 
             for (int i = 0; i < DataGrid_SectionCoordinates.Items.Count - 1; i++)
             {
-                string s = (DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString();
+                string s = (DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString(); // TODO - bug nefunguje to takto
 
                 id = Convert.ToInt32((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString());
                 y = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[1].ToString().Replace(",", "."), new CultureInfo("en-us"));
@@ -418,6 +449,11 @@ namespace SBD
 
                 listOfInputData.Add(SetInPutDataProperties(id, y, z, t));
             }
+        }
+
+        private void DataGrid_SectionCoordinates_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            getListsFromDatagrid(); // TODO - Bug pada to na nacitani poloziek z datagrid
         }
     }
 }
