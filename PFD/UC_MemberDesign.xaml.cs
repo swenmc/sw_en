@@ -83,6 +83,10 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fN_t_min.ToString());
             zoznamMenuJednotky.Add("[N]");
 
+            zoznamMenuNazvy.Add("η Nt");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_Nt.ToString());
+            zoznamMenuJednotky.Add("[-]");
+
             // Compression
             // Global Buckling
             zoznamMenuNazvy.Add("f oc");
@@ -159,7 +163,7 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_c.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta Nc");
+            zoznamMenuNazvy.Add("η Nc");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_721_N.ToString());
             zoznamMenuJednotky.Add("[-]");
 
@@ -252,19 +256,19 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_v.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_9_xu_yv.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_10_xu.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_11_xu_yv.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_12_xu_yv_10.ToString());
             zoznamMenuJednotky.Add("[-]");
 
@@ -285,20 +289,20 @@ namespace PFD
             zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_yv_f.ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_724.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_725_1.ToString());
             zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("Eta");
+            zoznamMenuNazvy.Add("η");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_725_2.ToString());
             zoznamMenuJednotky.Add("[-]");
 
             // Maximum design ratio
-            zoznamMenuNazvy.Add("Eta max");
+            zoznamMenuNazvy.Add("η max");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
             zoznamMenuJednotky.Add("[-]");
 

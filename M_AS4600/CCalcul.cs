@@ -189,6 +189,7 @@ namespace M_AS4600
         public float fM_s_xu_f;
         public float fM_s_yv_f;
 
+        public float fEta_Nt = 0.0f;
         public float fEta_721_N = 0.0f;
         public float fEta_723_9_xu_yv = 0.0f;
         public float fEta_723_10_xu = 0.0f;
@@ -265,6 +266,12 @@ namespace M_AS4600
             fb_f = fb; // TODO
 
             // Design
+
+            // Tension
+
+            fN_t_min = fA_g * ff_y; // Resistance // Todo
+            fEta_Nt = sDIF.fN_t / fN_t_min;
+
             // Compression
 
             float fa_CEQ = 0f;
@@ -524,8 +531,6 @@ namespace M_AS4600
             float fEta_N_724, fEta_Mxu_724, fEta_Myv_724; 
             float fEta_N_725_1, fEta_Mxu_725_1, fEta_Myv_725_1;
             float fEta_N_725_2, fEta_Mxu_725_2, fEta_Myv_725_2;
-
-            fN_t_min = fA_g * ff_y; // Resistance // Todo
 
             fM_s_xu_f = eq.Eq_725_3___(fZ_ft_xu, ff_y);
             fM_s_yv_f = eq.Eq_725_3___(fZ_ft_yv, ff_y);

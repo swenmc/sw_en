@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Drawing;
 using System.Globalization;
+using System.Windows.Controls.Primitives;
 using System.Data;
 using MATH;
 using BaseClasses;
@@ -67,6 +68,29 @@ namespace SBD
 
         public CSBDViewModel vm;
 
+        public Canvas CanvasSection2D = null;
+        int scale_unit = 1000; // mm
+
+        double modelMarginLeft_x;
+        double modelMarginBottom_y;
+        double fReal_Model_Zoom_Factor;
+
+        double fModel_Length_x_page;
+        double fModel_Length_y_page;
+
+        double dPageWidth;
+        double dPageHeight;
+
+        float fTempMax_X;
+        float fTempMin_X;
+        float fTempMax_Y;
+        float fTempMin_Y;
+
+        // Temporary for constructor
+        List<double> listOfyCoordinates = new List<double>();
+        List<double> listOfzCoordinates = new List<double>();
+        List<double> listOftCoordinates = new List<double>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -102,14 +126,6 @@ namespace SBD
             List<string> colInputHeader = new List<string> { "ID", "y-coordinate", "z-coordinate", "t" };
 
             AddCordinateDataToDataGridRow(listOfInputDataText, 4, colInputBinding, colInputHeader, DataGrid_SectionCoordinates);
-        }
-
-        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
-        {
-            // Temporary for constructor
-            List<double> listOfyCoordinates = new List<double>();
-            List<double> listOfzCoordinates = new List<double>();
-            List<double> listOftCoordinates = new List<double>();
 
             for (int i = 0; i < listOfInputData.Count; i++)
             {
@@ -123,22 +139,23 @@ namespace SBD
             else
                 section = new CSO(listOfyCoordinates, listOfzCoordinates, listOftCoordinates); // Open cross-section
 
-            List<string> colInputBinding = new List<string> { "sPointID", "sy_Coordinate", "sz_Coordinate", "st_Thickness" };
-            List<string> colInputHeader = new List<string> { "ID", "y-coordinate", "z-coordinate", "t" };
+            // Temporary
+            section.arrPointCoord = sectionC_temp.arrPointCoord;
 
-            AddCordinateDataToDataGridRow(listOfInputDataText, 4, colInputBinding, colInputHeader, DataGrid_SectionCoordinates);
+            List<string> colInputBinding2 = new List<string> { "sPointID", "sy_Coordinate", "sz_Coordinate", "st_Thickness" };
+            List<string> colInputHeader2 = new List<string> { "ID", "y-coordinate", "z-coordinate", "t" };
+
+            AddCordinateDataToDataGridRow(listOfInputDataText, 4, colInputBinding2, colInputHeader2, DataGrid_SectionCoordinates);
 
             // Get Input data from datagrid
             //getListsFromDatagrid();
 
-            // Display section in GUI canvas
-            // Primarny projekt by mal byt SW_EN, pre GUI sw_en_GUI
-            // z toho by mali cerpat projekty PFD a SBD
+            // Draw section
+            DrawSection();
+        }
 
-            // TODO - refactoring
-            //sw_en_GUI.WindowCrossSection2D a = new sw_en_GUI.WindowCrossSection2D(section, Canvas_Section.Width, Canvas_Section.Height);
-            //Canvas_Section = a.CanvasSection2D;
-
+        private void Calculate_Button_Click(object sender, RoutedEventArgs e)
+        {
             // Calculation of internal forces and deflection
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
@@ -187,6 +204,32 @@ namespace SBD
             if (sender == null) return;
             CPFDViewModel viewModel = sender as CPFDViewModel;
             if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
+        }
+
+        private void DrawSection()
+        {
+            // Display section in GUI canvas
+            // Primarny projekt by mal byt SW_EN, pre GUI sw_en_GUI
+            // z toho by mali cerpat projekty PFD a SBD
+
+            // TODO - refactoring (zjednotit vykreslovanie prierezu napriec celym solution, pouzite vo viacerych projektoch, outline, centreline, cislovanie bodov, osovy system prierezu ....
+
+            /*
+            sw_en_GUI.WindowCrossSection2D a = new sw_en_GUI.WindowCrossSection2D(section, Canvas_Section.Width, Canvas_Section.Height);
+            Canvas_Section = a.CanvasSection2D;
+            */
+
+            dPageWidth = Canvas_Section.Width;
+            dPageHeight = Canvas_Section.Height;
+
+            Canvas_Section.Children.Clear();
+            CalculateModelLimits(section.arrPointCoord, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            CaclulateBasicValue();
+            double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
+            double fCanvasLeft = modelMarginLeft_x;
+            DrawCentreLine(section.arrPointCoord, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, Canvas_Section);
+            DrawPointNumbers();
+            CanvasSection2D = Canvas_Section;
         }
 
         // TODO - refactoring
@@ -438,14 +481,34 @@ namespace SBD
             listOfInputData.Clear();
             listOfInputDataText.Clear();
 
+            DataGridCell cell;
+            TextBlock tb;
+
             for (int i = 0; i < DataGrid_SectionCoordinates.Items.Count - 1; i++)
             {
-                string s = (DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString(); // TODO - bug nefunguje to takto
+                cell = Datagrid.GetCell(DataGrid_SectionCoordinates, i, 0);
+                tb = cell.Content as TextBlock;
+                id = Convert.ToInt32(tb.Text);
 
-                id = Convert.ToInt32((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[0].ToString());
+                cell = Datagrid.GetCell(DataGrid_SectionCoordinates, i, 1);
+                tb = cell.Content as TextBlock;
+                y = Convert.ToDouble(tb.Text);
+
+                cell = Datagrid.GetCell(DataGrid_SectionCoordinates, i, 2);
+                tb = cell.Content as TextBlock;
+                z = Convert.ToDouble(tb.Text);
+
+                cell = Datagrid.GetCell(DataGrid_SectionCoordinates, i, 3);
+                tb = cell.Content as TextBlock;
+                t = Convert.ToDouble(tb.Text);
+
+                // Nefunguje
+                /*
+                id = Convert.ToInt32((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row[0].ToString());
                 y = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[1].ToString().Replace(",", "."), new CultureInfo("en-us"));
                 z = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[2].ToString().Replace(",", "."), new CultureInfo("en-us"));
                 t = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[3].ToString().Replace(",", "."), new CultureInfo("en-us"));
+                */
 
                 listOfInputData.Add(SetInPutDataProperties(id, y, z, t));
             }
@@ -453,7 +516,193 @@ namespace SBD
 
         private void DataGrid_SectionCoordinates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            getListsFromDatagrid(); // TODO - Bug pada to na nacitani poloziek z datagrid
+            // Toto by nemalo reagovat na zmenu indexu, ale na zmenu hodnoty
+
+            // Load Data From Datagrid - section coordinates
+            //getListsFromDatagrid();
+
+            // Redraw cross-section
+            //DrawSection();
+        }
+
+        public void DrawCentreLine(float[,] arrPoints, double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, Canvas imageCanvas)
+        {
+            PointCollection points = new PointCollection();
+
+            for (int i = 0; i < arrPoints.Length / 3; i++)
+            {
+                    points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * arrPoints[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * arrPoints[i, 1]));
+            }
+
+            Polyline myLine = new Polyline();
+            myLine.Stretch = Stretch.Fill;
+            myLine.Stroke = color;
+            myLine.Points = points;
+            myLine.StrokeThickness = fReal_Model_Zoom_Factor * arrPoints[0, 2]; // Constant thickness
+            myLine.StrokeStartLineCap = startCap;
+            myLine.StrokeEndLineCap = endCap;
+            //myLine.HorizontalAlignment = HorizontalAlignment.Left;
+            //myLine.VerticalAlignment = VerticalAlignment.Center;
+            Canvas.SetTop(myLine, dCanvasTopTemp);
+            Canvas.SetLeft(myLine, dCanvasLeftTemp);
+            imageCanvas.Children.Add(myLine);
+        }
+
+        public void CaclulateBasicValue()
+        {
+            float fModel_Length_x_real = fTempMax_X - fTempMin_X;
+            float fModel_Length_y_real = fTempMax_Y - fTempMin_Y;
+
+            fModel_Length_x_page = scale_unit * fModel_Length_x_real;
+            fModel_Length_y_page = scale_unit * fModel_Length_y_real;
+
+            // Calculate maximum zoom factor
+            // Original ratio
+            double dFactor_x = fModel_Length_x_page / dPageWidth;
+            double dFactor_y = fModel_Length_y_page / dPageHeight;
+
+            // Recalculate model coordinates and set minimum point coordinates to [0,0]
+
+            if (section.arrPointCoord != null && (int)section.arrPointCoord.Length / 3 > 0) // It should exist
+            {
+                for (int i = 0; i < (int)section.arrPointCoord.Length / 3; i++)
+                {
+                    section.arrPointCoord[i, 0] -= fTempMin_X;
+                    section.arrPointCoord[i, 1] -= fTempMin_Y;
+                }
+            }
+            else
+            {
+                // Error - Invalid data
+                MessageBox.Show("Invalid component outline");
+            }
+
+            // Calculate new model dimensions (zoom of model size is 90%)
+            fReal_Model_Zoom_Factor = 0.9f / MathF.Max(dFactor_x, dFactor_y) * scale_unit;
+
+            // Set new size of model on the page
+            fModel_Length_x_page = fReal_Model_Zoom_Factor * fModel_Length_x_real;
+            fModel_Length_y_page = fReal_Model_Zoom_Factor * fModel_Length_y_real;
+
+            modelMarginLeft_x = 0.5 * (dPageWidth - fModel_Length_x_page);
+
+            modelMarginBottom_y = fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page);
+        }
+
+        public void CalculateModelLimits(float[,] Points_temp, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
+        {
+            fTempMax_X = float.MinValue;
+            fTempMin_X = float.MaxValue;
+            fTempMax_Y = float.MinValue;
+            fTempMin_Y = float.MaxValue;
+
+            if (Points_temp != null) // Some points exist
+            {
+                for (int i = 0; i < Points_temp.Length / 3; i++)
+                {
+                    // Maximum X - coordinate
+                    if (Points_temp[i, 0] > fTempMax_X)
+                        fTempMax_X = Points_temp[i, 0];
+
+                    // Minimum X - coordinate
+                    if (Points_temp[i, 0] < fTempMin_X)
+                        fTempMin_X = Points_temp[i, 0];
+
+                    // Maximum Y - coordinate
+                    if (Points_temp[i, 1] > fTempMax_Y)
+                        fTempMax_Y = Points_temp[i, 1];
+
+                    // Minimum Y - coordinate
+                    if (Points_temp[i, 1] < fTempMin_Y)
+                        fTempMin_Y = Points_temp[i, 1];
+                }
+            }
+        }
+
+        public void DrawPointNumbers()
+        {
+            // Centerline points
+            if (section.arrPointCoord != null) // If is array of points not empty
+            {
+                for (int i = 0; i < section.arrPointCoord.Length / 3; i++)
+                {
+                    DrawText((i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * section.arrPointCoord[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * section.arrPointCoord[i, 1], 10, Brushes.Blue, Canvas_Section);
+                }
+            }
+        }
+
+        public void DrawText(string text, double posx, double posy, double fontSize, SolidColorBrush color, Canvas imageCanvas)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Foreground = color;
+            Canvas.SetLeft(textBlock, posx);
+            Canvas.SetTop(textBlock, posy);
+            textBlock.Margin = new Thickness(2, 2, 0, 0);
+            textBlock.FontSize = fontSize;
+            imageCanvas.Children.Add(textBlock);
+        }
+    }
+
+    public static class Datagrid
+    {
+        public static DataGridRow GetSelectedRow(this DataGrid grid)
+        {
+            return (DataGridRow)grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem);
+        }
+        public static DataGridRow GetRow(this DataGrid grid, int index)
+        {
+            DataGridRow row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromIndex(index);
+            if (row == null)
+            {
+                // May be virtualized, bring into view and try again.
+                grid.UpdateLayout();
+                grid.ScrollIntoView(grid.Items[index]);
+                row = (DataGridRow)grid.ItemContainerGenerator.ContainerFromIndex(index);
+            }
+            return row;
+        }
+        public static DataGridCell GetCell(this DataGrid grid, DataGridRow row, int column)
+        {
+            if (row != null)
+            {
+                DataGridCellsPresenter presenter = GetVisualChild<DataGridCellsPresenter>(row);
+
+                if (presenter == null)
+                {
+                    grid.ScrollIntoView(row, grid.Columns[column]);
+                    presenter = GetVisualChild<DataGridCellsPresenter>(row);
+                }
+
+                DataGridCell cell = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(column);
+                return cell;
+            }
+            return null;
+        }
+
+        public static T GetVisualChild<T>(Visual parent) where T : Visual
+        {
+            T child = default(T);
+            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < numVisuals; i++)
+            {
+                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                child = v as T;
+                if (child == null)
+                {
+                    child = GetVisualChild<T>(v);
+                }
+                if (child != null)
+                {
+                    break;
+                }
+            }
+            return child;
+        }
+        public static DataGridCell GetCell(this DataGrid grid, int row, int column)
+        {
+            DataGridRow rowContainer = GetRow(grid, row);
+            return GetCell(grid, rowContainer, column);
         }
     }
 }
