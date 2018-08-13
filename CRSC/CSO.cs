@@ -405,6 +405,9 @@ namespace CRSC
             for (int i = 1; i < count; i++)
             {
                 I_t += dAi_method(i) * Math.Pow(t_hodnoty[i], 2) / 3;
+
+                // For rectangle see https://www.colorado.edu/engineering/CAS/courses.d/Structures.d/IAST.Lect08.d/IAST.Lect08.pdf
+                // Page 8-6
             }
 
             if (MathF.Min(t_hodnoty) != 0) // Existuje minimum rozne od nuly
