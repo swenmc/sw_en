@@ -332,7 +332,7 @@ namespace M_EC1.AS_NZS
 
             // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
             fC_pe_S_wall_dimensions = new float[5] {0, fh, 2 * fh, 3 * fh, 9999 };
-            fC_pe_S_wall_values = new float[5] { -0.65f, -0.65f, -0.5f, -0.3f, -0.2f };
+            fC_pe_S_wall_values = new float[5] { -0.65f, -0.5f, -0.3f, -0.2f, -0.2f };
 
             // Roof
             fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
@@ -357,22 +357,27 @@ namespace M_EC1.AS_NZS
                 {
                     // Find dimension corresponding to the half of building width (change of gable roof slope from U to D)
                     // and set factor for U
-                    if (fC_pe_UD_roof_dimensions[i] < (fC_pe_UD_roof_dimensions.Length - 1) && fC_pe_UD_roof_dimensions[i+1] >= 0.5f * sGeometryInput.fW)
+                    if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i+1] >= 0.5f * sGeometryInput.fW) // Half of building width for gable roof
                     {
                         fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
                         fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
                         fC_pe_D_roof_values_max = new float[fC_pe_UD_roof_values_max.Length - i];
 
-                        for (int k = i; k < fC_pe_UD_roof_dimensions.Length - i; k++)
+                        for (int k = i; k < fC_pe_UD_roof_dimensions.Length; k++)
                         {
-                            fC_pe_D_roof_dimensions[k] = fC_pe_UD_roof_dimensions[i + k];
-                            fC_pe_D_roof_values_min[k] = fC_pe_UD_roof_values_min[i + k];
-                            fC_pe_D_roof_values_max[k] = fC_pe_UD_roof_values_max[i + k];
-                        }
-                        
-                    }
+                            if (k == i) // First segment on D side
+                                fC_pe_D_roof_dimensions[k - i] = 0;
+                            else if (k < fC_pe_UD_roof_dimensions.Length - 1)
+                                fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k] - 0.5f * sGeometryInput.fW; // subtract U side length from UD coordinates // D side starts with zero coordinate
+                            else // Last item in the array
+                                fC_pe_D_roof_dimensions[k - i] = fC_pe_UD_roof_dimensions[k];
 
-                    break; // Do not continue in cycle
+                            fC_pe_D_roof_values_min[k - i] = fC_pe_UD_roof_values_min[k];
+                            fC_pe_D_roof_values_max[k - i] = fC_pe_UD_roof_values_max[k];
+                        }
+
+                        break; // Finish cycle, the arrays for D side should be already filled
+                    }
                 }
             }
             else // More or equal to 10°
@@ -682,11 +687,11 @@ namespace M_EC1.AS_NZS
         protected void Calculate_Cpe_Table_5_3_A(float fh, float fRatioHtoD, ref float []fC_pe_roof_dimensions, ref float []fC_pe_roof_values_min, ref float []fC_pe_roof_values_max)
         {
             float[] fx = new float[6] { 0, 0.5f * fh, fh, 2 * fh, 3 * fh, 9999 };
-            float[] fy_min_htod_05 = new float[6] { -0.9f, -0.9f, -0.9f, -0.5f, -0.3f, -0.2f };
-            float[] fy_min_htod_10 = new float[6] { -1.3f, -1.3f, -0.7f, -0.7f, -0.7f, -0.7f }; //???
+            float[] fy_min_htod_05 = new float[6] { -0.9f, -0.9f, -0.5f, -0.3f, -0.2f, -0.2f };
+            float[] fy_min_htod_10 = new float[6] { -1.3f, -0.7f, -0.7f, -0.7f, -0.7f, -0.7f };
 
-            float[] fy_max_htod_05 = new float[6] { -0.4f, -0.4f, -0.4f, -0.0f, 0.1f, 0.2f };
-            float[] fy_max_htod_10 = new float[6] { -0.6f, -0.6f, -0.3f, -0.3f, -0.3f, -0.3f }; //???
+            float[] fy_max_htod_05 = new float[6] { -0.4f, -0.4f, -0.0f, 0.1f, 0.2f, 0.2f };
+            float[] fy_max_htod_10 = new float[6] { -0.6f, -0.3f, -0.3f, -0.3f, -0.3f, -0.3f };
 
             if (fRatioHtoD <= 0.5f)
             {

@@ -14,6 +14,7 @@ namespace BaseClasses
     {
         Point3DCollection pSurfacePoints;
         float fValue;
+        bool bIsFourPointBase;
         public bool bDrawPositiveValueOnPlusLocalZSide;
         public bool bChangePositionForNegativeValue;
 
@@ -129,33 +130,41 @@ namespace BaseClasses
             {
                 // TODO Ondrej - zapracovat nejaky algoritmus, ktory zmeni farbu m_Color, ak je hodnota negativna
                 // Nastavit napriklad nejaky posun v skale alebo zaviest skalu farieb pre kladne (odtiene cervenej) a zaporne (odtiene modrej) hodnoty a z tych potom vyberat
-                m_Color = Colors.LightSkyBlue; 
+                m_Color = Colors.LightSkyBlue;
             }
         }
 
-        // Constructor used for Gable Roof Building - wall (5 edges)
+        // Constructor used for Gable Roof Building - wall (5 edges, trapezoidal segment)
+        // Constructor used for Gable Roof Building - wall (4 edges, trapezoidal segment)
+
+        // Symmetric 5 points
         public CSLoad_FreeUniform(
-               ELoadCoordSystem eLoadCS_temp,
-               ELoadDir eLoadDirection_temp,
-               CPoint pControlPoint_temp,
-               float fX_dimension,
-               float fY1_dimension,
-               float fY2_dimension,
-               float fValue_temp,
-               float m_fRotationX_deg_temp,
-               float m_fRotationY_deg_temp,
-               float m_fRotationZ_deg_temp,
-               Color color_temp,
-               bool bDrawPositiveValueOnPlusLocalZSide_temp,
-               bool bChangePositionForNegativeValue_temp,
-               bool bIsDisplayed,
-               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+        ELoadCoordSystem eLoadCS_temp,
+        ELoadDir eLoadDirection_temp,
+        CPoint pControlPoint_temp,
+        float fX_dimension,
+        float fY1_dimension,
+        float fY2_dimension, // Tip coordinates
+        float fValue_temp,
+        float m_fRotationX_deg_temp,
+        float m_fRotationY_deg_temp,
+        float m_fRotationZ_deg_temp,
+        Color color_temp,
+        bool bDrawPositiveValueOnPlusLocalZSide_temp,
+        bool bChangePositionForNegativeValue_temp,
+        bool bIsFourPointBase_temp,
+        bool bIsDisplayed,
+        float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
+            bIsFourPointBase = bIsFourPointBase_temp;
 
-            pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(0.5f * fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
+            if (bIsFourPointBase)
+                pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
+            else
+                pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(0.5f * fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
 
             fValue = fValue_temp;
             RotationX_deg = m_fRotationX_deg_temp;
@@ -163,6 +172,59 @@ namespace BaseClasses
             RotationZ_deg = m_fRotationZ_deg_temp;
             bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
             bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
+            bIsFourPointBase = bIsFourPointBase_temp;
+            BIsDisplayed = BIsDisplayed;
+            FTime = fTime;
+
+            bool bUseDifferentColorForNegativeValue = false; // TODO - uzivatelsky nastavitelne
+            m_Color = color_temp;
+
+            if (bUseDifferentColorForNegativeValue && fValue < 0)
+            {
+                // TODO Ondrej - zapracovat nejaky algoritmus, ktory zmeni farbu m_Color, ak je hodnota negativna
+                // Nastavit napriklad nejaky posun v skale alebo zaviest skalu farieb pre kladne (odtiene cervenej) a zaporne (odtiene modrej) hodnoty a z tych potom vyberat
+                m_Color = Colors.LightSkyBlue;
+            }
+        }
+
+        // Asymetric 5 points
+        public CSLoad_FreeUniform(
+               ELoadCoordSystem eLoadCS_temp,
+               ELoadDir eLoadDirection_temp,
+               CPoint pControlPoint_temp,
+               float fX_dimension,
+               float fY1_dimension,
+               float fX2_dimension, // Tip coordinates
+               float fY2_dimension, // Tip coordinates
+               float fY3_dimension,
+               float fValue_temp,
+               float m_fRotationX_deg_temp,
+               float m_fRotationY_deg_temp,
+               float m_fRotationZ_deg_temp,
+               Color color_temp,
+               bool bDrawPositiveValueOnPlusLocalZSide_temp,
+               bool bChangePositionForNegativeValue_temp,
+               bool bIsFourPointBase_temp,
+               bool bIsDisplayed,
+               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+        {
+            ELoadCS = eLoadCS_temp; // GCS or LCS surface load
+            ELoadDirection = eLoadDirection_temp;
+            m_pControlPoint = pControlPoint_temp;
+            bIsFourPointBase = bIsFourPointBase_temp;
+
+            if (bIsFourPointBase)
+                pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
+            else
+                pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(fX2_dimension, fY2_dimension, 0), new Point3D(0, fY3_dimension, 0) };
+
+            fValue = fValue_temp;
+            RotationX_deg = m_fRotationX_deg_temp;
+            RotationY_deg = m_fRotationY_deg_temp;
+            RotationZ_deg = m_fRotationZ_deg_temp;
+            bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
+            bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
+            bIsFourPointBase = bIsFourPointBase_temp;
             BIsDisplayed = BIsDisplayed;
             FTime = fTime;
 
@@ -218,12 +280,27 @@ namespace BaseClasses
                 // Set point coordinates
                 for (int i = 0; i < pSurfacePoints.Count; i++)
                 {
-                    Point3D pa = new Point3D();
-                    pa = pSurfacePoints[i];
+                    // Top
+                    Point3D pTop = new Point3D();
+                    pTop = pSurfacePoints[i];
+                    pTop.Z = fz_coordTop;
 
-                    pa.Y += fy; // fy is currently used only for GCS and Z direction
-                    pa.Z = Math.Abs(fValueFor3D);
-                    pSurfacePoints_h.Add(pa);
+                    if(bDrawPositiveValueOnPlusLocalZSide)
+                        pTop.Y += fy; // fy is currently used only for GCS and Z direction
+
+                    pSurfacePoints_h.Add(pTop);
+
+                    // Bottom
+                    Point3D pBottom = new Point3D();
+                    pBottom = pSurfacePoints[i];
+                    pBottom.Z = fz_coordBottom;
+
+                    /*
+                    if (bDrawPositiveValueOnPlusLocalZSide)
+                        pBottom.Y -= fy; // fy is currently used only for GCS and Z direction
+                    */
+
+                    pSurfacePoints[i] = pBottom;
                 }
 
                 //GeometryModel3D model = volume.CreateM_G_M_3D_Volume_nEdges(new Point3D(0, 0, 0), pSurfacePoints, fValue, m_Material3DGraphics);

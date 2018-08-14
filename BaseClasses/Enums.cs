@@ -298,10 +298,10 @@ namespace BaseClasses
     {
         eUndefined,
         eGeneral,
-        eMinusX,
-        ePlusX,
-        eMinusY,
-        ePlusY,
+        eMinusX    = 0, // (load acting in -X) Theta = 000 deg (see AS/NZS 1170.2, Figure 2.2)
+        ePlusX     = 2, // (load acting in +X) Theta = 180 deg (see AS/NZS 1170.2, Figure 2.2)
+        eMinusY    = 3, // (load acting in -Y) Theta = 270 deg (see AS/NZS 1170.2, Figure 2.2)
+        ePlusY     = 1, // (load acting in +Y) Theta = 090 deg (see AS/NZS 1170.2, Figure 2.2)
         eMinusZ,
         ePlusZ
     }

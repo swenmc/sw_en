@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
+using MATH;
 
 namespace BaseClasses
 {
@@ -28,26 +29,41 @@ namespace BaseClasses
             set { m_bUseColorScaleRedAndBlue = value; }
         }
 
+        ELoadCoordSystem eLoadCS;
+        ELoadDir eLoadDirection;
+        float[] fX_coordinates;
+        float fX_dimension_max;
+        float fY_dimension;
+        float fY2_dimension;
+        float[,] fValues;
+
         public bool bDrawPositiveValueOnPlusLocalZSide;
         public bool bChangePositionForNegativeValue;
 
         public CSLoad_FreeUniformGroup(
-            ELoadCoordSystem eLoadCS_temp,
-            ELoadDir eLoadDirection_temp,
-            CPoint pControlPoint_temp,
-            float[] fX_coordinates,
-            float fX_dimension_max,
-            float fY_dimension,
-            float[,] fValues,
-            float m_fRotationX_deg_temp,
-            float m_fRotationY_deg_temp,
-            float m_fRotationZ_deg_temp,
-            bool bDrawPositiveValueOnPlusLocalZSide_temp,
-            bool bChangePositionForNegativeValue_temp,
-            bool bIsDisplayed,
-            float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+               ELoadCoordSystem eLoadCS_temp,
+               ELoadDir eLoadDirection_temp,
+               CPoint pControlPoint_temp,
+               float[] fX_coordinates_temp,
+               float fX_dimension_max_temp,
+               float fY_dimension_temp,
+               float[,] fValues_temp,
+               float m_fRotationX_deg_temp,
+               float m_fRotationY_deg_temp,
+               float m_fRotationZ_deg_temp,
+               bool bDrawPositiveValueOnPlusLocalZSide_temp,
+               bool bChangePositionForNegativeValue_temp,
+               bool bIsDisplayed,
+               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
+            eLoadCS = eLoadCS_temp;
+            eLoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
+            fX_coordinates = fX_coordinates_temp;
+            fX_dimension_max = fX_dimension_max_temp;
+            fY_dimension = fY_dimension_temp;
+            fY2_dimension = 0f; // Rectangle
+            fValues = fValues_temp;
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;
             RotationZ_deg = m_fRotationZ_deg_temp;
@@ -56,6 +72,47 @@ namespace BaseClasses
             bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
             BIsDisplayed = bIsDisplayed;
 
+            CreateParticularLoads();
+        }
+
+        public CSLoad_FreeUniformGroup(
+               ELoadCoordSystem eLoadCS_temp,
+               ELoadDir eLoadDirection_temp,
+               CPoint pControlPoint_temp,
+               float[] fX_coordinates_temp,
+               float fX_dimension_max_temp,
+               float fY_dimension_temp,
+               float fY2_dimension_temp,
+               float[,] fValues_temp,
+               float m_fRotationX_deg_temp,
+               float m_fRotationY_deg_temp,
+               float m_fRotationZ_deg_temp,
+               bool bDrawPositiveValueOnPlusLocalZSide_temp,
+               bool bChangePositionForNegativeValue_temp,
+               bool bIsDisplayed,
+               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+        {
+            eLoadCS = eLoadCS_temp;
+            eLoadDirection = eLoadDirection_temp;
+            m_pControlPoint = pControlPoint_temp;
+            fX_coordinates = fX_coordinates_temp;
+            fX_dimension_max = fX_dimension_max_temp;
+            fY_dimension = fY_dimension_temp;
+            fY2_dimension = fY2_dimension_temp; // Trapezoidal shape
+            fValues = fValues_temp;
+            RotationX_deg = m_fRotationX_deg_temp;
+            RotationY_deg = m_fRotationY_deg_temp;
+            RotationZ_deg = m_fRotationZ_deg_temp;
+
+            bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
+            bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
+            BIsDisplayed = bIsDisplayed;
+
+            CreateParticularLoads();
+        }
+
+        public void CreateParticularLoads()
+        {
             // TODO - Ondrej - pripravit koncept pre farby zatazenia ale aj vseobecne v programe pre pruty, prierezy, materialy atd
             // TODO vymysliet nejaky obecny koncept (nech sa mame s cim hrat), rozdielne farby zatazenia podla segmentov, rozdielne farby podla hodnot, podla znamienka hodnoty a pod
             // TODO umoznit farby uzivatelsky nastavovat
@@ -81,8 +138,30 @@ namespace BaseClasses
                     pControlPoint_segment.Y = 0;
                     pControlPoint_segment.Z = 0;
 
-                    // Create object in LCS (x - direction with changing values of load)
-                    LoadList.Add(new CSLoad_FreeUniform(eLoadCS_temp, eLoadDirection_temp, pControlPoint_segment, segment_x_dimension, fY_dimension, fValues[indexDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(i, fValues[indexDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, bIsDisplayed, fTime));
+                    float fY_dimension_temp1 = fY_dimension; // Rectangle
+                    float fY_dimension_temp2 = fY_dimension; // Rectangle
+
+                    // Trapezoidal shape
+                    if (!MathF.d_equal(fY2_dimension, 0.0f))
+                    {
+                        CalculateYCoordinatesOfSegment(segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
+                    }
+
+                    if (!MathF.d_equal(fY2_dimension,0) && fX_coordinates[i + 1] > 0.5f * fX_dimension_max) // Segment in the middle
+                    {
+                        // Create object in LCS (x - direction with changing values of load)
+                        // 5 points
+                        float fY_dimension_temp1_unused;
+                        float fY3_dimension_temp; // Bod na pravej strane
+                        CalculateYCoordinatesOfSegment(0.5f * fX_dimension_max, segmentStart_x_coordinate + segment_x_dimension - 0.5f * fX_dimension_max, out fY_dimension_temp1_unused, out fY3_dimension_temp);
+                        LoadList.Add(new CSLoad_FreeUniform(eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY3_dimension_temp, 0.5f * fX_dimension_max - segmentStart_x_coordinate, fY2_dimension, fY_dimension_temp1, fValues[indexDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(i, fValues[indexDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, false, BIsDisplayed, FTime));
+                    }
+                    else
+                    {
+                        // Create object in LCS (x - direction with changing values of load)
+                        // 4 points
+                        LoadList.Add(new CSLoad_FreeUniform(eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY_dimension_temp1, fY_dimension_temp2, fValues[indexDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(i, fValues[indexDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, true, BIsDisplayed, FTime));
+                    }
                 }
                 else
                 {
@@ -94,11 +173,36 @@ namespace BaseClasses
                     pControlPoint_segment.Y = 0;
                     pControlPoint_segment.Z = 0;
 
+                    float fY_dimension_temp1 = fY_dimension; // Rectangle
+                    float fY_dimension_temp2 = fY_dimension; // Rectangle
+
+                    // Trapezoidal shape
+                    if (!MathF.d_equal(fY2_dimension, 0.0f))
+                    {
+                        CalculateYCoordinatesOfSegment(segmentStart_x_coordinate, segment_x_dimension, out fY_dimension_temp1, out fY_dimension_temp2);
+                    }
+
                     // Create object in LCS (x - direction with changing values of load)
-                    LoadList.Add(new CSLoad_FreeUniform(eLoadCS_temp, eLoadDirection_temp, pControlPoint_segment, segment_x_dimension, fY_dimension, fValues[indexDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(i, fValues[indexDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, bIsDisplayed, fTime));
+                    LoadList.Add(new CSLoad_FreeUniform(eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY_dimension_temp1, fY_dimension_temp2, fValues[indexDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(i, fValues[indexDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, true, BIsDisplayed, FTime));
 
                     break; // Finish cycle after adding of last segment, we dont need to continue per whole list of fX_coordinates
                 }
+            }
+        }
+
+        private void CalculateYCoordinatesOfSegment(float fSegmentStart_x_coordinate, float fSegmentStart_x_dimension, out float fY_dimension_temp1, out float fY_dimension_temp2)
+        {
+            if (fSegmentStart_x_coordinate < 0.5f * fX_dimension_max)  // Half of symmetric gable roof
+            {
+                // Left side of building
+                fY_dimension_temp1 = fY_dimension + (fSegmentStart_x_coordinate * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
+                fY_dimension_temp2 = fY_dimension + ((fSegmentStart_x_coordinate + fSegmentStart_x_dimension) * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
+            }
+            else
+            {
+                // Right side of building
+                fY_dimension_temp1 = fY2_dimension - ((fSegmentStart_x_coordinate - (0.5f * fX_dimension_max)) * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
+                fY_dimension_temp2 = fY2_dimension - (((fSegmentStart_x_coordinate + fSegmentStart_x_dimension) - (0.5f * fX_dimension_max)) * ((fY2_dimension - fY_dimension) / (0.5f * fX_dimension_max)));
             }
         }
 

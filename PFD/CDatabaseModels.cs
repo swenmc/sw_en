@@ -45,7 +45,7 @@ namespace PFD
             //fh = CComboBoxHelper.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "wall_height", iSelectedIndex+1);
             //iFrNo = (int)CComboBoxHelper.GetValueFromDatabasebyRowID("ModelsSQLiteDB", "KitsetGableRoofEnclosed", "iFrames", iSelectedIndex+1);
             fL1 = fL / (iFrNo - 1);
-            fRoof_Pitch_deg = 15;
+            fRoof_Pitch_deg = 5;
             fdist_girt = 0.25f * fL1;
             fdist_purlin = 0.25f * fL1;
             fdist_frontcolumn = 0.5f * fL1;
