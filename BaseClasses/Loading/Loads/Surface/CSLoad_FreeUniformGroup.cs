@@ -125,6 +125,10 @@ namespace BaseClasses
 
         public void CreateParticularLoads()
         {
+            // Basic validation
+            if (fX_coordinates == null || fX_coordinates.Length < 2 || fValues == null || fValues.Length < 2) // Validation - load position and value should be calculated
+                throw new ArgumentNullException("Method received a null argument! Array of positions or values is null or empty!");
+
             // TODO - Ondrej - pripravit koncept pre farby zatazenia ale aj vseobecne v programe pre pruty, prierezy, materialy atd
             // TODO vymysliet nejaky obecny koncept (nech sa mame s cim hrat), rozdielne farby zatazenia podla segmentov, rozdielne farby podla hodnot, podla znamienka hodnoty a pod
             // TODO umoznit farby uzivatelsky nastavovat
@@ -135,6 +139,8 @@ namespace BaseClasses
 
             float segmentStart_x_coordinate;
             float segment_x_dimension;
+
+            // Number of possible cycles and segments to create is number of items in x_coodrinates minus 1. Last item is not taken into account because it is value 9999 for the end of last potentional segment
 
             for (int i = 0; i < fX_coordinates.Length - 1; i++)
             {

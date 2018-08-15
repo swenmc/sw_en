@@ -386,13 +386,13 @@ namespace M_EC1.AS_NZS
             }
             else // More or equal to 10°
             {
-                fC_pe_U_roof_dimensions = new float[1] { sGeometryInput.fW };
-                fC_pe_U_roof_values_min = new float[1];
-                fC_pe_U_roof_values_max = new float[1];
+                fC_pe_U_roof_dimensions = new float[2] {0, 9999 };
+                fC_pe_U_roof_values_min = new float[2];
+                fC_pe_U_roof_values_max = new float[2];
 
-                fC_pe_D_roof_dimensions = new float[1] { sGeometryInput.fW };
-                fC_pe_D_roof_values_min = new float[1];
-                fC_pe_D_roof_values_max = new float[1];
+                fC_pe_D_roof_dimensions = new float[2] {0, 9999 };
+                fC_pe_D_roof_values_min = new float[2];
+                fC_pe_D_roof_values_max = new float[2];
 
                 // Table 5.3(B) - Roofs - external pressure coefficients (Cpe) for rectangular enclosed buildings - for upwind slope (U) Alpha >= 10°
                 Calculate_Cpe_Table_5_3_B(fh, sGeometryInput.fRoofPitch_deg, fRatioHtoD_Theta0or180, ref fC_pe_U_roof_values_min, ref fC_pe_U_roof_values_max);
@@ -737,7 +737,7 @@ namespace M_EC1.AS_NZS
 
             if (fRatioHtoD <= 0.25f)
             {
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_min_htod_025);
@@ -762,7 +762,7 @@ namespace M_EC1.AS_NZS
                 }
 
                 // Interpolate - angle (roof pitch)
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesMinTemp);
@@ -787,7 +787,7 @@ namespace M_EC1.AS_NZS
                 }
 
                 // Interpolate - angle (roof pitch)
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesMinTemp);
@@ -798,7 +798,7 @@ namespace M_EC1.AS_NZS
             }
             else
             {
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_min_htod_100);
@@ -844,7 +844,7 @@ namespace M_EC1.AS_NZS
                 }
 
                 // Interpolate - angle (roof pitch)
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesTemp);
@@ -864,7 +864,7 @@ namespace M_EC1.AS_NZS
                 }
 
                 // Interpolate - angle (roof pitch)
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fValuesTemp);
@@ -875,7 +875,7 @@ namespace M_EC1.AS_NZS
             }
             else
             {
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     // Interpolate Cpe min
                     fC_pe_roof_values_min[i] = ArrayF.GetLinearInterpolationValuePositive(fAlpha_deg, fx, fy_htod_100);
