@@ -243,7 +243,7 @@ namespace BaseClasses
         {
             m_Material3DGraphics = new DiffuseMaterial();
             m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
-            m_fOpacity = 0.3f;
+            m_fOpacity = 0.5f;
             m_Material3DGraphics.Brush.Opacity = m_fOpacity;
 
             Model3DGroup model_gr = new Model3DGroup();

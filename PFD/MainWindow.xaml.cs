@@ -348,7 +348,7 @@ namespace PFD
 
         private void CalculateLoadingValues()
         {
-            // Input - TabItem Components            
+            // Input - TabItem Components
             if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
             UC_ComponentList componentList_UC = (UC_ComponentList)Model_Component.Content;
             //tu som nenasiel ziaden ViewModel napojeny na dany User Control
@@ -810,6 +810,13 @@ namespace PFD
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
 
+            // Set current geometry data to calculate loads
+            sGeometryInputData.fH_2 = vm.fh2;
+            sGeometryInputData.fH_1 = vm.WallHeight;
+            sGeometryInputData.fW = vm.GableWidth;
+            sGeometryInputData.fL = vm.Length;
+            sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
+
             CalculateLoadingValues();
 
             // TODO - nove parametre pre nastavenie hodnot zatazenia
@@ -836,7 +843,7 @@ namespace PFD
 
             // Create 3D window
             UpdateDisplayOptions();
-            
+
             Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
 
             // Display model in 3D preview frame

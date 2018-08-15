@@ -153,6 +153,8 @@ namespace M_EC1.AS_NZS
         public float[,] fp_e_max_R_roof_ULS_Theta_4;
         public float[,] fp_e_max_R_roof_SLS_Theta_4;
 
+        public int iFirst_D_SegmentColorID = 0; // Color ID of first downwind side segment (continue from upwind U side)
+
         public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp)
         {
             sBuildInput = sBuildingData_temp;
@@ -362,6 +364,8 @@ namespace M_EC1.AS_NZS
                         fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
                         fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
                         fC_pe_D_roof_values_max = new float[fC_pe_UD_roof_values_max.Length - i];
+
+                        iFirst_D_SegmentColorID = i;
 
                         for (int k = i; k < fC_pe_UD_roof_dimensions.Length; k++)
                         {
