@@ -31,6 +31,7 @@ namespace PFD
         List<string> listLoadCombinationLimitState = new List<string>();
         List<string> listLoadCombinationLoadCases = new List<string>();
         List<string> listLoadCombinationKeys = new List<string>();
+        List<string> listFormulas = new List<string>();
 
         public UC_LoadCombinationList(CModel model)
         {
@@ -46,6 +47,7 @@ namespace PFD
                 listLoadCombinationName.Add(model.m_arrLoadCombs[i].Name);
                 listLoadCombinationLimitState.Add(model.m_arrLoadCombs[i].eLComType == ELSType.eLS_ULS ? "ULS" : "SLS"); // ! Todo ak sa prida dalsi type LS je nutne upravit
                 listLoadCombinationKeys.Add(model.m_arrLoadCombs[i].CombinationKey);
+                listFormulas.Add(model.m_arrLoadCombs[i].Formula);
 
                 StringBuilder sb = new StringBuilder();
                 for (int j = 0; j < model.m_arrLoadCombs[i].LoadCasesList.Count; j++)
@@ -67,6 +69,7 @@ namespace PFD
             table.Columns.Add("LimitState", typeof(String));
             table.Columns.Add("LoadCases", typeof(String));
             table.Columns.Add("CombinationKey", typeof(String));
+            table.Columns.Add("Formula", typeof(String));
 
             // Set Column Caption
             table.Columns["ID"].Caption = "ID";
@@ -74,6 +77,7 @@ namespace PFD
             table.Columns["LimitState"].Caption = "LimitState";
             table.Columns["LoadCases"].Caption = "LoadCases";
             table.Columns["CombinationKey"].Caption = "CombinationKey";
+            table.Columns["Formula"].Caption = "Formula";
 
             // Create Datases
             ds = new DataSet();
@@ -91,6 +95,7 @@ namespace PFD
                     row["LimitState"] = listLoadCombinationLimitState[i];
                     row["LoadCases"] = listLoadCombinationLoadCases[i];
                     row["CombinationKey"] = listLoadCombinationKeys[i];
+                    row["Formula"] = listFormulas[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);

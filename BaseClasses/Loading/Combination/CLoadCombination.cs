@@ -105,6 +105,7 @@ namespace BaseClasses
         public List<float> LoadCasesFactorsList = new List<float>();
         public List<CLoadCase> LoadCasesList = new List<CLoadCase>();
         public string CombinationKey;
+        public string Formula;
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
