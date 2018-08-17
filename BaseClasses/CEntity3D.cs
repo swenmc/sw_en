@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
 using _3DTools;
+using MATERIAL;
 
 namespace BaseClasses
 {

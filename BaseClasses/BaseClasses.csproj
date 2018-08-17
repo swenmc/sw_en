@@ -96,7 +96,6 @@
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniformGroup.cs" />
     <Compile Include="Model\CCrSc.cs" />
     <Compile Include="Model\CExample.cs" />
-    <Compile Include="Model\CMat.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />
     <Compile Include="Model\CBlock.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CAnchor.cs" />
@@ -189,6 +188,10 @@
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
+      <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
+      <Name>MATERIAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>

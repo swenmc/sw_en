@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.OleDb;
-using DATABASE;
-using BaseClasses;
-
+﻿
 namespace MATERIAL
 {
     // Default concrete material class
-    public class CMat_02_00: BaseClasses.CMat
+    public class CMat_02_00: CMat
     {
         // Default - concrete
         // General material properties
@@ -135,165 +128,163 @@ namespace MATERIAL
 
 
         #region Constructor
-        OleDbDataReader dat_reader;
-        DatabaseConnection dat_conn;
-
+        
         public CMat_02_00()
         {
         }
 
-        public CMat_02_00(string combo1)
-        {
-            m_sMatType = 2;
+        //public CMat_02_00(string combo1)
+        //{
+        //    m_sMatType = 2;
 
-            string sql1;
+        //    string sql1;
 
-            sql1 = "Select mat_num, mat_name, mat_prod_code_num, mat_prod_code_name1, mat_prod_code_name2, concrete_grade_num, fck, fck_cube, fctm, fcm, fctk0_05, fctk0_95, epsilon_c1, epsilon_cu1, epsilon_c2, epsilon_cu2, epsilon_c3, epsilon_cu3, n, gamaMc, Ecm, Ec, G, nu_pois, alpha_temp from Concrete where mat_name like '" + combo1 + "'";
+        //    sql1 = "Select mat_num, mat_name, mat_prod_code_num, mat_prod_code_name1, mat_prod_code_name2, concrete_grade_num, fck, fck_cube, fctm, fcm, fctk0_05, fctk0_95, epsilon_c1, epsilon_cu1, epsilon_c2, epsilon_cu2, epsilon_c3, epsilon_cu3, n, gamaMc, Ecm, Ec, G, nu_pois, alpha_temp from Concrete where mat_name like '" + combo1 + "'";
 
-            // Database DATA-CONCRETE variables reader
-            dat_conn = DatabaseConnection.getInstance();
-            dat_reader = dat_conn.getDBReader(sql1);
+        //    // Database DATA-CONCRETE variables reader
+        //    dat_conn = DatabaseConnection.getInstance();
+        //    dat_reader = dat_conn.getDBReader(sql1);
 
-            try
-            {
-                while (dat_reader.Read())
-                {
-                    // CONCRETE DATABASE DATA
+        //    try
+        //    {
+        //        while (dat_reader.Read())
+        //        {
+        //            // CONCRETE DATABASE DATA
 
-                    #region Data list
-                    try
-                    {
-                        mat_num = Convert.ToInt16(dat_reader.GetValue(0).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        mat_name = dat_reader.GetValue(1).ToString();
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        mat_prod_code_num = Convert.ToInt16(dat_reader.GetValue(2).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        mat_prod_code_name1 = dat_reader.GetValue(3).ToString();
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        mat_prod_code_name2 = dat_reader.GetValue(4).ToString();
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        concrete_grade_num = Convert.ToInt32(dat_reader.GetValue(5).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        fck = Convert.ToDouble(dat_reader.GetValue(6).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        fck_cube = Convert.ToDouble(dat_reader.GetValue(7).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        fctm = Convert.ToDouble(dat_reader.GetValue(8).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        fcm = Convert.ToDouble(dat_reader.GetValue(9).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        fctk0_05 = Convert.ToDouble(dat_reader.GetValue(10).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        fctk0_95 = Convert.ToDouble(dat_reader.GetValue(11).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        epsilon_c1 = Convert.ToDouble(dat_reader.GetValue(12).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        epsilon_cu1 = Convert.ToDouble(dat_reader.GetValue(13).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        epsilon_c2 = Convert.ToDouble(dat_reader.GetValue(14).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        epsilon_cu2 = Convert.ToDouble(dat_reader.GetValue(15).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        epsilon_c3 = Convert.ToDouble(dat_reader.GetValue(16).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        epsilon_cu3 = Convert.ToDouble(dat_reader.GetValue(17).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_n = Convert.ToDouble(dat_reader.GetValue(18).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_gamaMc = Convert.ToDouble(dat_reader.GetValue(19).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_Ecm = Convert.ToDouble(dat_reader.GetValue(20).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_Ec = Convert.ToDouble(dat_reader.GetValue(21).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_G = Convert.ToDouble(dat_reader.GetValue(22).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_nu_pois = Convert.ToDouble(dat_reader.GetValue(23).ToString());
-                    }
-                    catch (FormatException) { }
-                    try
-                    {
-                        d_alpha_temp = Convert.ToDouble(dat_reader.GetValue(24).ToString());
-                    }
-                    catch (FormatException) { }
+        //            #region Data list
+        //            try
+        //            {
+        //                mat_num = Convert.ToInt16(dat_reader.GetValue(0).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                mat_name = dat_reader.GetValue(1).ToString();
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                mat_prod_code_num = Convert.ToInt16(dat_reader.GetValue(2).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                mat_prod_code_name1 = dat_reader.GetValue(3).ToString();
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                mat_prod_code_name2 = dat_reader.GetValue(4).ToString();
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                concrete_grade_num = Convert.ToInt32(dat_reader.GetValue(5).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                fck = Convert.ToDouble(dat_reader.GetValue(6).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                fck_cube = Convert.ToDouble(dat_reader.GetValue(7).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                fctm = Convert.ToDouble(dat_reader.GetValue(8).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                fcm = Convert.ToDouble(dat_reader.GetValue(9).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                fctk0_05 = Convert.ToDouble(dat_reader.GetValue(10).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                fctk0_95 = Convert.ToDouble(dat_reader.GetValue(11).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                epsilon_c1 = Convert.ToDouble(dat_reader.GetValue(12).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                epsilon_cu1 = Convert.ToDouble(dat_reader.GetValue(13).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                epsilon_c2 = Convert.ToDouble(dat_reader.GetValue(14).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                epsilon_cu2 = Convert.ToDouble(dat_reader.GetValue(15).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                epsilon_c3 = Convert.ToDouble(dat_reader.GetValue(16).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                epsilon_cu3 = Convert.ToDouble(dat_reader.GetValue(17).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_n = Convert.ToDouble(dat_reader.GetValue(18).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_gamaMc = Convert.ToDouble(dat_reader.GetValue(19).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_Ecm = Convert.ToDouble(dat_reader.GetValue(20).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_Ec = Convert.ToDouble(dat_reader.GetValue(21).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_G = Convert.ToDouble(dat_reader.GetValue(22).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_nu_pois = Convert.ToDouble(dat_reader.GetValue(23).ToString());
+        //            }
+        //            catch (FormatException) { }
+        //            try
+        //            {
+        //                d_alpha_temp = Convert.ToDouble(dat_reader.GetValue(24).ToString());
+        //            }
+        //            catch (FormatException) { }
 
-                    #endregion
+        //            #endregion
 
-                }
-            }
-            catch (FormatException) { }
+        //        }
+        //    }
+        //    catch (FormatException) { }
 
-        }
+        //}
 
 
         #endregion
