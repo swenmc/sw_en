@@ -12,7 +12,7 @@ namespace EXPIMP
     {
         string fileName;
         DataSet ds;
-        public ExportToExcel(string filename,DataSet ds)
+        public ExportToExcel(string filename, DataSet ds)
         {
             this.fileName = filename;
             this.ds = ds;
