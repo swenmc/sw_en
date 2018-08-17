@@ -268,7 +268,7 @@ namespace BaseClasses
             List<CLoadCombination> combinationsToRemove = new List<CLoadCombination>();
             foreach (CLoadCombination combination in Combinations)
             {
-                if (HasSameWindDirection(combination.LoadCasesList)) combinationsToRemove.Add(combination);
+                if (!HasSameWindDirection(combination.LoadCasesList)) combinationsToRemove.Add(combination);
             }
             foreach (CLoadCombination combToRemove in combinationsToRemove)
             {

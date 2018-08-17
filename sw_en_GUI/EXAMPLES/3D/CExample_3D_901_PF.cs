@@ -1130,8 +1130,8 @@ namespace sw_en_GUI.EXAMPLES._3D
             //generator.GenerateULS();
             //generator.GenerateSLS();
             //generator.WriteCombinationsLoadCases();
-            generator.WritePermutations();
-            generator.WriteCombinations();
+            //generator.WritePermutations();
+            //generator.WriteCombinations();
 
             // TODO No 40  Notes to Ondrej
             // Zopar navrhov na vylepsenie
