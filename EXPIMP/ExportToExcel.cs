@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.OleDb;
+﻿using System.Data.OleDb;
 using System.Data;
-using System.Windows.Forms;
+
 
 namespace EXPIMP
 {
@@ -41,7 +37,7 @@ namespace EXPIMP
                         "Hodnota2 char(20),Jednotka2 char(20) )"; ;
                 objCmd.ExecuteNonQuery();
             }
-            catch (OleDbException e) { MessageBox.Show(e.Message); }
+            catch (OleDbException e) { throw e; }
 
             try
             {
@@ -54,7 +50,7 @@ namespace EXPIMP
                     objCmd.ExecuteNonQuery();
                 }
             }
-            catch (OleDbException e) { MessageBox.Show(e.Message); }
+            catch (OleDbException e) { throw e; }
             
 
             // Close the connection.
