@@ -109,11 +109,11 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection();
-
             int iRadiusPoints = m_iNumOfArcSegment + 1;
             int iRadiusPoints_14 = m_iNumOfArcSegment / 2 + 1;
             int iNumOfArcSegment_14 = m_iNumOfArcSegment / 2;
+
+            TriangleIndicesFrontSide = new Int32Collection(iNumOfArcSegment_14 * 2 * 4 + 18);
 
             // Front Side / Forehead
             AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, 4, 5, INoAuxPoints + 2, INoAuxPoints + 3 + 2 * iRadiusPoints);
@@ -133,22 +133,21 @@ namespace CRSC
 
         protected override void loadCrScIndicesShell()
         {
-            TriangleIndicesShell = new Int32Collection();
-
             // Shell
             int iRadiusPoints = m_iNumOfArcSegment + 1;
+            TriangleIndicesShell = new Int32Collection((2 * iRadiusPoints + 4) * 6);
 
             DrawCaraLaterals(INoAuxPoints, 2 * iRadiusPoints + 4, TriangleIndicesShell);
         }
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection();
-
             int iRadiusPoints = m_iNumOfArcSegment + 1;
             int iRadiusPoints_14 = m_iNumOfArcSegment / 2 + 1;
             int iNumOfArcSegment_14 = m_iNumOfArcSegment / 2;
             int iPointNumbersOffset = INoAuxPoints + 2 * iRadiusPoints + 4; // Number of nodes per section - Nodes offset (aux points + 2 *radius points + 4 * edge points)
+
+            TriangleIndicesBackSide = new Int32Collection(iNumOfArcSegment_14 * 2 * 4 + 18);
 
             // Front Side / Forehead
             AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, iPointNumbersOffset + 4, iPointNumbersOffset + 5, iPointNumbersOffset + INoAuxPoints + 2, iPointNumbersOffset + INoAuxPoints + 3 + 2 * iRadiusPoints);

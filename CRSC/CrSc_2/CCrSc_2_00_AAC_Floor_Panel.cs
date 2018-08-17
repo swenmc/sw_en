@@ -79,7 +79,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection();
+            TriangleIndicesFrontSide = new Int32Collection(24);
 
             if (bIndicesCW)
             {
@@ -108,7 +108,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesShell()
         {
-            TriangleIndicesShell = new Int32Collection();
+            TriangleIndicesShell = new Int32Collection((ITotNoPoints - 1) * 6);
 
             // Shell Surface OutSide
             for (int i = 0; i < ITotNoPoints - 1; i++)
@@ -132,7 +132,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection();
+            TriangleIndicesBackSide = new Int32Collection(24);
 
             if (bIndicesCW)
             {

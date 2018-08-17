@@ -324,7 +324,7 @@ namespace CRSC
             // const int secNum = iAux + iRadiusPoints * 4;  // Number of points in section (2D)
             int iRadiusPoints = iRadiusSegment + 1;
 
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(60);
 
             if (sShape == 0)
             {

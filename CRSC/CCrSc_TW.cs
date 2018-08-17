@@ -277,16 +277,16 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection();
-
             // Front Side / Forehead
             if (IsShapeSolid)
             {
+                TriangleIndicesFrontSide = new Int32Collection(((ITotNoPoints - 2) / 2) * 6);
                 for (int i = 0; i < (ITotNoPoints - 2) / 2; i++)
                     AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, i, i + 1, ITotNoPoints - i - 2, ITotNoPoints - i - 1);
             }
             else
             {
+                TriangleIndicesFrontSide = new Int32Collection(INoPointsOut * 6);
                 // INoAuxPoints - number of auxiliary points in inside/outside collection of points
                 // INoPointsOut - number of real points in inside/outside collection of points
                 // INoAuxPoints + INoPointsOut - total number of points in inside/outside collection of section
@@ -306,11 +306,10 @@ namespace CRSC
 
         protected override void loadCrScIndicesShell()
         {
-            TriangleIndicesShell = new Int32Collection();
-
             // Shell Surface OutSide
             if (IsShapeSolid)
             {
+                TriangleIndicesShell = new Int32Collection(ITotNoPoints * 6);
                 for (int i = 0; i < ITotNoPoints; i++)
                 {
                     if (i < ITotNoPoints - 1)
@@ -321,6 +320,7 @@ namespace CRSC
             }
             else
             {
+                TriangleIndicesShell = new Int32Collection(INoPointsOut * 12);
                 // iAux - number of auxiliary points in inside/outside collection of points
                 // INoPointsOut - number of real points in inside/outside collection of points
                 // iAux + INoPointsOut - total number of points in inside/outside collection of section
@@ -347,16 +347,16 @@ namespace CRSC
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection();
-
             // Back Side
             if (IsShapeSolid)
             {
+                TriangleIndicesBackSide = new Int32Collection((ITotNoPoints - 2) / 2 * 6);
                 for (int i = 0; i < (ITotNoPoints - 2) / 2; i++)
                     AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + i, ITotNoPoints + i + 1, ITotNoPoints + ITotNoPoints - i - 2, ITotNoPoints + ITotNoPoints - i - 1);
             }
             else
             {
+                TriangleIndicesBackSide = new Int32Collection(INoPointsOut * 6);
                 // INoAuxPoints - number of auxiliary points in inside/outside collection of points
                 // INoPointsOut - number of real points in inside/outside collection of points
                 // INoAuxPoints + INoPointsOut - total number of points in inside/outside collection of section

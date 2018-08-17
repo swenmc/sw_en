@@ -438,7 +438,7 @@ namespace CRSC
 		protected override void loadCrScIndices()
         {
             // const int secNum = 8;  // Number of points in section (2D)
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(24 + 8*6);
 
             // Front Side / Forehead
             AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 2, 7);

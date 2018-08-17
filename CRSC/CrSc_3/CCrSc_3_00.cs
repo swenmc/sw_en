@@ -493,7 +493,7 @@ namespace CRSC
 
             int iRadiusPoints = m_iNumOfArcSegment + 1;
 
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(120);
 
             if (sShapeID == 0)
             {

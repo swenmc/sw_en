@@ -165,7 +165,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection();
+            TriangleIndicesFrontSide = new Int32Collection(7*6);
 
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 4, 17);
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 17, 18, 19);
@@ -180,7 +180,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection();
+            TriangleIndicesBackSide = new Int32Collection(7*6);
 
             AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 4, ITotNoPoints + 17);
             AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 17, ITotNoPoints + 18, ITotNoPoints + 19);

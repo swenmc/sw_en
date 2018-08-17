@@ -573,7 +573,7 @@ namespace CRSC
                     // const int secNum = iNumberAux + iRadiusPoints * 4;  // Number of points in section (2D)
                     int iRadiusPoints = m_iNumOfArcSegment + 1;
 
-                    TriangleIndices = new Int32Collection();
+                    TriangleIndices = new Int32Collection(12 * 6 + m_iNumOfArcSegment * 2 * 8 + (4 * iRadiusPoints) * 6);
 
                     // Front Side / Forehead
                     // Points order 1,2,3,4

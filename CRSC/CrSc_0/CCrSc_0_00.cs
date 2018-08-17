@@ -101,7 +101,7 @@ namespace CRSC
         // Auxiliary, used for also other cross-sections
         public void loadCrScIndices_00_01(int iTotNoPoints)
 		{
-           TriangleIndices = new Int32Collection();
+           TriangleIndices = new Int32Collection((iTotNoPoints - 1) * 6 + (iTotNoPoints - 2) * 6 + 12);
 
            // Front Side / Forehead
            for (int i = 0; i < iTotNoPoints - 1; i++)

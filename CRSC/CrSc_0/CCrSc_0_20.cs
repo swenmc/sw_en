@@ -115,7 +115,7 @@ namespace CRSC
             //const int secNum = 37;  // Number of points in section (2D) 36+1 -centroid
             int secNum = INoPointsOut;
 
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection((secNum - 1) * 12 + (secNum - 2) * 12 + 12);
 
             // Front Side / Forehead
 

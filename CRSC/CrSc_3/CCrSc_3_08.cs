@@ -513,7 +513,7 @@ namespace CRSC
         {
             int iRadiusPoints = iRadiusSegment + 1;
 
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(100);
 
             if (sShape == 0) // 0 - Five radii, tapered flanges, optional tapered web (5+2 auxiliary points)
             {

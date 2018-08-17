@@ -213,7 +213,7 @@ namespace CRSC
         // Auxiliary, used for also other cross-sections
         public void loadCrScIndices_02_03(int iTotNoPoints)
         {
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection((iTotNoPoints - 1) * 12);
 
             // Front Side / Forehead
             for (int i = 0; i < iTotNoPoints - 1; i++)
@@ -262,7 +262,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection();
+            TriangleIndicesFrontSide = new Int32Collection((ITotNoPoints - 1) * 3);
 
             // Front Side / Forehead
             for (int i = 0; i < ITotNoPoints - 1; i++)
@@ -284,7 +284,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesShell()
         {
-            TriangleIndicesShell = new Int32Collection();
+            TriangleIndicesShell = new Int32Collection((ITotNoPoints - 1) * 6);
 
             // Shell Surface OutSide
             for (int i = 0; i < ITotNoPoints - 1; i++)
@@ -299,7 +299,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection();
+            TriangleIndicesBackSide = new Int32Collection((ITotNoPoints - 1) * 3);
 
             // Back Side
             for (int i = 0; i < ITotNoPoints - 1; i++)

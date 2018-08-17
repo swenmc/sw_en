@@ -111,7 +111,7 @@ namespace CRSC
 		protected override void loadCrScIndices()
         {
             // const int secNum = 3;  // Number of points in section (2D)
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(24);
 
             // Front Side / Forehead
             TriangleIndices.Add(0);

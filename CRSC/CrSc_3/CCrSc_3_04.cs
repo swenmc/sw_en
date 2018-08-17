@@ -142,8 +142,7 @@ namespace CRSC
         protected override void loadCrScIndices()
         {
             CCrSc_3_03 oTemp = new CCrSc_3_03();
-            oTemp.load_3_03_04_TriangelIndices(m_iNumOfAuxPoints, m_iNumOfArcSegment);
-            TriangleIndices = new Int32Collection();
+            oTemp.load_3_03_04_TriangelIndices(m_iNumOfAuxPoints, m_iNumOfArcSegment);            
             TriangleIndices = oTemp.TriangleIndices;
         }
 

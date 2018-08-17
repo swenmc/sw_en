@@ -257,7 +257,7 @@ namespace CRSC
         protected override void loadCrScIndices()
         {
             // const int secNum = 4;  // Number of points in section (2D)
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(36);
 
             // Front Side / Forehead
             AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 2, 3);
@@ -274,7 +274,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-           TriangleIndicesFrontSide = new Int32Collection();
+           TriangleIndicesFrontSide = new Int32Collection(6);
             // Front Side / Forehead
            if(bIndicesCW)
              AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, 0, 1, 2, 3);
@@ -284,7 +284,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesShell()
         {
-            TriangleIndicesShell = new Int32Collection();
+            TriangleIndicesShell = new Int32Collection(24);
             // Shell Surface
             if (bIndicesCW)
             {
@@ -305,7 +305,7 @@ namespace CRSC
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection();
+            TriangleIndicesBackSide = new Int32Collection(6);
             // Back Side
             if (bIndicesCW) // Back view
               AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, 0, 1, 2, 3);

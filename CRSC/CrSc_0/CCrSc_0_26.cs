@@ -138,7 +138,7 @@ namespace CRSC
             // iNoPoints - numer of real points in inside/outside collection of points
             // iAux + iNoPoints - total number of points in inside/outside collection of section
 
-            TriangleIndices = new Int32Collection();
+            TriangleIndices = new Int32Collection(iNoPoints * 24);
 
             // Front Side / Forehead
 

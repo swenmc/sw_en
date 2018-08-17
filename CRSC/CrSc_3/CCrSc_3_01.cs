@@ -536,8 +536,7 @@ namespace CRSC
         protected override void loadCrScIndices()
         {
             CCrSc_3_00 oTemp = new CCrSc_3_00();
-            oTemp.loadCrScIndices_00_01(m_sShape, 0, m_iNumOfArcSegment);
-            TriangleIndices = new Int32Collection();
+            oTemp.loadCrScIndices_00_01(m_sShape, 0, m_iNumOfArcSegment);            
             TriangleIndices = oTemp.TriangleIndices;
         }
 
