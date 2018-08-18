@@ -1,11 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Collections;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
 
-namespace SharedLibraries.EXPIMP
+namespace EXPIMP
 {
     public class DXFConst
     {

@@ -26,6 +26,7 @@ using FEM_CALC_1Din2D;
 using FEM_CALC_1Din3D;
 using _3DTools;
 using BaseClasses.CRSC;
+using EXPIMP;
 
 namespace sw_en_GUI
 {
@@ -505,7 +506,7 @@ namespace sw_en_GUI
         public static void exportData(object obj)
         {
             ArrayList args = (ArrayList)obj;
-            CExportToExcel.ExportToExcel(args[0] as DataSet, args[1] as string);
+            ExportToExcelDocument.Export_to_Excel(args[1] as string, (args[0] as DataSet).Tables[0], "Data", true);
         }
 
         private void menuItemView2Dview_Click(object sender, RoutedEventArgs e)

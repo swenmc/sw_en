@@ -1,0 +1,6 @@
+﻿namespace EXPIMP
+{
+    class CExportToPDF
+	{
+	}
+}

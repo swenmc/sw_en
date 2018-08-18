@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MATERIAL
+﻿namespace MATERIAL
 {
     public class CMat_02_00_AAC : CMat_02_00
     {

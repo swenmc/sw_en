@@ -58,15 +58,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EXPIMP\CExportToDXF.cs" />
-    <Compile Include="EXPIMP\CExportToExcel.cs" />
-    <Compile Include="EXPIMP\CExportToPDF.cs" />
-    <Compile Include="EXPIMP\CExportToTXT.cs" />
-    <Compile Include="EXPIMP\CExportToXML.cs" />
-    <Compile Include="EXPIMP\CImportFromTXT.cs" />
-    <Compile Include="EXPIMP\CImportFromXML.cs" />
     <Compile Include="EXPIMP\CImportFromExcel.cs" />
-    <Compile Include="EXPIMP\CDXFImport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

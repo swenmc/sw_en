@@ -1,19 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Globalization;
-using System.Collections;
+﻿using _3DTools;
 using netDxf;
 using netDxf.Entities;
-using _3DTools;
-using System.Windows.Media.Media3D;
-using System.Windows.Controls;
+using System;
 using System.Linq;
-using WindowsShapes = System.Windows.Shapes;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using WindowsShapes = System.Windows.Shapes;
 
-namespace SharedLibraries.EXPIMP
+namespace EXPIMP
 {
     public static class CExportToDXF
     {

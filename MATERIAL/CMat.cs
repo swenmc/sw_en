@@ -2,7 +2,7 @@
 
 namespace MATERIAL
 {
-	[Serializable]
+    [Serializable]
     public class CMat
     {
         // Predecessor of materials

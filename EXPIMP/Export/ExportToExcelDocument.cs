@@ -1,19 +1,13 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Data;
-using OfficeOpenXml;
 using System.IO;
 
 namespace EXPIMP
 {
     public class ExportToExcelDocument
     {
-        public ExportToExcelDocument(string filename, DataTable dt, string workSheetName, bool withTimeStamp)
-        {
-            Export_to_Excel(filename, dt, workSheetName, withTimeStamp);
-        }
-
-
-        private void Export_to_Excel(string filename, DataTable dt, string workSheetName, bool withTimeStamp)
+        public static void Export_to_Excel(string filename, DataTable dt, string workSheetName, bool withTimeStamp)
         {
             if (withTimeStamp)
             {

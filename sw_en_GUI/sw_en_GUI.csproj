@@ -394,6 +394,10 @@
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EXPIMP\EXPIMP.csproj">
+      <Project>{22C05C80-D91F-424F-97B0-860C475FFD76}</Project>
+      <Name>EXPIMP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
       <Project>{602C8862-99F4-4595-A033-84194DDFE00A}</Project>
       <Name>FEM_CALC_1Din2D</Name>
