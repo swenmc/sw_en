@@ -27,6 +27,7 @@ using FEM_CALC_1Din3D;
 using _3DTools;
 using BaseClasses.CRSC;
 using EXPIMP;
+using Examples;
 
 namespace sw_en_GUI
 {
@@ -651,7 +652,7 @@ namespace sw_en_GUI
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
             CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
 
-            model = new EXAMPLES._3D.CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 9.3f);
+            model = new CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 9.3f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
@@ -678,7 +679,7 @@ namespace sw_en_GUI
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
             CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
 
-            model = new EXAMPLES._3D.CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
+            model = new CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
@@ -696,7 +697,7 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_01_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._2D.CExample_2D_01();
+            model = new CExample_2D_11();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -711,7 +712,7 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_02_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._2D.CExample_2D_02();
+            model = new CExample_2D_02();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -726,7 +727,7 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_03_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._2D.CExample_2D_03();
+            model = new CExample_2D_03();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -741,7 +742,7 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_04_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._2D.CExample_2D_04();
+            model = new CExample_2D_04();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -758,7 +759,7 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_11_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._2D.CExample_2D_11();
+            model = new CExample_2D_11();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -774,7 +775,7 @@ namespace sw_en_GUI
 
         private void menuItemExample2D_12_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._2D.CExample_2D_12();
+            model = new CExample_2D_12();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -793,7 +794,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_01_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_01();
+            model = new CExample_3D_01();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -808,7 +809,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_02_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_02();
+            model = new CExample_3D_02();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -823,7 +824,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_03_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_03();
+            model = new CExample_3D_03();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -838,7 +839,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_04_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_04();
+            model = new CExample_3D_04();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -853,7 +854,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_05_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_05();
+            model = new CExample_3D_05();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -868,7 +869,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_06_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_06();
+            model = new CExample_3D_06();
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
@@ -883,7 +884,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_07_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_07();
+            model = new CExample_3D_07();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -897,7 +898,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_08_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_08();
+            model = new CExample_3D_08();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -911,7 +912,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_09_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_09();
+            model = new CExample_3D_09();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -925,7 +926,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_10_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_10();
+            model = new CExample_3D_10();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -939,7 +940,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_11_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_11();
+            model = new CExample_3D_11();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -955,7 +956,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_21_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_21();
+            model = new CExample_3D_21();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -969,7 +970,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_50_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_50();
+            model = new CExample_3D_50();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -985,7 +986,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_80_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_80();
+            model = new CExample_3D_80();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -999,7 +1000,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_90_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_90();
+            model = new CExample_3D_90();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -1013,7 +1014,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_901_PF_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null, null, null, null, null, null, null);
+            model = new CExample_3D_901_PF(6,10,5,5, 8, 1f,1.2f,2f,0.3f,0,0, null, null, null, null, null, null, null, null);
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
 
@@ -1029,7 +1030,7 @@ namespace sw_en_GUI
 
         private void menuItemExample3D_902_OM_Click(object sender, RoutedEventArgs e)
         {
-            model = new EXAMPLES._3D.CExample_3D_902_OM();
+            model = new CExample_3D_902_OM();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
 

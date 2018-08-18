@@ -242,6 +242,10 @@
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Examples\Examples.csproj">
+      <Project>{9fe2caf6-e5ea-4a35-80a8-38956c08025d}</Project>
+      <Name>Examples</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EXPIMP\EXPIMP.csproj">
       <Project>{22c05c80-d91f-424f-97b0-860c475ffd76}</Project>
       <Name>EXPIMP</Name>

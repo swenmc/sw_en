@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>sw_en_GUI</RootNamespace>
     <AssemblyName>sw_en_GUI</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -188,34 +188,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BLOCKS\FS\CBlock_3D_001_DoorInBay.cs" />
-    <Compile Include="BLOCKS\FS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="CUIHelper.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_01.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_02.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_03.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_04.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_11.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_12.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_13_PF.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_01.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_02.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_03.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_04.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_05.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_06.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_07.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_08.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_09.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_10.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_11.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_21.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_50.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_80.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_90.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_901_PF.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_902_OM.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_Ondro.cs" />
     <Compile Include="Viewer3D.xaml.cs">
       <DependentUpon>Viewer3D.xaml</DependentUpon>
     </Compile>
@@ -393,6 +366,10 @@
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Examples\Examples.csproj">
+      <Project>{9fe2caf6-e5ea-4a35-80a8-38956c08025d}</Project>
+      <Name>Examples</Name>
     </ProjectReference>
     <ProjectReference Include="..\EXPIMP\EXPIMP.csproj">
       <Project>{22C05C80-D91F-424F-97B0-860C475FFD76}</Project>

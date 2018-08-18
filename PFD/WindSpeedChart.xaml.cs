@@ -12,10 +12,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
-using sw_en_GUI;
-using BaseClasses;
 using MATH;
-using M_EC1;
 using M_EC1.AS_NZS;
 
 namespace PFD

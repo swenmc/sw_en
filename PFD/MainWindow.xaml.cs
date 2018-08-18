@@ -25,17 +25,13 @@ using BaseClasses;
 using DATABASE;
 using MATH;
 using MATERIAL;
-using CRSC;
-using sw_en_GUI.EXAMPLES._2D;
-using sw_en_GUI.EXAMPLES._3D;
-using M_AS4600;
 using M_EC1.AS_NZS;
-using SharedLibraries.EXPIMP;
 using _3DTools;
 using FEM_CALC_BASE;
 using M_BASE;
 using BaseClasses.CRSC;
 using EXPIMP;
+using Examples;
 
 namespace PFD
 {
