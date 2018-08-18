@@ -34,6 +34,7 @@ using SharedLibraries.EXPIMP;
 using _3DTools;
 using FEM_CALC_BASE;
 using M_BASE;
+using BaseClasses.CRSC;
 
 namespace PFD
 {

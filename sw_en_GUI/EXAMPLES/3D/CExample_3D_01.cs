@@ -5,6 +5,7 @@ using System.Text;
 using BaseClasses;
 using MATERIAL;
 using CRSC;
+using BaseClasses.CRSC;
 
 namespace sw_en_GUI.EXAMPLES._3D
 {

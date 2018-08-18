@@ -25,6 +25,7 @@ using M_AS4600;
 using FEM_CALC_BASE;
 using M_BASE;
 using PFD;
+using BaseClasses.CRSC;
 
 namespace SBD
 {

@@ -1,13 +1,8 @@
-﻿using _3DTools;
-using MATH;
-using Petzold.Media3D;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 namespace BaseClasses

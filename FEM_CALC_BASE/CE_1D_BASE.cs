@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BaseClasses;
-using CRSC;
-using MATH;
-using CENEX;
+﻿using BaseClasses;
+using BaseClasses.CRSC;
 
 namespace FEM_CALC_BASE
 {

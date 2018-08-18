@@ -17,6 +17,7 @@ using BaseClasses;
 using sw_en_GUI;
 using CRSC;
 using _3DTools;
+using BaseClasses.CRSC;
 
 namespace PFD
 {

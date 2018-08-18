@@ -6,6 +6,7 @@ using System.Drawing;
 using BaseClasses;
 using MATERIAL;
 using CRSC;
+using BaseClasses.CRSC;
 
 namespace CENEX
 {

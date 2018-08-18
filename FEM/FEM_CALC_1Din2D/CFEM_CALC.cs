@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using CENEX;
 using BaseClasses;
 using MATH;
-using FEM_CALC_BASE;
 
 namespace FEM_CALC_1Din2D
 {

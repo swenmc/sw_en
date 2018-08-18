@@ -6,6 +6,7 @@ using MATH;
 using BaseClasses;
 using MATERIAL;
 using CRSC;
+using BaseClasses.CRSC;
 
 namespace FEM_CALC_BASE
 {

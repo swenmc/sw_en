@@ -5,6 +5,7 @@ using System.Text;
 using BaseClasses;
 using MATERIAL;
 using CRSC;
+using BaseClasses.CRSC;
 
 namespace sw_en_GUI.EXAMPLES._2D
 {
@@ -50,7 +51,7 @@ namespace sw_en_GUI.EXAMPLES._2D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CRSC.CCrSc_0_00();
+            m_arrCrSc[0] = new CCrSc_0_00();
 
             m_arrCrSc[0].A_g = 0.12f;   // Unit [m^2]
             m_arrCrSc[0].I_y = 0.0016f; // Unit [m^4]

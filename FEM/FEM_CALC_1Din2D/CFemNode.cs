@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CENEX;
+﻿using System.Collections;
 using BaseClasses;
 using MATH;
 using FEM_CALC_BASE;

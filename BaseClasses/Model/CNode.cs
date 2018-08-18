@@ -1,12 +1,9 @@
-﻿using System;
+﻿using _3DTools;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using System.Windows.Media.Media3D;
-using System.Windows.Media;
-using _3DTools;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {

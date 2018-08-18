@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BaseClasses;
 using CRSC;
+using BaseClasses.CRSC;
 
 namespace FEM_CALC_BASE
 {
@@ -50,7 +51,8 @@ namespace FEM_CALC_BASE
             }
         }
 
-        public void CalculateInternalForcesOnSimpleBeam(int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, float[] fx_positions, float fE_d_load_value_LCS_y, float fE_d_load_value_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+        public void CalculateInternalForcesOnSimpleBeam(int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, float[] fx_positions, 
+            float fE_d_load_value_LCS_y, float fE_d_load_value_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
         {
             int iNumberOfLoadCombinations = 1;
             float[] fE_d_load_values_LCS_y = new float[1] { fE_d_load_value_LCS_y };

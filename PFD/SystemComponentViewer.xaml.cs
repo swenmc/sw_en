@@ -19,6 +19,7 @@ using CRSC;
 using System.Windows.Media.Media3D;
 using _3DTools;
 using SharedLibraries.EXPIMP;
+using BaseClasses.CRSC;
 
 namespace PFD
 {

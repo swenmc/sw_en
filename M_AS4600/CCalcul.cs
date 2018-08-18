@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using MATH;
 using CRSC;
 using BaseClasses;
+using BaseClasses.CRSC;
 
 namespace M_AS4600
 {

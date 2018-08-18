@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BaseClasses.GraphObj.Objects_3D;
+using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using BaseClasses.GraphObj.Objects_3D;
 
 namespace BaseClasses
 {

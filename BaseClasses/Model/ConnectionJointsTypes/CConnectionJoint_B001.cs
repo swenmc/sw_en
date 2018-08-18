@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BaseClasses.GraphObj;
+using System;
 using System.Windows;
-using System.Windows.Shapes;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using BaseClasses.GraphObj;
-using MATH;
 
 
 namespace BaseClasses

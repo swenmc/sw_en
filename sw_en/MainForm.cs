@@ -1,29 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Data.OleDb;
 using Crownwood.Magic.Docking;
 using Crownwood.Magic.Common;
-using CENEX.MODULES._03_STEEL.EC3;
 using CENEX.TEMPORARY;
-using WindowsFormsApplication1;
 using DATABASE;
-using BaseClasses;
 using M_EC1;
 using M_EC2;
-using M_EC3;
 using M_EC4;
 using M_EC5;
 using M_EC6;
 using M_EC7;
-using M_EC8;
-using M_EC9;
-using MATERIAL;
 using CRSC;
 
 namespace CENEX
@@ -167,8 +153,8 @@ namespace CENEX
 
         private void materialsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           Data_MatForm obj_Data_MatForm = new Data_MatForm();
-            obj_Data_MatForm.ShowDialog();
+           //Data_MatForm obj_Data_MatForm = new Data_MatForm();
+           // obj_Data_MatForm.ShowDialog();
         }
 
         private void crosssectionsToolStripMenuItem_Click(object sender, EventArgs e)

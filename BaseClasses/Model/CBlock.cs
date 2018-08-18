@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
+﻿using BaseClasses.CRSC;
 using BaseClasses.GraphObj;
 using MATERIAL;
+using System;
 
 namespace BaseClasses
 {

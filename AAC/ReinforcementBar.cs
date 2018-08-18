@@ -9,13 +9,15 @@ using BaseClasses;
 using BaseClasses.GraphObj;
 using _3DTools;
 using MATH;
+using MATERIAL;
+using BaseClasses.CRSC;
 
 namespace AAC
 {
     public class ReinforcementBar : Object3DModel
     {
-        public MATERIAL.CMat_03_00 Reinforcement;
-        public CRSC.CCrSc_3_09 Cross_Section;
+        public CMat_03_00 Reinforcement;
+        public CCrSc_3_09 Cross_Section;
 
         public float fL = 0.0f;   // Bar Length
 
@@ -25,7 +27,7 @@ namespace AAC
         {
             Reinforcement = new MATERIAL.CMat_03_00();
             Reinforcement = Reinforcement_temp;
-            Cross_Section = new CRSC.CCrSc_3_09(fd_temp);
+            Cross_Section = new CCrSc_3_09(fd_temp);
             fL = fL_temp;
         }
 

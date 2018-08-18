@@ -25,6 +25,7 @@ using FEM_CALC_BASE;
 using FEM_CALC_1Din2D;
 using FEM_CALC_1Din3D;
 using _3DTools;
+using BaseClasses.CRSC;
 
 namespace sw_en_GUI
 {
@@ -333,11 +334,11 @@ namespace sw_en_GUI
                     Node2.ID = node2ID;
 
                     //Cross-sections
-                    CrSc1 = new CRSC.CCrSc_3_00();
+                    CrSc1 = new CCrSc_3_00();
                     int.TryParse(row["CrossSectionStartID"].ToString(), out iCrSc1ID);
                     CrSc1.ICrSc_ID = iCrSc1ID;
 
-                    CrSc2 = new CRSC.CCrSc_3_00();
+                    CrSc2 = new CCrSc_3_00();
                     int.TryParse(row["CrossSectionEndID"].ToString(), out iCrSc2ID);
                     CrSc2.ICrSc_ID = iCrSc2ID;
 

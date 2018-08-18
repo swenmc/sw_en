@@ -5,6 +5,7 @@ using System.Text;
 using BaseClasses;
 using MATERIAL;
 using CRSC;
+using BaseClasses.CRSC;
 
 namespace sw_en_GUI.EXAMPLES._3D
 {
@@ -37,7 +38,7 @@ namespace sw_en_GUI.EXAMPLES._3D
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
-            m_arrCrSc[0] = new CRSC.CCrSc_0_05(0.6f, 0.4f);
+            m_arrCrSc[0] = new CCrSc_0_05(0.6f, 0.4f);
 
             // Nodes Automatic Generation
             // Nodes List - Nodes Array
