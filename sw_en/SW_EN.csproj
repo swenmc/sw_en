@@ -614,17 +614,9 @@
     <Content Include="TEMPORARY\BIN\WindowsFormsApplication1.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3DTools-1.0-src\Samples\ModelViewer\ModelViewer.csproj">
-      <Project>{0231FAF0-6A94-4211-8C62-82043BD747AD}</Project>
-      <Name>ModelViewer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
       <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
       <Name>BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CRSC\Test_CRSC_Viewer.csproj">
-      <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
-      <Name>Test_CRSC_Viewer</Name>
     </ProjectReference>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</Project>
@@ -685,6 +677,10 @@
     <ProjectReference Include="..\MODULES\M_EC9\M_EC9.csproj">
       <Project>{B37DD6B9-7A5E-412B-A45B-05AD0ABF573E}</Project>
       <Name>M_EC9</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test Projects\TestCRSCViewer\Test_CRSC_Viewer.csproj">
+      <Project>{d54fa90d-3c90-42d1-b58d-bc345ec34325}</Project>
+      <Name>Test_CRSC_Viewer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

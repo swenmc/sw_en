@@ -20,7 +20,6 @@ using System.Data;
 using MATH;
 using BaseClasses;
 using MATERIAL;
-using CRSC;
 using M_AS4600;
 using FEM_CALC_BASE;
 using M_BASE;

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using BaseClasses;
-using CRSC;
 using BaseClasses.CRSC;
 
 namespace M_AS4600
