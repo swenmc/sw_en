@@ -114,13 +114,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
-      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
-      <Name>BaseClasses</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\GUI\3DTools-1.0-src\3DTools\3DTools.csproj">
       <Project>{5f603892-de40-4246-a969-1c6717afe35d}</Project>
@@ -129,10 +129,6 @@
     <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
       <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
       <Name>MATERIAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MATH\MATH.csproj">
-      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
-      <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\MODULES\M_BASE\M_BASE.csproj">
       <Project>{ad3e14f4-72c6-476e-b67f-93cc194e0e02}</Project>
@@ -157,6 +153,10 @@
     <ProjectReference Include="..\sw_en_GUI\sw_en_GUI.csproj">
       <Project>{76f7949b-0055-4004-bf34-bded850ae842}</Project>
       <Name>sw_en_GUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

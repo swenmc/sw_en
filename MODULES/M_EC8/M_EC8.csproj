@@ -111,12 +111,6 @@
     <Compile Include="SOLV\CS\EQ\CL_ALL.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MATH\MATH.csproj">
-      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
-      <Name>MATH</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -132,6 +126,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

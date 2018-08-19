@@ -218,21 +218,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
-      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
-      <Name>BaseClasses</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Examples\Examples.csproj">
-      <Project>{9fe2caf6-e5ea-4a35-80a8-38956c08025d}</Project>
-      <Name>Examples</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EXPIMP\EXPIMP.csproj">
-      <Project>{22c05c80-d91f-424f-97b0-860c475ffd76}</Project>
-      <Name>EXPIMP</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
       <Project>{602c8862-99f4-4595-a033-84194ddfe00a}</Project>
@@ -246,6 +234,18 @@
       <Project>{1ad8c2c0-40cf-4c23-a715-43214cd8db89}</Project>
       <Name>FEM_CALC_BASE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GENERAL\Examples\Examples.csproj">
+      <Project>{9fe2caf6-e5ea-4a35-80a8-38956c08025d}</Project>
+      <Name>Examples</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GENERAL\EXPIMP\EXPIMP.csproj">
+      <Project>{22c05c80-d91f-424f-97b0-860c475ffd76}</Project>
+      <Name>EXPIMP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GUI\3DTools-1.0-src\3DTools\3DTools.csproj">
       <Project>{5f603892-de40-4246-a969-1c6717afe35d}</Project>
       <Name>3DTools</Name>
@@ -253,10 +253,6 @@
     <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
       <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
       <Name>MATERIAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MATH\MATH.csproj">
-      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
-      <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\MODULES\M_BASE\M_BASE.csproj">
       <Project>{ad3e14f4-72c6-476e-b67f-93cc194e0e02}</Project>
@@ -281,6 +277,10 @@
     <ProjectReference Include="..\sw_en_GUI\sw_en_GUI.csproj">
       <Project>{76f7949b-0055-4004-bf34-bded850ae842}</Project>
       <Name>sw_en_GUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

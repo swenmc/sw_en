@@ -123,8 +123,8 @@
     <Compile Include="SOLV\CS\EQ\CL_68.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MATH\MATH.csproj">
-      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
+    <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\M_BASE\M_BASE.csproj">

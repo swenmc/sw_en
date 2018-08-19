@@ -88,17 +88,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BaseClasses\BaseClasses.csproj">
-      <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
-      <Name>BaseClasses</Name>
+    <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MATERIAL\MATERIAL.csproj">
       <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
       <Name>MATERIAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MATH\MATH.csproj">
-      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
-      <Name>MATH</Name>
+    <ProjectReference Include="..\..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

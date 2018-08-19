@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{22C05C80-D91F-424F-97B0-860C475FFD76}</ProjectGuid>
+    <ProjectGuid>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EXPIMP</RootNamespace>
-    <AssemblyName>EXPIMP</AssemblyName>
+    <RootNamespace>MATH</RootNamespace>
+    <AssemblyName>MATH</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -58,59 +58,29 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="Xceed.Words.NET, Version=1.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocX.1.2.1\lib\Xceed.Words.NET.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Export\CExportToDXF.cs" />
-    <Compile Include="Export\CExportToPDF.cs" />
-    <Compile Include="Export\CExportToTXT.cs" />
-    <Compile Include="Export\CExportToXML.cs" />
-    <Compile Include="Export\ExportToWordDocument.cs" />
-    <Compile Include="Export\ExportToExcelDocument.cs" />
-    <Compile Include="Export\ExportToExcel.cs" />
-    <Compile Include="Import\CDXFImport.cs" />
-    <Compile Include="Import\CImportFromTXT.cs" />
-    <Compile Include="Import\CImportFromXML.cs" />
+    <Compile Include="ARRAY\ArrayF.cs" />
+    <Compile Include="ARRAY\CArray.cs" />
+    <Compile Include="EQUATION\CCardanoCubicEQSolver.cs" />
+    <Compile Include="ALGEBRA\MathF.cs" />
+    <Compile Include="GEOMETRY\Geom2D.cs" />
+    <Compile Include="GEOMETRY\Geom3D.cs" />
+    <Compile Include="MATRIX\CMatrix.cs" />
+    <Compile Include="MATRIX\CMatrix3x3.cs" />
+    <Compile Include="MATRIX\CMatrix6x6.cs" />
+    <Compile Include="MATRIX\MatrixF.cs" />
+    <Compile Include="MATRIX\MatrixF64.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <Compile Include="VECTOR\CVector.cs" />
+    <Compile Include="VECTOR\VectorF.cs" />
+    <Compile Include="VECTOR\VectorF64.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -129,16 +99,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GUI\3DTools-1.0-src\3DTools\3DTools.csproj">
-      <Project>{5f603892-de40-4246-a969-1c6717afe35d}</Project>
-      <Name>3DTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedLibraries\netDxf\netDxf.csproj">
-      <Project>{785380e0-ceb9-4c34-82e5-60d0e33e848e}</Project>
-      <Name>netDxf</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
