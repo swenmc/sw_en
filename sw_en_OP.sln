@@ -76,7 +76,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelViewer", "3DTools-1.0-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveViewport3DSample", "3DTools-1.0-src\Samples\InteractiveViewport3DSample\InteractiveViewport3DSample.csproj", "{6E88F38A-029E-4BDE-8CFB-AD4898826FDF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test projects", "Test projects", "{912C220B-4C7E-4D26-B181-8023F3E884AA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared Libraries", "Shared Libraries", "{912C220B-4C7E-4D26-B181-8023F3E884AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibraries", "SharedLibraries\SharedLibraries\SharedLibraries.csproj", "{28044445-E8DD-4041-B534-3FEE5C07237F}"
 EndProject
@@ -112,6 +112,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBD", "SBD\SBD.csproj", "{E9A70D5A-6ED3-43F2-98B1-15F1ACC89357}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{9FE2CAF6-E5EA-4A35-80A8-38956C08025D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Projects", "Test Projects", "{14CFC29E-FCF8-42C0-AA2E-9292034B04C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
