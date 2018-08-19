@@ -614,17 +614,9 @@
     <Content Include="TEMPORARY\BIN\WindowsFormsApplication1.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
-      <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
-      <Name>BaseClasses</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</Project>
       <Name>DATABASE</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EXPIMP\EXPIMP.csproj">
-      <Project>{22C05C80-D91F-424F-97B0-860C475FFD76}</Project>
-      <Name>EXPIMP</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
       <Project>{602C8862-99F4-4595-A033-84194DDFE00A}</Project>
@@ -634,13 +626,17 @@
       <Project>{C027BE8A-6935-4525-BB39-A1A2F2F8C0D7}</Project>
       <Name>FEM_CALC_1Din3D</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GENERAL\EXPIMP\EXPIMP.csproj">
+      <Project>{22c05c80-d91f-424f-97b0-860c475ffd76}</Project>
+      <Name>EXPIMP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
       <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
       <Name>MATERIAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MATH\MATH.csproj">
-      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
-      <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\MODULES\M_EC1\M_EC1.csproj">
       <Project>{9764D1BF-A2B3-45D6-AB93-050DCE30830C}</Project>
@@ -681,6 +677,10 @@
     <ProjectReference Include="..\Test Projects\TestCRSCViewer\Test_CRSC_Viewer.csproj">
       <Project>{d54fa90d-3c90-42d1-b58d-bc345ec34325}</Project>
       <Name>Test_CRSC_Viewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

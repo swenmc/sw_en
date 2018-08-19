@@ -115,17 +115,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BaseClasses\BaseClasses.csproj">
-      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
-      <Name>BaseClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MATH\MATH.csproj">
-      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
+    <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\M_AS4600\M_AS4600.csproj">
       <Project>{209738f7-cdb3-4c11-98a3-e345299d9191}</Project>
       <Name>M_AS4600</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
