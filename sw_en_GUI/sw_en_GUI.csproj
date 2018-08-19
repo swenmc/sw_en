@@ -361,9 +361,9 @@
       <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
       <Name>BaseClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CRSC\CRSC.csproj">
+    <ProjectReference Include="..\CRSC\Test_CRSC_Viewer.csproj">
       <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
-      <Name>CRSC</Name>
+      <Name>Test_CRSC_Viewer</Name>
     </ProjectReference>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>

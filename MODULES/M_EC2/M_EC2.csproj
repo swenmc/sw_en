@@ -123,9 +123,9 @@
     <Compile Include="SOLV\CS\EQ\CL_68.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CRSC\CRSC.csproj">
+    <ProjectReference Include="..\..\CRSC\Test_CRSC_Viewer.csproj">
       <Project>{D54FA90D-3C90-42D1-B58D-BC345EC34325}</Project>
-      <Name>CRSC</Name>
+      <Name>Test_CRSC_Viewer</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
