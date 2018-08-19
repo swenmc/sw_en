@@ -88,10 +88,6 @@
       <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
       <Name>BaseClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CRSC\Test_CRSC_Viewer.csproj">
-      <Project>{d54fa90d-3c90-42d1-b58d-bc345ec34325}</Project>
-      <Name>Test_CRSC_Viewer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
       <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
       <Name>MATERIAL</Name>

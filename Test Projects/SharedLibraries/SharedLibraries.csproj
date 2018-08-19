@@ -69,6 +69,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3DTools-1.0-src\3DTools\3DTools.csproj">
+      <Project>{5f603892-de40-4246-a969-1c6717afe35d}</Project>
+      <Name>3DTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\netDxf\netDxf.csproj">
       <Project>{785380e0-ceb9-4c34-82e5-60d0e33e848e}</Project>
       <Name>netDxf</Name>

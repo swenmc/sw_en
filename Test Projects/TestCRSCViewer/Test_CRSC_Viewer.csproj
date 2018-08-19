@@ -118,15 +118,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseClasses\BaseClasses.csproj">
+    <ProjectReference Include="..\..\BaseClasses\BaseClasses.csproj">
       <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
       <Name>BaseClasses</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MATERIAL\MATERIAL.csproj">
+    <ProjectReference Include="..\..\MATERIAL\MATERIAL.csproj">
       <Project>{864D95AD-46AE-4198-B7F3-D5BBE1245208}</Project>
       <Name>MATERIAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MATH\MATH.csproj">
+    <ProjectReference Include="..\..\MATH\MATH.csproj">
       <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
       <Name>MATH</Name>
     </ProjectReference>

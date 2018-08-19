@@ -15,7 +15,6 @@ using System.Windows.Media.Imaging;
 using BaseClasses;
 using BaseClasses.GraphObj;
 using sw_en_GUI;
-using CRSC;
 using System.Windows.Media.Media3D;
 using _3DTools;
 using SharedLibraries.EXPIMP;
