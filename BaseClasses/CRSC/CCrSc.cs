@@ -1,6 +1,5 @@
 ﻿using MATERIAL;
 using System;
-using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace BaseClasses.CRSC
@@ -95,7 +94,7 @@ namespace BaseClasses.CRSC
         }
 
         // List of Members ID that have assigned cross-section
-        public List<CMember> AssignedMembersList = new List<CMember>();
+        //public List<CMember> AssignedMembersList = new List<CMember>();
 
         // Type of cross-section
         private bool m_bIsShapeSolid; // 0 (false) - Hollow section, 1 (true) - Solid section

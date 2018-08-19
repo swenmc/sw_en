@@ -381,11 +381,11 @@ namespace BaseClasses
             SetEndPoint3DCoord();
 
             // Add created member to the list of members in cross-section object
-            if (m_CrScStart != null)
-                m_CrScStart.AssignedMembersList.Add(this);
+            //if (m_CrScStart != null)
+            //    m_CrScStart.AssignedMembersList.Add(this);
 
-            if (m_CrScEnd != null)
-                m_CrScEnd.AssignedMembersList.Add(this);
+            //if (m_CrScEnd != null)
+            //    m_CrScEnd.AssignedMembersList.Add(this);
 
             // Set member name according to enum value of member type
             CComponentPrefixes component = CModelsManager.LoadModelComponent((int)EMemberType + 1);

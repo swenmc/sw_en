@@ -1657,12 +1657,15 @@ namespace Examples
                 m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
 
-                // TODO - nizsie uvedeny kod zmaze priradenie pruta do zoznamu prutov v priereze (list prutov ktorym je prierez priradeny), prut je totizto uz priradeny k prierezu kedze bol uz priradeny v bloku
+                // TODO - nizsie uvedeny kod zmaze priradenie pruta do zoznamu prutov v priereze (list prutov ktorym je prierez priradeny), 
+                // prut je totizto uz priradeny k prierezu kedze bol uz priradeny v bloku
                 // TODO - dvojite priradenie by sa malo vyriesit nejako elegantnejsie
 
                 // We need to remove assignment of member to the girt cross-section, it is already assigned
-                CCrSc GirtCrossSection = block.ReferenceGirt.CrScStart;
 
+                //19.8.2018
+                //Neviem ci je toto stale problem,kedze uz je metoda na ziskanie AssignedMembersList - takze komentujem...
+                /*CCrSc GirtCrossSection = block.ReferenceGirt.CrScStart;
                 if (GirtCrossSection.AssignedMembersList.Count > 0) // Check that list is not empty
                 {
                     if (GirtCrossSection.Equals(m_arrMembers[arraysizeoriginal + i].CrScStart))
@@ -1675,7 +1678,7 @@ namespace Examples
                 {
                     if (m_arrCrSc[m_arrCrSc.Length - 1].Equals(m_arrMembers[arraysizeoriginal + i].CrScStart))
                         m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.RemoveAt(m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.Count - 1);
-                }
+                }*/
             }
 
             // TODO - odstranit spoje na deaktivovanych prutoch

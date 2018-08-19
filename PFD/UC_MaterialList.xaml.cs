@@ -100,20 +100,21 @@ namespace PFD
             // For each cross-section shape / size add one row
             for (int i = 0; i < model.m_arrCrSc.Length; i++)
             {
-                if (model.m_arrCrSc[i].AssignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
+                List<CMember> assignedMembersList = model.GetListOfMembersWithCrsc(model.m_arrCrSc[i]);
+                if (assignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
                 {
                     List<CMember> ListOfMemberGroups = new List<CMember>();
 
-                    for (int j = 0; j < model.m_arrCrSc[i].AssignedMembersList.Count; j++) // Each member in the list
+                    for (int j = 0; j < assignedMembersList.Count; j++) // Each member in the list
                     {
-                        if (model.m_arrCrSc[i].AssignedMembersList[j].BIsDisplayed)
+                        if (assignedMembersList[j].BIsDisplayed)
                         {
                             // Define current member properties
-                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0];
+                            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0];
                             string sCrScName = model.m_arrCrSc[i].Name;
                             int iQuantity = 1;
                             string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
-                            float fLength = model.m_arrCrSc[i].AssignedMembersList[j].FLength_real;
+                            float fLength = assignedMembersList[j].FLength_real;
                             float fWeightPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
                             float fWeightPerPiece = fLength * fWeightPerLength;
                             float fTotalLength = iQuantity * fLength;
@@ -126,8 +127,8 @@ namespace PFD
                             {
                                 for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
                                 {
-                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0]) &&
-                                    (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
+                                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)assignedMembersList[j].EMemberType, 0]) &&
+                                    (MathF.d_equal(ListOfMemberGroups[k].FLength_real, assignedMembersList[j].FLength_real)))
                                     {
                                         // Add member to the one from already created groups
 
@@ -156,13 +157,77 @@ namespace PFD
                                 listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
                                 // Add first member in the group to the list of member groups
-                                ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
+                                ListOfMemberGroups.Add(assignedMembersList[j]);
                             }
                         }
                     }
 
                     iLastItemIndex += ListOfMemberGroups.Count; // Index of last row for previous cross-section
                 }
+
+                //if (model.m_arrCrSc[i].AssignedMembersList.Count > 0) // Cross-section is assigned (to the one or more members)
+                //{
+                //    List<CMember> ListOfMemberGroups = new List<CMember>();
+
+                //    for (int j = 0; j < model.m_arrCrSc[i].AssignedMembersList.Count; j++) // Each member in the list
+                //    {
+                //        if (model.m_arrCrSc[i].AssignedMembersList[j].BIsDisplayed)
+                //        {
+                //            // Define current member properties
+                //            string sPrefix = databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0];
+                //            string sCrScName = model.m_arrCrSc[i].Name;
+                //            int iQuantity = 1;
+                //            string sMaterialName = model.m_arrCrSc[i].m_Mat.Name;
+                //            float fLength = model.m_arrCrSc[i].AssignedMembersList[j].FLength_real;
+                //            float fWeightPerLength = (float)(model.m_arrCrSc[i].A_g * model.m_arrCrSc[i].m_Mat.m_fRho);
+                //            float fWeightPerPiece = fLength * fWeightPerLength;
+                //            float fTotalLength = iQuantity * fLength;
+                //            float fTotalWeight = fTotalLength * fWeightPerLength;
+                //            float fTotalPrice = fTotalWeight * fCFS_PricePerKg_Members_Total;
+
+                //            bool bMemberwasAdded = false; // Member was added to the group
+
+                //            if (j > 0) // If it not first item
+                //            {
+                //                for (int k = 0; k < ListOfMemberGroups.Count; k++) // For each group of members check if current member has same prefix and same length as some already created -  // Add Member to the group or create new one
+                //                {
+                //                    if ((databaseCopm.arr_Member_Types_Prefix[(int)ListOfMemberGroups[k].EMemberType, 0] == databaseCopm.arr_Member_Types_Prefix[(int)model.m_arrCrSc[i].AssignedMembersList[j].EMemberType, 0]) &&
+                //                    (MathF.d_equal(ListOfMemberGroups[k].FLength_real, model.m_arrCrSc[i].AssignedMembersList[j].FLength_real)))
+                //                    {
+                //                        // Add member to the one from already created groups
+
+                //                        listMemberQuantity[iLastItemIndex + k] += 1; // Add one member (piece) to the quantity
+                //                        listMemberTotalLength[iLastItemIndex + k] = Math.Round(listMemberQuantity[iLastItemIndex + k] * dlistMemberLength[iLastItemIndex + k], iNumberOfDecimalPlacesLength); // Recalculate total length of all members in the group
+                //                        listMemberTotalWeight[iLastItemIndex + k] = Math.Round(listMemberTotalLength[iLastItemIndex + k] * dlistMemberWeightPerLength[iLastItemIndex + k], iNumberOfDecimalPlacesWeight); // Recalculate total weight of all members in the group
+                //                        listMemberTotalPrice[iLastItemIndex + k] = Math.Round(listMemberTotalWeight[iLastItemIndex + k] * fCFS_PricePerKg_Members_Total, iNumberOfDecimalPlacesPrice); // Recalculate total price of all members in the group
+
+                //                        bMemberwasAdded = true;
+                //                    }
+                //                    // TODO - po pridani pruta by sme mohli tento cyklus prerusit, pokracovat dalej nema zmysel
+                //                }
+                //            }
+
+                //            if (j == 0 || !bMemberwasAdded) // Create new group (new row) (different length /prefix of member or first item in list of members assigned to the cross-section)
+                //            {
+                //                listMemberPrefix.Add(sPrefix);
+                //                listMemberCrScName.Add(sCrScName);
+                //                listMemberQuantity.Add(iQuantity);
+                //                listMemberMaterialName.Add(sMaterialName);
+                //                dlistMemberLength.Add(Math.Round(fLength, iNumberOfDecimalPlacesLength));
+                //                dlistMemberWeightPerLength.Add(Math.Round(fWeightPerLength, iNumberOfDecimalPlacesWeight));
+                //                dlistMemberWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
+                //                listMemberTotalLength.Add(Math.Round(fTotalLength, iNumberOfDecimalPlacesLength));
+                //                listMemberTotalWeight.Add(Math.Round(fTotalWeight, iNumberOfDecimalPlacesWeight));
+                //                listMemberTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
+
+                //                // Add first member in the group to the list of member groups
+                //                ListOfMemberGroups.Add(model.m_arrCrSc[i].AssignedMembersList[j]);
+                //            }
+                //        }
+                //    }
+
+                //    iLastItemIndex += ListOfMemberGroups.Count; // Index of last row for previous cross-section
+                //}
             }
 
             // Check Data

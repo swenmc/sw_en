@@ -2113,8 +2113,7 @@ namespace CENEX
             //this.WriteToExcelSpreadsheet(s_dialog.FileName,ds.Tables[0]);
 
             //my own class and methods for faster export
-            ExportToExcel export = new ExportToExcel(s_dialog.FileName,ds);
-            
+            ExportToExcel export = new ExportToExcel(s_dialog.FileName,ds);            
             export.writeToExcel();
 
 

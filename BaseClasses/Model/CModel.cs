@@ -163,7 +163,18 @@ namespace BaseClasses
             {
                 System.Diagnostics.Trace.WriteLine(string.Format("{0}, {1}", string.Format("{0}_{1}_{2}", pair.Key.Item1, pair.Key.Item2, pair.Key.Item3), pair.Value.Count));
             }
-
         }
+
+
+        public List<CMember> GetListOfMembersWithCrsc(CCrSc crsc)
+        {
+            List<CMember> members = new List<CMember>();
+            foreach (CMember m in m_arrMembers)
+            {
+                if (m.CrScStart.Equals(crsc) || m.CrScEnd.Equals(crsc)) members.Add(m);
+            }
+            return members;
+        }
+
     }
 }
