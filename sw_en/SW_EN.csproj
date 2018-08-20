@@ -142,86 +142,6 @@
     <Compile Include="MODULES\03_STEEL\EC3\EN1993-1-8Form_PIN.Designer.cs">
       <DependentUpon>EN1993-1-8Form_PIN.cs</DependentUpon>
     </Compile>
-    <Compile Include="TEMPORARY\BIN\Class1.cs" />
-    <Compile Include="TEMPORARY\BIN\Class2.cs" />
-    <Compile Include="TEMPORARY\BIN\Class3.cs" />
-    <Compile Include="TEMPORARY\BIN\Class4.cs" />
-    <Compile Include="TEMPORARY\BIN\Class5.cs" />
-    <Compile Include="TEMPORARY\BIN\Class6.cs" />
-    <Compile Include="TEMPORARY\BIN\Class7.cs" />
-    <Compile Include="TEMPORARY\BIN\Form1_Specimen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form1_Specimen.designer.cs">
-      <DependentUpon>Form1_Specimen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form10.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form10.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form11.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form11.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form12.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form12.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form13.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form13.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form14.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form14.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form15.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form15.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form16.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form16.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form2.designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form3.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form3.designer.cs">
-      <DependentUpon>Form3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form4.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form4.designer.cs">
-      <DependentUpon>Form4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form5.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form5.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form6.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form6.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form7.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form7.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form8.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form8.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\Form9.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TEMPORARY\BIN\Form9.Designer.cs" />
-    <Compile Include="TEMPORARY\BIN\ProcessStart.cs" />
     <Compile Include="TEMPORARY\DataGrid_Ukazky.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,55 +278,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MODULES\09_ALUMINIUM\EC9\EN1999-1-1MessageBoxes.resx">
       <DependentUpon>EN1999-1-1MessageBoxes.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form1_Specimen.resx">
-      <DependentUpon>Form1_Specimen.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form10.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form12.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form13.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form14.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form15.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form16.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form3.resx">
-      <DependentUpon>Form3.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form4.resx">
-      <DependentUpon>Form4.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form5.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form6.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form7.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form8.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TEMPORARY\BIN\Form9.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TEMPORARY\DataGrid_Ukazky.resx">
@@ -602,7 +473,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Resources\pin2.jpg" />
-    <None Include="TEMPORARY\BIN\app.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images.jpeg" />
@@ -611,7 +481,6 @@
     <None Include="Resources\pin_32_h.jpg" />
     <None Include="Resources\pin_32_s.jpg" />
     <Content Include="pin_r2.ico" />
-    <Content Include="TEMPORARY\BIN\WindowsFormsApplication1.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">

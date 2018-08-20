@@ -589,6 +589,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\HelixToolkit.Wpf.dll" />
+    <Content Include="bin\Debug\WPF.MDI.dll" />
     <Resource Include="pin_r2.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
