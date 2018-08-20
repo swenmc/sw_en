@@ -254,6 +254,10 @@
       <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
       <Name>MATERIAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MODULES\M_AS4600\M_AS4600.csproj">
+      <Project>{209738f7-cdb3-4c11-98a3-e345299d9191}</Project>
+      <Name>M_AS4600</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MODULES\M_BASE\M_BASE.csproj">
       <Project>{ad3e14f4-72c6-476e-b67f-93cc194e0e02}</Project>
       <Name>M_BASE</Name>
@@ -265,10 +269,6 @@
     <ProjectReference Include="..\MODULES\M_EC3\M_EC3.csproj">
       <Project>{515ce0e4-0e37-453d-869e-2a651557389e}</Project>
       <Name>M_EC3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\M_AS4600\M_AS4600.csproj">
-      <Project>{209738f7-cdb3-4c11-98a3-e345299d9191}</Project>
-      <Name>M_AS4600</Name>
     </ProjectReference>
     <ProjectReference Include="..\SharedLibraries\SharedLibraries\SharedLibraries.csproj">
       <Project>{28044445-e8dd-4041-b534-3fee5c07237f}</Project>
