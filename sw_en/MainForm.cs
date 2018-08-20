@@ -177,8 +177,8 @@ namespace CENEX
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            WindowsFormsApplication1.Form1 obj_Form1 = new WindowsFormsApplication1.Form1();
-            obj_Form1.ShowDialog();
+            //WindowsFormsApplication1.Form1 obj_Form1 = new WindowsFormsApplication1.Form1();
+            //obj_Form1.ShowDialog();
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
