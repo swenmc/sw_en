@@ -171,7 +171,7 @@ namespace BaseClasses
             List<CMember> members = new List<CMember>();
             foreach (CMember m in m_arrMembers)
             {
-                if (m.CrScStart.Equals(crsc) || m.CrScEnd.Equals(crsc)) members.Add(m);
+                if (m.CrScStart.Equals(crsc) || (m.CrScEnd != null && m.CrScEnd.Equals(crsc))) members.Add(m);
             }
             return members;
         }
