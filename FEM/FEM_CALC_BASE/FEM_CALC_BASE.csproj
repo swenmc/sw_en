@@ -88,6 +88,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CRSC\CRSC.csproj">
+      <Project>{FFB65036-8DD2-4633-B25A-D5A65D7213BD}</Project>
+      <Name>CRSC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
       <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>

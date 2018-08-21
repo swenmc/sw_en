@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BaseClasses;
-
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace FEM_CALC_BASE
 {

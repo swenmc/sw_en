@@ -1,5 +1,5 @@
 ﻿using BaseClasses;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace FEM_CALC_BASE
 {

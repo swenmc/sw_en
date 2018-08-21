@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 using System.IO;
 using BaseClasses;
 using MATH;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace sw_en_GUI
 {

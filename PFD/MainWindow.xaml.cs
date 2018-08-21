@@ -29,7 +29,7 @@ using M_EC1.AS_NZS;
 using _3DTools;
 using FEM_CALC_BASE;
 using M_BASE;
-using BaseClasses.CRSC;
+using CRSC;
 using EXPIMP;
 using Examples;
 

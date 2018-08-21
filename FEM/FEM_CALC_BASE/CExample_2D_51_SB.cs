@@ -5,7 +5,7 @@ using System.Text;
 using MATH;
 using BaseClasses;
 using MATERIAL;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace FEM_CALC_BASE
 {

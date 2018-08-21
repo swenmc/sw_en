@@ -3,7 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses;
 using _3DTools;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace PFD
 {

@@ -3,7 +3,7 @@ using System.Collections;
 using BaseClasses;
 using FEM_CALC_BASE;
 using MATH;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace FEM_CALC_1Din2D
 {

@@ -15,7 +15,7 @@ using System.Threading;
 using System.Collections;
 using BaseClasses;
 using _3DTools;
-using BaseClasses.CRSC;
+using CRSC;
 using EXPIMP;
 using Examples;
 

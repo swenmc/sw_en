@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BaseClasses;
 using M_AS4600;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace M_BASE
 {

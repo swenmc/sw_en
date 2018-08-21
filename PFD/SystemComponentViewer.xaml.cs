@@ -18,7 +18,7 @@ using sw_en_GUI;
 using System.Windows.Media.Media3D;
 using _3DTools;
 using SharedLibraries.EXPIMP;
-using BaseClasses.CRSC;
+using CRSC;
 using EXPIMP;
 
 namespace PFD

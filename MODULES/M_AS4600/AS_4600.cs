@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MATH;
+﻿using MATH;
+using System;
 
 namespace M_AS4600
 {

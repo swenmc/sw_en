@@ -1,5 +1,5 @@
 ﻿using BaseClasses;
-using BaseClasses.CRSC;
+using CRSC;
 using BaseClasses.GraphObj;
 using M_EC1.AS_NZS;
 using MATERIAL;

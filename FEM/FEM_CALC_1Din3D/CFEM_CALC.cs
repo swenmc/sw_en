@@ -7,7 +7,7 @@ using MATH;
 using BaseClasses;
 
 using FEM_CALC_BASE;
-using BaseClasses.CRSC;
+using CRSC;
 
 /*
  Todo

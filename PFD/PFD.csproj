@@ -218,6 +218,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CRSC\CRSC.csproj">
+      <Project>{FFB65036-8DD2-4633-B25A-D5A65D7213BD}</Project>
+      <Name>CRSC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>

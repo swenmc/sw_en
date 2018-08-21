@@ -10,7 +10,7 @@ using BaseClasses;
 using BaseClasses.GraphObj;
 using _3DTools;
 using MATH;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace AAC
 {

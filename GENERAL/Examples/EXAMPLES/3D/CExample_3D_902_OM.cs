@@ -1,5 +1,5 @@
 ﻿using BaseClasses;
-using BaseClasses.CRSC;
+using CRSC;
 using MATERIAL;
 using System.Collections.Generic;
 using System.Windows.Media;

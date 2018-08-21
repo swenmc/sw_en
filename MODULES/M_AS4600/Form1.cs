@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using CRSC;
+using System;
 using System.Windows.Forms;
-using BaseClasses;
-using BaseClasses.CRSC;
 
 namespace M_AS4600
 {

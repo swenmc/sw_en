@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using BaseClasses;
 using MATERIAL;
-using BaseClasses.CRSC;
+using CRSC;
 
 namespace AAC
 {

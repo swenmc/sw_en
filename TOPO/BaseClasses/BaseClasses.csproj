@@ -71,8 +71,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Data.SQLite.Core.1.0.109.1\lib\net46\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -87,74 +88,6 @@
   <ItemGroup>
     <Compile Include="CConnectionJointTypes.cs" />
     <Compile Include="CObject.cs" />
-    <Compile Include="CRSC\CCrSc_SO.cs" />
-    <Compile Include="CRSC\CCrSc_TW.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_00.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_01.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_02.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_03.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_04.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_05.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_06.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_07.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_08.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_09.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_20.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_22.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_23.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_24.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_25.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_26.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_27.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_28.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_50.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_52.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_54.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_56.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_58.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_60.cs" />
-    <Compile Include="CRSC\CrSc_0\CCrSc_0_61.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00_AAC_Beam.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00_AAC_Floor_Panel.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00_AAC_Horizontal_Wall_Panel.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00_AAC_Roof_Panel.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00_AAC_Wall_Panel_1.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_00_AAC_Wall_Panel_2.cs" />
-    <Compile Include="CRSC\CrSc_2\CCrSc_2_02.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_00.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_01.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_02.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_03.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_04.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_05.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_06.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_07.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_08.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_09.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_10.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_51_BOX_TEMP.cs" />
-    <Compile Include="CRSC\CrSc_3\CCrSc_3_51_TRIANGLE_TEMP.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_10075_BOX.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_270XX_C.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_270XX_C_BACK_TO_BACK.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_270XX_C_NESTED.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_50020_C.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_50020_C_NESTED.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_63020_BOX.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_I_LIPS.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_TR_PURLINDEK.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_TR_SMARTDEK.cs" />
-    <Compile Include="CRSC\CrSc_3\FS\CCrSc_3_Z.cs" />
-    <Compile Include="CRSC\CrSc_5\CCrSc_5_00.cs" />
-    <Compile Include="CRSC\CrSc_5\CCrSc_5_01.cs" />
-    <Compile Include="CRSC\CrSc_9\CCrSc_9_09.cs" />
-    <Compile Include="CRSC\CrSc_9\CCrSc_9_10.cs" />
-    <Compile Include="CRSC\CrSc_SW\CCrSc_GE.cs" />
-    <Compile Include="CRSC\CSC.cs" />
-    <Compile Include="CRSC\CSGClass.cs" />
-    <Compile Include="CRSC\CSO.cs" />
-    <Compile Include="CRSC\Enums.cs" />
     <Compile Include="Drawing2D.cs" />
     <Compile Include="Drawing3D.cs" />
     <Compile Include="Loading\Combination\CLoadCombinationsGenerator.cs" />
@@ -162,7 +95,6 @@
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniform.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_Free.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniformGroup.cs" />
-    <Compile Include="CRSC\CCrSc.cs" />
     <Compile Include="Model\CExample.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />
     <Compile Include="Model\CBlock.cs" />
@@ -245,6 +177,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CRSC\CRSC.csproj">
+      <Project>{FFB65036-8DD2-4633-B25A-D5A65D7213BD}</Project>
+      <Name>CRSC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
       <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>
@@ -286,16 +222,13 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CRSC\CrSc_4\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
