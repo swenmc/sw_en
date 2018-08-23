@@ -1354,5 +1354,76 @@ namespace BaseClasses
                 throw new Exception("Exception - no definition nodes or points");
             }
         }
+
+
+
+        //    Public Function GetPointOnPlaneZ(p1 As point3d, p2 As point3d, p3 As point3d, x As Single, y As Single)
+        //    'call with 3 points p1, p2, p3 that form plane and another point (x,y)
+        //    'returns point (x,y) on plane from 3 points
+        public static Point3D GetPointOnPlaneZ(Point3D p1, Point3D p2, Point3D p3, double x, double y)
+        {
+            Vector3D v1 = new Vector3D();
+            Vector3D v2 = new Vector3D();
+            Point3D abc = new Point3D();
+                        
+            //'Create 2 vectors by subtracting p3 from p1 and p2
+            v1.X = p1.X - p3.X;
+            v1.Y = p1.Y - p3.Y;
+            v1.Z = p1.Z - p3.Z;
+
+            v2.X = p2.X - p3.X;
+            v2.Y = p2.Y - p3.Y;
+            v2.Z = p2.Z - p3.Z;
+
+            //  'Create cross product from the 2 vectors
+            abc.X = v1.Y * v2.Z - v1.Z * v2.Y;
+            abc.Y = v1.Z * v2.X - v1.X * v2.Z;
+            abc.Z = v1.X * v2.Y - v1.Y * v2.X;
+
+            //    'find d in the equation aX + bY + cZ = d            
+            double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
+
+            //    'calc z coordinate for point (x,y)
+            //    GetPointOnPlaneZ = 
+            double z = (d - abc.X * x - abc.Y * y) / abc.Z;
+            
+            Point3D resultPoint = new Point3D(x, y, z);
+            return resultPoint;
+        }
+
+        //Distance of Point p from Plane defined by 3 points
+        public static double GetDistanceFromPointToPlane(Point3D p1, Point3D p2, Point3D p3, Point3D p)
+        {
+            Vector3D v1 = new Vector3D();
+            Vector3D v2 = new Vector3D();
+            v1 = p1 - p3;
+            v2 = p2 - p3;
+            Vector3D abc = Vector3D.CrossProduct(v1, v2);            
+            //    'find d in the equation aX + bY + cZ = d            
+            double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
+
+            double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z);
+            //double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Vector3D.DotProduct(abc, abc); vyskusat,ci je to to iste
+            return dist;
+        }
+
+        //Get Closest point on plane defined by 3 points(p1,p2,p3) from point p
+        public static Point3D GetClosestPointOnPlane(Point3D p1, Point3D p2, Point3D p3, Point3D p)
+        {
+            Vector3D v1 = new Vector3D();
+            Vector3D v2 = new Vector3D();
+            v1 = p1 - p3;
+            v2 = p2 - p3;
+            Vector3D abc = Vector3D.CrossProduct(v1, v2);
+            //    'find d in the equation aX + bY + cZ = d            
+            double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
+
+            double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z);
+            //double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Vector3D.DotProduct(abc, abc); vyskusat,ci je to to iste
+
+            Point3D closestPoint = p - dist * abc;
+            return closestPoint;
+        }
+
     }
 }
