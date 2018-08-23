@@ -85,12 +85,12 @@ namespace BaseClasses
             MemberLoadsList = MemberLoads_temp;
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, List<CSLoad_Free> SurfaceLoads_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CSLoad_Free> SurfaceLoads_temp)
         {
             ID = id_temp;
             Name = name_temp;
             Type = type_temp;
-            MainDirection = ELCMainDirection.eGeneral;
+            MainDirection = MainDirection_temp;
             SurfaceLoadsList = SurfaceLoads_temp;
         }
 

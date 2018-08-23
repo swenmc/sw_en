@@ -198,7 +198,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Rectangle Fill="{Binding CodeHEX}" Width="62" Height="12" Margin="0,1,5,1" />
-                                        <TextBlock Text="{Binding Name}" /> 
+                                        <TextBlock Text="{Binding Name}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -236,7 +236,7 @@
                         <CheckBox Name ="chbDisplayLoads" Grid.Row="18" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked ="chbDisplayLoads_UnChecked" Checked="chbDisplayLoads_Checked">Display Loads</CheckBox>
                         <TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 
-                        <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="5" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="200"
+                        <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
@@ -267,7 +267,7 @@
                HorizontalContentAlignment="Stretch" 
                VerticalContentAlignment="Stretch" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" NavigationUIVisibility="Hidden" Margin="5,5,5,88" Grid.Column="1"/>
-        
+
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <Button Name="View_2D" Content ="View 2D" Height="20" Width="70" Margin="0 0 10 0" Click="View_2D_Click"/>
             <Button Name="Clear3DModel" Content="Clear" Width="70" Margin="0 0 10 0" Click="Clear3DModel_Click" Height="20" />
@@ -275,7 +275,7 @@
             <Button Content="Calculate" Width="100"  Margin="0 0 10 0" Click="Calculate_Click" Height="20"/>
             <Button Name="SystemComponentViewer" Content="Component Viewer" Height="20" Width="120" Margin="0 0 10 0" Click="SystemComponentViewer_Click"/>
             <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>
-            
+
         </StackPanel>
     </Grid>
 </Window>

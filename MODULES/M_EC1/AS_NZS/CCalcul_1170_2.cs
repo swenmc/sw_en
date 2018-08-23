@@ -501,8 +501,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fp_i_max_ULS_Theta_4.Length; i++)
             {
-                fp_i_max_ULS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_i_min, fC_dyn);
-                fp_i_max_SLS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_i_min, fC_dyn);
+                fp_i_max_ULS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], fC_fig_i_max, fC_dyn);
+                fp_i_max_SLS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], fC_fig_i_max, fC_dyn);
             }
 
             // External pressure

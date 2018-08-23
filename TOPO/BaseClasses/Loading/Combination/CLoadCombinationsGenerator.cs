@@ -47,38 +47,30 @@ namespace BaseClasses
 
             List<CLoadCaseGroup> loadCaseGroups = new List<CLoadCaseGroup>();
 
+            // TODO - Ondrej, pridat do generovania podmienku, ze ak je obsah zatazovacieho stavu prazdny alebo maju vsetky zatazenia v zatazovacom stave nulovu
+            // hodnotu alebo ma zatazovaci stav nulovy faktor, tak sa zatazovaci stav do kombinacii nepreberie
+
+            // BUG - nezobrazuju sa SLS kombinacie pre EQ
+
             // Types of load cases (G - permanent, Q - imposed, W - wind, S - snow, EQ - earthquake)
             // ULS
-            // 1 - [0.9 * m_arrLoadCaseGroups[0]][0.9 G]
+            // 1 - [0.9 * m_arrLoadCaseGroups[0]][0.9G]
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            Generate(loadCaseGroups, "[0.9 G]", "AS/NZS 1170.0, cl. 4.2.1(a)", ELSType.eLS_ULS);
-            // 2 - [1.2 * m_arrLoadCaseGroups[0], 1.5 * m_arrLoadCaseGroups[1]][1.2G, 1.5Q]
+            Generate(loadCaseGroups, "[0.9G]", "AS/NZS 1170.0, cl. 4.2.1(a)", ELSType.eLS_ULS);
+            // 2 - [1.35 * m_arrLoadCaseGroups[0]][1.35G]
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.35f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            Generate(loadCaseGroups, "[1.35G]", "AS/NZS 1170.0, cl. 4.2.2(a)", ELSType.eLS_ULS);
+            // 3 - [1.2 * m_arrLoadCaseGroups[0], 1.5 * m_arrLoadCaseGroups[1]][1.2G, 1.5Q]
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.2f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 1.5f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
-            Generate(loadCaseGroups, "[1.2G, 1.5Q]", "AS/NZS 1170.0, cl. 4.2.1(b)(ii)", ELSType.eLS_ULS);
-            // 3 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_min, ψc Q]
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[3].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[3]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[4].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[4]);
-            Generate(loadCaseGroups, "[0.9G, Wu_i, Wu_e_min, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            // 4 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e_max, ψc Q] ψc = 0
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[3].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[3]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[5].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[5]);
-            Generate(loadCaseGroups, "[0.9G, Wu_i, Wu_e_max, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            // 5 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e_min, ψc Q]
+            Generate(loadCaseGroups, "[1.2G, 1.5Q]", "AS/NZS 1170.0, cl. 4.2.2(b)", ELSType.eLS_ULS);
+            // 4 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e, ψc Q]
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.2f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
@@ -86,22 +78,22 @@ namespace BaseClasses
             loadCaseGroups.Add(m_arrLoadCaseGroups[3]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[4].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[4]);
-            Generate(loadCaseGroups, "[1.2G, Wu_i, Wu_e_min, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            // 6 - [1.2 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5], ψc * m_arrLoadCaseGroups[1]] [1.2G, Wu_i, Wu_e_max, ψc Q]
+            Generate(loadCaseGroups, "[1.2G, Wu.i, Wu.e, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(d)", ELSType.eLS_ULS);
+            // 5 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4], ψc * m_arrLoadCaseGroups[1]] [0.9G, Wu_i, Wu_e, ψc Q]
             loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.2f);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[3].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[3]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[5].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[5]);
-            Generate(loadCaseGroups, "[1.2G, Wu_i, Wu_e_max, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            // 7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q] ψE = 0;
+            SetFactorForLoadCases(m_arrLoadCaseGroups[4].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[4]);
+            Generate(loadCaseGroups, "[0.9G, Wu.i, Wu.e, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(e)", ELSType.eLS_ULS);
+            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q] ψE = 0;
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[6].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[6]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[5].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[5]);
             Generate(loadCaseGroups, "[G, Eu, ψE Q] ψE = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
             // 8 - [1.20 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[2], ψc * m_arrLoadCaseGroups[1]][1.2G, Su, ψc Q]
             loadCaseGroups.Clear();
@@ -109,100 +101,57 @@ namespace BaseClasses
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[2].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[2]);
-            Generate(loadCaseGroups, "[1.2G, Su, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            // 9 - [1.35 * m_arrLoadCaseGroups[0]][1.35 G]
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.35f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            Generate(loadCaseGroups, "[1.35 G]", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            //10 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[4]][0.9G, Wu_i, Wu_e_min]
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[3].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[3]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[4].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[4]);
-            Generate(loadCaseGroups, "[0.9G, Wu_i, Wu_e_min]", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
-            //11 - [0.9 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[3], 1.0 * m_arrLoadCaseGroups[5]][0.9G, Wu_i, Wu_e_max]
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 0.9f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[3].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[3]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[5].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[5]);
-            Generate(loadCaseGroups, "[0.9G, Wu_i, Wu_e_max]", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_ULS);
+            Generate(loadCaseGroups, "[1.2G, Su, ψc Q] ψc = 0", "AS/NZS 1170.0, cl. 4.2.2(g)", ELSType.eLS_ULS);
 
             // SLS
-            // 1 - [1.0 * m_arrLoadCaseGroups[0]][1.0 G]
+            // 1 - [1.0 * m_arrLoadCaseGroups[0]][G]
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            Generate(loadCaseGroups, "[1.0 G]", "AS/NZS 1170.0, cl. 4.2.2(f)c", ELSType.eLS_SLS);
+            Generate(loadCaseGroups, "[G]", "AS/NZS 1170.0, cl. 4.3(a)", ELSType.eLS_SLS);
             // 2 - [1.0 * m_arrLoadCaseGroups[0] x ψs * m_arrLoadCaseGroups[1]][G, ψs Q] ψs = 0.7;
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
-            Generate(loadCaseGroups, "[G, ψs Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
-            // 3 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[9], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e_min, Q] ψs = 0.7;
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
-            Generate(loadCaseGroups, "[G, Ws_i, Ws_e_min, Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
-            // 4 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[10], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e_max, Q] ψs = 0.7;
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[10].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[10]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
-            Generate(loadCaseGroups, "[G, Ws_i, Ws_e_max, Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
-            // 5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[9]][G, Ws_i, Ws_e_min]
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
-            Generate(loadCaseGroups, "[G, Ws_i, Ws_e_min]", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
-            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[8], 1.0 * m_arrLoadCaseGroups[10]][G, Ws_i, Ws_e_max]
-            loadCaseGroups.Clear();
-            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[10].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[10]);
-            Generate(loadCaseGroups, "[G, Ws_i, Ws_e_max]", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
-            // 7 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[7], ψs * m_arrLoadCaseGroups[1]][G, Ss, ψs Q] ψs = 0.7;
+            Generate(loadCaseGroups, "[G, ψs Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.3(a)(b)", ELSType.eLS_SLS);
+            // 3 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[7], 1.0 * m_arrLoadCaseGroups[8], ψs * m_arrLoadCaseGroups[1]][G, Ws_i, Ws_e, Q] ψs = 0.7;
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[7].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[7]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
             SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
-            Generate(loadCaseGroups, "[G, Ss, ψs Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
-            // 8 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[11], ψE * m_arrLoadCaseGroups[1]][G, Eu, ψE Q] ψE = 0;
+            Generate(loadCaseGroups, "[G, Ws.i, Ws.e, Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.3(a)(b)(d)", ELSType.eLS_SLS);
+            // 4 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[7], 1.0 * m_arrLoadCaseGroups[8]][G, Ws_i, Ws_e]
             loadCaseGroups.Clear();
             SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
             loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
-            SetFactorForLoadCases(m_arrLoadCaseGroups[11].MLoadCasesList, 1.0f);
-            loadCaseGroups.Add(m_arrLoadCaseGroups[11]);
-            Generate(loadCaseGroups, "[G, Eu, ψE Q] ψE = 0", "AS/NZS 1170.0, cl. 4.2.2(f)", ELSType.eLS_SLS);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[7].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[7]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[8].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[8]);
+            Generate(loadCaseGroups, "[G, Ws.i, Ws.e]", "AS/NZS 1170.0, cl. 4.3(a)(d)", ELSType.eLS_SLS);
+            // 5 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[6], ψs * m_arrLoadCaseGroups[1]][G, Ss, ψs Q] ψs = 0.7;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[6].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[6]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[1].MLoadCasesList, 0.7f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[1]);
+            Generate(loadCaseGroups, "[G, Ss, ψs Q] ψs = 0.7", "AS/NZS 1170.0, cl. 4.3(a)(b)(f)", ELSType.eLS_SLS);
+            // 6 - [1.0 * m_arrLoadCaseGroups[0], 1.0 * m_arrLoadCaseGroups[9], ψE * m_arrLoadCaseGroups[1]][G, Es, ψE Q] ψE = 0;
+            loadCaseGroups.Clear();
+            SetFactorForLoadCases(m_arrLoadCaseGroups[0].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[0]);
+            SetFactorForLoadCases(m_arrLoadCaseGroups[9].MLoadCasesList, 1.0f);
+            loadCaseGroups.Add(m_arrLoadCaseGroups[9]);
+            Generate(loadCaseGroups, "[G, Es, ψE Q] ψE = 0", "AS/NZS 1170.0, cl. 4.3(a)(b)(e)", ELSType.eLS_SLS);
 
             FilterCombinationsByWindDirection();
             SetIDandNameForCombinations();
