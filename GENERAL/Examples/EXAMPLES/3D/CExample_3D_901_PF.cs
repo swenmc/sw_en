@@ -7,6 +7,7 @@ using MATH;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace Examples
 {
@@ -1128,6 +1129,90 @@ namespace Examples
             m_arrLoadCases[42] = new CLoadCase(43, "Earthquake load Es - X", ELCType.eEarthquake, ELCMainDirection.ePlusX);                                                                     // 43
             m_arrLoadCases[43] = new CLoadCase(44, "Earthquake load Es - Y", ELCType.eEarthquake, ELCMainDirection.ePlusY);                                                                     // 44
 
+            // Generate linear Loads
+            List<CMember> listOfPurlins = new List<CMember>(0);
+            List<CMember> listOfGirts = new List<CMember>(0);
+
+            List<CMember> listOfPurlinsLeftSide = new List<CMember>(0);
+            List<CMember> listOfPurlinsRightSide = new List<CMember>(0);
+            List<CMember> listOfGirtsLeftSide = new List<CMember>(0);
+            List<CMember> listOfGirtsRightSide = new List<CMember>(0);
+            List<CMember> listOfGirtsFrontSide = new List<CMember>(0);
+            List<CMember> listOfGirtsBackSide = new List<CMember>(0);
+
+            Point3D p1;
+            Point3D p2;
+            Point3D p3;
+
+            // TODO No 49 - in work, naplnit zoznamy prutov ktore lezia v rovine definujucej zatazenie, presnost 1 mm
+
+            foreach (CMember m in m_arrMembers)
+            {
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                // Girts
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+                // List of all girts
+                if (m.EMemberType == EMemberType_FormSteel.eG)
+                    listOfGirts.Add(m);
+
+                p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
+                p2 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
+                p3 = new Point3D(pRoofBackLeft.X, pRoofBackLeft.Y, pRoofBackLeft.Z);
+
+                // List of girts - left wall
+                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfGirtsLeftSide.Add(m);
+
+                p1 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
+                p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
+                p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
+
+                // List of girts - right wall
+                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfGirtsRightSide.Add(m);
+
+                p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
+                p2 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
+                p3 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
+
+                // List of girts - front wall
+                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfGirtsFrontSide.Add(m);
+
+                p1 = new Point3D(pWallBackLeft.X, pWallBackLeft.Y, pWallBackLeft.Z);
+                p2 = new Point3D(pWallBackRight.X, pWallBackRight.Y, pWallBackRight.Z);
+                p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
+
+                // List of girts - back wall
+                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfGirtsBackSide.Add(m);
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                // Purlins
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+                // List of all purlins
+                if (m.EMemberType == EMemberType_FormSteel.eP)
+                    listOfPurlins.Add(m);
+
+                p1 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
+                p2 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
+                p3 = new Point3D(pRoofBackApex.X, pRoofBackApex.Y, pRoofBackApex.Z);
+
+                // List of purlins - left side of the roof
+                if (m.EMemberType == EMemberType_FormSteel.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfPurlinsLeftSide.Add(m);
+
+                p1 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
+                p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
+                p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
+
+                // List of purlins - right side of the roof
+                if (m.EMemberType == EMemberType_FormSteel.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfPurlinsRightSide.Add(m);
+            }
+
             // Load Case Groups
             m_arrLoadCaseGroups = new CLoadCaseGroup[10];
 
@@ -1208,10 +1293,6 @@ namespace Examples
             m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[43]);
 
             // Load Combinations
-
-            // TEMPORARY - ukazka
-            // TODO No 40 - Ondrej
-            // Vysledkom ma byt toto pole Load Combinations, kombinacie maju obsahovat zoznam load cases a prislusne faktory ktorymi treba load cases prenasobovat
             CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
             generator.GenerateAll();
             //generator.GenerateULS();
@@ -1219,21 +1300,6 @@ namespace Examples
             //generator.WriteCombinationsLoadCases();
             //generator.WritePermutations();
             //generator.WriteCombinations();
-
-            // TODO No 40  Notes to Ondrej
-            // Zopar navrhov na vylepsenie
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////
-            // (A) Priorita 4
-            // Bolo by super zobrazit v dalsom stlpci v UC_LoadCombinationsList predpis "Combination Key", podla ktoreho sa to vygenerovalo
-            // pripadne aj clanok normy v dalsom stlpci, lahsie by sa to potom kontrolovalo a vyzeralo viac profi :)
-            // Napr.:
-            // [0.9*G + Wu,Cpi + Wu,Cpe,max + ψc*Q] ψc = 0    | AS/NZS 1170.0, cl. 4.2.1(a)
-            // [1.2*G + 1.5*Q]                                | AS/NZS 1170.0, cl. 4.2.1(b)(ii)
-            // [G + Eu + ψE*Q] ψE = 0                         | AS/NZS 1170.0, cl. 4.2.2(f)
-
-            // (B)
-            // Nezobrazuju sa kombinacie so zemetrasenim EQ load cases ID 17,18 a 34,35
 
             //m_arrLoadCombs = new CLoadCombination[generator.Combinations.Count];
             //for (int i = 0; i < m_arrLoadCombs.Length; i++)

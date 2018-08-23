@@ -1380,7 +1380,7 @@ namespace BaseClasses
             abc.Y = v1.Z * v2.X - v1.X * v2.Z;
             abc.Z = v1.X * v2.Y - v1.Y * v2.X;
 
-            //    'find d in the equation aX + bY + cZ = d            
+            //    'find d in the equation aX + bY + cZ = d
             double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
 
             //    'calc z coordinate for point (x,y)
@@ -1398,13 +1398,23 @@ namespace BaseClasses
             Vector3D v2 = new Vector3D();
             v1 = p1 - p3;
             v2 = p2 - p3;
-            Vector3D abc = Vector3D.CrossProduct(v1, v2);            
-            //    'find d in the equation aX + bY + cZ = d            
-            double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
+            Vector3D abc = Vector3D.CrossProduct(v1, v2); // Normal vector
+            //    'find d in the equation a * X0 + b * Y0 + c * Z0 + d = 0
+            // d = − a * X0 − b * Y0 − c * Z0 (point on the plane R [X0, Y0, Z0], we use point p3
+            //double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z; // Tu je asi chyba vid internetovy odkaz (po presunuti na pravu stranu sa ma zmenit znamienko)
+            double d = -abc.X * p3.X - abc.Y * p3.Y - abc.Z * p3.Z;
 
-            double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z);
-            //double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Vector3D.DotProduct(abc, abc); vyskusat,ci je to to iste
-            return dist;
+            double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z); // alternative 1
+            //double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Vector3D.DotProduct(abc, abc); // // alternative 2 - vyskusat,ci je to to iste
+
+            // TODO No. 49
+            // https://mathinsight.org/distance_point_plane
+            // To Ondrej, nie je to to iste, alternative 1 vracia asi spravne hodnoty vzdialností v metroch (kladne alebo zaporne), alternative 2 vracia radovo mensie cislo , napr -8 vs. - 0.222
+            // Niekde je vsak chyba pretoze pre niektore zatazovacie roviny sa zoznamy prutov naplnia, pre ine nie vid CExample_3D_901_PF
+            // Zistil som napriklad ze ak girts na pravej strane budovy maju suradnicu X = 8, tak to vrati vzdialenost dist = -16 a nie dist = 0
+            // podla uvedenej stranky malo byt pre d zmenene znamienko 
+
+            return dist; // Returns negative or positive value ???!!!
         }
 
         //Get Closest point on plane defined by 3 points(p1,p2,p3) from point p
@@ -1415,7 +1425,7 @@ namespace BaseClasses
             v1 = p1 - p3;
             v2 = p2 - p3;
             Vector3D abc = Vector3D.CrossProduct(v1, v2);
-            //    'find d in the equation aX + bY + cZ = d            
+            //    'find d in the equation aX + bY + cZ = d
             double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
 
             double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z);
@@ -1425,5 +1435,36 @@ namespace BaseClasses
             return closestPoint;
         }
 
+        // TODO No. 49 - in work, funckie vratia true alebo false pre poziciu bodu, uzla alebo celeho pruta v rovine definovanej troma bodmi v priestore, zadana tolerancia
+        public static bool PointLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, Point3D p, double dLimit = 0.000001)
+        {
+            double distance = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, p));
+
+            if (distance < dLimit)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool NodeLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, CNode n, double dLimit = 0.000001)
+        {
+            double distance = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(n.X,n.Y,n.Z)));
+
+            if (distance < dLimit)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool MemberLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, CMember m, double dLimit = 0.000001)
+        {
+            double distanceStart = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(m.NodeStart.X, m.NodeStart.Y, m.NodeStart.Z)));
+            double distanceEnd   = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(m.NodeEnd.X, m.NodeEnd.Y, m.NodeEnd.Z)));
+
+            if (distanceStart < dLimit && distanceEnd < dLimit)
+                return true;
+            else
+                return false;
+        }
     }
 }
