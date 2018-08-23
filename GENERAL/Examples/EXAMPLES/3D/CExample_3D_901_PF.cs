@@ -898,14 +898,21 @@ namespace Examples
             float fsnowSLS_Nu_1 = snow.fs_SLS_Nu_1 * fSlopeFactor;
             float fsnowSLS_Nu_2 = snow.fs_SLS_Nu_2 * fSlopeFactor;
 
-            List <CSLoad_Free> surfaceRoofSnowLoad_Nu_1 = new List<CSLoad_Free>(2);
-            surfaceRoofSnowLoad_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
-            surfaceRoofSnowLoad_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            List <CSLoad_Free> surfaceRoofSnowLoad_ULS_Nu_1 = new List<CSLoad_Free>(2);
+            surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            List<CSLoad_Free> surfaceRoofSnowLoad_ULS_Nu_2_Left = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_ULS_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            List<CSLoad_Free> surfaceRoofSnowLoad_ULS_Nu_2_Right = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_ULS_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
 
-            List<CSLoad_Free> surfaceRoofSnowLoad_Nu_2_Left = new List<CSLoad_Free>(1);
-            surfaceRoofSnowLoad_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
-            List<CSLoad_Free> surfaceRoofSnowLoad_Nu_2_Right = new List<CSLoad_Free>(1);
-            surfaceRoofSnowLoad_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            List<CSLoad_Free> surfaceRoofSnowLoad_SLS_Nu_1 = new List<CSLoad_Free>(2);
+            surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            List<CSLoad_Free> surfaceRoofSnowLoad_SLS_Nu_2_Left = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_SLS_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            List<CSLoad_Free> surfaceRoofSnowLoad_SLS_Nu_2_Right = new List<CSLoad_Free>(1);
+            surfaceRoofSnowLoad_SLS_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
 
             // Wind Load
             // Internal pressure
@@ -1072,13 +1079,13 @@ namespace Examples
 
             // Load Cases
             m_arrLoadCases = new CLoadCase[44];
-            m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCType.ePermanentLoad, ELCMainDirection.eGeneral, memberLoadDead1Rafters, surfaceDeadLoad);                                  // 01
-            m_arrLoadCases[01] = new CLoadCase(02, "Imposed load Q", ELCType.eImposedLoad_ST, ELCMainDirection.eGeneral, memberLoadImposedRafters, surfaceRoofImposedLoad);                     // 02
+            m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCType.ePermanentLoad, ELCMainDirection.eGeneral, surfaceDeadLoad);                                                          // 01
+            m_arrLoadCases[01] = new CLoadCase(02, "Imposed load Q", ELCType.eImposedLoad_ST, ELCMainDirection.eGeneral, surfaceRoofImposedLoad);                                               // 02
 
             // ULS - Load Case
-            m_arrLoadCases[02] = new CLoadCase(03, "Snow load Su - full", ELCType.eSnow, ELCMainDirection.ePlusZ, memberMaxLoadSnowAllRafters, surfaceRoofSnowLoad_Nu_1);                       // 03
-            m_arrLoadCases[03] = new CLoadCase(04, "Snow load Su - left", ELCType.eSnow, ELCMainDirection.ePlusZ, memberMaxLoadSnowLeftRafters, surfaceRoofSnowLoad_Nu_2_Left);                 // 04
-            m_arrLoadCases[04] = new CLoadCase(05, "Snow load Su - right", ELCType.eSnow, ELCMainDirection.ePlusZ, memberMaxLoadSnowRightRafters, surfaceRoofSnowLoad_Nu_2_Right);              // 05
+            m_arrLoadCases[02] = new CLoadCase(03, "Snow load Su - full", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_ULS_Nu_1);                                                // 03
+            m_arrLoadCases[03] = new CLoadCase(04, "Snow load Su - left", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_ULS_Nu_2_Left);                                           // 04
+            m_arrLoadCases[04] = new CLoadCase(05, "Snow load Su - right", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_ULS_Nu_2_Right);                                         // 05
             m_arrLoadCases[05] = new CLoadCase(06, "Wind load Wu - Cpi,min - Left - X+", ELCType.eWind, ELCMainDirection.ePlusX, surfaceWindLoad_ULS_PlusX_Cpimin);                             // 06
             m_arrLoadCases[06] = new CLoadCase(07, "Wind load Wu - Cpi,min - Right - X-", ELCType.eWind, ELCMainDirection.eMinusX, surfaceWindLoad_ULS_MinusX_Cpimin);                          // 07
             m_arrLoadCases[07] = new CLoadCase(08, "Wind load Wu - Cpi,min - Front - Y+", ELCType.eWind, ELCMainDirection.ePlusY, surfaceWindLoad_ULS_PlusY_Cpimin);                            // 08
@@ -1099,9 +1106,9 @@ namespace Examples
             m_arrLoadCases[22] = new CLoadCase(23, "Earthquake load Eu - Y", ELCType.eEarthquake, ELCMainDirection.ePlusY);                                                                     // 23
 
             // SLS - Load Case
-            m_arrLoadCases[23] = new CLoadCase(24, "Snow load Ss - full", ELCType.eSnow, ELCMainDirection.ePlusZ, memberMaxLoadSnowAllRafters);                                                 // 24
-            m_arrLoadCases[24] = new CLoadCase(25, "Snow load Ss - left", ELCType.eSnow, ELCMainDirection.ePlusZ, memberMaxLoadSnowLeftRafters);                                                // 25
-            m_arrLoadCases[25] = new CLoadCase(26, "Snow load Ss - right", ELCType.eSnow, ELCMainDirection.ePlusZ, memberMaxLoadSnowRightRafters);                                              // 26
+            m_arrLoadCases[23] = new CLoadCase(24, "Snow load Ss - full", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_SLS_Nu_1);                                                // 24
+            m_arrLoadCases[24] = new CLoadCase(25, "Snow load Ss - left", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_SLS_Nu_2_Left);                                           // 25
+            m_arrLoadCases[25] = new CLoadCase(26, "Snow load Ss - right", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_SLS_Nu_2_Right);                                         // 26
             m_arrLoadCases[26] = new CLoadCase(27, "Wind load Ws - Cpi,min - Left - X+", ELCType.eWind, ELCMainDirection.ePlusX, surfaceWindLoad_SLS_PlusX_Cpimin);                             // 27
             m_arrLoadCases[27] = new CLoadCase(28, "Wind load Ws - Cpi,min - Right - X-", ELCType.eWind, ELCMainDirection.eMinusX, surfaceWindLoad_SLS_MinusX_Cpimin);                          // 28
             m_arrLoadCases[28] = new CLoadCase(29, "Wind load Ws - Cpi,min - Front - Y+", ELCType.eWind, ELCMainDirection.ePlusY, surfaceWindLoad_SLS_PlusY_Cpimin);                            // 29
