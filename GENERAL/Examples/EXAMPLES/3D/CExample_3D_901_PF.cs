@@ -1131,10 +1131,13 @@ namespace Examples
 
             // Generate linear Loads
             List<CMember> listOfPurlins = new List<CMember>(0);
+            List<CMember> listOfEdgePurlins = new List<CMember>(0);
             List<CMember> listOfGirts = new List<CMember>(0);
 
             List<CMember> listOfPurlinsLeftSide = new List<CMember>(0);
             List<CMember> listOfPurlinsRightSide = new List<CMember>(0);
+            List<CMember> listOfEdgePurlinsLeftSide = new List<CMember>(0);
+            List<CMember> listOfEdgePurlinsRightSide = new List<CMember>(0);
             List<CMember> listOfGirtsLeftSide = new List<CMember>(0);
             List<CMember> listOfGirtsRightSide = new List<CMember>(0);
             List<CMember> listOfGirtsFrontSide = new List<CMember>(0);
@@ -1144,7 +1147,13 @@ namespace Examples
             Point3D p2;
             Point3D p3;
 
-            // TODO No 49 - in work, naplnit zoznamy prutov ktore lezia v rovine definujucej zatazenie, presnost 1 mm
+            // TODO No 49 and 50 - in work, naplnit zoznamy prutov ktore lezia v rovine definujucej zatazenie, presnost 1 mm
+
+            // Loading width of member (Zatazovacia sirka pruta)
+            float fLoadingWidthPurlin = fDist_Purlin;
+            float fLoadingWidthEdgePurlin_Roof = 0.5f * fDist_Purlin;
+            float fLoadingWidthEdgePurlin_Wall = 0.5f * fDist_Girt;
+            float fLoadingWidthGirt = fDist_Girt;
 
             foreach (CMember m in m_arrMembers)
             {
@@ -1196,6 +1205,10 @@ namespace Examples
                 if (m.EMemberType == EMemberType_FormSteel.eP)
                     listOfPurlins.Add(m);
 
+                // List of all edge purlins
+                if (m.EMemberType == EMemberType_FormSteel.eEP)
+                    listOfEdgePurlins.Add(m);
+
                 p1 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
                 p2 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
                 p3 = new Point3D(pRoofBackApex.X, pRoofBackApex.Y, pRoofBackApex.Z);
@@ -1204,6 +1217,10 @@ namespace Examples
                 if (m.EMemberType == EMemberType_FormSteel.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfPurlinsLeftSide.Add(m);
 
+                // List of edge purlins - left side of the roof (tento zoznam pouzit aj pre zatazenie lavej steny)
+                if (m.EMemberType == EMemberType_FormSteel.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfEdgePurlinsLeftSide.Add(m);
+
                 p1 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
                 p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
                 p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
@@ -1211,6 +1228,10 @@ namespace Examples
                 // List of purlins - right side of the roof
                 if (m.EMemberType == EMemberType_FormSteel.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfPurlinsRightSide.Add(m);
+
+                // List of edge purlins - right side of the roof (tento zoznam pouzit aj pre zatazenie pravej steny)
+                if (m.EMemberType == EMemberType_FormSteel.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                    listOfEdgePurlinsRightSide.Add(m);
             }
 
             // Load Case Groups
