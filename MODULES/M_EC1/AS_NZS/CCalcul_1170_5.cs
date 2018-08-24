@@ -15,22 +15,10 @@ namespace M_EC1.AS_NZS
     {
         public SQLiteConnection conn;
 
-        // Elastic site spectra
-
-        // Peak ground acceleration
-        float fT_period_PGA = 0f;
-        float fC_h_PGA = 1.12f; // Spectral shape factor
-
-        float fC_PGA_ULS = 0.39f;
-        float fC_PGA_SLS = 0.1f; // Peak ground coefficient
-
-        float fC_v_ULS;
-        float fC_v_SLS;
-
         // AS / NZS 4600:2018, cl. 1.6.4.2.2 Structural ductility factor
         float fNu_ULS = 1.25f; // Structural ductility factor, 1.6.4.2.2(a)
 
-        // NZS 117.5:2004
+        // NZS 1170.5:2004
         /*
         4.3.2 Serviceability limit state
         The structural ductility factor, μ, for the serviceability limit state SLS1 shall be
@@ -47,41 +35,39 @@ namespace M_EC1.AS_NZS
         float fS_p_ULS_strength = 0.90f;
         float fS_p_SLS = 0.70f;
 
-        float fC_T1 = 0; // ??????????????
-        float fCv_T1 = 0; // ?????????????
+        float fC_d_T1x_ULS_stab;
+        float fC_d_T1x_ULS_strength;
+        float fC_d_T1x_SLS;
 
-        float fC_d_T1_ULS_stab;
-        float fC_d_T1_ULS_strength;
-        float fC_d_T1_SLS;
+        float fC_d_T1y_ULS_stab;
+        float fC_d_T1y_ULS_strength;
+        float fC_d_T1y_SLS;
 
-        float fC_v_Tv_ULS_stab;
-        float fC_v_Tv_ULS_strength;
-        float fC_v_Tv_SLS;
+        /*
+        float fC_v_Tvx_ULS_stab;
+        float fC_v_Tvx_ULS_strength;
+        float fC_v_Tvx_SLS;
 
-        public CCalcul_1170_5(float fW, float fL1_PF_spacing, float fH1_columns, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
+        float fC_v_Tvy_ULS_stab;
+        float fC_v_Tvy_ULS_strength;
+        float fC_v_Tvy_SLS;
+        */
+
+        public float fV_x_ULS_stab;
+        public float fV_x_ULS_stregnth;
+        public float fV_x_SLS;
+
+        public float fV_y_ULS_stab;
+        public float fV_y_ULS_stregnth;
+        public float fV_y_SLS;
+
+        public CCalcul_1170_5(float fT_1x, float fT_1y, float fG_tot_x, float fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
         {
             // AS/NZS 4600:2018 - 1.6.4.2.4 Structural performance factor (a)
             if (1 < fNu_ULS && fNu_ULS <= 2)
                 fS_p_ULS_strength = 1.3f - 0.3f * fNu_ULS;
             else
                 fS_p_ULS_strength = 0.7f;
-
-            // Seismic Weight
-            float fg_roof = 200f; // kN / m^2
-            float fg_walls = 200f; // kN / m^2
-
-            float fq_roof = 250f; // kN / m^2
-
-            float fG_roof = fg_roof * fL1_PF_spacing * fW;
-            float fG_walls = fg_roof * fH1_columns * fL1_PF_spacing;
-
-            float fG_tot = fG_roof + fG_walls;
-
-            float fCdCT_ULS = 0.536f;
-            float fCdCT_SLS = 0.116f;
-
-            float fG_tot_ULS = fCdCT_ULS * fG_tot;
-            float fG_tot_SLS = fCdCT_SLS * fG_tot;
 
             float fR_ULS = GetReturnPeriodFactor_R(sBuildInput.fAnnualProbabilityULS_EQ);
             float fR_SLS = GetReturnPeriodFactor_R(sBuildInput.fAnnualProbabilitySLS);
@@ -98,19 +84,34 @@ namespace M_EC1.AS_NZS
             float fC_Tx_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Tx, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TxD_SLS);
             float fC_Ty_SLS = AS_NZS_1170_5.Eq_31_1____(sSeisInput.fSpectralShapeFactor_Ch_Ty, sSeisInput.fZoneFactor_Z, fR_SLS, fN_TyD_SLS);
 
-            float fT_1 = 1; // TODO // 4.1.2.1
+            fC_d_T1x_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1x_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Tx_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1x_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_Tx_SLS, fT_1x, fNu_SLS, sSeisInput.eSiteSubsoilClass);
 
-            fC_d_T1_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_T1, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_d_T1_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_T1, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_d_T1_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_T1, fT_1, fNu_SLS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1y_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_Ty_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1y_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_Ty_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_d_T1y_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_Ty_SLS, fT_1y, fNu_SLS, sSeisInput.eSiteSubsoilClass);
 
-            // Vetical - use T1 ???
-            fC_v_ULS = 0.7f * fC_PGA_ULS;
-            fC_v_SLS = 0.7f * fC_PGA_SLS;
+            /*
+            // TODO - Martin - v pripade potreby dopracovat podla cl. 3.2 a 5.4
+            fC_v_Tvx_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_v_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_v_Tvx_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_v_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1x, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_v_Tvx_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_v_SLS, fT_1x, fNu_SLS, sSeisInput.eSiteSubsoilClass);
 
-            fC_v_Tv_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_v_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_v_Tv_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_v_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1, fNu_ULS, sSeisInput.eSiteSubsoilClass);
-            fC_v_Tv_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_v_SLS, fT_1, fNu_SLS, sSeisInput.eSiteSubsoilClass);
+            fC_v_Tvy_ULS_stab = AS_NZS_1170_5.Eq_5221_ULS(fC_v_ULS, fS_p_ULS_stab, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_v_Tvy_ULS_strength = AS_NZS_1170_5.Eq_5221_ULS(fC_v_ULS, fS_p_ULS_strength, sSeisInput.fZoneFactor_Z, fR_ULS, fT_1y, fNu_ULS, sSeisInput.eSiteSubsoilClass);
+            fC_v_Tvy_SLS = AS_NZS_1170_5.Get_C_D_T1_5212_SLS(fC_v_SLS, fT_1y, fNu_SLS, sSeisInput.eSiteSubsoilClass);
+            */
+
+            // Forces at one frame (number of frames)
+            fV_x_ULS_stab = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_ULS_stab, fG_tot_x);
+            fV_x_ULS_stregnth = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_ULS_strength, fG_tot_x);
+            fV_x_SLS = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_SLS, fG_tot_x);
+
+            // Forces at one frame (sides of structure = 2)
+            fV_y_ULS_stab = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_ULS_stab, fG_tot_y);
+            fV_y_ULS_stregnth = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_ULS_strength, fG_tot_y);
+            fV_y_SLS = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_SLS, fG_tot_y);
         }
 
         protected float GetReturnPeriodFactor_R(float fRequiredAnnualProbabilityOfExceedance)

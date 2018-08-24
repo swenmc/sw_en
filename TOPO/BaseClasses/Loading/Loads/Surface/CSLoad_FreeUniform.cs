@@ -248,7 +248,7 @@ namespace BaseClasses
             {
                 CVolume volume = new CVolume();
 
-                float fValueFor3D = fValue * m_fDisplayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m)
+                float fValueFor3D = fValue * Displayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m)
 
                 float fz_coordTop = fValueFor3D;
                 float fz_coordBottom = 0;

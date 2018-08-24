@@ -390,26 +390,80 @@ namespace PFD
 
             // TODO - napojit vstupy z TabItem Components a TabItem Main (rozmery, hmotnosti, pocet prvkov)
             // 30.7.2018
-            //TabItem Main dostupny cez vm
-            float gableWidth = vm.GableWidth;
 
-            // Temporary values - napojit na vm model a spocitat presne hmotnost ramu a zatazenie
-            float fLoadingWidth_Frame = vm.fL1; // Zatazovacia sirka ramu
+            // Temporary values - napojit na model a spocitat presne hmotnost ramu a zatazenie
+            // Napojit na tab Compoment
 
-            float fMass_Purlins = 5000f;
-            float fMass_Girts = 2500f;
-            float fMass_Frame = 3000f;
+            float fPurlinMassPerMeter = 20; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Purlin a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
+            float fEdgePurlinMassPerMeter = 30; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Eave Purlin a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
+            float fGirtMassPerMeter = 15; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Girt a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
+            float fMainColumnMassPerMeter = 75; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Main Column a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
+            float fMainRafterMassPerMeter = 85; // kg // TODO napojit na ComponentTab - zvoleny prierez pre Main Rafter a jeho hodnota A_g * rho_steel (prevziat z materialu prierezu)
 
-            float fMass_Wall_kg = fLoadingWidth_Frame * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / fg_acceleration);
-            float fMass_Roof_kg = fLoadingWidth_Frame * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / fg_acceleration);
+            float fMainColumnMomentOfInteria_yu = 1.48e-4f; // m^4 // Box 63020, nacitat z databazy prierezov
+            float fMainColumnMomentOfInteria_zv = 1.86e-5f; // m^4
+            float fMainColumnMaterial_E = 2.1e+11f; // Pa
 
-            float fMass_Total = fMass_Frame + fMass_Girts + fMass_Wall + fMass_Purlins + fMass_Roof;
+            // Napojit na parametre v CExample_3D_901_PF (dedi od obecneho modelu, mozno je spravnejsie pouzivat v projekte PFD CExample_3D_901_PF nez obecny CModel)
+            // Obecny CModel tieto parametre nema a asi by ani nemal mat, mozeme vytvorit potomka CModel specialne pre projekt PFD
 
-            float fT_1x = GetPeriod(2, vm.WallHeight, 2.5e+6f, 2.1e+8f, fMass_Total); // Iy(AS 4600 - Ix)
-            float fT_1y = GetPeriod(5, vm.WallHeight, 1.3e+6f, 2.1e+8f, fMass_Total);  // Iz(AS 4600 - Iy)
+            int iNumberOfEavePurlins_x = 2; // TODO - napojit na model alebo priamo na example CExample_3D_901
+            int iNumberOfPurlins_x = 10; // TODO - napojit na model alebo priamo na example CExample_3D_901
+            int iNumberOfGirts_x = 8; // TODO - napojit na model alebo priamo na example CExample_3D_901
+            int iNumberOfMainColumns_x = 2; // TODO - napojit na model alebo priamo na example CExample_3D_901
+            int iNumberOfMainRafters_x = 2; // TODO - napojit na model alebo priamo na example CExample_3D_901
+
+            float fLoadingWidth_Frame_x = vm.fL1; // Zatazovacia sirka ramu
+            float fRafterLength = vm.GableWidth / (float)Math.Cos(vm.fRoofPitch_radians);
+
+            float fMass_Purlins_x = iNumberOfPurlins_x * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_EavePurlins_x = iNumberOfEavePurlins_x * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_Girts_x = iNumberOfGirts_x * fGirtMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_Frame_x = iNumberOfMainColumns_x * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_x * fMainRafterMassPerMeter * fRafterLength;
+
+            float fMass_Wall_x_kg = 2 * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_x_kg = 2 * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
+
+            float fMass_Total_x = fMass_Frame_x + fMass_Girts_x + fMass_Wall_x_kg + fMass_EavePurlins_x + fMass_Purlins_x + fMass_Roof_x_kg;
+
+            float fT_1x = GetPeriod(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E, fMass_Total_x);  // TODO  napojit Column Iy (AS 4600 - Ix)
+
+            int iNumberOfMainColumns_y = 5; //  // TODO - napojit na model alebo priamo na example CExample_3D_901, pocet ramov (da sa pouzit aj vm z GUI)
+            int iNumberOfMainRafters_y = iNumberOfMainColumns_y; // Pocet ramov je rovnaky ako pocet stlpov
+            int iNumberOfPurlins_y = (iNumberOfMainColumns_y - 1) * (iNumberOfPurlins_x / 2); // Number of bays (number of frames - 1) * Number of purlins per half of building width
+            int iNumberOfEavePurlins_y = (iNumberOfMainColumns_y - 1);
+            int iNumberOfGirtsInWallPerMainColumn = 4; // TODO - napojit na model alebo priamo na example CExample_3D_901 (pocet girts na vysku stlpa)
+            int iNumberOfGirts_y = (iNumberOfMainColumns_x - 1) * iNumberOfGirtsInWallPerMainColumn;
+
+            float fMass_Purlins_y = iNumberOfPurlins_y * fPurlinMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_EavePurlins_y = iNumberOfEavePurlins_y * fEdgePurlinMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_Girts_y = iNumberOfGirts_y * fGirtMassPerMeter * fLoadingWidth_Frame_x;
+            float fMass_Frame_y = iNumberOfMainColumns_y * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_y * fMainRafterMassPerMeter * fRafterLength;
+
+            float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu
+
+            float fMass_Wall_y_kg = vm.Length * vm.WallHeight * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_y_kg = vm.Length * fRafterLength * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
+
+            float fMass_Total_y = fMass_Frame_y + fMass_Girts_y + fMass_Wall_y_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
+
+            float fT_1y = GetPeriod(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E, fMass_Total_y);  //  TODO  napojit Column Iz (AS 4600 - Iy)
+
+            // NZS 1170.5, cl. 4.1.2.1 Rayleigh method, eq. 4.1(1)
+            float fT_1x_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(iNumberOfMainColumns_x, vm.WallHeight, fMainColumnMomentOfInteria_yu, fMainColumnMaterial_E, fMass_Total_x);
+            float fT_1y_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E, fMass_Total_y);
+
+            // Validation - compare calculated periods
+            // Kontrola vypoctu frekvencii, assert v pripade ze rozdiel je viac nez 20% mensej z hodnot (TODO - idealne je spocitat z globalneho modelu alebo aspon 2D modelu ramu so zohladnenim poddajnosti prievlaku / edge purlin)
+            if (!MathF.d_equal(fT_1x, fT_1x_RM_411, 0.2 * Math.Min(fT_1x, fT_1x_RM_411)) || !MathF.d_equal(fT_1y, fT_1y_RM_411, 0.2 * Math.Min(fT_1y, fT_1y_RM_411)))
+                throw new ArgumentException("Period values are different. \n" +
+                    "T1.x = " + Math.Round(fT_1x, 5).ToString() + " s\n" +
+                    "T1.x.rm = " + Math.Round(fT_1x_RM_411, 5).ToString() + " s" + " Eq. (4.1(1))" + "\n" +
+                    "T1.y = " + Math.Round(fT_1y, 5).ToString() + " s\n" +
+                    "T1.y.rm = " + Math.Round(fT_1y_RM_411, 5).ToString() + " s" + " Eq. (4.1(1))");
 
             // Earthquake / Seismic Design  (NZS 1170.5)
-            CalculateEQParameters();
+            CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
         }
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
@@ -568,7 +622,7 @@ namespace PFD
             wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
         }
 
-        public void CalculateEQParameters()
+        public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param)
         {
             sSeisInputData.eSiteSubsoilClass = loadinput.SiteSubSoilClass;
             sSeisInputData.fProximityToFault_D_km = loadinput.FaultDistanceDmin; // km
@@ -578,13 +632,8 @@ namespace PFD
             sSeisInputData.fSpectralShapeFactor_Ch_Tx = loadinput.SpectralShapeFactorChTx;
             sSeisInputData.fSpectralShapeFactor_Ch_Ty = loadinput.SpectralShapeFactorChTy;
 
-            eq = new CCalcul_1170_5(vm.GableWidth, vm.fL1, vm.WallHeight, sBuildingInputData, sSeisInputData);
+            eq = new CCalcul_1170_5(fT_1x_param, fT_1y_param, fMass_Total_x_param, fMass_Total_y_param, sBuildingInputData, sSeisInputData);
         }
-
-
-
-
-
 
         // Priblizne riesenie (tuhy prievlak)
         public float GetPeriod(int iNumberOfColumns, float fL, float fI_column, float fE, float fMass_Total)
@@ -602,6 +651,13 @@ namespace PFD
             float fPeriod_T = 1f / fFrequency;
 
             return fPeriod_T;
+        }
+
+        public float GetPeriod_RM_NZS1107_5_Eq411(int iNumberOfColumns, float fL, float fI_column, float fE, float fMass_Total)
+        {
+            double fP = 1; // Unit Force
+            double fDelta_x = fP * MathF.Pow3(vm.WallHeight) / (iNumberOfColumns * 3 * fI_column * fE); // Cantilever deflection (rafter is considered as rigid member)
+            return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * fg_acceleration * MathF.Pow2(fDelta_x)) / (fg_acceleration * fP * fDelta_x))); // Eq. 4.1(1)
         }
 
         public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)

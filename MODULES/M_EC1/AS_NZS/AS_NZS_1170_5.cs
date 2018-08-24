@@ -82,5 +82,18 @@ namespace M_EC1.AS_NZS
             float fS_p = 0.7f; // 5.2.1.2
             return Eq_52_1____(fC_T1, fS_p, fk_Nu); // Eq. (5.2(1)) // fCd(T1)
         }
+        public static float Eq_62_1____(float fC_d_T1, float fW_t)
+        {
+            return fC_d_T1 * fW_t; // Eq. (6.2(1)) // fV
+        }
+        public static float Eq_62_2____(bool bIsTopLevel, float fV, float fW_i, float fh_i, float fSumWihi)
+        {
+            float fF_t = 0;
+
+            if (bIsTopLevel)
+                fF_t = 0.08f * fV;
+
+            return fF_t + 0.92f * fV * ((fW_i * fh_i) / fSumWihi); // Eq. (6.2(2)) // fF_i
+        }
     }
 }

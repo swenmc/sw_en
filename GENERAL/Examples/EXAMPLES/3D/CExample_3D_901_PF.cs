@@ -747,13 +747,7 @@ namespace Examples
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
 
             // Loading
-
             // Loads
-            m_arrNLoads = new CNLoad[3];
-            m_arrNLoads[0] = new CNLoadAll(m_arrNodes[1], 0, 0, -4f, 0, 0, 0, true, 0);
-            m_arrNLoads[1] = new CNLoadAll(m_arrNodes[2], 0, 0, -4f, 0, 0, 0, true, 0);
-            m_arrNLoads[2] = new CNLoadAll(m_arrNodes[3], 0, 0, -4f, 0, 0, 0, true, 0);
-
             float fValueLoadRafterDead1 = -0.2f;
             float fValueLoadRafterDead2 = -0.1f;
             float fValueLoadRafterImposed = -0.1f;
@@ -1078,6 +1072,28 @@ namespace Examples
             out surfaceWindLoad_SLS_MinusY_Cpemax
             );
 
+            // Earthquake
+            int iNumberOfLoadsInXDirection = iFrameNo;
+            int iNumberOfLoadsInYDirection = 2;
+
+            List<CNLoad> nodalLoadEQ_ULS_PlusX = new List<CNLoad>(iNumberOfLoadsInXDirection);
+            List<CNLoad> nodalLoadEQ_ULS_PlusY = new List<CNLoad>(iNumberOfLoadsInYDirection);
+
+            List<CNLoad> nodalLoadEQ_SLS_PlusX = new List<CNLoad>(iNumberOfLoadsInXDirection);
+            List<CNLoad> nodalLoadEQ_SLS_PlusY = new List<CNLoad>(iNumberOfLoadsInYDirection);
+
+            for (int i = 0; i < iNumberOfLoadsInXDirection; i++)
+            {
+                nodalLoadEQ_ULS_PlusX.Add(new CNLoadSingle(m_arrNodes[i * 5 + 1], ENLoadType.eNLT_Fx, eq.fV_x_ULS_stregnth, true, 0));
+                nodalLoadEQ_SLS_PlusX.Add(new CNLoadSingle(m_arrNodes[i * 5 + 1], ENLoadType.eNLT_Fx, eq.fV_x_SLS, true, 0));
+            }
+
+            for (int i = 0; i < iNumberOfLoadsInYDirection; i++)
+            {
+                nodalLoadEQ_ULS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_ULS_stregnth, true, 0));
+                nodalLoadEQ_SLS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_SLS, true, 0));
+            }
+
             // Load Cases
             m_arrLoadCases = new CLoadCase[44];
             m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCType.ePermanentLoad, ELCMainDirection.eGeneral, surfaceDeadLoad);                                                          // 01
@@ -1103,8 +1119,8 @@ namespace Examples
             m_arrLoadCases[18] = new CLoadCase(19, "Wind load Wu - Cpe,max - Right - X-", ELCType.eWind, ELCMainDirection.eMinusX, surfaceWindLoad_ULS_MinusX_Cpemax);                          // 19
             m_arrLoadCases[19] = new CLoadCase(20, "Wind load Wu - Cpe,max - Front - Y+", ELCType.eWind, ELCMainDirection.ePlusY, surfaceWindLoad_ULS_PlusY_Cpemax);                            // 20
             m_arrLoadCases[20] = new CLoadCase(21, "Wind load Wu - Cpe,max - Rear - Y-", ELCType.eWind, ELCMainDirection.eMinusY, surfaceWindLoad_ULS_MinusY_Cpemax);                           // 21
-            m_arrLoadCases[21] = new CLoadCase(22, "Earthquake load Eu - X", ELCType.eEarthquake, ELCMainDirection.ePlusX);                                                                     // 22
-            m_arrLoadCases[22] = new CLoadCase(23, "Earthquake load Eu - Y", ELCType.eEarthquake, ELCMainDirection.ePlusY);                                                                     // 23
+            m_arrLoadCases[21] = new CLoadCase(22, "Earthquake load Eu - X", ELCType.eEarthquake, ELCMainDirection.ePlusX, nodalLoadEQ_ULS_PlusX);                                              // 22
+            m_arrLoadCases[22] = new CLoadCase(23, "Earthquake load Eu - Y", ELCType.eEarthquake, ELCMainDirection.ePlusY, nodalLoadEQ_ULS_PlusY);                                              // 23
 
             // SLS - Load Case
             m_arrLoadCases[23] = new CLoadCase(24, "Snow load Ss - full", ELCType.eSnow, ELCMainDirection.ePlusZ, surfaceRoofSnowLoad_SLS_Nu_1);                                                // 24
@@ -1126,18 +1142,18 @@ namespace Examples
             m_arrLoadCases[39] = new CLoadCase(40, "Wind load Ws - Cpe,max - Right - X-", ELCType.eWind, ELCMainDirection.eMinusX, surfaceWindLoad_SLS_MinusX_Cpemax);                          // 40
             m_arrLoadCases[40] = new CLoadCase(41, "Wind load Ws - Cpe,max - Front - Y+", ELCType.eWind, ELCMainDirection.ePlusY, surfaceWindLoad_SLS_PlusY_Cpemax);                            // 41
             m_arrLoadCases[41] = new CLoadCase(42, "Wind load Ws - Cpe,max - Rear - Y-", ELCType.eWind, ELCMainDirection.eMinusY, surfaceWindLoad_SLS_MinusY_Cpemax);                           // 42
-            m_arrLoadCases[42] = new CLoadCase(43, "Earthquake load Es - X", ELCType.eEarthquake, ELCMainDirection.ePlusX);                                                                     // 43
-            m_arrLoadCases[43] = new CLoadCase(44, "Earthquake load Es - Y", ELCType.eEarthquake, ELCMainDirection.ePlusY);                                                                     // 44
+            m_arrLoadCases[42] = new CLoadCase(43, "Earthquake load Es - X", ELCType.eEarthquake, ELCMainDirection.ePlusX, nodalLoadEQ_SLS_PlusX);                                              // 43
+            m_arrLoadCases[43] = new CLoadCase(44, "Earthquake load Es - Y", ELCType.eEarthquake, ELCMainDirection.ePlusY, nodalLoadEQ_SLS_PlusY);                                              // 44
 
             // Generate linear Loads
             List<CMember> listOfPurlins = new List<CMember>(0);
-            List<CMember> listOfEdgePurlins = new List<CMember>(0);
+            List<CMember> listOfEavePurlins = new List<CMember>(0);
             List<CMember> listOfGirts = new List<CMember>(0);
 
             List<CMember> listOfPurlinsLeftSide = new List<CMember>(0);
             List<CMember> listOfPurlinsRightSide = new List<CMember>(0);
-            List<CMember> listOfEdgePurlinsLeftSide = new List<CMember>(0);
-            List<CMember> listOfEdgePurlinsRightSide = new List<CMember>(0);
+            List<CMember> listOfEavePurlinsLeftSide = new List<CMember>(0);
+            List<CMember> listOfEavePurlinsRightSide = new List<CMember>(0);
             List<CMember> listOfGirtsLeftSide = new List<CMember>(0);
             List<CMember> listOfGirtsRightSide = new List<CMember>(0);
             List<CMember> listOfGirtsFrontSide = new List<CMember>(0);
@@ -1207,7 +1223,7 @@ namespace Examples
 
                 // List of all edge purlins
                 if (m.EMemberType == EMemberType_FormSteel.eEP)
-                    listOfEdgePurlins.Add(m);
+                    listOfEavePurlins.Add(m);
 
                 p1 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
                 p2 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
@@ -1219,7 +1235,7 @@ namespace Examples
 
                 // List of edge purlins - left side of the roof (tento zoznam pouzit aj pre zatazenie lavej steny)
                 if (m.EMemberType == EMemberType_FormSteel.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfEdgePurlinsLeftSide.Add(m);
+                    listOfEavePurlinsLeftSide.Add(m);
 
                 p1 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
                 p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
@@ -1231,7 +1247,7 @@ namespace Examples
 
                 // List of edge purlins - right side of the roof (tento zoznam pouzit aj pre zatazenie pravej steny)
                 if (m.EMemberType == EMemberType_FormSteel.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfEdgePurlinsRightSide.Add(m);
+                    listOfEavePurlinsRightSide.Add(m);
             }
 
             // Load Case Groups
