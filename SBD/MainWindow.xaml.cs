@@ -171,10 +171,16 @@ namespace SBD
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[,] sBIF_x;
 
+            // TODO Ondrej - pouzit tuto metodu pre kazdy prvok z component list, kazdy LC, kazde Member Load v ramci LC (spravidla bude len jedno)
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
 
             float fLoadUnitMultiplier = 1000; // From kN to N
             calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy * fLoadUnitMultiplier, vm.Loadqz * fLoadUnitMultiplier, out sBIF_x, out sMomentValuesforCb);
+
+            // TODO Martin Upravit metodu tak aby mala parameter member a member load
+            // pripravene
+            if(false)
+               calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, new CMember (), new CMLoad_21(), out sBIF_x, out sMomentValuesforCb);
 
             // Design
             designInternalForces[,] sDIF_x;

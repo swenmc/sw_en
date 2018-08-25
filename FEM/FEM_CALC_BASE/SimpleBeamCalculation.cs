@@ -60,5 +60,15 @@ namespace FEM_CALC_BASE
             CalculateInternalForcesOnSimpleBeam(iNumberOfLoadCombinations, iNumberOfDesignSections, section, fTheoreticalLengthOfMember, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
         }
 
+        public void CalculateInternalForcesOnSimpleBeam(int iNumberOfDesignSections, float[] fx_positions, CMember member,
+          CMLoad_21 memberload, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+        {
+            int iNumberOfLoadCombinations = 1;
+            float[] fE_d_load_values_LCS_y = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? memberload.Fq : 0};
+            float[] fE_d_load_values_LCS_z = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? memberload.Fq : 0};
+
+            CalculateInternalForcesOnSimpleBeam(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)member.CrScStart, member.FLength, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+        }
+
     }
 }

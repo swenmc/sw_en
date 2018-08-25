@@ -9,10 +9,12 @@ namespace BaseClasses
     public class CSLoad_FreeUniform : CSLoad_Free
     {
         Point3DCollection pSurfacePoints;
-        float fValue;
+        public float fValue;
         bool bIsFourPointBase;
         public bool bDrawPositiveValueOnPlusLocalZSide;
         public bool bChangePositionForNegativeValue;
+
+        
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
