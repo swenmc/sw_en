@@ -250,19 +250,16 @@ namespace BaseClasses
             {
                 CVolume volume = new CVolume();
 
-                float fValueFor3D = fValue * Displayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m)
+                float fValueFor3D = Math.Abs(fValue) * Displayin3DRatio; // Load value to display as 3D graphical object, height of prism (local z-axis) (1 kN = 1 m)
 
                 float fz_coordTop = fValueFor3D;
                 float fz_coordBottom = 0;
 
-                if (!bDrawPositiveValueOnPlusLocalZSide)
+                if (fValue > 0 && !bDrawPositiveValueOnPlusLocalZSide || (fValue < 0 && bDrawPositiveValueOnPlusLocalZSide && bChangePositionForNegativeValue))
                 {
                     fz_coordTop = 0;
                     fz_coordBottom = -fValueFor3D;
                 }
-
-                if (bChangePositionForNegativeValue && fValue < 0)
-                    m_pControlPoint.Z += fValueFor3D;
 
                 Point3DCollection pSurfacePoints_h = new Point3DCollection(pSurfacePoints.Count);
 
@@ -272,7 +269,7 @@ namespace BaseClasses
                 if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDirection == ELoadDir.eLD_Z && Math.Abs(RotationX_deg) < 35) // Load defined in GCS in global Z direction, rotation is less than 35 deg in absolute value - so we know that it is roof pitch angle
                 {
                     // Move coordinates in y-direction
-                    fy = (float)Math.Tan(RotationX_deg / 180 * Math.PI) * fValueFor3D;
+                    fy = (float)(Math.Tan(RotationX_deg / 180 * Math.PI) * fValueFor3D);
                 }
 
                 // Set point coordinates
@@ -283,7 +280,7 @@ namespace BaseClasses
                     pTop = pSurfacePoints[i];
                     pTop.Z = fz_coordTop;
 
-                    if(bDrawPositiveValueOnPlusLocalZSide)
+                    if(bDrawPositiveValueOnPlusLocalZSide || (!bDrawPositiveValueOnPlusLocalZSide && bChangePositionForNegativeValue))
                         pTop.Y += fy; // fy is currently used only for GCS and Z direction
 
                     pSurfacePoints_h.Add(pTop);

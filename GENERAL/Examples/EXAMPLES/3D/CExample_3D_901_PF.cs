@@ -872,42 +872,43 @@ namespace Examples
             float fWallFrontOrBack_Y1 = fH1_frame;
             float fWallFrontOrBack_Y2 = fH2_frame;
 
+            // Hodnota zatazenia v smere kladnej osi je kladna, hodnota zatazenia v smere zapornej osi je zaporna
             // Permanent load
             List<CSLoad_Free> surfaceDeadLoad = new List<CSLoad_Free>(6);
-            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, generalLoad.fDeadLoadTotal_Roof, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, true, true, 0));
-            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, generalLoad.fDeadLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, true, true, true, 0));
-            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallFrontLeft, fWallLeftOrRight_X, fWallLeftOrRight_Y, generalLoad.fDeadLoadTotal_Wall, 90, 0, 90, Colors.DeepPink, true, true, true, 0));
-            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallBackRight, fWallLeftOrRight_X, fWallLeftOrRight_Y, generalLoad.fDeadLoadTotal_Wall, 90, 0, 180+90, Colors.DeepPink, true, true, true, 0));
-            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallFrontLeft, fWallFrontOrBack_X, fWallFrontOrBack_Y1, 0.5f * fWallFrontOrBack_X, fWallFrontOrBack_Y2, fWallFrontOrBack_Y1, generalLoad.fDeadLoadTotal_Wall, 90, 0, 0, Colors.DeepPink, true, true, false, true, 0));
-            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallBackRight, fWallFrontOrBack_X, fWallFrontOrBack_Y1, 0.5f * fWallFrontOrBack_X, fWallFrontOrBack_Y2, fWallFrontOrBack_Y1, generalLoad.fDeadLoadTotal_Wall, 90, 0, 180, Colors.DeepPink, true, true, false, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, -generalLoad.fDeadLoadTotal_Roof, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, false, true, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, -generalLoad.fDeadLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, false, true, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallFrontLeft, fWallLeftOrRight_X, fWallLeftOrRight_Y, -generalLoad.fDeadLoadTotal_Wall, 90, 0, 90, Colors.DeepPink, false, true, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallBackRight, fWallLeftOrRight_X, fWallLeftOrRight_Y, -generalLoad.fDeadLoadTotal_Wall, 90, 0, 180+90, Colors.DeepPink, false, true, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallFrontLeft, fWallFrontOrBack_X, fWallFrontOrBack_Y1, 0.5f * fWallFrontOrBack_X, fWallFrontOrBack_Y2, fWallFrontOrBack_Y1, -generalLoad.fDeadLoadTotal_Wall, 90, 0, 0, Colors.DeepPink, false, true, false, true, 0));
+            surfaceDeadLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pWallBackRight, fWallFrontOrBack_X, fWallFrontOrBack_Y1, 0.5f * fWallFrontOrBack_X, fWallFrontOrBack_Y2, fWallFrontOrBack_Y1, -generalLoad.fDeadLoadTotal_Wall, 90, 0, 180, Colors.DeepPink, false, true, false, true, 0));
 
             // Imposed Load - Roof
             List<CSLoad_Free> surfaceRoofImposedLoad = new List<CSLoad_Free>(2);
-            surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, generalLoad.fImposedLoadTotal_Roof, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, true, true, true, 0));
-            surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, generalLoad.fImposedLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, true, true, true, 0));
+            surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, -generalLoad.fImposedLoadTotal_Roof, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, false, true, true, 0));
+            surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, -generalLoad.fImposedLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, false, true, true, 0));
 
             // Snow Load - Roof
             float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
-            float fsnowULS_Nu_1 = snow.fs_ULS_Nu_1 * fSlopeFactor; // Design value (projection on roof)
-            float fsnowULS_Nu_2 = snow.fs_ULS_Nu_2 * fSlopeFactor;
-            float fsnowSLS_Nu_1 = snow.fs_SLS_Nu_1 * fSlopeFactor;
-            float fsnowSLS_Nu_2 = snow.fs_SLS_Nu_2 * fSlopeFactor;
+            float fsnowULS_Nu_1 = -snow.fs_ULS_Nu_1 * fSlopeFactor; // Design value (projection on roof)
+            float fsnowULS_Nu_2 = -snow.fs_ULS_Nu_2 * fSlopeFactor;
+            float fsnowSLS_Nu_1 = -snow.fs_SLS_Nu_1 * fSlopeFactor;
+            float fsnowSLS_Nu_2 = -snow.fs_SLS_Nu_2 * fSlopeFactor;
 
             List <CSLoad_Free> surfaceRoofSnowLoad_ULS_Nu_1 = new List<CSLoad_Free>(2);
-            surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
-            surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
             List<CSLoad_Free> surfaceRoofSnowLoad_ULS_Nu_2_Left = new List<CSLoad_Free>(1);
-            surfaceRoofSnowLoad_ULS_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowULS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
             List<CSLoad_Free> surfaceRoofSnowLoad_ULS_Nu_2_Right = new List<CSLoad_Free>(1);
-            surfaceRoofSnowLoad_ULS_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_ULS_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowULS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
 
             List<CSLoad_Free> surfaceRoofSnowLoad_SLS_Nu_1 = new List<CSLoad_Free>(2);
-            surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
-            surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_1.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_1, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
             List<CSLoad_Free> surfaceRoofSnowLoad_SLS_Nu_2_Left = new List<CSLoad_Free>(1);
-            surfaceRoofSnowLoad_SLS_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_2_Left.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontApex, fRoof_X, fRoof_Y, fsnowSLS_Nu_2, -fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
             List<CSLoad_Free> surfaceRoofSnowLoad_SLS_Nu_2_Right = new List<CSLoad_Free>(1);
-            surfaceRoofSnowLoad_SLS_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, true, true, true, 0));
+            surfaceRoofSnowLoad_SLS_Nu_2_Right.Add(new CSLoad_FreeUniform(ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, fsnowSLS_Nu_2, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.SeaGreen, false, true, true, 0));
 
             // Wind Load
             // Internal pressure
