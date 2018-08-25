@@ -587,25 +587,32 @@ namespace PFD
             float fMaximumDesignRatioWholeStructure = 0;
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            foreach (CMember m in model.m_arrMembers)
-                foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
-                    {
-                        foreach (CLoadCase lc in lcomb.LoadCasesList)
-                        {
-                            foreach (CMLoad cmload in lc.MemberLoadsList)
-                            {
-                            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21) cmload, out sBIF_x, out sMomentValuesforCb);
-                            // Design
-                            designInternalForces[,] sDIF_x;
-                            CMemberDesign designModel = new CMemberDesign();
-                            designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
 
-                            // Set maximum design ratio of whole structure
-                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
-                                fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
-                            }
-                        }
+            // Calculate Internal Forces For Load Cases
+            foreach (CMember m in model.m_arrMembers)
+                foreach (CLoadCase lc in model.m_arrLoadCases) 
+                {
+                    foreach (CMLoad cmload in lc.MemberLoadsList)
+                    {
+                        calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+                        // Design
+                        designInternalForces[,] sDIF_x;
+                        CMemberDesign designModel = new CMemberDesign();
+                        designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
+
+                        // Set maximum design ratio of whole structure
+                        if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                            fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+
+                        Console.WriteLine("Member ID: " + m.ID + ", Load Case ID: " + lc.ID + ", " + "Load ID: " + cmload.ID + ", " + "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
                     }
+                }
+
+            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
+            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat, nemusi sa vytvarat nahradny vypoctovy model
+
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len designModel)
+
 
             MessageBox.Show("Calculation Results \n" + "Maximum design ratio: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString());
         }
