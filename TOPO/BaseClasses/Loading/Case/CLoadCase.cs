@@ -28,6 +28,14 @@ namespace BaseClasses
             set { m_eType = value; }
         }
 
+        private ELCGTypeForLimitState m_Type_LS;
+
+        public ELCGTypeForLimitState MType_LS
+        {
+            get { return m_Type_LS; }
+            set { m_Type_LS = value; }
+        }
+
         private ELCMainDirection m_eMainDirection;
 
         public ELCMainDirection MainDirection
@@ -91,7 +99,7 @@ namespace BaseClasses
 
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, ELCMainDirection MainDirection_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp)
         {
             ID = id_temp;
             Name = name_temp;
@@ -99,10 +107,11 @@ namespace BaseClasses
             MainDirection = MainDirection_temp;
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, List<CNLoad> NodeLoads_temp, List<CMLoad> MemberLoads_temp, List<CSLoad_Free> SurfaceLoads_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, List<CNLoad> NodeLoads_temp, List<CMLoad> MemberLoads_temp, List<CSLoad_Free> SurfaceLoads_temp)
         {
             ID = id_temp;
             Name = name_temp;
+            MType_LS = eType_LS_temp;
             Type = type_temp;
             MainDirection = ELCMainDirection.eGeneral;
             NodeLoadsList = NodeLoads_temp;
@@ -110,16 +119,17 @@ namespace BaseClasses
             SurfaceLoadsList = SurfaceLoads_temp;
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CNLoad> NodeLoads_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CNLoad> NodeLoads_temp)
         {
             ID = id_temp;
             Name = name_temp;
+            MType_LS = eType_LS_temp;
             Type = type_temp;
             MainDirection = MainDirection_temp;
             NodeLoadsList = NodeLoads_temp;
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CMLoad> MemberLoads_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CMLoad> MemberLoads_temp)
         {
             ID = id_temp;
             Name = name_temp;
@@ -128,19 +138,21 @@ namespace BaseClasses
             MemberLoadsList = MemberLoads_temp;
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CSLoad_Free> SurfaceLoads_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CSLoad_Free> SurfaceLoads_temp)
         {
             ID = id_temp;
             Name = name_temp;
+            MType_LS = eType_LS_temp;
             Type = type_temp;
             MainDirection = MainDirection_temp;
             SurfaceLoadsList = SurfaceLoads_temp;
         }
 
-        public CLoadCase(int id_temp, string name_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CMLoad> MemberLoads_temp, List<CSLoad_Free> SurfaceLoads_temp)
+        public CLoadCase(int id_temp, string name_temp, ELCGTypeForLimitState eType_LS_temp, ELCType type_temp, ELCMainDirection MainDirection_temp, List<CMLoad> MemberLoads_temp, List<CSLoad_Free> SurfaceLoads_temp)
         {
             ID = id_temp;
             Name = name_temp;
+            MType_LS = eType_LS_temp;
             Type = type_temp;
             MainDirection = MainDirection_temp;
             MemberLoadsList = MemberLoads_temp;

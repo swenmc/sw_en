@@ -30,7 +30,8 @@ namespace BaseClasses
             m_fq = fqValue;
         }
 
-        public CMLoad_21(float fq,
+        public CMLoad_21(int id_temp, 
+            float fq,
             CMember member_aux,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
@@ -38,6 +39,7 @@ namespace BaseClasses
             bool bIsDislayed,
             int fTime)
         {
+            ID = id_temp;
             Fq = fq;
             Member = member_aux;
             MLoadTypeDistr = mLoadTypeDistr;

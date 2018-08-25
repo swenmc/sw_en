@@ -575,10 +575,6 @@ namespace PFD
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
             float[] fx_positions = new float[iNumberOfDesignSections];
-
-            for (int i = 0; i < iNumberOfDesignSections; i++)
-                fx_positions[i] = ((float)i / (float)iNumberOfSegments) * vm.fL1; // Int must be converted to the float to get decimal numbers
-
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[,] sBIF_x;
 
@@ -590,33 +586,40 @@ namespace PFD
 
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
+            {
+                for (int i = 0; i < iNumberOfDesignSections; i++)
+                    fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
+
                 foreach (CLoadCase lc in model.m_arrLoadCases)
                 {
-                    foreach (CMLoad cmload in lc.MemberLoadsList)
+                    // Calculate Internal forces just for Load Cases that are included in ULS
+                    if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
                     {
-                        if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                        foreach (CMLoad cmload in lc.MemberLoadsList)
                         {
-                            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
-                            // Design
-                            designInternalForces[,] sDIF_x;
-                            CMemberDesign designModel = new CMemberDesign();
-                            designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
+                            if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                            {
+                                calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+                                // Design
+                                designInternalForces[,] sDIF_x;
+                                CMemberDesign designModel = new CMemberDesign();
+                                designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
 
-                            // Set maximum design ratio of whole structure
-                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
-                                fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                                // Set maximum design ratio of whole structure
+                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                    fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
 
-                            // Output (for debugging)
-                            Console.WriteLine("Member ID: " + m.ID + ", Load Case ID: " + lc.ID + ", " + "Load ID: " + cmload.ID + ", " + "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                                // Output (for debugging)
+                                Console.WriteLine("Member ID: " + m.ID + ", Load Case ID: " + lc.ID + ", " + "Load ID: " + cmload.ID + ", " + "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                            }
                         }
                     }
                 }
+            }
 
             // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
             // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-
             // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
-
 
             MessageBox.Show("Calculation Results \n" + "Maximum design ratio: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString());
         }
