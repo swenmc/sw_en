@@ -760,85 +760,35 @@ namespace PFD
 
         public void SetCrossSectionValuesFromDatabase()
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            foreach (CCrSc_TW crsc in model.m_arrCrSc)
             {
-                conn.Open();
-                SQLiteCommand command;
-                SQLiteDataReader reader;
+                // TODO - zjednotit nazvy prierezov v database a v GUI programu
+                string stringcommand = "Select * from tableSections_m where section = '" + crsc.Name + "'";
+                /*
+                10075
+                27095
+                270115
+                270115btb
+                270115n
+                50020
+                50020n
+                63020
+                63020s1
+                63020s2
+                */
 
-                foreach (CCrSc_TW crsc in model.m_arrCrSc)
-                {
-                    // TODO - zjednotit nazvy prierezov v database a v GUI programu
-                    string stringcommand = "Select * from tableSections_m where section = '" + crsc.Name + "'";
-                    /*
-                    10075
-                    27095
-                    270115
-                    270115btb
-                    270115n
-                    50020
-                    50020n
-                    63020
-                    63020s1
-                    63020s2
-                    */
+                CSectionManager.LoadCrossSectionProperties(crsc, crsc.Name);
 
-                    command = new SQLiteCommand("Select * from tableSections_m where section = '27095'", conn); // Temp
-                    using (reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            crsc.Name = reader["section"].ToString();
-                            crsc.h = reader.GetDouble(reader.GetOrdinal("h"));
-                            crsc.b = reader.GetDouble(reader.GetOrdinal("b"));
-                            crsc.t_min = crsc.t_max = reader.GetDouble(reader.GetOrdinal("t")); // Max and min value is just for thin-walled cold formed cross-sections
-                            crsc.A_g = reader.GetDouble(reader.GetOrdinal("A_g"));
-                            crsc.I_y0 = reader.GetDouble(reader.GetOrdinal("I_y0"));
-                            crsc.I_z0 = reader.GetDouble(reader.GetOrdinal("I_z0"));
-                            //crsc.W_y_el0 = reader.GetDouble(reader.GetOrdinal("W_el_y0"));
-                            //crsc.W_z_el0 = reader.GetDouble(reader.GetOrdinal("W_el_z0"));
-                            crsc.I_yz0 = reader.GetDouble(reader.GetOrdinal("Iyz0"));
-                            crsc.I_y = reader.GetDouble(reader.GetOrdinal("Iy"));
-                            crsc.I_z = reader.GetDouble(reader.GetOrdinal("Iz"));
-                            crsc.W_y_el = reader.GetDouble(reader.GetOrdinal("W_el_y"));
-                            crsc.W_z_el = reader.GetDouble(reader.GetOrdinal("W_el_z"));
-                            crsc.I_t = reader.GetDouble(reader.GetOrdinal("It"));
-                            crsc.I_w = reader.GetDouble(reader.GetOrdinal("Iw"));
-                            crsc.D_y_gc = reader.GetDouble(reader.GetOrdinal("yc")); // Poloha taziska v povodnom suradnicovom systeme
-                            crsc.D_z_gc = reader.GetDouble(reader.GetOrdinal("zc"));
-                            crsc.D_y_sc = reader.GetDouble(reader.GetOrdinal("ys")); // Poloha stredu smyku v povodnom suradnicovom systeme
-                            crsc.D_z_sc = reader.GetDouble(reader.GetOrdinal("zs"));
-                            crsc.D_y_s = reader.GetDouble(reader.GetOrdinal("ycs"));  // Vzdialenost medzi taziskom G a stredom smyku S
-                            crsc.D_z_s = reader.GetDouble(reader.GetOrdinal("zcs"));
-                            crsc.Beta_y = reader.GetDouble(reader.GetOrdinal("betay"));
-                            crsc.Beta_z = reader.GetDouble(reader.GetOrdinal("betaz"));
-                            crsc.Alpha_rad = (reader.GetDouble(reader.GetOrdinal("alpha_deg")) / 180 * MathF.dPI);
-                            crsc.Bending_curve_stress_x1 = reader.GetDouble(reader.GetOrdinal("Bending_curve_x1"));
-                            crsc.Bending_curve_stress_x2 = reader.GetDouble(reader.GetOrdinal("Bending_curve_x2"));
-                            //crsc.Bending_curve_stress_x3 = reader.GetDouble(reader.GetOrdinal("Bending_curve_x3")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
-                            //crsc.Bending_curve_stress_y = reader.GetDouble(reader.GetOrdinal("Bending_curve_y")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
-                            crsc.Compression_curve_stress_1 = reader.GetDouble(reader.GetOrdinal("Compression_curve_1"));
-                            //crsc.Compression_curve_stress_2 = reader.GetDouble(reader.GetOrdinal("Compression_curve_2")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
-                            //crsc.Compression_curve_stress_3 = reader.GetDouble(reader.GetOrdinal("Compression_curve_3")); // TODO osetrit nacitanie hodnoty ak je bunka v databaze prazdna
+                // Docasne hodnoty
+                crsc.A_vy = crsc.h * crsc.t_min; // TODO - len priblizne Temp
+                crsc.A_vz = crsc.b * crsc.t_min; // Temp
+                crsc.W_y_pl = 1.1 * crsc.W_y_el;
+                crsc.W_z_pl = 1.1 * crsc.W_z_el;
 
-                            crsc.A_vy = crsc.h * crsc.t_min; // TODO - len priblizne Temp
-                            crsc.A_vz = crsc.b * crsc.t_min; // Temp
-                            crsc.W_y_pl = 1.1 * crsc.W_y_el;
-                            crsc.W_z_pl = 1.1 * crsc.W_z_el;
-                            crsc.i_y_rg = 0.102f;
-                            crsc.i_z_rg = 0.052f;
-                            crsc.i_yz_rg = 0.102f;
-
-                            /*
-                            crsc.m_Mat.m_ff_yk_0 = 5e+8f;
-                            crsc.m_Mat.m_fE = 2.1e+8f;
-                            crsc.m_Mat.m_fG = 8.1e+7f;
-                            crsc.m_Mat.m_fNu = 0.297f;
-                            */
-                        }
-                    }
-                    reader.Close();
-                }
+                // TODO - doplnit vypocet
+                crsc.i_y_rg = 0.102f;
+                crsc.i_z_rg = 0.052f;
+                crsc.i_yz_rg = 0.102f;
             }
         }
 
