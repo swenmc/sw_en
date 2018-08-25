@@ -327,8 +327,8 @@ namespace M_AS4600
 
             ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
 
-            if (ff_od <= 0f)
-                ff_od = 1f; // Temp TODO - osetrit error
+            if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
+                ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
 
             fN_od = eq.Eq_7214_4__(fA_g, ff_od);
             flambda_d = eq.Eq_7214_3__(fN_ce, fN_ol);
