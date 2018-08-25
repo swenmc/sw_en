@@ -2369,10 +2369,6 @@ namespace Examples
             // Skusis mi aspon jeden prierez napojit prosim ?
             // pole m_arrCrSc by sa malo naplnit prierezmi podla mena prierezu (270115, 27095, 63020, ...) v databaze pre jednotlive typy members (purlin, girt, main column, ...)
             // kazdemu menu prierezu zodpoveda iny objekt z tried, ktore su v CRSC / CrSc_3 / FS
-
-
         }
-
-
     }
 }

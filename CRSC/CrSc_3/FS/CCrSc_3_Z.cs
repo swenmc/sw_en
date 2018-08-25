@@ -75,7 +75,7 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Point No. 1
-            CrScPointsOut[0, 0] = -Fb_flange + m_ft_f + m_ft_f / 2f;                          // y
+            CrScPointsOut[0, 0] = -Fb_flange + m_ft_f + m_ft_f / 2f;                // y
             CrScPointsOut[0, 1] = (float)h / 2f - m_fc_lip;                         // z
 
             // Point No. 2

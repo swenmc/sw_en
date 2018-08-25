@@ -93,6 +93,15 @@ namespace CRSC
             set { m_sName = value; }
         }
 
+        // Name of cross-section in database
+        private string m_sNameDatabase;
+
+        public string NameDatabase
+        {
+            get { return m_sNameDatabase; }
+            set { m_sNameDatabase = value; }
+        }
+
         // List of Members ID that have assigned cross-section
         //public List<CMember> AssignedMembersList = new List<CMember>();
 

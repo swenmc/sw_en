@@ -590,28 +590,32 @@ namespace PFD
 
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
-                foreach (CLoadCase lc in model.m_arrLoadCases) 
+                foreach (CLoadCase lc in model.m_arrLoadCases)
                 {
                     foreach (CMLoad cmload in lc.MemberLoadsList)
                     {
-                        calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
-                        // Design
-                        designInternalForces[,] sDIF_x;
-                        CMemberDesign designModel = new CMemberDesign();
-                        designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
+                        if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                        {
+                            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+                            // Design
+                            designInternalForces[,] sDIF_x;
+                            CMemberDesign designModel = new CMemberDesign();
+                            designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
 
-                        // Set maximum design ratio of whole structure
-                        if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
-                            fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                            // Set maximum design ratio of whole structure
+                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
 
-                        Console.WriteLine("Member ID: " + m.ID + ", Load Case ID: " + lc.ID + ", " + "Load ID: " + cmload.ID + ", " + "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                            // Output (for debugging)
+                            Console.WriteLine("Member ID: " + m.ID + ", Load Case ID: " + lc.ID + ", " + "Load ID: " + cmload.ID + ", " + "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                        }
                     }
                 }
 
             // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
-            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat, nemusi sa vytvarat nahradny vypoctovy model
+            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
 
-            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len designModel)
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
 
 
             MessageBox.Show("Calculation Results \n" + "Maximum design ratio: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString());
@@ -772,7 +776,7 @@ namespace PFD
             foreach (CCrSc_TW crsc in model.m_arrCrSc)
             {
                 // TODO - zjednotit nazvy prierezov v database a v GUI programu
-                string stringcommand = "Select * from tableSections_m where section = '" + crsc.Name + "'";
+                // TODO - zaviest v databaze meno prierezu ktore sa ma zobrazovat a meno pouzite pre identifikaciu (mozno enum)
                 /*
                 10075
                 27095
@@ -786,7 +790,7 @@ namespace PFD
                 63020s2
                 */
 
-                CSectionManager.LoadCrossSectionProperties(crsc, crsc.Name);
+                CSectionManager.LoadCrossSectionProperties_meters(crsc, crsc.NameDatabase);
 
                 // Docasne hodnoty
                 crsc.A_vy = crsc.h * crsc.t_min; // TODO - len priblizne Temp

@@ -118,7 +118,7 @@ namespace DATABASE
             return properties;
         }
 
-        public static void LoadCrossSectionProperties(CCrSc_TW crsc, string sectionName)
+        public static void LoadCrossSectionProperties_meters(CCrSc_TW crsc, string sectionNameDatabase)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -126,15 +126,15 @@ namespace DATABASE
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_mm WHERE section = @section", conn);
-                command.Parameters.AddWithValue("@section", sectionName);
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_m WHERE section = @section", conn);
+                command.Parameters.AddWithValue("@section", sectionNameDatabase);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         crsc.ICrSc_ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        crsc.Name = sectionName;
+                        crsc.NameDatabase = sectionNameDatabase;
                         crsc.h = double.Parse(reader["h"].ToString(), nfi);
                         crsc.b = double.Parse(reader["b"].ToString(), nfi);
                         crsc.t_min = double.Parse(reader["t"].ToString(), nfi);
@@ -162,11 +162,11 @@ namespace DATABASE
                         crsc.Alpha_rad = double.Parse(reader["alpha_deg"].ToString(), nfi) / 180 * Math.PI;
                         crsc.Bending_curve_stress_x1 = double.Parse(reader["Bending_curve_x1"].ToString(), nfi);
                         crsc.Bending_curve_stress_x2 = double.Parse(reader["Bending_curve_x2"].ToString(), nfi);
-                        crsc.Bending_curve_stress_x3 = double.Parse(reader["Bending_curve_x3"].ToString(), nfi);
-                        crsc.Bending_curve_stress_y = double.Parse(reader["Bending_curve_y"].ToString(), nfi);
+                        //crsc.Bending_curve_stress_x3 = double.Parse(reader["Bending_curve_x3"].ToString(), nfi);
+                        //crsc.Bending_curve_stress_y = double.Parse(reader["Bending_curve_y"].ToString(), nfi);
                         crsc.Compression_curve_stress_1 = double.Parse(reader["Compression_curve_1"].ToString(), nfi);
-                        crsc.Compression_curve_stress_2 = double.Parse(reader["Compression_curve_2"].ToString(), nfi);
-                        crsc.Compression_curve_stress_3 = double.Parse(reader["Compression_curve_3"].ToString(), nfi);
+                        //crsc.Compression_curve_stress_2 = double.Parse(reader["Compression_curve_2"].ToString(), nfi);
+                        //crsc.Compression_curve_stress_3 = double.Parse(reader["Compression_curve_3"].ToString(), nfi);
                     }
                 }
             }

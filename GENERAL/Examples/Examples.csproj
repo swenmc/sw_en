@@ -77,6 +77,10 @@
       <Project>{ffb65036-8dd2-4633-b25a-d5a65d7213bd}</Project>
       <Name>CRSC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DATABASE\DATABASE.csproj">
+      <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MATERIAL\MATERIAL.csproj">
       <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
       <Name>MATERIAL</Name>

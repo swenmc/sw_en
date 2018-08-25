@@ -47,6 +47,8 @@ namespace CRSC
         {
             Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
             Name = "Box " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
+            NameDatabase = (fh * 1000).ToString() + (20).ToString();
+
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 40;

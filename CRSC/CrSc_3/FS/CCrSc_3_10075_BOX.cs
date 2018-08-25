@@ -39,6 +39,8 @@ namespace CRSC
         public CCrSc_3_10075_BOX(float fh, float fb, float ft, Color color_temp)
         {
             Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString();
+            NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 10).ToString();
+
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 40;

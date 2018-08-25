@@ -9,6 +9,8 @@ namespace CRSC
         public CCrSc_3_270XX_C_BACK_TO_BACK(float fh, float fb, float fc_lip, float ft, Color color_temp) : base(fh, fb, fc_lip, ft, color_temp)
         {
             Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + " back to back";
+            NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + "btb";
+
             CSColor = color_temp;  // Set cross-section color
 
             IsShapeSolid = true;

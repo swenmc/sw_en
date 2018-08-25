@@ -50,6 +50,8 @@ namespace CRSC
         public CCrSc_3_270XX_C(float fh, float fb, float ft, Color color_temp)
         {
             Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
+            NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
+
             CSColor = color_temp;  // Set cross-section color
             //ITotNoPoints = 56;
             IsShapeSolid = true;
