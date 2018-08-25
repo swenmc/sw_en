@@ -17,6 +17,8 @@ namespace FEM_CALC_BASE
         float fI;
         float fE;
 
+        // Docasne riesenie
+        // TODO 51 - nahradny model pruta zatazeneho spojitym zatazenim pre vypocet vn. sil pre lokalny smer y alebo z
         public CExample_2D_51_SB(CCrSc crsc, float fL_temp, EMLoadDirPCC1 eLoadDirection_temp, float fq_temp)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
@@ -156,6 +158,6 @@ namespace FEM_CALC_BASE
         public float GetDelta_x(float fx)
         {
             return ((fq * fx) / (24f * fE * fI)) * (MathF.Pow3(fL) - 2f * fL * MathF.Pow2(fx) + MathF.Pow3(fx));
-        }
+        } 
     }
 }

@@ -187,6 +187,10 @@ namespace SBD
             // Display section properties
             // TODO Vlozit detaily z vypoctu prierezu do datagrid - refaktorovat s projektom CRSC - metoda DisplaySectionPropertiesInDataGrid
             // Najlepsie budes asi previest projekt CRSC na WPF a cele to refaktorovat (tabulky, vykreslovanie atd)
+
+            // !!!!! BOLO TO PRESUNUTE DO TEST_PROJECTS / TEST_CRSC_VIEWER / CSFORM.cs
+            // Ak sa funkcionalita zapracuje do WPF moze sa tento "test" projekt zmazat
+
             FillOutPutDataList(section);
 
             List<string> colBinding = new List<string> { "sPropertyFullName", "sPropertySymbol", "sPropertyValue", "sPropertyUnit" };
@@ -234,6 +238,7 @@ namespace SBD
 
         // TODO - refactoring
         // TODO  refactoring DisplaySectionPropertiesInDataGrid, CRSC (CSForm - WinForms) a FillOutPutDataList
+        // !!!!! BOLO TO PRESUNUTE DO TEST_PROJECTS / TEST_CRSC_VIEWER / CSFORM.cs
         public void FillOutPutDataList(CCrSc_TW cs)
         {
             // Values
@@ -389,7 +394,7 @@ namespace SBD
             return sData;
         }
 
-        // TODO  - refactoring (iny typ zoznamu vstupnej struktury)
+        // TODO  - refactoring metod AddCordinateDataToDataGridRow vid nizsie (iny typ zoznamu vstupnej struktury)
         private void AddSectionDataToDataGridRow(List<sOutPutData> listOfData, int iNumberOfColumns, List<string> sColumnBinding, List<string> sColumnHeader, DataGrid dataGrid)
         {
             dataGrid.Items.Clear();
@@ -419,7 +424,7 @@ namespace SBD
             }
         }
 
-        // TODO - refactoring (iny typ zoznamu vstupnej struktury)
+        // TODO - refactoring metod AddCordinateDataToDataGridRow vid vyssie (iny typ zoznamu vstupnej struktury)
         private void AddCordinateDataToDataGridRow(List<sInPutDataText> listOfData, int iNumberOfColumns, List<string> sColumnBinding, List<string> sColumnHeader, DataGrid dataGrid)
         {
             dataGrid.Items.Clear();
@@ -502,7 +507,8 @@ namespace SBD
                 tb = cell.Content as TextBlock;
                 t = Convert.ToDouble(tb.Text);
 
-                // Nefunguje
+                // TODO - Ondrej, review ako vieme co najelegantnejsie ziskat hodnoty z datagrid refactoring metod AddCordinateDataToDataGridRow
+                // Nefunguje - mozno sa to da upravit a pouzit a nemusi sa pouzit vyssie uvedeny zlozitejsi kod
                 /*
                 id = Convert.ToInt32((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row[0].ToString());
                 y = Convert.ToDouble((DataGrid_SectionCoordinates.Items[i] as DataRowView).Row.ItemArray[1].ToString().Replace(",", "."), new CultureInfo("en-us"));
@@ -516,7 +522,9 @@ namespace SBD
 
         private void DataGrid_SectionCoordinates_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Toto by nemalo reagovat na zmenu indexu, ale na zmenu hodnoty
+            // Funcionalita vid TEST_PROJECTS / TEST_CRSC_VIEWER / CSFORM.cs
+            // TODO Ondrej - pri zmene hodnoty v datagirde by sa mal prekreslit prierez
+            // Asi je to nespravna fukcia, toto by nemalo reagovat na zmenu selektovaneho indexu, ale na zmenu hodnoty v bunke
 
             // Load Data From Datagrid - section coordinates
             //getListsFromDatagrid();

@@ -1250,6 +1250,16 @@ namespace Examples
                     listOfEavePurlinsRightSide.Add(m);
             }
 
+            // TODO 50
+            // Ukazka - purlin - imposed load
+            // Preorganizovat properties v triedach surface load tak, aby sa dalo dostat k hodnote zatazenia a prenasobit vzdialenostou medzi vaznicami
+            // Vypocitane zatazenie priradit prutom zo zoznamu listOfPurlins v Load Case v m_arrLoadCases[01]
+            //m_arrLoadCases[01].SurfaceLoadsList[0].
+
+            // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
+            // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
+
+
             // Load Case Groups
             m_arrLoadCaseGroups = new CLoadCaseGroup[10];
 
@@ -1876,7 +1886,7 @@ namespace Examples
                 }*/
             }
 
-            // TODO - odstranit spoje na deaktivovanych prutoch
+            // TODO / BUG No 46 - odstranit spoje na deaktivovanych prutoch
 
             // Add block member connections to the main model connections
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
@@ -2350,7 +2360,10 @@ namespace Examples
             // Vysledok bol taky ze som to akurat dobabral
             // Triedy CDatabaseComponents, CDatabaseModels a CDatabaseManager ako aj connectionStrings z app.config by asi mali byt v projekte DATABASE
 
-
+            // Komentar platil pred reorganizaciou projektov
+            // Skusis mi aspon jeden prierez napojit prosim ?
+            // pole m_arrCrSc by sa malo naplnit prierezmi podla mena prierezu (270115, 27095, 63020, ...) v databaze pre jednotlive typy members (purlin, girt, main column, ...)
+            // kazdemu menu prierezu zodpoveda iny objekt z tried, ktore su v CRSC / CrSc_3 / FS
 
 
         }
