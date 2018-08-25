@@ -582,15 +582,30 @@ namespace PFD
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[,] sBIF_x;
 
+
+
+
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
-            SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)model.m_arrCrSc[4],  vm.fL1, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
 
-            // Design
-            designInternalForces[,] sDIF_x;
-            CMemberDesign designModel = new CMemberDesign();
-            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)model.m_arrCrSc[4], vm.fL1, sBIF_x, sMomentValuesforCb, out sDIF_x);
+
+
+            SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
+            foreach (CMember m in model.m_arrMembers)
+                foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
+                    {
+                        foreach (CLoadCase lc in lcomb.LoadCasesList)
+                        {
+                            foreach (CMLoad cmload in lc.MemberLoadsList)
+                            {
+                            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21) cmload, out sBIF_x, out sMomentValuesforCb);
+                            // Design
+                            designInternalForces[,] sDIF_x;
+                            CMemberDesign designModel = new CMemberDesign();
+                            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)m.CrScStart, m.FLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+                            }
+                        }
+                    }
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)

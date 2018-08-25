@@ -24,26 +24,41 @@ namespace BaseClasses
             {
                 foreach (CSLoad_Free csload in lc.SurfaceLoadsList)
                 {
-                    float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
-                    foreach (CMember m in members)
+                    if (csload is CSLoad_FreeUniform)
                     {
-                        lc.MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                        float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
+                        foreach (CMember m in members)
+                        {
+                            lc.MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                        }
                     }
+                    if (csload is CSLoad_FreeUniformGroup)
+                    {
+                        CSLoad_FreeUniformGroup group = (CSLoad_FreeUniformGroup)csload;
+                        foreach (CSLoad_FreeUniform csloadFree in group.LoadList)
+                        {
+                            float fMemberLoadValue = csloadFree.fValue * fDist;
+                            foreach (CMember m in members)
+                            {
+                                lc.MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                            }
+                        }
+                    }                   
                 }
             }
         }
         
-        public static void GenerateMemberLoads(CLoadCase loadCase, List<CMember> members, float fDist)
-        {
-            foreach (CSLoad_Free csload in loadCase.SurfaceLoadsList)
-            {
-                float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
-                foreach (CMember m in members)
-                {
-                    loadCase.MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
-                }
-            }
-        }
+        //public static void GenerateMemberLoads(CLoadCase loadCase, List<CMember> members, float fDist)
+        //{
+        //    foreach (CSLoad_Free csload in loadCase.SurfaceLoadsList)
+        //    {
+        //        float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
+        //        foreach (CMember m in members)
+        //        {
+        //            loadCase.MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+        //        }
+        //    }
+        //}
 
     }
 }
