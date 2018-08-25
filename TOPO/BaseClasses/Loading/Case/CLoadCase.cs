@@ -35,11 +35,54 @@ namespace BaseClasses
             get { return m_eMainDirection; }
             set { m_eMainDirection = value; }
         }
+              
 
-        public List<CNLoad> NodeLoadsList;
-        public List<CMLoad> MemberLoadsList;
-        public List<CSLoad_Free> SurfaceLoadsList;
+        private List<CNLoad> MNodeLoadsList;
+        private List<CMLoad> MMemberLoadsList;
+        private List<CSLoad_Free> MSurfaceLoadsList;
 
+
+        public List<CNLoad> NodeLoadsList
+        {
+            get
+            {
+                if (MNodeLoadsList == null) MNodeLoadsList = new List<CNLoad>();
+                return MNodeLoadsList;
+            }
+
+            set
+            {
+                MNodeLoadsList = value;
+            }
+        }
+
+        public List<CMLoad> MemberLoadsList
+        {
+            get
+            {
+                if (MMemberLoadsList == null) MMemberLoadsList = new List<CMLoad>();
+                return MMemberLoadsList;
+            }
+
+            set
+            {
+                MMemberLoadsList = value;
+            }
+        }
+
+        public List<CSLoad_Free> SurfaceLoadsList
+        {
+            get
+            {
+                if (MSurfaceLoadsList == null) MSurfaceLoadsList = new List<CSLoad_Free>();
+                return MSurfaceLoadsList;
+            }
+
+            set
+            {
+                MSurfaceLoadsList = value;
+            }
+        }
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
