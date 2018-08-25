@@ -21,6 +21,11 @@ namespace M_BASE
             bDebugging = bDebugging_temp;
         }
 
+        public void SetDesignForcesAndMemberDesign(int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
+        {
+            SetDesignForcesAndMemberDesign(1, iNumberOfDesignSections, (CCrSc_TW)member.CrScStart, member.FLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+        }
+
         public void SetDesignForcesAndMemberDesign(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);

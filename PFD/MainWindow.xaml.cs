@@ -551,7 +551,7 @@ namespace PFD
             // Combinations of action
             // 4.2.2 Strength
             // Purlin (a) (b) (d) (e) (g)
-
+            /*
             int iNumberOfLoadCombinations = 5;
             float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
 
@@ -570,7 +570,7 @@ namespace PFD
             fE_d_load_values_LCS_z[2] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fWu_max_linear;                             // 4.2.2 (d)
             fE_d_load_values_LCS_z[3] = 0.90f * fPurlinDeadLoadLinear_LCS_z + Math.Abs(fWu_min_linear);                   // 4.2.2 (e)
             fE_d_load_values_LCS_z[4] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fPurlinSnowLoadLinear_LCS_z;                // 4.2.2 (g)
-
+            */
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
@@ -582,13 +582,9 @@ namespace PFD
             designMomentValuesForCb[] sMomentValuesforCb;
             basicInternalForces[,] sBIF_x;
 
-
-
-
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
-
-
+            float fMaximumDesignRatioWholeStructure = 0;
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
             foreach (CMember m in model.m_arrMembers)
@@ -602,10 +598,16 @@ namespace PFD
                             // Design
                             designInternalForces[,] sDIF_x;
                             CMemberDesign designModel = new CMemberDesign();
-                            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)m.CrScStart, m.FLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+                            designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
+
+                            // Set maximum design ratio of whole structure
+                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
                             }
                         }
                     }
+
+            MessageBox.Show("Calculation Results \n" + "Maximum design ratio: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString());
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
