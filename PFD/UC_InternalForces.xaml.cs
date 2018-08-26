@@ -38,14 +38,22 @@ namespace PFD
 
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
 
+        public List<string> ComponentsNames;
+        
+
         public UC_InternalForces(CModel model, UC_ComponentList components)
         {
             InitializeComponent();
 
+            CComponentListVM compList = (CComponentListVM)components.DataContext;
+            ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
+            
             // Add items into comboboxes
             FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
-            FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);            
-            FillComboboxValues(Combobox_ComponentType, components.MemberComponentName);
+            FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
+            //FillComboboxValues(Combobox_ComponentType, components.MemberComponentName); binding napojit
+
+            Combobox_ComponentType.ItemsSource = ComponentsNames;
 
             // Set default values of combobox index
             Combobox_LimitState.SelectedIndex = 0;
