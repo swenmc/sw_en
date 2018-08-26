@@ -132,6 +132,12 @@ namespace FEM_CALC_BASE
             m_arrLoadCombs[0] = LoadComb0;
         }
 
+        public CExample_2D_51_SB(float fL_temp, float fq_temp)
+        {
+            fL = fL_temp;
+            fq = fq_temp;
+        }
+
         public float GetSupportReactionValue_R()
         {
             return 0.5f * fq * fL;

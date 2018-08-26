@@ -21,8 +21,11 @@ namespace FEM_CALC_BASE
             // Temporary calculation of internal forces - each combination
             for (int i = 0; i < iNumberOfLoadCombinations; i++)
             {
-                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y[i]);
-                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z[i]);
+                //CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y[i]);
+                //CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z[i]);
+
+                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(fTheoreticalLengthOfMember, fE_d_load_values_LCS_y[i]);
+                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(fTheoreticalLengthOfMember, fE_d_load_values_LCS_z[i]);
 
                 float fM_abs_max = 0;
 
