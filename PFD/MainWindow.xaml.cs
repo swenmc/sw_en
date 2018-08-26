@@ -591,6 +591,7 @@ namespace PFD
             CMember MaximumDesignRatioColumn = new CMember();
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
+            List<CMemberLoadForces> listMemberLoadForces = new List<CMemberLoadForces>();
 
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
@@ -615,6 +616,7 @@ namespace PFD
                         }
                     }
 
+                    listMemberLoadForces.Add(new CMemberLoadForces(m, lc, sBIF_x));
                     m.MMomentValuesforCb.Add(sMomentValuesforCb);
                     m.MBIF_x.Add(sBIF_x);
                 }
@@ -632,6 +634,20 @@ namespace PFD
                     // TODO - nacitat internal forces z obsahu LC ktore patria kombinacii a prenasobit faktormi
                     designMomentValuesForCb sMomentValuesforCb_design = new designMomentValuesForCb();
                     basicInternalForces[] sBIF_x_design = m.MBIF_x[0];
+
+                    foreach (CLoadCase lc in lcomb.LoadCasesList)
+                    {
+                        CMemberLoadForces mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
+                        if (mlf != null)
+                        {
+                            int i = 0;
+                            foreach (basicInternalForces bif in mlf.Forces)
+                            {
+                                sBIF_x_design[i].fV_yy = lc.Factor * bif.fV_yy;
+                                i++;
+                            }
+                        }
+                    }
 
                     // Design
                     designInternalForces[] sDIF_x;

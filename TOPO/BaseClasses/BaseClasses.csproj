@@ -92,6 +92,7 @@
     <Compile Include="Drawing3D.cs" />
     <Compile Include="Loading\Combination\CLoadCombinationsGenerator.cs" />
     <Compile Include="Loading\Group\CLoadCaseGroup.cs" />
+    <Compile Include="Loading\Loads\CMemberLoadForces.cs" />
     <Compile Include="Loading\Loads\CLoadGenerator.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniform.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_Free.cs" />
