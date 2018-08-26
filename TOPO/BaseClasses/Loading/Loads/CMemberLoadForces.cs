@@ -11,6 +11,7 @@ namespace BaseClasses
         private CMember MMember;
         private CLoadCase MLoadCase;
         private basicInternalForces[] MForces;
+        private designMomentValuesForCb MMomentValues;
 
         public CMember Member
         {
@@ -51,16 +52,29 @@ namespace BaseClasses
             }
         }
 
+        public designMomentValuesForCb MomentValues
+        {
+            get
+            {
+                return MMomentValues;
+            }
+
+            set
+            {
+                MMomentValues = value;
+            }
+        }
+
         public CMemberLoadForces()
         {
 
         }
-        public CMemberLoadForces(CMember member, CLoadCase loadcase, basicInternalForces[] forces)
+        public CMemberLoadForces(CMember member, CLoadCase loadcase, basicInternalForces[] forces, designMomentValuesForCb momentValuesForCb)
         {
             MMember = member;
             MLoadCase = loadcase;
             MForces = forces;
-
+            MMomentValues = momentValuesForCb;
         }
     }
 }

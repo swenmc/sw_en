@@ -616,9 +616,9 @@ namespace PFD
                         }
                     }
 
-                    listMemberLoadForces.Add(new CMemberLoadForces(m, lc, sBIF_x));
-                    m.MMomentValuesforCb.Add(sMomentValuesforCb);
-                    m.MBIF_x.Add(sBIF_x);
+                    listMemberLoadForces.Add(new CMemberLoadForces(m, lc, sBIF_x, sMomentValuesforCb));
+                    //m.MMomentValuesforCb.Add(sMomentValuesforCb);
+                    //m.MBIF_x.Add(sBIF_x);
                 }
             }
 
@@ -639,11 +639,15 @@ namespace PFD
                     {
                         CMemberLoadForces mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
                         if (mlf != null)
-                        {
+                        {                            
                             int i = 0;
+                            sMomentValuesforCb_design.fM_14 += lc.Factor * mlf.MomentValues.fM_14;
+
+
                             foreach (basicInternalForces bif in mlf.Forces)
                             {
-                                sBIF_x_design[i].fV_yy = lc.Factor * bif.fV_yy;
+                                sBIF_x_design[i].fV_yy += lc.Factor * bif.fV_yy;
+                                sBIF_x_design[i].fM_yy += lc.Factor * bif.fM_yy;
                                 i++;
                             }
                         }
@@ -664,7 +668,7 @@ namespace PFD
                     // Output (for debugging)
                     bDebugging = true; // Testovacie ucely
                     if (bDebugging)
-                        Console.WriteLine("Member ID: " + m.ID + "\t | " +
+                        System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                           "Load Combination ID: " + lcomb.ID + "\t | " +
                                           "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
 
