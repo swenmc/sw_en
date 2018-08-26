@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BaseClasses;
 using M_AS4600;
+using CRSC;
 
 namespace PFD
 {
@@ -30,7 +31,7 @@ namespace PFD
 
         public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
 
-        public UC_MemberDesign(CModel model, UC_ComponentList components)
+        public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio> DesignResults)
         {
             InitializeComponent();
 
@@ -46,6 +47,11 @@ namespace PFD
 
             // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
             // DisplayDesignResultsInGridView(CCalcul obj_CalcDesign);
+
+            //CMemberLoadCombinationRatio mlcr = DesignResults.Find(i => i.LoadCombination.ID == Combobox_LoadCombination.SelectedValue)
+
+            CCalcul c = new CCalcul(false, DesignResults[0].DesignInternalForces, (CCrSc_TW)DesignResults[0].Member.CrScStart, DesignResults[0].Member.FLength, DesignResults[0].DesignMomentValuesForCb);
+            DisplayDesignResultsInGridView(Results_GridView, c);
         }
 
         // TODO - Ondrej - zjednotit s UC_InternalForces

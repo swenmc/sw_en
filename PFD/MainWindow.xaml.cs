@@ -84,6 +84,9 @@ namespace PFD
         //float fdist_frontcolumn; // 1 - 10 m
         //float fdist_girt_bottom; // 1 - 10 m
 
+        List<CMemberLoadCombinationRatio> DesignResults;
+        
+
         public MainWindow()
         {
             dmodels = new CDatabaseModels();
@@ -466,6 +469,8 @@ namespace PFD
             CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
         }
 
+
+
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             // Clear results of previous calculation
@@ -593,6 +598,7 @@ namespace PFD
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
             List<CMemberLoadForces> listMemberLoadForces = new List<CMemberLoadForces>();
 
+
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
             {
@@ -616,7 +622,7 @@ namespace PFD
                         }
                     }
 
-                    listMemberLoadForces.Add(new CMemberLoadForces(m, lc, sBIF_x, sMomentValuesforCb));
+                    if(sBIF_x != null) listMemberLoadForces.Add(new CMemberLoadForces(m, lc, sBIF_x, sMomentValuesforCb));
                     //m.MMomentValuesforCb.Add(sMomentValuesforCb);
                     //m.MBIF_x.Add(sBIF_x);
                 }
@@ -624,6 +630,7 @@ namespace PFD
 
             // Design of members
             // Calculate Internal Forces For Load Cases
+            DesignResults = new List<CMemberLoadCombinationRatio>();
             foreach (CMember m in model.m_arrMembers)
             {
                 for (int i = 0; i < iNumberOfDesignSections; i++)
@@ -631,24 +638,36 @@ namespace PFD
 
                 foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
                 {
+                    if (lcomb.eLComType == ELSType.eLS_SLS) continue;
+
                     // TODO - nacitat internal forces z obsahu LC ktore patria kombinacii a prenasobit faktormi
                     designMomentValuesForCb sMomentValuesforCb_design = new designMomentValuesForCb();
-                    basicInternalForces[] sBIF_x_design = m.MBIF_x[0];
+                    basicInternalForces[] sBIF_x_design = new basicInternalForces[iNumberOfDesignSections];
 
                     foreach (CLoadCase lc in lcomb.LoadCasesList)
                     {
                         CMemberLoadForces mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
                         if (mlf != null)
-                        {                            
-                            int i = 0;
+                        {            
                             sMomentValuesforCb_design.fM_14 += lc.Factor * mlf.MomentValues.fM_14;
+                            sMomentValuesforCb_design.fM_24 += lc.Factor * mlf.MomentValues.fM_24;
+                            sMomentValuesforCb_design.fM_34 += lc.Factor * mlf.MomentValues.fM_34;
+                            sMomentValuesforCb_design.fM_max += lc.Factor * mlf.MomentValues.fM_max;
 
-
+                            int j = 0;
                             foreach (basicInternalForces bif in mlf.Forces)
                             {
-                                sBIF_x_design[i].fV_yy += lc.Factor * bif.fV_yy;
-                                sBIF_x_design[i].fM_yy += lc.Factor * bif.fM_yy;
-                                i++;
+                                sBIF_x_design[j].fM_yu += lc.Factor * bif.fM_yu;
+                                sBIF_x_design[j].fM_yy += lc.Factor * bif.fM_yy;
+                                sBIF_x_design[j].fM_zv += lc.Factor * bif.fM_zv;
+                                sBIF_x_design[j].fM_zz += lc.Factor * bif.fM_zz;
+                                sBIF_x_design[j].fN += lc.Factor * bif.fN;
+                                sBIF_x_design[j].fT += lc.Factor * bif.fT;
+                                sBIF_x_design[j].fV_yu += lc.Factor * bif.fV_yu;
+                                sBIF_x_design[j].fV_yy += lc.Factor * bif.fV_yy;
+                                sBIF_x_design[j].fV_zv += lc.Factor * bif.fV_zv;
+                                sBIF_x_design[j].fV_zz += lc.Factor * bif.fV_zz;
+                                j++;
                             }
                         }
                     }
@@ -657,6 +676,8 @@ namespace PFD
                     designInternalForces[] sDIF_x;
                     CMemberDesign designModel = new CMemberDesign();
                     designModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sDIF_x);
+                    
+                    DesignResults.Add(new CMemberLoadCombinationRatio(m, lcomb, designModel.fMaximumDesignRatio, sDIF_x[designModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
 
                     // Set maximum design ratio of whole structure
                     if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
@@ -664,6 +685,8 @@ namespace PFD
                         fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
                         MaximumDesignRatioWholeStructureMember = m;
                     }
+
+                    if (designModel.fMaximumDesignRatio > 9999999999) break;
 
                     // Output (for debugging)
                     bDebugging = true; // Testovacie ucely
@@ -1105,7 +1128,7 @@ namespace PFD
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 // TODO - napojit ako vstup type prvkov pre combobox - zobrazovanie vysledkov podla typu pruta
-                Member_Design.Content = new UC_MemberDesign(model, component).Content;
+                Member_Design.Content = new UC_MemberDesign(model, component, DesignResults).Content;
             }
             else if (MainTabControl.SelectedIndex == 7)
                 Joint_Design.Content = new UC_JointDesign().Content;
