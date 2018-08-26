@@ -16,7 +16,7 @@ namespace BaseClasses
     {
         public static void DrawToTrackPort(Trackport3D _trackport, CModel model, DisplayOptions sDisplayOptions, CLoadCase loadcase)
         {
-            DateTime start = DateTime.Now;
+            //DateTime start = DateTime.Now;
 
             // Color of Trackport
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
@@ -24,7 +24,7 @@ namespace BaseClasses
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
 
-            System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
+            //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
                 Model3DGroup gr = new Model3DGroup();
@@ -32,23 +32,23 @@ namespace BaseClasses
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
-                System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After CreateMembersModel3D: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup jointsModel3DGroup = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayJoints) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
                 if (jointsModel3DGroup != null) gr.Children.Add(jointsModel3DGroup);
-                System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After CreateConnectionJointsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
                 if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
-                System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup loadsModel3DGroup = null;
                 if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase);
                 if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
-                System.Diagnostics.Trace.WriteLine("After CreateModelLoadObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After CreateModelLoadObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
 
@@ -64,7 +64,7 @@ namespace BaseClasses
 
                 // Add centerline member model
                 if (sDisplayOptions.bDisplayMembersCenterLines && sDisplayOptions.bDisplayMembers) Drawing3D.DrawModelMembersCenterLines(model, _trackport.ViewPort);
-                System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersCenterLines: " + (DateTime.Now - start).TotalMilliseconds);
 
                 // Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
@@ -73,19 +73,19 @@ namespace BaseClasses
                     //Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
                     Drawing3D.DrawModelMembersWireFrame_OP(model, _trackport.ViewPort);
                 } 
-                System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
                 {
                     if (jointsModel3DGroup == null) jointsModel3DGroup = Drawing3D.CreateConnectionJointsModel3DGroup(model, sDisplayOptions);
                     Drawing3D.DrawModelConnectionJointsWireFrame(model, _trackport.ViewPort);
                 }
-                System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
+                //System.Diagnostics.Trace.WriteLine("After DrawModelConnectionJointsWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
                     Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort);
-                    System.Diagnostics.Trace.WriteLine("After DrawMemberDescriptionTexts: " + (DateTime.Now - start).TotalMilliseconds);
+                    //System.Diagnostics.Trace.WriteLine("After DrawMemberDescriptionTexts: " + (DateTime.Now - start).TotalMilliseconds);
                 }
 
             }

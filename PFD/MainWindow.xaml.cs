@@ -592,6 +592,9 @@ namespace PFD
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
 
+            DateTime start = DateTime.Now;
+
+
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
             {
@@ -607,11 +610,14 @@ namespace PFD
                         {
                             if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
                             {
+                                
                                 calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+                                System.Diagnostics.Trace.WriteLine("CalculateInternalForcesOnSimpleBeam  " + m.Name + ":" + m.ID + " - " + (DateTime.Now - start).TotalMilliseconds);
                                 // Design
                                 designInternalForces[,] sDIF_x;
                                 CMemberDesign designModel = new CMemberDesign();
                                 designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
+                                System.Diagnostics.Trace.WriteLine("SetDesignForcesAndMemberDesign  " + m.Name + ":" + m.ID + " - " + (DateTime.Now - start).TotalMilliseconds);
 
                                 // Set maximum design ratio of whole structure
                                 if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
@@ -623,9 +629,10 @@ namespace PFD
                                 // Output (for debugging)
                                 bDebugging = true; // Testovacie ucely
                                 if(bDebugging)
-                                Console.WriteLine("Member ID: "   + m.ID + "\t | " +
+                                    System.Diagnostics.Trace.WriteLine("Member ID: "   + m.ID + "\t | " +
                                                   "Load Case ID: " + lc.ID + "\t | " +
                                                   "Load ID: "      + cmload.ID + "\t | " +
+                                                  "Time: " + (DateTime.Now - start).TotalMilliseconds + "\t | " +
                                                   "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
 
                                 // Output - set maximum design ratio by component Type
