@@ -581,6 +581,14 @@ namespace PFD
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
             float fMaximumDesignRatioWholeStructure = 0;
+            float fMaximumDesignRatioGirts = 0;
+            float fMaximumDesignRatioPurlins = 0;
+            float fMaximumDesignRatioColumns = 0;
+
+            CMember MaximumDesignRatioWholeStructureMember = new CMember();
+            CMember MaximumDesignRatioGirt = new CMember();
+            CMember MaximumDesignRatioPurlin = new CMember();
+            CMember MaximumDesignRatioColumn = new CMember();
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
 
@@ -607,10 +615,57 @@ namespace PFD
 
                                 // Set maximum design ratio of whole structure
                                 if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                {
                                     fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                                    MaximumDesignRatioWholeStructureMember = m;
+                                }
 
                                 // Output (for debugging)
-                                Console.WriteLine("Member ID: " + m.ID + ", Load Case ID: " + lc.ID + ", " + "Load ID: " + cmload.ID + ", " + "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                                bDebugging = true; // Testovacie ucely
+                                if(bDebugging)
+                                Console.WriteLine("Member ID: "   + m.ID + "\t | " +
+                                                  "Load Case ID: " + lc.ID + "\t | " +
+                                                  "Load ID: "      + cmload.ID + "\t | " +
+                                                  "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+
+                                // Output - set maximum design ratio by component Type
+                                if(bDebugging)
+                                {
+                                    
+                                    switch (m.EMemberType)
+                                    {
+                                        case EMemberType_FormSteel.eG: // Girt
+                                            {
+                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                                                {
+                                                    fMaximumDesignRatioGirts = designModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioGirt = m;
+                                                }
+                                                break;
+                                            }
+                                        case EMemberType_FormSteel.eP: // Purlin
+                                            {
+                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                                                {
+                                                    fMaximumDesignRatioPurlins = designModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioPurlin = m;
+                                                }
+                                                break;
+                                            }
+                                        case EMemberType_FormSteel.eC: // Column
+                                            {
+                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                                                {
+                                                    fMaximumDesignRatioColumns = designModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioColumn = m;
+                                                }
+                                                break;
+                                            }
+                                        default:
+                                            // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -621,7 +676,17 @@ namespace PFD
             // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
             // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
 
-            MessageBox.Show("Calculation Results \n" + "Maximum design ratio: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString());
+            MessageBox.Show("Calculation Results \n" +
+                            "Maximum design ratio \n" +
+                            "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
+
+                            "Maximum design ratio - girts\n" +
+                            "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
+                            "Maximum design ratio - purlins\n" +
+                            "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
+                            "Maximum design ratio - columns\n" +
+                            "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n"
+                            );
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
