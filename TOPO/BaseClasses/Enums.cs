@@ -529,6 +529,30 @@
         public float fSpectralShapeFactor_Ch_Ty;
     }
 
+    public struct FreeSurfaceLoadsMemberTypeData
+    {
+        public EMemberType_FormSteel memberType;
+        public float fLoadingWidth;
+
+        public FreeSurfaceLoadsMemberTypeData(EMemberType_FormSteel memberType_temp, float fLoadingWidth_temp)
+        {
+            memberType = memberType_temp;
+            fLoadingWidth = fLoadingWidth_temp;
+        }
+    }
+
+    public struct FreeSurfaceLoadsMemberData
+    {
+        public CMember loadedMember;
+        public float fLoadingArea; // Toto by sa asi mohlo zmazat za predpokladu ze vsetky pruty rovnakeho typu budu mat rovnaku zatazovaciu sirku, resp plochu (sirka = plocha A / dlzka pruta L) (nemusi to tak byt, ale teraz je to zjednodusene)
+
+        public FreeSurfaceLoadsMemberData(CMember member_temp, float fLoadingArea_temp)
+        {
+            loadedMember = member_temp;
+            fLoadingArea = fLoadingArea_temp;
+        }
+    }
+
     public struct PropertiesToInsertOpening
     {
         public string sBuildingSide;

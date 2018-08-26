@@ -2,25 +2,24 @@
 using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Collections.Generic;
 
 namespace BaseClasses
 {
     [Serializable]
     public class CSLoad_FreeUniform : CSLoad_Free
     {
-        Point3DCollection pSurfacePoints;
         public float fValue;
         bool bIsFourPointBase;
         public bool bDrawPositiveValueOnPlusLocalZSide;
         public bool bChangePositionForNegativeValue;
-
-        
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
 
         public CSLoad_FreeUniform(
+            List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
             ELoadCoordSystem eLoadCS_temp,
             ELoadDir eLoadDirection_temp,
             CPoint pControlPoint_temp,
@@ -29,11 +28,12 @@ namespace BaseClasses
             bool bDrawPositiveValueOnPlusLocalZSide_temp,
             bool bChangePositionForNegativeValue_temp,
             bool bIsDisplayed,
-            float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+            float fTime) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
             if (pSurfacePoints_temp == null || pSurfacePoints_temp.Count < 3)
                 throw new ArgumentException("Invalid Point Collection"); // Invalid collection data, unable to define surface, pridat kontrolu totoznych bodov v kolekcii
 
+            listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
@@ -53,6 +53,7 @@ namespace BaseClasses
 
         // Constructor used for rectangular surface (4 edges)
         public CSLoad_FreeUniform(
+               List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
                ELoadDir eLoadDirection_temp,
                CPoint pControlPoint_temp,
@@ -65,8 +66,9 @@ namespace BaseClasses
                bool bDrawPositiveValueOnPlusLocalZSide_temp,
                bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
-               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+               float fTime) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
+            listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
@@ -91,6 +93,7 @@ namespace BaseClasses
 
         // Constructor used for rectangular surface (4 edges)
         public CSLoad_FreeUniform(
+               List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
                ELoadDir eLoadDirection_temp,
                CPoint pControlPoint_temp,
@@ -104,8 +107,9 @@ namespace BaseClasses
                bool bDrawPositiveValueOnPlusLocalZSide_temp,
                bool bChangePositionForNegativeValue_temp,
                bool bIsDisplayed,
-               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+               float fTime) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
+            listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
@@ -137,6 +141,7 @@ namespace BaseClasses
 
         // Symmetric 5 points
         public CSLoad_FreeUniform(
+        List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
         ELoadCoordSystem eLoadCS_temp,
         ELoadDir eLoadDirection_temp,
         CPoint pControlPoint_temp,
@@ -152,8 +157,9 @@ namespace BaseClasses
         bool bChangePositionForNegativeValue_temp,
         bool bIsFourPointBase_temp,
         bool bIsDisplayed,
-        float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+        float fTime) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
+            listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
@@ -187,6 +193,7 @@ namespace BaseClasses
 
         // Asymetric 5 points
         public CSLoad_FreeUniform(
+               List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
                ELoadDir eLoadDirection_temp,
                CPoint pControlPoint_temp,
@@ -204,8 +211,9 @@ namespace BaseClasses
                bool bChangePositionForNegativeValue_temp,
                bool bIsFourPointBase_temp,
                bool bIsDisplayed,
-               float fTime) : base(eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
+               float fTime) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
+            listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
