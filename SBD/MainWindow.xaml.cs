@@ -175,17 +175,12 @@ namespace SBD
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
 
             float fLoadUnitMultiplier = 1000; // From kN to N
-            calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy * fLoadUnitMultiplier, vm.Loadqz * fLoadUnitMultiplier, out sBIF_x, out sMomentValuesforCb);
-
-            // TODO Martin Upravit metodu tak aby mala parameter member a member load
-            // pripravene
-            if(false)
-               calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, new CMember (), new CMLoad_21(), out sBIF_x, out sMomentValuesforCb);
+            calcModel.CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy * fLoadUnitMultiplier, vm.Loadqz * fLoadUnitMultiplier, out sBIF_x, out sMomentValuesforCb);
 
             // Design
             designInternalForces[,] sDIF_x;
             CMemberDesign designModel = new CMemberDesign();
-            designModel.SetDesignForcesAndMemberDesign(iNumberOfLoadCombinations, iNumberOfDesignSections, section, vm.Length, sBIF_x, sMomentValuesforCb, out sDIF_x);
+            designModel.SetDesignForcesAndMemberDesign_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, section, vm.Length, sBIF_x, sMomentValuesforCb, out sDIF_x);
 
             // TODO - toto zobrazenie detailov v Gridview pre PFD a SBD treba refaktorovat a vytvorit jednotnu bazu pre zobrazovanie dat
             // v datagrid napriec roznymi projektmi

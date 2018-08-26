@@ -575,8 +575,8 @@ namespace PFD
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
             float[] fx_positions = new float[iNumberOfDesignSections];
-            designMomentValuesForCb[] sMomentValuesforCb;
-            basicInternalForces[,] sBIF_x;
+            designMomentValuesForCb sMomentValuesforCb;
+            basicInternalForces[] sBIF_x;
 
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
@@ -607,76 +607,91 @@ namespace PFD
                         {
                             if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
                             {
-                                calcModel.CalculateInternalForcesOnSimpleBeam(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
-                                // Design
-                                designInternalForces[,] sDIF_x;
-                                CMemberDesign designModel = new CMemberDesign();
-                                designModel.SetDesignForcesAndMemberDesign(iNumberOfDesignSections, m, sBIF_x, sMomentValuesforCb, out sDIF_x);
-
-                                // Set maximum design ratio of whole structure
-                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
-                                {
-                                    fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
-                                    MaximumDesignRatioWholeStructureMember = m;
-                                }
-
-                                // Output (for debugging)
-                                bDebugging = true; // Testovacie ucely
-                                if(bDebugging)
-                                Console.WriteLine("Member ID: "   + m.ID + "\t | " +
-                                                  "Load Case ID: " + lc.ID + "\t | " +
-                                                  "Load ID: "      + cmload.ID + "\t | " +
-                                                  "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
-
-                                // Output - set maximum design ratio by component Type
-                                if(bDebugging)
-                                {
-                                    
-                                    switch (m.EMemberType)
-                                    {
-                                        case EMemberType_FormSteel.eG: // Girt
-                                            {
-                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
-                                                {
-                                                    fMaximumDesignRatioGirts = designModel.fMaximumDesignRatio;
-                                                    MaximumDesignRatioGirt = m;
-                                                }
-                                                break;
-                                            }
-                                        case EMemberType_FormSteel.eP: // Purlin
-                                            {
-                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
-                                                {
-                                                    fMaximumDesignRatioPurlins = designModel.fMaximumDesignRatio;
-                                                    MaximumDesignRatioPurlin = m;
-                                                }
-                                                break;
-                                            }
-                                        case EMemberType_FormSteel.eC: // Column
-                                            {
-                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
-                                                {
-                                                    fMaximumDesignRatioColumns = designModel.fMaximumDesignRatio;
-                                                    MaximumDesignRatioColumn = m;
-                                                }
-                                                break;
-                                            }
-                                        default:
-                                            // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
-                                            break;
-                                    }
-                                }
+                                calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
                             }
                         }
                     }
                 }
             }
 
-            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
-            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
+            // Design of members
+            // Calculate Internal Forces For Load Cases
+            foreach (CMember m in model.m_arrMembers)
+            {
+                for (int i = 0; i < iNumberOfDesignSections; i++)
+                    fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
-            MessageBox.Show("Calculation Results \n" +
+                foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
+                {
+                    // TODO - nacitat internal forces z obsahu LC ktore patria kombinacii a prenasobit faktormi
+                    designMomentValuesForCb sMomentValuesforCb_design = new designMomentValuesForCb();
+                    basicInternalForces[] sBIF_x_design = new basicInternalForces[iNumberOfDesignSections];
+
+                    // Design
+                    designInternalForces[] sDIF_x;
+                    CMemberDesign designModel = new CMemberDesign();
+                    designModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sDIF_x);
+
+                    // Set maximum design ratio of whole structure
+                    if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                    {
+                        fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                        MaximumDesignRatioWholeStructureMember = m;
+                    }
+
+                    // Output (for debugging)
+                    bDebugging = true; // Testovacie ucely
+                    if (bDebugging)
+                        Console.WriteLine("Member ID: " + m.ID + "\t | " +
+                                          "Load Combination ID: " + lcomb.ID + "\t | " +
+                                          "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+
+                    // Output - set maximum design ratio by component Type
+                    if (bDebugging)
+                    {
+
+                        switch (m.EMemberType)
+                        {
+                            case EMemberType_FormSteel.eG: // Girt
+                                {
+                                    if (designModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                                    {
+                                        fMaximumDesignRatioGirts = designModel.fMaximumDesignRatio;
+                                        MaximumDesignRatioGirt = m;
+                                    }
+                                    break;
+                                }
+                            case EMemberType_FormSteel.eP: // Purlin
+                                {
+                                    if (designModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                                    {
+                                        fMaximumDesignRatioPurlins = designModel.fMaximumDesignRatio;
+                                        MaximumDesignRatioPurlin = m;
+                                    }
+                                    break;
+                                }
+                            case EMemberType_FormSteel.eC: // Column
+                                {
+                                    if (designModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                                    {
+                                        fMaximumDesignRatioColumns = designModel.fMaximumDesignRatio;
+                                        MaximumDesignRatioColumn = m;
+                                    }
+                                    break;
+                                }
+                            default:
+                                // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+                                break;
+                        }
+                    }
+                }
+            }
+
+                    // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
+                    // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
+                    // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
+
+                    MessageBox.Show("Calculation Results \n" +
                             "Maximum design ratio \n" +
                             "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
 
