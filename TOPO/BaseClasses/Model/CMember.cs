@@ -155,12 +155,29 @@ namespace BaseClasses
             set { m_fAlignment_End = value; }
         }
 
-        public double m_dTheta_x;
+        private double m_dTheta_x;
 
         public double DTheta_x
         {
             get { return m_dTheta_x; }
             set { m_dTheta_x = value; }
+        }
+
+        // Member results - list of values in each Load Case
+        private List<designMomentValuesForCb> m_sMomentValuesforCb;
+
+        public List<designMomentValuesForCb> MMomentValuesforCb
+        {
+            get { return m_sMomentValuesforCb; }
+            set { m_sMomentValuesforCb = value; }
+        }
+
+        private List<basicInternalForces[]> m_sBIF_x;
+
+        public List<basicInternalForces[]> MBIF_x
+        {
+            get { return m_sBIF_x; }
+            set { m_sBIF_x = value; }
         }
 
         public List<Point3D> WireFramePoints;

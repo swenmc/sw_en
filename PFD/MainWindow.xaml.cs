@@ -575,8 +575,8 @@ namespace PFD
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
             float[] fx_positions = new float[iNumberOfDesignSections];
-            designMomentValuesForCb sMomentValuesforCb;
-            basicInternalForces[] sBIF_x;
+            designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
+            basicInternalForces[] sBIF_x = null;
 
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
@@ -598,6 +598,9 @@ namespace PFD
                 for (int i = 0; i < iNumberOfDesignSections; i++)
                     fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
+                m.MMomentValuesforCb = new List<designMomentValuesForCb>();
+                m.MBIF_x = new List<basicInternalForces[]>();
+
                 foreach (CLoadCase lc in model.m_arrLoadCases)
                 {
                     // Calculate Internal forces just for Load Cases that are included in ULS
@@ -611,6 +614,9 @@ namespace PFD
                             }
                         }
                     }
+
+                    m.MMomentValuesforCb.Add(sMomentValuesforCb);
+                    m.MBIF_x.Add(sBIF_x);
                 }
             }
 
@@ -625,7 +631,7 @@ namespace PFD
                 {
                     // TODO - nacitat internal forces z obsahu LC ktore patria kombinacii a prenasobit faktormi
                     designMomentValuesForCb sMomentValuesforCb_design = new designMomentValuesForCb();
-                    basicInternalForces[] sBIF_x_design = new basicInternalForces[iNumberOfDesignSections];
+                    basicInternalForces[] sBIF_x_design = m.MBIF_x[0];
 
                     // Design
                     designInternalForces[] sDIF_x;
@@ -687,21 +693,21 @@ namespace PFD
                 }
             }
 
-                    // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
-                    // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-                    // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
+            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
+            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
 
-                    MessageBox.Show("Calculation Results \n" +
-                            "Maximum design ratio \n" +
-                            "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
+            MessageBox.Show("Calculation Results \n" +
+                    "Maximum design ratio \n" +
+                    "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
 
-                            "Maximum design ratio - girts\n" +
-                            "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
-                            "Maximum design ratio - purlins\n" +
-                            "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
-                            "Maximum design ratio - columns\n" +
-                            "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n"
-                            );
+                    "Maximum design ratio - girts\n" +
+                    "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - purlins\n" +
+                    "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - columns\n" +
+                    "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n"
+                    );
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)
