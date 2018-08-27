@@ -1110,7 +1110,7 @@ namespace PFD
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
-                Member_Design.Content = new UC_MemberDesign(model, component, DesignResults).Content;
+                Member_Design.Content = new UC_MemberDesign(model, component, DesignResults);
             }
             else if (MainTabControl.SelectedIndex == 7)
                 Joint_Design.Content = new UC_JointDesign().Content;

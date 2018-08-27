@@ -30,41 +30,41 @@ namespace PFD
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
         List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
 
-        public List<string> ComponentsNames;
+        CModel Model;
+        List<CMemberLoadCombinationRatio> DesignResults;
+
 
         public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
 
-        public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio> DesignResults)
+        public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio> designResults)
         {
             InitializeComponent();
 
+            Model = model;
+            DesignResults = designResults;
             CComponentListVM compList = (CComponentListVM)components.DataContext;
-            ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
+            List<string> ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
 
             // Add items into comboboxes
             FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
             FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
             // TODO Ondrej - fill combobox with UC_ComponentList Names
 
-            Combobox_ComponentType.ItemsSource = ComponentsNames;
+            //Combobox_ComponentType.ItemsSource = ComponentsNames;
 
             // Set default values of combobox index
-            Combobox_LimitState.SelectedIndex = 0;
-            Combobox_LoadCombination.SelectedIndex = 0;
-            Combobox_ComponentType.SelectedIndex = 0;
+            //Combobox_LimitState.SelectedIndex = 0;
+            //Combobox_LoadCombination.SelectedIndex = 0;
+            //Combobox_ComponentType.SelectedIndex = 0;
 
             // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
 
             //CMemberLoadCombinationRatio mlcr = DesignResults.Find(i => i.LoadCombination.ID == Combobox_LoadCombination.SelectedValue)
 
-            CMemberGroup GroupOfMembersWithSelectedType = model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex];
-
-            // Calculate governing member design ratio in member group
-            CCalcul cGoverningMemberResults;
-            CalculateGoverningMemberDesignDetails(DesignResults, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+           
 
             // Member Design
-            CPFDMemberDesign mdinput = new CPFDMemberDesign();
+            CPFDMemberDesign mdinput = new CPFDMemberDesign(compList.ComponentList);
             mdinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = mdinput;
         }
@@ -73,6 +73,14 @@ namespace PFD
             if (sender == null) return;
             CPFDMemberDesign mdinput = sender as CPFDMemberDesign;
             if (mdinput != null && mdinput.IsSetFromCode) return;
+
+
+            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups[mdinput.ComponentTypeIndex];
+
+            // Calculate governing member design ratio in member group
+            CCalcul cGoverningMemberResults;
+            CalculateGoverningMemberDesignDetails(DesignResults, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+
         }
 
         // TODO - Ondrej - zjednotit s UC_InternalForces

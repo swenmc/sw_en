@@ -8,6 +8,7 @@ using System.Data.SQLite;
 using System.Configuration;
 using System.Globalization;
 using BaseClasses;
+using System.Collections.ObjectModel;
 
 namespace PFD
 {
@@ -21,6 +22,9 @@ namespace PFD
         private int MLimiStateIndex;
         private int MLoadCombinationIndex;
         private int MComponentTypeIndex;
+
+        private List<string> MComponentsNames;
+        private ObservableCollection<CComponentInfo> MComponentList;
 
         public bool IsSetFromCode = false;
 
@@ -72,15 +76,47 @@ namespace PFD
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        public CPFDMemberDesign()
+        public List<string> ComponentsNames
         {
+            get
+            {
+                return MComponentsNames;
+            }
+
+            set
+            {
+                MComponentsNames = value;
+                NotifyPropertyChanged("ComponentsNames");
+            }
+        }
+
+        public ObservableCollection<CComponentInfo> ComponentList
+        {
+            get
+            {
+                return MComponentList;
+            }
+
+            set
+            {
+                MComponentList = value;
+                NotifyPropertyChanged("ComponentList");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        public CPFDMemberDesign(ObservableCollection<CComponentInfo> componentList)
+        {
+            //MComponentsNames = componentsNames;
+            MComponentList = componentList;
+
             // Set default
             LimiStateIndex = 0;
             LoadCombinationIndex = 0;
             ComponentTypeIndex = 0;
+
 
             IsSetFromCode = false;
         }
