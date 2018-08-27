@@ -85,7 +85,9 @@ namespace PFD
         //float fdist_girt_bottom; // 1 - 10 m
 
         List<CMemberInternalForcesInLoadCases> listMemberInternalForces;
-        List<CMemberLoadCombinationRatio> DesignResults;
+        List<CMemberDeflectionsInLoadCases> listMemberDeflections;
+        List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
+        List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
 
         bool bInternalForcesResultsExists = false;
         bool bMemberDesignResultsExists = false;
@@ -601,6 +603,7 @@ namespace PFD
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
             listMemberInternalForces = new List<CMemberInternalForcesInLoadCases>();
+            listMemberDeflections = new List<CMemberDeflectionsInLoadCases>();
 
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
@@ -637,7 +640,8 @@ namespace PFD
             // Design of members
             // Calculate Internal Forces For Load Cases
 
-            DesignResults = new List<CMemberLoadCombinationRatio>();
+            DesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+            DesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
 
             foreach (CMember m in model.m_arrMembers)
             {
@@ -648,73 +652,102 @@ namespace PFD
 
                     foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
                     {
-                        // Do not perform internal foces design for SLS
-                        if (lcomb.eLComType == ELSType.eLS_SLS) continue;
-
-                        // Member basic internal forces
-                        designMomentValuesForCb sMomentValuesforCb_design;
-                        basicInternalForces[] sBIF_x_design;
-                        CInternalForcesManager.SetMemberInternalForcesInLoadCombination(m, lcomb, listMemberInternalForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
-
-                        // Member design internal forces
-                        if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
+                        if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for SLS
                         {
-                            designInternalForces[] sDIF_x;
-                            CMemberDesign designModel = new CMemberDesign();
-                            designModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sDIF_x);
-                            DesignResults.Add(new CMemberLoadCombinationRatio(m, lcomb, designModel.fMaximumDesignRatio, sDIF_x[designModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
+                            // Member basic internal forces
+                            designMomentValuesForCb sMomentValuesforCb_design;
+                            basicInternalForces[] sBIF_x_design;
+                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, listMemberInternalForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
 
-                            // Set maximum design ratio of whole structure
-                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                            // Member design internal forces
+                            if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
                             {
-                                fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
-                                MaximumDesignRatioWholeStructureMember = m;
-                            }
+                                designInternalForces[] sDIF_x;
+                                CMemberDesign designModel = new CMemberDesign();
+                                designModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sDIF_x);
+                                DesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, designModel.fMaximumDesignRatio, sDIF_x[designModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
 
-                            // Output (for debugging)
-                            bDebugging = true; // Testovacie ucely
-                            if (bDebugging)
-                                System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
-                                                  "Load Combination ID: " + lcomb.ID + "\t | " +
-                                                  "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
-
-                            // Output - set maximum design ratio by component Type
-                            if (bDebugging)
-                            {
-
-                                switch (m.EMemberType)
+                                // Set maximum design ratio of whole structure
+                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
                                 {
-                                    case EMemberType_FormSteel.eG: // Girt
-                                        {
-                                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
-                                            {
-                                                fMaximumDesignRatioGirts = designModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioGirt = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FormSteel.eP: // Purlin
-                                        {
-                                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
-                                            {
-                                                fMaximumDesignRatioPurlins = designModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioPurlin = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FormSteel.eC: // Column
-                                        {
-                                            if (designModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
-                                            {
-                                                fMaximumDesignRatioColumns = designModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioColumn = m;
-                                            }
-                                            break;
-                                        }
-                                    default:
-                                        // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
-                                        break;
+                                    fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                                    MaximumDesignRatioWholeStructureMember = m;
                                 }
+
+                                // Output (for debugging)
+                                bDebugging = true; // Testovacie ucely
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+
+                                // Output - set maximum design ratio by component Type
+                                if (bDebugging)
+                                {
+
+                                    switch (m.EMemberType)
+                                    {
+                                        case EMemberType_FormSteel.eG: // Girt
+                                            {
+                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                                                {
+                                                    fMaximumDesignRatioGirts = designModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioGirt = m;
+                                                }
+                                                break;
+                                            }
+                                        case EMemberType_FormSteel.eP: // Purlin
+                                            {
+                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                                                {
+                                                    fMaximumDesignRatioPurlins = designModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioPurlin = m;
+                                                }
+                                                break;
+                                            }
+                                        case EMemberType_FormSteel.eC: // Column
+                                            {
+                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                                                {
+                                                    fMaximumDesignRatioColumns = designModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioColumn = m;
+                                                }
+                                                break;
+                                            }
+                                        default:
+                                            // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        else // SLS
+                        {
+                            // Member basic deflections
+                            basicDeflections[] sBDeflection_x_design;
+                            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, listMemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
+
+                            // Member design deflections
+                            if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
+                            {
+                                designDeflections[] sDDeflection_x;
+                                CMemberDesign designModel = new CMemberDesign();
+                                designModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                DesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, designModel.fMaximumDesignRatio, sDDeflection_x[designModel.fMaximumDesignRatioLocationID]));
+
+                                // Set maximum design ratio of whole structure
+                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                {
+                                    fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                                    MaximumDesignRatioWholeStructureMember = m;
+                                }
+
+                                // Output (for debugging)
+                                bDebugging = true; // Testovacie ucely
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
                             }
                         }
                     }
@@ -1110,7 +1143,7 @@ namespace PFD
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
-                Member_Design.Content = new UC_MemberDesign(model, component, DesignResults).Content;
+                Member_Design.Content = new UC_MemberDesign(model, component, DesignResults_ULS, DesignResults_SLS).Content;
             }
             else if (MainTabControl.SelectedIndex == 7)
                 Joint_Design.Content = new UC_JointDesign().Content;

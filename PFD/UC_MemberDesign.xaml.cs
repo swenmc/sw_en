@@ -34,7 +34,7 @@ namespace PFD
 
         public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
 
-        public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio> DesignResults)
+        public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS, List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS)
         {
             InitializeComponent();
 
@@ -61,7 +61,11 @@ namespace PFD
 
             // Calculate governing member design ratio in member group
             CCalcul cGoverningMemberResults;
-            CalculateGoverningMemberDesignDetails(DesignResults, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+
+            if (model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex].eLComType == ELSType.eLS_ULS)
+                CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+            else
+                CalculateGoverningMemberDesignDetails(DesignResults_SLS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
 
             // Member Design
             CPFDMemberDesign mdinput = new CPFDMemberDesign();
@@ -94,7 +98,7 @@ namespace PFD
         }
 
         // Calculate governing member design ratio
-        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_ULS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -116,23 +120,133 @@ namespace PFD
                 }
 
                 if (cGoverningMemberResults != null)
-                    DisplayDesignResultsInGridView(Results_GridView, cGoverningMemberResults);
+                    DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView, cGoverningMemberResults);
                 else
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
                     // throw new Exception("Results of selected component are not available!");
                     MessageBox.Show("Results of selected component are not available!");
-
                 }
             }
 
         }
 
+        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_SLS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
+        {
+            cGoverningMemberResults = null;
+
+            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
+            {
+                float fMaximumDesignRatio = 0;
+                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
+                {
+                    // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
+                    // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
+
+                    CCalcul c = new CCalcul(false, DesignResults[m.ID - 1].DesignDeflections, m);
+
+                    if (c.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatio = c.fEta_max;
+                        cGoverningMemberResults = c;
+                    }
+                }
+
+                if (cGoverningMemberResults != null)
+                    DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView, cGoverningMemberResults);
+                else
+                {
+                    // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
+                    // throw new Exception("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available!");
+                }
+            }
+        }
+
         // TODO - Display Data in DataGrid Results_GridView
 
-        public void DisplayDesignResultsInGridView(DataGrid dataGrid, CCalcul obj_CalcDesign)
+        public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid, CCalcul obj_CalcDesign)
         {
             DeleteLists();
+
+            if (eCombinationType == ELSType.eLS_ULS)
+                SetResultsDetailsFor_ULS(obj_CalcDesign);
+            else
+                SetResultsDetailsFor_SLS(obj_CalcDesign);
+
+            // Create Table
+            DataTable table = new DataTable("Table");
+            // Create Table Rows
+
+            table.Columns.Add("Symbol", typeof(String));
+            table.Columns.Add("Value", typeof(String));
+            table.Columns.Add("Unit", typeof(String));
+
+            table.Columns.Add("Symbol1", typeof(String));
+            table.Columns.Add("Value1", typeof(String));
+            table.Columns.Add("Unit1", typeof(String));
+
+            table.Columns.Add("Symbol2", typeof(String));
+            table.Columns.Add("Value2", typeof(String));
+            table.Columns.Add("Unit2", typeof(String));
+
+            // Set Column Caption
+            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
+            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
+            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
+
+            // Create Datases
+            ds = new DataSet();
+            // Add Table to Dataset
+            ds.Tables.Add(table);
+
+            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
+            {
+                DataRow row = table.NewRow();
+
+                try
+                {
+                    row["Symbol"] = zoznamMenuNazvy[i];
+                    row["Value"] = zoznamMenuHodnoty[i];
+                    row["Unit"] = zoznamMenuJednotky[i];
+                    i++;
+                    row["Symbol1"] = zoznamMenuNazvy[i];
+                    row["Value1"] = zoznamMenuHodnoty[i];
+                    row["Unit1"] = zoznamMenuJednotky[i];
+                    i++;
+                    row["Symbol2"] = zoznamMenuNazvy[i];
+                    row["Value2"] = zoznamMenuHodnoty[i];
+                    row["Unit2"] = zoznamMenuJednotky[i];
+                }
+                catch (ArgumentOutOfRangeException) { }
+                table.Rows.Add(row);
+            }
+
+            dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+
+            /*
+            // Set Column Header
+            Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
+            Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
+            Results_GridView.Columns[2].Header = Results_GridView.Columns[5].Header = Results_GridView.Columns[8].Header = "Unit";
+
+            // Set Column Width
+            Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
+            Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
+            Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
+            */
+        }
+
+        private void DeleteLists()
+        {
+            // Deleting lists for updating actual values
+            zoznamMenuNazvy.Clear();
+            zoznamMenuHodnoty.Clear();
+            zoznamMenuJednotky.Clear();
+        }
+
+        private void SetResultsDetailsFor_ULS(CCalcul obj_CalcDesign)
+        {
             // Display results in datagrid
             // AS 4600 output variables
 
@@ -367,76 +481,36 @@ namespace PFD
             zoznamMenuNazvy.Add("η max");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
             zoznamMenuJednotky.Add("[-]");
-
-            // Create Table
-            DataTable table = new DataTable("Table");
-            // Create Table Rows
-
-            table.Columns.Add("Symbol", typeof(String));
-            table.Columns.Add("Value", typeof(String));
-            table.Columns.Add("Unit", typeof(String));
-
-            table.Columns.Add("Symbol1", typeof(String));
-            table.Columns.Add("Value1", typeof(String));
-            table.Columns.Add("Unit1", typeof(String));
-
-            table.Columns.Add("Symbol2", typeof(String));
-            table.Columns.Add("Value2", typeof(String));
-            table.Columns.Add("Unit2", typeof(String));
-
-            // Set Column Caption
-            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
-            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
-            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
-
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
-
-            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
-            {
-                DataRow row = table.NewRow();
-
-                try
-                {
-                    row["Symbol"] = zoznamMenuNazvy[i];
-                    row["Value"] = zoznamMenuHodnoty[i];
-                    row["Unit"] = zoznamMenuJednotky[i];
-                    i++;
-                    row["Symbol1"] = zoznamMenuNazvy[i];
-                    row["Value1"] = zoznamMenuHodnoty[i];
-                    row["Unit1"] = zoznamMenuJednotky[i];
-                    i++;
-                    row["Symbol2"] = zoznamMenuNazvy[i];
-                    row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
-
-            dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
-            /*
-            // Set Column Header
-            Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
-            Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
-            Results_GridView.Columns[2].Header = Results_GridView.Columns[5].Header = Results_GridView.Columns[8].Header = "Unit";
-
-            // Set Column Width
-            Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
-            Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
-            Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
-            */
         }
 
-        private void DeleteLists()
+        private void SetResultsDetailsFor_SLS(CCalcul obj_CalcDesign)
         {
-            // Deleting lists for updating actual values
-            zoznamMenuNazvy.Clear();
-            zoznamMenuHodnoty.Clear();
-            zoznamMenuJednotky.Clear();
+            // Display results in datagrid
+
+            // Deflection
+            // δ
+
+            zoznamMenuNazvy.Add("δ lim");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fLimitDeflection.ToString());
+            zoznamMenuJednotky.Add("[mm]");
+
+            // Design ratio
+            zoznamMenuNazvy.Add("η x/u");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_yu.ToString());
+            zoznamMenuJednotky.Add("[mm]");
+
+            zoznamMenuNazvy.Add("η y/v");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zv.ToString());
+            zoznamMenuJednotky.Add("[mm]");
+
+            zoznamMenuNazvy.Add("η x");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_yy.ToString());
+            zoznamMenuJednotky.Add("[mm]");
+
+            zoznamMenuNazvy.Add("η y");
+            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zz.ToString());
+            zoznamMenuJednotky.Add("[mm]");
+
         }
     }
 }

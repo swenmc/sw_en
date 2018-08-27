@@ -205,7 +205,7 @@ namespace SBD
 
             // Display results for maximum design ratio
             UC_MemberDesign b_temp = new UC_MemberDesign(); // TODO - refaktoring, tento riadkoch by tu nemal byt, vyvotirit spolocnu bazovu triedu pre vlozenie dat do DATAGRIDu
-            b_temp.DisplayDesignResultsInGridView(this.DataGrid_Results, designModel.listOfMemberDesignInLocations[designModel.fMaximumDesignRatioLocationID]);
+            b_temp.DisplayDesignResultsInGridView(ELSType.eLS_ULS, this.DataGrid_Results, designModel.listOfMemberDesignInLocations[designModel.fMaximumDesignRatioLocationID]);
         }
 
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
