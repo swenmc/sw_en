@@ -66,6 +66,11 @@ namespace PFD
 
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
+            // TODO - Ondrej
+            // TODO - zo skupiny prutov s rovnakym typom z component list vybrat prvy alebo prejst vsetky ???
+            CMember member = Model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex].ListOfMembers[0];
+            fMemberLength_xMax = member.FLength;
+
             for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
                 arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * fMemberLength_xMax; // Int must be converted to the float to get decimal numbers
 
@@ -74,9 +79,6 @@ namespace PFD
             designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
             basicInternalForces[] sBIF_x;
 
-            // TODO - Ondrej
-            // TODO - zo skupiny prutov s rovnakym typom z component list vybrat prvy alebo prejst vsetky ???
-            CMember member = Model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex].ListOfMembers[0];
             // TODO - kombinacia ktorej vysledky chceme zobrazit
             CLoadCombination lcomb = Model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex];
             // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
