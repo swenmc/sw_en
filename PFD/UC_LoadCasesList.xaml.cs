@@ -29,7 +29,7 @@ namespace PFD
         List<string> listLoadCaseName = new List<string>();
         List<string> listLoadCaseType = new List<string>();
 
-        public UC_LoadCaseList(CModel model)
+        public UC_LoadCaseList(CModel_PFD model)
         {
             InitializeComponent();
 

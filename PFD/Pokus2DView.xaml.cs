@@ -16,7 +16,7 @@ namespace PFD
     public partial class Pokus2DView : Window
     {
         public Canvas CanvasSection2D = null;
-        public CModel Model = null;
+        public CModel_PFD Model = null;
 
         double modelMarginLeft_x;
         double modelMarginBottom_y;
@@ -46,7 +46,7 @@ namespace PFD
             CanvasSection2D = canvasForImage;
         }
 
-        public Pokus2DView(CModel model)
+        public Pokus2DView(CModel_PFD model)
         {
             InitializeComponent();
             Model = model;
@@ -54,7 +54,7 @@ namespace PFD
             comboViews.SelectedIndex = 3;
         }
 
-        public void DrawRightView_ModelToCanvas(CModel model)
+        public void DrawRightView_ModelToCanvas(CModel_PFD model)
         {
             canvasForImage.Children.Clear();
 
@@ -190,7 +190,7 @@ namespace PFD
 
         }
 
-        public void DrawLeftView_ModelToCanvas(CModel model)
+        public void DrawLeftView_ModelToCanvas(CModel_PFD model)
         {
             canvasForImage.Children.Clear(); return;
 
@@ -326,7 +326,7 @@ namespace PFD
 
         }
 
-        public void DrawFrontView_ModelToCanvas(CModel model)
+        public void DrawFrontView_ModelToCanvas(CModel_PFD model)
         {
             canvasForImage.Children.Clear(); return;
 
@@ -462,7 +462,7 @@ namespace PFD
 
         }
 
-        public void DrawBackView_ModelToCanvas(CModel model)
+        public void DrawBackView_ModelToCanvas(CModel_PFD model)
         {
             canvasForImage.Children.Clear(); return;
 
@@ -598,7 +598,7 @@ namespace PFD
 
         }
 
-        public void DrawTopView_ModelToCanvas(CModel model)
+        public void DrawTopView_ModelToCanvas(CModel_PFD model)
         {
             canvasForImage.Children.Clear(); return;
 

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace Examples
+namespace PFD
 {
     enum EMemberGroupNames
     {
@@ -24,7 +24,7 @@ namespace Examples
         eBackGirt = 8
     }
 
-    public class CExample_3D_901_PF : CExample
+    public class CModel_PFD_01_GR : CModel_PFD
     {
         public float fH1_frame;
         float fH2_frame;
@@ -60,7 +60,7 @@ namespace Examples
         int[] iArrNumberOfNodesPerBackColumn;
         int iOneColumnGirtNo;
 
-        public CExample_3D_901_PF
+        public CModel_PFD_01_GR
             (
                 float fH1_temp,
                 float fW_temp,

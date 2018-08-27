@@ -30,13 +30,13 @@ namespace PFD
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
         List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
 
-        CModel Model;
+        CModel_PFD Model;
         List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
 
         public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
 
-        public UC_MemberDesign(CModel model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
+        public UC_MemberDesign(CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
         {
             InitializeComponent();
 

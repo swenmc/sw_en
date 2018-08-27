@@ -73,7 +73,7 @@ namespace PFD
 
         CDatabaseComponents databaseCopm = new CDatabaseComponents();
 
-        public UC_MaterialList(CModel model)
+        public UC_MaterialList(CModel_PFD model)
         {
             InitializeComponent();
 

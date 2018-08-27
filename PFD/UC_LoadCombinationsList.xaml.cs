@@ -33,7 +33,7 @@ namespace PFD
         List<string> listLoadCombinationKeys = new List<string>();
         List<string> listFormulas = new List<string>();
 
-        public UC_LoadCombinationList(CModel model)
+        public UC_LoadCombinationList(CModel_PFD model)
         {
             InitializeComponent();
 

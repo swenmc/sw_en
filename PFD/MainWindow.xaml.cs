@@ -47,7 +47,7 @@ namespace PFD
 
         bool bDebugging = false;
 
-        public CModel model;
+        public CModel_PFD model;
         public CDatabaseModels dmodels; // Todo nahradit databazov modelov
         public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
         public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
@@ -203,7 +203,7 @@ namespace PFD
             CalculateLoadingValues();
 
             // Create 3D model of structure including loading
-            model = new CExample_3D_901_PF(
+            model = new CModel_PFD_01_GR(
                     vm.WallHeight,
                     vm.GableWidth,
                     vm.fL1, vm.Frames,
@@ -950,7 +950,7 @@ namespace PFD
             CalculateLoadingValues();
 
             // TODO - nove parametre pre nastavenie hodnot zatazenia
-            model = new CExample_3D_901_PF(
+            model = new CModel_PFD_01_GR(
                 vm.WallHeight,
                 vm.GableWidth,
                 vm.fL1,

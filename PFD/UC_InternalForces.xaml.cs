@@ -40,10 +40,10 @@ namespace PFD
 
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
 
-        CModel Model;
+        CModel_PFD Model;
         List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases;
 
-        public UC_InternalForces(CModel model, CComponentListVM compList, List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases)
+        public UC_InternalForces(CModel_PFD model, CComponentListVM compList, List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases)
         {
             InitializeComponent();
 

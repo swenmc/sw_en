@@ -43,8 +43,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLOCKS\FS\CBlock_3D_001_DoorInBay.cs" />
-    <Compile Include="BLOCKS\FS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_01.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_02.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_03.cs" />
@@ -67,7 +65,6 @@
     <Compile Include="EXAMPLES\3D\CExample_3D_50.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_80.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_90.cs" />
-    <Compile Include="EXAMPLES\3D\CExample_3D_901_PF.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_902_OM.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_Ondro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +94,9 @@
       <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
       <Name>BaseClasses</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BLOCKS\FS\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
