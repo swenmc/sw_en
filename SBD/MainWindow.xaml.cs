@@ -175,12 +175,16 @@ namespace SBD
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
 
             float fLoadUnitMultiplier = 1000; // From kN to N
-            calcModel.CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfDesignSections, section, vm.Length, fx_positions, vm.Loadqy * fLoadUnitMultiplier, vm.Loadqz * fLoadUnitMultiplier, out sBIF_x, out sMomentValuesforCb);
+            CMember member = new CMember();
+            member.CrScStart = section;
+            member.FLength = vm.Length;
+
+            calcModel.CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfDesignSections, member, fx_positions, vm.Loadqy * fLoadUnitMultiplier, vm.Loadqz * fLoadUnitMultiplier, out sBIF_x, out sMomentValuesforCb);
 
             // Design
             designInternalForces[,] sDIF_x;
             CMemberDesign designModel = new CMemberDesign();
-            designModel.SetDesignForcesAndMemberDesign_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, section, vm.Length, sBIF_x, sMomentValuesforCb, out sDIF_x);
+            designModel.SetDesignForcesAndMemberDesign_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, sBIF_x, sMomentValuesforCb, out sDIF_x);
 
             // TODO - toto zobrazenie detailov v Gridview pre PFD a SBD treba refaktorovat a vytvorit jednotnu bazu pre zobrazovanie dat
             // v datagrid napriec roznymi projektmi

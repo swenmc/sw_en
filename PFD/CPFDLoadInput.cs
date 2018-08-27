@@ -91,7 +91,7 @@ namespace PFD
                 SetDesignLifeValueFromDatabaseValues();
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
-                NotifyPropertyChanged("DesignLife");
+                NotifyPropertyChanged("DesignLifeIndex");
             }
         }
 

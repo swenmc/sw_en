@@ -13,7 +13,7 @@ namespace FEM_CALC_BASE
         public SimpleBeamCalculation() { }
 
         // SBD funkcie (zahrnaju kombinacie)
-        public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, float[] fx_positions, float[] fE_d_load_values_LCS_y, float[] fE_d_load_values_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+        public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, float[] fx_positions, float[] fE_d_load_values_LCS_y, float[] fE_d_load_values_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
         {
             sMomentValuesforCb = new designMomentValuesForCb[iNumberOfLoadCombinations];
             sBIF_x = new basicInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
@@ -24,8 +24,8 @@ namespace FEM_CALC_BASE
                 //CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y[i]);
                 //CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z[i]);
 
-                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(fTheoreticalLengthOfMember, fE_d_load_values_LCS_y[i]);
-                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(fTheoreticalLengthOfMember, fE_d_load_values_LCS_z[i]);
+                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(member.FLength, fE_d_load_values_LCS_y[i]);
+                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(member.FLength, fE_d_load_values_LCS_z[i]);
 
                 float fM_abs_max = 0;
 
@@ -45,20 +45,20 @@ namespace FEM_CALC_BASE
                 }
 
                 sMomentValuesforCb[i].fM_max = fM_abs_max;
-                sMomentValuesforCb[i].fM_14 = memberModel_qz.GetM_x(0.25f * fTheoreticalLengthOfMember);
-                sMomentValuesforCb[i].fM_24 = memberModel_qz.GetM_x(0.50f * fTheoreticalLengthOfMember);
-                sMomentValuesforCb[i].fM_34 = memberModel_qz.GetM_x(0.75f * fTheoreticalLengthOfMember);
+                sMomentValuesforCb[i].fM_14 = memberModel_qz.GetM_x(0.25f * member.FLength);
+                sMomentValuesforCb[i].fM_24 = memberModel_qz.GetM_x(0.50f * member.FLength);
+                sMomentValuesforCb[i].fM_34 = memberModel_qz.GetM_x(0.75f * member.FLength);
             }
         }
 
-        public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, float[] fx_positions, 
+        public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfDesignSections, CMember member, float[] fx_positions, 
             float fE_d_load_value_LCS_y, float fE_d_load_value_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
         {
             int iNumberOfLoadCombinations = 1;
             float[] fE_d_load_values_LCS_y = new float[1] { fE_d_load_value_LCS_y };
             float[] fE_d_load_values_LCS_z = new float[1] { fE_d_load_value_LCS_z };
 
-            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, section, fTheoreticalLengthOfMember, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
         }
 
         public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
@@ -68,20 +68,18 @@ namespace FEM_CALC_BASE
             float[] fE_d_load_values_LCS_y = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? memberload.Fq : 0};
             float[] fE_d_load_values_LCS_z = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? memberload.Fq : 0};
 
-            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, (CCrSc_TW)member.CrScStart, member.FLength, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
         }
-
-
 
         // PFD - nove funkcie (nezahrnaju kombinacie)
 
-        public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, float[] fx_positions, float fE_d_load_values_LCS_y, float fE_d_load_values_LCS_z, out basicInternalForces[] sBIF_x, out designMomentValuesForCb sMomentValuesforCb)
+        public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, CMember member, float[] fx_positions, float fE_d_load_values_LCS_y, float fE_d_load_values_LCS_z, out basicInternalForces[] sBIF_x, out designMomentValuesForCb sMomentValuesforCb)
         {
             sMomentValuesforCb = new designMomentValuesForCb();
             sBIF_x = new basicInternalForces[iNumberOfDesignSections];
 
-                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y);
-                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(section, fTheoreticalLengthOfMember, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z);
+                CExample_2D_51_SB memberModel_qy = new CExample_2D_51_SB(member, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, fE_d_load_values_LCS_y);
+                CExample_2D_51_SB memberModel_qz = new CExample_2D_51_SB(member, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, fE_d_load_values_LCS_z);
 
                 float fM_abs_max = 0;
 
@@ -101,9 +99,9 @@ namespace FEM_CALC_BASE
                 }
 
                 sMomentValuesforCb.fM_max = fM_abs_max;
-                sMomentValuesforCb.fM_14 = memberModel_qz.GetM_x(0.25f * fTheoreticalLengthOfMember);
-                sMomentValuesforCb.fM_24 = memberModel_qz.GetM_x(0.50f * fTheoreticalLengthOfMember);
-                sMomentValuesforCb.fM_34 = memberModel_qz.GetM_x(0.75f * fTheoreticalLengthOfMember);
+                sMomentValuesforCb.fM_14 = memberModel_qz.GetM_x(0.25f * member.FLength);
+                sMomentValuesforCb.fM_24 = memberModel_qz.GetM_x(0.50f * member.FLength);
+                sMomentValuesforCb.fM_34 = memberModel_qz.GetM_x(0.75f * member.FLength);
         }
 
         public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
@@ -112,7 +110,7 @@ namespace FEM_CALC_BASE
             float fE_d_load_values_LCS_y = memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? memberload.Fq : 0;
             float fE_d_load_values_LCS_z = memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? memberload.Fq : 0;
 
-            CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, (CCrSc_TW)member.CrScStart, member.FLength, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+            CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
         }
 
     }

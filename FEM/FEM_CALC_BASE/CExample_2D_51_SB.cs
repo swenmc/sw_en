@@ -20,7 +20,7 @@ namespace FEM_CALC_BASE
         // Docasne riesenie
         // TODO 51 - nahradny model pruta zatazeneho spojitym zatazenim pre vypocet vn. sil pre lokalny smer y alebo z
         // TODO - Ondrej , upravit vsetko tak aby sem vstupoval priamo objekt pruta, limit state, load case, load
-        public CExample_2D_51_SB(CCrSc crsc, float fL_temp, EMLoadDirPCC1 eLoadDirection_temp, float fq_temp)
+        public CExample_2D_51_SB(CMember member, EMLoadDirPCC1 eLoadDirection_temp, float fq_temp)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
@@ -35,14 +35,14 @@ namespace FEM_CALC_BASE
             m_arrLoadCases = new CLoadCase[1];
             m_arrLoadCombs = new CLoadCombination[1];
 
-            fL = fL_temp;
+            fL = member.FLength;
             fq = fq_temp;
             eLoadDirection = eLoadDirection_temp;
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             // Cross-section
-            m_arrCrSc[0] = crsc;
+            m_arrCrSc[0] = member.CrScStart;
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array

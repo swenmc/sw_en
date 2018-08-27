@@ -85,7 +85,10 @@ namespace PFD
         //float fdist_girt_bottom; // 1 - 10 m
 
         List<CMemberLoadCombinationRatio> DesignResults;
-        
+
+        bool bInternalForcesResultsExists = false;
+        bool bMemberDesignResultsExists = false;
+        bool bJointDesignResultsExists = false;
 
         public MainWindow()
         {
@@ -630,7 +633,9 @@ namespace PFD
 
             // Design of members
             // Calculate Internal Forces For Load Cases
+
             DesignResults = new List<CMemberLoadCombinationRatio>();
+
             foreach (CMember m in model.m_arrMembers)
             {
                 for (int i = 0; i < iNumberOfDesignSections; i++)
@@ -638,41 +643,15 @@ namespace PFD
 
                 foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
                 {
+                    // Do not perform internal foces design for SLS
                     if (lcomb.eLComType == ELSType.eLS_SLS) continue;
 
-                    // TODO - nacitat internal forces z obsahu LC ktore patria kombinacii a prenasobit faktormi
-                    designMomentValuesForCb sMomentValuesforCb_design = new designMomentValuesForCb();
-                    basicInternalForces[] sBIF_x_design = new basicInternalForces[iNumberOfDesignSections];
+                    // Member basic internal forces
+                    designMomentValuesForCb sMomentValuesforCb_design;
+                    basicInternalForces[] sBIF_x_design;
+                    SetMemberInternalForcesInLoadCombination(m, lcomb, listMemberLoadForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
 
-                    foreach (CLoadCase lc in lcomb.LoadCasesList)
-                    {
-                        CMemberLoadForces mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
-                        if (mlf != null)
-                        {            
-                            sMomentValuesforCb_design.fM_14 += lc.Factor * mlf.MomentValues.fM_14;
-                            sMomentValuesforCb_design.fM_24 += lc.Factor * mlf.MomentValues.fM_24;
-                            sMomentValuesforCb_design.fM_34 += lc.Factor * mlf.MomentValues.fM_34;
-                            sMomentValuesforCb_design.fM_max += lc.Factor * mlf.MomentValues.fM_max;
-
-                            int j = 0;
-                            foreach (basicInternalForces bif in mlf.Forces)
-                            {
-                                sBIF_x_design[j].fM_yu += lc.Factor * bif.fM_yu;
-                                sBIF_x_design[j].fM_yy += lc.Factor * bif.fM_yy;
-                                sBIF_x_design[j].fM_zv += lc.Factor * bif.fM_zv;
-                                sBIF_x_design[j].fM_zz += lc.Factor * bif.fM_zz;
-                                sBIF_x_design[j].fN += lc.Factor * bif.fN;
-                                sBIF_x_design[j].fT += lc.Factor * bif.fT;
-                                sBIF_x_design[j].fV_yu += lc.Factor * bif.fV_yu;
-                                sBIF_x_design[j].fV_yy += lc.Factor * bif.fV_yy;
-                                sBIF_x_design[j].fV_zv += lc.Factor * bif.fV_zv;
-                                sBIF_x_design[j].fV_zz += lc.Factor * bif.fV_zz;
-                                j++;
-                            }
-                        }
-                    }
-
-                    // Design
+                    // Member design internal forces
                     designInternalForces[] sDIF_x;
                     CMemberDesign designModel = new CMemberDesign();
                     designModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sDIF_x);
@@ -751,6 +730,41 @@ namespace PFD
                     "Maximum design ratio - columns\n" +
                     "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n"
                     );
+        }
+
+        public void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb,  List<CMemberLoadForces> listMemberLoadForces, int iNumberOfMemberResultsSections, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
+        {
+            sMomentValuesforCb_output = new designMomentValuesForCb();
+            sBIF_x_output = new basicInternalForces[iNumberOfMemberResultsSections];
+
+            foreach (CLoadCase lc in lcomb.LoadCasesList)
+            {
+                CMemberLoadForces mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
+                if (mlf != null)
+                {
+                    sMomentValuesforCb_output.fM_14 += lc.Factor * mlf.MomentValues.fM_14;
+                    sMomentValuesforCb_output.fM_24 += lc.Factor * mlf.MomentValues.fM_24;
+                    sMomentValuesforCb_output.fM_34 += lc.Factor * mlf.MomentValues.fM_34;
+                    sMomentValuesforCb_output.fM_max += lc.Factor * mlf.MomentValues.fM_max;
+
+                    int j = 0;
+                    foreach (basicInternalForces bif in mlf.Forces)
+                    {
+                        sBIF_x_output[j].fN += lc.Factor * bif.fN;
+                        sBIF_x_output[j].fV_yu += lc.Factor * bif.fV_yu;
+                        sBIF_x_output[j].fV_yy += lc.Factor * bif.fV_yy;
+                        sBIF_x_output[j].fV_zv += lc.Factor * bif.fV_zv;
+                        sBIF_x_output[j].fV_zz += lc.Factor * bif.fV_zz;
+                        sBIF_x_output[j].fT += lc.Factor * bif.fT;
+                        sBIF_x_output[j].fM_yu += lc.Factor * bif.fM_yu;
+                        sBIF_x_output[j].fM_yy += lc.Factor * bif.fM_yy;
+                        sBIF_x_output[j].fM_zv += lc.Factor * bif.fM_zv;
+                        sBIF_x_output[j].fM_zz += lc.Factor * bif.fM_zz;
+
+                        j++;
+                    }
+                }
+            }
         }
 
         public void CalculateBasicLoad(float fMass_Roof, float fMass_Wall)

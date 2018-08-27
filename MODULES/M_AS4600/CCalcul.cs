@@ -197,7 +197,12 @@ namespace M_AS4600
         public float fEta_725_2 = 0f;
         public float fEta_max = 0.0f;
 
-        public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)
+        public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designMomentValuesForCb sMomentValuesForCb)
+        {
+            CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sMomentValuesForCb);
+        }
+
+        public void CalculateDesignRatio(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)
         {
             AS_4600 eq = new AS_4600();
 

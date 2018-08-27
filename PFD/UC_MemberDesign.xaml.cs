@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
@@ -50,8 +51,22 @@ namespace PFD
 
             //CMemberLoadCombinationRatio mlcr = DesignResults.Find(i => i.LoadCombination.ID == Combobox_LoadCombination.SelectedValue)
 
-            CCalcul c = new CCalcul(false, DesignResults[0].DesignInternalForces, (CCrSc_TW)DesignResults[0].Member.CrScStart, DesignResults[0].Member.FLength, DesignResults[0].DesignMomentValuesForCb);
-            DisplayDesignResultsInGridView(Results_GridView, c);
+            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
+            {
+                CCalcul c = new CCalcul(false, DesignResults[0].DesignInternalForces, DesignResults[0].Member, DesignResults[0].DesignMomentValuesForCb);
+                DisplayDesignResultsInGridView(Results_GridView, c);
+            }
+
+            // Member Design
+            CPFDMemberDesign mdinput = new CPFDMemberDesign();
+            mdinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
+            this.DataContext = mdinput;
+        }
+        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            CPFDMemberDesign mdinput = sender as CPFDMemberDesign;
+            if (mdinput != null && mdinput.IsSetFromCode) return;
         }
 
         // TODO - Ondrej - zjednotit s UC_InternalForces

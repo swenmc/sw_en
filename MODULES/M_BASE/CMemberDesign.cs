@@ -24,10 +24,10 @@ namespace M_BASE
         // SBD
         public void SetDesignForcesAndMemberDesign_SBD(int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
-            SetDesignForcesAndMemberDesign_SBD(1, iNumberOfDesignSections, (CCrSc_TW)member.CrScStart, member.FLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
+            SetDesignForcesAndMemberDesign_SBD(1, iNumberOfDesignSections, member, sBIF_x, sMomentValuesforCb, out sDIF_x);
         }
 
-        public void SetDesignForcesAndMemberDesign_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
             // Design
@@ -48,7 +48,7 @@ namespace M_BASE
                     sDIF_x[i, j].fV_zv = sBIF_x[i, j].fV_zv;
                     sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
 
-                    CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], section, fTheoreticalLengthOfMember, sMomentValuesforCb[i]);
+                    CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], member, sMomentValuesforCb[i]);
 
                     if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
@@ -63,11 +63,6 @@ namespace M_BASE
 
         // PFD
         public void SetDesignForcesAndMemberDesign_PFD(int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x, designMomentValuesForCb sMomentValuesforCb, out designInternalForces[] sDIF_x)
-        {
-            SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, (CCrSc_TW)member.CrScStart, member.FLength, sBIF_x, sMomentValuesforCb, out sDIF_x);
-        }
-
-        public void SetDesignForcesAndMemberDesign_PFD(int iNumberOfDesignSections, CCrSc_TW section, float fTheoreticalLengthOfMember, basicInternalForces[] sBIF_x, designMomentValuesForCb sMomentValuesforCb, out designInternalForces[] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
             // Design
@@ -86,7 +81,7 @@ namespace M_BASE
                 sDIF_x[j].fV_zv = sBIF_x[j].fV_zv;
                 sDIF_x[j].fM_yu = sBIF_x[j].fM_yu;
 
-                CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[j], section, fTheoreticalLengthOfMember, sMomentValuesforCb);
+                CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[j], member, sMomentValuesforCb);
 
                     if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {

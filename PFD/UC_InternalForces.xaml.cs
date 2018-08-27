@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -102,6 +103,16 @@ namespace PFD
             DrawTexts(fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_BendingMomentDiagramMx);
             DrawTexts(fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_BendingMomentDiagramMy);
 
+            // Internal forces
+            CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces();
+            ifinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
+            this.DataContext = ifinput;
+        }
+        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            CPFDLoadInput loadInput = sender as CPFDLoadInput;
+            if (loadInput != null && loadInput.IsSetFromCode) return;
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)
