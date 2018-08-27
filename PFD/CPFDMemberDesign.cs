@@ -19,28 +19,30 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        private int MLimiStateIndex;
+        private int MLimitStateIndex;
         private int MLoadCombinationIndex;
         private int MComponentTypeIndex;
 
-        private List<string> MComponentsNames;
         private ObservableCollection<CComponentInfo> MComponentList;
+
+        private CLimitState[] MLimitStates;
+        private CLoadCombination[] MLoadCombinations;
 
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LimiStateIndex
+        public int LimitStateIndex
         {
             get
             {
-                return MLimiStateIndex;
+                return MLimitStateIndex;
             }
 
             set
             {
-                MLimiStateIndex = value;
+                MLimitStateIndex = value;
 
-                NotifyPropertyChanged("LimiStateIndex");
+                NotifyPropertyChanged("LimitStateIndex");
             }
         }
 
@@ -76,19 +78,19 @@ namespace PFD
             }
         }
 
-        public List<string> ComponentsNames
-        {
-            get
-            {
-                return MComponentsNames;
-            }
+        //public List<string> ComponentsNames
+        //{
+        //    get
+        //    {
+        //        return MComponentsNames;
+        //    }
 
-            set
-            {
-                MComponentsNames = value;
-                NotifyPropertyChanged("ComponentsNames");
-            }
-        }
+        //    set
+        //    {
+        //        MComponentsNames = value;
+        //        NotifyPropertyChanged("ComponentsNames");
+        //    }
+        //}
 
         public ObservableCollection<CComponentInfo> ComponentList
         {
@@ -104,20 +106,48 @@ namespace PFD
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        public CPFDMemberDesign(ObservableCollection<CComponentInfo> componentList)
+        public CLimitState[] LimitStates
         {
-            //MComponentsNames = componentsNames;
+            get
+            {
+                return MLimitStates;
+            }
+
+            set
+            {
+                MLimitStates = value;
+                NotifyPropertyChanged("LimitStates");
+            }
+        }
+
+        public CLoadCombination[] LoadCombinations
+        {
+            get
+            {
+                return MLoadCombinations;
+            }
+
+            set
+            {
+                MLoadCombinations = value;
+                NotifyPropertyChanged("LoadCombinations");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        public CPFDMemberDesign(CLimitState[] limitStates, CLoadCombination[] loadCombinations, ObservableCollection<CComponentInfo> componentList)
+        {
+            MLimitStates = limitStates;
+            MLoadCombinations = loadCombinations;
             MComponentList = componentList;
 
             // Set default
-            LimiStateIndex = 0;
+            LimitStateIndex = 0;
             LoadCombinationIndex = 0;
             ComponentTypeIndex = 0;
-
-
+            
             IsSetFromCode = false;
         }
 

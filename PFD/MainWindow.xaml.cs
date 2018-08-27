@@ -113,9 +113,7 @@ namespace PFD
 
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
-
-            // TODO Ondrej - Bug No 43 - polozky farieb v comboboxe stratia farbu, ak boli vybrane
-
+            
             // Model Geometry
             vm = new CPFDViewModel(1);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
@@ -1143,7 +1141,8 @@ namespace PFD
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
-                Member_Design.Content = new UC_MemberDesign(model, component, DesignResults_ULS, DesignResults_SLS).Content;
+                CComponentListVM compList = (CComponentListVM)component.DataContext;
+                Member_Design.Content = new UC_MemberDesign(model, compList, DesignResults_ULS, DesignResults_SLS);
             }
             else if (MainTabControl.SelectedIndex == 7)
                 Joint_Design.Content = new UC_JointDesign().Content;

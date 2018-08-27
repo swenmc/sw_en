@@ -30,45 +30,26 @@ namespace PFD
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
         List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
 
-        public List<string> ComponentsNames;
+        CModel Model;
+        List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
+        List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
 
         public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
 
-        public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS, List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS)
+        public UC_MemberDesign(CModel model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
         {
             InitializeComponent();
 
-            CComponentListVM compList = (CComponentListVM)components.DataContext;
-            ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
+            Model = model;
+            DesignResults_ULS = designResults_ULS;
+            DesignResults_SLS = designResults_SLS;
 
-            // Add items into comboboxes
-            FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
-            FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
-            // TODO Ondrej - fill combobox with UC_ComponentList Names
+            // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a 
+            //tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
 
-            Combobox_ComponentType.ItemsSource = ComponentsNames;
-
-            // Set default values of combobox index
-            Combobox_LimitState.SelectedIndex = 0;
-            Combobox_LoadCombination.SelectedIndex = 0;
-            Combobox_ComponentType.SelectedIndex = 0;
-
-            // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
-
-            //CMemberLoadCombinationRatio mlcr = DesignResults.Find(i => i.LoadCombination.ID == Combobox_LoadCombination.SelectedValue)
-
-            CMemberGroup GroupOfMembersWithSelectedType = model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex];
-
-            // Calculate governing member design ratio in member group
-            CCalcul cGoverningMemberResults;
-
-            if (model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex].eLComType == ELSType.eLS_ULS)
-                CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
-            else
-                CalculateGoverningMemberDesignDetails(DesignResults_SLS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
-
+            
             // Member Design
-            CPFDMemberDesign mdinput = new CPFDMemberDesign(compList.ComponentList);
+            CPFDMemberDesign mdinput = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             mdinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = mdinput;
         }
@@ -77,26 +58,19 @@ namespace PFD
             if (sender == null) return;
             CPFDMemberDesign mdinput = sender as CPFDMemberDesign;
             if (mdinput != null && mdinput.IsSetFromCode) return;
-        }
 
-        // TODO - Ondrej - zjednotit s UC_InternalForces
-        public void FillComboboxValues(ComboBox combobox, CObject[] array)
-        {
-            if (array != null)
-            {
-                foreach (CObject obj in array)
-                {
-                    if (obj.Name != null || obj.Name != "")
-                        combobox.Items.Add(obj.Name);
-                    else
-                    {
-                        // Exception
-                        MessageBox.Show("Object ID = " + obj.ID + "." + " Object name is not defined correctly.");
-                    }
-                }
-            }
-        }
+            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups[mdinput.ComponentTypeIndex];
 
+            // Calculate governing member design ratio in member group
+            CCalcul cGoverningMemberResults;
+
+            if (Model.m_arrLoadCombs[mdinput.LoadCombinationIndex].eLComType == ELSType.eLS_ULS)
+                CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+            else
+                CalculateGoverningMemberDesignDetails(DesignResults_SLS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+
+        }
+        
         // Calculate governing member design ratio
         public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_ULS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
         {
