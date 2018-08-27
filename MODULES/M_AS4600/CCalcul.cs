@@ -197,6 +197,14 @@ namespace M_AS4600
         public float fEta_725_2 = 0f;
         public float fEta_max = 0.0f;
 
+        // SLS
+        public float fLimitDeflection;
+        public float fEta_defl_yu = 0f;
+        public float fEta_defl_zv = 0f;
+        public float fEta_defl_yy = 0f;
+        public float fEta_defl_zz = 0f;
+        public float fEta_defl_tot = 0f;
+
         public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designMomentValuesForCb sMomentValuesForCb)
         {
             CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sMomentValuesForCb);
@@ -206,6 +214,31 @@ namespace M_AS4600
             {
                 throw new Exception("Design ratio is invalid! " + "Member ID: " + member.ID);
             }
+        }
+
+        public CCalcul(bool bIsDebugging, designDeflections sDDeflections_x_temp, CMember member)
+        {
+            CalculateDesignRatio(bIsDebugging, sDDeflections_x_temp, member.FLength);
+
+            // Validation
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid! " + "Member ID: " + member.ID);
+            }
+        }
+
+        public void CalculateDesignRatio(bool bIsDebugging, designDeflections sDDeflections_x_temp, float fL_temp)
+        {
+            float fLimit = 1 / 360; // TODO nastavovat podla obsahu kombinacie SLS a typu prvku
+            float fLimitDeflection = fL_temp * fLimit;
+
+            fEta_defl_yu = sDDeflections_x_temp.fDelta_yu / fLimit;
+            fEta_defl_zv = sDDeflections_x_temp.fDelta_zv / fLimit;
+            fEta_defl_yy = sDDeflections_x_temp.fDelta_yy / fLimit;
+            fEta_defl_zz = sDDeflections_x_temp.fDelta_zz / fLimit;
+            fEta_defl_tot = sDDeflections_x_temp.fDelta_tot / fLimit;
+
+            fEta_max = fEta_defl_tot;
         }
 
         public void CalculateDesignRatio(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BaseClasses;
+using MATH;
 
 namespace FEM_CALC_BASE
 {
-    public static class CInternalForcesManager
+    public static class CMemberResultsManager
     {
+        // Internal forces - ULS
         public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, int iNumberOfMemberResultsSections, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
             sMomentValuesforCb_output = new designMomentValuesForCb();
@@ -47,6 +49,32 @@ namespace FEM_CALC_BASE
             }
         }
 
+        //  Deflections - SLS
+        public static void SetMemberDeflectionsInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCases> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
+        {
+            sBDeflections_x_output = new basicDeflections[iNumberOfMemberResultsSections];
 
+            if (listMemberDeflections != null) // If some results data exist
+            {
+                foreach (CLoadCase lc in lcomb.LoadCasesList)
+                {
+                    CMemberDeflectionsInLoadCases mdefl = listMemberDeflections.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
+                    if (mdefl != null)
+                    {
+                        int j = 0;
+                        foreach (basicDeflections bdef in mdefl.Deflections)
+                        {
+                            sBDeflections_x_output[j].fDelta_yu += lc.Factor * bdef.fDelta_yu;
+                            sBDeflections_x_output[j].fDelta_yy += lc.Factor * bdef.fDelta_yy;
+                            sBDeflections_x_output[j].fDelta_zv += lc.Factor * bdef.fDelta_zv;
+                            sBDeflections_x_output[j].fDelta_zz += lc.Factor * bdef.fDelta_zz;
+                            sBDeflections_x_output[j].fDelta_tot += (float)Math.Sqrt(MathF.Pow2(lc.Factor * bdef.fDelta_yu) + MathF.Pow2(lc.Factor * bdef.fDelta_zv));
+
+                            j++;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -613,6 +613,24 @@
         public float fM_zz;
     }
 
+    public struct basicDeflections
+    {
+        public float fDelta_yu;
+        public float fDelta_zv;
+        public float fDelta_yy;
+        public float fDelta_zz;
+        public float fDelta_tot;
+    }
+
+    public struct designDeflections
+    {
+        public float fDelta_yu;
+        public float fDelta_zv;
+        public float fDelta_yy;
+        public float fDelta_zz;
+        public float fDelta_tot;
+    }
+
     public struct designInternalForces
     {
         public float fN;

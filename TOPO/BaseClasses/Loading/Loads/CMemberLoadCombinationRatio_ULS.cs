@@ -6,7 +6,7 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses
 {
     [Serializable]
-    public class CMemberLoadCombinationRatio
+    public class CMemberLoadCombinationRatio_ULS
     {
         private CMember MMember;
         private CLoadCombination MLoadCombination;
@@ -81,18 +81,18 @@ namespace BaseClasses
             }
         }
 
-        public CMemberLoadCombinationRatio()
+        public CMemberLoadCombinationRatio_ULS()
         {
 
         }
-        public CMemberLoadCombinationRatio(CMember member, CLoadCombination loadCombination, float maxDesignRatio,
+        public CMemberLoadCombinationRatio_ULS(CMember member, CLoadCombination loadCombination, float maxDesignRatio,
             designInternalForces designInternalForces, designMomentValuesForCb designMomentValuesForCb)
         {
-            MMember = member;
-            MLoadCombination = loadCombination;
-            MMaximumDesignRatio = maxDesignRatio;
-            MDesignInternalForces = designInternalForces;
-            MDesignMomentValuesForCb = designMomentValuesForCb;
+            Member = member;
+            LoadCombination = loadCombination;
+            MaximumDesignRatio = maxDesignRatio;
+            DesignInternalForces = designInternalForces;
+            DesignMomentValuesForCb = designMomentValuesForCb;
 
         }
     }

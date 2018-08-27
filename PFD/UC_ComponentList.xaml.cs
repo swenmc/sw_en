@@ -62,6 +62,9 @@ namespace PFD
 
             // TODO Ondrej - zrusit napojenie na objekt DatabaseComponents database a nahradit vstupmi z SQL databazy - MDBModels, tabulka componentPrefixes
             // Obsah tejto tabulky co sa tyka prierezov by sa mal prebrat z modelu CExample_3D_901_PF - m_arrSections
+            // Material prevziat z prierezov
+
+            // TODO - Ondrej - obsah tohto zoznamu preberat z CExample_3D_901_PF - zoznam listOfModelMemberGroups
             CComponentInfo ci = null;
             CComponentListVM cl = new CComponentListVM();
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], "Box 63020", "G550", true, true, true, true, true);

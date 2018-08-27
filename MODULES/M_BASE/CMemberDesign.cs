@@ -91,7 +91,32 @@ namespace M_BASE
 
                     listOfMemberDesignInLocations.Add(obj_CalcDesign);
                 }
+        }
 
+        public void SetDesignDeflections_PFD(int iNumberOfDesignSections, CMember member, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)
+        {
+            listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
+            // Design
+            sDDeflections_x = new designDeflections[iNumberOfDesignSections];
+
+            for (int j = 0; j < iNumberOfDesignSections; j++)
+            {
+                sDDeflections_x[j].fDelta_yu = sBDeflections_x[j].fDelta_yu;
+                sDDeflections_x[j].fDelta_yy = sBDeflections_x[j].fDelta_yy;
+                sDDeflections_x[j].fDelta_zv = sBDeflections_x[j].fDelta_zv;
+                sDDeflections_x[j].fDelta_zz = sBDeflections_x[j].fDelta_zz;
+                sDDeflections_x[j].fDelta_tot = sBDeflections_x[j].fDelta_tot;
+
+                CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDDeflections_x[j], member);
+
+                if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
+                {
+                    fMaximumDesignRatioLocationID = j;
+                    fMaximumDesignRatio = obj_CalcDesign.fEta_max;
+                }
+
+                listOfMemberDesignInLocations.Add(obj_CalcDesign);
+            }
         }
     }
 }
