@@ -230,6 +230,21 @@ namespace PFD
 
             //Combobox_LoadCase.SelectedIndex = 0; // Selected load case  - TOto spusti UpdateAll a model sa vytvara znovu
 
+            if (DesignResults_ULS == null)
+            {
+                Member_Design.IsEnabled = false;
+                Internal_Forces.IsEnabled = false;
+                //Member_Design.Visibility = Visibility.Hidden;
+                //Internal_Forces.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                Member_Design.IsEnabled = true;
+                Internal_Forces.IsEnabled = true;
+                //Member_Design.Visibility = Visibility.Visible;
+                //Internal_Forces.Visibility = Visibility.Visible;
+            }
+
             // Update display options
             UpdateDisplayOptions();
 
@@ -477,12 +492,15 @@ namespace PFD
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
+            DateTime start = DateTime.Now;
             // Clear results of previous calculation
             DeleteCalculationResults();
 
             // TODO  - toto je potrebne presunut niekam k materialom / prierezom, moze sa nacitat pred vypoctom
             SetMaterialValuesFromDatabase();
             SetCrossSectionValuesFromDatabase();
+
+            System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
             // Temporary solution
             // Purlin
@@ -603,6 +621,7 @@ namespace PFD
             listMemberInternalForces = new List<CMemberInternalForcesInLoadCases>();
             listMemberDeflections = new List<CMemberDeflectionsInLoadCases>();
 
+            System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in model.m_arrMembers)
             {
@@ -673,7 +692,7 @@ namespace PFD
                                 }
 
                                 // Output (for debugging)
-                                bDebugging = true; // Testovacie ucely
+                                bDebugging = false; // Testovacie ucely
                                 if (bDebugging)
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
@@ -741,7 +760,7 @@ namespace PFD
                                 }
 
                                 // Output (for debugging)
-                                bDebugging = true; // Testovacie ucely
+                                bDebugging = false; // Testovacie ucely
                                 if (bDebugging)
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
@@ -752,6 +771,10 @@ namespace PFD
                 }
             }
 
+
+            Member_Design.IsEnabled = true; 
+            Internal_Forces.IsEnabled = true;
+            System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);
             // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
             // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
             // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
@@ -843,80 +866,7 @@ namespace PFD
         
         public void SetMaterialValuesFromDatabase()
         {
-            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MaterialsSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteCommand command;
-                SQLiteDataReader reader;
-
-                foreach (CMat_03_00 mat in model.m_arrMat)
-                {
-                    int ID = 1;
-                    string stringcommand = "Select * from materialSteelAS4600 where ID = '" + ID + "'";
-
-                    command = new SQLiteCommand(stringcommand, conn);
-                    using (reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            mat.Standard = reader["Standard"].ToString();
-                            mat.Name = /*mat.Grade =*/ reader["Grade"].ToString();
-                            int intervals = reader.GetInt32(reader.GetOrdinal("iNumberOfIntervals"));
-                            mat.Note = reader["note"].ToString();
-
-                            if (intervals == 1)
-                            {
-                                mat.m_ft_interval = new float[intervals];
-                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
-                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f; // From MPa -> Pa, asi by bolo lepsie zmenit jednotky priamo v databaze ??? Ale MPa sa udavaju najcastejsie v podkladoch a tabulkach
-                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
-                            }
-                            else if (intervals == 2)
-                            {
-                                mat.m_ft_interval = new float[intervals];
-                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
-                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f;
-                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
-                                mat.m_ft_interval[1] = reader.GetFloat(reader.GetOrdinal("t2"));
-                                mat.m_ff_yk[1] = reader.GetFloat(reader.GetOrdinal("f_y2")) * 1e+6f;
-                                mat.m_ff_u[1] = reader.GetFloat(reader.GetOrdinal("f_u2")) * 1e+6f;
-                            }
-                            else if (intervals == 3)
-                            {
-                                mat.m_ft_interval = new float[intervals];
-                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
-                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f;
-                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
-                                mat.m_ft_interval[1] = reader.GetFloat(reader.GetOrdinal("t2"));
-                                mat.m_ff_yk[1] = reader.GetFloat(reader.GetOrdinal("f_y2")) * 1e+6f;
-                                mat.m_ff_u[1] = reader.GetFloat(reader.GetOrdinal("f_u2")) * 1e+6f;
-                                mat.m_ft_interval[2] = reader.GetFloat(reader.GetOrdinal("t3"));
-                                mat.m_ff_yk[2] = reader.GetFloat(reader.GetOrdinal("f_y3")) * 1e+6f;
-                                mat.m_ff_u[2] = reader.GetFloat(reader.GetOrdinal("f_u3")) * 1e+6f;
-                            }
-                            else if (intervals == 4)
-                            {
-                                mat.m_ft_interval = new float[intervals];
-                                mat.m_ft_interval[0] = reader.GetFloat(reader.GetOrdinal("t1"));
-                                mat.m_ff_yk[0] = reader.GetFloat(reader.GetOrdinal("f_y1")) * 1e+6f;
-                                mat.m_ff_u[0] = reader.GetFloat(reader.GetOrdinal("f_u1")) * 1e+6f;
-                                mat.m_ft_interval[1] = reader.GetFloat(reader.GetOrdinal("t2"));
-                                mat.m_ff_yk[1] = reader.GetFloat(reader.GetOrdinal("f_y2")) * 1e+6f;
-                                mat.m_ff_u[1] = reader.GetFloat(reader.GetOrdinal("f_u2")) * 1e+6f;
-                                mat.m_ft_interval[2] = reader.GetFloat(reader.GetOrdinal("t3"));
-                                mat.m_ff_yk[2] = reader.GetFloat(reader.GetOrdinal("f_y3")) * 1e+6f;
-                                mat.m_ff_u[2] = reader.GetFloat(reader.GetOrdinal("f_u3")) * 1e+6f;
-                                mat.m_ft_interval[3] = reader.GetFloat(reader.GetOrdinal("t4"));
-                                mat.m_ff_yk[3] = reader.GetFloat(reader.GetOrdinal("f_y4")) * 1e+6f;
-                                mat.m_ff_u[3] = reader.GetFloat(reader.GetOrdinal("f_u4")) * 1e+6f;
-                            }
-
-                            model.m_arrMat[0] = mat;
-                        }
-                    }
-                    reader.Close();
-                }
-            }
+            CMaterialManager.SetMaterialValuesFromDatabase(model.m_arrMat);
         }
 
         public void SetCrossSectionValuesFromDatabase()
@@ -1135,7 +1085,8 @@ namespace PFD
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
-                Internal_Forces.Content = new UC_InternalForces(model, component, listMemberInternalForces).Content;
+                CComponentListVM compList = (CComponentListVM)component.DataContext;
+                Internal_Forces.Content = new UC_InternalForces(model, compList, listMemberInternalForces);
             }
             else if (MainTabControl.SelectedIndex == 6)
             {

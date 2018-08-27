@@ -40,26 +40,29 @@ namespace PFD
 
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
 
-        public List<string> ComponentsNames;
+        CModel Model;
+        List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases;
 
-        public UC_InternalForces(CModel model, UC_ComponentList components, List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases)
+        public UC_InternalForces(CModel model, CComponentListVM compList, List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases)
         {
             InitializeComponent();
 
-            CComponentListVM compList = (CComponentListVM)components.DataContext;
-            ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
+            Model = model;
+            ListMemberInternalForcesInLoadCases = listMemberInternalForcesInLoadCases;
+            
+            // Internal forces
+            CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
+            ifinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
+            this.DataContext = ifinput;
+        }
 
-            // Add items into comboboxes
-            FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
-            FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
-            //FillComboboxValues(Combobox_ComponentType, components.MemberComponentName); binding napojit
 
-            Combobox_ComponentType.ItemsSource = ComponentsNames;
+        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            CPFDLoadInput loadInput = sender as CPFDLoadInput;
+            if (loadInput != null && loadInput.IsSetFromCode) return;
 
-            // Set default values of combobox index
-            Combobox_LimitState.SelectedIndex = 0;
-            Combobox_LoadCombination.SelectedIndex = 0;
-            Combobox_ComponentType.SelectedIndex = 0;
 
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
@@ -73,9 +76,9 @@ namespace PFD
 
             // TODO - Ondrej
             // TODO - zo skupiny prutov s rovnakym typom z component list vybrat prvy alebo prejst vsetky ???
-            CMember member = model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex].ListOfMembers[0];
+            CMember member = Model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex].ListOfMembers[0];
             // TODO - kombinacia ktorej vysledky chceme zobrazit
-            CLoadCombination lcomb = model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex];
+            CLoadCombination lcomb = Model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex];
             // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sMomentValuesforCb, out sBIF_x);
 
@@ -129,16 +132,6 @@ namespace PFD
             DrawTexts(fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_BendingMomentDiagramMx);
             DrawTexts(fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_BendingMomentDiagramMy);
 
-            // Internal forces
-            CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces();
-            ifinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
-            this.DataContext = ifinput;
-        }
-        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
-        {
-            if (sender == null) return;
-            CPFDLoadInput loadInput = sender as CPFDLoadInput;
-            if (loadInput != null && loadInput.IsSetFromCode) return;
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)

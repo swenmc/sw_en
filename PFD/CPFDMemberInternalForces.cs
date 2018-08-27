@@ -8,6 +8,7 @@ using System.Data.SQLite;
 using System.Configuration;
 using System.Globalization;
 using BaseClasses;
+using System.Collections.ObjectModel;
 
 namespace PFD
 {
@@ -21,6 +22,10 @@ namespace PFD
         private int MLimitStateIndex;
         private int MLoadCombinationIndex;
         private int MComponentTypeIndex;
+
+        private ObservableCollection<CComponentInfo> MComponentList;
+        private CLimitState[] MLimitStates;
+        private CLoadCombination[] MLoadCombinations;
 
         public bool IsSetFromCode = false;
 
@@ -72,11 +77,57 @@ namespace PFD
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        public CPFDMemberInternalForces()
+        public ObservableCollection<CComponentInfo> ComponentList
         {
+            get
+            {
+                return MComponentList;
+            }
+
+            set
+            {
+                MComponentList = value;
+                NotifyPropertyChanged("ComponentList");
+            }
+        }
+
+        public CLimitState[] LimitStates
+        {
+            get
+            {
+                return MLimitStates;
+            }
+
+            set
+            {
+                MLimitStates = value;
+                NotifyPropertyChanged("LimitStates");
+            }
+        }
+
+        public CLoadCombination[] LoadCombinations
+        {
+            get
+            {
+                return MLoadCombinations;
+            }
+
+            set
+            {
+                MLoadCombinations = value;
+                NotifyPropertyChanged("LoadCombinations");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] loadCombinations, ObservableCollection<CComponentInfo> componentList)
+        {
+            MLimitStates = limitStates;
+            MLoadCombinations = loadCombinations;
+            MComponentList = componentList;
+
             // Set default
             LimitStateIndex = 0;
             LoadCombinationIndex = 0;

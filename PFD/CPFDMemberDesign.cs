@@ -24,7 +24,6 @@ namespace PFD
         private int MComponentTypeIndex;
 
         private ObservableCollection<CComponentInfo> MComponentList;
-
         private CLimitState[] MLimitStates;
         private CLoadCombination[] MLoadCombinations;
 
@@ -77,21 +76,7 @@ namespace PFD
                 NotifyPropertyChanged("ComponentTypeIndex");
             }
         }
-
-        //public List<string> ComponentsNames
-        //{
-        //    get
-        //    {
-        //        return MComponentsNames;
-        //    }
-
-        //    set
-        //    {
-        //        MComponentsNames = value;
-        //        NotifyPropertyChanged("ComponentsNames");
-        //    }
-        //}
-
+        
         public ObservableCollection<CComponentInfo> ComponentList
         {
             get
