@@ -81,10 +81,15 @@ namespace PFD
                 float fMaximumDesignRatio = 0;
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
+
+
                     // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
                     // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
 
-                    CCalcul c = new CCalcul(false, DesignResults[m.ID - 1].DesignInternalForces, m, DesignResults[m.ID - 1].DesignMomentValuesForCb);
+                    //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
+                    CMemberLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
+                    if (res == null) continue;
+                    CCalcul c = new CCalcul(false, res.DesignInternalForces, m, res.DesignMomentValuesForCb);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
@@ -112,12 +117,18 @@ namespace PFD
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = 0;
+
+                //Mato mam otazku: Preco tu neprejdeme zoznam DesignResults a vypocet spravime pre vsetky Members z DesignResults, ktore maju dany typ vybraty v kombe ComponentType???
+
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
                     // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
                     // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
 
-                    CCalcul c = new CCalcul(false, DesignResults[m.ID - 1].DesignDeflections, m);
+                    //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
+                    CMemberLoadCombinationRatio_SLS res = DesignResults.Find(i => i.Member.ID == m.ID);
+                    if (res == null) continue;
+                    CCalcul c = new CCalcul(false, res.DesignDeflections, m);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
