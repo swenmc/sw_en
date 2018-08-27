@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MATH;
 using BaseClasses;
+using FEM_CALC_BASE;
 
 namespace PFD
 {
@@ -40,15 +41,14 @@ namespace PFD
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
 
         public List<string> ComponentsNames;
-        
 
-        public UC_InternalForces(CModel model, UC_ComponentList components)
+        public UC_InternalForces(CModel model, UC_ComponentList components, List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases)
         {
             InitializeComponent();
 
             CComponentListVM compList = (CComponentListVM)components.DataContext;
             ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
-            
+
             // Add items into comboboxes
             FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
             FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
@@ -59,19 +59,45 @@ namespace PFD
             // Set default values of combobox index
             Combobox_LimitState.SelectedIndex = 0;
             Combobox_LoadCombination.SelectedIndex = 0;
+            Combobox_ComponentType.SelectedIndex = 0;
 
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
             for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
                 arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * fMemberLength_xMax; // Int must be converted to the float to get decimal numbers
 
-            // Temporary Data
-            float[] fArr_AxialForceValuesN = new float[iNumberOfDesignSections] { 10000, 10000, 9000, 0000, 0000, -3000, -3000, -4000, -4500, -5000, -5000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_ShearForceValuesVx = new float[iNumberOfDesignSections] { -10000, -8000, -3000, -5000, -5000, -4600, 0, -12000, -8000, -20000, -3000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_ShearForceValuesVy = new float[iNumberOfDesignSections] { 15000, 8000, 3000, 5000, 5000, 4600, 0, 12000, 8000, 20000, 5000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_TorsionMomentValuesT = new float[iNumberOfDesignSections] { 5000, 8000, 3000, 5000, 5000, 4600, -2000, -1000, -8000, -0, -1000 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_BendingMomentValuesMx = new float[iNumberOfDesignSections] { 100, 8000, 30000, 50000, 20000, 14600, 13000, 12000, 8000, 0, 300 }; // Temporary data - napojit na vysledky vypoctu
-            float[] fArr_BendingMomentValuesMy = new float[iNumberOfDesignSections] { -500, -1000, -2000, -3000, -4000, -4600, -4800, -3000, -2000, 0, -200 }; // Temporary data - napojit na vysledky vypoctu
+            // Perform displayin of internal foces just for ULS combinations
+            // Member basic internal forces
+            designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
+            basicInternalForces[] sBIF_x;
+
+            // TODO - Ondrej
+            // TODO - zo skupiny prutov s rovnakym typom z component list vybrat prvy alebo prejst vsetky ???
+            CMember member = model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex].ListOfMembers[0];
+            // TODO - kombinacia ktorej vysledky chceme zobrazit
+            CLoadCombination lcomb = model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex];
+            // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
+            CInternalForcesManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sMomentValuesforCb, out sBIF_x);
+
+            float[] fArr_AxialForceValuesN;
+            float[] fArr_ShearForceValuesVx;
+            float[] fArr_ShearForceValuesVy;
+            float[] fArr_TorsionMomentValuesT;
+            float[] fArr_BendingMomentValuesMx;
+            float[] fArr_BendingMomentValuesMy;
+
+            //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkych struktur
+            //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case alebo load combination rovnaky ale nemusi byt, je potrebne dopracovat
+
+            TransformIFStructureOnMemberToFloatArrays(
+            sBIF_x,
+            out fArr_AxialForceValuesN,
+            out fArr_ShearForceValuesVx,
+            out fArr_ShearForceValuesVy,
+            out fArr_TorsionMomentValuesT,
+            out fArr_BendingMomentValuesMx,
+            out fArr_BendingMomentValuesMy
+            );
 
             // Draw axis (x, y)
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
@@ -95,11 +121,11 @@ namespace PFD
             Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMy);
 
             // Draw values description
-            DrawTexts(fArr_AxialForceValuesN , arrPointsCoordX, fArr_AxialForceValuesN , Brushes.BlueViolet, Canvas_AxialForceDiagram);
+            DrawTexts(fArr_AxialForceValuesN, arrPointsCoordX, fArr_AxialForceValuesN, Brushes.BlueViolet, Canvas_AxialForceDiagram);
             DrawTexts(fArr_ShearForceValuesVx, arrPointsCoordX, fArr_ShearForceValuesVx, Brushes.BlueViolet, Canvas_ShearForceDiagramVx);
             DrawTexts(fArr_ShearForceValuesVy, arrPointsCoordX, fArr_ShearForceValuesVy, Brushes.BlueViolet, Canvas_ShearForceDiagramVy);
 
-            DrawTexts(fArr_TorsionMomentValuesT , arrPointsCoordX, fArr_TorsionMomentValuesT , Brushes.BlueViolet, Canvas_TorsionMomentDiagram);
+            DrawTexts(fArr_TorsionMomentValuesT, arrPointsCoordX, fArr_TorsionMomentValuesT, Brushes.BlueViolet, Canvas_TorsionMomentDiagram);
             DrawTexts(fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_BendingMomentDiagramMx);
             DrawTexts(fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_BendingMomentDiagramMy);
 
@@ -138,7 +164,7 @@ namespace PFD
                 combobox.Items.Add(s);
             }
         }
-        
+
 
         // Funkcie su rovnake ako u windspeed, len je pridany parameter pre canvas a vypocet FactorX a FactorY
         //public void DrawTexts(string[] array_text, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
@@ -160,7 +186,7 @@ namespace PFD
         //    Drawing2D.DrawTexts(array_text, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y,
         //        modelBottomPosition_y, color, canvasForImage);
         //}
-        
+
         //public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
         //{
         //    DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, fPointsCoordY, color, canvasForImage);
@@ -172,7 +198,7 @@ namespace PFD
         //}
 
         public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
-        { 
+        {
             Drawing2D.DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y,
                 modelBottomPosition_y, color, canvasForImage);
         }
@@ -192,7 +218,34 @@ namespace PFD
             return null;
         }
 
-        
+        // TODO - tato transformacia je zbytocna ak prepracujeme zobrazovanie priamo na vykreslovanie poloziek struktury
+        public void TransformIFStructureOnMemberToFloatArrays(
+            basicInternalForces[] sBIF_x,
+            out float[] fArr_AxialForceValuesN,
+            out float[] fArr_ShearForceValuesVx,
+            out float[] fArr_ShearForceValuesVy,
+            out float[] fArr_TorsionMomentValuesT,
+            out float[] fArr_BendingMomentValuesMx,
+            out float[] fArr_BendingMomentValuesMy
+            )
+        {
+            fArr_AxialForceValuesN = new float[iNumberOfDesignSections];
+            fArr_ShearForceValuesVx = new float[iNumberOfDesignSections];
+            fArr_ShearForceValuesVy = new float[iNumberOfDesignSections];
+            fArr_TorsionMomentValuesT = new float[iNumberOfDesignSections];
+            fArr_BendingMomentValuesMx = new float[iNumberOfDesignSections];
+            fArr_BendingMomentValuesMy = new float[iNumberOfDesignSections];
 
+            for (int i = 0; i < iNumberOfDesignSections; i++)
+            {
+                // TODO indexy pre cross-section principal axes vs indexy pre local axes
+                fArr_AxialForceValuesN[i] = sBIF_x[i].fN;
+                fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yu;
+                fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zv;
+                fArr_TorsionMomentValuesT[i] = sBIF_x[i].fT;
+                fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yu;
+                fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zv;
+            }
+        }
     }
 }

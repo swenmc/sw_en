@@ -75,6 +75,9 @@ namespace BaseClasses
         // 3D Objects
         public CStructure_Window[] m_arrGOStrWindows;
 
+        // Group of structure parts / components - each of them has its own member list
+        public List<CMemberGroup> listOfModelMemberGroups;
+
         //Grouped Members
         Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
 

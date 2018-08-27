@@ -6,12 +6,12 @@ using System.Windows.Media.Media3D;
 namespace BaseClasses
 {
     [Serializable]
-    public class CMemberLoadForces
+    public class CMemberInternalForcesInLoadCases
     {
         private CMember MMember;
         private CLoadCase MLoadCase;
-        private basicInternalForces[] MForces;
-        private designMomentValuesForCb MMomentValues;
+        private basicInternalForces[] MInternalForces;
+        private designMomentValuesForCb MBendingMomentValues;
 
         public CMember Member
         {
@@ -39,42 +39,42 @@ namespace BaseClasses
             }
         }
 
-        public basicInternalForces[] Forces
+        public basicInternalForces[] InternalForces
         {
             get
             {
-                return MForces;
+                return MInternalForces;
             }
 
             set
             {
-                MForces = value;
+                MInternalForces = value;
             }
         }
 
-        public designMomentValuesForCb MomentValues
+        public designMomentValuesForCb BendingMomentValues
         {
             get
             {
-                return MMomentValues;
+                return MBendingMomentValues;
             }
 
             set
             {
-                MMomentValues = value;
+                MBendingMomentValues = value;
             }
         }
 
-        public CMemberLoadForces()
+        public CMemberInternalForcesInLoadCases()
         {
 
         }
-        public CMemberLoadForces(CMember member, CLoadCase loadcase, basicInternalForces[] forces, designMomentValuesForCb momentValuesForCb)
+        public CMemberInternalForcesInLoadCases(CMember member, CLoadCase loadcase, basicInternalForces[] internalForces, designMomentValuesForCb bendingMomentValuesForCb)
         {
             MMember = member;
             MLoadCase = loadcase;
-            MForces = forces;
-            MMomentValues = momentValuesForCb;
+            MInternalForces = internalForces;
+            MBendingMomentValues = bendingMomentValuesForCb;
         }
     }
 }

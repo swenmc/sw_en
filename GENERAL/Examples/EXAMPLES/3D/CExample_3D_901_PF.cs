@@ -11,6 +11,19 @@ using System.Windows.Media.Media3D;
 
 namespace Examples
 {
+    enum EMemberGroupNames
+    {
+        eMainColumn = 0,
+        eRafter = 1,
+        eEavesPurlin = 2,
+        eGirtWall = 3,
+        ePurlin = 4,
+        eFrontColumn = 5,
+        eBackColumn = 6,
+        eFrontGirt = 7,
+        eBackGirt = 8
+    }
+
     public class CExample_3D_901_PF : CExample
     {
         public float fH1_frame;
@@ -113,35 +126,49 @@ namespace Examples
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
             // TODO Nastavit podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
-            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);  // Main Column
-            m_arrCrSc[1] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);      // Rafter
-            m_arrCrSc[2] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
-            m_arrCrSc[3] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                // Girt - Wall
-            m_arrCrSc[4] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);             // Purlin
-            m_arrCrSc[5] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Front Column
-            m_arrCrSc[6] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Back Column
-            m_arrCrSc[7] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Brown);                 // Front Girt
-            m_arrCrSc[8] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);           // Back Girt
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);   // Main Column
+            m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);           // Rafter
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                   // Girt - Wall
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                  // Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);              // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Brown);                   // Front Girt
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);              // Back Girt
+
+            // Member Groups
+            listOfModelMemberGroups = new List<CMemberGroup>(9);
+
+            // See UC component list
+            listOfModelMemberGroups.Add(new CMemberGroup(1, "Main Column" , m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, "Rafter"      , m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, "Eaves Purlin", m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, "Girt - Wall" , m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, "Purlin"      , m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, "Front Column", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, "Back Column" , m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, "Front Girt"  , m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, "Back Girt"   , m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
 
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
-            CMemberEccentricity eccentricityPurlin = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[1].h - 0.5 * m_arrCrSc[4].h));
-            CMemberEccentricity eccentricityGirtLeft_X0 = new CMemberEccentricity(0, (float)(-(0.5 * m_arrCrSc[0].h - 0.5 * m_arrCrSc[3].h)));
-            CMemberEccentricity eccentricityGirtRight_XB = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[0].h - 0.5 * m_arrCrSc[3].h));
+            CMemberEccentricity eccentricityPurlin = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.ePurlin].h));
+            CMemberEccentricity eccentricityGirtLeft_X0 = new CMemberEccentricity(0, (float)(-(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.eGirtWall].h)));
+            CMemberEccentricity eccentricityGirtRight_XB = new CMemberEccentricity(0, (float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - 0.5 * m_arrCrSc[(int)EMemberGroupNames.eGirtWall].h));
 
-            CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[0].h + m_arrCrSc[2].y_min), 0);
+            CMemberEccentricity eccentricityEavePurlin = new CMemberEccentricity(-(float)(0.5 * m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h + m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].y_min), 0);
 
             CMemberEccentricity eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0);
             CMemberEccentricity eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
 
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
-            fUpperGirtLimit = (float)(m_arrCrSc[2].h + m_arrCrSc[3].b);
+            fUpperGirtLimit = (float)(m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].h + m_arrCrSc[(int)EMemberGroupNames.eGirtWall].b);
 
             // Limit pre poziciu horneho nosnika (front / back girt) na prednej alebo zadnej stene budovy
             // Nosnik alebo pripoj nosnika nesmie zasahovat do prievlaku (rafter)
 
-            fz_UpperLimitForFrontGirts = (float)((0.5 * m_arrCrSc[1].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[7].b);
-            fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[1].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[8].b);
+            fz_UpperLimitForFrontGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eFrontGirt].b);
+            fz_UpperLimitForBackGirts = (float)((0.5 * m_arrCrSc[(int)EMemberGroupNames.eRafter].h) / Math.Cos(fRoofPitch_rad) + 0.5f * m_arrCrSc[(int)EMemberGroupNames.eBackGirt].b);
 
             bool bGenerateGirts = true;
             if (bGenerateGirts)
@@ -267,30 +294,30 @@ namespace Examples
 
             float fallignment_column, fallignment_knee_rafter, fallignment_apex_rafter;
 
-            GetJointAllignments((float)m_arrCrSc[0].h, (float)m_arrCrSc[1].h, out fallignment_column, out fallignment_knee_rafter, out fallignment_apex_rafter);
+            GetJointAllignments((float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h, (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h, out fallignment_column, out fallignment_knee_rafter, out fallignment_apex_rafter);
 
             float fMainColumnStart = 0.0f;
             float fMainColumnEnd = -fallignment_column - fCutOffOneSide;
             float fRafterStart = fallignment_knee_rafter - fCutOffOneSide;
             float fRafterEnd = -fallignment_apex_rafter - fCutOffOneSide;              // Calculate according to h of rafter and roof pitch
-            float fEavesPurlinStart = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;  // Just in case that cross-section of rafter is symmetric about z-z
-            float fEavesPurlinEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;    // Just in case that cross-section of rafter is symmetric about z-z
-            float fGirtStart = -0.5f * (float)m_arrCrSc[0].b - fCutOffOneSide;         // Just in case that cross-section of main column is symmetric about z-z
-            float fGirtEnd = -0.5f * (float)m_arrCrSc[0].b - fCutOffOneSide;           // Just in case that cross-section of main column is symmetric about z-z
-            float fPurlinStart = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;       // Just in case that cross-section of rafter is symmetric about z-z
-            float fPurlinEnd = -0.5f * (float)m_arrCrSc[1].b - fCutOffOneSide;         // Just in case that cross-section of rafter is symmetric about z-z
+            float fEavesPurlinStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].b - fCutOffOneSide;  // Just in case that cross-section of rafter is symmetric about z-z
+            float fEavesPurlinEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].b - fCutOffOneSide;    // Just in case that cross-section of rafter is symmetric about z-z
+            float fGirtStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b - fCutOffOneSide;         // Just in case that cross-section of main column is symmetric about z-z
+            float fGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b - fCutOffOneSide;           // Just in case that cross-section of main column is symmetric about z-z
+            float fPurlinStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].b - fCutOffOneSide;       // Just in case that cross-section of rafter is symmetric about z-z
+            float fPurlinEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].b - fCutOffOneSide;         // Just in case that cross-section of rafter is symmetric about z-z
             float fFrontColumnStart = 0f;
-            float fFrontColumnEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;    // TODO - Calculate according to h of rafter and roof pitch
+            float fFrontColumnEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h - fCutOffOneSide;    // TODO - Calculate according to h of rafter and roof pitch
             float fBackColumnStart = 0f;
-            float fBackColumnEnd = -0.5f * (float)m_arrCrSc[1].h - fCutOffOneSide;     // TODO - Calculate according to h of rafter and roof pitch
-            float fFrontGirtStart = -0.5f * (float)m_arrCrSc[5].b - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
-            float fFrontGirtEnd = -0.5f * (float)m_arrCrSc[5].b - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
-            float fBackGirtStart = -0.5f * (float)m_arrCrSc[6].b - fCutOffOneSide;     // Just in case that cross-section of column is symmetric about z-z
-            float fBackGirtEnd = -0.5f * (float)m_arrCrSc[6].b - fCutOffOneSide;       // Just in case that cross-section of column is symmetric about z-z
-            float fFrontGirtStart_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide; // Connection to the main frame column (column symmetrical about y-y)
-            float fFrontGirtEnd_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide;   // Connection to the main frame column (column symmetrical about y-y)
-            float fBackGirtStart_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide;  // Connection to the main frame column (column symmetrical about y-y)
-            float fBackGirtEnd_MC = -0.5f * (float)m_arrCrSc[0].h - fCutOffOneSide;    // Connection to the main frame column (column symmetrical about y-y)
+            float fBackColumnEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h - fCutOffOneSide;     // TODO - Calculate according to h of rafter and roof pitch
+            float fFrontGirtStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].b - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
+            float fFrontGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].b - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
+            float fBackGirtStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].b - fCutOffOneSide;     // Just in case that cross-section of column is symmetric about z-z
+            float fBackGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eBackColumn].b - fCutOffOneSide;       // Just in case that cross-section of column is symmetric about z-z
+            float fFrontGirtStart_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide; // Connection to the main frame column (column symmetrical about y-y)
+            float fFrontGirtEnd_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;   // Connection to the main frame column (column symmetrical about y-y)
+            float fBackGirtStart_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;  // Connection to the main frame column (column symmetrical about y-y)
+            float fBackGirtEnd_MC = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].h - fCutOffOneSide;    // Connection to the main frame column (column symmetrical about y-y)
 
             float fColumnsRotation = MathF.fPI / 2.0f;
             float fGirtsRotation = MathF.fPI / 2.0f;
@@ -321,18 +348,18 @@ namespace Examples
             for (int i = 0; i < iFrameNo; i++)
             {
                 // Main Column
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember(i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[0], EMemberType_FormSteel.eMC, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember(i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
                 // Rafters
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember(i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[1], EMemberType_FormSteel.eMR, null, null, fRafterStart, fRafterEnd, 0f, 0);
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember(i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[1], EMemberType_FormSteel.eMR, null, null, fRafterEnd, fRafterStart, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember(i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterStart, fRafterEnd, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember(i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterEnd, fRafterStart, 0f, 0);
                 // Main Column
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember(i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[0], EMemberType_FormSteel.eMC, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember(i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
 
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))
                 {
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[2], EMemberType_FormSteel.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 6, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[2], EMemberType_FormSteel.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FormSteel.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 6, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FormSteel.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
                 }
             }
 
@@ -364,13 +391,13 @@ namespace Examples
                 {
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[3], EMemberType_FormSteel.eG, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart, fGirtEnd, fGirtsRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FormSteel.eG, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart, fGirtEnd, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + j]);
                     }
 
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[3], EMemberType_FormSteel.eG, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart, fGirtEnd, fGirtsRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FormSteel.eG, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart, fGirtEnd, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j]);
                     }
                 }
@@ -413,12 +440,12 @@ namespace Examples
                         CMemberEccentricity temp = new CMemberEccentricity();
                         temp.MFz_local = - eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
  
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[4], EMemberType_FormSteel.eP, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, -(fRoofPitch_rad + (float)Math.PI), 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FormSteel.eP, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, -(fRoofPitch_rad + (float)Math.PI), 0);
                     }
 
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[4], EMemberType_FormSteel.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FormSteel.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
                     }
                 }
             }
@@ -435,7 +462,7 @@ namespace Examples
             i_temp_numberofMembers += bGeneratePurlins ? (iPurlinNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGenerateFrontColumns)
             {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iFrontColumnNoInOneFrame, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[5], fColumnsRotation);
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iFrontColumnNoInOneFrame, fFrontColumnStart, fFrontColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], fColumnsRotation);
             }
 
             // Back Columns
@@ -451,7 +478,7 @@ namespace Examples
             i_temp_numberofMembers += bGenerateFrontColumns ? iFrontColumnNoInOneFrame : 0;
             if (bGenerateBackColumns)
             {
-                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fBackColumnStart, fBackColumnEnd, m_arrCrSc[6], fColumnsRotation);
+                AddColumnsMembers(i_temp_numberofNodes, i_temp_numberofMembers, iOneRafterBackColumnNo, iBackColumnNoInOneFrame, fBackColumnStart, fBackColumnEnd, m_arrCrSc[(int)EMemberGroupNames.eBackColumn], fColumnsRotation);
             }
 
             // Front Girts
@@ -471,7 +498,7 @@ namespace Examples
             i_temp_numberofMembers += bGenerateBackColumns ? iBackColumnNoInOneFrame : 0;
             if (bGenerateFrontGirts)
             {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, i_temp_numberofMembers, iFrontIntermediateColumnNodesForGirtsOneRafterNo, iFrontIntermediateColumnNodesForGirtsOneFrameNo, 0, fDist_Girt, eccentricityGirtFront_Y0, fFrontGirtStart_MC, fFrontGirtStart, fFrontGirtEnd, m_arrCrSc[7], fColumnsRotation);
+                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterFrontColumnNo, iArrNumberOfNodesPerFrontColumn, i_temp_numberofNodes, i_temp_numberofMembers, iFrontIntermediateColumnNodesForGirtsOneRafterNo, iFrontIntermediateColumnNodesForGirtsOneFrameNo, 0, fDist_Girt, eccentricityGirtFront_Y0, fFrontGirtStart_MC, fFrontGirtStart, fFrontGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], fColumnsRotation);
             }
 
             // Back Girts
@@ -489,7 +516,7 @@ namespace Examples
             i_temp_numberofMembers += bGenerateFrontGirts ? iFrontGirtsNoInOneFrame : 0;
             if (bGenerateBackGirts)
             {
-                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[8], fColumnsRotation);
+                AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fColumnsRotation);
             }
 
             // Connection Joints
@@ -1397,6 +1424,8 @@ namespace Examples
             m_arrLimitStates[0] = new CLimitState("Ultimate Limit State - Stability", ELSType.eLS_ULS);
             m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength" , ELSType.eLS_ULS);
             m_arrLimitStates[2] = new CLimitState("Serviceability Limit State"      , ELSType.eLS_SLS);
+
+            AddMembersToMemberGroupsLists();
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
@@ -2435,6 +2464,34 @@ namespace Examples
             // Skusis mi aspon jeden prierez napojit prosim ?
             // pole m_arrCrSc by sa malo naplnit prierezmi podla mena prierezu (270115, 27095, 63020, ...) v databaze pre jednotlive typy members (purlin, girt, main column, ...)
             // kazdemu menu prierezu zodpoveda iny objekt z tried, ktore su v CRSC / CrSc_3 / FS
+        }
+
+        // Add members to the member group list
+        // Base on cross-section ID 
+        // TODO - spravnejsie by bolo pridavat member do zoznamu priamo pri vytvoreni
+        public void AddMembersToMemberGroupsLists()
+        {
+            int i = 0;
+
+            foreach (CMember member in m_arrMembers)
+            {
+                foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
+                {
+                    if (member.CrScStart.ICrSc_ID == group.CrossSection.ICrSc_ID) // In case that cross-section ID is same add member to the list
+                    {
+                        listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
+                        i++;
+                        break;
+                    }
+                }
+            }
+
+            // Check
+            // TODO - aktivovat po vyrieseni mazania nevygenerovanych prutov zo zoznamu a pridani prutov tvoriacich bloky (dvere, okna, ...)
+            /*
+            if (i != m_arrMembers.Length)
+                throw new Exception("Not all members were added.");
+            */
         }
     }
 }

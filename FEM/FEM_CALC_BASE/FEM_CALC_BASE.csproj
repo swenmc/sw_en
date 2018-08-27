@@ -51,6 +51,7 @@
     <Compile Include="CExample_2D_51_SB.cs" />
     <Compile Include="CE_1D_BASE.cs" />
     <Compile Include="CFEM_CALC.cs" />
+    <Compile Include="CInternalForcesManager.cs" />
     <Compile Include="CN.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Form1.cs">

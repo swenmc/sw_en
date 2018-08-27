@@ -30,31 +30,61 @@ namespace PFD
         List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
         List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
 
+        public List<string> ComponentsNames;
+
         public UC_MemberDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
 
         public UC_MemberDesign(CModel model, UC_ComponentList components, List<CMemberLoadCombinationRatio> DesignResults)
         {
             InitializeComponent();
 
+            CComponentListVM compList = (CComponentListVM)components.DataContext;
+            ComponentsNames = compList.ComponentList.Select(i => i.ComponentName).ToList();
+
             // Add items into comboboxes
             FillComboboxValues(Combobox_LimitState, model.m_arrLimitStates);
             FillComboboxValues(Combobox_LoadCombination, model.m_arrLoadCombs);
             // TODO Ondrej - fill combobox with UC_ComponentList Names
-            //FillComboboxValues(Combobox_ComponentType, components);
+
+            Combobox_ComponentType.ItemsSource = ComponentsNames;
 
             // Set default values of combobox index
             Combobox_LimitState.SelectedIndex = 0;
             Combobox_LoadCombination.SelectedIndex = 0;
+            Combobox_ComponentType.SelectedIndex = 0;
 
             // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
-            // DisplayDesignResultsInGridView(CCalcul obj_CalcDesign);
 
             //CMemberLoadCombinationRatio mlcr = DesignResults.Find(i => i.LoadCombination.ID == Combobox_LoadCombination.SelectedValue)
 
+            CMemberGroup GroupOfMembersWithSelectedType = model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex];
+
+            CCalcul cGoverningMemberResults = null;
+
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
-                CCalcul c = new CCalcul(false, DesignResults[0].DesignInternalForces, DesignResults[0].Member, DesignResults[0].DesignMomentValuesForCb);
-                DisplayDesignResultsInGridView(Results_GridView, c);
+                float fMaximumDesignRatio = 0;
+                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
+                {
+                    // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
+                    // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
+
+                    CCalcul c = new CCalcul(false, DesignResults[m.ID-1].DesignInternalForces, m, DesignResults[m.ID - 1].DesignMomentValuesForCb);
+
+                    if (c.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatio = c.fEta_max;
+                        cGoverningMemberResults = c;
+                    }
+                }
+
+                if (cGoverningMemberResults != null)
+                    DisplayDesignResultsInGridView(Results_GridView, cGoverningMemberResults);
+                else
+                {
+                    // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
+                    throw new Exception("Results of selected member are not available!");
+                }
             }
 
             // Member Design
