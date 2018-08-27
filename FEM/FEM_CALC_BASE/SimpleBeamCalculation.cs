@@ -63,7 +63,7 @@ namespace FEM_CALC_BASE
         }
 
         public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
-          CMLoad_21 memberload, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+        CMLoad_21 memberload, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
         {
             int iNumberOfLoadCombinations = 1;
             float[] fE_d_load_values_LCS_y = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? memberload.Fq : 0};
