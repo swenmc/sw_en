@@ -68,7 +68,7 @@ namespace PFD
                 CalculateGoverningMemberDesignDetails(DesignResults_SLS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
 
             // Member Design
-            CPFDMemberDesign mdinput = new CPFDMemberDesign();
+            CPFDMemberDesign mdinput = new CPFDMemberDesign(compList.ComponentList);
             mdinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = mdinput;
         }
