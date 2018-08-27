@@ -13,7 +13,8 @@ namespace FEM_CALC_BASE
         public SimpleBeamCalculation() { }
 
         // SBD funkcie (zahrnaju kombinacie)
-        public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, float[] fx_positions, float[] fE_d_load_values_LCS_y, float[] fE_d_load_values_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+        public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, float[] fx_positions,
+            float[] fE_d_load_values_LCS_y, float[] fE_d_load_values_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
         {
             sMomentValuesforCb = new designMomentValuesForCb[iNumberOfLoadCombinations];
             sBIF_x = new basicInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];

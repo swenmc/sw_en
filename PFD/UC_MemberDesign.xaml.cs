@@ -59,33 +59,9 @@ namespace PFD
 
             CMemberGroup GroupOfMembersWithSelectedType = model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex];
 
-            CCalcul cGoverningMemberResults = null;
-
-            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
-            {
-                float fMaximumDesignRatio = 0;
-                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
-                {
-                    // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
-                    // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
-
-                    CCalcul c = new CCalcul(false, DesignResults[m.ID-1].DesignInternalForces, m, DesignResults[m.ID - 1].DesignMomentValuesForCb);
-
-                    if (c.fEta_max > fMaximumDesignRatio)
-                    {
-                        fMaximumDesignRatio = c.fEta_max;
-                        cGoverningMemberResults = c;
-                    }
-                }
-
-                if (cGoverningMemberResults != null)
-                    DisplayDesignResultsInGridView(Results_GridView, cGoverningMemberResults);
-                else
-                {
-                    // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
-                    throw new Exception("Results of selected member are not available!");
-                }
-            }
+            // Calculate governing member design ratio in member group
+            CCalcul cGoverningMemberResults;
+            CalculateGoverningMemberDesignDetails(DesignResults, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
 
             // Member Design
             CPFDMemberDesign mdinput = new CPFDMemberDesign();
@@ -115,6 +91,41 @@ namespace PFD
                     }
                 }
             }
+        }
+
+        // Calculate governing member design ratio
+        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
+        {
+            cGoverningMemberResults = null;
+
+            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
+            {
+                float fMaximumDesignRatio = 0;
+                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
+                {
+                    // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
+                    // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
+
+                    CCalcul c = new CCalcul(false, DesignResults[m.ID - 1].DesignInternalForces, m, DesignResults[m.ID - 1].DesignMomentValuesForCb);
+
+                    if (c.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatio = c.fEta_max;
+                        cGoverningMemberResults = c;
+                    }
+                }
+
+                if (cGoverningMemberResults != null)
+                    DisplayDesignResultsInGridView(Results_GridView, cGoverningMemberResults);
+                else
+                {
+                    // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
+                    // throw new Exception("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available!");
+
+                }
+            }
+
         }
 
         // TODO - Display Data in DataGrid Results_GridView

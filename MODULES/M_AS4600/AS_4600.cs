@@ -336,11 +336,11 @@ namespace M_AS4600
         {
             return ff_oz * ff_ox / (ff_oz + ff_ox); // Eq. (D1.1.1(8)) // ff_oxz
         }
-        public void Eq_D111_9__(float ff_oz, float ff_ox, float ff_oy, float fr_o1, float fx_o, float fy_o, out float fa_CEQ, out float fb_CEQ, out float fc_CEQ, out float fd_CEQ)
+        public void Eq_D111_9__(float ff_oz, float ff_ox, float ff_oy, float fr_o1, float fx_o, float fy_o, out double fa_CEQ, out double fb_CEQ, out double fc_CEQ, out double fd_CEQ)
         {
             // Eq. (D1.1.1(9)) // Cubic Equation to calculate ff_oc
             fa_CEQ = MathF.Pow2(fr_o1) - MathF.Pow2(fx_o) - MathF.Pow2(fy_o);
-            fb_CEQ = -((MathF.Pow2(fr_o1) * (MathF.Pow2(ff_ox) + MathF.Pow2(ff_oy) + MathF.Pow2(ff_oz))) - (ff_oy * MathF.Pow2(fx_o) + ff_ox * MathF.Pow2(fy_o)));
+            fb_CEQ = -((MathF.Pow2(fr_o1) * (ff_ox + ff_oy + ff_oz)) - (ff_oy * MathF.Pow2(fx_o) + ff_ox * MathF.Pow2(fy_o)));
             fc_CEQ = MathF.Pow2(fr_o1) * (ff_ox * ff_oy + ff_oy * ff_oz + ff_ox * ff_oz);
             fd_CEQ = -(ff_ox * ff_oy * ff_oz * MathF.Pow2(fr_o1));
         }

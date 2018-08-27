@@ -131,8 +131,8 @@ namespace Examples
             m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
             m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                   // Girt - Wall
             m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                  // Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);             // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_10075_BOX(0.3f, 0.1f, 0.0075f, Colors.BlueViolet);              // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(0.29f, 0.071f, 0.00115f, Colors.BlueViolet);    // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(0.29f, 0.071f, 0.00115f, Colors.BlueViolet);     // Back Column
             m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Brown);                   // Front Girt
             m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);              // Back Girt
 
@@ -2479,6 +2479,10 @@ namespace Examples
                 {
                     if (member.CrScStart.ICrSc_ID == group.CrossSection.ICrSc_ID) // In case that cross-section ID is same add member to the list
                     {
+                        member.BIsDSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
+                        member.BIsDSelectedForDesign = true;
+                        member.BIsSelectedForMaterialList = true;
+
                         listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
                         i++;
                         break;

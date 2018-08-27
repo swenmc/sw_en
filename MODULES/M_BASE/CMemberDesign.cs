@@ -83,7 +83,7 @@ namespace M_BASE
 
                 CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[j], member, sMomentValuesforCb);
 
-                    if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
+                if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
                         fMaximumDesignRatioLocationID = j;
                         fMaximumDesignRatio = obj_CalcDesign.fEta_max;

@@ -200,6 +200,12 @@ namespace M_AS4600
         public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designMomentValuesForCb sMomentValuesForCb)
         {
             CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sMomentValuesForCb);
+
+            // Validation
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid! " + "Member ID: " + member.ID);
+            }
         }
 
         public void CalculateDesignRatio(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)
@@ -276,10 +282,10 @@ namespace M_AS4600
 
             // Compression
 
-            float fa_CEQ = 0f;
-            float fb_CEQ = 0f;
-            float fc_CEQ = 0f;
-            float fd_CEQ = 0f;
+            double fa_CEQ = 0f;
+            double fb_CEQ = 0f;
+            double fc_CEQ = 0f;
+            double fd_CEQ = 0f;
 
             fx_o = (float)cs.D_y_s;
             fy_o = (float)cs.D_z_s;
@@ -298,7 +304,7 @@ namespace M_AS4600
             eq.Eq_D111_9__(ff_oz, ff_ox, ff_oy, fr_o1, fx_o, fy_o, out fa_CEQ, out fb_CEQ, out fc_CEQ, out fd_CEQ);
             CCardanoCubicEQSolver cubic_solver = new CCardanoCubicEQSolver(fa_CEQ, fb_CEQ, fc_CEQ, fd_CEQ);
 
-            float ff_oc_real_1 = (float)cubic_solver.x_min_positive;
+            double ff_oc_real_1 = cubic_solver.x_min_positive;
 
             ff_oc = (float)cubic_solver.x_min_positive > 0 ? (float)cubic_solver.x_min_positive : 0f;
 
@@ -330,10 +336,15 @@ namespace M_AS4600
             // The values of A, J, Ix, Iy, Ixy, Iw are for the compression flange and lip alone.
             float fb_w = fb; // ???
 
-            ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
+            if (cs.IsShapeSolid) // Open Cross-section
+            {
+                ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
 
-            if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
-                ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
+                if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
+                    ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
+            }
+            else
+                ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
 
             fN_od = eq.Eq_7214_4__(fA_g, ff_od);
             flambda_d = eq.Eq_7214_3__(fN_ce, fN_ol);
@@ -443,7 +454,14 @@ namespace M_AS4600
 
                 // 7.2.2.4 Distorsional buckling
                 // 7.2.2.4.2 Beams without holes
-                ff_od_bend = eq.Eq_D121_1_DB(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_f, fb_w, ft);
+
+                if (cs.IsShapeSolid) // Open Cross-section
+                {
+                    ff_od_bend = eq.Eq_D121_1_DB(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_f, fb_w, ft);
+                }
+                else
+                    ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
+
                 fM_od_xu = eq.Eq_7224_4__(fZ_f_xu, ff_od);
                 fLambda_d_xu = eq.Eq_7224_3__(fM_y_xu, fM_od_xu);
                 fM_bd_xu = eq.Eq_7224____(fM_y_xu, fM_od_xu, fLambda_d_xu);
@@ -551,6 +569,25 @@ namespace M_AS4600
 
                 eq.Eq_725_2___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_s_xu_f, sDIF.fM_yv, fM_s_yv_f, out fEta_N_725_2, out fEta_Mxu_725_2, out fEta_Myv_725_2, out fEta_725_2);
                 fEta_max = MathF.Max(fEta_max, fEta_725_2);
+            }
+
+            // Validation - negative design ratio
+            if (fEta_721_N < 0 ||
+                fEta_723_9_xu_yv < 0 ||
+                fEta_723_10_xu < 0 ||
+                fEta_723_11_xu_yv < 0 ||
+                fEta_723_12_xu_yv_10 < 0 ||
+                fEta_724 < 0 ||
+                fEta_725_1 < 0 ||
+                fEta_725_2 < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - inifiniti design ratio
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
             }
 
             int iNumberOfDecimalPlaces = 3;
