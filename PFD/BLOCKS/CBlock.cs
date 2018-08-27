@@ -2,15 +2,16 @@
 using CRSC;
 using MATERIAL;
 using System;
+using BaseClasses;
 
-namespace BaseClasses
+namespace PFD
 {
     // Main model class
 
     // List of block objects is included
 
     [Serializable]
-    public class CBlock : CModel
+    public class CBlock : CModel_PFD
     {
         // General project data
         public string m_sBlockName;

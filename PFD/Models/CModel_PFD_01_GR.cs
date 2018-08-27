@@ -11,19 +11,6 @@ using System.Windows.Media.Media3D;
 
 namespace PFD
 {
-    enum EMemberGroupNames
-    {
-        eMainColumn = 0,
-        eRafter = 1,
-        eEavesPurlin = 2,
-        eGirtWall = 3,
-        ePurlin = 4,
-        eFrontColumn = 5,
-        eBackColumn = 6,
-        eFrontGirt = 7,
-        eBackGirt = 8
-    }
-
     public class CModel_PFD_01_GR : CModel_PFD
     {
         public float fH1_frame;

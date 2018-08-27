@@ -63,8 +63,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Blocks\CBlock_3D_001_DoorInBay.cs" />
-    <Compile Include="Blocks\CBlock_3D_002_WindowInBay.cs" />
+    <Compile Include="BLOCKS\CBlock.cs" />
+    <Compile Include="BLOCKS\CBlock_3D_001_DoorInBay.cs" />
+    <Compile Include="BLOCKS\CBlock_3D_002_WindowInBay.cs" />
     <Compile Include="CComponentInfo.cs" />
     <Compile Include="CComponentListVM.cs" />
     <Compile Include="CComboBoxHelper.cs" />
@@ -75,8 +76,8 @@
     <Compile Include="CPFDLoadInput.cs" />
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="CDatabaseComponents.cs" />
-    <Compile Include="Models\CModel_PFD_01_GR.cs" />
-    <Compile Include="Models\CModel_PFD.cs" />
+    <Compile Include="MODELS\CModel_PFD_01_GR.cs" />
+    <Compile Include="MODELS\CModel_PFD.cs" />
     <Compile Include="UC_InternalForces.xaml.cs">
       <DependentUpon>UC_InternalForces.xaml</DependentUpon>
     </Compile>
