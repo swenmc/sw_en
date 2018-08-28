@@ -68,6 +68,7 @@ namespace MATH
             return (float)(x * - Math.Sin(theta_rad) + y * Math.Cos(theta_rad));
         }
 
+        // Trasnform point
         public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
         {
             TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref  y);
@@ -118,6 +119,7 @@ namespace MATH
             y = py;
         }
 
+        // Transform array
         public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);

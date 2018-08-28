@@ -31,7 +31,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
+        public CConCom_Plate_JB(string sName_temp, CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -79,7 +79,7 @@ namespace BaseClasses
             fArea = PolygonArea();
         }
 
-        public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
+        public CConCom_Plate_JB(string sName_temp, CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -300,25 +300,35 @@ namespace BaseClasses
 
             int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint);
 
-            float fRadius = 0.10f; // m // Input
-            float fAngle_seq_rotation_init_point_deg = 0;// 0.62f; // Constant for cross-section according to the size of middle sfiffener
-            float fAngle_seq_rotation_deg = 0; // 0.92f; // Input value (roof pitch)
+            float fRadius = 0.10f; // m // Input - depending on depth of cross-section
+            float fAngle_seq_rotation_init_point_deg = 20; // Input - constant for cross-section according to the size of middle sfiffener
+            float fAngle_seq_rotation_deg = (float) (Math.Atan((m_fhY_2 - m_fhY_1) / (0.5f * m_fbX)) * 180f / Math.PI); // Input value (roof pitch)
 
-            float fAngle_interval_rad = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
+            float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
 
             // Left side
-            float[,] fSequenceLeftTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
-            float[,] fSequenceLeftBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
+            float[,] fSequenceLeftTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            float[,] fSequenceLeftBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
 
-            Geom2D.TransformPositions_CCW_deg(fx_c1, fy_c1, fAngle_seq_rotation_deg, ref fSequenceLeftTop);
-            Geom2D.TransformPositions_CCW_deg(fx_c1, fy_c1, fAngle_seq_rotation_deg, ref fSequenceLeftBottom);
+            // Rotate about [0,0]
+            Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceLeftTop);
+            Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceLeftBottom);
+
+            // Translate
+            Geom2D.TransformPositions_CCW_deg(fx_c1, fy_c1, 0, ref fSequenceLeftTop);
+            Geom2D.TransformPositions_CCW_deg(fx_c1, fy_c1, 0, ref fSequenceLeftBottom);
 
             // Right side
-            float[,] fSequenceRightTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
-            float[,] fSequenceRightBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
+            float[,] fSequenceRightTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            float[,] fSequenceRightBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
 
-            Geom2D.TransformPositions_CCW_deg(fx_c2, fy_c2, fAngle_seq_rotation_deg, ref fSequenceRightTop);
-            Geom2D.TransformPositions_CCW_deg(fx_c2, fy_c2, fAngle_seq_rotation_deg, ref fSequenceRightBottom);
+            // Rotate about [0,0]
+            Geom2D.TransformPositions_CCW_deg(0, 0, -fAngle_seq_rotation_deg, ref fSequenceRightTop);
+            Geom2D.TransformPositions_CCW_deg(0, 0, -fAngle_seq_rotation_deg, ref fSequenceRightBottom);
+
+            // Translate
+            Geom2D.TransformPositions_CCW_deg(fx_c2, fy_c2, 0, ref fSequenceRightTop);
+            Geom2D.TransformPositions_CCW_deg(fx_c2, fy_c2, 0, ref fSequenceRightBottom);
 
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
@@ -342,7 +352,7 @@ namespace BaseClasses
             for (int i = 0; i < IHolesNumber; i++)
             {
                 arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i, 0];
-                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i, 1];
+                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i, 1] - m_flZ; // Musime odpocitat zalomenie hrany plechu, v 2D zobrazeni sa totiz pripocitalo
                 arrConnectorControlPoints3D[i].Z = -m_ft; // TODO Position depends on screw length;
             }
         }
