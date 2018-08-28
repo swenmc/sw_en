@@ -324,7 +324,7 @@ namespace BaseClasses
                 {
                     // Set different colors of plates in joints defined in LCS of member and GCS of model
                     if (cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
-                        brushPlates = new SolidColorBrush(Colors.DarkGreen);
+                        brushPlates = new SolidColorBrush(Colors.DeepSkyBlue);
 
                     // Models3D or ModelGroups Components
                     Model3DGroup JointModelGroup = new Model3DGroup();
