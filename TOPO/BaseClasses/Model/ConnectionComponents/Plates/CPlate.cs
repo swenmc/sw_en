@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using MATH;
 
 namespace BaseClasses
 {
@@ -44,7 +45,7 @@ namespace BaseClasses
         public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
         public float FHoleDiameter;
         public int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
-        public Point3D [] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
+        public Point3D[] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
 
         public int INoPoints2Dfor3D; // Number of points in one surface used for 3D model (holes lines are divided to the straight segments)
 
@@ -459,6 +460,29 @@ namespace BaseClasses
             // The signed area is negative if the polyogn is
             // oriented clockwise.
             return Math.Abs(SignedPolygonArea());
+        }
+
+        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fCrscWebStraightDepth, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, out float[,] fSequenceTop, out float[,] fSequenceBottom)
+        {
+            int iNumberOfSequencesInGroup = 2;
+
+            int iNumberOfScrewsInOneSequence = iNumberOfScrewsInGroup / iNumberOfSequencesInGroup;
+
+            float fRadius = 0.5f * fCrscWebStraightDepth; // m // Input - depending on depth of cross-section
+            float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
+
+            float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
+
+            fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+
+            // Rotate about [0,0]
+            Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceTop);
+            Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceBottom);
+
+            // Translate
+            Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceTop);
+            Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceBottom);
         }
     }
 }

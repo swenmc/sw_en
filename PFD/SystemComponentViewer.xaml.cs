@@ -547,7 +547,7 @@ namespace PFD
                             if (Combobox_Component.SelectedIndex == 0) // JA
                                 component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, true);
                             else
-                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, true);
+                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -717,7 +717,7 @@ namespace PFD
                             if (Combobox_Component.SelectedIndex == 0) // JA
                                 component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
                             else
-                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true);
+                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
