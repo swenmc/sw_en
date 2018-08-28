@@ -229,15 +229,17 @@ namespace M_AS4600
 
         public void CalculateDesignRatio(bool bIsDebugging, designDeflections sDDeflections_x_temp, float fL_temp)
         {
-            float fLimit = 1 / 360; // TODO nastavovat podla obsahu kombinacie SLS a typu prvku
+            float fLimit = 1f / 360f; // TODO nastavovat podla obsahu kombinacie SLS a typu prvku
             float fLimitDeflection = fL_temp * fLimit;
 
-            fEta_defl_yu = sDDeflections_x_temp.fDelta_yu / fLimit;
-            fEta_defl_zv = sDDeflections_x_temp.fDelta_zv / fLimit;
-            fEta_defl_yy = sDDeflections_x_temp.fDelta_yy / fLimit;
-            fEta_defl_zz = sDDeflections_x_temp.fDelta_zz / fLimit;
-            fEta_defl_tot = sDDeflections_x_temp.fDelta_tot / fLimit;
+            // Calculate deflection design ratio
+            fEta_defl_yu = Math.Abs(sDDeflections_x_temp.fDelta_yu) / fLimitDeflection;
+            fEta_defl_zv = Math.Abs(sDDeflections_x_temp.fDelta_zv) / fLimitDeflection;
+            fEta_defl_yy = Math.Abs(sDDeflections_x_temp.fDelta_yy) / fLimitDeflection;
+            fEta_defl_zz = Math.Abs(sDDeflections_x_temp.fDelta_zz) / fLimitDeflection;
+            fEta_defl_tot = sDDeflections_x_temp.fDelta_tot / fLimitDeflection;
 
+            // Set maximum design ratio
             fEta_max = fEta_defl_tot;
         }
 

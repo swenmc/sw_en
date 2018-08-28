@@ -476,7 +476,7 @@ namespace PFD
             float fT_1y_RM_411 = GetPeriod_RM_NZS1107_5_Eq411(iNumberOfMainColumns_y, vm.WallHeight, fMainColumnMomentOfInteria_zv, fMainColumnMaterial_E, fMass_Total_y);
 
             // Validation - compare calculated periods
-            // Kontrola vypoctu frekvencii, assert v pripade ze rozdiel je viac nez 20% mensej z hodnot (TODO - idealne je spocitat z globalneho modelu alebo aspon 2D modelu ramu so zohladnenim poddajnosti prievlaku / edge purlin)
+            // Kontrola vypoctu frekvencii, assert v pripade ze rozdiel je viac nez 20% mensej z hodnot (TODO - idealne je spocitat z globalneho modelu alebo aspon 2D modelu ramu so zohladnenim poddajnosti prievlaku (rafter) pre smer x / krajnej vaznice (edge purlin) pre smer y)
             if (!MathF.d_equal(fT_1x, fT_1x_RM_411, 0.2 * Math.Min(fT_1x, fT_1x_RM_411)) || !MathF.d_equal(fT_1y, fT_1y_RM_411, 0.2 * Math.Min(fT_1y, fT_1y_RM_411)))
                 throw new ArgumentException("Period values are different. \n" +
                     "T1.x = " + Math.Round(fT_1x, 5).ToString() + " s\n" +
@@ -604,6 +604,7 @@ namespace PFD
             float[] fx_positions = new float[iNumberOfDesignSections];
             designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
             basicInternalForces[] sBIF_x = null;
+            basicDeflections[] sBDeflections_x = null;
 
             // Tu by sa mal napojit FEM vypocet
             //RunFEMSOlver();
@@ -632,6 +633,7 @@ namespace PFD
 
                     m.MMomentValuesforCb = new List<designMomentValuesForCb>();
                     m.MBIF_x = new List<basicInternalForces[]>();
+                    m.MBDef_x = new List<basicDeflections[]>();
 
                     foreach (CLoadCase lc in model.m_arrLoadCases)
                     {
@@ -642,12 +644,18 @@ namespace PFD
                             {
                                 if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
                                 {
+                                    // ULS - internal forces
                                     calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+
+                                    // SLS - deflections
+                                    calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
                                 }
                             }
                         }
 
                         if (sBIF_x != null) listMemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                        if (sBDeflections_x != null) listMemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+
                         //m.MMomentValuesforCb.Add(sMomentValuesforCb);
                         //m.MBIF_x.Add(sBIF_x);
                     }

@@ -41,6 +41,9 @@ namespace PFD
             {
                 MLimitStateIndex = value;
 
+                // TODO - Pri zmene LimitState nacitat load combinations, ktora patria k danemu limit state a maju spocitane vysledky
+                // PODOBNE PRE INTERNAL FORCES
+
                 NotifyPropertyChanged("LimitStateIndex");
             }
         }
@@ -56,6 +59,8 @@ namespace PFD
             set
             {
                 MLoadCombinationIndex = value;
+
+                // TODO - Pri zmene load combination, spustit vypocet pre vsetky pruty vybraneho typu v component type a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
 
                 NotifyPropertyChanged("LoadCombinationIndex");
             }
@@ -73,24 +78,12 @@ namespace PFD
             {
                 MComponentTypeIndex = value;
 
+                // TODO - Pri zmene typpu pruta, spustit vypocet pre vsetky pruty vybraneho typu pre vybranu kombinaciu a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
+
                 NotifyPropertyChanged("ComponentTypeIndex");
             }
         }
         
-        public ObservableCollection<CComponentInfo> ComponentList
-        {
-            get
-            {
-                return MComponentList;
-            }
-
-            set
-            {
-                MComponentList = value;
-                NotifyPropertyChanged("ComponentList");
-            }
-        }
-
         public CLimitState[] LimitStates
         {
             get
@@ -116,6 +109,20 @@ namespace PFD
             {
                 MLoadCombinations = value;
                 NotifyPropertyChanged("LoadCombinations");
+            }
+        }
+
+        public ObservableCollection<CComponentInfo> ComponentList
+        {
+            get
+            {
+                return MComponentList;
+            }
+
+            set
+            {
+                MComponentList = value;
+                NotifyPropertyChanged("ComponentList");
             }
         }
 

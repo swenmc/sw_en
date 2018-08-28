@@ -180,6 +180,14 @@ namespace BaseClasses
             set { m_sBIF_x = value; }
         }
 
+        private List<basicDeflections[]> m_sBDef_x;
+
+        public List<basicDeflections[]> MBDef_x
+        {
+            get { return m_sBDef_x; }
+            set { m_sBDef_x = value; }
+        }
+
         public List<Point3D> WireFramePoints;
 
         //----------------------------------------------------------------------------

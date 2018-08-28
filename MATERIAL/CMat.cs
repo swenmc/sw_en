@@ -26,7 +26,7 @@ namespace MATERIAL
 
         // Default material - steel
         public short m_sMatType = 3;
-        public float m_fE = 2.1e5f;        // Unit [Pa]
+        public float m_fE = 2.1e11f;       // Unit [Pa]
         public float m_fNu = 0.3f;         // Unit [-]
         public float m_fG;                 // Unit [Pa]
         public float m_fAlpha_T = 1.2e-5f; // Unit [1/Celsius degree]
