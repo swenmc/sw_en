@@ -44,12 +44,12 @@ namespace PFD
             //combobox.ItemsSource = color_items;
         }
 
+        // TODO Ondrej - ak je mozne zobecnit tuto funkciu tak, aby to vracalo rozne typy podla typu, aky zistilo v stlpci "sColumnName"
+        // Hruza a des. Neverim,ze taku vseobecnu metodu nam treba
+        // To bol len taky "napad", ze by to bolo super :)
 
-        //Hruza a des. Neverim,ze taku vseobecnu metodu nam treba
         public static float GetValueFromDatabasebyRowID(string sDBName, string sTableName, string sColumnName, int IDValue, string sKeyColumnName = "ID")
         {
-            // TODO Ondrej - ak je mozne zobecnit tuto funkciu tak, aby to vracalo rozne typy podla typu, aky zistilo v stlpci "sColumnName"
-
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
             float fValue = float.NaN;

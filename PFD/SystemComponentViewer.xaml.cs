@@ -553,7 +553,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
                             else if(Combobox_Component.SelectedIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
@@ -723,7 +723,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
                             else if (Combobox_Component.SelectedIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             else

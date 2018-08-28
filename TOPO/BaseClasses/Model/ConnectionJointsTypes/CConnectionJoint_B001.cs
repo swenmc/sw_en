@@ -36,6 +36,10 @@ namespace BaseClasses
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * m_fb_2;
             m_ft = ft;
 
+            // TODO nacitavat parametre z prierezu
+            float fCrscWebStraightDepth = 0.63f - 2 * 0.025f - 2 * 0.002f; // BOX 63020 web straight depth
+            float fStiffenerSize = 0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
+
             float ftemp_a = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             float ftemp_b = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
 
@@ -86,10 +90,14 @@ namespace BaseClasses
             CPoint ControlPoint_P1 = new CPoint(0, fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
             CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
 
+            int iConnectorNumber = 80; // Plates LH LI, LK
+            float fDiameter_temp = 0.0055f; // Default - same size as screw
+            float fScrewLength = 0.009f;
+
             m_arrPlates = new CPlate[2];
 
-            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, BIsDisplayed);  // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, iConnectorNumber, fDiameter_temp, fScrewLength, fCrscWebStraightDepth, fStiffenerSize, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, iConnectorNumber, fDiameter_temp, fScrewLength, fCrscWebStraightDepth, fStiffenerSize, BIsDisplayed);  // Rotation angle in degrees
         }
 
         public static Point ? Intersection(Point start1, Point end1, Point start2, Point end2)
