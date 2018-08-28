@@ -93,7 +93,7 @@ namespace CRSC
             float[,] fArrTemp = new float[3, 2];
             fArrTemp = Geom2D.GetTrianEqLatPointCoord1(m_ft);
 
-            // Transform Radians to Degrees - input to GetPositionX/Y functions
+            // Transform Radians to Degrees - input to GetPositionX_deg/Y functions
             fAlpha_Aux = 180f / MathF.fPI * fAlpha_Aux;
             // Transform Degrees to Radians
             // fAlpha_Aux = MathF.fPI / 180f * fAlpha_Aux;
@@ -101,40 +101,40 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Point No. 1
-            CrScPointsOut[0, 0] = Geom2D.GetPositionX(fr, 210f + fAlpha_Aux);    // y
-            CrScPointsOut[0, 1] = Geom2D.GetPositionY_CW(fr, 210f + fAlpha_Aux);    // z
+            CrScPointsOut[0, 0] = Geom2D.GetPositionX_deg(fr, 210f + fAlpha_Aux);    // y
+            CrScPointsOut[0, 1] = Geom2D.GetPositionY_CW_deg(fr, 210f + fAlpha_Aux);    // z
 
             // Point No. 2
             CrScPointsOut[1, 0] = fArrTemp[0, 0];     // y
             CrScPointsOut[1, 1] = fArrTemp[0, 1];     // z
 
             // Point No. 3
-            CrScPointsOut[2, 0] = Geom2D.GetPositionX(fr, 330f - fAlpha_Aux);    // y
-            CrScPointsOut[2, 1] = Geom2D.GetPositionY_CW(fr, 330f - fAlpha_Aux);    // z
+            CrScPointsOut[2, 0] = Geom2D.GetPositionX_deg(fr, 330f - fAlpha_Aux);    // y
+            CrScPointsOut[2, 1] = Geom2D.GetPositionY_CW_deg(fr, 330f - fAlpha_Aux);    // z
 
             // Point No. 4
-            CrScPointsOut[3, 0] = Geom2D.GetPositionX(fr, 330f + fAlpha_Aux);    // y
-            CrScPointsOut[3, 1] = Geom2D.GetPositionY_CW(fr, 330f + fAlpha_Aux);    // z
+            CrScPointsOut[3, 0] = Geom2D.GetPositionX_deg(fr, 330f + fAlpha_Aux);    // y
+            CrScPointsOut[3, 1] = Geom2D.GetPositionY_CW_deg(fr, 330f + fAlpha_Aux);    // z
 
             // Point No. 5
             CrScPointsOut[4, 0] = fArrTemp[1, 0];      // y
             CrScPointsOut[4, 1] = fArrTemp[1, 1];      // z
 
             // Point No. 6
-            CrScPointsOut[5, 0] = Geom2D.GetPositionX(fr, 90f - fAlpha_Aux);    // y
-            CrScPointsOut[5, 1] = Geom2D.GetPositionY_CW(fr, 90f - fAlpha_Aux);    // z
+            CrScPointsOut[5, 0] = Geom2D.GetPositionX_deg(fr, 90f - fAlpha_Aux);    // y
+            CrScPointsOut[5, 1] = Geom2D.GetPositionY_CW_deg(fr, 90f - fAlpha_Aux);    // z
 
             // Point No. 7
-            CrScPointsOut[6, 0] = Geom2D.GetPositionX(fr, 90f + fAlpha_Aux);    // y
-            CrScPointsOut[6, 1] = Geom2D.GetPositionY_CW(fr, 90f + fAlpha_Aux);    // z
+            CrScPointsOut[6, 0] = Geom2D.GetPositionX_deg(fr, 90f + fAlpha_Aux);    // y
+            CrScPointsOut[6, 1] = Geom2D.GetPositionY_CW_deg(fr, 90f + fAlpha_Aux);    // z
 
             // Point No. 8
             CrScPointsOut[7, 0] = fArrTemp[2, 0];      // y
             CrScPointsOut[7, 1] = fArrTemp[2, 1];      // z
 
             // Point No. 9
-            CrScPointsOut[8, 0] = Geom2D.GetPositionX(fr, 210f - fAlpha_Aux);    // y
-            CrScPointsOut[8, 1] = Geom2D.GetPositionY_CW(fr, 210f - fAlpha_Aux);    // z
+            CrScPointsOut[8, 0] = Geom2D.GetPositionX_deg(fr, 210f - fAlpha_Aux);    // y
+            CrScPointsOut[8, 1] = Geom2D.GetPositionY_CW_deg(fr, 210f - fAlpha_Aux);    // z
         }
 
 		protected override void loadCrScIndices()

@@ -588,7 +588,7 @@ namespace BaseClasses
                         }
 
                         // Rotate about local x-axis
-                        Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                         meshPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
@@ -609,7 +609,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
@@ -627,7 +627,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
@@ -666,7 +666,7 @@ namespace BaseClasses
                         }
 
                         // Rotate about local x-axis
-                        Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                         meshPositions.Add(new Point3D(-FAlignment_Start,fy, fz));
                     }
@@ -695,7 +695,7 @@ namespace BaseClasses
                         }
 
                         // Rotate about local x-axis
-                        Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                         meshPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                     }
@@ -726,7 +726,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
@@ -744,7 +744,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
@@ -775,7 +775,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                         }
@@ -793,7 +793,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                         }
@@ -922,7 +922,7 @@ namespace BaseClasses
                         }
 
                         // Rotate about local x-axis
-                        Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                         meshFrontSidePositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                         meshShellPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
@@ -945,7 +945,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End,fy, fz)); // Constant size member
                             meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -964,7 +964,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                             meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -1004,7 +1004,7 @@ namespace BaseClasses
                         }
 
                         // Rotate about local x-axis
-                        Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                         meshFrontSidePositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                         meshShellPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
@@ -1034,7 +1034,7 @@ namespace BaseClasses
                         }
 
                         // Rotate about local x-axis
-                        Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                        Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                         meshFrontSidePositions.Add(new Point3D(-FAlignment_Start, fy, fz));
                         meshShellPositions.Add(new Point3D(-FAlignment_Start, fy, fz));
@@ -1066,7 +1066,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                             meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -1085,7 +1085,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                             meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -1117,7 +1117,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Constant size member
                             meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -1136,7 +1136,7 @@ namespace BaseClasses
                             }
 
                             // Rotate about local x-axis
-                            Geom2D.TransformPositions_CCW(0f, 0f, dTheta_x, ref fy, ref fz);
+                            Geom2D.TransformPositions_CCW_rad(0f, 0f, dTheta_x, ref fy, ref fz);
 
                             meshBackSidePositions.Add(new Point3D(FLength + FAlignment_End, fy, fz)); // Tapered member
                             meshShellPositions.Add(new Point3D(FLength + FAlignment_End, fy, fz));
@@ -1480,28 +1480,28 @@ namespace BaseClasses
                     if (i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints - 1)
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
                     else // Last line
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
@@ -1522,28 +1522,28 @@ namespace BaseClasses
                     if (i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints - 1)
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
                     else // Last line
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
@@ -1586,14 +1586,14 @@ namespace BaseClasses
                     Point3D pj = new Point3D();
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                     pi = new Point3D(- FAlignment_Start, fy, fz);
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                     pj = new Point3D(FLength + FAlignment_End, fy, fz);
 
@@ -1611,14 +1611,14 @@ namespace BaseClasses
                     Point3D pj = new Point3D();
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                     pi = new Point3D(-FAlignment_Start, fy, fz);
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
 
                     pj = new Point3D(FLength + FAlignment_End, fy, fz);
 

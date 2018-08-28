@@ -180,16 +180,16 @@ namespace BaseClasses
             // Hole 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
                 arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Z = 0;
             }
 
             // Hole 2 - upper
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
                 arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
             }
 
@@ -264,16 +264,16 @@ namespace BaseClasses
             // Holes 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Z = m_ft;
             }
 
             // Hole 2 - upper
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = m_ft;
             }
         }

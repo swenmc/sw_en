@@ -1,7 +1,9 @@
-﻿using _3DTools;
-using System;
+﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
+using _3DTools;
+using MATH;
 
 namespace BaseClasses
 {
@@ -14,6 +16,14 @@ namespace BaseClasses
         float m_ft;
         float m_fSlope_rad;
 
+        private float fConnectorLength;
+
+        public float FConnectorLength
+        {
+            get { return fConnectorLength; }
+            set { fConnectorLength = value; }
+        }
+
         public CConCom_Plate_JB()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -21,7 +31,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -38,6 +48,9 @@ namespace BaseClasses
             m_fhY_2 = fh_2_temp;
             m_flZ = fL_temp;
             m_ft = ft_platethickness;
+            IHolesNumber = iHolesNumber;
+            FHoleDiameter = fHoleDiameter_temp;
+            FConnectorLength = fConnectorLength_temp;
             m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / (0.5 * fb_temp));
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -46,13 +59,19 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[IHolesNumber, 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
+            Calc_HolesCentersCoord2D();
+            Calc_HolesControlPointsCoord3D();
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            GenerateConnectors();
 
             fWidth_bx = m_fbX;
             fHeight_hy = Math.Max(m_fhY_1, m_fhY_2);
@@ -60,7 +79,7 @@ namespace BaseClasses
             fArea = PolygonArea();
         }
 
-        public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_JB(string sName_temp, GraphObj.CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -77,6 +96,9 @@ namespace BaseClasses
             m_fhY_2 = fh_2_temp;
             m_flZ = fL_temp;
             m_ft = ft_platethickness;
+            IHolesNumber = iHolesNumber;
+            FHoleDiameter = fHoleDiameter_temp;
+            FConnectorLength = fConnectorLength_temp;
             m_fSlope_rad = fSLope_rad_temp;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -85,13 +107,19 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[IHolesNumber, 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
+            Calc_HolesCentersCoord2D();
+            Calc_HolesControlPointsCoord3D();
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            GenerateConnectors();
 
             fWidth_bx = m_fbX;
             fHeight_hy = Math.Max(m_fhY_1, m_fhY_2);
@@ -256,6 +284,78 @@ namespace BaseClasses
             arrPoints3D[i_temp + 11].X = arrPoints3D[14].X;
             arrPoints3D[i_temp + 11].Y = arrPoints3D[14].Y;
             arrPoints3D[i_temp + 11].Z = arrPoints3D[16].Z;
+        }
+
+        void Calc_HolesCentersCoord2D()
+        {
+            int iNumberOfCircleJoints = 2;
+
+            float fx_c1 = m_fbX / 4f;
+            float fy_c1 = m_flZ + m_fhY_1 / 2f;
+
+            float fx_c2 = m_fbX * 3f / 4f;
+            float fy_c2 = m_flZ + m_fhY_1 / 2f;
+
+            int iNumberOfSequencesInJoint = 2;
+
+            int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint);
+
+            float fRadius = 0.10f; // m // Input
+            float fAngle_seq_rotation_init_point_deg = 0;// 0.62f; // Constant for cross-section according to the size of middle sfiffener
+            float fAngle_seq_rotation_deg = 0; // 0.92f; // Input value (roof pitch)
+
+            float fAngle_interval_rad = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
+
+            // Left side
+            float[,] fSequenceLeftTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
+            float[,] fSequenceLeftBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
+
+            Geom2D.TransformPositions_CCW_deg(fx_c1, fy_c1, fAngle_seq_rotation_deg, ref fSequenceLeftTop);
+            Geom2D.TransformPositions_CCW_deg(fx_c1, fy_c1, fAngle_seq_rotation_deg, ref fSequenceLeftBottom);
+
+            // Right side
+            float[,] fSequenceRightTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
+            float[,] fSequenceRightBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_rad, iNumberOfScrewsInOneSequence, false);
+
+            Geom2D.TransformPositions_CCW_deg(fx_c2, fy_c2, fAngle_seq_rotation_deg, ref fSequenceRightTop);
+            Geom2D.TransformPositions_CCW_deg(fx_c2, fy_c2, fAngle_seq_rotation_deg, ref fSequenceRightBottom);
+
+            // Fill array of holes centers
+            for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
+            {
+                HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
+                HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
+
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 0] = fSequenceLeftBottom[i, 0];
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 1] = fSequenceLeftBottom[i, 1];
+
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightTop[i, 0];
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightTop[i, 1];
+
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
+            }
+        }
+
+        void Calc_HolesControlPointsCoord3D()
+        {
+            for (int i = 0; i < IHolesNumber; i++)
+            {
+                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i, 0];
+                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i, 1];
+                arrConnectorControlPoints3D[i].Z = -m_ft; // TODO Position depends on screw length;
+            }
+        }
+
+        void GenerateConnectors()
+        {
+            m_arrPlateConnectors = new CConnector[IHolesNumber];
+
+            for (int i = 0; i < IHolesNumber; i++)
+            {
+                CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, -90, 0, true);
+            }
         }
 
         protected override void loadIndices()

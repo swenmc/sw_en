@@ -145,8 +145,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -166,8 +166,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -281,8 +281,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -302,8 +302,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -417,8 +417,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -438,8 +438,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -553,8 +553,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -574,8 +574,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -689,8 +689,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
@@ -710,8 +710,8 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
 
                             crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
                             crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);

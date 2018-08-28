@@ -1451,8 +1451,8 @@ namespace PFD
         public void RotateAndTranslateNodeAboutZ_CCW(CPoint pControlPoint, CNode node, float fAngle_rad)
         {
             // Rotate node
-            float fx = (float)Geom2D.GetRotatedPosition_x_CCW(node.X, node.Y, fAngle_rad);
-            float fy = (float)Geom2D.GetRotatedPosition_y_CCW(node.X, node.Y, fAngle_rad);
+            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(node.X, node.Y, fAngle_rad);
+            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(node.X, node.Y, fAngle_rad);
 
             // Set rotated coordinates
             node.X = fx;

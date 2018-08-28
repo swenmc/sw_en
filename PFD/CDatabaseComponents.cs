@@ -274,8 +274,8 @@ namespace PFD
         public float[,] arr_Serie_J_Dimension = new float[2, 6]
         {
                 // b, h1, h2, t, L, iHoles
-                {500, 300, 350, 0, 3, 0},
-                {500, 300, 350, 50, 3, 0}
+                {500, 300, 350, 0, 3, 80},
+                {500, 300, 350, 50, 3, 80}
         };
 
         public float[,] arr_Serie_K_Dimension = new float[3, 8]

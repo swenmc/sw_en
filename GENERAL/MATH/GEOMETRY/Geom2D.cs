@@ -11,53 +11,77 @@ namespace MATH
 
         // Transformation of coordinates
         // Polar to Carthesian, Input angle in degrees
-        public static float GetPositionX(float radius, float theta)
+        public static float GetPositionX_deg(float radius, float theta_deg)
         {
-            return radius * (float)Math.Cos(theta * Math.PI / 180);
+            return radius * (float)Math.Cos(theta_deg * Math.PI / 180);
         }
 
-        public static float GetPositionY_CW(float radius, float theta)
+        public static float GetPositionY_CW_deg(float radius, float theta_deg)
         {
             // Clock-wise (for counterclock-wise change sign for vertical coordinate)
-            return -radius * (float)Math.Sin(theta * Math.PI / 180);
+            return - radius * (float)Math.Sin(theta_deg * Math.PI / 180);
         }
 
-        public static float GetPositionY_CCW(float radius, float theta)
+        public static float GetPositionY_CCW_deg(float radius, float theta_deg)
         {
             // Counter Clock-wise
-            return - GetPositionY_CW(radius, theta);
+            return -GetPositionY_CW_deg(radius, theta_deg);
+        }
+
+        // Polar to Carthesian, Input angle in rad
+        public static float GetPositionX_rad(float radius, float theta_rad)
+        {
+            return radius * (float)Math.Cos(theta_rad);
+        }
+
+        public static float GetPositionY_CW_rad(float radius, float theta_rad)
+        {
+            // Clock-wise (for counterclock-wise change sign for vertical coordinate)
+            return -radius * (float)Math.Sin(theta_rad);
+        }
+
+        public static float GetPositionY_CCW_rad(float radius, float theta_rad)
+        {
+            // Counter Clock-wise
+            return -GetPositionY_CW_rad(radius, theta_rad);
         }
 
         // Get rotated position of point
-        public static float GetRotatedPosition_x_CCW(float x, float y, double theta)
+        // Input angle in radians
+        public static float GetRotatedPosition_x_CCW_rad(float x, float y, double theta_rad)
         {
-            return (float)(x * Math.Cos(theta) - y * Math.Sin(theta));
+            return (float)(x * Math.Cos(theta_rad) - y * Math.Sin(theta_rad));
         }
 
-        public static float GetRotatedPosition_y_CCW(float x, float y, double theta)
+        public static float GetRotatedPosition_y_CCW_rad(float x, float y, double theta_rad)
         {
-            return (float)(x * Math.Sin(theta) + y * Math.Cos(theta));
+            return (float)(x * Math.Sin(theta_rad) + y * Math.Cos(theta_rad));
         }
 
-        public static float GetRotatedPosition_x_CW(float x, float y, double theta)
+        public static float GetRotatedPosition_x_CW_rad(float x, float y, double theta_rad)
         {
-            return (float)(x * Math.Cos(theta) + y * Math.Sin(theta));
+            return (float)(x * Math.Cos(theta_rad) + y * Math.Sin(theta_rad));
         }
 
-        public static float GetRotatedPosition_y_CW(float x, float y, double theta)
+        public static float GetRotatedPosition_y_CW_rad(float x, float y, double theta_rad)
         {
-            return (float)(x * - Math.Sin(theta) + y * Math.Cos(theta));
+            return (float)(x * - Math.Sin(theta_rad) + y * Math.Cos(theta_rad));
         }
 
-        public static void TransformPositions_CCW(float x_centerOfRotation, float y_centerOfRotation, double theta, ref float x, ref float y)
+        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
+        {
+            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref  y);
+        }
+
+        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float x, ref float y)
         {
             float px;
             float py;
 
-            if (!MathF.d_equal(theta, 0)) // Translate and rotate
+            if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
             {
-                px = (float)(Math.Cos(theta) * (x - x_centerOfRotation) - Math.Sin(theta) * (y - y_centerOfRotation) + x_centerOfRotation);
-                py = (float)(Math.Sin(theta) * (x - x_centerOfRotation) + Math.Cos(theta) * (y - y_centerOfRotation) + y_centerOfRotation);
+                px = (float)(Math.Cos(theta_rad) * (x - x_centerOfRotation) - Math.Sin(theta_rad) * (y - y_centerOfRotation) + x_centerOfRotation);
+                py = (float)(Math.Sin(theta_rad) * (x - x_centerOfRotation) + Math.Cos(theta_rad) * (y - y_centerOfRotation) + y_centerOfRotation);
             }
             else // Only translate
             {
@@ -69,15 +93,20 @@ namespace MATH
             y = py;
         }
 
-        public static void TransformPositions_CW(float x_centerOfRotation, float y_centerOfRotation, double theta, ref float x, ref float y)
+        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
+        {
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref y);
+        }
+
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float x, ref float y)
         {
             float px;
             float py;
 
-            if (!MathF.d_equal(theta, 0)) // Translate and rotate
+            if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
             {
-                px = (float)(Math.Cos(theta) * (x - x_centerOfRotation) + Math.Sin(theta) * (y - y_centerOfRotation) + x_centerOfRotation);
-                py = (float)(-Math.Sin(theta) * (x - x_centerOfRotation) + Math.Cos(theta) * (y - y_centerOfRotation) + y_centerOfRotation);
+                px = (float)(Math.Cos(theta_rad) * (x - x_centerOfRotation) + Math.Sin(theta_rad) * (y - y_centerOfRotation) + x_centerOfRotation);
+                py = (float)(-Math.Sin(theta_rad) * (x - x_centerOfRotation) + Math.Cos(theta_rad) * (y - y_centerOfRotation) + y_centerOfRotation);
             }
             else  // Only translate
             {
@@ -87,6 +116,28 @@ namespace MATH
 
             x = px;
             y = py;
+        }
+
+        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
+        {
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
+        }
+
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float [,] array)
+        {
+            for (int i = 0; i < array.Length / 2; i++)
+                TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
+        }
+
+        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
+        {
+            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
+        }
+
+        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float[,] array)
+        {
+            for (int i = 0; i < array.Length / 2; i++)
+                TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,21 +164,33 @@ namespace MATH
         // semicircle curve shape,
         // curve shape,
         // incomplete circle shape,
-        // empty semicircle shape, 
+        // empty semicircle shape,
         // right trapezium shape
 
 
         #region Circle
         // Circle
         // Get Points Coordinates
-        public static float[,] GetCirclePointCoord(float fr, int iNumber)
+        public static float[,] GetCirclePointCoord_CW(float fr, int iNumber)
         {
             m_ArrfPointsCoord2D = new float[iNumber, 2];
 
             for (int i = 0; i < iNumber; i++)
             {
-                m_ArrfPointsCoord2D[i, 0] = GetPositionX(fr, i * 360 / iNumber);  // y
-                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CW(fr, i * 360 / iNumber);  // z
+                m_ArrfPointsCoord2D[i, 0] = GetPositionX_deg(fr, i * 360 / iNumber);  // y
+                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CW_deg(fr, i * 360 / iNumber);  // z
+            }
+
+            return m_ArrfPointsCoord2D;
+        }
+        public static float[,] GetCirclePointCoord_CCW(float fr, int iNumber)
+        {
+            m_ArrfPointsCoord2D = new float[iNumber, 2];
+
+            for (int i = 0; i < iNumber; i++)
+            {
+                m_ArrfPointsCoord2D[i, 0] = GetPositionX_deg(fr, i * 360 / iNumber);  // y
+                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CCW_deg(fr, i * 360 / iNumber);  // z
             }
 
             return m_ArrfPointsCoord2D;
@@ -135,21 +198,60 @@ namespace MATH
         #endregion
         #region Arc
         // Arc
-        public static float[,] GetArcPointCoord(float fr, int fStartAngle, int fEndAngle, int iNumber)
+        public static float[,] GetArcPointCoord_CW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
         {
-            // iNumber - number of points of section (arc + centroid)
-            // iNumber - 1 - number of points arc
-            m_ArrfPointsCoord2D = new float[iNumber, 2];  // Allocate Memory for whole section (all section points including centroid)
+            if (bIncludeCentroid)
+            {
+                // iNumber - number of points of section (arc + centroid)
+                // iNumber - 1 - number of points arc
+                m_ArrfPointsCoord2D = new float[iNumber, 2];  // Allocate Memory for whole section (all section points including centroid)
 
-            // Decrease Number
-            --iNumber;
-            // iNumber - number of points of arc
-            // iNumber - 1 - number of segments of arc
+                // Decrease Number
+                --iNumber;
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+            else
+            {
+                m_ArrfPointsCoord2D = new float[iNumber, 2];  // Allocate Memory for whole section (all section points excluding centroid)
+
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
 
             for (int i = 0; i < iNumber; i++)
             {
-                m_ArrfPointsCoord2D[i, 0] = GetPositionX(fr, fStartAngle + i * (fEndAngle - fStartAngle) / (iNumber - 1));  // y
-                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CW(fr, fStartAngle + i * (fEndAngle - fStartAngle) / (iNumber - 1));  // z
+                m_ArrfPointsCoord2D[i, 0] = GetPositionX_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // y
+                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CW_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // z
+            }
+
+            return m_ArrfPointsCoord2D;
+        }
+        public static float[,] GetArcPointCoord_CCW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
+        {
+            if (bIncludeCentroid)
+            {
+                // iNumber - number of points of section (arc + centroid)
+                // iNumber - 1 - number of points arc
+                m_ArrfPointsCoord2D = new float[iNumber, 2];  // Allocate Memory for whole section (all section points including centroid)
+
+                // Decrease Number
+                --iNumber;
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+            else
+            {
+                m_ArrfPointsCoord2D = new float[iNumber, 2];  // Allocate Memory for whole section (all section points excluding centroid)
+
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+
+            for (int i = 0; i < iNumber; i++)
+            {
+                m_ArrfPointsCoord2D[i, 0] = GetPositionX_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // y
+                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CCW_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // z
             }
 
             return m_ArrfPointsCoord2D;
@@ -245,8 +347,8 @@ namespace MATH
 
             for (int i = 0; i < iNumEdges; i++)
             {
-                m_ArrfPointsCoord2D[i, 0] = GetPositionX(GetRadiusfromSideLength(fa, iNumEdges), i * 360 / iNumEdges);  // y
-                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CW(GetRadiusfromSideLength(fa, iNumEdges), i * 360 / iNumEdges);  // z
+                m_ArrfPointsCoord2D[i, 0] = GetPositionX_deg(GetRadiusfromSideLength(fa, iNumEdges), i * 360 / iNumEdges);  // y
+                m_ArrfPointsCoord2D[i, 1] = GetPositionY_CW_deg(GetRadiusfromSideLength(fa, iNumEdges), i * 360 / iNumEdges);  // z
             }
 
             return m_ArrfPointsCoord2D;

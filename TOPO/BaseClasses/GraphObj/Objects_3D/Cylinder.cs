@@ -53,7 +53,7 @@ namespace BaseClasses.GraphObj.Objects_3D
             float[,] PointsOut = new float[iTotNoPoints - 1, 2];
 
             // Outside Points Coordinates
-            PointsOut = Geom2D.GetCirclePointCoord(fDim1_r, iTotNoPoints - 1);
+            PointsOut = Geom2D.GetCirclePointCoord_CW(fDim1_r, iTotNoPoints - 1);
 
             // TODO - potrebujeme zmenit velkost dvojrozmerneho pola a pridat don posledny bod - stredovy bod kruhu
             float[,] PointsOutTemp = PointsOut;

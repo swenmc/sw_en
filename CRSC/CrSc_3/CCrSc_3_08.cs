@@ -245,37 +245,37 @@ namespace CRSC
             // 2nd radius - centre "3" (0-90 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 0] = CrScPointsOut[3, 0] + Geom2D.GetPositionX(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 1] = CrScPointsOut[3, 1] + Geom2D.GetPositionY_CW(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
+                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 0] = CrScPointsOut[3, 0] + Geom2D.GetPositionX_deg(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 1] = CrScPointsOut[3, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
             }
 
             // 3rd radius - centre "4" (90-180 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 0] = CrScPointsOut[4, 0] + m_fr_1 + Geom2D.GetPositionX(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 1] = CrScPointsOut[4, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 0] = CrScPointsOut[4, 0] + m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 1] = CrScPointsOut[4, 1] - m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // 4th radius - centre "5" (0-180 degrees)
             for (short i = 0; i < 2 * m_iNumOfArcPoints-1; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + i + 1, 0] = CrScPointsOut[5, 0] + Geom2D.GetPositionX(m_fr_3, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + i + 1, 1] = CrScPointsOut[5, 1] + Geom2D.GetPositionY_CW(m_fr_3, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + i + 1, 0] = CrScPointsOut[5, 0] + Geom2D.GetPositionX_deg(m_fr_3, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + i + 1, 1] = CrScPointsOut[5, 1] + Geom2D.GetPositionY_CW_deg(m_fr_3, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // 5th radius - centre "6" (180-270 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 0] = CrScPointsOut[6, 0] - m_fr_1 + Geom2D.GetPositionX(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 1] = CrScPointsOut[6, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 0] = CrScPointsOut[6, 0] - m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 1] = CrScPointsOut[6, 1] - m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // 1st radius - centre "0" (90-180 degrees)
             // Do not create last point of segment - it is already defined
             for (short i = 0; i < m_iNumOfArcPoints - 1; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 0] = CrScPointsOut[0, 0] + Geom2D.GetPositionX(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);      // y
-                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 1] = CrScPointsOut[0, 1] + Geom2D.GetPositionY_CW(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);    // z
+                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 0] = CrScPointsOut[0, 0] + Geom2D.GetPositionX_deg(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);      // y
+                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 2 * m_iNumOfArcPoints + i, 1] = CrScPointsOut[0, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);    // z
             }
         }
 
@@ -325,15 +325,15 @@ namespace CRSC
             // 2nd radius - centre "3" (0-90 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 0] = CrScPointsOut[3, 0] + Geom2D.GetPositionX(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 1] = CrScPointsOut[3, 1] + Geom2D.GetPositionY_CW(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
+                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 0] = CrScPointsOut[3, 0] + Geom2D.GetPositionX_deg(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 1] = CrScPointsOut[3, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
             }
 
             // 3rd radius - centre "4" (90-180 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 0] = CrScPointsOut[4, 0] + m_fr_1 + Geom2D.GetPositionX(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 1] = CrScPointsOut[4, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 0] = CrScPointsOut[4, 0] + m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + i + 1, 1] = CrScPointsOut[4, 1] - m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // Point No. XX - Bottom Right Edge point
@@ -347,16 +347,16 @@ namespace CRSC
             // 4th radius - centre "5" (180-270 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 3 + i, 0] = CrScPointsOut[5, 0] - m_fr_1 + Geom2D.GetPositionX(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 3 + i, 1] = CrScPointsOut[5, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 3 + i, 0] = CrScPointsOut[5, 0] - m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + 3 + i, 1] = CrScPointsOut[5, 1] - m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // 1st radius - centre "0" (90-180 degrees)
             // Do not create last point of segment - it is already defined
             for (short i = 0; i < m_iNumOfArcPoints - 1; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 3 + i, 0] = CrScPointsOut[0, 0] + Geom2D.GetPositionX(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);       // y
-                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 3 + i, 1] = CrScPointsOut[0, 1] + Geom2D.GetPositionY_CW(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);    // z
+                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 3 + i, 0] = CrScPointsOut[0, 0] + Geom2D.GetPositionX_deg(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);       // y
+                CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints + 3 + i, 1] = CrScPointsOut[0, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);    // z
             }
         }
 
@@ -398,8 +398,8 @@ namespace CRSC
             // 2nd radius - centre "3" (0-90 degrees)
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 0] = CrScPointsOut[3, 0] + Geom2D.GetPositionX(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 1] = CrScPointsOut[3, 1] + Geom2D.GetPositionY_CW(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
+                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 0] = CrScPointsOut[3, 0] + Geom2D.GetPositionX_deg(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + i + 1, 1] = CrScPointsOut[3, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 0 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
             }
 
             // Point No. XX - Upper right edge web point
@@ -422,8 +422,8 @@ namespace CRSC
             // Do not create last point of segment - it is already defined
             for (short i = 0; i < m_iNumOfArcPoints - 1; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 5 + i, 0] = CrScPointsOut[0, 0] + Geom2D.GetPositionX(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);       // y
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 5 + i, 1] = CrScPointsOut[0, 1] + Geom2D.GetPositionY_CW(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);    // z
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 5 + i, 0] = CrScPointsOut[0, 0] + Geom2D.GetPositionX_deg(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);       // y
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 5 + i, 1] = CrScPointsOut[0, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 90 + i * iRadiusAngle / m_iNumOfArcSegment);    // z
             }
         }
 
@@ -473,8 +473,8 @@ namespace CRSC
             // 1st radius - centre "1" (90-180 degrees) - right side
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + i + 5, 0] = CrScPointsOut[1, 0] + m_fr_1 + Geom2D.GetPositionX(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + i + 5, 1] = CrScPointsOut[1, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + i + 5, 0] = CrScPointsOut[1, 0] + m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + i + 5, 1] = CrScPointsOut[1, 1] - m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 90 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // Point No. XX - Bottom Right Edge point
@@ -488,8 +488,8 @@ namespace CRSC
             // 2nd radius - centre "0" (180-270 degrees) - left side
             for (short i = 0; i < m_iNumOfArcPoints; i++)
             {
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 7 + i, 0] = CrScPointsOut[0, 0] - m_fr_1 + Geom2D.GetPositionX(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
-                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 7 + i, 1] = CrScPointsOut[0, 1] - m_fr_1 + Geom2D.GetPositionY_CCW(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 7 + i, 0] = CrScPointsOut[0, 0] - m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+                CrScPointsOut[m_iNumOfAuxPoints + m_iNumOfArcPoints + 7 + i, 1] = CrScPointsOut[0, 1] - m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 0 + i * iRadiusAngle / m_iNumOfArcSegment); // z
             }
 
             // Last point

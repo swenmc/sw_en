@@ -1,8 +1,8 @@
-﻿using _3DTools;
-using BaseClasses.GraphObj;
-using System;
+﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using BaseClasses.GraphObj;
+using _3DTools;
 
 namespace BaseClasses
 {
