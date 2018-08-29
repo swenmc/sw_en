@@ -61,7 +61,7 @@ namespace BaseClasses
                 points.Add(new Point(marginLeft_x + fFactorX * arrPointsCoordX[i], bottomPosition_y - fFactorY * arrPointsCoordY[i]));
             }
 
-            Polyline myLine = new Polyline();
+            Polyline myLine = new Polyline();            
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
             myLine.Points = points;

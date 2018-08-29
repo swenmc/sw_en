@@ -114,6 +114,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRSC", "CRSC", "{8A01D9B6-9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRSC", "CRSC\CRSC.csproj", "{FFB65036-8DD2-4633-B25A-D5A65D7213BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConcoleApp", "ConsoleApplication1\TestConcoleApp.csproj", "{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -487,6 +489,18 @@ Global
 		{FFB65036-8DD2-4633-B25A-D5A65D7213BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FFB65036-8DD2-4633-B25A-D5A65D7213BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{FFB65036-8DD2-4633-B25A-D5A65D7213BD}.Release|x86.Build.0 = Release|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -526,10 +540,11 @@ Global
 		{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26} = {1E958905-DA17-42F6-B93D-5CE937F29859}
 		{209738F7-CDB3-4C11-98A3-E345299D9191} = {7239374F-E8CD-4AB3-B6FC-181D1525AF71}
 		{FFB65036-8DD2-4633-B25A-D5A65D7213BD} = {8A01D9B6-92A4-4C23-9F0C-600389FC3D18}
+		{C47F562B-67A6-4E58-B6CC-C547DE5A61FC} = {14CFC29E-FCF8-42C0-AA2E-9292034B04C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
