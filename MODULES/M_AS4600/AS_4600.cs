@@ -5,6 +5,154 @@ namespace M_AS4600
 {
     public class AS_4600
     {
+        public float Eq_5423_1__(float fN_asterix_t, float fPhi, float fN_t)
+        {
+            return fN_asterix_t / (fPhi * fN_t); // Eq. (5.4.2.3(1)) // fN_t design ratio
+        }
+        public float Eq_5423_2__(float fd_f, float fs_f, float fA_n, float ff_u)
+        {
+            return Math.Min((2.5f * fd_f / fs_f) * fA_n * ff_u, fA_n * ff_u); // Eq. (5.4.2.3(2)) // fN_t
+        }
+        public float Eq_5423_3__(float fd_f, float fs_f, float fA_n, float ff_u)
+        {
+            return fA_n * ff_u; // Eq. (5.4.2.3(3)) // fN_t
+        }
+        public float Eq_5424_1__(float fV_asterix_b, float fPhi, float fV_b)
+        {
+            return fV_asterix_b / (fPhi * fV_b); // Eq. (5.4.2.4(1)) // fV_b design ratio
+        }
+        public float Eq_5424_2__(float ft_2, float fd_f, float ff_u2)
+        {
+            return (float)(4.2 * Math.Sqrt(MathF.Pow3(ft_2) * fd_f) * ff_u2); // Eq. (5.4.2.4(2)) // fV_b
+        }
+        public float Eq_5424_3__(float fC, float ft_1, float fd_f, float ff_u1)
+        {
+            return fC * ft_1 * fd_f * ff_u1; // Eq. (5.4.2.4(3)) // fV_b
+        }
+        public float Eq_5424_4__(float fC, float ft_2, float fd_f, float ff_u2)
+        {
+            return fC * ft_2 * fd_f * ff_u2; // Eq. (5.4.2.4(4)) // fV_b
+        }
+        public float Eq_5424_5__(float fC, float ft_1, float fd_f, float ff_u1)
+        {
+            return fC * ft_1 * fd_f * ff_u1; // Eq. (5.4.2.4(5)) // fV_b
+        }
+        public float Eq_5424_6__(float fC, float ft_2, float fd_f, float ff_u2)
+        {
+            return fC * ft_2 * fd_f * ff_u2; // Eq. (5.4.2.4(6)) // fV_b
+        }
+        public float Get_C_Tab_5424(float fd_f, float ft)
+        {
+            // Table 5.4.2.4 - Bearing Factor (C)
+            float fratio_df_to_t = fd_f / ft;
+
+            if (fratio_df_to_t < 6)
+                return 2.7f;
+            else if (fratio_df_to_t <= 13)
+                return 3.3f - 0.1f * fratio_df_to_t;
+            else
+                return 2.0f;
+        }
+        public float Eq_5425_1__(float fV_asterix_fv, float fPhi, float fV_fv)
+        {
+            return fV_asterix_fv / (fPhi * fV_fv); // Eq. (5.4.2.5(1)) // fV_fv design ratio
+        }
+        public float Eq_5425_1__(float fV_asterix_fv, float fV_fv, float ff_u, float ff_y)
+        {
+            float fPhi;
+
+            if (ff_u / ff_y >= 1.05)
+                fPhi = 0.7f;
+            else
+                fPhi = 0.6f;
+
+            return Eq_5425_1__(fV_asterix_fv, fPhi, fV_fv); // Eq. (5.4.2.5(1)) // fV_fv design ratio
+        }
+        public float Eq_5425_2__(float fV_fv, float fthickness, float fe, float ff_u)
+        {
+            return fthickness * fe * ff_u; // Eq. (5.4.2.5(2)) // fV_fv
+        }
+        public float Eq_5432_1__(float fN_asterix_t, float fPhi, float fN_t)
+        {
+            return fN_asterix_t / (fPhi * fN_t); // Eq. (5.4.3.2(1)) // fN_t design ratio
+        }
+        public float Eq_5432_2__(float ft_2, float fd_f, float ff_u2)
+        {
+            if(ft_2 > 0.0009f) // 0.9 mm
+              return 0.85f * ft_2 * fd_f * ff_u2; // Eq. (5.4.3.2(1)) // fN_ou
+            else
+            {
+                // Exception
+                throw new ArgumentException("Invalid value of thickness t2! Less than 0.9 mm, see cl. 5.4.3.2(2).");
+            }
+        }
+        public float Eq_5432_3__(float ft_1, float fd_w, float ff_ul)
+        {
+            return 1.5f * ft_1 * fd_w * ff_ul; // Eq. (5.4.3.2(3)) // fN_ov
+        }
+        public float Eq_5432_4__(float fd_h, float ft_w, float ft_1, float fd_w)
+        {
+            return MathF.Min(fd_h + 2 * ft_w + ft_1, fd_w); // Eq. (5.4.3.2(4)) // fd_aphostrof_w
+        }
+        public float Eq_5432_5__(float fd_h, float ft_w, float ft_1, float fd_w)
+        {
+            return MathF.Min(fd_h, 0.02f); // Eq. (5.4.3.2(5)) // fd_aphostrof_w
+        }
+        public float Eq_5432_6__(float ft_1, float ff_ul)
+        {
+            return 8.68f * MathF.Pow2(ft_1) * ff_ul; // Eq. (5.4.3.2(6)) // fN_ov
+        }
+        public float Eq_5432_7__(float ft_1, float fd_aphostrof_w, float ff_ul)
+        {
+            if(0.011f <= fd_aphostrof_w && fd_aphostrof_w <= 0.0145f)
+               return (float)(3.07f * Math.Pow(ft_1, 1.4f) * Math.Pow(fd_aphostrof_w, 0.6f) * ff_ul); // Eq. (5.4.3.2(7)) // fN_ov
+            else
+            {
+                // Exception
+                throw new ArgumentException("Invalid value of screw head diameter dh! Less than 11 mm or more than 14.5 mm, see cl. 5.4.3.2(7).");
+            }
+        }
+        public float Eq_5434____(float fV_asterix_b, float fN_asterix_t, float fPhi, float fV_b, float fN_ov)
+        {
+            float fPortion_V = fV_asterix_b / (fPhi * fV_b);
+            float fPortion_N = fN_asterix_t / (fPhi * fN_ov);
+            return (fPortion_V + 0.71f * fPortion_V) / 1.1f; // Eq. (5.4.3.4) // fDesignRatio
+        }
+        public float Eq_5435____(float fV_asterix_b, float fN_asterix_t, float fPhi, float fV_b, float fN_ou)
+        {
+            float fPortion_V = fV_asterix_b / (fPhi * fV_b);
+            float fPortion_N = fN_asterix_t / (fPhi * fN_ou);
+            return (fPortion_V + fPortion_V) / 1.15f; // Eq. (5.4.3.5) // fDesignRatio
+        }
+        public float Eq_5436____(float fV_asterix, float fN_asterix_t, float fPhi, float fV_screw, float fN_screw)
+        {
+            float fPortion_V = fV_asterix / (fPhi * fV_screw);
+            float fPortion_N = fN_asterix_t / (fPhi * fN_screw);
+            return (fPortion_V + fPortion_V) / 1.3f; // Eq. (5.4.3.6) // fDesignRatio
+        }
+        public float Eq_571_1___(float fV_asterix_n, float fPhi, float fV_n)
+        {
+            return fV_asterix_n / (fPhi * fV_n); // Eq. (5.7.1(1)) // fV_n design ratio
+        }
+        public float Eq_571_2___(float  ff_u, float fA_wn)
+        {
+            return 0.6f * ff_u * fA_wn; // Eq. (5.7.1(2)) // fV_n
+        }
+        public float Eq_571_3___(float fd_wc, int in_h, float fd_h, float ft)
+        {
+            return (fd_wc - in_h * fd_h) * ft; // Eq. (5.7.1(3)) // fA_wn
+        }
+        public float Eq_573_1___(float fS_asterix, float fPhi, float fR_n)
+        {
+            return fS_asterix / (fPhi * fR_n); // Eq. (5.7.3(1)) // fDesignRatio
+        }
+        public float Eq_573_2___(float ff_y, float fA_av, float ff_u, float fA_nt, float fd_f, float fs_f)
+        {
+            return 0.6f * ff_y * fA_av  + ff_u * fA_nt * (0.9f + 0.1f * fd_f / fs_f); // Eq. (5.7.3(2)) // fR_n
+        }
+
+
+        // Direct Strength Method
         public float Eq_7212_1__(float flambda_c, float fN_y)
         {
             return (float)(Math.Pow(0.658f, MathF.Pow2(flambda_c)) * fN_y); // Eq. (7.2.1.2(1)) // fN_ce

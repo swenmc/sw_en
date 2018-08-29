@@ -336,50 +336,61 @@ namespace BaseClasses
 
         void Calc_HolesCentersCoord2D()
         {
-            int iNumberOfCircleJoints = 2;
+            // Circle
+            bool bIsCircleJointArrangement = true;
 
-            float fDistanceOfCenterFromLeftEdge = m_fbX / 4f;
-            float fx_c1 = fDistanceOfCenterFromLeftEdge;
-            float fy_c1 = m_flZ + ((m_fhY_1 / 2f) / (float)Math.Cos(m_fSlope_rad)) + (fDistanceOfCenterFromLeftEdge * (float)Math.Tan(m_fSlope_rad));
-
-            float fx_c2 = m_fbX - fDistanceOfCenterFromLeftEdge; // Symmetrical
-            float fy_c2 = fy_c1;
-
-            int iNumberOfSequencesInJoint = 2;
-
-            int iNumberOfAddionalConnectorsInOneGroup = m_bUseAdditionalCornerScrews ? (m_iAdditionalConnectorNumber / iNumberOfCircleJoints) : 0;
-            int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
-
-            float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
-            float fRadius = 0.5f * m_fCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
-            float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * m_fStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
-
-            // Left side
-            float[,] fSequenceLeftTop;
-            float[,] fSequenceLeftBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom);
-
-            // Right side
-            float[,] fSequenceRightTop;
-            float[,] fSequenceRightBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, - m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom);
-
-            IHolesNumber += m_iAdditionalConnectorNumber;
-
-            // Fill array of holes centers
-            for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
+            if (bIsCircleJointArrangement)
             {
-                HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
-                HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
+                int iNumberOfCircleJoints = 2;
 
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 0] = fSequenceLeftBottom[i, 0];
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 1] = fSequenceLeftBottom[i, 1];
+                float fDistanceOfCenterFromLeftEdge = m_fbX / 4f;
+                float fx_c1 = fDistanceOfCenterFromLeftEdge;
+                float fy_c1 = m_flZ + ((m_fhY_1 / 2f) / (float)Math.Cos(m_fSlope_rad)) + (fDistanceOfCenterFromLeftEdge * (float)Math.Tan(m_fSlope_rad));
 
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightTop[i, 0];
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightTop[i, 1];
+                float fx_c2 = m_fbX - fDistanceOfCenterFromLeftEdge; // Symmetrical
+                float fy_c2 = fy_c1;
 
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
+                int iNumberOfSequencesInJoint = 2;
+
+                int iNumberOfAddionalConnectorsInOneGroup = m_bUseAdditionalCornerScrews ? (m_iAdditionalConnectorNumber / iNumberOfCircleJoints) : 0;
+                int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
+
+                float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
+                float fRadius = 0.5f * m_fCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
+                float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * m_fStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
+
+                // Left side
+                float[,] fSequenceLeftTop;
+                float[,] fSequenceLeftBottom;
+                Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom);
+
+                // Right side
+                float[,] fSequenceRightTop;
+                float[,] fSequenceRightBottom;
+                Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, -m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom);
+
+                IHolesNumber += m_iAdditionalConnectorNumber;
+
+                // Fill array of holes centers
+                for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
+                {
+                    HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
+                    HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
+
+                    HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 0] = fSequenceLeftBottom[i, 0];
+                    HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 1] = fSequenceLeftBottom[i, 1];
+
+                    HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightTop[i, 0];
+                    HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightTop[i, 1];
+
+                    HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
+                    HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
+                }
+            }
+            else
+            {
+               // TODO - zapracovat rozne usporiadanie skrutiek
+
             }
         }
 
