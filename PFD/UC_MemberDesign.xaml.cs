@@ -62,7 +62,7 @@ namespace PFD
             CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups[mdinput.ComponentTypeIndex];
 
             // Calculate governing member design ratio in member group
-            CCalcul cGoverningMemberResults;
+            CCalculMember cGoverningMemberResults;
 
             if (Model.m_arrLoadCombs[mdinput.LoadCombinationIndex].eLComType == ELSType.eLS_ULS)
                 CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
@@ -72,7 +72,7 @@ namespace PFD
         }
         
         // Calculate governing member design ratio
-        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_ULS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_ULS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -89,7 +89,7 @@ namespace PFD
                     //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
                     CMemberLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
-                    CCalcul c = new CCalcul(false, res.DesignInternalForces, m, res.DesignMomentValuesForCb);
+                    CCalculMember c = new CCalculMember(false, res.DesignInternalForces, m, res.DesignMomentValuesForCb);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
@@ -110,7 +110,7 @@ namespace PFD
 
         }
 
-        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_SLS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalcul cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_SLS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -128,7 +128,7 @@ namespace PFD
                     //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
                     CMemberLoadCombinationRatio_SLS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
-                    CCalcul c = new CCalcul(false, res.DesignDeflections, m);
+                    CCalculMember c = new CCalculMember(false, res.DesignDeflections, m);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
@@ -150,7 +150,7 @@ namespace PFD
 
         // TODO - Display Data in DataGrid Results_GridView
 
-        public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid, CCalcul obj_CalcDesign)
+        public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid, CCalculMember obj_CalcDesign)
         {
             DeleteLists();
 
@@ -230,7 +230,7 @@ namespace PFD
             zoznamMenuJednotky.Clear();
         }
 
-        private void SetResultsDetailsFor_ULS(CCalcul obj_CalcDesign)
+        private void SetResultsDetailsFor_ULS(CCalculMember obj_CalcDesign)
         {
             // Display results in datagrid
             // AS 4600 output variables
@@ -468,7 +468,7 @@ namespace PFD
             zoznamMenuJednotky.Add("[-]");
         }
 
-        private void SetResultsDetailsFor_SLS(CCalcul obj_CalcDesign)
+        private void SetResultsDetailsFor_SLS(CCalculMember obj_CalcDesign)
         {
             // Display results in datagrid
 

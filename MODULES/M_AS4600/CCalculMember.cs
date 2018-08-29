@@ -61,7 +61,7 @@ namespace M_AS4600
         eD3c_StiffFlanges  // Webs restrained at the top and bottom edges by flanges
     };
 
-    public class CCalcul
+    public class CCalculMember
     {
         public struct designInternalForces_AS4600
         {
@@ -205,7 +205,7 @@ namespace M_AS4600
         public float fEta_defl_zz = 0f;
         public float fEta_defl_tot = 0f;
 
-        public CCalcul(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designMomentValuesForCb sMomentValuesForCb)
         {
             CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sMomentValuesForCb);
 
@@ -216,7 +216,7 @@ namespace M_AS4600
             }
         }
 
-        public CCalcul(bool bIsDebugging, designDeflections sDDeflections_x_temp, CMember member)
+        public CCalculMember(bool bIsDebugging, designDeflections sDDeflections_x_temp, CMember member)
         {
             CalculateDesignRatio(bIsDebugging, sDDeflections_x_temp, member.FLength);
 

@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AS_4600.cs" />
-    <Compile Include="CCalcul.cs" />
+    <Compile Include="CCalculMember.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

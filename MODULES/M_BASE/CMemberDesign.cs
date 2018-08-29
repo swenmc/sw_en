@@ -12,7 +12,7 @@ namespace M_BASE
     public class CMemberDesign
     {
         bool bDebugging;
-        public List<CCalcul> listOfMemberDesignInLocations;
+        public List<CCalculMember> listOfMemberDesignInLocations;
         public int fMaximumDesignRatioLocationID = 0;
         public float fMaximumDesignRatio = 0;
 
@@ -29,7 +29,7 @@ namespace M_BASE
 
         public void SetDesignForcesAndMemberDesign_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
-            listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
+            listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
             sDIF_x = new designInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
 
@@ -48,7 +48,7 @@ namespace M_BASE
                     sDIF_x[i, j].fV_zv = sBIF_x[i, j].fV_zv;
                     sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
 
-                    CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[i, j], member, sMomentValuesforCb[i]);
+                    CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, sDIF_x[i, j], member, sMomentValuesforCb[i]);
 
                     if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
@@ -64,7 +64,7 @@ namespace M_BASE
         // PFD
         public void SetDesignForcesAndMemberDesign_PFD(int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x, designMomentValuesForCb sMomentValuesforCb, out designInternalForces[] sDIF_x)
         {
-            listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
+            listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
             sDIF_x = new designInternalForces[iNumberOfDesignSections];
 
@@ -81,7 +81,7 @@ namespace M_BASE
                 sDIF_x[j].fV_zv = sBIF_x[j].fV_zv;
                 sDIF_x[j].fM_yu = sBIF_x[j].fM_yu;
 
-                CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDIF_x[j], member, sMomentValuesforCb);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, sDIF_x[j], member, sMomentValuesforCb);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
@@ -95,7 +95,7 @@ namespace M_BASE
 
         public void SetDesignDeflections_PFD(int iNumberOfDesignSections, CMember member, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)
         {
-            listOfMemberDesignInLocations = new List<CCalcul>(iNumberOfDesignSections);
+            listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
             sDDeflections_x = new designDeflections[iNumberOfDesignSections];
 
@@ -107,7 +107,7 @@ namespace M_BASE
                 sDDeflections_x[j].fDelta_zz = sBDeflections_x[j].fDelta_zz;
                 sDDeflections_x[j].fDelta_tot = sBDeflections_x[j].fDelta_tot;
 
-                CCalcul obj_CalcDesign = new CCalcul(bDebugging, sDDeflections_x[j], member);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, sDDeflections_x[j], member);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                 {
