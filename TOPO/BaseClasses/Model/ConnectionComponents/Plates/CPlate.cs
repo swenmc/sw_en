@@ -462,13 +462,12 @@ namespace BaseClasses
             return Math.Abs(SignedPolygonArea());
         }
 
-        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fCrscWebStraightDepth, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, bool bUseAdditionalCornerScrews, int iAdditionalConnectorNumberinGroup, out float[,] fSequenceTop, out float[,] fSequenceBottom)
+        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fRadius, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, bool bUseAdditionalCornerScrews, int iAdditionalConnectorNumberinGroup, out float[,] fSequenceTop, out float[,] fSequenceBottom)
         {
             int iNumberOfSequencesInGroup = 2;
 
             int iNumberOfScrewsInOneSequence = iNumberOfScrewsInGroup / iNumberOfSequencesInGroup;
 
-            float fRadius = 0.5f * fCrscWebStraightDepth; // m // Input - depending on depth of cross-section
             float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
 
             float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence

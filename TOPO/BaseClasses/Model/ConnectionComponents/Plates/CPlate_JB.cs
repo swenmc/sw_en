@@ -350,18 +350,19 @@ namespace BaseClasses
             int iNumberOfAddionalConnectorsInOneGroup = m_bUseAdditionalCornerScrews ? (m_iAdditionalConnectorNumber / iNumberOfCircleJoints) : 0;
             int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
 
-            float fRadius = 0.5f * m_fCrscWebStraightDepth; // m // Input - depending on depth of cross-section
+            float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
+            float fRadius = 0.5f * m_fCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
             float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * m_fStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
 
             // Left side
             float[,] fSequenceLeftTop;
             float[,] fSequenceLeftBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, m_fCrscWebStraightDepth, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom);
+            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom);
 
             // Right side
             float[,] fSequenceRightTop;
             float[,] fSequenceRightBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, m_fCrscWebStraightDepth, fAngle_seq_rotation_init_point_deg, - m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom);
+            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, - m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom);
 
             IHolesNumber += m_iAdditionalConnectorNumber;
 

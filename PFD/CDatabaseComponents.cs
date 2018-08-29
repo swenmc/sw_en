@@ -274,16 +274,16 @@ namespace PFD
         public float[,] arr_Serie_J_Dimension = new float[2, 6]
         {
                 // b, h1, h2, t, L, iHoles
-                {500, 300, 350, 0, 3, 80},
-                {500, 300, 350, 50, 3, 80}
+                {1400, 650, 800, 0, 3, 80},
+                {1400, 650, 800, 50, 3, 80}
         };
 
         public float[,] arr_Serie_K_Dimension = new float[3, 8]
         {
                 // bR, b, h, b2, h2, l, t, iHoles
-                {0, 300, 700, 500, 1000, 0, 3, 80},
-                {0, 300, 700, 500, 1000, 50, 3, 80},
-                {200, 300, 700, 500, 1000, 50, 3, 80}
+                {0, 630, 1200, 800, 1400, 0, 3, 80},
+                {0, 630, 1200, 800, 1400, 50, 3, 80},
+                {200, 630, 1200, 800, 1400, 50, 3, 80}
         };
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
