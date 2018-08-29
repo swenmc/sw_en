@@ -30,6 +30,8 @@ namespace BaseClasses
             float fCrscWebStraightDepth = 0.63f - 2 * 0.025f - 2 * 0.002f; // BOX 63020 web straight depth
             float fStiffenerSize = 0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
 
+            bool bUseAdditionalCornerScrews = true;
+            int iAdditionalConnectorNumber = 2 * 4 * 4; //2 kruhy, 4 rohy, 4 skrutky v kazom rohu
             m_fh_1 = (float)m_MainMember.CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * 0.5f * m_fb;
             m_ft = ft;
@@ -44,8 +46,8 @@ namespace BaseClasses
             float fScrewLength = 0.009f;
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, iConnectorNumber, fDiameter_temp, fScrewLength, fCrscWebStraightDepth, fStiffenerSize, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, iConnectorNumber, fDiameter_temp, fScrewLength, fCrscWebStraightDepth, fStiffenerSize, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, iConnectorNumber, fDiameter_temp, fScrewLength, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, iConnectorNumber, fDiameter_temp, fScrewLength, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed); // Rotation angle in degrees
         }
     }
 }

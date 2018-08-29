@@ -462,7 +462,7 @@ namespace BaseClasses
             return Math.Abs(SignedPolygonArea());
         }
 
-        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fCrscWebStraightDepth, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, out float[,] fSequenceTop, out float[,] fSequenceBottom)
+        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fCrscWebStraightDepth, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, bool bUseAdditionalCornerScrews, int iAdditionalConnectorNumberinGroup, out float[,] fSequenceTop, out float[,] fSequenceBottom)
         {
             int iNumberOfSequencesInGroup = 2;
 
@@ -473,8 +473,55 @@ namespace BaseClasses
 
             float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
 
+            // Circle sequence
             fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
             fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+
+            // Add addtional point the sequences
+            if(bUseAdditionalCornerScrews)
+            {
+                // Additional corner connectors in Sequence
+                float fDistance_y = 0.03f; // TODO - konstanta podla rozmerov prierezu
+                float fDistance_x = fDistance_y; // Square arrangement
+
+                float[,] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2*fRadius - fDistance_x, -fRadius, fRadius - fDistance_y, 0, 2, 2, fDistance_x, fDistance_y);
+                float[,] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2*fRadius - fDistance_x, -fRadius, fRadius - fDistance_y, 180, 2, 2, fDistance_x, fDistance_y);
+
+                // Add additional connectors into the array
+                // Store original array
+                float[,] fSequenceTop_original = fSequenceTop;
+                float[,] fSequenceBottom_original = fSequenceBottom;
+
+                // Set new size of array (items are deleted), TODO - find way how to resize two dimensional array
+                fSequenceTop = new float[fSequenceTop_original.Length/2 + cornerConnectorsInTopSequence.Length /2, 2];
+                fSequenceBottom = new float[fSequenceBottom_original.Length / 2 + cornerConnectorsInBottomSequence.Length / 2, 2];
+
+                // Add items (point coordinates) from original array
+                for (int i = 0; i < fSequenceTop_original.Length / 2; i++)
+                {
+                    fSequenceTop[i, 0] = fSequenceTop_original[i, 0];
+                    fSequenceTop[i, 1] = fSequenceTop_original[i, 1];
+                }
+
+                for (int i = 0; i < fSequenceBottom_original.Length / 2; i++)
+                {
+                    fSequenceBottom[i, 0] = fSequenceBottom_original[i, 0];
+                    fSequenceBottom[i, 1] = fSequenceBottom_original[i, 1];
+                }
+
+                // Add items (point coordinates) from additional array of connectors
+                for (int i = 0; i < cornerConnectorsInTopSequence.Length / 2; i++)
+                {
+                    fSequenceTop[fSequenceTop_original.Length / 2 + i, 0] = cornerConnectorsInTopSequence[i, 0];
+                    fSequenceTop[fSequenceTop_original.Length / 2 + i, 1] = cornerConnectorsInTopSequence[i, 1];
+                }
+
+                for (int i = 0; i < cornerConnectorsInBottomSequence.Length / 2; i++)
+                {
+                    fSequenceBottom[fSequenceBottom_original.Length / 2 + i, 0] = cornerConnectorsInBottomSequence[i, 0];
+                    fSequenceBottom[fSequenceBottom_original.Length / 2 + i, 1] = cornerConnectorsInBottomSequence[i, 1];
+                }
+            }
 
             // Rotate about [0,0]
             Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceTop);
@@ -483,6 +530,44 @@ namespace BaseClasses
             // Translate
             Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceTop);
             Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceBottom);
+        }
+
+        public float[,] GetRegularArrayOfPointsInCartesianCoordinates(float fcPointX, float fcPointY, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float fDistanceOfPointsX, float fDistanceOfPointsY)
+        {
+            float[,] array = new float[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection, 2];
+
+            for(int i = 0; i < iNumberOfPointsInYDirection; i++) // Rows
+            {
+                for (int j = 0; j < iNumberOfPointsInXDirection; j++) // Columns
+                {
+                    array[i * iNumberOfPointsInXDirection + j, 0] = fcPointX + j * fDistanceOfPointsX; // Fill items in row [i], column [j]
+                    array[i * iNumberOfPointsInXDirection + j, 1] = fcPointY + i * fDistanceOfPointsY; // Fill items in row [i], column [j]
+                }
+            }
+
+            return array;
+        }
+
+        public float[,] GetAdditionaConnectorsCoordinatesInOneSequence(float fDistanceBetweenCornerPartsControlPointsX, float fcPointX, float fcPointY, float fRotationAngle_deg, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float fDistanceOfPointsX, float fDistanceOfPointsY)
+        {
+            float[,] fLeftPoints = GetRegularArrayOfPointsInCartesianCoordinates(fcPointX, fcPointY, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, fDistanceOfPointsX, fDistanceOfPointsY);
+            float[,] fRightPoints = GetRegularArrayOfPointsInCartesianCoordinates(fDistanceBetweenCornerPartsControlPointsX + fcPointX, fcPointY, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, fDistanceOfPointsX, fDistanceOfPointsY);
+
+            float[,] array = new float[2 * iNumberOfPointsInXDirection * iNumberOfPointsInYDirection, 2];
+
+            for(int i = 0; i < iNumberOfPointsInXDirection * iNumberOfPointsInYDirection; i++) // Merge two array into one
+            {
+                array[i, 0] = fLeftPoints[i, 0];
+                array[i, 1] = fLeftPoints[i, 1];
+
+                array[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection + i, 0] = fRightPoints[i, 0];
+                array[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection + i, 1] = fRightPoints[i, 1];
+            }
+
+            // Rotate points about [0,0] // Used for top or bottom sequence (0 or 180 degrees)
+            Geom2D.TransformPositions_CCW_deg(0, 0, fRotationAngle_deg, ref array);
+
+            return array;
         }
     }
 }

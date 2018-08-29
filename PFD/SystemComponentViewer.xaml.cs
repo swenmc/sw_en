@@ -504,6 +504,8 @@ namespace PFD
             {
                 float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
                 float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
+                bool bUseAdditinalConnectors = true;
+                int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
@@ -547,13 +549,13 @@ namespace PFD
                             if (Combobox_Component.SelectedIndex == 0) // JA
                                 component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, true);
                             else
-                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
+                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if(Combobox_Component.SelectedIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
@@ -674,6 +676,8 @@ namespace PFD
             {
                 float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
                 float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
+                bool bUseAdditinalConnectors = true;
+                int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
                 switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                 {
@@ -717,13 +721,13 @@ namespace PFD
                             if (Combobox_Component.SelectedIndex == 0) // JA
                                 component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
                             else
-                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
+                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (Combobox_Component.SelectedIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.22f, 0.06f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if (Combobox_Component.SelectedIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             else

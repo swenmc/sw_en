@@ -18,6 +18,8 @@ namespace BaseClasses
 
         float m_fCrscWebStraightDepth;
         float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
+        bool m_bUseAdditionalCornerScrews;
+        int m_iAdditionalConnectorNumber;
 
         private float fConnectorLength;
 
@@ -34,7 +36,24 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_JB(string sName_temp, CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, float fCrscWebStraightDepth_temp, float fStiffenerSize_temp, bool bIsDisplayed)
+        public CConCom_Plate_JB(string sName_temp,
+            CPoint controlpoint,
+            float fb_temp,
+            float fh_1_temp,
+            float fh_2_temp,
+            float fL_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            int iHolesNumber,
+            float fHoleDiameter_temp,
+            float fConnectorLength_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            bool bUseAdditionalCornerScrews_temp,
+            int iAdditionalConnectorNumber_temp,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -56,6 +75,8 @@ namespace BaseClasses
             FConnectorLength = fConnectorLength_temp;
             m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             m_fStiffenerSize = fStiffenerSize_temp;
+            m_bUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
+            m_iAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
             m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / (0.5 * fb_temp));
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -64,8 +85,8 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+            HolesCentersPoints2D = new float[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0), 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
             // Fill Array Data
             Calc_Coord2D();
@@ -84,7 +105,25 @@ namespace BaseClasses
             fArea = PolygonArea();
         }
 
-        public CConCom_Plate_JB(string sName_temp, CPoint controlpoint, float fb_temp, float fh_1_temp, float fh_2_temp, float fL_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, float fCrscWebStraightDepth_temp, float fStiffenerSize_temp, bool bIsDisplayed)
+        public CConCom_Plate_JB(string sName_temp,
+            CPoint controlpoint,
+            float fb_temp,
+            float fh_1_temp,
+            float fh_2_temp,
+            float fL_temp,
+            float ft_platethickness,
+            float fSLope_rad_temp,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            int iHolesNumber,
+            float fHoleDiameter_temp,
+            float fConnectorLength_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            bool bUseAdditionalCornerScrews_temp,
+            int iAdditionalConnectorNumber_temp,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -106,6 +145,8 @@ namespace BaseClasses
             FConnectorLength = fConnectorLength_temp;
             m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             m_fStiffenerSize = fStiffenerSize_temp;
+            m_bUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
+            m_iAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
             m_fSlope_rad = fSLope_rad_temp;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -114,8 +155,8 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+            HolesCentersPoints2D = new float[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0), 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
             // Fill Array Data
             Calc_Coord2D();
@@ -306,7 +347,8 @@ namespace BaseClasses
 
             int iNumberOfSequencesInJoint = 2;
 
-            int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint);
+            int iNumberOfAddionalConnectorsInOneGroup = m_bUseAdditionalCornerScrews ? (m_iAdditionalConnectorNumber / iNumberOfCircleJoints) : 0;
+            int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
 
             float fRadius = 0.5f * m_fCrscWebStraightDepth; // m // Input - depending on depth of cross-section
             float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * m_fStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
@@ -314,12 +356,14 @@ namespace BaseClasses
             // Left side
             float[,] fSequenceLeftTop;
             float[,] fSequenceLeftBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, m_fCrscWebStraightDepth, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, out fSequenceLeftTop, out fSequenceLeftBottom);
+            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, m_fCrscWebStraightDepth, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom);
 
             // Right side
             float[,] fSequenceRightTop;
             float[,] fSequenceRightBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, m_fCrscWebStraightDepth, fAngle_seq_rotation_init_point_deg, - m_fSlope_rad, out fSequenceRightTop, out fSequenceRightBottom);
+            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, m_fCrscWebStraightDepth, fAngle_seq_rotation_init_point_deg, - m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom);
+
+            IHolesNumber += m_iAdditionalConnectorNumber;
 
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
