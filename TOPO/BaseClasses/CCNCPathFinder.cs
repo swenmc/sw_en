@@ -40,18 +40,20 @@ namespace BaseClasses
             }
         }
 
-        
-
         public CCNCPathFinder()
+        { }
+
+        public CCNCPathFinder(CPlate plate)
         {
-            CConCom_Plate_KA ka = new CConCom_Plate_KA();
-
-            //for (int i = 0; i < ka.HolesCentersPoints2D.Length; i++)
-            //{
-            //    Points.Add(new Point(ka.HolesCentersPoints2D[i, 0], ka.HolesCentersPoints2D[i, 1]));
-            //}
+            if (plate.HolesCentersPoints2D != null)
+            {
+                for (int i = 0; i < plate.HolesCentersPoints2D.Length / 2; i++)
+                {
+                    Points.Add(new Point(plate.HolesCentersPoints2D[i, 0], plate.HolesCentersPoints2D[i, 1]));
+                }
+            }
             
-
+            /*
             Points.Add(new Point(1, 1));
             Points.Add(new Point(2, 2));
             Points.Add(new Point(3, 3));
@@ -60,6 +62,7 @@ namespace BaseClasses
             Points.Add(new Point(3, 6));
             Points.Add(new Point(3, 1));
             Points.Add(new Point(1, 3));
+            */
             IEnumerable<IEnumerable<Point>> res = GetPermutations(Points, Points.Count);
 
 

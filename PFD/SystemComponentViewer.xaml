@@ -34,5 +34,7 @@
         <Frame Name ="Frame3D" Content="3D Preview" HorizontalAlignment="Left"
                Height="1000" Margin="805,100,0,0" VerticalAlignment="Top"
                Width="780" NavigationUIVisibility="Hidden"/>
+        <Button Height="20" Width="100" x:Name="BtnExportCNC" Content="Export to CNC"
+            Margin="370,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportCNC_Click"/>
     </Grid>
 </Window>

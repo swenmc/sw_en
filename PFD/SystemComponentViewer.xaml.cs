@@ -922,6 +922,9 @@ namespace PFD
             CExportToDXF.ExportViewPort_DXF(page3D._trackport.ViewPort);
         }
 
-        
+        private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
+        {
+            CCNCPathFinder generator = new CCNCPathFinder(component);
+        }
     }
 }
