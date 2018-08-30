@@ -935,6 +935,7 @@ namespace PFD
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
             CCNCPathFinder c = new CCNCPathFinder(component);
+            MessageBox.Show("Shortest distance: " + c.GetRouteDistance());
             //c.RoutePoints
             TwoOpt.MainWindow w = new TwoOpt.MainWindow();
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;

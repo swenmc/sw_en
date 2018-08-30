@@ -121,6 +121,16 @@ namespace BaseClasses
             }
         }
 
+        public double GetRouteDistance()
+        {
+            double dist = 0;
+            for (int i = 1; i < RoutePoints.Count; i++)
+            {
+                dist += GetPointsDistance(RoutePoints[i - 1], RoutePoints[i]);
+            }
+            return dist;
+        }
+
         private Point FindStartPoint()
         {
             Point startPoint = Points.OrderByDescending(p => p.X).ThenBy(p => p.Y).First();
