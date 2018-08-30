@@ -257,7 +257,7 @@ namespace sw_en_GUI
                     {
                         double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
                         double fCanvasLeft = modelMarginLeft_x;
-                        DrawPolyLine(PointsOut, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                        DrawPolyLine(true, PointsOut, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
                     }
 
                     // Internal outline lines
@@ -265,7 +265,7 @@ namespace sw_en_GUI
                     {
                         double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page + dPointInOutDistance_y_page;
                         double fCanvasLeft = modelMarginLeft_x + dPointInOutDistance_x_page;
-                        DrawPolyLine(PointsIn, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                        DrawPolyLine(true, PointsIn, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
                     }
                 }
                 else 
@@ -373,11 +373,37 @@ namespace sw_en_GUI
         public void DrawDrillingRoute()
         {
             // ??? TODO upravit odsadenie
-            double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
-            double fCanvasLeft = modelMarginLeft_x;
+
+            double fx_min = double.MaxValue;
+            double fy_min = double.MaxValue;
+            double fx_max = double.MinValue;
+            double fy_max = double.MinValue;
+
+            for (int i = 0; i < PointsDrillingRoute.Length / 2; i++)
+            {
+                if (PointsDrillingRoute[i, 0] < fx_min)
+                    fx_min = PointsDrillingRoute[i, 0];
+
+                if (PointsDrillingRoute[i, 1] < fy_min)
+                    fy_min = PointsDrillingRoute[i, 1];
+
+                if (PointsDrillingRoute[i, 0] > fx_max)
+                    fx_max = PointsDrillingRoute[i, 0];
+
+                if (PointsDrillingRoute[i, 1] > fy_max)
+                    fy_max = PointsDrillingRoute[i, 1];
+            }
+
+            fx_min *= fReal_Model_Zoom_Factor;
+            fy_min *= fReal_Model_Zoom_Factor;
+            fx_max *= fReal_Model_Zoom_Factor;
+            fy_max *= fReal_Model_Zoom_Factor;
+
+            double fCanvasTop = modelMarginBottom_y - fy_max;
+            double fCanvasLeft = modelMarginLeft_x + fx_min;
 
             if (PointsDrillingRoute != null)
-               DrawPolyLine(PointsDrillingRoute, fCanvasTop, fCanvasLeft, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                DrawPolyLine(false, PointsDrillingRoute, fCanvasTop, fCanvasLeft, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
         }
 
         public void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
@@ -387,6 +413,10 @@ namespace sw_en_GUI
 
         public void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
+            Random r = new Random();
+            Color randomcolor = Color.FromArgb((byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256));
+            SolidColorBrush b = new SolidColorBrush(randomcolor);
+
             Line myLine = new Line();
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
@@ -404,11 +434,13 @@ namespace sw_en_GUI
             imageCanvas.Children.Add(myLine);
         }
 
-        public void DrawPolyLine(float [,] arrPoints,double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public void DrawPolyLine(bool bIsClosed, float [,] arrPoints,double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             PointCollection points = new PointCollection();
 
-            for (int i = 0; i < arrPoints.Length / 2 + 1; i++)
+            int iNumberOfLineSegments = arrPoints.Length / 2 + (bIsClosed? 1:0);
+
+            for (int i = 0; i < iNumberOfLineSegments; i++)
             {
                 if(i < ((arrPoints.Length / 2)))
                    points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * arrPoints[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * arrPoints[i, 1]));
