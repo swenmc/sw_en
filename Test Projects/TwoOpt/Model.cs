@@ -48,7 +48,7 @@ namespace TwoOpt
          var size = _tour.TourSize();
 
          //CHECK THIS!!		
-         for (var i = 0; i < size; i++)
+         for (var i = 1; i < size; i++)  //changed to i = 1 
          {
             _newTour.SetCity(i, _tour.GetCity(i));
          }
@@ -172,8 +172,8 @@ namespace TwoOpt
             var xn1 = (xc1 - minX) / (float)(maxX - minX);
             var yn1 = 1.0 - (yc1 - minY) / (float)(maxY - minY);
 
-            var xcoord1 = (int)(xn1 * Math.Abs(_width));
-            var ycoord1 = (int)(yn1 * Math.Abs(_height));
+            var xcoord1 = (xn1 * Math.Abs(_width));
+            var ycoord1 = (yn1 * Math.Abs(_height));
 
             var newCoord = new Pair(xcoord1, ycoord1);
 
@@ -203,8 +203,8 @@ namespace TwoOpt
             var xn1 = (xc1 - minX)/(float) (maxX - minX);
             var yn1 = 1.0 - (yc1 - minY)/(float) (maxY - minY);
 
-            var xcoord1 = (int) (xn1*Math.Abs(width));
-            var ycoord1 = (int) (yn1*Math.Abs(height));
+            var xcoord1 = (xn1*Math.Abs(width));
+            var ycoord1 = (yn1*Math.Abs(height));
 
             var newCoord = new Pair(xcoord1, ycoord1);
 

@@ -24,7 +24,7 @@ namespace TwoOpt
       private static void Shuffle<T>(IList<T> array)
       {
          var n = array.Count;
-         for (var i = 0; i < n; i++)
+         for (var i = 1; i < n; i++)  //changed to 1
          {
             // Use Next on random instance with an argument.
             // ... The argument is an exclusive bound.
@@ -93,10 +93,11 @@ namespace TwoOpt
             dist += Distance(c1, c2);
          }
 
+         //We do not need to go back to beginning city
          // And back to the beginning city
-         c1 = _cities[size - 1];
-         c2 = _cities[0];
-         dist += Distance(c1, c2);
+         //c1 = _cities[size - 1];
+         //c2 = _cities[0];
+         //dist += Distance(c1, c2);
 
          return dist;
       }

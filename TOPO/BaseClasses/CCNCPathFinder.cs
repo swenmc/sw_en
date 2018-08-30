@@ -123,7 +123,7 @@ namespace BaseClasses
 
         public double GetRouteDistance()
         {
-            double dist = 0;
+            double dist = 0.0;
             for (int i = 1; i < RoutePoints.Count; i++)
             {
                 dist += GetPointsDistance(RoutePoints[i - 1], RoutePoints[i]);
@@ -133,7 +133,7 @@ namespace BaseClasses
 
         private Point FindStartPoint()
         {
-            Point startPoint = Points.OrderByDescending(p => p.X).ThenBy(p => p.Y).First();
+            Point startPoint = Points.OrderBy(p => p.X).ThenByDescending(p => p.Y).First();
             return startPoint;
         }
 
@@ -147,7 +147,7 @@ namespace BaseClasses
 
         public double GetPointsDistance(Point p1, Point p2)
         {
-            return Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2);
+            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
         }
 
         private static List<CLine2D> GetLinesFromPoints(List<Point> points)
