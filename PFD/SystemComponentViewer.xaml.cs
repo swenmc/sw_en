@@ -20,6 +20,7 @@ using _3DTools;
 using SharedLibraries.EXPIMP;
 using CRSC;
 using EXPIMP;
+using System.Threading;
 
 namespace PFD
 {
@@ -941,7 +942,24 @@ namespace PFD
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
             viewModel.RoutePoints = c.RoutePoints;
             w.Show();
+            w.Closing += W_Closing;
+            
+            
           // Export of drilling route to the .nc files
+
+        }
+
+        private void W_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            TwoOpt.MainWindow w = sender as TwoOpt.MainWindow;
+            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
+
+            List<Point> PathPoints = new List<Point>(viewModel._model._coordMatrix._coords.Count);
+            foreach (TwoOpt.Pair p in viewModel._model._coordMatrix._coords)
+            {
+                System.Diagnostics.Trace.WriteLine("[" + p.X() + "," + p.Y() + "]");
+                PathPoints.Add(new Point(p.X(), p.Y()));
+            }
 
         }
     }

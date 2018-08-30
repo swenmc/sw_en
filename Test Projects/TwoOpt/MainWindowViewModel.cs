@@ -10,7 +10,7 @@ namespace TwoOpt
 {
    public class MainWindowViewModel : BaseViewModel
    {
-      private readonly Model _model;
+      public readonly Model _model;
       private ICommand _openCommand;
       private ICommand _runCommand;
 

@@ -11,7 +11,7 @@ namespace TwoOpt
          Euc_2D
       }
 
-      private readonly List<Pair> _coords = new List<Pair>();
+      public readonly List<Pair> _coords = new List<Pair>();
       private readonly Dictionary<string, double> _distMatrix = new Dictionary<string, double>();
       private EdgeWeightType _edgeWeightType;
       private double _maxx;

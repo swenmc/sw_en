@@ -9,7 +9,7 @@ namespace TwoOpt
    public class Model
    {
       private readonly BackgroundWorker _worker = new BackgroundWorker();
-      private readonly CoordMatrix _coordMatrix = new CoordMatrix();
+      public readonly CoordMatrix _coordMatrix = new CoordMatrix();
       private Tour _tour, _newTour;
       private double _width, _height;
       public string Title { get; set; }
