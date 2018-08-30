@@ -48,7 +48,7 @@ namespace TwoOpt
          var size = _tour.TourSize();
 
          //CHECK THIS!!		
-         for (var i = 1; i < size; i++)  //changed to i = 1 
+         for (var i = 0; i < size; i++)  //changed to i = 1 
          {
             _newTour.SetCity(i, _tour.GetCity(i));
          }

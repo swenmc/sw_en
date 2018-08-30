@@ -133,7 +133,8 @@ namespace BaseClasses
 
         private Point FindStartPoint()
         {
-            Point startPoint = Points.OrderBy(p => p.X).ThenByDescending(p => p.Y).First();
+            //Point startPoint = Points.OrderBy(p => p.X).ThenByDescending(p => p.Y).First();
+            Point startPoint = (Points.OrderBy(p => p.Y).ThenBy(p => p.X)).First();
             return startPoint;
         }
 
