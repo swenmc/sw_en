@@ -68,7 +68,6 @@ namespace PFD
                 CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             else
                 CalculateGoverningMemberDesignDetails(DesignResults_SLS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
-
         }
         
         // Calculate governing member design ratio
@@ -119,6 +118,21 @@ namespace PFD
                 float fMaximumDesignRatio = 0;
 
                 //Mato mam otazku: Preco tu neprejdeme zoznam DesignResults a vypocet spravime pre vsetky Members z DesignResults, ktore maju dany typ vybraty v kombe ComponentType???
+                // To Ondrej GroupOfMembers maju rovnake typy ako ComponentType (napriklad Girts - Front Side) ale Member ma ine typy (napr. len Girt)
+                // Mena GroupOfMembers alebo ComponentType kombinuju polohu v konstrukcii a zakladny typ
+
+                // Ak tomu rozumiem spravne podla toho co navrhujes by sme presli vsetky Girts ktore su na stene vpredu, vzadu a tak dalej
+                // Member moze mat zakladny typ girt a mozeme mu pridat este jeden girt-front side alebo nejaky odkaz na structure part (napr. Front Side) cim by sme sa k tomu dostali
+                // Ide o to ze girt je vseobecny nazov a v component je kombinacia nazvu a polohy
+
+                // Nieco ako stolicka (ta sama o sebe nevie kde je, vie len ze je stolicka), stoly, obrazy
+                // preto som do stolicky nechcel davat informaciu, patrim do obyvacky
+
+                // a potom su stolicky v obyvacke, stolicky v kuchyni, stolicky v jedalni
+                // Myslel som ze CEntityGroup alebo CMemberGroup bude nieco ako obyvacka, kuchyna, jedalen a ta bude vediet ze je obyvacka a ktore stolicky, stoly, obrazy v nej su
+
+                // Ak to vidis logicky inak a jednoduchsie, nebranim sa
+                // Mozno ma stolicka nielen ze je stolicka ale aj kde je:)
 
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {

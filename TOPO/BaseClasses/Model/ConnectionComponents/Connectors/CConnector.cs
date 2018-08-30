@@ -39,7 +39,7 @@ namespace BaseClasses
         public CConnector(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Name = sName_temp;
-            m_Mat = new CMat(); // Todo - material ako parameter
+            m_Mat = new CMat_03_00(); // Todo - material ako parameter
             m_Mat.Name = "Class 3 / 4 / B8";
             m_pControlPoint = controlpoint;
             BIsDisplayed = bIsDisplayed;

@@ -76,5 +76,26 @@ namespace MATERIAL
             m_ff_u = fu;
         }
 
+        public float Get_f_yk_by_thickness(float ft)
+        {
+            return FindCorrespondingVauleInArray(ft, m_ft_interval, m_ff_yk);
+        }
+
+        public float Get_f_uk_by_thickness(float ft)
+        {
+            return FindCorrespondingVauleInArray(ft, m_ft_interval, m_ff_u);
+        }
+
+        public float FindCorrespondingVauleInArray(float ft, float[] ft_interval, float[] fvalues)
+        {
+            for (int i = 0; i < ft_interval.Length; i++)
+            {
+                if (ft < ft_interval[i]) // if t is less than interval
+                    return fvalues[i]; // Return value from array
+            }
+
+            return 0; // Exception - value wasn't found
+        }
+
     }
 }

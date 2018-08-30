@@ -1,12 +1,49 @@
 ﻿<UserControl x:Class="PFD.UC_JointDesign"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PFD"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d"
+        d:DesignHeight="1270" d:DesignWidth="600">
+    <UserControl.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">200</System:Double>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_LimitState" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LimitStates}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LimitStateIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Load Combination:" HorizontalAlignment="Left" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" />
+        <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_LoadCombination" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=LoadCombinations}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LoadCombinationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" DisplayMemberPath="ComponentName" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Design Details - Member Start" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <DataGrid Grid.Row="5" Grid.Column="0" Name ="Results_JointAtMemberStart_GridView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Design Details - Member End" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <DataGrid Grid.Row="7" Grid.Column="0" Name ="Results_JointAtMemberEnd_GridView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
     </Grid>
 </UserControl>

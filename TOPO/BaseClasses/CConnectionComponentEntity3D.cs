@@ -1,6 +1,7 @@
 ﻿using _3DTools;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using MATERIAL;
 
 namespace BaseClasses
 {
@@ -13,6 +14,8 @@ namespace BaseClasses
             get { return m_TriangleIndices; }
             set { m_TriangleIndices = value; }
         }
+
+        public new CMat_03_00 m_Mat;
 
         public float[,] PointsOut2D;
         public Point3D[] arrPoints3D;

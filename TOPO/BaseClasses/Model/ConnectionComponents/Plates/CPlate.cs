@@ -23,13 +23,13 @@ namespace BaseClasses
         public CPlate()
         {
             BIsDisplayed = true;
-            m_Mat = new CMat();
+            m_Mat = new CMat_03_00();
         }
 
         public CPlate(bool bIsDisplayed)
         {
             BIsDisplayed = bIsDisplayed;
-            m_Mat = new CMat();
+            m_Mat = new CMat_03_00();
         }
 
         protected override void loadIndices()

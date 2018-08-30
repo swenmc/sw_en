@@ -1079,12 +1079,12 @@ namespace PFD
 
             if (MainTabControl.SelectedIndex == 1)
             {
-                if(Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
-            }                
+                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
+            }
             else if (MainTabControl.SelectedIndex == 2)
             {
-                if(Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
-            }                
+                if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
+            }
             else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(model).Content;
             else if (MainTabControl.SelectedIndex == 4)
@@ -1104,7 +1104,12 @@ namespace PFD
                 Member_Design.Content = new UC_MemberDesign(model, compList, DesignResults_ULS, DesignResults_SLS);
             }
             else if (MainTabControl.SelectedIndex == 7)
-                Joint_Design.Content = new UC_JointDesign().Content;
+            {
+                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
+                UC_ComponentList component = Model_Component.Content as UC_ComponentList;
+                CComponentListVM compList = (CComponentListVM)component.DataContext;
+                Joint_Design.Content = new UC_JointDesign(model, compList).Content;
+            }
             else if (MainTabControl.SelectedIndex == 8)
                 Part_List.Content = new UC_MaterialList(model).Content;
             else

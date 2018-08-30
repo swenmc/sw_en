@@ -1,5 +1,7 @@
 ﻿using MATH;
+using MATH.ARRAY;
 using System;
+
 
 namespace M_AS4600
 {
@@ -53,6 +55,49 @@ namespace M_AS4600
             else
                 return 2.0f;
         }
+        public float Get_Vb_5424_a(float ft1_plate, float ft2_crsc, float fd_f, float ff_u1_plate, float ff_u2_crsc)
+        {
+            return MathF.Min(
+                            Eq_5424_2__(ft2_crsc, fd_f, ff_u2_crsc),
+                            Eq_5424_3__(Get_C_Tab_5424(fd_f, ft1_plate), ft1_plate, fd_f, ff_u1_plate),
+                            Eq_5424_4__(Get_C_Tab_5424(fd_f, ft2_crsc), ft2_crsc, fd_f, ff_u2_crsc));
+        }
+        public float Get_Vb_5424_b(float ft1_plate, float ft2_crsc, float fd_f, float ff_u1_plate, float ff_u2_crsc)
+        {
+            return MathF.Min(
+                            Eq_5424_5__(Get_C_Tab_5424(fd_f, ft1_plate), ft1_plate, fd_f, ff_u1_plate),
+                            Eq_5424_6__(Get_C_Tab_5424(fd_f, ft2_crsc), ft2_crsc, fd_f, ff_u2_crsc));
+        }
+        public float Get_Vb_5424_c(float ft1_plate, float ft2_crsc, float fd_f, float ff_u1_plate, float ff_u2_crsc)
+        {
+            float fVb_5424a = Get_Vb_5424_a(ft1_plate, ft2_crsc, fd_f, ff_u1_plate, ff_u2_crsc);
+            float fVb_5424b = Get_Vb_5424_b(ft1_plate, ft2_crsc, fd_f, ff_u1_plate, ff_u2_crsc);
+
+            float fRatio_t2_to_t1 = ft2_crsc / ft1_plate;
+
+            return ArrayF.GetLinearInterpolationValuePositive(1, 2.5f, fVb_5424a, fVb_5424b, fRatio_t2_to_t1); // 5.4.2.4(c)
+        }
+        public float Get_Vb_5424(float ft1_plate, float ft2_crsc,  float fd_f, float ff_u1_plate, float ff_u2_crsc)
+        {
+            // 5.4.2.4 Tilting and hole bearing
+            /*  t2 = thickness of the sheet not in contact with the screw head
+                t1 = thickness of the sheet in contact with the screw head
+                df = nominal screw diameter
+                fu2 = tensile strength of the sheet not in contact with the screw head
+                fu1 = tensile strength of the sheet in contact with the screw head
+                C = bearing factor
+            */
+
+            //(a)
+            float fRatio_t2_to_t1 = ft2_crsc / ft1_plate;
+            if (fRatio_t2_to_t1 <= 1.0f)
+                return Get_Vb_5424_a(ft1_plate, ft2_crsc, fd_f, ff_u1_plate, ff_u2_crsc);
+            else if (fRatio_t2_to_t1 >= 2.5f)
+                return Get_Vb_5424_b(ft1_plate, ft2_crsc, fd_f, ff_u1_plate, ff_u2_crsc);
+            else
+                return Get_Vb_5424_c(ft1_plate, ft2_crsc, fd_f, ff_u1_plate, ff_u2_crsc);
+        }
+
         public float Eq_5425_1__(float fV_asterix_fv, float fPhi, float fV_fv)
         {
             return fV_asterix_fv / (fPhi * fV_fv); // Eq. (5.4.2.5(1)) // fV_fv design ratio
