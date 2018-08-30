@@ -49,6 +49,7 @@ namespace sw_en_GUI
         float[,] PointsOut;
         float[,] PointsIn;
         float[,] PointsHoles;
+        float[,] PointsDrillingRoute;
 
         double dPointInOutDistance_x_real;
         double dPointInOutDistance_y_real;
@@ -93,6 +94,18 @@ namespace sw_en_GUI
                 INoHoles = plate.IHolesNumber;
                 PointsHoles = plate.HolesCentersPoints2D;
                 DHolesDiameter = plate.FHoleDiameter;
+            }
+
+            if(plate.DrillingRoutePoints != null)
+            {
+                PointsDrillingRoute = new float[plate.DrillingRoutePoints.Count, 2];
+
+                // Fill array of drilling points route
+                for (int i = 0; i < plate.DrillingRoutePoints.Count; i++)
+                {
+                    PointsDrillingRoute[i, 0] = (float)plate.DrillingRoutePoints[i].X;
+                    PointsDrillingRoute[i, 1] = (float)plate.DrillingRoutePoints[i].Y;
+                }
             }
 
             CaclulateBasicValue();
@@ -204,6 +217,8 @@ namespace sw_en_GUI
             if (PointsHoles != null)
             {
                 DrawHoles();
+
+                DrawDrillingRoute();
             }
         }
 
@@ -355,12 +370,22 @@ namespace sw_en_GUI
             }
         }
 
-        public void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
-		{
-			DrawRectangle(strokeColor,fillColor, thickness, imageCanvas, new Point(point.X - 0.5* thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness));
-		}
+        public void DrawDrillingRoute()
+        {
+            // ??? TODO upravit odsadenie
+            double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
+            double fCanvasLeft = modelMarginLeft_x;
 
-		public void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+            if (PointsDrillingRoute != null)
+               DrawPolyLine(PointsDrillingRoute, fCanvasTop, fCanvasLeft, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+        }
+
+        public void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
+        {
+            DrawRectangle(strokeColor, fillColor, thickness, imageCanvas, new Point(point.X - 0.5 * thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness));
+        }
+
+        public void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             Line myLine = new Line();
             myLine.Stretch = Stretch.Fill;

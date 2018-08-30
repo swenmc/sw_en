@@ -2,6 +2,7 @@
 using MATERIAL;
 using System;
 using System.Windows;
+using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
@@ -19,6 +20,20 @@ namespace BaseClasses
         public GeometryModel3D Visual_Plate;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
+
+        private List<Point> m_drillingRoutePoints;
+        public List<Point> DrillingRoutePoints
+        {
+            get
+            {
+                return m_drillingRoutePoints;
+            }
+
+            set
+            {
+                m_drillingRoutePoints = value;
+            }
+        }
 
         public CPlate()
         {

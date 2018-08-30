@@ -80,6 +80,11 @@ namespace PFD
             }
             else if (Combobox_Type.SelectedIndex == 1)
             {
+                // Generate drilling plan
+                CCNCPathFinder generator = new CCNCPathFinder(component);
+                // Set drilling route points
+                component.DrillingRoutePoints = generator.RoutePoints;
+                // Draw plate
                 page2D = new WindowCrossSection2D(component, dWidth, dHeight);
             }
             else
@@ -583,6 +588,11 @@ namespace PFD
             }
             else if (Combobox_Type.SelectedIndex == 1)
             {
+                // Generate drilling plan
+                CCNCPathFinder generator = new CCNCPathFinder(component);
+                // Set drilling route points
+                component.DrillingRoutePoints = generator.RoutePoints;
+                // Draw plate
                 page2D = new WindowCrossSection2D(component, Frame2D.Width, Frame2D.Height);
             }
             else
@@ -924,10 +934,8 @@ namespace PFD
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
-            CCNCPathFinder generator = new CCNCPathFinder(component);
-            List<Point> routePoints = generator.RoutePoints;
-            //
-            
+          // Export of drilling route to the .nc files
+
         }
     }
 }
