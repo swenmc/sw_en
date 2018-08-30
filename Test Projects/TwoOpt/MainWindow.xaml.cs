@@ -44,6 +44,25 @@ namespace TwoOpt
                 count++;
             }
         }
+        public void DisplayNodes(List<Pair> displayCoords)
+        {
+            int count = 0;
+            foreach (var coord in displayCoords)
+            {
+                var ellipse = new Ellipse
+                {
+                    Width = 4,
+                    Height = 4,
+                    Fill = (count == 0 ? Brushes.Red : Brushes.Blue)
+                };
+
+                Canvas.SetLeft(ellipse, coord.X());
+                Canvas.SetTop(ellipse, coord.Y());
+
+                CanvasGrid.Children.Add(ellipse);
+                count++;
+            }
+        }
 
 
 
@@ -88,16 +107,17 @@ namespace TwoOpt
                     startCoord = tourCoords[i];
                 }
 
-             //var finalLink = new Line
-             //{
-             //   X1 = tourCoords[0].X() + 2,
-             //   Y1 = tourCoords[0].Y() + 2,
-             //   X2 = tourCoords[size - 1].X() + 2,               
-             //   Y2 = tourCoords[size - 1].Y() + 2,
-             //   Stroke = Brushes.Blue
-             //};
+                var finalLink = new Line
+                {
+                    X1 = tourCoords[0].X() + 2,
+                    Y1 = tourCoords[0].Y() + 2,
+                    X2 = tourCoords[size - 1].X() + 2,
+                    Y2 = tourCoords[size - 1].Y() + 2,
+                    Stroke = Brushes.Blue
+                };
 
-             //CanvasGrid.Children.Add(finalLink);
+                CanvasGrid.Children.Add(finalLink);
+                DisplayNodes(tourCoords);
             });
         }
     }
