@@ -925,6 +925,9 @@ namespace PFD
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
             CCNCPathFinder generator = new CCNCPathFinder(component);
+            List<Point> routePoints = generator.RoutePoints;
+            //
+            
         }
     }
 }

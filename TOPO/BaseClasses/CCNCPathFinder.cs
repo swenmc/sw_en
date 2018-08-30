@@ -11,6 +11,7 @@ namespace BaseClasses
     {
         List<CLine2D> MLines;
         List<Point> MPoints;
+        List<Point> MRoutePoints;
 
         public List<CLine2D> Lines
         {
@@ -40,6 +41,20 @@ namespace BaseClasses
             }
         }
 
+        public List<Point> RoutePoints
+        {
+            get
+            {
+                if (MRoutePoints == null) MRoutePoints = new List<Point>();
+                return MRoutePoints;
+            }
+
+            set
+            {
+                MRoutePoints = value;
+            }
+        }
+
         public CCNCPathFinder()
         { }
 
@@ -52,7 +67,7 @@ namespace BaseClasses
                     Points.Add(new Point(plate.HolesCentersPoints2D[i, 0], plate.HolesCentersPoints2D[i, 1]));
                 }
             }
-            
+
             /*
             Points.Add(new Point(1, 1));
             Points.Add(new Point(2, 2));
@@ -63,40 +78,88 @@ namespace BaseClasses
             Points.Add(new Point(3, 1));
             Points.Add(new Point(1, 3));
             */
-            IEnumerable<IEnumerable<Point>> res = GetPermutations(Points, Points.Count);
+            //IEnumerable<IEnumerable<Point>> res = GetPermutations(Points.GetRange(0, 10), 10);
 
 
-            List<List<CLine2D>> allLines = new List<List<CLine2D>>();
-            int count = 0;
-            foreach (IEnumerable<Point> ie in res)
+            //List<List<CLine2D>> allLines = new List<List<CLine2D>>(res.Count());
+            //int count = 0;
+            //foreach (IEnumerable<Point> ie in res)
+            //{
+            //    allLines.Add(GetLinesFromPoints(ie));                
+            //    //String s = "";
+            //    //foreach (Point p in ie)
+            //    //{                    
+            //    //    s += string.Format("[{0},{1}],", p.X, p.Y);
+            //    //}
+            //    //Console.WriteLine(s);
+            //    count++;
+            //}
+
+            //List<List<CLine2D>> noIntersectionPolyLines = GetAllPolylinesWithNoIntersection(allLines);
+            //List<CLine2D>  shortestPolyline = GetShortestPolyLine(noIntersectionPolyLines);
+            //Console.WriteLine("Number of rows: "+ count);
+
+            FindShortestRoute();
+
+            
+        }
+
+        public void FindShortestRoute()
+        {
+            RoutePoints = new List<Point>(Points.Count);
+            Point startPoint = FindStartPoint();
+            RoutePoints.Add(startPoint);
+            Points.Remove(startPoint);
+
+            int pointsCount = Points.Count;
+            Point point = startPoint;
+            for (int i = 0; i < pointsCount; i++)
             {
-                allLines.Add(GetLinesFromPoints(ie.ToList()));                
-                //String s = "";
-                //foreach (Point p in ie)
-                //{                    
-                //    s += string.Format("[{0},{1}],", p.X, p.Y);
-                //}
-                //Console.WriteLine(s);
-                count++;
+                point = FindClosesPoint(Points, point);
+                RoutePoints.Add(point);
+                Points.Remove(point);
             }
+        }
 
-            List<List<CLine2D>> noIntersectionPolyLines = GetAllPolylinesWithNoIntersection(allLines);
-            List<CLine2D>  shortestPolyline = GetShortestPolyLine(noIntersectionPolyLines);
-            Console.WriteLine("Number of rows: "+ count);
-            Console.ReadLine();
+        private Point FindStartPoint()
+        {
+            Point startPoint = Points.OrderByDescending(p => p.X).ThenBy(p => p.Y).First();
+            return startPoint;
+        }
+
+        private Point FindClosesPoint(List<Point> points, Point p)
+        {
+            Point closestPoint = points.OrderBy(p1 => GetPointsDistance(p, p1)).First();
+            return closestPoint;
+        }
+
+        
+
+        public double GetPointsDistance(Point p1, Point p2)
+        {
+            return Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2);
         }
 
         private static List<CLine2D> GetLinesFromPoints(List<Point> points)
         {
-            List<CLine2D> lines = new List<CLine2D>();
+            List<CLine2D> lines = new List<CLine2D>(points.Count);
             for (int i = 1; i < points.Count; i++)
             {
                 lines.Add(new CLine2D(points[i - 1].X, points[i - 1].Y, points[i].X, points[i].Y));
             }
             return lines;
         }
+        private static List<CLine2D> GetLinesFromPoints(IEnumerable<Point> points)
+        {
+            List<CLine2D> lines = new List<CLine2D>(points.Count());
+            for (int i = 1; i < points.Count(); i++)
+            {
+                lines.Add(new CLine2D(points.ElementAt(i - 1).X, points.ElementAt(i - 1).Y, points.ElementAt(i).X, points.ElementAt(i).Y));
+            }
+            return lines;
+        }
 
-        
+
 
         private static List<List<CLine2D>> GetAllPolylinesWithNoIntersection(List<List<CLine2D>> allLines)
         {

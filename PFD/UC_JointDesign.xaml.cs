@@ -50,10 +50,12 @@ namespace PFD
 
             // K diskusii
             // Moznosti su zobrazovat vysledky podla typu spoja alebo po prutoch pre spoje na konci a na zaciatku
+            //Model.m_arrMembers.Select(m => m.Name.Contains("girt"))
+            
 
             // Prva moznost 
             // Pre vybrany typ spoja prejst vsetky vsetky spoje daneho typu a vybrat najhorsi
-
+            //Model.m_arrConnectionJoints.Select(j => j.mSe)
 
             // Druha moznost
             // Pre vybrany prut potrebujeme mat pristupne designInternalForces na jeho zaciatku a na konci

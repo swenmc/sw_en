@@ -2459,18 +2459,22 @@ namespace PFD
         public void AddMembersToMemberGroupsLists()
         {
             int i = 0;
-
+            
             foreach (CMember member in m_arrMembers)
             {
+
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
                 {
+                    
+
                     if (member.CrScStart.ICrSc_ID == group.CrossSection.ICrSc_ID) // In case that cross-section ID is same add member to the list
                     {
                         member.BIsDSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
                         member.BIsDSelectedForDesign = true;
                         member.BIsSelectedForMaterialList = true;
 
-                        listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
+                        group.ListOfMembers.Add(member);
+                        //listOfModelMemberGroups[group.CrossSection.ICrSc_ID].ListOfMembers.Add(member);
                         i++;
                         break;
                     }
