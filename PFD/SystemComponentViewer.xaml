@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Title="FormSteel System Component Viewer" WindowState="Maximized">
-    <Grid>
+    <Grid Name="MainGrid">
         <!--Base Grid 2 columns and 4 rows-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

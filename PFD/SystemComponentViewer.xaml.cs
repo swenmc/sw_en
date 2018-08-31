@@ -39,9 +39,16 @@ namespace PFD
         float fPitch_rad =  11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
         int iNumberofHoles;
 
+
+        double WindowHeight;
+        double WindowWidth;
+
         public SystemComponentViewer()
         {
             InitializeComponent();
+
+            this.SizeChanged += OnWindowSizeChanged;
+
             dcomponents = new CDatabaseComponents();
 
             // Internal forces
@@ -49,6 +56,13 @@ namespace PFD
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
             vm.ComponentIndex = 1;
+        }
+        protected void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WindowHeight = e.NewSize.Height;
+            WindowWidth = e.NewSize.Width;
+            double prevWindowHeight = e.PreviousSize.Height;
+            double prevWindowWidth = e.PreviousSize.Width;
         }
 
         private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -71,8 +85,10 @@ namespace PFD
             // Create 2D page
             page2D = null;
 
-            double dWidth = Frame2D.Width;
-            double dHeight = Frame2D.Height;
+            //double dWidth = Frame2D.Width;
+            //double dHeight = Frame2D.Height;
+            double dWidth = WindowWidth;
+            double dHeight = WindowHeight;
 
             if (vm.ComponentTypeIndex == 0)
             {
@@ -126,7 +142,7 @@ namespace PFD
             {
                 if (vm.ComponentTypeIndex == 0) // Cross-section
                 {
-                    switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
+                    switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
                     {
                         case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                             {
@@ -196,7 +212,7 @@ namespace PFD
                 }
                 else if (vm.ComponentTypeIndex == 1) // Plate
                 {
-                    switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
+                    switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                     {
                         case ESerieTypePlate.eSerie_B:
                             {
@@ -311,7 +327,7 @@ namespace PFD
             // Change Combobox
             if (vm.ComponentTypeIndex == 0) // Cross-section
             {
-                switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
+                switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
@@ -374,7 +390,7 @@ namespace PFD
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
-                switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
+                switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
@@ -446,7 +462,7 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-                page2D = new WindowCrossSection2D(crsc, Frame2D.Width, Frame2D.Height);
+                page2D = new WindowCrossSection2D(crsc, Frame2D.ActualWidth, Frame2D.ActualHeight);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -455,7 +471,7 @@ namespace PFD
                 // Set drilling route points
                 //component.DrillingRoutePoints = generator.RoutePoints;
                 // Draw plate
-                page2D = new WindowCrossSection2D(component, Frame2D.Width, Frame2D.Height);
+                page2D = new WindowCrossSection2D(component, Frame2D.ActualWidth, Frame2D.ActualHeight);
             }
             else
             {
@@ -503,7 +519,7 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0) // Cross-sections
             {
-                switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
+                switch ((ESerieTypeCrSc_FormSteel) vm.ComponentSerieIndex)
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
@@ -552,7 +568,7 @@ namespace PFD
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
-                switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
+                switch ((ESerieTypePlate) vm.ComponentSerieIndex)
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
@@ -627,7 +643,7 @@ namespace PFD
 
         //    if (vm.ComponentTypeIndex == 0) // Cross-section
         //    {
-        //        switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
+        //        switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
         //        {
         //            case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
         //                {
@@ -674,7 +690,7 @@ namespace PFD
         //    }
         //    else if (vm.ComponentTypeIndex == 1)
         //    {
-        //        switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
+        //        switch ((ESerieTypePlate)vm.ComponentSerieIndex)
         //        {
         //            case ESerieTypePlate.eSerie_B:
         //                {
@@ -832,8 +848,8 @@ namespace PFD
                 PathPoints.Add(new Point(p.X(), p.Y()));
             }
 
-            double dWidth = Frame2D.Width;
-            double dHeight = Frame2D.Height;
+            double dWidth = Frame2D.ActualWidth;
+            double dHeight = Frame2D.ActualHeight;
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
