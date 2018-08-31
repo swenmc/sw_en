@@ -113,7 +113,7 @@ namespace M_AS4600
 
             return Eq_5425_1__(fV_asterix_fv, fPhi, fV_fv); // Eq. (5.4.2.5(1)) // fV_fv design ratio
         }
-        public float Eq_5425_2__(float fV_fv, float fthickness, float fe, float ff_u)
+        public float Eq_5425_2__(float fthickness, float fe, float ff_u)
         {
             return fthickness * fe * ff_u; // Eq. (5.4.2.5(2)) // fV_fv
         }

@@ -477,7 +477,7 @@ namespace BaseClasses
             return Math.Abs(SignedPolygonArea());
         }
 
-        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fRadius, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, bool bUseAdditionalCornerScrews, int iAdditionalConnectorNumberinGroup, out float[,] fSequenceTop, out float[,] fSequenceBottom)
+        public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fRadius, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, bool bUseAdditionalCornerScrews, int iAdditionalConnectorNumberinGroup, out float[,] fSequenceTop, out float[,] fSequenceBottom, out float[] fSequenceTopRadii, out float[] fSequenceBottomRadii)
         {
             int iNumberOfSequencesInGroup = 2;
 
@@ -540,6 +540,16 @@ namespace BaseClasses
             // Rotate about [0,0]
             Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceTop);
             Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceBottom);
+
+            // Set radii of connectors / screws in the connection
+            fSequenceTopRadii = new float[fSequenceTop.Length / 2];
+
+            for (int i = 0; i < fSequenceTop.Length / 2; i++)
+                fSequenceTopRadii[i] = (float)Math.Sqrt(MathF.Pow2(fSequenceTop[i,0]) + MathF.Pow2(fSequenceTop[i, 1]));
+
+            fSequenceBottomRadii = new float[fSequenceBottom.Length / 2];
+            for (int i = 0; i < fSequenceTop.Length / 2; i++)
+                fSequenceBottomRadii[i] = (float)Math.Sqrt(MathF.Pow2(fSequenceBottom[i, 0]) + MathF.Pow2(fSequenceBottom[i, 1]));
 
             // Translate
             Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceTop);

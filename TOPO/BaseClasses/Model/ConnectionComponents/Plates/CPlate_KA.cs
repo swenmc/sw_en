@@ -22,6 +22,9 @@ namespace BaseClasses
         bool m_bUseAdditionalCornerScrews;
         int m_iAdditionalConnectorNumber;
 
+        public float[] HolesCenterRadii;
+        public int INumberOfCircleJoints = 2;
+
         private float fConnectorLength;
 
         public float FConnectorLength
@@ -89,6 +92,7 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
             HolesCentersPoints2D = new float[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0), 2];
+            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
             // Calculate point positions
@@ -158,6 +162,7 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
             HolesCentersPoints2D = new float[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0), 2];
+            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
             // Fill Array Data
@@ -209,8 +214,6 @@ namespace BaseClasses
 
         void Calc_HolesCentersCoord2D()
         {
-            int iNumberOfCircleJoints = 2;
-
             // Bottom Circle (Main Column)
             float fDistanceOfCenterFromLeftEdge = m_fbX1 / 2f;
             float fx_c1 = fDistanceOfCenterFromLeftEdge;
@@ -224,8 +227,8 @@ namespace BaseClasses
 
             int iNumberOfSequencesInJoint = 2;
 
-            int iNumberOfAddionalConnectorsInOneGroup = m_iAdditionalConnectorNumber / iNumberOfCircleJoints;
-            int iNumberOfScrewsInOneSequence = IHolesNumber / (iNumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
+            int iNumberOfAddionalConnectorsInOneGroup = m_iAdditionalConnectorNumber / INumberOfCircleJoints;
+            int iNumberOfScrewsInOneSequence = IHolesNumber / (INumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
 
             float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
             float fRadius = 0.5f * m_fCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
@@ -234,12 +237,16 @@ namespace BaseClasses
             // Left side
             float[,] fSequenceLeftTop;
             float[,] fSequenceLeftBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom);
+            float[] fSequenceLeftTopRadii;
+            float[] fSequenceLeftBottomRadii;
+            Get_ScrewGroup_Circle(IHolesNumber / INumberOfCircleJoints, fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
 
             // Right side
             float[,] fSequenceRightTop;
             float[,] fSequenceRightBottom;
-            Get_ScrewGroup_Circle(IHolesNumber / iNumberOfCircleJoints, fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom);
+            float[] fSequenceRightTopRadii;
+            float[] fSequenceRightBottomRadii;
+            Get_ScrewGroup_Circle(IHolesNumber / INumberOfCircleJoints, fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
 
             IHolesNumber += m_iAdditionalConnectorNumber;
 
@@ -257,6 +264,11 @@ namespace BaseClasses
 
                 HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
                 HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
+
+                HolesCenterRadii[i] = fSequenceLeftTopRadii[i];
+                HolesCenterRadii[iNumberOfScrewsInOneSequence + i] = fSequenceLeftBottomRadii[i];
+                HolesCenterRadii[2 * iNumberOfScrewsInOneSequence + i] = fSequenceRightTopRadii[i];
+                HolesCenterRadii[3 * iNumberOfScrewsInOneSequence + i] = fSequenceRightBottomRadii[i];
             }
         }
 

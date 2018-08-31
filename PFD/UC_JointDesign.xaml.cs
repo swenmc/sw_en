@@ -70,7 +70,12 @@ namespace PFD
             // TODO Ondrej - najst pre zaciatocny CNode a koncovy CNode na prute priradeny Joint (CConectionJointTypes)
             // Asi by sa to malo priradit uz priamo v CModel_PFD, resp by tam mala byt tato funckia dostupna
 
-            designInternalForces sDIF_temp = new designInternalForces();
+            designInternalForces sDIF_temp = new designInternalForces(); // TODO nacitat vnutorne sily pre prislusny member a jeho koncovy uzol odpovedajuci spoju
+
+            // Temporary
+            sDIF_temp.fM_yu = 180000;
+            sDIF_temp.fV_yu = 30000;
+
             CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(Model.m_arrConnectionJoints[0], sDIF_temp);
         }
     }
