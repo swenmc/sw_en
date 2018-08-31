@@ -24,7 +24,7 @@ namespace TwoOpt
         private static void Shuffle<T>(IList<T> array)
         {
             var n = array.Count;
-            for (var i = 0; i < n; i++)  //changed to 1
+            for (var i = 1; i < n; i++)  //changed to 1
             {
                 // Use Next on random instance with an argument.
                 // ... The argument is an exclusive bound.
@@ -43,7 +43,7 @@ namespace TwoOpt
 
             var cityArray = new int[_mat.Size()];
 
-            for (var i = 0; i < _mat.Size(); i++)
+            for (var i = 0; i < _mat.Size(); i++) 
             {
                 cityArray[i] = i;
             }
