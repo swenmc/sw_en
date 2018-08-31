@@ -62,10 +62,17 @@
     <Compile Include="EventRaiser.cs" />
     <Compile Include="IMainWindow.cs" />
     <Compile Include="Line.cs" />
+    <Compile Include="WindowRunSalesman.xaml.cs">
+      <DependentUpon>WindowRunSalesman.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="Pair.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Tour.cs" />
+    <Page Include="WindowRunSalesman.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

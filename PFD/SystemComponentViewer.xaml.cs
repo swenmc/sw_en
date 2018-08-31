@@ -1,26 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using WindowsShapes = System.Windows.Shapes;
-using System.Windows.Media.Imaging;
 //using System.Windows.Shapes;
 using BaseClasses;
 using BaseClasses.GraphObj;
 using sw_en_GUI;
-using System.Windows.Media.Media3D;
-using _3DTools;
-using SharedLibraries.EXPIMP;
 using CRSC;
 using EXPIMP;
-using System.Threading;
 
 namespace PFD
 {
@@ -56,13 +44,24 @@ namespace PFD
             InitializeComponent();
             dcomponents = new CDatabaseComponents();
 
-            Combobox_Type.Items.Add("Cross-section");
-            Combobox_Type.Items.Add("Plate");
-            Combobox_Type.Items.Add("Screw");
+            // Internal forces
+            SystemComponentViewerViewModel vm = new SystemComponentViewerViewModel(dcomponents);
+            vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
+            this.DataContext = vm;
+            vm.ComponentIndex = 1;
+        }
+
+        private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
+            if (vm != null && vm.IsSetFromCode) return;
+
 
             // Set data from database in to the GUI
-            SetDataFromDatabasetoWindow();
-
+            // SetDataFromDatabasetoWindow();
+            
+            if (e.PropertyName != "ComponentIndex") return;
             // Load data from database
             LoadDataFromDatabase();
 
@@ -75,11 +74,11 @@ namespace PFD
             double dWidth = Frame2D.Width;
             double dHeight = Frame2D.Height;
 
-            if (Combobox_Type.SelectedIndex == 0)
+            if (vm.ComponentTypeIndex == 0)
             {
-               page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
+                page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
             }
-            else if (Combobox_Type.SelectedIndex == 1)
+            else if (vm.ComponentTypeIndex == 1)
             {
                 // Generate drilling plan
                 //CCNCPathFinder generator = new CCNCPathFinder(component);
@@ -94,16 +93,16 @@ namespace PFD
             }
 
             // Display plate in 2D preview frame
-            Frame2D.Content = page2D.Content;
+            if(page2D != null) Frame2D.Content = page2D.Content;
 
             // Create 3D window
             page3D = null;
 
-            if (Combobox_Type.SelectedIndex == 0)
+            if (vm.ComponentTypeIndex == 0)
             {
                 page3D = new Page3Dmodel(crsc);
             }
-            else if (Combobox_Type.SelectedIndex == 1)
+            else if (vm.ComponentTypeIndex == 1)
             {
                 page3D = new Page3Dmodel(component);
             }
@@ -114,209 +113,70 @@ namespace PFD
 
             // Display model in 3D preview frame
             Frame3D.Content = page3D;
+
         }
 
-        private void SetDataFromDatabasetoWindow()
-        {
-            if (Combobox_Type.SelectedIndex == 0) // Cross-sections
-            {
-                foreach (string seriename in dcomponents.arr_Serie_CrSc_FormSteel_Names) // Plates
-                    Combobox_Series.Items.Add(seriename);
-
-                Combobox_Series.SelectedIndex = (int)ESerieTypeCrSc_FormSteel.eSerie_Box_10075; // TODO Temp
-
-                switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
-                {
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Box_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Z_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_single:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_C_BtoB_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_C_Nested_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Box63020_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    default:
-                        {
-                            // Not Implemented
-                            break;
-                        }
-                }
-            }
-            else if (Combobox_Type.SelectedIndex == 1)
-            {
-                foreach (string seriename in dcomponents.arr_SeriesNames) // Plates
-                    Combobox_Series.Items.Add(seriename);
-
-                Combobox_Series.SelectedIndex = (int)ESerieTypePlate.eSerie_B; // TODO Temp
-
-                switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
-                {
-                    case ESerieTypePlate.eSerie_B:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_B_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_L:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_L_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_LL:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_LL_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_F:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_F_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_Q:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Q_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_S:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_S_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_T:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_T_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_X:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_X_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_Y:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Y_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_J:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_J_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_K:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_K_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    default:
-                        {
-                            // Not implemented
-                            break;
-                        }
-                }
-            }
-            else // Screws
-            {
-                // TODO not implemented
-            }
-
-            if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedIndex = 0;
-        }
+        
 
         private void LoadDataFromDatabase()
         {
-            if (Combobox_Component.SelectedIndex >= 0) // Index is valid
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (vm.ComponentIndex >= 0) // Index is valid
             {
-                if (Combobox_Type.SelectedIndex == 0) // Cross-section
+                if (vm.ComponentTypeIndex == 0) // Cross-section
                 {
                     switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
                     {
                         case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                             {
-                                fb = dcomponents.arr_Serie_Box_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_Box_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                ft = dcomponents.arr_Serie_Box_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                cComponentColor = dcomponents.arr_Serie_Box_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                fb = dcomponents.arr_Serie_Box_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_Box_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                ft = dcomponents.arr_Serie_Box_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_Box_FormSteel_Colors[vm.ComponentIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_Z:
                             {
-                                fh = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fb_fl = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fc_lip1 = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_Z_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                cComponentColor = dcomponents.arr_Serie_Z_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                fh = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fb_fl = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fc_lip1 = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_Z_FormSteel_Colors[vm.ComponentIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                             {
-                                fb = dcomponents.arr_Serie_C_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_C_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                ft = dcomponents.arr_Serie_C_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                cComponentColor = dcomponents.arr_Serie_C_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                fb = dcomponents.arr_Serie_C_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_C_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                ft = dcomponents.arr_Serie_C_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_C_FormSteel_Colors[vm.ComponentIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
                             {
-                                fb = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fc_lip1 = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                cComponentColor = dcomponents.arr_Serie_C_BtoB_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                fb = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fc_lip1 = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_C_BtoB_FormSteel_Colors[vm.ComponentIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                             {
-                                fb = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                ft = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                cComponentColor = dcomponents.arr_Serie_C_Nested_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                fb = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                ft = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_C_Nested_FormSteel_Colors[vm.ComponentIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                             {
-                                fb = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                ft = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft_f = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                cComponentColor = dcomponents.arr_Serie_Box63020_FormSteel_Colors[Combobox_Component.SelectedIndex];
+                                fb = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                ft = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft_f = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                cComponentColor = dcomponents.arr_Serie_Box63020_FormSteel_Colors[vm.ComponentIndex];
                                 break;
                             }
                         case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
@@ -334,98 +194,98 @@ namespace PFD
                             }
                     }
                 }
-                else if (Combobox_Type.SelectedIndex == 1) // Plate
+                else if (vm.ComponentTypeIndex == 1) // Plate
                 {
                     switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
                     {
                         case ESerieTypePlate.eSerie_B:
                             {
-                                fb = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fb = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 0] / 1000f;
                                 fb2 = fb;
-                                fh = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fl = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_B_Dimension[Combobox_Component.SelectedIndex, 4];
+                                fh = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_B_Dimension[vm.ComponentIndex, 4];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_L:
                             {
-                                fb = dcomponents.arr_Serie_L_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
+                                fb = dcomponents.arr_Serie_L_Dimension[vm.ComponentIndex, 0] / 1000f;
                                 fb2 = fb;
-                                fh = dcomponents.arr_Serie_L_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fl = dcomponents.arr_Serie_L_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_L_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_L_Dimension[Combobox_Component.SelectedIndex, 4];
+                                fh = dcomponents.arr_Serie_L_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_L_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_L_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_L_Dimension[vm.ComponentIndex, 4];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_LL:
                             {
-                                fb = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fb2 = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fh = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fl = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                ft = dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_LL_Dimension[Combobox_Component.SelectedIndex, 5];
+                                fb = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fb2 = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fh = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                fl = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_LL_Dimension[vm.ComponentIndex, 5];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_F:
                             {
-                                fb = dcomponents.arr_Serie_F_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fb2 = dcomponents.arr_Serie_F_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fh = dcomponents.arr_Serie_F_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fl = dcomponents.arr_Serie_F_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                ft = dcomponents.arr_Serie_F_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_F_Dimension[Combobox_Component.SelectedIndex, 5];
+                                fb = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fb2 = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fh = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                fl = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_F_Dimension[vm.ComponentIndex, 5];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_Q:
                             {
-                                fb = dcomponents.arr_Serie_Q_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_Q_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fl = dcomponents.arr_Serie_Q_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_Q_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_Q_Dimension[Combobox_Component.SelectedIndex, 4];
+                                fb = dcomponents.arr_Serie_Q_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_Q_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_Q_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_Q_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_Q_Dimension[vm.ComponentIndex, 4];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_T:
                             {
-                                fb = dcomponents.arr_Serie_T_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_T_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fl = dcomponents.arr_Serie_T_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                ft = dcomponents.arr_Serie_T_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_T_Dimension[Combobox_Component.SelectedIndex, 4];
+                                fb = dcomponents.arr_Serie_T_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_T_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_T_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                ft = dcomponents.arr_Serie_T_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_T_Dimension[vm.ComponentIndex, 4];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_Y:
                             {
-                                fb = dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fl = dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fl2 = dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                ft = dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_Y_Dimension[Combobox_Component.SelectedIndex, 5];
+                                fb = dcomponents.arr_Serie_Y_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_Y_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fl = dcomponents.arr_Serie_Y_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                fl2 = dcomponents.arr_Serie_Y_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_Y_Dimension[vm.ComponentIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_Y_Dimension[vm.ComponentIndex, 5];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_J:
                             {
-                                fb = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fh = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fh2 = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fl = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                ft = dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_J_Dimension[Combobox_Component.SelectedIndex, 5];
+                                fb = dcomponents.arr_Serie_J_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fh = dcomponents.arr_Serie_J_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fh2 = dcomponents.arr_Serie_J_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                fl = dcomponents.arr_Serie_J_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                ft = dcomponents.arr_Serie_J_Dimension[vm.ComponentIndex, 4] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_J_Dimension[vm.ComponentIndex, 5];
                                 break;
                             }
                         case ESerieTypePlate.eSerie_K:
                             {
-                                fb_R = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 0] / 1000f;
-                                fb = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 1] / 1000f;
-                                fh = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 2] / 1000f;
-                                fb2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 3] / 1000f;
-                                fh2 = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 4] / 1000f;
-                                fl = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 5] / 1000f;
-                                ft = dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 6] / 1000f;
-                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[Combobox_Component.SelectedIndex, 7];
+                                fb_R = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 0] / 1000f;
+                                fb = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 1] / 1000f;
+                                fh = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 2] / 1000f;
+                                fb2 = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 3] / 1000f;
+                                fh2 = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 4] / 1000f;
+                                fl = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 5] / 1000f;
+                                ft = dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 6] / 1000f;
+                                iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 7];
                                 break;
                             }
                         default:
@@ -444,11 +304,12 @@ namespace PFD
 
         private void UpdateAll()
         {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel; 
             LoadDataFromDatabase();
 
             // Create Model
             // Change Combobox
-            if (Combobox_Type.SelectedIndex == 0) // Cross-section
+            if (vm.ComponentTypeIndex == 0) // Cross-section
             {
                 switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
                 {
@@ -467,7 +328,7 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            if(Combobox_Component.SelectedIndex < 3) // C270
+                            if(vm.ComponentIndex < 3) // C270
                                 crsc = new CCrSc_3_270XX_C(fh, fb, ft, cComponentColor);
                             else
                                 crsc = new CCrSc_3_50020_C(fh, fb, ft, cComponentColor);
@@ -506,7 +367,7 @@ namespace PFD
                         }
                 }
             }
-            else if (Combobox_Type.SelectedIndex == 1)
+            else if (vm.ComponentTypeIndex == 1)
             {
                 float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
                 float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
@@ -532,7 +393,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
@@ -552,7 +413,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
-                            if (Combobox_Component.SelectedIndex == 0) // JA
+                            if (vm.ComponentIndex == 0) // JA
                                 component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, true);
                             else
                                 component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
@@ -560,9 +421,9 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
-                            if (Combobox_Component.SelectedIndex == 0) // KA
+                            if (vm.ComponentIndex == 0) // KA
                                 component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
-                            else if(Combobox_Component.SelectedIndex == 1)
+                            else if(vm.ComponentIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
                                 component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
@@ -583,11 +444,11 @@ namespace PFD
             // Create 2D page
             page2D = null;
 
-            if (Combobox_Type.SelectedIndex == 0)
+            if (vm.ComponentTypeIndex == 0)
             {
                 page2D = new WindowCrossSection2D(crsc, Frame2D.Width, Frame2D.Height);
             }
-            else if (Combobox_Type.SelectedIndex == 1)
+            else if (vm.ComponentTypeIndex == 1)
             {
                 // Generate drilling plan
                 //CCNCPathFinder generator = new CCNCPathFinder(component);
@@ -608,11 +469,11 @@ namespace PFD
             // Create 3D window
             page3D = null;
 
-            if (Combobox_Type.SelectedIndex == 0)
+            if (vm.ComponentTypeIndex == 0)
             {
                 page3D = new Page3Dmodel(crsc);
             }
-            else if (Combobox_Type.SelectedIndex == 1)
+            else if (vm.ComponentTypeIndex == 1)
             {
                 page3D = new Page3Dmodel(component);
             }
@@ -627,19 +488,20 @@ namespace PFD
             this.UpdateLayout();
         }
 
-        private void Combobox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Combobox_Series.Items.Clear();
-            Combobox_Component.Items.Clear();
+        //private void Combobox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    Combobox_Series.Items.Clear();
+        //    Combobox_Component.Items.Clear();
 
-            SetDataFromDatabasetoWindow();
+        //    SetDataFromDatabasetoWindow();
 
-            UpdateAll();
-        }
+        //    UpdateAll();
+        //}
 
         public void CreateModelObject()
         {
-            if (Combobox_Type.SelectedIndex == 0) // Cross-sections
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (vm.ComponentTypeIndex == 0) // Cross-sections
             {
                 switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
                 {
@@ -655,7 +517,7 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            if (Combobox_Component.SelectedIndex < 3) // C270
+                            if (vm.ComponentIndex < 3) // C270
                                 crsc = new CCrSc_3_270XX_C(fh, fb, ft, cComponentColor);
                             else
                                 crsc = new CCrSc_3_50020_C(fh, fb, ft, cComponentColor);
@@ -683,7 +545,7 @@ namespace PFD
                         }
                 }
             }
-            else if (Combobox_Type.SelectedIndex == 1) // Plates
+            else if (vm.ComponentTypeIndex == 1) // Plates
             {
                 float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
                 float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
@@ -709,7 +571,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, Combobox_Component.SelectedIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
+                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
@@ -729,7 +591,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
-                            if (Combobox_Component.SelectedIndex == 0) // JA
+                            if (vm.ComponentIndex == 0) // JA
                                 component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
                             else
                                 component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
@@ -737,9 +599,9 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
-                            if (Combobox_Component.SelectedIndex == 0) // KA
+                            if (vm.ComponentIndex == 0) // KA
                                 component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
-                            else if (Combobox_Component.SelectedIndex == 1)
+                            else if (vm.ComponentIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             else
                                 component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
@@ -758,146 +620,146 @@ namespace PFD
             }
         }
 
-        private void Combobox_Series_DropDownClosed(object sender, EventArgs e)
-        {
-            // Change Component Items Combobox
-            Combobox_Component.Items.Clear();
+        //private void Combobox_Series_DropDownClosed(object sender, EventArgs e)
+        //{
+        //    // Change Component Items Combobox
+        //    Combobox_Component.Items.Clear();
 
-            if (Combobox_Type.SelectedIndex == 0) // Cross-section
-            {
-                switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
-                {
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Box_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Z_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_single:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_C_BtoB_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_C_Nested_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Box63020_FormSteel_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    default:
-                        {
-                            // Not implemented
-                            break;
-                        }
-                }
-            }
-            else if (Combobox_Type.SelectedIndex == 1)
-            {
-                switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
-                {
-                    case ESerieTypePlate.eSerie_B:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_B_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_L:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_L_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_LL:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_LL_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_F:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_F_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_Q:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Q_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_S:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_S_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_T:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_T_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_X:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_X_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_Y:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_Y_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_J:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_J_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_K:
-                        {
-                            foreach (string name in dcomponents.arr_Serie_K_Names)
-                                Combobox_Component.Items.Add(name); // Add values into the combobox
-                            break;
-                        }
-                    default:
-                        {
-                            // Not implemented
-                            break;
-                        }
-                }
-            }
-            else
-            {
-                // Not implemented
-            }
+        //    if (vm.ComponentTypeIndex == 0) // Cross-section
+        //    {
+        //        switch ((ESerieTypeCrSc_FormSteel)Combobox_Series.SelectedIndex)
+        //        {
+        //            case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_Box_FormSteel_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_Z:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_Z_FormSteel_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_C_single:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_C_BtoB_FormSteel_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_C_Nested_FormSteel_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_Box63020_FormSteel_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            default:
+        //                {
+        //                    // Not implemented
+        //                    break;
+        //                }
+        //        }
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1)
+        //    {
+        //        switch ((ESerieTypePlate)Combobox_Series.SelectedIndex)
+        //        {
+        //            case ESerieTypePlate.eSerie_B:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_B_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_L:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_L_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_LL:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_LL_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_F:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_F_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_Q:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_Q_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_S:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_S_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_T:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_T_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_X:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_X_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_Y:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_Y_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_J:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_J_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_K:
+        //                {
+        //                    foreach (string name in dcomponents.arr_Serie_K_Names)
+        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
+        //                    break;
+        //                }
+        //            default:
+        //                {
+        //                    // Not implemented
+        //                    break;
+        //                }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Not implemented
+        //    }
 
-            // Set default
-            Combobox_Component.SelectedIndex = 0;
-            if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedItem = Combobox_Component.Items[0];
+        //    // Set default
+        //    vm.ComponentIndex = 0;
+        //    //if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedItem = Combobox_Component.Items[0];
 
-            UpdateAll();
-        }
+        //    UpdateAll();
+        //}
 
         private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -918,10 +780,10 @@ namespace PFD
             // Takze musime zakazat wheel alebo to updateall / SelectionChanged oddelit od pridania poloziek do comboboxu, aby sa to nevolalo opakovane
         }
 
-        private void Combobox_Component_DropDownClosed(object sender, EventArgs e)
-        {
-            UpdateAll();
-        }
+        //private void Combobox_Component_DropDownClosed(object sender, EventArgs e)
+        //{
+        //    UpdateAll();
+        //}
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
@@ -935,19 +797,27 @@ namespace PFD
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
-            List<Point> points = component.GetHolesCentersPoints2D();
-            if (points == null) return;
-            
-            points.Insert(0, new Point(0, 0));
-            TwoOpt.MainWindow w = new TwoOpt.MainWindow();
-            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
-            viewModel.RoutePoints = points;
-            w.Show();
-            w.Closing += W_Closing;
-            
             
           // Export of drilling route to the .nc files
 
+
+
+        }
+
+        
+
+        private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
+        {
+            List<Point> points = component.GetHolesCentersPoints2D();
+            if (points == null) return;
+
+            points.Insert(0, new Point(0, 0));
+            //TwoOpt.MainWindow w = new TwoOpt.MainWindow();
+            TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points);
+            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
+            //viewModel.RoutePoints = points;
+            w.ShowDialog();
+            w.Closing += W_Closing;
         }
 
         private void W_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -964,13 +834,13 @@ namespace PFD
 
             double dWidth = Frame2D.Width;
             double dHeight = Frame2D.Height;
-            
 
-            if (Combobox_Type.SelectedIndex == 0)
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (vm.ComponentTypeIndex == 0)
             {
                 page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
             }
-            else if (Combobox_Type.SelectedIndex == 1)
+            else if (vm.ComponentTypeIndex == 1)
             {
                 // Set drilling route points
                 component.DrillingRoutePoints = PathPoints;

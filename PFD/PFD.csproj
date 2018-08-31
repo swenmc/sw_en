@@ -71,6 +71,7 @@
     <Compile Include="CComboBoxHelper.cs" />
     <Compile Include="CDatabaseModels.cs" />
     <Compile Include="CPFDJointsDesign.cs" />
+    <Compile Include="SystemComponentViewerViewModel.cs" />
     <Compile Include="CPFDMemberInternalForces.cs" />
     <Compile Include="CPFDMemberDesign.cs" />
     <Compile Include="FractionConverter.cs" />

@@ -5,36 +5,72 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="FormSteel System Component Viewer" Height="1200" Width="1600">
+        Title="FormSteel System Component Viewer" WindowState="Maximized">
     <Grid>
-        <TextBlock Text="Type:" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" Width="100"/>
-        <ComboBox Name ="Combobox_Type" HorizontalAlignment="Left" Height="20" 
-                  Margin="115,10,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
-                  SelectionChanged="Combobox_Type_SelectionChanged"/>
-        <Button Height="20" Width="100" Name="BtnExportDXF" Content="Export to DXF"
-                Margin="370 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
-        <Button Height="20" Width="100" Name="BtnExportDXF_3D" Content="Export 3D to DXF"
-                Margin="500 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_3D_Click" />
+        <!--Base Grid 2 columns and 4 rows-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <TextBlock Text="Serie:" HorizontalAlignment="Left" Height="20" Margin="10,35,0,0" VerticalAlignment="Top" Width="100"/>
-        <ComboBox Name ="Combobox_Series" HorizontalAlignment="Left" Height="20" 
-                  Margin="115,35,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
-                  SelectionChanged="Combobox_Series_SelectionChanged"
-                  DropDownClosed="Combobox_Series_DropDownClosed"/>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Center" 
+                      ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"  />
+            
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Center" 
+                      ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                 />
 
-        <TextBlock Text="Component:" HorizontalAlignment="Left" Height="20" Margin="10,60,0,0" VerticalAlignment="Top" Width="100"/>
-        <ComboBox Name ="Combobox_Component" HorizontalAlignment="Left" Height="20" 
-                  Margin="115,60,0,0" VerticalAlignment="Top" Width="200" SelectedIndex="1" 
-                  SelectionChanged="Combobox_Component_SelectionChanged"
-                  DropDownClosed="Combobox_Component_DropDownClosed"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Component:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="10 0 0 0"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_Component" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Center" 
+                      ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                  />
+            <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails"/>
+            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="BtnsPanel" Orientation="Horizontal" >
+                <Button Name="BtnExportDXF" Content="Export to DXF" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
+                <Button Name="BtnExportDXF_3D" Content="Export 3D to DXF" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_3D_Click" />
+                <Button Name="BtnExportCNC" Content="Export to CNC" Margin="5 0 5 0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportCNC_Click"/>
+                <Button Name="BtnFindCNCPath" Content="Find CNC Path" Margin="5 0 5 0"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnFindCNCPath_Click"/>
 
-        <Frame Name ="Frame2D" Content="2D Preview" HorizontalAlignment="Left" 
-               Height="1000" Margin="10,100,0,0" VerticalAlignment="Top" 
-               Width="780" NavigationUIVisibility="Hidden"/>
-        <Frame Name ="Frame3D" Content="3D Preview" HorizontalAlignment="Left"
-               Height="1000" Margin="805,100,0,0" VerticalAlignment="Top"
-               Width="780" NavigationUIVisibility="Hidden"/>
-        <Button Height="20" Width="100" x:Name="BtnExportCNC" Content="Export to CNC"
-            Margin="370,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportCNC_Click"/>
+            </StackPanel>
+            
+
+        </Grid>
+        <TabControl Grid.Row="0" Grid.Column="1">
+            <TabItem Name="tabItem2D" Header="2D">
+                <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+            </TabItem>
+            <TabItem Name="tabItem3D" Header="3D">
+                <Frame Name ="Frame3D" Content="3D Preview" NavigationUIVisibility="Hidden"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                       />
+            </TabItem>
+        </TabControl>
+
+
+
+
+        
     </Grid>
 </Window>
