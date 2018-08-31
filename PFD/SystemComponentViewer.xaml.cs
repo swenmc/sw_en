@@ -82,9 +82,9 @@ namespace PFD
             else if (Combobox_Type.SelectedIndex == 1)
             {
                 // Generate drilling plan
-                CCNCPathFinder generator = new CCNCPathFinder(component);
+                //CCNCPathFinder generator = new CCNCPathFinder(component);
                 // Set drilling route points
-                component.DrillingRoutePoints = generator.RoutePoints;
+                //component.DrillingRoutePoints = generator.RoutePoints;
                 // Draw plate
                 page2D = new WindowCrossSection2D(component, dWidth, dHeight);
             }
@@ -590,9 +590,9 @@ namespace PFD
             else if (Combobox_Type.SelectedIndex == 1)
             {
                 // Generate drilling plan
-                CCNCPathFinder generator = new CCNCPathFinder(component);
+                //CCNCPathFinder generator = new CCNCPathFinder(component);
                 // Set drilling route points
-                component.DrillingRoutePoints = generator.RoutePoints;
+                //component.DrillingRoutePoints = generator.RoutePoints;
                 // Draw plate
                 page2D = new WindowCrossSection2D(component, Frame2D.Width, Frame2D.Height);
             }
@@ -935,12 +935,13 @@ namespace PFD
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
-            CCNCPathFinder c = new CCNCPathFinder(component);
-            //MessageBox.Show("Shortest distance: " + c.GetRouteDistance());
-            c.RoutePoints.Insert(0, new Point(0, 0));
+            List<Point> points = component.GetHolesCentersPoints2D();
+            if (points == null) return;
+            
+            points.Insert(0, new Point(0, 0));
             TwoOpt.MainWindow w = new TwoOpt.MainWindow();
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
-            viewModel.RoutePoints = c.RoutePoints;
+            viewModel.RoutePoints = points;
             w.Show();
             w.Closing += W_Closing;
             
@@ -960,6 +961,29 @@ namespace PFD
                 System.Diagnostics.Trace.WriteLine("[" + p.X() + "," + p.Y() + "]");
                 PathPoints.Add(new Point(p.X(), p.Y()));
             }
+
+            double dWidth = Frame2D.Width;
+            double dHeight = Frame2D.Height;
+            
+
+            if (Combobox_Type.SelectedIndex == 0)
+            {
+                page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
+            }
+            else if (Combobox_Type.SelectedIndex == 1)
+            {
+                // Set drilling route points
+                component.DrillingRoutePoints = PathPoints;
+                // Draw plate
+                page2D = new WindowCrossSection2D(component, dWidth, dHeight);
+            }
+            else
+            {
+                // Screw - not implemented
+            }
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D.Content;
 
         }
     }

@@ -372,6 +372,7 @@ namespace sw_en_GUI
 
         public void DrawDrillingRoute()
         {
+            if (PointsDrillingRoute == null) return;
             // ??? TODO upravit odsadenie
 
             double fx_min = double.MaxValue;

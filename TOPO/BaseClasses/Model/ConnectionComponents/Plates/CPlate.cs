@@ -593,5 +593,19 @@ namespace BaseClasses
 
             return array;
         }
+
+        public List<Point> GetHolesCentersPoints2D()
+        {
+            List<Point> points = null; 
+            if (this.HolesCentersPoints2D != null)
+            {
+                points = new List<Point>(this.HolesCentersPoints2D.Length / 2);
+                for (int i = 0; i < this.HolesCentersPoints2D.Length / 2; i++)
+                {
+                    points.Add(new Point(this.HolesCentersPoints2D[i, 0], this.HolesCentersPoints2D[i, 1]));
+                }
+            }
+            return points;
+        }
     }
 }

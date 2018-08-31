@@ -100,12 +100,11 @@ namespace BaseClasses
             //Console.WriteLine("Number of rows: "+ count);
 
             FindShortestRoute();
-
-            
         }
 
         public void FindShortestRoute()
         {
+            if (Points.Count == 0) return;
             RoutePoints = new List<Point>(Points.Count);
             Point startPoint = FindStartPoint();
             RoutePoints.Add(startPoint);
