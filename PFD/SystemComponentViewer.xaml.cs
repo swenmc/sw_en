@@ -48,6 +48,7 @@ namespace PFD
             InitializeComponent();
 
             this.SizeChanged += OnWindowSizeChanged;
+            //this.RaiseEvent(new RoutedEventArgs(Window.SizeChangedEvent));
 
             dcomponents = new CDatabaseComponents();
 
@@ -87,8 +88,8 @@ namespace PFD
 
             //double dWidth = Frame2D.Width;
             //double dHeight = Frame2D.Height;
-            double dWidth = WindowWidth;
-            double dHeight = WindowHeight;
+            double dWidth = WindowWidth / 2;
+            double dHeight = WindowHeight - 30;
 
             if (vm.ComponentTypeIndex == 0)
             {
