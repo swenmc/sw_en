@@ -18,7 +18,7 @@ namespace PFD
     public partial class SystemComponentViewer : Window
     {
         public CDatabaseComponents dcomponents; // Todo nahradit databazov component
-        public WindowCrossSection2D page2D;
+        public Canvas page2D;
         public Page3Dmodel page3D;
 
         CCrSc_TW crsc;
@@ -84,7 +84,7 @@ namespace PFD
             CreateModelObject();
 
             // Create 2D page
-            page2D = null;
+            page2D = new Canvas();
 
             //double dWidth = Frame2D.Width;
             //double dHeight = Frame2D.Height;
@@ -93,7 +93,8 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-                page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
+                //page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
+                Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -102,7 +103,8 @@ namespace PFD
                 // Set drilling route points
                 //component.DrillingRoutePoints = generator.RoutePoints;
                 // Draw plate
-                page2D = new WindowCrossSection2D(component, dWidth, dHeight);
+                // page2D = new WindowCrossSection2D(component, dWidth, dHeight);
+                Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
             }
             else
             {
@@ -110,7 +112,7 @@ namespace PFD
             }
 
             // Display plate in 2D preview frame
-            if(page2D != null) Frame2D.Content = page2D.Content;
+            if(page2D != null) Frame2D.Content = page2D;
 
             // Create 3D window
             page3D = null;
@@ -459,11 +461,11 @@ namespace PFD
             }
 
             // Create 2D page
-            page2D = null;
+            page2D = new Canvas();
 
             if (vm.ComponentTypeIndex == 0)
             {
-                page2D = new WindowCrossSection2D(crsc, Frame2D.ActualWidth, Frame2D.ActualHeight);
+               Drawing2D.DrawCrscToCanvas(crsc, Frame2D.ActualWidth, Frame2D.ActualHeight, ref page2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -472,16 +474,16 @@ namespace PFD
                 // Set drilling route points
                 //component.DrillingRoutePoints = generator.RoutePoints;
                 // Draw plate
-                page2D = new WindowCrossSection2D(component, Frame2D.ActualWidth, Frame2D.ActualHeight);
+                Drawing2D.DrawPlateToCanvas(component, Frame2D.ActualWidth, Frame2D.ActualHeight, ref page2D);
             }
             else
             {
                 // Screw - not implemented
-                page2D = new WindowCrossSection2D(); // TODO - Display empty window in current state
+                //page2D = new WindowCrossSection2D(); // TODO - Display empty window in current state
             }
 
             // Display plate in 2D preview frame
-            Frame2D.Content = page2D.Content;
+            Frame2D.Content = page2D;
 
             // Create 3D window
             page3D = null;
@@ -804,7 +806,7 @@ namespace PFD
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
-            CExportToDXF.ExportCanvas_DXF(page2D.CanvasSection2D,0,0);
+            CExportToDXF.ExportCanvas_DXF(page2D,0,0);
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
@@ -855,14 +857,15 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
             {
-                page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
+              Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Set drilling route points
                 component.DrillingRoutePoints = PathPoints;
                 // Draw plate
-                page2D = new WindowCrossSection2D(component, dWidth, dHeight);
+                //page2D = new WindowCrossSection2D(component, dWidth, dHeight);
+                Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
             }
             else
             {
@@ -870,7 +873,7 @@ namespace PFD
             }
 
             // Display plate in 2D preview frame
-            Frame2D.Content = page2D.Content;
+            Frame2D.Content = page2D;
 
         }
     }
