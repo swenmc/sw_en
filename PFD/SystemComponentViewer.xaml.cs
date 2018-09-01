@@ -20,6 +20,7 @@ namespace PFD
         public CDatabaseComponents dcomponents; // Todo nahradit databazov component
         public Canvas page2D;
         public Page3Dmodel page3D;
+        public DisplayOptions sDisplayOptions = new DisplayOptions();
 
         CCrSc_TW crsc;
         CPlate component;
@@ -45,6 +46,10 @@ namespace PFD
 
         public SystemComponentViewer()
         {
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayWireFrameModel = true;
+
             InitializeComponent();
 
             this.SizeChanged += OnWindowSizeChanged;
@@ -89,7 +94,15 @@ namespace PFD
             //double dWidth = Frame2D.Width;
             //double dHeight = Frame2D.Height;
             double dWidth = WindowWidth / 2;
-            double dHeight = WindowHeight - 30;
+            double dHeight = WindowHeight - 100;
+
+            // TODO / BUG - Ondrej, pri prvom spusteni je WindowWidth a WindowHeight rovne nula a vsetko sa vykresli do laveho horneho rohu
+            // je potrebne nastavit rozmery pre vykreslenie
+            if (dWidth == 0 || dHeight == 0) // Docasne
+            {
+                dWidth = 1280;
+                dHeight = 1310;
+            }
 
             if (vm.ComponentTypeIndex == 0)
             {
@@ -119,11 +132,13 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-                page3D = new Page3Dmodel(crsc);
+                // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch pri zmene component serie, podobne to nefunguje ani pre plates
+
+                page3D = new Page3Dmodel(crsc, sDisplayOptions);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                page3D = new Page3Dmodel(component);
+                page3D = new Page3Dmodel(component, sDisplayOptions);
             }
             else
             {
@@ -490,11 +505,13 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-                page3D = new Page3Dmodel(crsc);
+                // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch - component serie, podobne to nefunguje ani pre plates
+
+                page3D = new Page3Dmodel(crsc, sDisplayOptions);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                page3D = new Page3Dmodel(component);
+                page3D = new Page3Dmodel(component, sDisplayOptions);
             }
             else
             {
@@ -850,6 +867,9 @@ namespace PFD
                 System.Diagnostics.Trace.WriteLine("[" + p.X() + "," + p.Y() + "]");
                 PathPoints.Add(new Point(p.X(), p.Y()));
             }
+
+            // TODO - Ondrej vykreslene spojnice drilling route su asi prvotne a nie zoptimalizovane
+            // Bud vykreslujem zle data alebo algoritmus neprebehol
 
             double dWidth = Frame2D.ActualWidth;
             double dHeight = Frame2D.ActualHeight;

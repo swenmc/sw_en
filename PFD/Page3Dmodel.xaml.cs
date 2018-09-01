@@ -28,8 +28,10 @@ namespace PFD
             Drawing3D.DrawToTrackPort(_trackport, model, sDisplayOptions, loadcase);
         }
 
-        public Page3Dmodel(CConnectionComponentEntity3D model)
+        public Page3Dmodel(CConnectionComponentEntity3D model, DisplayOptions sDisplayOptions_temp)
         {
+            sDisplayOptions = sDisplayOptions_temp;
+
             InitializeComponent();
 
             // Default color
@@ -62,7 +64,7 @@ namespace PFD
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
 
-                if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)
+                if (sDisplayOptions.bDisplaySolidModel)
                 {
                     _trackport.Model = (Model3D)ComponentGeomModel;
                 }
@@ -84,8 +86,10 @@ namespace PFD
             _trackport.SetupScene();
         }
 
-        public Page3Dmodel(CCrSc_TW crsc)
+        public Page3Dmodel(CCrSc_TW crsc, DisplayOptions sDisplayOptions_temp)
         {
+            sDisplayOptions = sDisplayOptions_temp;
+
             InitializeComponent();
 
             // Default color
