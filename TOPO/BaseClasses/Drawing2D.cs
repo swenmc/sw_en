@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 using MATH;
 using CRSC;
 
@@ -623,8 +624,24 @@ namespace BaseClasses
             }
         }
 
+        public static float [,] TransformPointToArrayCoord(List<Point> Points_input)
+        {
+            if (Points_input == null)
+                throw new ArgumentNullException("Not inicialized list of points!");
 
-       // POVODNE FUNKCIE
+            float [,] array = new float[Points_input.Count, 2];
+
+            for(int i = 0; i < Points_input.Count; i++)
+            {
+                array[i, 0] = (float)Points_input[i].X;
+                array[i, 0] = (float)Points_input[i].Y;
+            }
+
+            return array;
+        }
+
+
+        // POVODNE FUNKCIE
 
         //LINES
         public static  void DrawLine(CMember member, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvas, 

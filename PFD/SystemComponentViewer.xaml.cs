@@ -823,8 +823,6 @@ namespace PFD
 
         }
 
-        
-
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
             List<Point> points = component.GetHolesCentersPoints2D();
@@ -835,6 +833,7 @@ namespace PFD
             TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points);
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
             //viewModel.RoutePoints = points;
+
             w.ShowDialog();
             w.Closing += W_Closing;
         }
@@ -863,10 +862,10 @@ namespace PFD
             {
                 // Set drilling route points
                 component.DrillingRoutePoints = PathPoints;
+                component.DrillingRoutePoints2D = Drawing2D.TransformPointToArrayCoord(component.DrillingRoutePoints);
                 // Draw plate
-                //page2D = new WindowCrossSection2D(component, dWidth, dHeight);
                 Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
-            }
+             }
             else
             {
                 // Screw - not implemented
