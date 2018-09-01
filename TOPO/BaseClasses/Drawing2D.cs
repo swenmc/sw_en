@@ -634,7 +634,7 @@ namespace BaseClasses
             for(int i = 0; i < Points_input.Count; i++)
             {
                 array[i, 0] = (float)Points_input[i].X;
-                array[i, 0] = (float)Points_input[i].Y;
+                array[i, 1] = (float)Points_input[i].Y;
             }
 
             return array;

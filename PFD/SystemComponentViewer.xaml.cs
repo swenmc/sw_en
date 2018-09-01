@@ -832,15 +832,16 @@ namespace PFD
             //TwoOpt.MainWindow w = new TwoOpt.MainWindow();
             TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points);
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
-            //viewModel.RoutePoints = points;
+            viewModel.RoutePoints = points;
 
-            w.ShowDialog();
+            w.Show();
             w.Closing += W_Closing;
         }
 
         private void W_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            TwoOpt.MainWindow w = sender as TwoOpt.MainWindow;
+            //TwoOpt.MainWindow w = sender as TwoOpt.MainWindow; // TOTO som zakomentoval - TODO Ondrej
+            TwoOpt.WindowRunSalesman w = sender as TwoOpt.WindowRunSalesman;
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
 
             List<Point> PathPoints = new List<Point>(viewModel._model._coordMatrix._coords.Count);
