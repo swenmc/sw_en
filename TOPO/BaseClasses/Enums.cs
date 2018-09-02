@@ -447,6 +447,15 @@
         eWindswept           // (c) Windswept Sites where the roof is exposed on all sides, with no protection provided by obstructions, trees, or terrain features higher than the roof.
     }
 
+    public enum EScrewTypes
+    {
+        // See AS / NZS 4600 - Figure 5.4.3.2 SCREW PULL-OVER WITH WASHER
+        eA_HEXheadScrew_FlatWasher,    // (a) Flat steel washer beneath hex head screw head
+        eB_PancakeScrewWahserHead,     // (b) Pancake screw washer head
+        eC_HWH_FlatWahser,             // (c) Flat steel washer beneath hex washer head screw head (HWH has integral solid washer)
+        eD_DomedWasherScrew            // (d) Domed washer (non-solid) beneath screw head
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions
@@ -575,6 +584,7 @@
         public int iNumberOfWindowColumns;
     }
 
+    // AS 1170.0 - AS 1170.5
     public struct loadInputComboboxIndexes
     {
         public int LocationIndex;
@@ -647,6 +657,7 @@
         public float fM_zz;
     }
 
+    // AS 4600
     public struct designMomentValuesForCb
     {
         public float fM_max;

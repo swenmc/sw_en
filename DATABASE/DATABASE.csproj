@@ -82,9 +82,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CTEKScrewsManager.cs" />
     <Compile Include="CModelsManager.cs" />
     <Compile Include="CMaterialManager.cs" />
     <Compile Include="CSectionManager.cs" />
+    <Compile Include="DTO\CTEKScrewProperties.cs" />
     <Compile Include="DTO\CSectionPropertiesText.cs" />
     <Compile Include="CTrapezoidalSheetingManager.cs" />
     <Compile Include="CDatabaseManager.cs" />
@@ -121,6 +123,7 @@
     <Content Include="Resources\MDBMaterials.db3" />
     <Content Include="Resources\MDBSections.db3" />
     <None Include="Resources\MDBModels.db3" />
+    <None Include="Resources\MDBTEKScrews.db3" />
     <None Include="Resources\MDBTrapezoidalSheeting.db3" />
   </ItemGroup>
   <ItemGroup>

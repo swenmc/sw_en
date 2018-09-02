@@ -85,12 +85,7 @@ namespace DATABASE
                         } //end reader
                     }
                 }
-
-
             }
         }
-
-
-
     }
 }

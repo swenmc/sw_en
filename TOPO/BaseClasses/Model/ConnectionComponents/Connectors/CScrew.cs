@@ -7,6 +7,62 @@ namespace BaseClasses
 {
     public class CScrew : CConnector
     {
+        private EScrewTypes m_eType;
+        public EScrewTypes Type
+        {
+            get
+            {
+                return m_eType;
+            }
+
+            set
+            {
+                m_eType = value;
+            }
+        }
+
+        private float m_fd_h_headdiameter;
+        public float D_h_headdiameter
+        {
+            get
+            {
+                return m_fd_h_headdiameter;
+            }
+
+            set
+            {
+                m_fd_h_headdiameter = value;
+            }
+        }
+
+        private float m_fd_w_washerdiameter;
+        public float D_w_washerdiameter
+        {
+            get
+            {
+                return m_fd_w_washerdiameter;
+            }
+
+            set
+            {
+                m_fd_w_washerdiameter = value;
+            }
+        }
+
+        private float m_ft_w_washerthickness;
+        public float T_w_washerthickness
+        {
+            get
+            {
+                return m_ft_w_washerthickness;
+            }
+
+            set
+            {
+                m_ft_w_washerthickness = value;
+            }
+        }
+
         public CScrew()
         { }
 

@@ -49,6 +49,52 @@ namespace BaseClasses
 
         public int INoPoints2Dfor3D; // Number of points in one surface used for 3D model (holes lines are divided to the straight segments)
 
+        private float m_fs_f_min;  // Minimalna vzdialenost skrutiek kolmo na smer osovej sily v prute
+
+        public float S_f_min
+        {
+            get
+            {
+                return m_fs_f_min;
+            }
+
+            set
+            {
+                m_fs_f_min = value;
+            }
+        }
+
+        private float m_fs_f_max;  // Maximalna vzdialenost skrutiek kolmo na smer osovej sily v prute
+
+        public float S_f_max
+        {
+            get
+            {
+                return m_fs_f_max;
+            }
+
+            set
+            {
+                m_fs_f_max = value;
+            }
+        }
+
+        private int m_iNumberOfConnectorsInSection;  // Pocet skrutiek v reze kolmom na smer osovej sily v prute
+
+        public int INumberOfConnectorsInSection
+        {
+            get
+            {
+                return m_iNumberOfConnectorsInSection;
+            }
+
+            set
+            {
+                m_iNumberOfConnectorsInSection = value;
+            }
+        }
+
+
 
         public CPlate()
         {

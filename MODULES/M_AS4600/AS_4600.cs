@@ -1,6 +1,7 @@
 ﻿using MATH;
 using MATH.ARRAY;
 using System;
+using BaseClasses;
 
 
 namespace M_AS4600
@@ -131,9 +132,49 @@ namespace M_AS4600
                 throw new ArgumentException("Invalid value of thickness t2! Less than 0.9 mm, see cl. 5.4.3.2(2).");
             }
         }
-        public float Eq_5432_3__(float ft_1, float fd_w, float ff_ul)
+        public float Eq_5432_3__(float ft_1, float fd_w, float ff_u1)
         {
-            return 1.5f * ft_1 * fd_w * ff_ul; // Eq. (5.4.3.2(3)) // fN_ov
+            return 1.5f * ft_1 * fd_w * ff_u1; // Eq. (5.4.3.2(3)) // fN_ov
+        }
+        public float Get_d_aphostrof_w(EScrewTypes eScrewType,  float ft1_plate, float fd_h, float ft_w, float fd_w) // Effective pull-over diameter 5.4.3.2
+        {
+            /*
+            For screws subject to tensile forces, the head of the screw or washer shall have a diameter
+            (dw) not less than 8 mm. Washers shall have a minimum thickness of 1.27 mm.
+            */
+            if ((fd_w <= 0f && fd_h < 0.008f) ||
+                (fd_h < 0.008f && fd_w < 0.008f) ||
+                (fd_w > 0f && fd_w < 0.00127f))
+                throw new ArgumentException("Invalid dimension of screw or washer acc. to cl. 5.4.3.2!");
+            /*
+            (i) For a round head, a hex head[Figure 5.4.3.2(a)], pancake screw washer head [Figure 5.4.3.2(b)], or hex washer head[Figure 5.4.3.2(c)] screw with an independent and solid steel washer beneath the screw head
+            (ii) For a round head, hex head, or hex washer head screw without an independent washer beneath the screw head
+            (iii) For a domed(non-solid and either independent or integral) washer beneath the screw head[Figure 5.4.3.2(d)], it is permitted to use d'w as calculated in Equation 5.4.3.2(4), with dh, tw and t1 as defined in Figure 5.4.3.2(d).
+            In the equation, d'w shall not exceed 20 mm.
+            */
+
+            if ((eScrewType == EScrewTypes.eA_HEXheadScrew_FlatWasher ||
+               eScrewType == EScrewTypes.eB_PancakeScrewWahserHead ||
+               eScrewType == EScrewTypes.eC_HWH_FlatWahser) &&
+               fd_w > 0f)
+                return Eq_5432_4__(fd_h, ft_w, ft1_plate, fd_w); // (i)
+            else if (eScrewType == EScrewTypes.eA_HEXheadScrew_FlatWasher ||
+               eScrewType == EScrewTypes.eB_PancakeScrewWahserHead ||
+               eScrewType == EScrewTypes.eC_HWH_FlatWahser)
+                return Math.Min(fd_h, 0.02f); // (ii)
+            else if (eScrewType == EScrewTypes.eD_DomedWasherScrew)
+                return Math.Min(Eq_5432_4__(fd_h, ft_w, ft1_plate, fd_w), 0.02f); // (iii)
+            else
+                throw new Exception("Invalid screw type!");
+        }
+        public float Get_Nt_5432(EScrewTypes eScrewType, float ft1_plate, float ft2_crsc, float fd_f, float fd_h, float ft_w, float fd_w, float ff_u1_plate, float ff_u2_crsc)
+        {
+            float fd_aphostrof_w = Get_d_aphostrof_w(eScrewType, ft1_plate, fd_h, ft_w, fd_w);
+
+            return Math.Min(
+                Eq_5432_2__(ft2_crsc, fd_f, ff_u2_crsc), // (a) The nominal pull-out capacity (Nou) (pull-out from cross-section)
+                Eq_5432_3__(ft1_plate, fd_aphostrof_w, ff_u1_plate) // (b) The nominal pull-over (pull-through) (pull-through connection plate)
+                );
         }
         public float Eq_5432_4__(float fd_h, float ft_w, float ft_1, float fd_w)
         {
