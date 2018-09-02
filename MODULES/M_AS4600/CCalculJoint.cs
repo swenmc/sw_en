@@ -11,9 +11,28 @@ namespace M_AS4600
 {
     public class CCalculJoint
     {
+        AS_4600 eq = new AS_4600();
         public CConnectionJointTypes joint;
         public designInternalForces sDIF;
         bool bIsDebugging;
+
+        CScrew screw;
+        CPlate plate;
+        CCrSc_TW crsc_mainMember;
+        CCrSc_TW crsc_secMember;
+
+        float ft_1_plate;
+        float ft_2_crscmainMember;
+        float ft_2_crscsecMember;
+
+        float ff_yk_1_plate;
+        float ff_uk_1_plate;
+
+        float ff_yk_2_MainMember;
+        float ff_uk_2_MainMember;
+
+        float ff_yk_2_SecondaryMember;
+        float ff_uk_2_SecondaryMember;
 
         public float fEta_max = 0;
 
@@ -22,13 +41,11 @@ namespace M_AS4600
             joint = joint_temp;
             sDIF = sDIF_temp;
 
-            CalculateDesignRatio(bIsDebugging, joint_temp, sDIF_temp);
+            CalculateDesignRatio(bIsDebugging, joint, sDIF);
         }
 
         public void CalculateDesignRatio(bool bIsDebugging, CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
         {
-            AS_4600 eq = new AS_4600();
-
             // 1.6.3 Design capacity Rd
             // (i) For members      Φ = 0.80
             // (ii) For connections Φ = 0.65
@@ -47,35 +64,40 @@ namespace M_AS4600
             */
 
             //df = nominal screw diameter
-            CScrew screw = (CScrew)joint_temp.m_arrConnectors[0];
-            CPlate plate = joint_temp.m_arrPlates[0];
-            CCrSc_TW crsc_mainMember = (CCrSc_TW)joint_temp.m_MainMember.CrScStart;
-            CCrSc_TW crsc_secMember = (CCrSc_TW)joint_temp.m_SecondaryMembers[0].CrScStart;
+            screw = (CScrew)joint_temp.m_arrConnectors[0];
+            plate = joint_temp.m_arrPlates[0];
+            crsc_mainMember = (CCrSc_TW)joint_temp.m_MainMember.CrScStart;
+            crsc_secMember = (CCrSc_TW)joint_temp.m_SecondaryMembers[0].CrScStart;
 
-            float ft_1_plate = (float)plate.fThickness_tz;
-            float ft_2_crscmainMember = (float)crsc_mainMember.t_min;
-            float ft_2_crscsecMember = (float)crsc_secMember.t_min;
+            ft_1_plate = (float)plate.fThickness_tz;
+            ft_2_crscmainMember = (float)crsc_mainMember.t_min;
+            ft_2_crscsecMember = (float)crsc_secMember.t_min;
 
-            float ff_yk_1_plate = plate.m_Mat.Get_f_yk_by_thickness((float)ft_1_plate);
-            float ff_uk_1_plate = plate.m_Mat.Get_f_uk_by_thickness((float)ft_1_plate);
+            ff_yk_1_plate = plate.m_Mat.Get_f_yk_by_thickness((float)ft_1_plate);
+            ff_uk_1_plate = plate.m_Mat.Get_f_uk_by_thickness((float)ft_1_plate);
 
-            float ff_yk_2_MainMember = crsc_mainMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscmainMember);
-            float ff_uk_2_MainMember = crsc_mainMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscmainMember);
+            ff_yk_2_MainMember = crsc_mainMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscmainMember);
+            ff_uk_2_MainMember = crsc_mainMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscmainMember);
 
-            float ff_yk_2_SecondaryMember = crsc_secMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscsecMember);
-            float ff_uk_2_SecondaryMember = crsc_secMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscsecMember);
+            ff_yk_2_SecondaryMember = crsc_secMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscsecMember);
+            ff_uk_2_SecondaryMember = crsc_secMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscsecMember);
 
+            // 5.4.1
+            if(!(0.003f <= screw.m_fDiameter && screw.m_fDiameter <= 0.007f))
+                    throw new Exception("Conditions acc. to cl 5.4.1 are not fulfilled!");
+        }
 
+        public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        {
             /// Bending Joint apex, knee joint
 
             float fVb_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.m_fDiameter, ff_uk_1_plate, ff_uk_2_MainMember);
             float fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.m_fDiameter, ff_uk_1_plate, ff_uk_2_SecondaryMember);
 
-            int fNumberOfScrewsInTension = 0;
-            int fNumberOfScrewsInShear = joint_temp.m_arrConnectors.Length; // Temporary
+            int iNumberOfScrewsInShear = joint_temp.m_arrConnectors.Length; // Temporary
 
-            float fEta_MainMember = sDIF.fV_zv / (fNumberOfScrewsInShear * fVb_MainMember);
-            float fEta_SecondaryMember = sDIF.fV_zv / (fNumberOfScrewsInShear * fVb_SecondaryMember);
+            float fEta_MainMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_MainMember);
+            float fEta_SecondaryMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_SecondaryMember);
 
             float fN_oneside = 0.5f * sDIF_temp.fN;
             float fM_xu_oneside = 0.5f * sDIF_temp.fM_yu;
@@ -135,7 +157,8 @@ namespace M_AS4600
             // Validation - negative design ratio
             if (fEta_Vb_5424 < 0 ||
                 fEta_V_fv_5425 < 0
-)            {
+)
+            {
                 throw new Exception("Design ratio is invalid!");
             }
 
@@ -152,11 +175,6 @@ namespace M_AS4600
                               + "Design Ratio η = " + Math.Round(fEta_V_fv_5425, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 5.4.2.5" + "\n"
                               + "Design Ratio η max = " + Math.Round(fEta_max, iNumberOfDecimalPlaces) + " [-]");
 
-
-            /// Purlins, girts .....
-
-
-
             // 5.4.2.3 Tension in the connected part
             float fA_n_MainMember = (float)crsc_mainMember.A_g - plate.INumberOfConnectorsInSection * 2 * screw.m_fDiameter; // TODO - spocitat presne podla poctu a rozmeru otvorov v jednom reze
             float fN_t_section_MainMember = eq.Eq_5423_2__(screw.m_fDiameter, plate.S_f_min, fA_n_MainMember, ff_uk_2_MainMember);
@@ -167,51 +185,57 @@ namespace M_AS4600
             float fN_t_section_SecondaryMember = eq.Eq_5423_2__(screw.m_fDiameter, plate.S_f_min, fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
             float fEta_N_t_5423_SecondaryMember = eq.Eq_5423_1__(sDIF_temp.fN_t, 0.65f, fN_t_section_SecondaryMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_SecondaryMember);
+        }
+
+        public void CalculateDesignRatioGirtOrPurlinJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        {
+            /// Purlins, girts .....
+            int iNumberOfScrewsInTension = plate.IHolesNumber;
 
             // 5.4.3 Screwed connections in tension
             // 5.4.3.2 Pull-out and pull-over (pull-through)
 
-            // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member
+            // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member (to asi zanedbame)
 
-            float fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.m_fDiameter, screw.D_h_headdiameter,  screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
-            float fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fN_t / fNumberOfScrewsInTension, 0.5f, fN_t_5432_MainMember);
+            float fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.m_fDiameter, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
+            float fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.5f, fN_t_5432_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5432_MainMember);
 
             // 5.4.3.4 Screwed connections subject to combined shear and pull-over
 
             // Check conditions
-            bool bIsFilFilled_5434 = eq.Conditions_5434_FulFilled(ft_1_plate, ft_2_crscmainMember, screw.T_w_washerthickness, screw.D_w_washerdiameter, screw.m_iGauge, ff_uk_1_plate);
+            bool bIsFulFilled_5434 = eq.Conditions_5434_FulFilled(ft_1_plate, ft_2_crscmainMember, screw.T_w_washerthickness, screw.D_w_washerdiameter, screw.m_iGauge, ff_uk_1_plate);
 
-            if (!bIsFilFilled_5434)
+            if (!bIsFulFilled_5434)
                 throw new Exception("Conditions acc. to cl 5.4.3.4 are not fulfilled!");
-            
+
             /*
-            Vb and Nov shall be determined in accordance with Clauses 5.4.2.4 and 5.4.3.2(b), respectively.In using Clause 5.4.2.4, only Equation 5.4.2.4(6) needs to be considered.
+            Vb and Nov shall be determined in accordance with Clauses 5.4.2.4 and 5.4.3.2(b), respectively. In using Clause 5.4.2.4, only Equation 5.4.2.4(6) needs to be considered.
             A value of Φ = 0.65 shall be used.
             */
 
             // Pripoj plechu k hlavnemu prutu
             // Tension and shear
             float fC_for5434_MainMember = eq.Get_C_Tab_5424(screw.m_fDiameter, ft_2_crscmainMember);
-            float fV_b_for5434_MainMember = eq.Eq_5424_6__(fC_for5434_MainMember, ft_2_crscmainMember, screw.m_fDiameter, ff_uk_2_MainMember);
+            float fV_b_for5434_MainMember = eq.Eq_5424_6__(fC_for5434_MainMember, ft_2_crscmainMember, screw.m_fDiameter, ff_uk_2_MainMember); // Eq. 5.4.2.4(6)
             float fd_w_for5434_plate = eq.Get_d_aphostrof_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
-            float fN_ov_for5434_plate = eq.Eq_5432_2__(ft_1_plate, fd_w_for5434_plate, ff_uk_1_plate);
+            float fN_ov_for5434_plate = eq.Eq_5432_3__(ft_1_plate, screw.D_w_washerdiameter, ff_uk_1_plate); // 5.4.3.2(b) Eq. 5.4.3.2(3) - Nov
 
             bool bIsEccentricallyLoadedJoint = false;
 
             if (bIsEccentricallyLoadedJoint)
                 fN_ov_for5434_plate *= 0.5f; // Use 50% of resistance value in case of eccentrically loaded connection
 
-            float fV_asterix_b_for5434_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / fNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / fNumberOfScrewsInTension));
-            float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, sDIF_temp.fN_t / fNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
+            float fV_asterix_b_for5434_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+            float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
             fEta_max = MathF.Max(fEta_max, fEta_5434_MainMember);
 
             // 5.4.3.5 Screwed connections subject to combined shear and pull-out
 
             // Check conditions
-            bool bIsFilFilled_5435 = eq.Conditions_5435_FulFilled(ft_2_crscmainMember, screw.m_iGauge, ff_yk_2_MainMember, ff_uk_2_MainMember);
+            bool bIsFulFilled_5435 = eq.Conditions_5435_FulFilled(ft_2_crscmainMember, screw.m_iGauge, ff_yk_2_MainMember, ff_uk_2_MainMember);
 
-            if (!bIsFilFilled_5435)
+            if (!bIsFulFilled_5435)
                 throw new Exception("Conditions acc. to cl 5.4.3.5 are not fulfilled!");
 
             /*
@@ -221,10 +245,10 @@ namespace M_AS4600
 
             // Pripoj k hlavnemu prutu
             float fV_b_for5435_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.m_fDiameter, ff_uk_1_plate, ff_uk_2_MainMember);
-            float fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember,screw.m_fDiameter, ff_uk_2_MainMember);
+            float fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember, screw.m_fDiameter, ff_uk_2_MainMember); // 5.4.3.2(a) Eq. 5.4.3.2(2) - Nou
 
-            float fV_asterix_b_for5435_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / fNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / fNumberOfScrewsInTension));
-            float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, sDIF_temp.fN_t / fNumberOfScrewsInTension, 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
+            float fV_asterix_b_for5435_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+            float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_5435_MainMember);
 
             // TODO - smyk na okraji
