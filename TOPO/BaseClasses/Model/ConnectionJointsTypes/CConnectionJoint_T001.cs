@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DATABASE;
 using DATABASE.DTO;
 using BaseClasses.GraphObj;
+using System.Globalization;
 
 namespace BaseClasses
 {
@@ -54,8 +55,10 @@ namespace BaseClasses
             if (sPlateType_ForL == "LJ") // TODO - tento string prepracovat na enum pre jednotlive typy plechov, pripravit databazu plechov
                 iConnectorNumberinOnePlate = 8; // Plate LJ
 
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             List<CTEKScrewProperties> screws = CTEKScrewsManager.LoadTEKScrewsProperties();
-            float fDiameter_temp = float.Parse(screws[4].shankDiameter) / 1000f; // TODO - zapracovat skurtky do objektu JOINT a PLATE // 0.0055f; // Default - same size as screw
+            float fDiameter_temp = float.Parse(screws[4].shankDiameter, nfi) / 1000f; // TODO - zapracovat skurtky do objektu JOINT a PLATE // 0.0055f; // Default - same size as screw
             float fScrewLength = 0.009f;
             //float fScrewWeight = 0.012f;
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DATABASE;
 using DATABASE.DTO;
 using BaseClasses.GraphObj;
+using System.Globalization;
 
 namespace BaseClasses
 {
@@ -95,8 +96,11 @@ namespace BaseClasses
             bool bUseAdditionalCornerScrews = true;
             int iAdditionalConnectorNumber = 2*4*4; //2 kruhy, 4 rohy, 4 skrutky v kazom rohu
             int iConnectorNumber = 80; // Plates LH LI, LK
+
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
             List<CTEKScrewProperties> screws = CTEKScrewsManager.LoadTEKScrewsProperties();
-            float fDiameter_temp = float.Parse(screws[4].shankDiameter) / 1000f; // TODO - zapracovat skurtky do objektu JOINT a PLATE // 0.0055f; // Default - same size as screw
+            float fDiameter_temp = float.Parse(screws[4].shankDiameter, nfi) / 1000f; // TODO - zapracovat skurtky do objektu JOINT a PLATE // 0.0055f; // Default - same size as screw
             float fScrewLength = 0.009f;
 
             m_arrPlates = new CPlate[2];
