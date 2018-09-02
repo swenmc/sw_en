@@ -9,8 +9,8 @@ namespace TwoOpt
     public class Model
     {
         private readonly BackgroundWorker _worker = new BackgroundWorker();
-        public readonly CoordMatrix _coordMatrix = new CoordMatrix();
-        private Tour _tour, _newTour;
+        private readonly CoordMatrix _coordMatrix = new CoordMatrix();
+        public Tour _tour, _newTour;
         private double _width, _height;
         public string Title { get; set; }
 
@@ -58,7 +58,7 @@ namespace TwoOpt
             var improve = 0;
             var iteration = 0;
 
-            while (improve < 500)
+            while (improve < 700)
             {
                 var bestDistance = _tour.TourDistance();
 
@@ -209,7 +209,7 @@ namespace TwoOpt
             }
             _coordMatrix.SetDistanceMatrix();
             SetDisplayCoords(height, width);
-            Title = _coordMatrix.GetTitle();
+            //Title = _coordMatrix.GetTitle();
         }
 
 

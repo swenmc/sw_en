@@ -20,15 +20,7 @@ namespace TwoOpt
             if (mainWindowViewModel != null)
                 mainWindowViewModel.MainWindow = this;
 
-            var height = this.GridHeight();
-            var width = this.GridWidth();
-
             mainWindowViewModel.RoutePoints = Points;
-            mainWindowViewModel._model.CancelJobs();
-            mainWindowViewModel._model.InitMatrix(Points, height, width);
-            Title = "CNC Path Finding";
-            //mainWindowViewModel.DisplayNodes();
-            this.UpdateIteration(0, 0, null);
         }
 
         public void PlotNodes(List<Pair> displayCoords)
@@ -130,6 +122,23 @@ namespace TwoOpt
                 CanvasGrid.Children.Add(finalLink);
                 DisplayNodes(tourCoords);
             });
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void CanvasGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var mainWindowViewModel = DataContext as MainWindowViewModel;
+            mainWindowViewModel.OpenCommand.Execute(null);
+            mainWindowViewModel.RunCommand.Execute(null);
+        }
+
+        private void DisplayGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

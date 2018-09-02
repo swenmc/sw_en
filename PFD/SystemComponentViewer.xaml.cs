@@ -857,34 +857,30 @@ namespace PFD
             if (points == null) return;
 
             points.Insert(0, new Point(0, 0));
-            //TwoOpt.MainWindow w = new TwoOpt.MainWindow();
             TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points);
-            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
-            viewModel.RoutePoints = points;
-
+            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel; 
+                        
             w.Show();
-            w.Closing += W_Closing;
+            w.Closing += SalesmanWindow_Closing;
+
+            //Dialog mi nefunguje nejako
+            //w.ShowDialog();
+            //SalesmanWindow_Closing(null, null);
         }
 
-        private void W_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void SalesmanWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //TwoOpt.MainWindow w = sender as TwoOpt.MainWindow; // TOTO som zakomentoval - TODO Ondrej
-            TwoOpt.WindowRunSalesman w = sender as TwoOpt.WindowRunSalesman;
+            TwoOpt.WindowRunSalesman w = sender as TwoOpt.WindowRunSalesman;            
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
 
-            List<Point> PathPoints = new List<Point>(viewModel._model._coordMatrix._coords.Count);
-            foreach (TwoOpt.Pair p in viewModel._model._coordMatrix._coords)
+            List<Point> PathPoints = new List<Point>(viewModel.RoutePoints.Count);            
+            for (int i = 0; i < viewModel.RoutePoints.Count; i++)
             {
-                System.Diagnostics.Trace.WriteLine("[" + p.X() + "," + p.Y() + "]");
-                PathPoints.Add(new Point(p.X(), p.Y()));
+                PathPoints.Add(viewModel.RoutePoints[viewModel._model._tour.GetCities()[i]]);                
             }
-
-            // TODO - Ondrej vykreslene spojnice drilling route su asi prvotne a nie zoptimalizovane
-            // Bud vykreslujem zle data alebo algoritmus neprebehol
-
+            
             double dWidth = Frame2D.ActualWidth;
             double dHeight = Frame2D.ActualHeight;
-
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
             {
@@ -905,7 +901,6 @@ namespace PFD
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
-
         }
     }
 }

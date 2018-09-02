@@ -6,7 +6,7 @@
         xmlns:twoOpt="clr-namespace:TwoOpt"
         mc:Ignorable="d"        
         Title="{Binding Title}" 
-        Height="620" Width="600">
+        Height="620" Width="600" Loaded="Window_Loaded">
     
     <Window.DataContext>
         <twoOpt:MainWindowViewModel />
@@ -53,8 +53,8 @@
                 <RowDefinition Height="5" />
             </Grid.RowDefinitions>
 
-            <Grid Name="DisplayGrid" Grid.Column="1" Grid.Row="1">
-                <Canvas Name="CanvasGrid">
+            <Grid Name="DisplayGrid" Grid.Column="1" Grid.Row="1" Loaded="DisplayGrid_Loaded">
+                <Canvas Name="CanvasGrid" Loaded="CanvasGrid_Loaded">
                 </Canvas>
             </Grid>
         </Grid>
