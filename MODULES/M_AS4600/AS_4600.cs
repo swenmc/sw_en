@@ -204,11 +204,48 @@ namespace M_AS4600
             float fPortion_N = fN_asterix_t / (fPhi * fN_ov);
             return (fPortion_V + 0.71f * fPortion_V) / 1.1f; // Eq. (5.4.3.4) // fDesignRatio
         }
+        public bool Conditions_5434_FulFilled(float ft_1, float ft_2, float ft_w, float fd_w, int iGauge, float ff_u1)
+        {
+            /*
+            (a) 0.72 mm <= t1 <= 1.13 mm;
+            (b) No. 12 and No. 14 self-drilling screws with or without washers;
+            (c) dw <= 20 mm;
+            (d) Washer dimension limitations of Clause 5.4.3 apply;
+            (e) fu1 <= 500 MPa; and
+            (f) t2/t1 >= 2.5
+            */
+
+            if ((0.00072 <= ft_1 && ft_1 <= 0.00113f) &&
+               (iGauge == 12 || iGauge == 14) &&
+               (fd_w <= ((ft_w > 0) ? 0.020f : 0.1f)) &&
+               ff_u1 <= 5e+8f &&
+               (ft_2 / ft_1 >= 2.5f))
+                return true; // Conditions fulfilled
+            else
+                return false; // Not fulfilled
+        }
         public float Eq_5435____(float fV_asterix_b, float fN_asterix_t, float fPhi, float fV_b, float fN_ou)
         {
             float fPortion_V = fV_asterix_b / (fPhi * fV_b);
             float fPortion_N = fN_asterix_t / (fPhi * fN_ou);
             return (fPortion_V + fPortion_V) / 1.15f; // Eq. (5.4.3.5) // fDesignRatio
+        }
+        public bool Conditions_5435_FulFilled(float ft_2, int iGauge, float ff_y2, float ff_u2)
+        {
+            /*
+            (a)0.754 mm <= t2 <= 1.84 mm;
+            (b)No. 10, 12 or 14 self - drilling screws with or without washers;
+            (c)fu2 <= 834 MPa; and
+            (d) 1.0 <= fu / fy <= 1.62
+            */
+
+            if ((0.000754 <= ft_2 && ft_2 <= 0.00184f) &&
+               (iGauge == 10 || iGauge == 12 || iGauge == 14) &&
+               ff_u2 <= 8.34e+8f &&
+               (1f <= ff_u2 / ff_y2 && ff_u2 / ff_y2 <= 1.62))
+                return true; // Conditions fulfilled
+            else
+                return false; // Not fulfilled
         }
         public float Eq_5436____(float fV_asterix, float fN_asterix_t, float fPhi, float fV_screw, float fN_screw)
         {
