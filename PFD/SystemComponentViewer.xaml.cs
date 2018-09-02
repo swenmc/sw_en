@@ -82,71 +82,77 @@ namespace PFD
             // SetDataFromDatabasetoWindow();
             
             if (e.PropertyName != "ComponentIndex") return;
-            // Load data from database
-            LoadDataFromDatabase();
 
-            // Create Component Model
-            CreateModelObject();
+            UpdateAll();
 
-            // Create 2D page
-            page2D = new Canvas();
 
-            //double dWidth = Frame2D.Width;
-            //double dHeight = Frame2D.Height;
-            double dWidth = WindowWidth / 2;
-            double dHeight = WindowHeight - 100;
+            //// Load data from database
+            //LoadDataFromDatabase();
 
-            // TODO / BUG - Ondrej, pri prvom spusteni je WindowWidth a WindowHeight rovne nula a vsetko sa vykresli do laveho horneho rohu
-            // je potrebne nastavit rozmery pre vykreslenie
-            if (dWidth == 0 || dHeight == 0) // Docasne
-            {
-                dWidth = 1280;
-                dHeight = 1310;
-            }
+            //// Create Component Model
+            //CreateModelObject();
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                //page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
-                Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                // Generate drilling plan
-                //CCNCPathFinder generator = new CCNCPathFinder(component);
-                // Set drilling route points
-                //component.DrillingRoutePoints = generator.RoutePoints;
-                // Draw plate
-                // page2D = new WindowCrossSection2D(component, dWidth, dHeight);
-                Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
-            }
-            else
-            {
-                // Screw - not implemented
-            }
+            //// Create 2D page
+            //page2D = new Canvas();
 
-            // Display plate in 2D preview frame
-            if(page2D != null) Frame2D.Content = page2D;
+            ////double dWidth = Frame2D.Width;
+            ////double dHeight = Frame2D.Height;
+            //double dWidth = WindowWidth / 2;
+            //double dHeight = WindowHeight - 100;
 
-            // Create 3D window
-            page3D = null;
+            //// TODO / BUG - Ondrej, pri prvom spusteni je WindowWidth a WindowHeight rovne nula a vsetko sa vykresli do laveho horneho rohu
+            //// je potrebne nastavit rozmery pre vykreslenie
+            //if (dWidth == 0 || dHeight == 0) // Docasne
+            //{
+            //    dWidth = 1280;
+            //    dHeight = 1310;
+            //}
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch pri zmene component serie, podobne to nefunguje ani pre plates
+            //if (vm.ComponentTypeIndex == 0)
+            //{
+            //    //page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
+            //    Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
+            //}
+            //else if (vm.ComponentTypeIndex == 1)
+            //{
+            //    // Generate drilling plan
+            //    //CCNCPathFinder generator = new CCNCPathFinder(component);
+            //    // Set drilling route points
+            //    //component.DrillingRoutePoints = generator.RoutePoints;
+            //    // Draw plate
+            //    // page2D = new WindowCrossSection2D(component, dWidth, dHeight);
+            //    Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
+            //}
+            //else
+            //{
+            //    // Screw - not implemented
+            //}
 
-                page3D = new Page3Dmodel(crsc, sDisplayOptions);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                page3D = new Page3Dmodel(component, sDisplayOptions);
-            }
-            else
-            {
-                // Screw - not implemented
-            }
+            //// Display plate in 2D preview frame
+            //if(page2D != null) Frame2D.Content = page2D;
 
-            // Display model in 3D preview frame
-            Frame3D.Content = page3D;
+            //// Create 3D window
+            //page3D = null;
+
+            //if (vm.ComponentTypeIndex == 0)
+            //{
+            //    // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch pri zmene component serie, podobne to nefunguje ani pre plates
+
+            //    page3D = new Page3Dmodel(crsc, sDisplayOptions);
+            //}
+            //else if (vm.ComponentTypeIndex == 1)
+            //{
+            //    page3D = new Page3Dmodel(component, sDisplayOptions);
+            //}
+            //else
+            //{
+            //    // Screw - not implemented
+            //}
+
+            //// Display model in 3D preview frame
+            //Frame3D.Content = page3D;
+
+
 
         }
 
@@ -478,9 +484,14 @@ namespace PFD
             // Create 2D page
             page2D = new Canvas();
 
+            double Frame2DWidth = Frame2D.ActualWidth;
+            double Frame2DHeight = Frame2D.ActualHeight;
+            if (Frame2DWidth == 0) Frame2DWidth = System.Windows.SystemParameters.PrimaryScreenWidth / 2 - 15;
+            if(Frame2DHeight == 0) Frame2DHeight = System.Windows.SystemParameters.PrimaryScreenHeight - 145;
+
             if (vm.ComponentTypeIndex == 0)
             {
-               Drawing2D.DrawCrscToCanvas(crsc, Frame2D.ActualWidth, Frame2D.ActualHeight, ref page2D);
+               Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -489,7 +500,7 @@ namespace PFD
                 // Set drilling route points
                 //component.DrillingRoutePoints = generator.RoutePoints;
                 // Draw plate
-                Drawing2D.DrawPlateToCanvas(component, Frame2D.ActualWidth, Frame2D.ActualHeight, ref page2D);
+                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else
             {

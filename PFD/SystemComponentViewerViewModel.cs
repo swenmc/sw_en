@@ -147,7 +147,6 @@ namespace PFD
 
         private void ComponentTypeChanged()
         {
-            IsSetFromCode = true;
             if (ComponentTypeIndex == 0) // Cross-sections
             {
                 ComponentSeries = databaseComponents.arr_Serie_CrSc_FormSteel_Names; // Plates
@@ -171,13 +170,11 @@ namespace PFD
 
                 // TODO not implemented
             }
-            IsSetFromCode = false;
         }
 
         
         private void ComponentSeriesChanged()
         {
-            IsSetFromCode = true;
             if (ComponentTypeIndex == 0) // Cross-sections
             {
                 switch ((ESerieTypeCrSc_FormSteel)ComponentSerieIndex)
@@ -307,7 +304,6 @@ namespace PFD
             {
                 // TODO not implemented
             }
-            IsSetFromCode = false;
         }
 
 
