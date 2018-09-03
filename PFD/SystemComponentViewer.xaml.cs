@@ -6,7 +6,7 @@ using System.Windows.Media;
 //using System.Windows.Shapes;
 using BaseClasses;
 using BaseClasses.GraphObj;
-using sw_en_GUI;
+using MATH;
 using CRSC;
 using EXPIMP;
 
@@ -19,6 +19,8 @@ namespace PFD
     {
         public CDatabaseComponents dcomponents; // Todo nahradit databazov component
         public Canvas page2D;
+        double Frame2DWidth;
+        double Frame2DHeight;
         public Page3Dmodel page3D;
         public DisplayOptions sDisplayOptions = new DisplayOptions();
 
@@ -484,10 +486,10 @@ namespace PFD
             // Create 2D page
             page2D = new Canvas();
 
-            double Frame2DWidth = Frame2D.ActualWidth;
-            double Frame2DHeight = Frame2D.ActualHeight;
-            if (Frame2DWidth == 0) Frame2DWidth = System.Windows.SystemParameters.PrimaryScreenWidth / 2 - 15;
-            if(Frame2DHeight == 0) Frame2DHeight = System.Windows.SystemParameters.PrimaryScreenHeight - 145;
+            Frame2DWidth = Frame2D.ActualWidth;
+            Frame2DHeight = Frame2D.ActualHeight;
+            if (Frame2DWidth == 0) Frame2DWidth = SystemParameters.PrimaryScreenWidth / 2 - 15;
+            if (Frame2DHeight == 0) Frame2DHeight = SystemParameters.PrimaryScreenHeight - 145;
 
             if (vm.ComponentTypeIndex == 0)
             {
@@ -870,27 +872,27 @@ namespace PFD
 
         private void SalesmanWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            TwoOpt.WindowRunSalesman w = sender as TwoOpt.WindowRunSalesman;            
+            TwoOpt.WindowRunSalesman w = sender as TwoOpt.WindowRunSalesman;
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
 
-            List<Point> PathPoints = new List<Point>(viewModel.RoutePoints.Count);            
+            List<Point> PathPoints = new List<Point>(viewModel.RoutePoints.Count);
             for (int i = 0; i < viewModel.RoutePoints.Count; i++)
             {
-                PathPoints.Add(viewModel.RoutePoints[viewModel._model._tour.GetCities()[i]]);                
+                PathPoints.Add(viewModel.RoutePoints[viewModel._model._tour.GetCities()[i]]);
             }
-            
+
             double dWidth = Frame2D.ActualWidth;
             double dHeight = Frame2D.ActualHeight;
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
             {
-              Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
+                Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Set drilling route points
                 component.DrillingRoutePoints = PathPoints;
-                component.DrillingRoutePoints2D = Drawing2D.TransformPointToArrayCoord(component.DrillingRoutePoints);
+                component.DrillingRoutePoints2D = Geom2D.TransformPointToArrayCoord(component.DrillingRoutePoints);
                 // Draw plate
                 Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
              }
@@ -899,6 +901,66 @@ namespace PFD
                 // Screw - not implemented
             }
 
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+
+        private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
+        {
+            // Mirror coordinates
+            component.MirrorPlateAboutX();
+            // Redraw plate in 2D
+            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+
+        private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
+        {
+            // Mirror coordinates
+            component.MirrorPlateAboutY();
+            // Redraw plate in 2D
+            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+
+        private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
+        {
+            // Rotate coordinates
+            component.RotatePlateAboutZ_CW(90);
+            // Redraw plate in 2D
+            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+
+        private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // Mirror coordinates
+            component.MirrorPlateAboutX();
+            // Redraw plate in 2D
+            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+
+        private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // Mirror coordinates
+            component.MirrorPlateAboutY();
+            // Redraw plate in 2D
+            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+
+        private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // Rotate coordinates
+            component.RotatePlateAboutZ_CW(-90);
+            // Redraw plate in 2D
+            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
         }

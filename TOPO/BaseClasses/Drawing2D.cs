@@ -624,23 +624,6 @@ namespace BaseClasses
             }
         }
 
-        public static float [,] TransformPointToArrayCoord(List<Point> Points_input)
-        {
-            if (Points_input == null)
-                throw new ArgumentNullException("Not inicialized list of points!");
-
-            float [,] array = new float[Points_input.Count, 2];
-
-            for(int i = 0; i < Points_input.Count; i++)
-            {
-                array[i, 0] = (float)Points_input[i].X;
-                array[i, 1] = (float)Points_input[i].Y;
-            }
-
-            return array;
-        }
-
-
         // POVODNE FUNKCIE
 
         //LINES

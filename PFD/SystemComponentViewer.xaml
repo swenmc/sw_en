@@ -31,10 +31,11 @@
                 <RowDefinition Height="10" />
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
+            
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" Margin="0 5 0 0"
                       ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"  />
-            
+
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
@@ -46,7 +47,7 @@
                   />
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
-            
+
             <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails"/>
             <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="BtnsPanel" Orientation="Horizontal" >
                 <Button Name="BtnExportDXF" Content="Export to DXF" Margin="5 0 5 0"
@@ -58,24 +59,29 @@
                 <Button Name="BtnExportCNC" Content="Export to CNC" Margin="5 0 5 0"
             HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportCNC_Click"/>
             </StackPanel>
-
-
         </Grid>
-        <TabControl Grid.Row="0" Grid.Column="2" Margin="0,0,0,50">
-            <TabItem Name="tabItem2D" Header="View 2D">
-                <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <TabControl Grid.Row="0" Grid.Column="0">
+                <TabItem Name="tabItem2D" Header="View 2D">
+                    <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-            </TabItem>
-            <TabItem Name="tabItem3D" Header="View 3D">
-                <Frame Name ="Frame3D" Content="3D Preview" NavigationUIVisibility="Hidden"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                       />
-            </TabItem>
-        </TabControl>
-
-
-
-
-        
+                </TabItem>
+                <TabItem Name="tabItem3D" Header="View 3D">
+                    <Frame Name ="Frame3D" Content="3D Preview" NavigationUIVisibility="Hidden"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                </TabItem>
+            </TabControl>
+            <CheckBox x:Name="CheckBox_MirrorY" Content="Mirror about vertical axis y-y" Grid.Column="0" Grid.Row="2"  HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="180" Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"/>
+            <CheckBox x:Name="CheckBox_MirrorX" Content="Mirror about horizontal axis x-x"  Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="190" Checked="CheckBox_MirrorX_Checked" Unchecked="CheckBox_MirrorX_Unchecked"/>
+            <CheckBox x:Name="CheckBox_Rotate_CW" Content="Rotate 90 deg clock-wise" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="200,0,0,0" VerticalAlignment="Top" Width="155" Checked="CheckBox_Rotate_CW_Checked" Unchecked="CheckBox_Rotate_CW_Unchecked"/>
+        </Grid>
     </Grid>
 </Window>

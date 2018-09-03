@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace MATH
 {
@@ -127,8 +128,11 @@ namespace MATH
 
         public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float [,] array)
         {
-            for (int i = 0; i < array.Length / 2; i++)
-                TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
+            if (array != null)
+            {
+                for (int i = 0; i < array.Length / 2; i++)
+                    TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
+            }
         }
 
         public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
@@ -140,6 +144,59 @@ namespace MATH
         {
             for (int i = 0; i < array.Length / 2; i++)
                 TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
+        }
+
+        // Mirror
+        public static void MirrorAboutY_ChangeXCoordinates(ref float[,] array)
+        {
+            if (array != null)
+            {
+                for (int i = 0; i < array.Length / 2; i++)
+                    array[i, 0] *= -1;
+            }
+        }
+
+        public static void MirrorAboutX_ChangeYCoordinates(ref float[,] array)
+        {
+            if (array != null)
+            {
+                for (int i = 0; i < array.Length / 2; i++)
+                    array[i, 1] *= -1;
+            }
+        }
+
+        // TODO - Ondrej - zjednotit typ objeku pouzivany pre 2D, asi by to mal byt Point (nie array [,] a pod)
+
+        // Different data types transformation
+        public static float[,] TransformPointToArrayCoord(List<Point> Points_input)
+        {
+            if (Points_input == null)
+                throw new ArgumentNullException("Not inicialized list of points!");
+
+            float[,] array = new float[Points_input.Count, 2];
+
+            for (int i = 0; i < Points_input.Count; i++)
+            {
+                array[i, 0] = (float)Points_input[i].X;
+                array[i, 1] = (float)Points_input[i].Y;
+            }
+
+            return array;
+        }
+
+        public static List<Point> TransformArrayToPointCoord(float [,] array_input)
+        {
+            if (array_input == null)
+                throw new ArgumentNullException("Not inicialized array of point coordinates!");
+
+            List <Point> listPoints = new List<Point>(array_input.Length / 2);
+
+            for (int i = 0; i < array_input.Length / 2; i++)
+            {
+                listPoints.Add(new Point(array_input[i, 0], array_input[i, 1]));
+            }
+
+            return listPoints;
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

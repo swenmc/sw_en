@@ -657,5 +657,72 @@ namespace BaseClasses
             }
             return points;
         }
+
+        // Modification
+
+        // Rotate
+        public void RotateAboutZ_00(float theta_deg, ref float[,] array)
+        {
+            Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, ref array);
+        }
+
+        public void RotateAboutZ_00(float theta_deg, ref Point3D[] array)
+        {
+           Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0,0,0), theta_deg, ref array);
+        }
+
+        // Mirror plate about x
+        public void MirrorPlateAboutX()
+        {
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsOut2D);
+            Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref HolesCentersPoints2D);
+            Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrConnectorControlPoints3D);
+
+            // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
+            // TODO - Ondrej - checkbox pre transformaciu by mal byt aktivny len ak je vybrany typ componenty plate alebo crsc, asi nema zmysel pre skrutku
+            // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
+            if (DrillingRoutePoints2D != null)
+            {
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref DrillingRoutePoints2D);
+                DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
+            }
+        }
+
+        // Mirror plate about y
+        public void MirrorPlateAboutY()
+        {
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref PointsOut2D);
+            Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref HolesCentersPoints2D);
+            Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrConnectorControlPoints3D);
+
+            // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
+            // TODO - Ondrej - checkbox pre transformaciu by mal byt aktivny len ak je vybrany typ componenty plate alebo crsc, asi nema zmysel pre skrutku
+            // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
+            if (DrillingRoutePoints2D != null)
+            {
+                Geom2D.MirrorAboutY_ChangeXCoordinates(ref DrillingRoutePoints2D);
+                DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
+            }
+        }
+
+        // Rotate plate
+        public void RotatePlateAboutZ_CW(float fTheta_deg)
+        {
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref PointsOut2D);
+            Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrPoints3D);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref HolesCentersPoints2D);
+            Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrConnectorControlPoints3D);
+
+            // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
+
+            // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
+            if (DrillingRoutePoints2D != null)
+            {
+                Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref DrillingRoutePoints2D);
+                DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
+            }
+        }
     }
 }
