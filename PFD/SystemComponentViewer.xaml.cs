@@ -854,7 +854,7 @@ namespace PFD
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
             List<Point> points = component.GetHolesCentersPoints2D();
-            if (points == null) return;
+            if (points == null || points.Count == 0) return;
 
             points.Insert(0, new Point(0, 0));
             TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points);

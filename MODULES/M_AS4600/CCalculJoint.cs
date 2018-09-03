@@ -85,6 +85,15 @@ namespace M_AS4600
             // 5.4.1
             if(!(0.003f <= screw.m_fDiameter && screw.m_fDiameter <= 0.007f))
                     throw new Exception("Conditions acc. to cl 5.4.1 are not fulfilled!");
+
+            // TODO Ondrej - Zistit typ vstupujuceho objektu (konkretny potomok CConnectionJointTypes ... ) a na zaklade toho spustit posudenie pre dany typ spoja
+            // Pripadne prist s lepsim napadom ako to ma byt usporiadane, kazdy spoj ma nejaku geometriu pre ktoru by malo byt specificke posudenie, niektore typy spojov ju maju velmi podobnu, takze sa da pouzit rovnaka metoda
+
+            bool bIsApexOrKneeJoint = true; // Temporary
+            if (bIsApexOrKneeJoint)
+                CalculateDesignRatioApexOrKneeJoint(joint_temp, sDIF_temp);
+            else
+                CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp);
         }
 
         public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
@@ -156,8 +165,7 @@ namespace M_AS4600
 
             // Validation - negative design ratio
             if (fEta_Vb_5424 < 0 ||
-                fEta_V_fv_5425 < 0
-)
+                fEta_V_fv_5425 < 0)
             {
                 throw new Exception("Design ratio is invalid!");
             }
