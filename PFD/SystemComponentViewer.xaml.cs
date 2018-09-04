@@ -463,11 +463,15 @@ namespace PFD
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (vm.ComponentIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if(vm.ComponentIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                            else if (vm.ComponentIndex == 2)
+                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                            else if (vm.ComponentIndex == 3)
+                                component = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
-                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                component = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             break;
                         }
                     default:
@@ -652,7 +656,7 @@ namespace PFD
                             else if (vm.ComponentIndex == 1)
                                 component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             else
-                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
+                                component = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[2], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0,0,0, true);
                             break;
                         }
                     default:
