@@ -659,18 +659,6 @@ namespace BaseClasses
         }
 
         // Modification
-
-        // Rotate
-        public void RotateAboutZ_00(float theta_deg, ref float[,] array)
-        {
-            Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, ref array);
-        }
-
-        public void RotateAboutZ_00(float theta_deg, ref Point3D[] array)
-        {
-           Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0,0,0), theta_deg, ref array);
-        }
-
         // Mirror plate about x
         public void MirrorPlateAboutX()
         {

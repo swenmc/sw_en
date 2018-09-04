@@ -1,6 +1,7 @@
-﻿using MATERIAL;
-using System;
+﻿using System;
 using System.Windows.Media;
+using MATH;
+using MATERIAL;
 
 namespace CRSC
 {
@@ -1025,6 +1026,28 @@ namespace CRSC
             }
 
             return array_out;
+        }
+
+        // Modification
+        // Mirror cross-section about x
+        public void MirrorPlateAboutX()
+        {
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsOut);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsIn);
+        }
+
+        // Mirror cross-section about y
+        public void MirrorPlateAboutY()
+        {
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsOut);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsIn);
+        }
+
+        // Rotate cross-section
+        public void RotateCrsc_CW(float fTheta_deg)
+        {
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsOut);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsIn);
         }
     }
 }

@@ -59,7 +59,6 @@ namespace PFD
 
             dcomponents = new CDatabaseComponents();
 
-            // Internal forces
             SystemComponentViewerViewModel vm = new SystemComponentViewerViewModel(dcomponents);
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
@@ -881,12 +880,12 @@ namespace PFD
                 PathPoints.Add(viewModel.RoutePoints[viewModel._model._tour.GetCities()[i]]);
             }
 
-            double dWidth = Frame2D.ActualWidth;
-            double dHeight = Frame2D.ActualHeight;
+            Frame2DWidth = Frame2D.ActualWidth;
+            Frame2DHeight = Frame2D.ActualHeight;
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
             {
-                Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -894,7 +893,7 @@ namespace PFD
                 component.DrillingRoutePoints = PathPoints;
                 component.DrillingRoutePoints2D = Geom2D.TransformPointToArrayCoord(component.DrillingRoutePoints);
                 // Draw plate
-                Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
+                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
              }
             else
             {
@@ -905,62 +904,112 @@ namespace PFD
             Frame2D.Content = page2D;
         }
 
+        // TODO Ondrej - je potrebne pridat checkboxy do SystemComponentViewerViewModel ???
+        // TODO Ondrej, po zmene typu, serie alebo objektu by sa mali checkboxy odchecknut
+        // Uvazujem ze by tam mohol byt nielen uhol 90 deg ale aj 180, 270 alebo nejaky combobox, spinbuttons kde by sa dal nastavit lubovolny uhol rotacie prierezu alebo plechu
+
         private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         {
-            // Mirror coordinates
-            component.MirrorPlateAboutX();
-            // Redraw plate in 2D
-            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            RedrawMirroredComponentAboutXIn2D();
         }
 
         private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
         {
-            // Mirror coordinates
-            component.MirrorPlateAboutY();
-            // Redraw plate in 2D
-            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            RedrawMirroredComponentAboutYIn2D();
         }
 
         private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
         {
-            // Rotate coordinates
-            component.RotatePlateAboutZ_CW(90);
-            // Redraw plate in 2D
-            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            RedrawRotatedComponentIn2D(90);
         }
 
         private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
         {
-            // Mirror coordinates
-            component.MirrorPlateAboutX();
-            // Redraw plate in 2D
-            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            RedrawMirroredComponentAboutXIn2D();
         }
 
         private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
         {
-            // Mirror coordinates
-            component.MirrorPlateAboutY();
-            // Redraw plate in 2D
-            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            RedrawMirroredComponentAboutYIn2D();
         }
 
         private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
         {
-            // Rotate coordinates
-            component.RotatePlateAboutZ_CW(-90);
-            // Redraw plate in 2D
-            Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            RedrawRotatedComponentIn2D(-90);
+        }
+
+        private void RedrawMirroredComponentAboutXIn2D()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (vm.ComponentTypeIndex == 0)
+            {
+                // Mirror coordinates
+                crsc.MirrorPlateAboutX();
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                // Mirror coordinates
+                component.MirrorPlateAboutX();
+                // Redraw plate in 2D
+                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            }
+            else // Screw
+            {
+                throw new NotImplementedException("Component 'screw' is not implemented!");
+            }
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+        private void RedrawMirroredComponentAboutYIn2D()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (vm.ComponentTypeIndex == 0)
+            {
+                // Mirror coordinates
+                crsc.MirrorPlateAboutY();
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                // Mirror coordinates
+                component.MirrorPlateAboutY();
+                // Redraw plate in 2D
+                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            }
+            else // Screw
+            {
+                throw new NotImplementedException("Component 'screw' is not implemented!");
+            }
+
+            // Display component in 2D preview frame
+            Frame2D.Content = page2D;
+        }
+        private void RedrawRotatedComponentIn2D(float fTheta_deg)
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (vm.ComponentTypeIndex == 0)
+            {
+                // Rotate coordinates
+                crsc.RotateCrsc_CW(fTheta_deg);
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                // Rotate coordinates
+                component.RotatePlateAboutZ_CW(fTheta_deg);
+                // Redraw plate in 2D
+                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+            }
+            else // Screw
+            {
+                throw new NotImplementedException("Component 'screw' is not implemented!");
+            }
+
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
         }
