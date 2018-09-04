@@ -32,9 +32,9 @@ namespace EXPIMP
             sb.AppendLine("(Make sure you run setup program first)");
             sb.AppendLine("m4 s1000");
             sb.AppendLine("G21 G90 G64 G40 G17");
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 1; i < points.Count; i++) // Start with index "1", skip first item - point [0,0] - do not drill in this point
             {
-                if (i == 0) sb.AppendFormat(nfi, "G81 X{0:F3} Y{1:F3} {2} R40.0 F100.0{3}", Math.Round(points[i].X * fUnitFactor, 3), Math.Round(points[i].Y * fUnitFactor, 3), str_Z, Environment.NewLine);
+                if (i == 1) sb.AppendFormat(nfi, "G81 X{0:F3} Y{1:F3} {2} R40.0 F100.0{3}", Math.Round(points[i].X * fUnitFactor, 3), Math.Round(points[i].Y * fUnitFactor, 3), str_Z, Environment.NewLine);
                 else sb.AppendFormat(nfi, "G81 X{0:F3} Y{1:F3} {2}{3}", Math.Round(points[i].X * fUnitFactor, 3), Math.Round(points[i].Y * fUnitFactor, 3), str_Z, Environment.NewLine);
             }
             sb.AppendLine("G00 Z40");
@@ -71,7 +71,5 @@ namespace EXPIMP
 
             return sb;
         }
-
-
     }
 }

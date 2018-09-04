@@ -1020,8 +1020,5 @@ namespace PFD
                 MessageBox.Show("Error occurs. Check geometry input.");
             }
         }
-
-        
-
     }
 }
