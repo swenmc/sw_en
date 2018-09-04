@@ -14,7 +14,23 @@ namespace BaseClasses
         float m_flZ;
         float m_ft;
         float m_fSlope_rad;
-        public float m_fRotationZ;
+
+        float m_fCrscRafterDepth;
+        float m_fCrscWebStraightDepth;
+        float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
+        bool m_bUseAdditionalCornerScrews;
+        int m_iAdditionalConnectorNumber;
+
+        public float[] HolesCenterRadii;
+        public int INumberOfCircleJoints = 2;
+
+        private float fConnectorLength;
+
+        public float FConnectorLength
+        {
+            get { return fConnectorLength; }
+            set { fConnectorLength = value; }
+        }
 
         public CConCom_Plate_KB()
         {
@@ -23,7 +39,26 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_KB(string sName_temp, GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_KB(string sName_temp,
+            GraphObj.CPoint controlpoint,
+            float fb_1_temp,
+            float fh_1_temp,
+            float fb_2_temp,
+            float fh_2_temp,
+            float fl_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            int iHolesNumber,
+            float fHoleDiameter_temp,
+            float fConnectorLength_temp,
+            float fCrscRafterDepth_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            bool bUseAdditionalCornerScrews_temp,
+            int iAdditionalConnectorNumber_temp,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -42,6 +77,15 @@ namespace BaseClasses
             m_fhY2 = fh_2_temp;
             m_flZ = fl_temp;
             m_ft = ft_platethickness;
+            IHolesNumber = iHolesNumber;
+            FHoleDiameter = fHoleDiameter_temp;
+            FConnectorLength = fConnectorLength_temp;
+            m_fCrscRafterDepth = fCrscRafterDepth_temp;
+            m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            m_fStiffenerSize = fStiffenerSize_temp;
+            m_bUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
+            m_iAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
+
             m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / fb_2_temp);
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -50,13 +94,33 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0), 2];
+            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
-            // Calculate point positions
+            // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
+            Calc_HolesCentersCoord2D_KneePlate(
+                m_fbX1,
+                m_fbX2,
+                m_flZ,
+                m_fhY1,
+                m_fSlope_rad,
+                m_bUseAdditionalCornerScrews,
+                INumberOfCircleJoints,
+                m_iAdditionalConnectorNumber,
+                m_fCrscRafterDepth,
+                m_fCrscWebStraightDepth,
+                m_fStiffenerSize,
+                ref HolesCenterRadii);
+
+            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, m_ft);
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            GenerateConnectors_ApexOrKneePlate(14, FConnectorLength, 0.015f);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
@@ -64,7 +128,26 @@ namespace BaseClasses
             fArea = PolygonArea();
         }
 
-        public CConCom_Plate_KB(GraphObj.CPoint controlpoint, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_KB(GraphObj.CPoint controlpoint,
+            float fb_1_temp,
+            float fh_1_temp,
+            float fb_2_temp,
+            float fh_2_temp,
+            float fl_temp,
+            float ft_platethickness,
+            float fSLope_rad_temp,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            int iHolesNumber,
+            float fHoleDiameter_temp,
+            float fConnectorLength_temp,
+            float fCrscRafterDepth_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            bool bUseAdditionalCornerScrews_temp,
+            int iAdditionalConnectorNumber_temp,
+            bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -80,6 +163,15 @@ namespace BaseClasses
             m_fhY2 = fh_2_temp;
             m_flZ = fl_temp;
             m_ft = ft_platethickness;
+            IHolesNumber = iHolesNumber;
+            FHoleDiameter = fHoleDiameter_temp;
+            FConnectorLength = fConnectorLength_temp;
+            m_fCrscRafterDepth = fCrscRafterDepth_temp;
+            m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            m_fStiffenerSize = fStiffenerSize_temp;
+            m_bUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
+            m_iAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
+
             m_fSlope_rad = fSLope_rad_temp;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -88,13 +180,33 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0), 2];
+            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
+            arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
+            Calc_HolesCentersCoord2D_KneePlate(
+                m_fbX1,
+                m_fbX2,
+                m_flZ,
+                m_fhY1,
+                m_fSlope_rad,
+                m_bUseAdditionalCornerScrews,
+                INumberOfCircleJoints,
+                m_iAdditionalConnectorNumber,
+                m_fCrscRafterDepth,
+                m_fCrscWebStraightDepth,
+                m_fStiffenerSize,
+                ref HolesCenterRadii);
+
+            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, m_ft);
 
             // Fill list of indices for drawing of surface
             loadIndices();
+
+            GenerateConnectors_ApexOrKneePlate(14, FConnectorLength, 0.015f);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);

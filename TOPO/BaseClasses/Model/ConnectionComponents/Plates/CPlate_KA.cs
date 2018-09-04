@@ -95,16 +95,29 @@ namespace BaseClasses
             HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber + (m_bUseAdditionalCornerScrews ? m_iAdditionalConnectorNumber : 0)];
 
-            // Calculate point positions
+            // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            Calc_HolesCentersCoord2D();
-            Calc_HolesControlPointsCoord3D();
+            Calc_HolesCentersCoord2D_KneePlate(
+                m_fbX1,
+                m_fbX2,
+                0,
+                m_fhY1,
+                m_fSlope_rad,
+                m_bUseAdditionalCornerScrews,
+                INumberOfCircleJoints,
+                m_iAdditionalConnectorNumber,
+                m_fCrscRafterDepth,
+                m_fCrscWebStraightDepth,
+                m_fStiffenerSize,
+                ref HolesCenterRadii);
+
+            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, m_ft);
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            GenerateConnectors();
+            GenerateConnectors_ApexOrKneePlate(14, FConnectorLength, 0.015f);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
@@ -168,13 +181,26 @@ namespace BaseClasses
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            Calc_HolesCentersCoord2D();
-            Calc_HolesControlPointsCoord3D();
+            Calc_HolesCentersCoord2D_KneePlate(
+                m_fbX1,
+                m_fbX2,
+                0,
+                m_fhY1,
+                m_fSlope_rad,
+                m_bUseAdditionalCornerScrews,
+                INumberOfCircleJoints,
+                m_iAdditionalConnectorNumber,
+                m_fCrscRafterDepth,
+                m_fCrscWebStraightDepth,
+                m_fStiffenerSize,
+                ref HolesCenterRadii);
+
+            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, m_ft);
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            GenerateConnectors();
+            GenerateConnectors_ApexOrKneePlate(14, FConnectorLength, 0.015f);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
@@ -209,87 +235,6 @@ namespace BaseClasses
                     arrPoints3D[(i * ITotNoPointsin2D) + j].Y = PointsOut2D[j, 1];
                     arrPoints3D[(i * ITotNoPointsin2D) + j].Z = i * m_ft;
                 }
-            }
-        }
-
-        void Calc_HolesCentersCoord2D()
-        {
-            // Bottom Circle (Main Column)
-            float fDistanceOfCenterFromLeftEdge = m_fbX1 / 2f;
-            float fx_c1 = fDistanceOfCenterFromLeftEdge;
-            float fy_c1 = m_fhY1 / 4f;
-
-            // Top Circle (Main Rafter)
-            float fxInTopMemberAxis = 0.2f * (m_fbX2 - m_fbX1); // TODO - hodnota je v smere lokalnej osi x prievkalu, je urcena priblizne z vodorovnych rozmerov plechu, do buducna bo bolo dobre pohrat sa s jej urcenim na zaklade sklonu prievkalu a dalsich rozmerov, tak aby spoj nekolidoval s eave purlin a skrutky nevysli mimo plech
-
-            float fx_c2 = fxInTopMemberAxis * (float)Math.Cos(m_fSlope_rad) + fDistanceOfCenterFromLeftEdge;
-            float fy_c2 = fxInTopMemberAxis * (float)Math.Sin(m_fSlope_rad) + ((m_fhY1 + fx_c1 * (float)Math.Atan(m_fSlope_rad)) - (0.5f * m_fCrscRafterDepth / (float)Math.Cos(m_fSlope_rad))); // TODO Dopracovat podla sklonu rafteru
-
-            int iNumberOfSequencesInJoint = 2;
-
-            int iNumberOfAddionalConnectorsInOneGroup = m_iAdditionalConnectorNumber / INumberOfCircleJoints;
-            int iNumberOfScrewsInOneSequence = IHolesNumber / (INumberOfCircleJoints * iNumberOfSequencesInJoint) + iNumberOfAddionalConnectorsInOneGroup / iNumberOfSequencesInJoint;
-
-            float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
-            float fRadius = 0.5f * m_fCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
-            float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * m_fStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
-
-            // Left side
-            float[,] fSequenceLeftTop;
-            float[,] fSequenceLeftBottom;
-            float[] fSequenceLeftTopRadii;
-            float[] fSequenceLeftBottomRadii;
-            Get_ScrewGroup_Circle(IHolesNumber / INumberOfCircleJoints, fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
-
-            // Right side
-            float[,] fSequenceRightTop;
-            float[,] fSequenceRightBottom;
-            float[] fSequenceRightTopRadii;
-            float[] fSequenceRightBottomRadii;
-            Get_ScrewGroup_Circle(IHolesNumber / INumberOfCircleJoints, fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, m_fSlope_rad, m_bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
-
-            IHolesNumber += m_iAdditionalConnectorNumber;
-
-            // Fill array of holes centers
-            for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
-            {
-                HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
-                HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
-
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 0] = fSequenceLeftBottom[i, 0];
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 1] = fSequenceLeftBottom[i, 1];
-
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightTop[i, 0];
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightTop[i, 1];
-
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
-
-                HolesCenterRadii[i] = fSequenceLeftTopRadii[i];
-                HolesCenterRadii[iNumberOfScrewsInOneSequence + i] = fSequenceLeftBottomRadii[i];
-                HolesCenterRadii[2 * iNumberOfScrewsInOneSequence + i] = fSequenceRightTopRadii[i];
-                HolesCenterRadii[3 * iNumberOfScrewsInOneSequence + i] = fSequenceRightBottomRadii[i];
-            }
-        }
-
-        void Calc_HolesControlPointsCoord3D()
-        {
-            for (int i = 0; i < IHolesNumber; i++)
-            {
-                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i, 0];
-                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i, 1];
-                arrConnectorControlPoints3D[i].Z = -m_ft; // TODO Position depends on screw length;
-            }
-        }
-
-        void GenerateConnectors()
-        {
-            m_arrPlateConnectors = new CConnector[IHolesNumber];
-
-            for (int i = 0; i < IHolesNumber; i++)
-            {
-                CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, -90, 0, true);
             }
         }
 
