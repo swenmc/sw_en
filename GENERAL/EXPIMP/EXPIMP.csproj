@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Export\CExportToDXF.cs" />
     <Compile Include="Export\CExportToPDF.cs" />
+    <Compile Include="Export\CExportToNC.cs" />
     <Compile Include="Export\CExportToTXT.cs" />
     <Compile Include="Export\CExportToXML.cs" />
     <Compile Include="Export\ExportToWordDocument.cs" />

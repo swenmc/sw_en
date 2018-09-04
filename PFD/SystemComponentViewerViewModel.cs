@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Globalization;
 using BaseClasses;
 using System.Collections.ObjectModel;
+using CRSC;
 
 namespace PFD
 {
@@ -26,6 +27,8 @@ namespace PFD
         private List<string> MComponentTypes;
         private string[] MComponentSeries;
         private string[] MComponents;
+
+        private List<Tuple<string, string, string>> MComponentDetails;
 
         public bool IsSetFromCode = false;
 
@@ -116,6 +119,20 @@ namespace PFD
             {
                 MComponents = value;
                 NotifyPropertyChanged("Components");
+            }
+        }
+
+        public List<Tuple<string, string, string>> ComponentDetails
+        {
+            get
+            {
+                return MComponentDetails;
+            }
+
+            set
+            {
+                MComponentDetails = value;
+                NotifyPropertyChanged("ComponentDetails");
             }
         }
 
@@ -306,6 +323,52 @@ namespace PFD
             }
         }
 
+        public void SetComponentProperties(CPlate plate)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
 
+            List<Tuple<string, string, string>> details = new List<Tuple<string, string, string>>();
+            details.Add(Tuple.Create("Name", plate.Name, ""));
+            details.Add(Tuple.Create("fArea", plate.fArea.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("fHeight_hy", plate.fHeight_hy.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("FHoleDiameter", plate.FHoleDiameter.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("fThickness_tz", plate.fThickness_tz.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("fWidth_bx", plate.fWidth_bx.ToString(nfi), "[mm]"));
+
+            CCNCPathFinder c = new CCNCPathFinder();
+            c.RoutePoints = plate.DrillingRoutePoints;
+            double dist = c.GetRouteDistance();
+            details.Add(Tuple.Create("Drilling Route Distance", dist.ToString(nfi), "[mm]"));
+
+            //TODO
+            //doplnit potrebne parametre
+
+
+
+            ComponentDetails = details;
+        }
+        public void SetComponentProperties(CCrSc crsc)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            List<Tuple<string, string, string>> details = new List<Tuple<string, string, string>>();
+            details.Add(Tuple.Create("Name", crsc.Name, ""));
+            details.Add(Tuple.Create("S_y", crsc.S_y.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("S_z", crsc.S_z.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("t_min", crsc.t_min.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("t_max", crsc.t_max.ToString(nfi), "[mm]"));
+
+
+            //TODO
+            //doplnit potrebne parametre
+
+
+            ComponentDetails = details;
+        }
+
+
+        
     }
 }

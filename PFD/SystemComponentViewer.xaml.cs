@@ -9,6 +9,9 @@ using BaseClasses.GraphObj;
 using MATH;
 using CRSC;
 using EXPIMP;
+using System.Windows.Media.Media3D;
+using System.Windows.Documents;
+using System.Text;
 
 namespace PFD
 {
@@ -78,83 +81,14 @@ namespace PFD
             SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
             if (vm != null && vm.IsSetFromCode) return;
 
-
-            // Set data from database in to the GUI
-            // SetDataFromDatabasetoWindow();
+            //if (vm.ComponentTypeIndex == (int)EConnectionComponentType.eScrew)
+            //{
+            //    Frame3D.Source = new Uri("Resources/self_drilling_screw.xaml", UriKind.RelativeOrAbsolute); return;
+            //}
             
             if (e.PropertyName != "ComponentIndex") return;
 
             UpdateAll();
-
-
-            //// Load data from database
-            //LoadDataFromDatabase();
-
-            //// Create Component Model
-            //CreateModelObject();
-
-            //// Create 2D page
-            //page2D = new Canvas();
-
-            ////double dWidth = Frame2D.Width;
-            ////double dHeight = Frame2D.Height;
-            //double dWidth = WindowWidth / 2;
-            //double dHeight = WindowHeight - 100;
-
-            //// TODO / BUG - Ondrej, pri prvom spusteni je WindowWidth a WindowHeight rovne nula a vsetko sa vykresli do laveho horneho rohu
-            //// je potrebne nastavit rozmery pre vykreslenie
-            //if (dWidth == 0 || dHeight == 0) // Docasne
-            //{
-            //    dWidth = 1280;
-            //    dHeight = 1310;
-            //}
-
-            //if (vm.ComponentTypeIndex == 0)
-            //{
-            //    //page2D = new WindowCrossSection2D(crsc, dWidth, dHeight);
-            //    Drawing2D.DrawCrscToCanvas(crsc, dWidth, dHeight, ref page2D);
-            //}
-            //else if (vm.ComponentTypeIndex == 1)
-            //{
-            //    // Generate drilling plan
-            //    //CCNCPathFinder generator = new CCNCPathFinder(component);
-            //    // Set drilling route points
-            //    //component.DrillingRoutePoints = generator.RoutePoints;
-            //    // Draw plate
-            //    // page2D = new WindowCrossSection2D(component, dWidth, dHeight);
-            //    Drawing2D.DrawPlateToCanvas(component, dWidth, dHeight, ref page2D);
-            //}
-            //else
-            //{
-            //    // Screw - not implemented
-            //}
-
-            //// Display plate in 2D preview frame
-            //if(page2D != null) Frame2D.Content = page2D;
-
-            //// Create 3D window
-            //page3D = null;
-
-            //if (vm.ComponentTypeIndex == 0)
-            //{
-            //    // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch pri zmene component serie, podobne to nefunguje ani pre plates
-
-            //    page3D = new Page3Dmodel(crsc, sDisplayOptions);
-            //}
-            //else if (vm.ComponentTypeIndex == 1)
-            //{
-            //    page3D = new Page3Dmodel(component, sDisplayOptions);
-            //}
-            //else
-            //{
-            //    // Screw - not implemented
-            //}
-
-            //// Display model in 3D preview frame
-            //Frame3D.Content = page3D;
-
-
-
         }
 
         
@@ -407,6 +341,7 @@ namespace PFD
                             break;
                         }
                 }
+                vm.SetComponentProperties(crsc);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -480,6 +415,7 @@ namespace PFD
                             break;
                         }
                 }
+                vm.SetComponentProperties(component);
             }
             else
             {
@@ -532,6 +468,9 @@ namespace PFD
             else
             {
                 // Screw - not implemented
+                PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);                    
+                page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);                
+                tabItem3D.Focus();              
             }
 
             // Display model in 3D preview frame
@@ -853,11 +792,24 @@ namespace PFD
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
-            
-          // Export of drilling route to the .nc files
+            // Export of drilling route to the .nc files
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (vm.ComponentTypeIndex == 0)
+            {
+                MessageBox.Show("NC file export of Cross Section not implemented.");
+                return;                
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                if (component.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found."); return; }
 
-
-
+                CExportToNC.ExportHolesToNC(component.DrillingRoutePoints);
+                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(component.PointsOut2D));
+            }
+            else
+            {
+                // Screw - not implemented
+            }
         }
 
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
@@ -1021,5 +973,49 @@ namespace PFD
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
         }
+
+        private void BtnShowCNCFile_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (component.DrillingRoutePoints == null) { MessageBox.Show("No drilling points"); return; }
+                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(component.DrillingRoutePoints);
+
+                Paragraph paragraph = new Paragraph();
+                paragraph.FontSize = 14;
+                paragraph.FontFamily = new FontFamily("Consolas");
+                paragraph.Inlines.Add(sb1.ToString());
+                FlowDocument document = new FlowDocument(paragraph);
+                FlowDocViewer.Document = document;                
+                tabItemDoc.Focus();  
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error occurs. We are sorry.");                
+            }
+            
+        }
+
+        private void BtnShowCNCSetupFile_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(component.PointsOut2D));
+                Paragraph paragraph = new Paragraph();
+                paragraph.FontSize = 14;
+                paragraph.FontFamily = new FontFamily("Consolas");
+                paragraph.Inlines.Add(sb2.ToString());
+                FlowDocument document = new FlowDocument(paragraph);
+                FlowDocViewer.Document = document;
+                tabItemDoc.Focus();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error occurs. We are sorry.");
+            }
+        }
+
+        
+
     }
 }

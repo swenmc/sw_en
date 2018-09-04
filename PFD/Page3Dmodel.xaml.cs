@@ -4,6 +4,9 @@ using System.Windows.Media.Media3D;
 using BaseClasses;
 using _3DTools;
 using CRSC;
+using System.IO;
+using System;
+using System.Windows;
 
 namespace PFD
 {
@@ -122,6 +125,43 @@ namespace PFD
             }
 
             _trackport.SetupScene();
+        }
+
+
+        public Page3Dmodel(string pathToModel, PerspectiveCamera camera)
+        {
+            InitializeComponent();
+
+            if (camera != null)
+            {
+                _trackport.PerspectiveCamera.Position = camera.Position;
+                _trackport.PerspectiveCamera.LookDirection = camera.LookDirection;
+                _trackport.PerspectiveCamera.UpDirection = camera.UpDirection;
+                _trackport.PerspectiveCamera.FieldOfView = camera.FieldOfView;
+            } 
+            LoadXAMLResource(pathToModel);
+            
+        }
+
+        private void LoadXAMLResource(string path)
+        {
+            if (path != null)
+            {
+                try
+                {
+                    using (FileStream file = File.OpenRead(path))
+                    {
+                        _trackport.LoadModel(file);
+                        
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(
+                        String.Format("Unable to parse file:\r\n\r\n{0}",
+                        e.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         public void CalculateModelLimits(CConnectionComponentEntity3D componentmodel,
