@@ -797,18 +797,22 @@ namespace PFD
             if (vm.ComponentTypeIndex == 0)
             {
                 MessageBox.Show("NC file export of Cross Section not implemented.");
-                return;                
+                return;
             }
             else if (vm.ComponentTypeIndex == 1)
             {
                 if (component.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found."); return; }
 
-                CExportToNC.ExportHolesToNC(component.DrillingRoutePoints);
-                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(component.PointsOut2D));
+                float fUnitFactor = 1000; // defined in m, exported in mm
+
+                CExportToNC.ExportHolesToNC(component.DrillingRoutePoints, component.fThickness_tz, fUnitFactor);
+                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(component.PointsOut2D), fUnitFactor);
             }
             else
             {
                 // Screw - not implemented
+                MessageBox.Show("NC file export of screw not implemented.");
+                return;
             }
         }
 
@@ -976,31 +980,33 @@ namespace PFD
 
         private void BtnShowCNCFile_Click(object sender, RoutedEventArgs e)
         {
+            float fUnitFactor = 1000; // defined in m, exported in mm
             try
             {
-                if (component.DrillingRoutePoints == null) { MessageBox.Show("No drilling points"); return; }
-                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(component.DrillingRoutePoints);
+                if (component.DrillingRoutePoints == null) { MessageBox.Show("Drilling points are not defined."); return; }
+                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(component.DrillingRoutePoints, component.fThickness_tz, fUnitFactor);
 
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");
                 paragraph.Inlines.Add(sb1.ToString());
                 FlowDocument document = new FlowDocument(paragraph);
-                FlowDocViewer.Document = document;                
-                tabItemDoc.Focus();  
+                FlowDocViewer.Document = document;
+                tabItemDoc.Focus();
             }
             catch (Exception)
             {
-                MessageBox.Show("Error occurs. We are sorry.");                
+                MessageBox.Show("Error occurs. Check geometry input.");
             }
             
         }
 
         private void BtnShowCNCSetupFile_Click(object sender, RoutedEventArgs e)
         {
+            float fUnitFactor = 1000; // defined in m, exported in mm
             try
             {
-                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(component.PointsOut2D));
+                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(component.PointsOut2D), fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");
@@ -1011,7 +1017,7 @@ namespace PFD
             }
             catch (Exception)
             {
-                MessageBox.Show("Error occurs. We are sorry.");
+                MessageBox.Show("Error occurs. Check geometry input.");
             }
         }
 
