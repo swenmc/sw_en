@@ -364,7 +364,7 @@ namespace PFD
 
                 foreach (CSectionPropertiesText textRow in sectionTexts)
                 {
-                    if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row fore whose the value is not empty string
+                    if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row for property value is which is not empty string
                         details.Add(Tuple.Create(textRow.text, textRow.symbol, listSectionPropertyValue[textRow.ID - 1], textRow.unit_NmmMpa));
                 }
 
