@@ -25,7 +25,7 @@ namespace EXPIMP
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            string str_Z = "z-"+ Math.Round(fPlateThickness * fUnitFactor, 2).ToString(); // Drilling depth is defined by plate thickness
+            string str_Z = string.Format(nfi, "z-{0:F1}", Math.Round(fPlateThickness * fUnitFactor, 2)); // Drilling depth is defined by plate thickness
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("(HOLE PROGRAM)");
             sb.AppendLine("(Touch Z to top of touch plate)");
