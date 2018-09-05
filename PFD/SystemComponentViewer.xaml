@@ -60,8 +60,8 @@
 
                 <Button Name="BtnShowCNCSetupFile" Content="Show CNC Setup File" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCSetupFile_Click"/>
-                <Button Name="BtnShowCNCFile" Content="Show CNC Holes File" Margin="5 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCFile_Click"/>
+                <Button Name="BtnShowCNCDrillingFile" Content="Show CNC Drilling File" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCDrillingFile_Click"/>
 
             </StackPanel>
         </Grid>

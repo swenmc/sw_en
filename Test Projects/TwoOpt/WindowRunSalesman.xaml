@@ -6,7 +6,7 @@
         xmlns:twoOpt="clr-namespace:TwoOpt"
         mc:Ignorable="d"        
         Title="{Binding Title}" 
-        Height="620" Width="600" Loaded="Window_Loaded">
+        Height="893" Width="800" Loaded="Window_Loaded">
     
     <Window.DataContext>
         <twoOpt:MainWindowViewModel />
@@ -34,7 +34,7 @@
                 
                 <Label 
                     VerticalContentAlignment="Center"
-                    Name="IterationLabel"                    
+                    Name="IterationLabel"
                     Grid.Row="1" />
             </Grid>
         </StackPanel>

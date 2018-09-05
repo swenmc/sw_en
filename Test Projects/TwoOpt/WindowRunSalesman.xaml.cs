@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,9 +12,22 @@ namespace TwoOpt
     /// </summary>
     public partial class WindowRunSalesman : IMainWindow
     {
-        public WindowRunSalesman(List<Point> Points)
+        public WindowRunSalesman(List<Point> Points, float fHeightToWidthRatio = 1)
         {
             InitializeComponent();
+
+            // Set window size according to the ratio of (ymax - ymin) / (xmax - xmin) calculated from input point coordinates
+            // window height 892
+            // window width 800
+            // canvas height 692
+            // canvas width 765
+            float fVerticalDifference = 200;
+            float fHorizontalDifference = 35;
+
+            if (fHeightToWidthRatio < 1)
+                Height = (fHeightToWidthRatio * (Width - fHorizontalDifference)) + fVerticalDifference;
+            else
+                Width = ((1 / fHeightToWidthRatio) * (Height - fVerticalDifference)) + fHorizontalDifference;
 
             var mainWindowViewModel = DataContext as MainWindowViewModel;
 
@@ -84,7 +98,7 @@ namespace TwoOpt
             Dispatcher.Invoke(() =>
             {
                 IterationLabel.Content = "Iteration: " + iter;
-                BestLabel.Content = "Best distance: " + best;
+                BestLabel.Content = "Best distance: " + Math.Round(best, 4);
 
                 if (tourCoords == null) return;
 

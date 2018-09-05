@@ -819,12 +819,22 @@ namespace PFD
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
             List<Point> points = component.GetHolesCentersPoints2D();
-            if (points == null || points.Count == 0) return;
+            if (points == null || points.Count == 0)
+                MessageBox.Show("Drilling points are not defined for selected plate.");
 
+            // Calculate size of plate and width to height ratio to set size of "salesman" algorthim window
+            float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
+            Drawing2D.CalculateModelLimits(component.HolesCentersPoints2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            float fWidth = fTempMax_X - fTempMin_X;
+            float fHeigth = fTempMax_Y - fTempMin_Y;
+            float fHeightToWidthRatio = fHeigth / fWidth;
+
+            // Add coordinates of drilling machine start point
             points.Insert(0, new Point(0, 0));
-            TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points);
+
+            TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points, fHeightToWidthRatio);
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel; 
-                        
+
             w.Show();
             w.Closing += SalesmanWindow_Closing;
 
@@ -874,31 +884,55 @@ namespace PFD
 
         private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         {
+            component.DrillingRoutePoints2D = null;
+            component.DrillingRoutePoints=null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
             RedrawMirroredComponentAboutXIn2D();
         }
 
         private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
         {
+            component.DrillingRoutePoints2D = null;
+            component.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
             RedrawMirroredComponentAboutYIn2D();
         }
 
         private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
         {
+            component.DrillingRoutePoints2D = null;
+            component.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
             RedrawRotatedComponentIn2D(90);
         }
 
         private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
         {
+            component.DrillingRoutePoints2D = null;
+            component.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
             RedrawMirroredComponentAboutXIn2D();
         }
 
         private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
         {
+            component.DrillingRoutePoints2D = null;
+            component.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
             RedrawMirroredComponentAboutYIn2D();
         }
 
         private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
         {
+            component.DrillingRoutePoints2D = null;
+            component.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
             RedrawRotatedComponentIn2D(-90);
         }
 
@@ -978,34 +1012,13 @@ namespace PFD
             Frame2D.Content = page2D;
         }
 
-        private void BtnShowCNCFile_Click(object sender, RoutedEventArgs e)
-        {
-            float fUnitFactor = 1000; // defined in m, exported in mm
-            try
-            {
-                if (component.DrillingRoutePoints == null) { MessageBox.Show("Drilling points are not defined."); return; }
-                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(component.DrillingRoutePoints, component.fThickness_tz, fUnitFactor);
-
-                Paragraph paragraph = new Paragraph();
-                paragraph.FontSize = 14;
-                paragraph.FontFamily = new FontFamily("Consolas");
-                paragraph.Inlines.Add(sb1.ToString());
-                FlowDocument document = new FlowDocument(paragraph);
-                FlowDocViewer.Document = document;
-                tabItemDoc.Focus();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error occurs. Check geometry input.");
-            }
-            
-        }
-
         private void BtnShowCNCSetupFile_Click(object sender, RoutedEventArgs e)
         {
             float fUnitFactor = 1000; // defined in m, exported in mm
             try
             {
+                tabItemDoc.Visibility = Visibility.Visible;
+
                 StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(component.PointsOut2D), fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
@@ -1019,6 +1032,30 @@ namespace PFD
             {
                 MessageBox.Show("Error occurs. Check geometry input.");
             }
+        }
+
+        private void BtnShowCNCDrillingFile_Click(object sender, RoutedEventArgs e)
+        {
+            float fUnitFactor = 1000; // defined in m, exported in mm
+            try
+            {
+                if (component.DrillingRoutePoints == null) { MessageBox.Show("Drilling points are not defined."); return; }
+                tabItemDoc.Visibility = Visibility.Visible;
+
+                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(component.DrillingRoutePoints, component.fThickness_tz, fUnitFactor);
+                Paragraph paragraph = new Paragraph();
+                paragraph.FontSize = 14;
+                paragraph.FontFamily = new FontFamily("Consolas");
+                paragraph.Inlines.Add(sb1.ToString());
+                FlowDocument document = new FlowDocument(paragraph);
+                FlowDocViewer.Document = document;
+                tabItemDoc.Focus();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error occurs. Check geometry input.");
+            }
+
         }
     }
 }
