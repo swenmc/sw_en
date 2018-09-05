@@ -89,6 +89,7 @@
     <Compile Include="CCNCPathFinder.cs" />
     <Compile Include="CConnectionJointTypes.cs" />
     <Compile Include="CLine2D.cs" />
+    <Compile Include="GraphObj\PointF.cs" />
     <Compile Include="Loading\Loads\CMemberLoadCombinationRatio_SLS.cs" />
     <Compile Include="CObject.cs" />
     <Compile Include="Drawing2D.cs" />
