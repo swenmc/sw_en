@@ -52,6 +52,10 @@ namespace CRSC
             Name = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // Formsteel Description
             NameDatabase = (fh * 1000).ToString() + (20).ToString() + "n";
 
+            // Temporary
+            Name = "C " + "500" + (20).ToString() + " nested"; // Formsteel Description
+            NameDatabase = "500" + (20).ToString() + "n";
+
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 34;

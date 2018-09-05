@@ -81,24 +81,18 @@ namespace PFD
             SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
             if (vm != null && vm.IsSetFromCode) return;
 
-            //if (vm.ComponentTypeIndex == (int)EConnectionComponentType.eScrew)
-            //{
-            //    Frame3D.Source = new Uri("Resources/self_drilling_screw.xaml", UriKind.RelativeOrAbsolute); return;
-            //}
-            
             if (e.PropertyName != "ComponentIndex") return;
 
             UpdateAll();
         }
 
-        
-
         private void LoadDataFromDatabase()
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-            if (vm.ComponentIndex >= 0) // Index is valid
-            {
+            if (vm.ComponentIndex < 0) // Index is invalid - set default 0
+                vm.ComponentIndex = 0;
+
                 if (vm.ComponentTypeIndex == 0) // Cross-section
                 {
                     switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
@@ -274,7 +268,7 @@ namespace PFD
                 {
                     // Not implemented
                 }
-            }
+
         }
 
         private void UpdateAll()
@@ -317,7 +311,10 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         {
-                            crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, cComponentColor);
+                            if (vm.ComponentIndex == 0)
+                                crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, cComponentColor); // C270115n
+                            else
+                                crsc = new CCrSc_3_50020_C_NESTED(fh, fb, ft, cComponentColor); // C50020n
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
@@ -327,12 +324,12 @@ namespace PFD
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
                         {
-                            crsc = new CCrSc_3_TR_SMARTDEK(fh, fb, ft, cComponentColor); // BOX
+                            crsc = new CCrSc_3_TR_SMARTDEK(fh, fb, ft, cComponentColor); // Trapezoidal sheeting
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
                         {
-                            crsc = new CCrSc_3_TR_PURLINDEK(fh, fb, ft, cComponentColor); // BOX
+                            crsc = new CCrSc_3_TR_PURLINDEK(fh, fb, ft, cComponentColor); // Trapezoidal sheeting
                             break;
                         }
                     default:
@@ -436,12 +433,7 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                // Generate drilling plan
-                //CCNCPathFinder generator = new CCNCPathFinder(component);
-                // Set drilling route points
-                //component.DrillingRoutePoints = generator.RoutePoints;
-                // Draw plate
-                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+               Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else
             {
@@ -467,10 +459,10 @@ namespace PFD
             }
             else
             {
-                // Screw - not implemented
-                PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);                    
-                page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);                
-                tabItem3D.Focus();              
+                // Screw
+                PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
+                page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
+                tabItem3D.Focus();
             }
 
             // Display model in 3D preview frame
@@ -478,16 +470,6 @@ namespace PFD
 
             this.UpdateLayout();
         }
-
-        //private void Combobox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    Combobox_Series.Items.Clear();
-        //    Combobox_Component.Items.Clear();
-
-        //    SetDataFromDatabasetoWindow();
-
-        //    UpdateAll();
-        //}
 
         public void CreateModelObject()
         {
@@ -615,170 +597,13 @@ namespace PFD
             }
         }
 
-        //private void Combobox_Series_DropDownClosed(object sender, EventArgs e)
-        //{
-        //    // Change Component Items Combobox
-        //    Combobox_Component.Items.Clear();
-
-        //    if (vm.ComponentTypeIndex == 0) // Cross-section
-        //    {
-        //        switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
-        //        {
-        //            case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_Box_FormSteel_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypeCrSc_FormSteel.eSerie_Z:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_Z_FormSteel_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypeCrSc_FormSteel.eSerie_C_single:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_C_FormSteel_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_C_BtoB_FormSteel_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_C_Nested_FormSteel_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_Box63020_FormSteel_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            default:
-        //                {
-        //                    // Not implemented
-        //                    break;
-        //                }
-        //        }
-        //    }
-        //    else if (vm.ComponentTypeIndex == 1)
-        //    {
-        //        switch ((ESerieTypePlate)vm.ComponentSerieIndex)
-        //        {
-        //            case ESerieTypePlate.eSerie_B:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_B_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_L:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_L_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_LL:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_LL_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_F:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_F_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_Q:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_Q_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_S:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_S_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_T:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_T_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_X:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_X_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_Y:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_Y_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_J:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_J_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            case ESerieTypePlate.eSerie_K:
-        //                {
-        //                    foreach (string name in dcomponents.arr_Serie_K_Names)
-        //                        Combobox_Component.Items.Add(name); // Add values into the combobox
-        //                    break;
-        //                }
-        //            default:
-        //                {
-        //                    // Not implemented
-        //                    break;
-        //                }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Not implemented
-        //    }
-
-        //    // Set default
-        //    vm.ComponentIndex = 0;
-        //    //if(Combobox_Component.Items.Count > 0) Combobox_Component.SelectedItem = Combobox_Component.Items[0];
-
-        //    UpdateAll();
-        //}
-
         private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Vola sa to po kazdom pridani prvku do comboboxu
-            // To Ondrej; OK, ale teraz to nefunguje pokial nad comboboxom pouzijem wheel, preview sa nepregeneruje
-            // Takze musime zakazat wheel alebo to update / SelectionChanged oddelit od pridania poloziek do comboboxu, aby sa to nevolalo opakovane
-
-            //// Change Component Items Combobox
-            //Combobox_Component.Items.Clear();
         }
 
         private void Combobox_Component_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Vola sa to po kazdom pridani prvku do comboboxu
-            //UpdateAll();
-
-            // To Ondrej; OK, ale teraz to nefunguje pokial nad comboboxom pouzijem wheel, preview sa nepregeneruje
-            // Takze musime zakazat wheel alebo to updateall / SelectionChanged oddelit od pridania poloziek do comboboxu, aby sa to nevolalo opakovane
         }
-
-        //private void Combobox_Component_DropDownClosed(object sender, EventArgs e)
-        //{
-        //    UpdateAll();
-        //}
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {

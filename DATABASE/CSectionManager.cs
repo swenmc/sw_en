@@ -78,43 +78,70 @@ namespace DATABASE
                 {
                     if (reader.Read())
                     {
-                        properties = new CSectionProperties();
-                        properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        properties.sectionName = reader["section"].ToString();
-                        properties.h = reader["h"].ToString();
-                        properties.b = reader["b"].ToString();
-                        properties.t = reader["t"].ToString();
-                        properties.A_g = reader["A_g"].ToString();
-                        properties.I_y0 = reader["I_y0"].ToString();
-                        properties.I_z0 = reader["I_z0"].ToString();
-                        properties.W_el_y0 = reader["W_el_y0"].ToString();
-                        properties.W_el_z0 = reader["W_el_z0"].ToString();
-                        properties.Iyz0 = reader["Iyz0"].ToString();
-                        properties.Iy = reader["Iy"].ToString();
-                        properties.Iz = reader["Iz"].ToString();
-                        properties.W_el_y = reader["W_el_y"].ToString();
-                        properties.W_el_z = reader["W_el_z"].ToString();
-                        properties.It = reader["It"].ToString();
-                        properties.Iw = reader["Iw"].ToString();
-                        properties.yc = reader["yc"].ToString();
-                        properties.zc = reader["zc"].ToString();
-                        properties.ys = reader["ys"].ToString();
-                        properties.zs = reader["zs"].ToString();
-                        properties.ycs = reader["ycs"].ToString();
-                        properties.zcs = reader["zcs"].ToString();
-                        properties.betay = reader["betay"].ToString();
-                        properties.betaz = reader["betaz"].ToString();
-                        properties.alpha_deg = reader["alpha_deg"].ToString();
-                        properties.Bending_curve_x1 = reader["Bending_curve_x1"].ToString();
-                        properties.Bending_curve_x2 = reader["Bending_curve_x2"].ToString();
-                        properties.Bending_curve_x3 = reader["Bending_curve_x3"].ToString();
-                        properties.Bending_curve_y = reader["Bending_curve_y"].ToString();
-                        properties.Compression_curve_1 = reader["Compression_curve_1"].ToString();
-                        properties.Compression_curve_2 = reader["Compression_curve_2"].ToString();
-                        properties.Compression_curve_3 = reader["Compression_curve_3"].ToString();
-                     }
+                        properties = GetSectionProperties(reader);
+                    }
                 }
             }
+            return properties;
+        }
+
+        public static CSectionProperties LoadSectionProperties(string name)
+        {
+            CSectionProperties properties = null;
+            using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("Select * from tableSections_mm WHERE section = @section", conn);
+                command.Parameters.AddWithValue("@section", name);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        properties = GetSectionProperties(reader);
+                    }
+                }
+            }
+            return properties;
+        }
+
+        private static CSectionProperties GetSectionProperties(SQLiteDataReader reader)
+        {
+            CSectionProperties properties = new CSectionProperties();
+            properties.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+            properties.sectionName = reader["section"].ToString();
+            properties.h = reader["h"].ToString();
+            properties.b = reader["b"].ToString();
+            properties.t = reader["t"].ToString();
+            properties.A_g = reader["A_g"].ToString();
+            properties.I_y0 = reader["I_y0"].ToString();
+            properties.I_z0 = reader["I_z0"].ToString();
+            properties.W_el_y0 = reader["W_el_y0"].ToString();
+            properties.W_el_z0 = reader["W_el_z0"].ToString();
+            properties.Iyz0 = reader["Iyz0"].ToString();
+            properties.Iy = reader["Iy"].ToString();
+            properties.Iz = reader["Iz"].ToString();
+            properties.W_el_y = reader["W_el_y"].ToString();
+            properties.W_el_z = reader["W_el_z"].ToString();
+            properties.It = reader["It"].ToString();
+            properties.Iw = reader["Iw"].ToString();
+            properties.yc = reader["yc"].ToString();
+            properties.zc = reader["zc"].ToString();
+            properties.ys = reader["ys"].ToString();
+            properties.zs = reader["zs"].ToString();
+            properties.ycs = reader["ycs"].ToString();
+            properties.zcs = reader["zcs"].ToString();
+            properties.betay = reader["betay"].ToString();
+            properties.betaz = reader["betaz"].ToString();
+            properties.alpha_deg = reader["alpha_deg"].ToString();
+            properties.Bending_curve_x1 = reader["Bending_curve_x1"].ToString();
+            properties.Bending_curve_x2 = reader["Bending_curve_x2"].ToString();
+            properties.Bending_curve_x3 = reader["Bending_curve_x3"].ToString();
+            properties.Bending_curve_y = reader["Bending_curve_y"].ToString();
+            properties.Compression_curve_1 = reader["Compression_curve_1"].ToString();
+            properties.Compression_curve_2 = reader["Compression_curve_2"].ToString();
+            properties.Compression_curve_3 = reader["Compression_curve_3"].ToString();
+
             return properties;
         }
 
@@ -175,8 +202,20 @@ namespace DATABASE
 
         public static List<string> LoadSectionPropertiesStringList(int ID)
         {
-            CSectionProperties properties = LoadSectionProperties(ID);
+            CSectionProperties properties = new CSectionProperties();
+            properties = LoadSectionProperties(ID);
+            return FillListOfSectionPropertiesString(properties);
+        }
 
+        public static List<string> LoadSectionPropertiesStringList(string name)
+        {
+            CSectionProperties properties = new CSectionProperties();
+            properties = LoadSectionProperties(name);
+            return FillListOfSectionPropertiesString(properties);
+        }
+
+        private static List<string> FillListOfSectionPropertiesString(CSectionProperties properties)
+        {
             List<string> list = new List<string>();
             list.Add(properties.h);
             list.Add(properties.b);

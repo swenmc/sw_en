@@ -10,6 +10,8 @@ using System.Globalization;
 using BaseClasses;
 using System.Collections.ObjectModel;
 using CRSC;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -28,7 +30,7 @@ namespace PFD
         private string[] MComponentSeries;
         private string[] MComponents;
 
-        private List<Tuple<string, string, string>> MComponentDetails;
+        private List<Tuple<string, string, string, string>> MComponentDetails;
 
         public bool IsSetFromCode = false;
 
@@ -122,7 +124,7 @@ namespace PFD
             }
         }
 
-        public List<Tuple<string, string, string>> ComponentDetails
+        public List<Tuple<string, string, string, string>> ComponentDetails
         {
             get
             {
@@ -328,18 +330,18 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<Tuple<string, string, string>> details = new List<Tuple<string, string, string>>();
-            details.Add(Tuple.Create("Name", plate.Name, ""));
-            details.Add(Tuple.Create("fArea", plate.fArea.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("fHeight_hy", plate.fHeight_hy.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("FHoleDiameter", plate.FHoleDiameter.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("fThickness_tz", plate.fThickness_tz.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("fWidth_bx", plate.fWidth_bx.ToString(nfi), "[mm]"));
+            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
+            details.Add(Tuple.Create("Name","", plate.Name, ""));
+            details.Add(Tuple.Create("Area", "", plate.fArea.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Height_hy", "", plate.fHeight_hy.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("FHoleDiameter", "", plate.FHoleDiameter.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("fThickness_tz", "", plate.fThickness_tz.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("fWidth_bx", "", plate.fWidth_bx.ToString(nfi), "[mm]"));
 
             CCNCPathFinder c = new CCNCPathFinder();
             c.RoutePoints = plate.DrillingRoutePoints;
             double dist = c.GetRouteDistance();
-            details.Add(Tuple.Create("Drilling Route Distance", dist.ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Drilling Route Distance","Ldr", dist.ToString(nfi), "[mm]"));
 
             //TODO
             //doplnit potrebne parametre
@@ -350,25 +352,28 @@ namespace PFD
         }
         public void SetComponentProperties(CCrSc crsc)
         {
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
+            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
+            details.Add(Tuple.Create("Name","", crsc.Name, ""));
 
-            List<Tuple<string, string, string>> details = new List<Tuple<string, string, string>>();
-            details.Add(Tuple.Create("Name", crsc.Name, ""));
-            details.Add(Tuple.Create("S_y", crsc.S_y.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("S_z", crsc.S_z.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("t_min", crsc.t_min.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("t_max", crsc.t_max.ToString(nfi), "[mm]"));
+            List<CSectionPropertiesText> sectionTexts = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
+            List<string> listSectionPropertyValue = new List<string>();
 
+            try
+            {
+                listSectionPropertyValue = CSectionManager.LoadSectionPropertiesStringList(crsc.NameDatabase);
 
-            //TODO
-            //doplnit potrebne parametre
+                foreach (CSectionPropertiesText textRow in sectionTexts)
+                {
+                    if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row fore whose the value is not empty string
+                        details.Add(Tuple.Create(textRow.text, textRow.symbol, listSectionPropertyValue[textRow.ID - 1], textRow.unit_NmmMpa));
+                }
 
-
-            ComponentDetails = details;
+                ComponentDetails = details;
+            }
+            catch
+            {
+                throw new ArgumentException("Cross section name wasn't found in the database or invalid database data.");
+            }
         }
-
-
-        
     }
 }

@@ -49,6 +49,18 @@ namespace CRSC
             Name = "Box " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
             NameDatabase = (fh * 1000).ToString() + (20).ToString();
 
+            // Temporary  identify stiffeners acc. to flange thickness
+            if (0.003f < ft_flange && ft_flange < 0.005)
+            {
+                Name = "Box " + (fh * 1000).ToString() + (20).ToString() + " single stiffener"; // Formsteel Description
+                NameDatabase = (fh * 1000).ToString() + (20).ToString() + "s1";
+            }
+            else if (ft_flange > 0.005)
+            {
+                Name = "Box " + (fh * 1000).ToString() + (20).ToString() + " double stiffener"; // Formsteel Description
+                NameDatabase = (fh * 1000).ToString() + (20).ToString() + "s2";
+            }
+
             CSColor = color_temp;  // Set cross-section color
 
             //ITotNoPoints = 40;

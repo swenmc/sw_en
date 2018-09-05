@@ -371,19 +371,22 @@ namespace PFD
                 {2*70,270,40,1.15f}
         };
 
-        public string[] arr_Serie_C_Nested_FormSteel_Names = new string[1]
+        public string[] arr_Serie_C_Nested_FormSteel_Names = new string[2]
         {
-                "270115 nested"
+                "270115 nested",
+                "50020 nested"
         };
 
-        public Color[] arr_Serie_C_Nested_FormSteel_Colors = new Color[1]
+        public Color[] arr_Serie_C_Nested_FormSteel_Colors = new Color[2]
         {
-            Color.FromRgb(122,40,204)
+            Color.FromRgb(122,40,204),
+            Color.FromRgb(10,40,200)
         };
 
-        public float[,] arr_Serie_C_Nested_FormSteel_Dimension = new float[1, 3]
+        public float[,] arr_Serie_C_Nested_FormSteel_Dimension = new float[2, 3]
         {
-                {70,290,1.15f}
+                {70,290,1.15f},
+                {102,550,1.95f},
         };
 
         public string[] arr_Serie_Box63020_FormSteel_Names = new string[3]
