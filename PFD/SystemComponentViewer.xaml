@@ -36,14 +36,20 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" Margin="0 5 0 0"
                       ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <!--<ComboBox Grid.Row="0" Grid.Column="1" Name ="Com_Type" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" Margin="155 5 0 0"
+                      ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>-->
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <!--<ComboBox Grid.Row="1" Grid.Column="2" Name ="Com_Series" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>-->
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Component:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_Component" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <!--<ComboBox Grid.Row="2" Grid.Column="1" Name ="Com_Component" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>-->
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" ItemsSource="{Binding Path=ComponentGeometry}" HeadersVisibility="None" IsReadOnly="False"/>

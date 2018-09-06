@@ -184,6 +184,7 @@
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_E001.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_B001.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_A001.cs" />
+    <Compile Include="Model\CSystemComponent.cs" />
     <Compile Include="Model\CSegment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

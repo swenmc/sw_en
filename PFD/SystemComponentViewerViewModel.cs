@@ -35,6 +35,9 @@ namespace PFD
 
         public bool IsSetFromCode = false;
 
+        private List<CSystemComponent<object>> MSystemComponents = new List<CSystemComponent<object>>();
+
+
         float fUnitFactor_Length = 1000;
         float fUnitFactor_Area = 1000000;//fUnitFactor_Length * fUnitFactor_Length;
         int iNumberOfDecimalPlaces_Length = 1;
@@ -158,7 +161,26 @@ namespace PFD
             }
         }
 
+        public List<CSystemComponent<object>> SystemComponents
+        {
+            get
+            {
+                return MSystemComponents;
+            }
+
+            set
+            {
+                MSystemComponents = value;
+                NotifyPropertyChanged("SystemComponents");
+            }
+        }
+                
         CDatabaseComponents databaseComponents;
+
+        private List<CCrSc> list_crossSections;
+        private List<CPlate> list_plates;
+        private List<CScrew> list_screws;
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -174,8 +196,18 @@ namespace PFD
             ComponentSerieIndex = 1;
             ComponentIndex = 1;
 
+            //TODO naplnit zoznamy cross sections, plates, screws
+
+
             IsSetFromCode = false;
         }
+
+        //private void LoadSystemComponents()
+        //{
+        //    List<CSystemComponent<Type>> components = new List<CSystemComponent<Type>>();
+        //    components.Add(new CSystemComponent<CRSC.CCrSc>("Cross section", list_crossSections));
+        //    components.Add(new CSystemComponent<CPlate>("Plates", list_plates));
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
