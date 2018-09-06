@@ -736,7 +736,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_K_Dimension[3, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[3, 6] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[3, 7];
-            platesInSerie9.Add(new CConCom_Plate_KD(databaseComponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true));
+            platesInSerie9.Add(new CConCom_Plate_KD(databaseComponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[4, 0] / 1000f;
             fb = databaseComponents.arr_Serie_K_Dimension[4, 1] / 1000f;

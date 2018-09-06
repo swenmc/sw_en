@@ -1,7 +1,7 @@
-﻿using _3DTools;
-using System;
+﻿using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using _3DTools;
 using MATH;
 using BaseClasses.GraphObj;
 
@@ -313,7 +313,7 @@ namespace BaseClasses
 
             arrPoints3D[INoPoints2Dfor3D + 4].X = arrPoints3D[12].X;
             arrPoints3D[INoPoints2Dfor3D + 4].Y = arrPoints3D[12].Y;
-            arrPoints3D[INoPoints2Dfor3D + 4].Z = m_ft +m_flZ;
+            arrPoints3D[INoPoints2Dfor3D + 4].Z = m_flZ;
 
             arrPoints3D[INoPoints2Dfor3D + 5].X = arrPoints3D[7].X;
             arrPoints3D[INoPoints2Dfor3D + 5].Y = arrPoints3D[7].Y;
@@ -350,20 +350,20 @@ namespace BaseClasses
             AddRectangleIndices_CW_1234(TriangleIndices, 10, 0, 9, 18);
 
             // Top Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 18, 17, 19, 9);
-            AddRectangleIndices_CW_1234(TriangleIndices, 16, 15, 7, 8);
-            AddRectangleIndices_CW_1234(TriangleIndices, 7, 14, 5, 6);
+            AddRectangleIndices_CW_1234(TriangleIndices, 18, 9, 16, 17);
+            AddRectangleIndices_CW_1234(TriangleIndices, 16, 8, 7, 15);
+            AddRectangleIndices_CW_1234(TriangleIndices, 7, 6, 5, 14);
 
             // Bottom Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 11, 10);
-            AddRectangleIndices_CW_1234(TriangleIndices, 1, 2, 12, 11);
-            AddRectangleIndices_CW_1234(TriangleIndices, 2, 3, 4, 13);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 10, 11, 1);
+            AddRectangleIndices_CW_1234(TriangleIndices, 1, 11, 12, 2);
+            AddRectangleIndices_CW_1234(TriangleIndices, 2, 13, 4, 3);
 
             // Side Surface
             AddRectangleIndices_CW_1234(TriangleIndices, 10, 18, 17, 11);
             AddRectangleIndices_CW_1234(TriangleIndices, 12, 15, 14, 13);
-            AddRectangleIndices_CW_1234(TriangleIndices, 3, 6, 5, 4);
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 9, 8, 1);
+            AddRectangleIndices_CW_1234(TriangleIndices, 3, 4, 5, 6);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 8, 9);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
@@ -444,9 +444,6 @@ namespace BaseClasses
 
             wireFrame.Points.Add(arrPoints3D[1]);
             wireFrame.Points.Add(arrPoints3D[8]);
-
-            wireFrame.Points.Add(arrPoints3D[2]);
-            wireFrame.Points.Add(arrPoints3D[7]);
 
             wireFrame.Points.Add(arrPoints3D[3]);
             wireFrame.Points.Add(arrPoints3D[6]);

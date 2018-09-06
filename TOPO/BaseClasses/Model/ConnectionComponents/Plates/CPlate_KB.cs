@@ -316,21 +316,21 @@ namespace BaseClasses
             AddRectangleIndices_CCW_1234(TriangleIndices, 3, 4, 11, 10);
 
             // Back Side
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 7, 6, 1);
-            AddRectangleIndices_CW_1234(TriangleIndices, 1, 6, 5, 2);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 6, 7);
+            AddRectangleIndices_CW_1234(TriangleIndices, 1, 2, 5, 6);
 
             // Top Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 7, 13, 12, 6);
-            AddRectangleIndices_CW_1234(TriangleIndices, 4, 5, 6, 11);
+            AddRectangleIndices_CW_1234(TriangleIndices, 7, 6, 12, 13);
+            AddRectangleIndices_CW_1234(TriangleIndices, 4, 11, 6, 5);
 
             // Bottom Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 9, 8);
-            AddRectangleIndices_CW_1234(TriangleIndices, 1, 2, 3, 10);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 8, 9, 1);
+            AddRectangleIndices_CW_1234(TriangleIndices, 1, 10, 3, 2);
 
             // Side Surface
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 8, 13, 7);
-            AddRectangleIndices_CW_1234(TriangleIndices, 9, 10, 11, 12);
-            AddRectangleIndices_CW_1234(TriangleIndices, 2, 5, 4, 3);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 7, 13, 8);
+            AddRectangleIndices_CW_1234(TriangleIndices, 9, 12, 11, 10);
+            AddRectangleIndices_CW_1234(TriangleIndices, 2, 3, 4, 5);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
