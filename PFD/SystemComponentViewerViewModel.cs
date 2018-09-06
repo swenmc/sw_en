@@ -181,6 +181,62 @@ namespace PFD
         private Dictionary<string, List<CPlate>> plates;
         private Dictionary<string, List<CScrew>> screws;
 
+        public Dictionary<string, List<CCrSc_TW>> CrossSections
+        {
+            get
+            {
+                return crossSections;
+            }
+
+            set
+            {
+                crossSections = value;
+                NotifyPropertyChanged("CrossSections");
+            }
+        }
+        public Dictionary<string, List<CPlate>> Plates
+        {
+            get
+            {
+                return plates;
+            }
+
+            set
+            {
+                plates = value;
+                NotifyPropertyChanged("Plates");
+            }
+        }
+        public Dictionary<string, List<CScrew>> Screws
+        {
+            get
+            {
+                return screws;
+            }
+
+            set
+            {
+                screws = value;
+                NotifyPropertyChanged("Screws");
+            }
+        }
+
+        private object selectedComponent;
+        public object SelectedComponent
+        {
+            get
+            {
+                return selectedComponent;
+            }
+
+            set
+            {
+                selectedComponent = value;
+                NotifyPropertyChanged("SelectedComponent");
+            }
+        }
+        
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
