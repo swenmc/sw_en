@@ -306,7 +306,7 @@ namespace PFD
                 "10075"
         };
 
-        public Color[] arr_Serie_Box_FormSteel_Colors = new Color[]
+        public Color[] arr_Serie_Box_FormSteel_Colors = new Color[1]
         {
             Colors.Red,
         };
@@ -318,10 +318,10 @@ namespace PFD
 
         public string[] arr_Serie_Z_FormSteel_Names = new string[1]
         {
-                "Template Z"
+                "TeC-singlemplate Z"
         };
 
-        public Color[] arr_Serie_Z_FormSteel_Colors = new Color[]
+        public Color[] arr_Serie_Z_FormSteel_Colors = new Color[1]
         {
             Colors.Gold,
         };
@@ -428,6 +428,22 @@ namespace PFD
             {"BG","Base Girt"},        // 12
             {"MR","Main Rafter"},      // 13
             {"MC","Main Column"}       // 14
+        };
+
+        public string[] arr_Serie_Screws_Names = new string[1]
+        {
+            "Hex Head Tek"
+        };
+
+        public string[] arr_Serie_TEK_Names = new string[7]
+        {
+            "Gauge 4",
+            "Gauge 6",
+            "Gauge 8",
+            "Gauge 10",
+            "Gauge 12",
+            "Gauge 14",
+            "Gauge 18"
         };
 
         public float[,] arr_Screws_TEK_Dimensions = new float[7, 2]

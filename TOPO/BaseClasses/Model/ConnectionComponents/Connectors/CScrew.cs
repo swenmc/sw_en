@@ -66,8 +66,9 @@ namespace BaseClasses
         public CScrew()
         { }
 
-        public CScrew(CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fWeight_temp, bool bIsDisplayed)
+        public CScrew(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fWeight_temp, bool bIsDisplayed)
         {
+            Name = sName_temp;
             m_pControlPoint = controlpoint;
             BIsDisplayed = bIsDisplayed;
             m_fLength = fLength_temp;
