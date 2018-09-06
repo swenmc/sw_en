@@ -30,9 +30,15 @@ namespace PFD
         private string[] MComponentSeries;
         private string[] MComponents;
 
+        private List<Tuple<string, string, string, string>> MComponentGeometry;
         private List<Tuple<string, string, string, string>> MComponentDetails;
 
         public bool IsSetFromCode = false;
+
+        float fUnitFactor_Length = 1000;
+        float fUnitFactor_Area = 1000000;//fUnitFactor_Length * fUnitFactor_Length;
+        int iNumberOfDecimalPlaces_Length = 1;
+        int iNumberOfDecimalPlaces_Area = 1;
 
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
@@ -124,6 +130,20 @@ namespace PFD
             }
         }
 
+        public List<Tuple<string, string, string, string>> ComponentGeometry
+        {
+            get
+            {
+                return MComponentGeometry;
+            }
+
+            set
+            {
+                MComponentGeometry = value;
+                NotifyPropertyChanged("ComponentGeometry");
+            }
+        }
+
         public List<Tuple<string, string, string, string>> ComponentDetails
         {
             get
@@ -191,7 +211,6 @@ namespace PFD
             }
         }
 
-        
         private void ComponentSeriesChanged()
         {
             if (ComponentTypeIndex == 0) // Cross-sections
@@ -330,31 +349,43 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
-            details.Add(Tuple.Create("Name","", plate.Name, ""));
-            details.Add(Tuple.Create("Area", "", plate.fArea.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Height_hy", "", plate.fHeight_hy.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("FHoleDiameter", "", plate.FHoleDiameter.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("fThickness_tz", "", plate.fThickness_tz.ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("fWidth_bx", "", plate.fWidth_bx.ToString(nfi), "[mm]"));
+            List<Tuple<string, string, string, string>> geometry = new List<Tuple<string, string, string, string>>();
+            geometry.Add(Tuple.Create("Name","", plate.Name, ""));
+            geometry.Add(Tuple.Create("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
+            geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter*fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.FHoleDiameter*fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(plate.fThickness_tz*fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
+            ComponentGeometry = geometry;
+
+            List < Tuple<string, string, string, string> > details = new List<Tuple<string, string, string, string>>();
             CCNCPathFinder c = new CCNCPathFinder();
             c.RoutePoints = plate.DrillingRoutePoints;
             double dist = c.GetRouteDistance();
-            details.Add(Tuple.Create("Drilling Route Distance","Ldr", dist.ToString(nfi), "[mm]"));
-
+            details.Add(Tuple.Create("Drilling Route Distance","Ldr", (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Area", "A", (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
+            details.Add(Tuple.Create("Weight", "w", Math.Round(plate.fWeight, 2).ToString(nfi), "[kg]"));
             //TODO
             //doplnit potrebne parametre
-
-
 
             ComponentDetails = details;
         }
         public void SetComponentProperties(CCrSc crsc)
         {
-            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
-            details.Add(Tuple.Create("Name","", crsc.Name, ""));
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
 
+            List<Tuple<string, string, string, string>> geometry = new List<Tuple<string, string, string, string>>();
+            geometry.Add(Tuple.Create("Name", "", crsc.Name, ""));
+            geometry.Add(Tuple.Create("Width", "b", (Math.Round(crsc.b * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Height", "h", (Math.Round(crsc.h * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(crsc.t_min * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+            ComponentGeometry = geometry;
+
+            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
             List<CSectionPropertiesText> sectionTexts = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
             List<string> listSectionPropertyValue = new List<string>();
 

@@ -126,6 +126,7 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         public CConCom_Plate_KB(GraphObj.CPoint controlpoint,
@@ -212,6 +213,7 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         //----------------------------------------------------------------------------

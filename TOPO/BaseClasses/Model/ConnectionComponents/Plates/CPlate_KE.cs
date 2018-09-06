@@ -64,6 +64,7 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         public CConCom_Plate_KE(GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
@@ -103,6 +104,7 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         //----------------------------------------------------------------------------

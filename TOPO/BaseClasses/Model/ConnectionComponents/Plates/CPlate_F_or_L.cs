@@ -17,7 +17,7 @@ namespace BaseClasses
         public float FConnectorLength
         {
             get { return fConnectorLength; }
-            set { fConnectorLength = value; }            
+            set { fConnectorLength = value; }
         }       
 
         public CConCom_Plate_F_or_L()
@@ -72,6 +72,7 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         public CConCom_Plate_F_or_L(string sName_temp, CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, CConnector [] arrPlateConnectors_temp,  bool bIsDisplayed)
@@ -116,6 +117,7 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         // F - no holes
@@ -176,6 +178,7 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         //----------------------------------------------------------------------------

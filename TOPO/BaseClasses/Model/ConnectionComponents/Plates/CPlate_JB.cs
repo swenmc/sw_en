@@ -117,6 +117,7 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY_1, m_fhY_2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         public CConCom_Plate_JB(string sName_temp,
@@ -197,6 +198,7 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY_1, m_fhY_2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         //----------------------------------------------------------------------------

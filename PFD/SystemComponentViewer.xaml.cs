@@ -28,7 +28,7 @@ namespace PFD
         public DisplayOptions sDisplayOptions = new DisplayOptions();
 
         CCrSc_TW crsc;
-        CPlate component;
+        CPlate plate;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
         Color cComponentColor = Colors.Aquamarine; // Default
         float fb_R; // Rafter Width
@@ -351,59 +351,59 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // L
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, null, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, null, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
                         {
-                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
+                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
                             break;
                         }
                     case ESerieTypePlate.eSerie_T:
                         {
-                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
+                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
+                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (vm.ComponentIndex == 0) // JA
-                                component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else
-                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (vm.ComponentIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if(vm.ComponentIndex == 1)
-                                component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if (vm.ComponentIndex == 2)
-                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if (vm.ComponentIndex == 3)
-                                component = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
-                                component = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             break;
                         }
                     default:
@@ -412,7 +412,7 @@ namespace PFD
                             break;
                         }
                 }
-                vm.SetComponentProperties(component);
+                vm.SetComponentProperties(plate);
             }
             else
             {
@@ -433,7 +433,7 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-               Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+               Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else
             {
@@ -455,7 +455,7 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                page3D = new Page3Dmodel(component, sDisplayOptions);
+                page3D = new Page3Dmodel(plate, sDisplayOptions);
             }
             else
             {
@@ -529,59 +529,59 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            component = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, null, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, fScrewHoleDiameter, null, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            component = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            component = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
                         {
-                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
+                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
                             break;
                         }
                     case ESerieTypePlate.eSerie_T:
                         {
-                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
+                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            component = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
+                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (vm.ComponentIndex == 0) // JA
-                                component = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else
-                                component = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (vm.ComponentIndex == 0) // KA
-                                component = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if (vm.ComponentIndex == 1)
-                                component = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if (vm.ComponentIndex == 2)
-                                component = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else if (vm.ComponentIndex == 3)
-                                component = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             else
-                                component = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
                             break;
                         }
                     default:
@@ -626,12 +626,12 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                if (component.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found."); return; }
+                if (plate.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found."); return; }
 
                 float fUnitFactor = 1000; // defined in m, exported in mm
 
-                CExportToNC.ExportHolesToNC(component.DrillingRoutePoints, component.fThickness_tz, fUnitFactor);
-                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(component.PointsOut2D), fUnitFactor);
+                CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.fThickness_tz, fUnitFactor);
+                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(plate.PointsOut2D), fUnitFactor);
             }
             else
             {
@@ -643,13 +643,16 @@ namespace PFD
 
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
-            List<Point> points = component.GetHolesCentersPoints2D();
+            List<Point> points = plate.GetHolesCentersPoints2D();
             if (points == null || points.Count == 0)
+            {
                 MessageBox.Show("Drilling points are not defined for selected plate.");
+                return;
+            }
 
             // Calculate size of plate and width to height ratio to set size of "salesman" algorthim window
             float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
-            Drawing2D.CalculateModelLimits(component.HolesCentersPoints2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            Drawing2D.CalculateModelLimits(plate.HolesCentersPoints2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             float fWidth = fTempMax_X - fTempMin_X;
             float fHeigth = fTempMax_Y - fTempMin_Y;
             float fHeightToWidthRatio = fHeigth / fWidth;
@@ -689,11 +692,14 @@ namespace PFD
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Set drilling route points
-                component.DrillingRoutePoints = PathPoints;
-                component.DrillingRoutePoints2D = Geom2D.TransformPointToArrayCoord(component.DrillingRoutePoints);
+                plate.DrillingRoutePoints = PathPoints;
+                plate.DrillingRoutePoints2D = Geom2D.TransformPointToArrayCoord(plate.DrillingRoutePoints);
                 // Draw plate
-                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
-             }
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D);
+
+                // Update value of drilling route in grid view
+                vm.SetComponentProperties(plate);
+            }
             else
             {
                 // Screw - not implemented
@@ -709,8 +715,8 @@ namespace PFD
 
         private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         {
-            component.DrillingRoutePoints2D = null;
-            component.DrillingRoutePoints=null;
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints=null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
             RedrawMirroredComponentAboutXIn2D();
@@ -718,8 +724,8 @@ namespace PFD
 
         private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
         {
-            component.DrillingRoutePoints2D = null;
-            component.DrillingRoutePoints = null;
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
             RedrawMirroredComponentAboutYIn2D();
@@ -727,8 +733,8 @@ namespace PFD
 
         private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
         {
-            component.DrillingRoutePoints2D = null;
-            component.DrillingRoutePoints = null;
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
             RedrawRotatedComponentIn2D(90);
@@ -736,8 +742,8 @@ namespace PFD
 
         private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
         {
-            component.DrillingRoutePoints2D = null;
-            component.DrillingRoutePoints = null;
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
             RedrawMirroredComponentAboutXIn2D();
@@ -745,8 +751,8 @@ namespace PFD
 
         private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
         {
-            component.DrillingRoutePoints2D = null;
-            component.DrillingRoutePoints = null;
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
             RedrawMirroredComponentAboutYIn2D();
@@ -754,8 +760,8 @@ namespace PFD
 
         private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
         {
-            component.DrillingRoutePoints2D = null;
-            component.DrillingRoutePoints = null;
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
             RedrawRotatedComponentIn2D(-90);
@@ -774,9 +780,9 @@ namespace PFD
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Mirror coordinates
-                component.MirrorPlateAboutX();
+                plate.MirrorPlateAboutX();
                 // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else // Screw
             {
@@ -799,9 +805,9 @@ namespace PFD
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Mirror coordinates
-                component.MirrorPlateAboutY();
+                plate.MirrorPlateAboutY();
                 // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else // Screw
             {
@@ -824,9 +830,9 @@ namespace PFD
             else if (vm.ComponentTypeIndex == 1)
             {
                 // Rotate coordinates
-                component.RotatePlateAboutZ_CW(fTheta_deg);
+                plate.RotatePlateAboutZ_CW(fTheta_deg);
                 // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(component, Frame2DWidth, Frame2DHeight, ref page2D);
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D);
             }
             else // Screw
             {
@@ -844,7 +850,7 @@ namespace PFD
             {
                 tabItemDoc.Visibility = Visibility.Visible;
 
-                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(component.PointsOut2D), fUnitFactor);
+                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(plate.PointsOut2D), fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");
@@ -864,10 +870,10 @@ namespace PFD
             float fUnitFactor = 1000; // defined in m, exported in mm
             try
             {
-                if (component.DrillingRoutePoints == null) { MessageBox.Show("Drilling points are not defined."); return; }
+                if (plate.DrillingRoutePoints == null) { MessageBox.Show("Drilling points are not defined."); return; }
                 tabItemDoc.Visibility = Visibility.Visible;
 
-                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(component.DrillingRoutePoints, component.fThickness_tz, fUnitFactor);
+                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(plate.DrillingRoutePoints, plate.fThickness_tz, fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");

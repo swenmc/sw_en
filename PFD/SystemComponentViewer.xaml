@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Title="FormSteel System Component Viewer" WindowState="Maximized">
-    <Grid Name="MainGrid">        
+    <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="10" />
@@ -26,6 +26,8 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="40" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="40" />
@@ -33,22 +35,23 @@
             
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" Margin="0 5 0 0"
-                      ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"  />
+                      ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                 />
+                      ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Component:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_Component" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
-                  />
+                      ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
-
-            <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="None"/>
-            <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="BtnsPanel" Orientation="Horizontal" >
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
+            <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" ItemsSource="{Binding Path=ComponentGeometry}" HeadersVisibility="None" IsReadOnly="False"/>
+            
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
+            <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="None" IsReadOnly="True"/>
+            
+            <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Name="BtnsPanel" Orientation="Horizontal" >
                 <Button Name="BtnExportDXF" Content="Export to DXF" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
                 <Button Name="BtnExportDXF_3D" Content="Export 3D to DXF" Margin="5 0 5 0"
@@ -84,10 +87,10 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
                 </TabItem>
                 <TabItem Name="tabItemDoc" Header="View CNC file">
-                    <Grid VerticalAlignment="Stretch">                        
+                    <Grid VerticalAlignment="Stretch">
                         <!--<DocumentViewer Name="DocumentPreview" VerticalAlignment="Stretch"></DocumentViewer>-->
                         <FlowDocumentScrollViewer Name="FlowDocViewer" VerticalAlignment="Stretch"></FlowDocumentScrollViewer>
-                    </Grid>                    
+                    </Grid>
                 </TabItem>
             </TabControl>
             <CheckBox x:Name="CheckBox_MirrorY" Content="Mirror about vertical axis y-y" Grid.Column="0" Grid.Row="2"  HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="180" Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"/>

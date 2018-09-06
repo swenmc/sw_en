@@ -75,6 +75,7 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
+            fWeight = GetPlateWeight();
         }
 
         //----------------------------------------------------------------------------

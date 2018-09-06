@@ -1,5 +1,6 @@
 ﻿using MATERIAL;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 namespace CRSC
@@ -84,6 +85,19 @@ namespace CRSC
         public double dCompression_curve_stress_1;
         public double dCompression_curve_stress_2;
         public double dCompression_curve_stress_3;
+
+        public ObservableCollection<string> Series = new ObservableCollection<string>()
+        {
+                "Box-10075",
+                "Z",
+                "C-single",
+                "C-back to back",
+                "C-nested",
+                "Box-63020",
+                "SpeedClad",
+                "SmartDek",
+                "PurlinDek"
+        };
 
         #endregion
 

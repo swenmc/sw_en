@@ -7,6 +7,7 @@ using _3DTools;
 using MATH;
 using MATERIAL;
 using BaseClasses.GraphObj;
+using System.Collections.ObjectModel;
 
 namespace BaseClasses
 {
@@ -17,6 +18,8 @@ namespace BaseClasses
         public float fHeight_hy;
         public float fThickness_tz;
         public float fArea;
+        public float fWeight;
+
         public CConnector[] m_arrPlateConnectors;
         public GeometryModel3D Visual_Plate;
 
@@ -95,7 +98,20 @@ namespace BaseClasses
             }
         }
 
-
+        public ObservableCollection<string> Series = new ObservableCollection<string>()
+        {
+             "Serie B",
+             "Serie L",
+             "Serie LL",
+             "Serie F",
+             "Serie Q",
+             "Serie S",
+             "Serie T",
+             "Serie X",
+             "Serie Y",
+             "Serie J",
+             "Serie K"
+        };
 
         public CPlate()
         {
@@ -878,6 +894,11 @@ namespace BaseClasses
                 CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
                 m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, iGauge, FHoleDiameter, fConnectorLength, fConnectorWeight, 0, -90, 0, true);
             }
+        }
+
+        public float GetPlateWeight()
+        {
+            return fArea* fThickness_tz * m_Mat.m_fRho;
         }
     }
 }
