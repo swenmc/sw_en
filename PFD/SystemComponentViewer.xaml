@@ -41,15 +41,16 @@
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <ComboBox Grid.Row="1" Grid.Column="2" Name ="Com_Series" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=Plates}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedIndex="0"/>
+                      ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
+            <!--<ComboBox Grid.Row="1" Grid.Column="2" Name ="Com_Series" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
+                      ItemsSource="{Binding Path=Plates}" DisplayMemberPath="Key" SelectedItem="{Binding Path=}" />-->
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Component:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_Component" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <ComboBox Grid.Row="2" Grid.Column="1" Name ="Com_Component" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
-                      ItemsSource="{Binding SelectedValue, ElementName=Com_Series}" DisplayMemberPath="Name" SelectedIndex="1" SelectedItem="{Binding Path=SelectedComponent, Mode=TwoWay}"/>
+                      ItemsSource="{Binding Path=Components}" SelectedIndex="{Binding Path=ComponentIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
+            <!--<ComboBox Grid.Row="2" Grid.Column="1" Name ="Com_Component" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
+                      ItemsSource="{Binding SelectedItem.Value, ElementName=Com_Series}" 
+                      DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedComponent, UpdateSourceTrigger=PropertyChanged}" />-->
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" ItemsSource="{Binding Path=ComponentGeometry}" HeadersVisibility="None" IsReadOnly="False"/>
