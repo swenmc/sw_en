@@ -438,11 +438,17 @@ namespace PFD
             geometry.Add(Tuple.Create("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(Tuple.Create("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
-            geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-            ComponentGeometry = geometry;
+            if (plate.referenceScrew != null)
+            {
+                geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+
+
+            // BUG - neda sa previest list string na 
+            //ComponentGeometry = geometry;
 
             List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
             CCNCPathFinder c = new CCNCPathFinder();

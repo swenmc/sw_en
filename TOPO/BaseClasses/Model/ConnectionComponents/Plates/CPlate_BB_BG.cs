@@ -14,7 +14,7 @@ namespace BaseClasses
 
         float m_fDistanceBetweenHoles;
 
-        CAnchor referenceAnchor;
+        public CAnchor referenceAnchor;
 
         int iNoPoints2Dfor3D;
 
@@ -110,6 +110,7 @@ namespace BaseClasses
 
         void Calc_Coord3D()
         {
+            // Anchors
             float[,] holesCentersPointsfor3D = new float[IHolesNumber, 2];
 
             holesCentersPointsfor3D[0, 0] = 0.5f * m_fbX;
@@ -118,7 +119,7 @@ namespace BaseClasses
             holesCentersPointsfor3D[1, 0] = 0.5f * m_fbX;
             holesCentersPointsfor3D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
 
-            float fradius = 0.5f * referenceAnchor.Diameter_thread;
+            float fradius = 0.5f * referenceAnchor.Diameter_thread; // Anchor
             int iRadiusAngle = 360; // Angle
 
             // First layer

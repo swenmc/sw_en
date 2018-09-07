@@ -162,6 +162,17 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
+            float fDiameter = plate.referenceScrew != null ? plate.referenceScrew.Diameter_thread : 0;
+
+            if(plate.GetType() == typeof(CConCom_Plate_BB_BG)) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
+            {
+                // TODO - Ondrej - asi by sa to dalo osetrit nejako krajsie
+
+                // Ak je plech typu B - zakladova patka, vykreslit priemer z anchor
+                CConCom_Plate_BB_BG temp_plate = plate as CConCom_Plate_BB_BG;
+                fDiameter = temp_plate.referenceAnchor.Diameter_thread;
+            }
+
             canvasForImage.Children.Clear();
             if (plate != null)
                 DrawComponent(
@@ -175,7 +186,7 @@ namespace BaseClasses
                     plate.HolesCentersPoints2D,
                     plate.DrillingRoutePoints2D, // TODO Ondrej - Prepracovat vsetky polia bodov na objekt Point alebo opacne, toto pole je potrebne naplnit z poloziek zoznamu List<Point> DrillingRoutePoints
                     scale_unit,
-                    plate.referenceScrew.Diameter_thread,
+                    fDiameter,
                     fmodelMarginLeft_x,
                     fmodelMarginBottom_y,
                     fReal_Model_Zoom_Factor,
