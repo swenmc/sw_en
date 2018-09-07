@@ -53,7 +53,17 @@
                       DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedComponent, UpdateSourceTrigger=PropertyChanged}" />-->
 
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
-            <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" ItemsSource="{Binding Path=ComponentGeometry}" HeadersVisibility="None" IsReadOnly="False"/>
+            <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" 
+                      ItemsSource="{Binding Path=ComponentGeometry}" 
+                      HeadersVisibility="None" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
+                      SelectionMode="Single" SelectionUnit="Cell"  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="It1" Width="100" IsReadOnly="True" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="It2" Width="100" IsReadOnly="True" Binding="{Binding ShortCut}" />
+                    <DataGridTextColumn Header="It3" Width="100" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" />
+                    <DataGridTextColumn Header="It4" Width="100" IsReadOnly="True" Binding="{Binding Unit}" />
+                </DataGrid.Columns>
+            </DataGrid>            
             
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="None" IsReadOnly="True"/>

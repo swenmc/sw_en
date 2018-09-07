@@ -32,7 +32,7 @@ namespace PFD
         private string[] MComponentSeries;
         private string[] MComponents;
 
-        private List<Tuple<string, string, string, string>> MComponentGeometry;
+        private List<CComponentParamsView> MComponentGeometry;
         private List<Tuple<string, string, string, string>> MComponentDetails;
 
         public bool IsSetFromCode = false;
@@ -141,7 +141,7 @@ namespace PFD
             }
         }
 
-        public List<Tuple<string, string, string, string>> ComponentGeometry
+        public List<CComponentParamsView> ComponentGeometry
         {
             get
             {
@@ -433,15 +433,15 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<Tuple<string, string, string, string>> geometry = new List<Tuple<string, string, string, string>>();
-            geometry.Add(Tuple.Create("Name", "", plate.Name, ""));
-            geometry.Add(Tuple.Create("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
-            geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-
+            List<CComponentParamsView> geometry = new List<CComponentParamsView>();            
+            geometry.Add(new CComponentParamsView("Name", "", plate.Name, ""));
+            geometry.Add(new CComponentParamsView("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
+            geometry.Add(new CComponentParamsView("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Hole radius", "rh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                        
             ComponentGeometry = geometry;
 
             List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
@@ -461,11 +461,11 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<Tuple<string, string, string, string>> geometry = new List<Tuple<string, string, string, string>>();
-            geometry.Add(Tuple.Create("Name", "", crsc.Name, ""));
-            geometry.Add(Tuple.Create("Width", "b", (Math.Round(crsc.b * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Height", "h", (Math.Round(crsc.h * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(crsc.t_min * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            List<CComponentParamsView> geometry = new List<CComponentParamsView>();
+            geometry.Add(new CComponentParamsView("Name", "", crsc.Name, ""));
+            geometry.Add(new CComponentParamsView("Width", "b", (Math.Round(crsc.b * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Height", "h", (Math.Round(crsc.h * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(crsc.t_min * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
             ComponentGeometry = geometry;
 
