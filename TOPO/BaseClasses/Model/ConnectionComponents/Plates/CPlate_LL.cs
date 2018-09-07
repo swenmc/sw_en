@@ -8,11 +8,11 @@ namespace BaseClasses
 {
     public class CConCom_Plate_LL : CPlate
     {
-        public float m_fbX1;
-        public float m_fbX2;
-        public float m_fhY;
-        public float m_flZ; // Not used in 2D model
-        public float m_ft; // Not used in 2D model
+        public float m_fbX1; // Long vertical part in connection (member z-direction)
+        public float m_fbX2; // short horizontal part in connection (member y-direction)
+        public float m_fhY;  // Member x-direction
+        public float m_flZ;  // Not used in 2D model
+        public float m_ft;   // Not used in 2D model
 
         private float fConnectorLength;
 
@@ -29,7 +29,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_LL(string sName_temp, CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
+        public CConCom_Plate_LL(string sName_temp, CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, CScrew referenceScrew_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -47,9 +47,8 @@ namespace BaseClasses
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
             IHolesNumber = iHolesNumber;
-            FHoleDiameter = fHoleDiameter_temp;
-            FConnectorLength = fConnectorLength_temp;
-            // m_arrPlateConnectors = arrPlateConnectors_temp; // Generate
+            referenceScrew = referenceScrew_temp;
+            // m_arrPlateScrews = arrPlateConnectors_temp; // Generate
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
@@ -76,6 +75,14 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            fA_g = Get_A_rect(2 * m_ft, m_fbX1);
+            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(2 * m_ft, m_fbX1);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = 2 * Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
         //----------------------------------------------------------------------------
@@ -402,7 +409,7 @@ namespace BaseClasses
         {
             if (IHolesNumber > 0)
             {
-                m_arrPlateConnectors = new CConnector[IHolesNumber];
+                m_arrPlateScrews = new CScrew[IHolesNumber];
 
                 // TODO Ondrej 15/07/2018
                 // Tu sa pridava sktrutka do plechu, v klada sa do pozicie na plechu v suradnicovom systeme plechu (controlpoint) a otoci sa do pozicie v LCS plechu
@@ -418,22 +425,22 @@ namespace BaseClasses
                     if (i < IHolesNumber / 4) // Left
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, -90, 0, true);
+                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
                     }
                     else if (i < IHolesNumber * 2 / 4) // Front Left
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, 0, 0, true);
+                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, 0, 0, true);
                     }
                     else if (i < IHolesNumber * 3 / 4) // Front Right
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, 180, 0, true);
+                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, 180, 0, true);
                     }
                     else // Right
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 14, FHoleDiameter, FConnectorLength, 0.015f, 0, -90, 0, true);
+                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
                     }
                 }
             }

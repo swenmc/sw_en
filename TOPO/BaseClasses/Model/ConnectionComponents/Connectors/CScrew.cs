@@ -2,6 +2,9 @@
 using BaseClasses.GraphObj.Objects_3D;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Globalization;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace BaseClasses
 {
@@ -18,6 +21,20 @@ namespace BaseClasses
             set
             {
                 m_eType = value;
+            }
+        }
+
+        private int m_iGauge;
+        public int Gauge
+        {
+            get
+            {
+                return m_iGauge;
+            }
+
+            set
+            {
+                m_iGauge = value;
             }
         }
 
@@ -66,19 +83,70 @@ namespace BaseClasses
         public CScrew()
         { }
 
-        public CScrew(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fWeight_temp, bool bIsDisplayed)
+        public CScrew(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_thread_temp, float fHeadDiameter_temp, float fWasherDiameter_temp, float fWasherThickness_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Name = sName_temp;
             m_pControlPoint = controlpoint;
-            BIsDisplayed = bIsDisplayed;
-            m_fLength = fLength_temp;
             m_iGauge = iGauge_temp;
-            m_fDiameter = fDiameter_temp;
-            m_fWeight = fWeight_temp;
+            Diameter_thread = fDiameter_thread_temp;
+
+            D_h_headdiameter = fHeadDiameter_temp;
+            D_w_washerdiameter = fWasherDiameter_temp;
+            T_w_washerthickness = fWasherThickness_temp;
+
+            Length = fLength_temp;
+            Weight = fWeight_temp;
+            BIsDisplayed = bIsDisplayed;
+
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
+
+        public CScrew(string sName_temp, CTEKScrewProperties screwproperties)
+        {
+            Name = sName_temp;
+            SetScrewValuesFromDatabase(screwproperties);
+        }
+
+        public CScrew(string sName_temp, string gauge)
+        {
+            CTEKScrewProperties screwProperties = CTEKScrewsManager.LoadScrewProperties(gauge);
+            SetScrewValuesFromDatabase(screwProperties);
+        }
+
+        public void SetScrewValuesFromDatabase(CTEKScrewProperties properties)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            Gauge = int.Parse(properties.gauge, nfi);
+            Diameter_thread = float.Parse(properties.threadDiameter, nfi) / 1000f;
+            Diameter_shank = float.Parse(properties.shankDiameter, nfi) / 1000f;
+
+            /*
+            properties.threadType1
+            properties.threadsPerInch1
+            properties.threadType2
+            properties.threadsPerInch2
+            properties.threadType3
+            properties.threadsPerInch3
+            properties.headSizeInch
+            */
+
+            D_h_headdiameter = float.Parse(properties.headSizemm, nfi) / 1000f;
+            D_w_washerdiameter =   float.Parse(properties.washerSizemm, nfi) / 1000f;
+            T_w_washerthickness =  float.Parse(properties.washerThicknessmm, nfi) / 1000f;
+
+            // Default
+            Length = 0.009f; // m
+            Weight = 0.015f; // kg
+        }
+
+        //float fScrewWeight = 0.012f;
 
         /*
         protected override void loadIndices()

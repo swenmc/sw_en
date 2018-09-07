@@ -51,8 +51,7 @@ namespace BaseClasses
             float fRotation_y_deg,
             float fRotation_z_deg,
             int iHolesNumber,
-            float fHoleDiameter_temp,
-            float fConnectorLength_temp,
+            CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
             float fStiffenerSize_temp,
@@ -75,8 +74,7 @@ namespace BaseClasses
             m_fhY2 = fh_2_temp;
             m_ft = ft_platethickness;
             IHolesNumber = iHolesNumber;
-            FHoleDiameter = fHoleDiameter_temp;
-            FConnectorLength = fConnectorLength_temp;
+            referenceScrew = referenceScrew_temp;
             m_fCrscRafterDepth = fCrscRafterDepth_temp;
             m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             m_fStiffenerSize = fStiffenerSize_temp;
@@ -117,13 +115,21 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            GenerateConnectors_ApexOrKneePlate(14, FConnectorLength, 0.015f);
+            GenerateConnectors_ApexOrKneePlate(referenceScrew);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            fA_g = Get_A_rect(m_ft, m_fbX1);
+            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(m_ft, m_fbX1);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
         public CConCom_Plate_KA(CPoint controlpoint,
@@ -137,8 +143,7 @@ namespace BaseClasses
             float fRotation_y_deg,
             float fRotation_z_deg,
             int iHolesNumber,
-            float fHoleDiameter_temp,
-            float fConnectorLength_temp,
+            CScrew referenceScrew_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
             float fStiffenerSize_temp,
@@ -159,8 +164,7 @@ namespace BaseClasses
             m_fhY2 = fh_2_temp;
             m_ft = ft_platethickness;
             IHolesNumber = iHolesNumber;
-            FHoleDiameter = fHoleDiameter_temp;
-            FConnectorLength = fConnectorLength_temp;
+            referenceScrew = referenceScrew_temp;
             m_fCrscRafterDepth = fCrscRafterDepth_temp;
             m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
             m_fStiffenerSize = fStiffenerSize_temp;
@@ -201,13 +205,21 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            GenerateConnectors_ApexOrKneePlate(14, FConnectorLength, 0.015f);
+            GenerateConnectors_ApexOrKneePlate(referenceScrew);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            fA_g = Get_A_rect(m_ft, m_fbX1);
+            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(m_ft, m_fbX1);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
         //----------------------------------------------------------------------------

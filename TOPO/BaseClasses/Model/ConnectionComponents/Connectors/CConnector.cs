@@ -9,10 +9,62 @@ namespace BaseClasses
 {
     public class CConnector : CConnectionComponentEntity3D
     {
-        public int m_iGauge;
-        public float m_fLength;
-        public float m_fDiameter;
-        public float m_fWeight;
+        private float m_fDiameter_shank;
+        public float Diameter_shank
+        {
+            get
+            {
+                return m_fDiameter_shank;
+            }
+
+            set
+            {
+                m_fDiameter_shank = value;
+            }
+        }
+
+        private float m_fDiameter_thread;
+        public float Diameter_thread // d_f - nominal (screw) diameter
+        {
+            get
+            {
+                return m_fDiameter_thread;
+            }
+
+            set
+            {
+                m_fDiameter_thread = value;
+            }
+        }
+
+        private float m_fLength;
+        public float Length
+        {
+            get
+            {
+                return m_fLength;
+            }
+
+            set
+            {
+                m_fLength = value;
+            }
+        }
+
+        private float m_fWeight;
+        public float Weight
+        {
+            get
+            {
+                return m_fWeight;
+            }
+
+            set
+            {
+                m_fWeight = value;
+            }
+        }
+
         public float m_iNumberOfThreads;
         public DiffuseMaterial m_DiffuseMat;
         public Cylinder m_cylinder;
@@ -36,24 +88,23 @@ namespace BaseClasses
             m_cylinder = new Cylinder();
         }
 
-        public CConnector(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConnector(string sName_temp, CPoint controlpoint, float fDiameter_thread_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Name = sName_temp;
             m_Mat = new CMat_03_00(); // Todo - material ako parameter
             m_Mat.Name = "Class 3 / 4 / B8";
             m_pControlPoint = controlpoint;
             BIsDisplayed = bIsDisplayed;
-            m_fLength = fLength_temp;
-            m_iGauge = iGauge_temp;
-            m_fDiameter = fDiameter_temp;
-            m_fWeight = fWeight_temp;
+            Length = fLength_temp;
+            Diameter_thread = fDiameter_thread_temp;
+            Weight = fWeight_temp;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            m_cylinder = new Cylinder(0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
         }
 
         protected override void loadIndices()
@@ -64,7 +115,7 @@ namespace BaseClasses
             ScreenSpaceLines3D ssl3D = new ScreenSpaceLines3D();
 
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
 
             Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
 
@@ -83,7 +134,7 @@ namespace BaseClasses
             Point3DCollection points3D = new Point3DCollection();
 
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
 
             Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
 
@@ -99,7 +150,7 @@ namespace BaseClasses
         }
         public Point3DCollection WireFrameModelPointsFromVisual()
         {
-            Point3DCollection points3D = new Point3DCollection();            
+            Point3DCollection points3D = new Point3DCollection();
             Int32Collection wireFrameIndices = m_cylinder.GetWireFrameIndices_Cylinder(13);
 
             // TODO Ondrej 15/07/2018
@@ -159,7 +210,7 @@ namespace BaseClasses
         {
             m_DiffuseMat = new DiffuseMaterial(brush);
             GeometryModel3D geometryModel = new GeometryModel3D();
-            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            geometryModel = m_cylinder.CreateM_G_M_3D_Volume_Cylinder(new Point3D(m_pControlPoint.X, m_pControlPoint.Y, m_pControlPoint.Z), 13, 0.5f * Diameter_thread, m_fLength, m_DiffuseMat);
 
             TransformCoord(geometryModel);
 

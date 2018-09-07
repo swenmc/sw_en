@@ -96,6 +96,7 @@
     <Compile Include="Drawing3D.cs" />
     <Compile Include="Loading\Combination\CLoadCombinationsGenerator.cs" />
     <Compile Include="Loading\Group\CLoadCaseGroup.cs" />
+    <Compile Include="Loading\Loads\CJointLoadCombinationRatio_ULS.cs" />
     <Compile Include="Loading\Loads\CMemberLoadCombinationRatio_ULS.cs" />
     <Compile Include="Loading\Loads\CMemberDeflectionsInLoadCases.cs" />
     <Compile Include="Loading\Loads\CMemberInternalForcesInLoadCases.cs" />

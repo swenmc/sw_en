@@ -631,6 +631,7 @@ namespace PFD
             bool bUseAdditinalConnectors = true;
             int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
             CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
+            CScrew referenceScrew = new CScrew("TEK", "14");
 
             databaseComponents = new CDatabaseComponents();
 
@@ -674,7 +675,7 @@ namespace PFD
                 fl = databaseComponents.arr_Serie_LL_Dimension[i, 3] / 1000f;
                 ft = databaseComponents.arr_Serie_LL_Dimension[i, 4] / 1000f;
                 iNumberofHoles = (int)databaseComponents.arr_Serie_LL_Dimension[i, 5];
-                platesInSerie3.Add(new CConCom_Plate_LL(databaseComponents.arr_Serie_LL_Names[i], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, true)); // LL
+                platesInSerie3.Add(new CConCom_Plate_LL(databaseComponents.arr_Serie_LL_Names[i], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, 0, referenceScrew, true)); // LL
             }
             plates.Add("Serie LL", platesInSerie3);
 
@@ -740,7 +741,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_J_Dimension[0, 3] / 1000f;
             ft = databaseComponents.arr_Serie_J_Dimension[0, 4] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_J_Dimension[0, 5];
-            platesInSerie8.Add(new CConCom_Plate_JA(databaseComponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
+            platesInSerie8.Add(new CConCom_Plate_JA(databaseComponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             fb = databaseComponents.arr_Serie_J_Dimension[1, 0] / 1000f;
             fh = databaseComponents.arr_Serie_J_Dimension[1, 1] / 1000f;
@@ -748,7 +749,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_J_Dimension[1, 3] / 1000f;
             ft = databaseComponents.arr_Serie_J_Dimension[1, 4] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_J_Dimension[1, 5];
-            platesInSerie8.Add(new CConCom_Plate_JB(databaseComponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
+            platesInSerie8.Add(new CConCom_Plate_JB(databaseComponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             plates.Add("Serie J", platesInSerie8);
 
@@ -762,7 +763,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_K_Dimension[0, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[0, 6] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[0, 7];
-            platesInSerie9.Add(new CConCom_Plate_KA(databaseComponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
+            platesInSerie9.Add(new CConCom_Plate_KA(databaseComponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[1, 0] / 1000f;
             fb = databaseComponents.arr_Serie_K_Dimension[1, 1] / 1000f;
@@ -772,7 +773,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_K_Dimension[1, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[1, 6] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[1, 7];
-            platesInSerie9.Add(new CConCom_Plate_KB(databaseComponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
+            platesInSerie9.Add(new CConCom_Plate_KB(databaseComponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[2, 0] / 1000f;
             fb = databaseComponents.arr_Serie_K_Dimension[2, 1] / 1000f;
@@ -782,7 +783,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_K_Dimension[2, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[2, 6] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[2, 7];
-            platesInSerie9.Add(new CConCom_Plate_KC(databaseComponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
+            platesInSerie9.Add(new CConCom_Plate_KC(databaseComponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[3, 0] / 1000f;
             fb = databaseComponents.arr_Serie_K_Dimension[3, 1] / 1000f;
@@ -792,7 +793,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_K_Dimension[3, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[3, 6] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[3, 7];
-            platesInSerie9.Add(new CConCom_Plate_KD(databaseComponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, 0, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
+            platesInSerie9.Add(new CConCom_Plate_KD(databaseComponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[4, 0] / 1000f;
             fb = databaseComponents.arr_Serie_K_Dimension[4, 1] / 1000f;
@@ -809,6 +810,7 @@ namespace PFD
 
         private void CreateScrews()
         {
+            // TODO - prepracovat a nacitavat vlastnosti z databazy, plati pre vsetky komponenty - prierezy, plechy, skrutky
             int iGauge;
             float fHoleDiameter;
             float fConnectorLength = 0.02f;
@@ -826,7 +828,7 @@ namespace PFD
                 iGauge = (int)databaseComponents.arr_Screws_TEK_Dimensions[i, 0];
                 fHoleDiameter = databaseComponents.arr_Screws_TEK_Dimensions[i, 1] / 1000f;
 
-                screwsInSerie.Add(new CScrew(databaseComponents.arr_Serie_TEK_Names[i], controlpoint, iGauge, fHoleDiameter, fConnectorLength, fConnectorWeight, true));
+                screwsInSerie.Add(new CScrew(databaseComponents.arr_Serie_TEK_Names[i], controlpoint, iGauge, fHoleDiameter,0,0,0, fConnectorLength, fConnectorWeight,0,0,0, true));
             }
             screws.Add("Hex Head Tek", screwsInSerie);
         }

@@ -348,14 +348,14 @@ namespace BaseClasses
                                 }
 
                                 // Add plate connectors
-                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors != null &&
-                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length > 0)
+                                if (cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateScrews != null &&
+                                    cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateScrews.Length > 0)
                                 {
                                     Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
-                                    for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors.Length; m++)
+                                    for (int m = 0; m < cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateScrews.Length; m++)
                                     {
-                                        GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].CreateGeomModel3D(brushConnectors);
-                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateConnectors[m].Visual_Connector = plateConnectorgeom;
+                                        GeometryModel3D plateConnectorgeom = cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateScrews[m].CreateGeomModel3D(brushConnectors);
+                                        cmodel.m_arrConnectionJoints[i].m_arrPlates[l].m_arrPlateScrews[m].Visual_Connector = plateConnectorgeom;
                                         plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
                                     }
                                     plateConnectorsModelGroup.Transform = plateGeom.Transform;
@@ -922,13 +922,13 @@ namespace BaseClasses
                                 if (drawConnectors)
                                 {
                                     // Add plate connectors
-                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors != null &&
-                                        model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length > 0)
+                                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews != null &&
+                                        model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews.Length > 0)
                                     {
-                                        for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; m++)
+                                        for (int m = 0; m < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews.Length; m++)
                                         {
-                                            GeometryModel3D geom = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].Visual_Connector;
-                                            Point3DCollection pointsConnector = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[m].WireFrameModelPointsFromVisual();
+                                            GeometryModel3D geom = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[m].Visual_Connector;
+                                            Point3DCollection pointsConnector = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[m].WireFrameModelPointsFromVisual();
                                             var transPoints_PlateConnector = pointsConnector.Select(p => geom.Transform.Transform(p));
                                             jointPlatePoints.AddRange(transPoints_PlateConnector);
                                         }

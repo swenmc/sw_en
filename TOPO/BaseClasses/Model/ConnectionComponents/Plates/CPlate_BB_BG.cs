@@ -67,6 +67,14 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            fA_g = Get_A_rect(2 * m_ft, m_fhY);
+            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(2 * m_ft, m_fhY);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = 2 * Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
         //----------------------------------------------------------------------------

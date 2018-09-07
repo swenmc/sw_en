@@ -26,12 +26,13 @@ namespace PFD
     {
         CModel_PFD Model;
 
-        public UC_JointDesign() { } // TODO - Refaktorovat, tento konstruktor je pouzity v projekte SBD
+        List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_JointDesign(CModel_PFD model, CComponentListVM compList)
+        public UC_JointDesign(CModel_PFD model, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
         {
             InitializeComponent();
 
+            DesignResults_ULS = designResults_ULS;
             Model = model;
 
             // Joint Design
@@ -76,7 +77,7 @@ namespace PFD
             sDIF_temp.fM_yu = 180000;
             sDIF_temp.fV_yu = 30000;
 
-            CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(Model.m_arrConnectionJoints[0], sDIF_temp);
+            CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, Model.m_arrConnectionJoints[0], sDIF_temp);
         }
     }
 }

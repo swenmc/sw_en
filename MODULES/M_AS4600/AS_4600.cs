@@ -8,6 +8,10 @@ namespace M_AS4600
 {
     public class AS_4600
     {
+        public float Eq_3341____(float fV_asterix, float fPhi_v, float fV_v)
+        {
+            return fV_asterix / (fPhi_v * fV_v); // Eq. (3.3.4.1) // fV_v design ratio
+        }
         public float Eq_5423_1__(float fN_asterix_t, float fPhi, float fN_t)
         {
             return fN_asterix_t / (fPhi * fN_t); // Eq. (5.4.2.3(1)) // fN_t design ratio

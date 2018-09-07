@@ -27,7 +27,7 @@ namespace BaseClasses
         }
 
         // L with or without holes
-        public CConCom_Plate_F_or_L(string sName_temp, CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, float fConnectorLength_temp, bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(string sName_temp, CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, CScrew referenceScrew_temp, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -43,14 +43,12 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
-            IHolesNumber = iHolesNumber;
-            FHoleDiameter = fHoleDiameter_temp;
-            FConnectorLength = fConnectorLength_temp;
-            // m_arrPlateConnectors = arrPlateConnectors_temp; // Generate
+            // m_arrPlateScrews = arrPlateScrews_temp; // Generate
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
-
+            IHolesNumber = iHolesNumber;
+            referenceScrew = referenceScrew_temp;
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -73,9 +71,17 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            fA_g = Get_A_rect(m_ft, m_fhY);
+            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(m_ft, m_fhY);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
-        public CConCom_Plate_F_or_L(string sName_temp, CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, CConnector [] arrPlateConnectors_temp,  bool bIsDisplayed)
+        public CConCom_Plate_F_or_L(string sName_temp, CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, CScrew [] arrPlateScrews_temp,  bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -93,7 +99,7 @@ namespace BaseClasses
             m_ft = ft_platethickness;
             IHolesNumber = iHolesNumber;
             FHoleDiameter = fHoleDiameter_temp;
-            m_arrPlateConnectors = arrPlateConnectors_temp;
+            m_arrPlateScrews = arrPlateScrews_temp;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
@@ -118,6 +124,14 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            fA_g = Get_A_rect(m_ft, m_fhY);
+            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(m_ft, m_fhY);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
         // F - no holes
@@ -480,7 +494,7 @@ namespace BaseClasses
         {
             if (IHolesNumber > 0)
             {
-                m_arrPlateConnectors = new CConnector[IHolesNumber];
+                m_arrPlateScrews = new CScrew[IHolesNumber];
 
                 // TODO Ondrej 15/07/2018
                 // Tu sa pridava sktrutka do plechu, vklada sa do pozicie na plechu v suradnicovom systeme plechu (controlpoint) a otoci sa do pozicie v LCS plechu
@@ -495,12 +509,12 @@ namespace BaseClasses
                     if (i < IHolesNumber / 2) // Left Leg
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 12, FHoleDiameter, FConnectorLength, 0.012f, 0, 0, 0, true);
+                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, 0, 0, true);
                     }
                     else
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, 12, FHoleDiameter, FConnectorLength, 0.012f, 0, -90, 0, true);
+                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
                     }
                 }
             }

@@ -24,7 +24,19 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_KE(string sName_temp, GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_KE(string sName_temp,
+            GraphObj.CPoint controlpoint,
+            float fb_R_temp,
+            float fb_1_temp,
+            float fh_1_temp,
+            float fb_2_temp,
+            float fh_2_temp,
+            float fl_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -65,9 +77,33 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
+            fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * m_ft, m_ft, m_fbX1);
+            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(2 * m_ft, m_fbX1);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = Get_I_yu_channel(m_flZ, m_ft, m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
+            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
+            fI_yu = Get_I_yu_channel(Math.Min(2f * m_flZ, m_fbXR), m_ft, m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
-        public CConCom_Plate_KE(GraphObj.CPoint controlpoint, float fb_R_temp, float fb_1_temp, float fh_1_temp, float fb_2_temp, float fh_2_temp, float fl_temp, float ft_platethickness, float fSLope_rad_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_KE(GraphObj.CPoint controlpoint,
+            float fb_R_temp,
+            float fb_1_temp,
+            float fh_1_temp,
+            float fb_2_temp,
+            float fh_2_temp,
+            float fl_temp,
+            float ft_platethickness,
+            float fSLope_rad_temp,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
             BIsDisplayed = bIsDisplayed;
@@ -105,6 +141,18 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
+            fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * m_ft, m_ft, m_fbX1);
+            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_v_zv = Get_A_rect(2 * m_ft, m_fbX1);
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fI_yu = Get_I_yu_channel(m_flZ, m_ft, m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
+            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
+            fI_yu = Get_I_yu_channel(Math.Min(2f * m_flZ, m_fbXR), m_ft, m_ft, m_fbX1);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
         //----------------------------------------------------------------------------

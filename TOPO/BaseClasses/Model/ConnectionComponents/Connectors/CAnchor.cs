@@ -15,13 +15,12 @@ namespace BaseClasses
         {
             m_pControlPoint = controlpoint;
             BIsDisplayed = bIsDisplayed;
-            m_fLength = fLength_temp;
-            m_iGauge = iGauge_temp;
-            m_fDiameter = fDiameter_temp;
-            m_fWeight = fWeight_temp;
+            Length = fLength_temp;
+            Diameter_thread = fDiameter_temp;
+            Weight = fWeight_temp;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
-            m_cylinder = new Cylinder(0.5f * m_fDiameter, m_fLength, m_DiffuseMat);
+            m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);
         }
 
         /*

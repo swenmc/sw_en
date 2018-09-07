@@ -656,18 +656,18 @@ namespace PFD
             {
                 for (int j = 0; j < model.m_arrConnectionJoints[i].m_arrPlates.Length; j++) // For each plate
                 {
-                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors != null)
+                    if (model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews != null)
                     {
-                        for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors.Length; k++) // For each connector in plate
+                        for (int k = 0; k < model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews.Length; k++) // For each connector in plate
                         {
-                            string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].Name;
+                            string sPrefix = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Name;
                             int iQuantity = 1;
-                            string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_Mat.Name;
-                            int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_iGauge;
-                            float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fDiameter;
-                            float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fLength;
+                            string sMaterialName = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].m_Mat.Name;
+                            int iGauge = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Gauge;
+                            float fDiameter = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Diameter_thread;
+                            float fLength = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Length;
                             string size = iGauge.ToString() + "g" + " x " + Math.Round(fLength * 1000, 0).ToString(); // Display in [mm] (value * 1000)
-                            float fWeightPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fWeight;
+                            float fWeightPerPiece = model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Weight;
                             float fTotalWeight = iQuantity * fWeightPerPiece;
                             float fTotalPrice = iQuantity * fTEK_PricePerPiece_Screws_Total;
 
@@ -677,10 +677,10 @@ namespace PFD
                             {
                                 for (int m = 0; m < ListOfConnectorGroups.Count; m++) // For each group of connectors check if current connector has same prefix and same dimensions as some already created -  // Add connector to the group or create new one
                                 {
-                                    if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].Name &&
-                                    MathF.d_equal(ListOfConnectorGroups[m].m_fDiameter, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fDiameter) &&
-                                    MathF.d_equal(ListOfConnectorGroups[m].m_fLength, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fLength) &&
-                                    MathF.d_equal(ListOfConnectorGroups[m].m_fWeight, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k].m_fWeight))
+                                    if (ListOfConnectorGroups[m].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Name &&
+                                    MathF.d_equal(ListOfConnectorGroups[m].Diameter_thread, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Diameter_thread) &&
+                                    MathF.d_equal(ListOfConnectorGroups[m].Length, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Length) &&
+                                    MathF.d_equal(ListOfConnectorGroups[m].Weight, model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k].Weight))
                                     {
                                         // Add connector to the one from already created groups
 
@@ -705,7 +705,7 @@ namespace PFD
                                 listConnectorTotalPrice.Add(Math.Round(fTotalPrice, iNumberOfDecimalPlacesPrice));
 
                                 // Add first plate in the group to the list of plate groups
-                                ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateConnectors[k]);
+                                ListOfConnectorGroups.Add(model.m_arrConnectionJoints[i].m_arrPlates[j].m_arrPlateScrews[k]);
                             }
                         }
                     }
@@ -722,11 +722,11 @@ namespace PFD
                 foreach (CPlate plate in joint.m_arrPlates)
                 {
                     // Set connectors data
-                    if (plate.m_arrPlateConnectors != null)
+                    if (plate.m_arrPlateScrews != null)
                     {
-                        foreach (CConnector connector in plate.m_arrPlateConnectors)
+                        foreach (CConnector connector in plate.m_arrPlateScrews)
                         {
-                            dTotalConnectorsWeight_Model += connector.m_fWeight;
+                            dTotalConnectorsWeight_Model += connector.Weight;
                             dTotalConnectorsPrice_Model += fTEK_PricePerPiece_Screws_Total;
                             iTotalConnectorsNumber_Model += 1;
                         }

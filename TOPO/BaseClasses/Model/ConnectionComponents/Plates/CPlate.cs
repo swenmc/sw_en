@@ -18,9 +18,17 @@ namespace BaseClasses
         public float fHeight_hy;
         public float fThickness_tz;
         public float fArea;
+        public float fA_g; // Gross area
+        public float fA_n; // Net area
+        public float fA_v_zv; // Shear area
+        public float fA_vn_zv; // Net shear area
+        public float fI_yu; // Moment of inertia of plate
+        public float fW_el_yu; // Elastic section modulus
+        public float fSurface;
         public float fWeight;
 
-        public CConnector[] m_arrPlateConnectors;
+        public CScrew referenceScrew; // Referencny objekt skrutky
+        public CScrew[] m_arrPlateScrews;
         public GeometryModel3D Visual_Plate;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
@@ -544,6 +552,37 @@ namespace BaseClasses
             return Math.Abs(SignedPolygonArea());
         }
 
+        public float Get_A_rect(float ft, float fh)
+        {
+            return ft * fh; // Gross sectional area of plate
+        }
+
+        public float Get_A_channel(float fb, float ft_web, float ft_lip, float fh)
+        {
+            float fA_rect_1 = Get_A_rect(fb, fh);
+            float fA_rect_2 = Get_A_rect(fb - ft_web, fh - 2f * ft_lip);
+
+            return fA_rect_1 - fA_rect_2; // Gross sectional area of plate
+        }
+
+        public float Get_I_yu_rect(float ft, float fh)
+        {
+            return 1f / 12f * ft * MathF.Pow3(fh); // Moment of inertia of plate
+        }
+
+        public float Get_I_yu_channel(float fb, float ft_web, float ft_lip, float fh)
+        {
+            float fI_yu_rect_1 = Get_I_yu_rect(fb, fh);
+            float fI_yu_rect_2 = Get_I_yu_rect(fb - ft_web, fh - 2f * ft_lip);
+
+            return fI_yu_rect_1 - fI_yu_rect_2; // Moment of inertia of plate
+        }
+
+        public float Get_W_el_yu(float fI_yu_rect, float fh)
+        {
+            return 2f  * fI_yu_rect / fh; // Elastic section modulus
+        }
+
         public void Get_ScrewGroup_Circle(int iNumberOfScrewsInGroup, float fx_c, float fy_c, float fRadius, float fAngle_seq_rotation_init_point_deg, float fRotation_rad, bool bUseAdditionalCornerScrews, int iAdditionalConnectorNumberinGroup, out float[,] fSequenceTop, out float[,] fSequenceBottom, out float[] fSequenceTopRadii, out float[] fSequenceBottomRadii)
         {
             int iNumberOfSequencesInGroup = 2;
@@ -885,14 +924,14 @@ namespace BaseClasses
             }
         }
 
-        public void GenerateConnectors_ApexOrKneePlate(int iGauge, float fConnectorLength, float fConnectorWeight)
+        public void GenerateConnectors_ApexOrKneePlate(CScrew referenceScrew)
         {
-            m_arrPlateConnectors = new CConnector[IHolesNumber];
+            m_arrPlateScrews = new CScrew[IHolesNumber];
 
             for (int i = 0; i < IHolesNumber; i++)
             {
                 CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                m_arrPlateConnectors[i] = new CConnector("TEK", controlpoint, iGauge, FHoleDiameter, fConnectorLength, fConnectorWeight, 0, -90, 0, true);
+                m_arrPlateScrews[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
             }
         }
 

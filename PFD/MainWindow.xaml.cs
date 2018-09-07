@@ -86,9 +86,12 @@ namespace PFD
 
         List<CMemberInternalForcesInLoadCases> listMemberInternalForces;
         List<CMemberDeflectionsInLoadCases> listMemberDeflections;
-        List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
-        List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
+        List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
+        List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
 
+        List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+
+        // TODO Ondrej pouzit na zobrazovanie jednotlivych zaloziek (tabitems) aktivitu tlacitok a podobne podla toho ci existuju vysledky pre vnutorne sily, posudenie prutov, posudenie spojov
         bool bInternalForcesResultsExists = false;
         bool bMemberDesignResultsExists = false;
         bool bJointDesignResultsExists = false;
@@ -230,17 +233,19 @@ namespace PFD
 
             //Combobox_LoadCase.SelectedIndex = 0; // Selected load case  - TOto spusti UpdateAll a model sa vytvara znovu
 
-            if (DesignResults_ULS == null)
+            if (MemberDesignResults_ULS == null)
             {
-                Member_Design.IsEnabled = false;
                 Internal_Forces.IsEnabled = false;
+                Member_Design.IsEnabled = false;
+                Joint_Design.IsEnabled = false;
                 //Member_Design.Visibility = Visibility.Hidden;
                 //Internal_Forces.Visibility = Visibility.Hidden;
             }
             else
             {
-                Member_Design.IsEnabled = true;
                 Internal_Forces.IsEnabled = true;
+                Member_Design.IsEnabled = true;
+                Joint_Design.IsEnabled = true;
                 //Member_Design.Visibility = Visibility.Visible;
                 //Internal_Forces.Visibility = Visibility.Visible;
             }
@@ -488,8 +493,6 @@ namespace PFD
             CalculateEQParameters(fT_1x, fT_1y, fMass_Total_x, fMass_Total_y);
         }
 
-
-
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             DateTime start = DateTime.Now;
@@ -665,8 +668,10 @@ namespace PFD
             // Design of members
             // Calculate Internal Forces For Load Cases
 
-            DesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
-            DesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+            MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+            MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+
+            JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
 
             foreach (CMember m in model.m_arrMembers)
             {
@@ -687,54 +692,69 @@ namespace PFD
                             // Member design internal forces
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
                             {
-                                designInternalForces[] sDIF_x;
-                                CMemberDesign designModel = new CMemberDesign();
-                                designModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sDIF_x);
-                                DesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, designModel.fMaximumDesignRatio, sDIF_x[designModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
+                                designInternalForces[] sMemberDIF_x;
+
+                                // Member Design
+                                CMemberDesign memberDesignModel = new CMemberDesign();
+                                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sMemberDIF_x);
+                                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
 
                                 // Set maximum design ratio of whole structure
-                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
                                 {
-                                    fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                                    fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
                                     MaximumDesignRatioWholeStructureMember = m;
                                 }
 
-                                // Output (for debugging)
-                                bDebugging = false; // Testovacie ucely
+                                // Joint Design
+                                designInternalForces[] sJointDIF_x;
+                                CJointDesign jointDesignModel = new CJointDesign();
+                                CConnectionJointTypes joint;
+                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, out joint, out sJointDIF_x);
+                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, joint, lcomb, jointDesignModel.fMaximumDesignRatio, sJointDIF_x[jointDesignModel.fMaximumDesignRatioLocationID]));
+
+                                // Output (for debugging - member results)
+                                bDebugging = true; // Testovacie ucely
                                 if (bDebugging)
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
-                                                      "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                                                      "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
+
+                                // Output (for debugging - member connection / joint results)
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Joint ID: " + joint.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(jointDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
 
                                 // Output - set maximum design ratio by component Type
                                 if (bDebugging)
                                 {
-
                                     switch (m.EMemberType)
                                     {
                                         case EMemberType_FormSteel.eG: // Girt
                                             {
-                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
                                                 {
-                                                    fMaximumDesignRatioGirts = designModel.fMaximumDesignRatio;
+                                                    fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
                                                     MaximumDesignRatioGirt = m;
                                                 }
                                                 break;
                                             }
                                         case EMemberType_FormSteel.eP: // Purlin
                                             {
-                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
                                                 {
-                                                    fMaximumDesignRatioPurlins = designModel.fMaximumDesignRatio;
+                                                    fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
                                                     MaximumDesignRatioPurlin = m;
                                                 }
                                                 break;
                                             }
                                         case EMemberType_FormSteel.eC: // Column
                                             {
-                                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
                                                 {
-                                                    fMaximumDesignRatioColumns = designModel.fMaximumDesignRatio;
+                                                    fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
                                                     MaximumDesignRatioColumn = m;
                                                 }
                                                 break;
@@ -756,14 +776,14 @@ namespace PFD
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
                             {
                                 designDeflections[] sDDeflection_x;
-                                CMemberDesign designModel = new CMemberDesign();
-                                designModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
-                                DesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, designModel.fMaximumDesignRatio, sDDeflection_x[designModel.fMaximumDesignRatioLocationID]));
+                                CMemberDesign memberDesignModel = new CMemberDesign();
+                                memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
 
                                 // Set maximum design ratio of whole structure
-                                if (designModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
                                 {
-                                    fMaximumDesignRatioWholeStructure = designModel.fMaximumDesignRatio;
+                                    fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
                                     MaximumDesignRatioWholeStructureMember = m;
                                 }
 
@@ -772,20 +792,19 @@ namespace PFD
                                 if (bDebugging)
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
-                                                      "Design Ratio: " + Math.Round(designModel.fMaximumDesignRatio, 3).ToString());
+                                                      "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString());
                             }
                         }
                     }
                 }
             }
 
-
             Member_Design.IsEnabled = true; 
             Internal_Forces.IsEnabled = true;
             System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);
             // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
             // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre designModel s hodnotami vn sil v rezoch)
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
 
             MessageBox.Show("Calculation Results \n" +
                     "Maximum design ratio \n" +
@@ -1101,14 +1120,14 @@ namespace PFD
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Member_Design.Content = new UC_MemberDesign(model, compList, DesignResults_ULS, DesignResults_SLS);
+                Member_Design.Content = new UC_MemberDesign(model, compList, MemberDesignResults_ULS, MemberDesignResults_SLS);
             }
             else if (MainTabControl.SelectedIndex == 7)
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Joint_Design.Content = new UC_JointDesign(model, compList).Content;
+                Joint_Design.Content = new UC_JointDesign(model, compList, JointDesignResults_ULS).Content;
             }
             else if (MainTabControl.SelectedIndex == 8)
                 Part_List.Content = new UC_MaterialList(model).Content;

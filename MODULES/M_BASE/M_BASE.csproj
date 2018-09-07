@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\CBase.cs" />
+    <Compile Include="CJointDesign.cs" />
     <Compile Include="CMemberDesign.cs" />
     <Compile Include="Concrete\MatTemp.cs" />
     <Compile Include="FormModBase.cs">

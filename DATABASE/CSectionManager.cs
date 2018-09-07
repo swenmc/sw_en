@@ -197,7 +197,6 @@ namespace DATABASE
                     }
                 }
             }
-            
         }
 
         public static List<string> LoadSectionPropertiesStringList(int ID)

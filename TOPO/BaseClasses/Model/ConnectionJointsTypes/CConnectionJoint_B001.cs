@@ -97,16 +97,12 @@ namespace BaseClasses
             int iAdditionalConnectorNumber = 2*4*4; //2 kruhy, 4 rohy, 4 skrutky v kazom rohu
             int iConnectorNumber = 80; // Plates LH LI, LK
 
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-            List<CTEKScrewProperties> screws = CTEKScrewsManager.LoadTEKScrewsProperties();
-            float fDiameter_temp = float.Parse(screws[4].shankDiameter, nfi) / 1000f; // TODO - zapracovat skurtky do objektu JOINT a PLATE // 0.0055f; // Default - same size as screw
-            float fScrewLength = 0.009f;
+            CScrew referenceScrew = new CScrew("TEK", "12");
 
             m_arrPlates = new CPlate[2];
 
-            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, iConnectorNumber, fDiameter_temp, fScrewLength, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, iConnectorNumber, fDiameter_temp, fScrewLength, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed);  // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, iConnectorNumber, referenceScrew, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_KA("KA", ControlPoint_P2, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, iConnectorNumber, referenceScrew, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed);  // Rotation angle in degrees
         }
 
         public static Point ? Intersection(Point start1, Point end1, Point start2, Point end2)
