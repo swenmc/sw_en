@@ -433,14 +433,14 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<CComponentParamsView> geometry = new List<CComponentParamsView>();
-            geometry.Add(new CComponentParamsView("Name", "", plate.Name, ""));
-            geometry.Add(new CComponentParamsView("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(new CComponentParamsView("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(new CComponentParamsView("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
-            geometry.Add(new CComponentParamsView("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(new CComponentParamsView("Hole radius", "rh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            List<Tuple<string, string, string, string>> geometry = new List<Tuple<string, string, string, string>>();
+            geometry.Add(Tuple.Create("Name", "", plate.Name, ""));
+            geometry.Add(Tuple.Create("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
+            geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
             ComponentGeometry = geometry;
 
