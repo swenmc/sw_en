@@ -36,6 +36,8 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            int iHolesNumber,
+            CScrew referenceScrew_temp,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -60,6 +62,8 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
+            IHolesNumber = iHolesNumber;
+            referenceScrew = referenceScrew_temp;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
@@ -81,9 +85,9 @@ namespace BaseClasses
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * m_ft, m_ft, m_fbX1);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fA_v_zv = Get_A_rect(2 * m_ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = Get_I_yu_channel(m_flZ, m_ft, m_ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
@@ -103,6 +107,8 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            int iHolesNumber,
+            CScrew referenceScrew_temp,
             bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -124,7 +130,8 @@ namespace BaseClasses
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
-
+            IHolesNumber = iHolesNumber;
+            referenceScrew = referenceScrew_temp;
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -145,9 +152,9 @@ namespace BaseClasses
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * m_ft, m_ft, m_fbX1);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fA_v_zv = Get_A_rect(2 * m_ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = Get_I_yu_channel(m_flZ, m_ft, m_ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR

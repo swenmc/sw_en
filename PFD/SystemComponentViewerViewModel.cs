@@ -443,10 +443,15 @@ namespace PFD
             geometry.Add(Tuple.Create("Name", "", plate.Name, ""));
             geometry.Add(Tuple.Create("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(Tuple.Create("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
-            geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.FHoleDiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+            // Holes
+            geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
+            if (plate.referenceScrew != null)
+            {
+                geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
 
             ComponentGeometry = geometry;
 
@@ -626,12 +631,11 @@ namespace PFD
             float ft;
             float fPitch_rad = 11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
             int iNumberofHoles;
-            float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
-            float fScrewHoleDiameter = 0.007f; // Diameter of hole, temporary for preview
             bool bUseAdditinalConnectors = true;
             int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
             CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
             CScrew referenceScrew = new CScrew("TEK", "14");
+            CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
 
             databaseComponents = new CDatabaseComponents();
 
@@ -647,7 +651,7 @@ namespace PFD
                 fl = databaseComponents.arr_Serie_B_Dimension[i, 2] / 1000f;
                 ft = databaseComponents.arr_Serie_B_Dimension[i, 3] / 1000f;
                 iNumberofHoles = (int)databaseComponents.arr_Serie_B_Dimension[i, 4];
-                platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0, 0, 0, true)); // B
+                platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, true)); // B
             }
             plates.Add("Serie B", platesInSerie1);
 
@@ -661,7 +665,7 @@ namespace PFD
                 fl = databaseComponents.arr_Serie_L_Dimension[i, 2] / 1000f;
                 ft = databaseComponents.arr_Serie_L_Dimension[i, 3] / 1000f;
                 iNumberofHoles = (int)databaseComponents.arr_Serie_L_Dimension[i, 4];
-                platesInSerie2.Add(new CConCom_Plate_F_or_L(databaseComponents.arr_Serie_L_Names[i], controlpoint, fb, fh, fl, ft, 0, 0, 0, iNumberofHoles, fScrewHoleDiameter, null, true)); // L
+                platesInSerie2.Add(new CConCom_Plate_F_or_L(databaseComponents.arr_Serie_L_Names[i], controlpoint, fb, fh, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true)); // L
             }
             plates.Add("Serie L", platesInSerie2);
 
@@ -803,7 +807,7 @@ namespace PFD
             fl = databaseComponents.arr_Serie_K_Dimension[4, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[4, 6] / 1000f;
             iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[4, 7];
-            platesInSerie9.Add(new CConCom_Plate_KE(databaseComponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true));
+            platesInSerie9.Add(new CConCom_Plate_KE(databaseComponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true));
 
             plates.Add("Serie K", platesInSerie9);
         }

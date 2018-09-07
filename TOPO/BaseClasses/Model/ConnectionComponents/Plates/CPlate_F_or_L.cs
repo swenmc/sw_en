@@ -12,13 +12,6 @@ namespace BaseClasses
         public float m_fhY;
         public float m_flZ; // Not used in 2D model
         public float m_ft; // Not used in 2D model
-        private float fConnectorLength;
-        
-        public float FConnectorLength
-        {
-            get { return fConnectorLength; }
-            set { fConnectorLength = value; }
-        }       
 
         public CConCom_Plate_F_or_L()
         {
@@ -74,62 +67,9 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(m_ft, m_fhY);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fA_v_zv = Get_A_rect(m_ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
-            fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
-        }
-
-        public CConCom_Plate_F_or_L(string sName_temp, CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, float fHoleDiameter_temp, CScrew [] arrPlateScrews_temp,  bool bIsDisplayed)
-        {
-            Name = sName_temp;
-            eConnComponentType = EConnectionComponentType.ePlate;
-
-            BIsDisplayed = bIsDisplayed;
-
-            ITotNoPointsin2D = 6;
-            ITotNoPointsin3D = 12;
-
-            m_pControlPoint = controlpoint;
-            m_fbX1 = fbX_temp;
-            m_fbX2 = m_fbX1; // L Series - without slope
-            m_fhY = fhY_temp;
-            m_flZ = fl_Z_temp;
-            m_ft = ft_platethickness;
-            IHolesNumber = iHolesNumber;
-            FHoleDiameter = fHoleDiameter_temp;
-            m_arrPlateScrews = arrPlateScrews_temp;
-            m_fRotationX_deg = fRotation_x_deg;
-            m_fRotationY_deg = fRotation_y_deg;
-            m_fRotationZ_deg = fRotation_z_deg;
-
-            // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
-
-            // Calculate point positions
-            Calc_Coord2D();
-            Calc_Coord3D();
-            Calc_HolesCentersCoord2D();
-            Calc_HolesControlPointsCoord3D();
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            fWidth_bx = m_fbX1 + m_fbX2;
-            fHeight_hy = m_fhY;
-            fThickness_tz = m_ft;
-            fArea = PolygonArea();
-            fWeight = GetPlateWeight();
-
-            fA_g = Get_A_rect(m_ft, m_fhY);
-            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
-            fA_v_zv = Get_A_rect(m_ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
@@ -150,12 +90,11 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
-            IHolesNumber = 0;
-            FHoleDiameter = 0;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
-
+            IHolesNumber = 0;
+            referenceScrew = null;
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -193,6 +132,15 @@ namespace BaseClasses
             fThickness_tz = m_ft;
             fArea = PolygonArea();
             fWeight = GetPlateWeight();
+
+            // NO SCREWS
+            fA_g = Get_A_rect(m_ft, m_fhY);
+            //int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g;// - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+            fA_v_zv = Get_A_rect(m_ft, m_fhY);
+            fA_vn_zv = fA_v_zv;// - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+            fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
         //----------------------------------------------------------------------------
@@ -612,7 +560,5 @@ namespace BaseClasses
 
             return wireFrame;
         }
-
-
-    }
+   }
 }
