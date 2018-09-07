@@ -36,9 +36,7 @@ namespace PFD
         private List<Tuple<string, string, string, string>> MComponentDetails;
 
         public bool IsSetFromCode = false;
-
-        private List<CSystemComponent<object>> MSystemComponents = new List<CSystemComponent<object>>();
-
+        
         float fUnitFactor_Length = 1000;
         float fUnitFactor_Area = 1000000;//fUnitFactor_Length * fUnitFactor_Length;
         int iNumberOfDecimalPlaces_Length = 1;
@@ -55,8 +53,12 @@ namespace PFD
             set
             {
                 MComponentTypeIndex = value;
-                ComponentTypeChanged();
-                NotifyPropertyChanged("ComponentTypeIndex");
+                if (MComponentTypeIndex != -1)
+                {
+                    NotifyPropertyChanged("ComponentTypeIndex");
+                    ComponentTypeChanged();
+                    ComponentSerieIndex = 0;
+                }                
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -70,8 +72,13 @@ namespace PFD
             set
             {
                 MComponentSerieIndex = value;
-                ComponentSeriesChanged();
-                NotifyPropertyChanged("ComponentSerieIndex");
+                if (MComponentSerieIndex != -1)
+                {
+                    NotifyPropertyChanged("ComponentSerieIndex");
+                    ComponentSeriesChanged();
+                    ComponentIndex = 0;
+                }
+                    
             }
         }
 
@@ -86,7 +93,7 @@ namespace PFD
             set
             {
                 MComponentIndex = value;
-                NotifyPropertyChanged("ComponentIndex");
+                if(MComponentIndex != -1) NotifyPropertyChanged("ComponentIndex");
             }
         }
 
@@ -161,81 +168,89 @@ namespace PFD
                 NotifyPropertyChanged("ComponentDetails");
             }
         }
-
-        public List<CSystemComponent<object>> SystemComponents
-        {
-            get
-            {
-                return MSystemComponents;
-            }
-
-            set
-            {
-                MSystemComponents = value;
-                NotifyPropertyChanged("SystemComponents");
-            }
-        }
+        
 
         CDatabaseComponents databaseComponents;
         private Dictionary<string, List<CCrSc_TW>> crossSections;
         private Dictionary<string, List<CPlate>> plates;
         private Dictionary<string, List<CScrew>> screws;
 
-        public Dictionary<string, List<CCrSc_TW>> CrossSections
-        {
-            get
-            {
-                return crossSections;
-            }
+        //public Dictionary<string, List<CCrSc_TW>> CrossSections
+        //{
+        //    get
+        //    {
+        //        return crossSections;
+        //    }
 
-            set
-            {
-                crossSections = value;
-                NotifyPropertyChanged("CrossSections");
-            }
-        }
-        public Dictionary<string, List<CPlate>> Plates
-        {
-            get
-            {
-                return plates;
-            }
+        //    set
+        //    {
+        //        crossSections = value;
+        //        NotifyPropertyChanged("CrossSections");
+        //    }
+        //}
+        //public Dictionary<string, List<CPlate>> Plates
+        //{
+        //    get
+        //    {
+        //        return plates;
+        //    }
 
-            set
-            {
-                plates = value;
-                NotifyPropertyChanged("Plates");
-            }
-        }
-        public Dictionary<string, List<CScrew>> Screws
-        {
-            get
-            {
-                return screws;
-            }
+        //    set
+        //    {
+        //        plates = value;
+        //        NotifyPropertyChanged("Plates");
+        //    }
+        //}
+        //List<CPlate> selectedSerie;
+        //public List<CPlate> SelectedSerie
+        //{
+        //    get
+        //    {
+        //        return selectedSerie;
+        //    }
 
-            set
-            {
-                screws = value;
-                NotifyPropertyChanged("Screws");
-            }
-        }
-
-        private object selectedComponent;
-        public object SelectedComponent
-        {
-            get
-            {
-                return selectedComponent;
-            }
-
-            set
-            {
-                selectedComponent = value;
-                NotifyPropertyChanged("SelectedComponent");
-            }
-        }
+        //    set
+        //    {
+        //        selectedSerie = value;
+        //        SelectedComponent = selectedSerie[0];
+        //        NotifyPropertyChanged("SelectedSerie");
+        //    }
+        //}
         
+
+        //public Dictionary<string, List<CScrew>> Screws
+        //{
+        //    get
+        //    {
+        //        return screws;
+        //    }
+
+        //    set
+        //    {
+        //        screws = value;
+        //        NotifyPropertyChanged("Screws");
+        //    }
+        //}
+
+        //private object selectedComponent;
+        //public object SelectedComponent
+        //{
+        //    get
+        //    {
+        //        return selectedComponent;
+        //    }
+
+        //    set
+        //    {
+        //        selectedComponent = value;
+        //        if (selectedComponent == null)
+        //        {
+                    
+        //        }
+        //        NotifyPropertyChanged("SelectedComponent");
+        //    }
+        //}
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -253,10 +268,12 @@ namespace PFD
             ComponentIndex = 1;
 
             //TODO naplnit zoznamy cross sections, plates, screws
-            CreateCrossSections();
-            CreatePlates();
-            CreateScrews();
+            //CreateCrossSections();
+            //CreatePlates();
+            //CreateScrews();
 
+            //SelectedComponent = Plates["Serie B"][0];
+            
             IsSetFromCode = false;
         }
 
@@ -278,22 +295,17 @@ namespace PFD
         {
             if (ComponentTypeIndex == 0) // Cross-sections
             {
-                ComponentSeries = databaseComponents.arr_Serie_CrSc_FormSteel_Names; // Plates
-                ComponentSerieIndex = 0;
-                Components = databaseComponents.arr_Serie_Box_FormSteel_Names;
-                ComponentIndex = 0;
+                ComponentSeries = databaseComponents.arr_Serie_CrSc_FormSteel_Names; // Plates                
+                Components = databaseComponents.arr_Serie_Box_FormSteel_Names;                
             }
             else if (ComponentTypeIndex == 1)
             {
-                ComponentSeries = databaseComponents.arr_SeriesNames; // Plates
-                ComponentSerieIndex = 0;
-                Components = databaseComponents.arr_Serie_B_Names;
-                ComponentIndex = 0;
+                ComponentSeries = databaseComponents.arr_SeriesNames; // Plates                
+                Components = databaseComponents.arr_Serie_B_Names;                
             }
             else // Screws
             {
-                ComponentSeries = null; // Plates
-                ComponentSerieIndex = 0;
+                ComponentSeries = null; // Plates                
                 Components = null;
                 ComponentIndex = 0;
 
@@ -309,38 +321,32 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
-                            Components = databaseComponents.arr_Serie_Box_FormSteel_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_Box_FormSteel_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Z:
                         {
-                            Components = databaseComponents.arr_Serie_Z_FormSteel_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_Z_FormSteel_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            Components = databaseComponents.arr_Serie_C_FormSteel_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_C_FormSteel_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
                         {
-                            Components = databaseComponents.arr_Serie_C_BtoB_FormSteel_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_C_BtoB_FormSteel_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         {
-                            Components = databaseComponents.arr_Serie_C_Nested_FormSteel_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_C_Nested_FormSteel_Names;                            
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
-                            Components = databaseComponents.arr_Serie_Box63020_FormSteel_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_Box63020_FormSteel_Names;                            
                             break;
                         }
                     default:
@@ -357,68 +363,56 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             Components = databaseComponents.arr_Serie_B_Names;
-                            ComponentIndex = 0;
-
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            Components = databaseComponents.arr_Serie_L_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_L_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            Components = databaseComponents.arr_Serie_LL_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_LL_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            Components = databaseComponents.arr_Serie_F_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_F_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
                         {
-                            Components = databaseComponents.arr_Serie_Q_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_Q_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_S:
                         {
-                            Components = databaseComponents.arr_Serie_S_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_S_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_T:
                         {
-                            Components = databaseComponents.arr_Serie_T_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_T_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_X:
                         {
-                            Components = databaseComponents.arr_Serie_X_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_X_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            Components = databaseComponents.arr_Serie_Y_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_Y_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
-                            Components = databaseComponents.arr_Serie_J_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_J_Names;                            
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
-                            Components = databaseComponents.arr_Serie_K_Names;
-                            ComponentIndex = 0;
+                            Components = databaseComponents.arr_Serie_K_Names;                            
                             break;
                         }
                     default:
