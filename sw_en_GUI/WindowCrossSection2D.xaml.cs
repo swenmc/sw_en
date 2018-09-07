@@ -93,7 +93,7 @@ namespace sw_en_GUI
             {
                 INoHoles = plate.IHolesNumber;
                 PointsHoles = plate.HolesCentersPoints2D;
-                DHolesDiameter = plate.FHoleDiameter;
+                DHolesDiameter = plate.referenceScrew.Diameter_thread;
             }
 
             if(plate.DrillingRoutePoints != null)

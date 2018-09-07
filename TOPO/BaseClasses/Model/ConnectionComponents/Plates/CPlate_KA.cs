@@ -25,14 +25,6 @@ namespace BaseClasses
         public float[] HolesCenterRadii;
         public int INumberOfCircleJoints = 2;
 
-        private float fConnectorLength;
-
-        public float FConnectorLength
-        {
-            get { return fConnectorLength; }
-            set { fConnectorLength = value; }
-        }
-
         public CConCom_Plate_KA()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -125,9 +117,9 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(m_ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fA_v_zv = Get_A_rect(m_ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
@@ -215,9 +207,9 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(m_ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fA_v_zv = Get_A_rect(m_ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }

@@ -342,9 +342,8 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
-
                 CScrew referenceScrew = new CScrew("TEK", "14");
+                CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
 
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
@@ -353,7 +352,7 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // L
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 ,true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -405,7 +404,7 @@ namespace PFD
                             else if (vm.ComponentIndex == 3)
                                 plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else
-                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true);
                             break;
                         }
                     default:
@@ -522,8 +521,9 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1) // Plates
             {
-                float fAnchorHoleDiameter = 0.02f; // Diameter of hole, temporary for preview
                 CScrew referenceScrew = new CScrew("TEK", "14");
+                CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
@@ -531,7 +531,7 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, fAnchorHoleDiameter, 0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -583,7 +583,7 @@ namespace PFD
                             else if (vm.ComponentIndex == 3)
                                 plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
                             else
-                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, true);
+                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true);
                             break;
                         }
                     default:

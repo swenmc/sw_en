@@ -55,7 +55,6 @@ namespace BaseClasses
         public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
         public float[,] DrillingRoutePoints2D; // Array of points coordinates of holes centers - short distance for drilling .nc file
 
-        public float FHoleDiameter;
         public int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
         public Point3D[] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
 

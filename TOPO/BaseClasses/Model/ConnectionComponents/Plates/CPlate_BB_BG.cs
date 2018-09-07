@@ -14,6 +14,8 @@ namespace BaseClasses
 
         float m_fDistanceBetweenHoles;
 
+        CAnchor referenceAnchor;
+
         int iNoPoints2Dfor3D;
 
         public CConCom_Plate_BB_BG()
@@ -23,7 +25,7 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_BB_BG(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber_temp, float fHoleDiameter_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_BB_BG(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber_temp, CScrew referenceScrew_temp, CAnchor referenceAnchor_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -37,7 +39,8 @@ namespace BaseClasses
             m_flZ = fl_Z_temp;
             m_ft = ft_platethickness;
             IHolesNumber = iHolesNumber_temp = 2;
-            FHoleDiameter = fHoleDiameter_temp;
+            referenceScrew = referenceScrew_temp;
+            referenceAnchor = referenceAnchor_temp;
 
             m_fDistanceBetweenHoles = 0.5f * m_fhY;
             ITotNoPointsin2D = 8;
@@ -70,9 +73,9 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(2 * m_ft, m_fhY);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fA_v_zv = Get_A_rect(2 * m_ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * FHoleDiameter;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = 2 * Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
@@ -115,7 +118,7 @@ namespace BaseClasses
             holesCentersPointsfor3D[1, 0] = 0.5f * m_fbX;
             holesCentersPointsfor3D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
 
-            float fradius = 0.5f * FHoleDiameter;
+            float fradius = 0.5f * referenceAnchor.Diameter_thread;
             int iRadiusAngle = 360; // Angle
 
             // First layer

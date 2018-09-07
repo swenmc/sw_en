@@ -175,7 +175,7 @@ namespace BaseClasses
                     plate.HolesCentersPoints2D,
                     plate.DrillingRoutePoints2D, // TODO Ondrej - Prepracovat vsetky polia bodov na objekt Point alebo opacne, toto pole je potrebne naplnit z poloziek zoznamu List<Point> DrillingRoutePoints
                     scale_unit,
-                    plate.FHoleDiameter,
+                    plate.referenceScrew.Diameter_thread,
                     fmodelMarginLeft_x,
                     fmodelMarginBottom_y,
                     fReal_Model_Zoom_Factor,
