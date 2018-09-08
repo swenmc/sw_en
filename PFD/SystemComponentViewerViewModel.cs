@@ -39,9 +39,11 @@ namespace PFD
         
         float fUnitFactor_Length = 1000;
         float fUnitFactor_Area = 1000000;//fUnitFactor_Length * fUnitFactor_Length;
+        float fUnitFactor_Volume = 1000000000;//fUnitFactor_Length * fUnitFactor_Length * fUnitFactor_Length;
         int iNumberOfDecimalPlaces_Length = 1;
         int iNumberOfDecimalPlaces_Area = 1;
-
+        int iNumberOfDecimalPlaces_Volume = 1;
+        int iNumberOfDecimalPlaces_Weight = 1;
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
         {
@@ -295,21 +297,18 @@ namespace PFD
         {
             if (ComponentTypeIndex == 0) // Cross-sections
             {
-                ComponentSeries = databaseComponents.arr_Serie_CrSc_FormSteel_Names; // Plates                
-                Components = databaseComponents.arr_Serie_Box_FormSteel_Names;                
+                ComponentSeries = databaseComponents.arr_Serie_CrSc_FormSteel_Names; // Cross-sections
+                Components = databaseComponents.arr_Serie_Box_FormSteel_Names;
             }
             else if (ComponentTypeIndex == 1)
             {
-                ComponentSeries = databaseComponents.arr_SeriesNames; // Plates                
-                Components = databaseComponents.arr_Serie_B_Names;                
+                ComponentSeries = databaseComponents.arr_SeriesNames; // Plates
+                Components = databaseComponents.arr_Serie_B_Names;
             }
             else // Screws
             {
-                ComponentSeries = null; // Plates                
-                Components = null;
-                ComponentIndex = 0;
-
-                // TODO not implemented
+                ComponentSeries = databaseComponents.arr_Serie_Screws_Names; // Screws
+                Components = databaseComponents.arr_Serie_TEK_Names;
             }
         }
 
@@ -321,32 +320,32 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
-                            Components = databaseComponents.arr_Serie_Box_FormSteel_Names;                            
+                            Components = databaseComponents.arr_Serie_Box_FormSteel_Names;
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Z:
                         {
-                            Components = databaseComponents.arr_Serie_Z_FormSteel_Names;                            
+                            Components = databaseComponents.arr_Serie_Z_FormSteel_Names;
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            Components = databaseComponents.arr_Serie_C_FormSteel_Names;                            
+                            Components = databaseComponents.arr_Serie_C_FormSteel_Names;
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
                         {
-                            Components = databaseComponents.arr_Serie_C_BtoB_FormSteel_Names;                            
+                            Components = databaseComponents.arr_Serie_C_BtoB_FormSteel_Names;
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         {
-                            Components = databaseComponents.arr_Serie_C_Nested_FormSteel_Names;                            
+                            Components = databaseComponents.arr_Serie_C_Nested_FormSteel_Names;
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
-                            Components = databaseComponents.arr_Serie_Box63020_FormSteel_Names;                            
+                            Components = databaseComponents.arr_Serie_Box63020_FormSteel_Names;
                             break;
                         }
                     default:
@@ -367,52 +366,52 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            Components = databaseComponents.arr_Serie_L_Names;                            
+                            Components = databaseComponents.arr_Serie_L_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            Components = databaseComponents.arr_Serie_LL_Names;                            
+                            Components = databaseComponents.arr_Serie_LL_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            Components = databaseComponents.arr_Serie_F_Names;                            
+                            Components = databaseComponents.arr_Serie_F_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
                         {
-                            Components = databaseComponents.arr_Serie_Q_Names;                            
+                            Components = databaseComponents.arr_Serie_Q_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_S:
                         {
-                            Components = databaseComponents.arr_Serie_S_Names;                            
+                            Components = databaseComponents.arr_Serie_S_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_T:
                         {
-                            Components = databaseComponents.arr_Serie_T_Names;                            
+                            Components = databaseComponents.arr_Serie_T_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_X:
                         {
-                            Components = databaseComponents.arr_Serie_X_Names;                            
+                            Components = databaseComponents.arr_Serie_X_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
-                            Components = databaseComponents.arr_Serie_Y_Names;                            
+                            Components = databaseComponents.arr_Serie_Y_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
-                            Components = databaseComponents.arr_Serie_J_Names;                            
+                            Components = databaseComponents.arr_Serie_J_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
-                            Components = databaseComponents.arr_Serie_K_Names;                            
+                            Components = databaseComponents.arr_Serie_K_Names;
                             break;
                         }
                     default:
@@ -424,7 +423,7 @@ namespace PFD
             }
             else // Screws
             {
-                // TODO not implemented
+                Components = databaseComponents.arr_Serie_TEK_Names;
             }
         }
 
@@ -433,32 +432,31 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<Tuple<string, string, string, string>> geometry = new List<Tuple<string, string, string, string>>();
-            geometry.Add(Tuple.Create("Name", "", plate.Name, ""));
-            geometry.Add(Tuple.Create("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            geometry.Add(Tuple.Create("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
-            geometry.Add(Tuple.Create("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            List<CComponentParamsView> geometry = new List<CComponentParamsView>();
+            geometry.Add(new CComponentParamsView("Name", "", plate.Name, ""));
+            geometry.Add(new CComponentParamsView("Width", "b", (Math.Round(plate.fWidth_bx * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Height", "h", (Math.Round(plate.fHeight_hy * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            geometry.Add(new CComponentParamsView("Number of holes", "nh", plate.IHolesNumber.ToString(nfi), "[-]"));
+            geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plate.fThickness_tz * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
             if (plate.referenceScrew != null)
             {
-                geometry.Add(Tuple.Create("Hole diameter", "dh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(Tuple.Create("Hole radius", "rh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Hole diameter", "dh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Hole radius", "rh", (Math.Round(plate.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             }
 
-
-            // BUG - neda sa previest list string na 
-            //ComponentGeometry = geometry;
+            ComponentGeometry = geometry;
 
             List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
+            details.Add(Tuple.Create("Perimeter - Cutting route distance", "Lcr", (Math.Round(plate.fCuttingRouteDistance * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Surface", "S", (Math.Round(plate.fSurface * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
+            details.Add(Tuple.Create("Area", "A", (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
+            details.Add(Tuple.Create("Volume", "V", (Math.Round(plate.fVolume * fUnitFactor_Volume, iNumberOfDecimalPlaces_Volume)).ToString(nfi), "[mm^3]"));
+            details.Add(Tuple.Create("Weight", "w", Math.Round(plate.fWeight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
             CCNCPathFinder c = new CCNCPathFinder();
             c.RoutePoints = plate.DrillingRoutePoints;
             double dist = c.GetRouteDistance();
-            details.Add(Tuple.Create("Drilling Route Distance", "Ldr", (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Area", "A", (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
-            details.Add(Tuple.Create("Weight", "w", Math.Round(plate.fWeight, 2).ToString(nfi), "[kg]"));
-            //TODO
-            //doplnit potrebne parametre
+            details.Add(Tuple.Create("Drilling route distance", "Ldr", (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
             ComponentDetails = details;
         }
@@ -485,7 +483,7 @@ namespace PFD
 
                 foreach (CSectionPropertiesText textRow in sectionTexts)
                 {
-                    if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row for property value is which is not empty string
+                    if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row for property value which is not empty string
                         details.Add(Tuple.Create(textRow.text, textRow.symbol, listSectionPropertyValue[textRow.ID - 1], textRow.unit_NmmMpa));
                 }
 
@@ -495,6 +493,22 @@ namespace PFD
             {
                 throw new ArgumentException("Cross section name wasn't found in the database or invalid database data.");
             }
+        }
+        public void SetComponentProperties(CScrew screw)
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
+            details.Add(Tuple.Create("Gauge", "No", screw.Gauge.ToString(nfi), "[-]"));
+            details.Add(Tuple.Create("Thread diameter", "dt", (Math.Round(screw.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Shank diameter", "ds", (Math.Round(screw.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Head diameter", "dh", (Math.Round(screw.D_h_headdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Washer diameter", "dw", (Math.Round(screw.D_w_washerdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(Tuple.Create("Weight", "w", Math.Round(screw.Weight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
+
+            ComponentDetails = details;
         }
 
         private void CreateCrossSections()

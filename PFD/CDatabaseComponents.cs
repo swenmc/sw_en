@@ -435,26 +435,28 @@ namespace PFD
             "Hex Head Tek"
         };
 
-        public string[] arr_Serie_TEK_Names = new string[7]
+        public string[] arr_Serie_TEK_Names = new string[8]
         {
             "Gauge 4",
             "Gauge 6",
             "Gauge 8",
             "Gauge 10",
             "Gauge 12",
+            "Gauge 13",
             "Gauge 14",
-            "Gauge 18"
+            "Gauge 15"
         };
 
-        public float[,] arr_Screws_TEK_Dimensions = new float[7, 2]
+        public float[,] arr_Screws_TEK_Dimensions = new float[8, 2]
         {
             {4f,   2.9f },
             {6f,   3.5f },
             {8f,   4.2f },
             {10f,  4.8f },
-            {12f,  5.5f },
+            {12f,  5.0f },
+            {13f,  6.1f },
             {14f,  6.3f },
-            {18f,  8.0f },
+            {15f,  6.5f },
         };
     }
 }

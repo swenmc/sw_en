@@ -63,7 +63,10 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
 
             fA_g = Get_A_rect(m_ft, m_fhY);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
@@ -131,7 +134,10 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
 
             // NO SCREWS
             fA_g = Get_A_rect(m_ft, m_fhY);

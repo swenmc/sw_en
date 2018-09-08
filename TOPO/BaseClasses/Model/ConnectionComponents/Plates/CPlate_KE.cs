@@ -80,7 +80,10 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
 
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * m_ft, m_ft, m_fbX1);
@@ -147,7 +150,10 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
 
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * m_ft, m_ft, m_fbX1);

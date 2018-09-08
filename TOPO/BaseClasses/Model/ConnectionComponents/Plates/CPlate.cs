@@ -24,7 +24,9 @@ namespace BaseClasses
         public float fA_vn_zv; // Net shear area
         public float fI_yu; // Moment of inertia of plate
         public float fW_el_yu; // Elastic section modulus
+        public float fCuttingRouteDistance;
         public float fSurface;
+        public float fVolume;
         public float fWeight;
 
         public CScrew referenceScrew; // Referencny objekt skrutky
@@ -510,6 +512,40 @@ namespace BaseClasses
             }
         }
 
+        public float GetCuttingRouteDistance()
+        {
+            float fDistance = 0;
+
+            for (int i = 0; i < PointsOut2D.Length / 2; i++)
+            {
+                if (i < PointsOut2D.Length / 2 - 1)
+                {
+                    fDistance += MathF.Sqrt(MathF.Pow2(PointsOut2D[i + 1, 0] - PointsOut2D[i, 0]) + MathF.Pow2(PointsOut2D[i + 1, 1] - PointsOut2D[i, 1]));
+                }
+                else // Last segment
+                {
+                    fDistance += MathF.Sqrt(MathF.Pow2(PointsOut2D[0, 0] - PointsOut2D[i, 0]) + MathF.Pow2(PointsOut2D[0, 1] - PointsOut2D[i, 1]));
+                }
+            }
+
+            return fDistance;
+        }
+
+        public float GetSurfaceIgnoringHoles()
+        {
+            return fThickness_tz * GetCuttingRouteDistance();
+        }
+
+        public float GetVolumeIgnoringHoles()
+        {
+             return fThickness_tz * PolygonArea();
+        }
+
+        public float GetWeightIgnoringHoles()
+        {
+            return m_Mat.m_fRho * GetVolumeIgnoringHoles();
+        }
+
         // Return the polygon's area in "square units."
         // The value will be negative if the polygon is
         // oriented clockwise.
@@ -932,11 +968,6 @@ namespace BaseClasses
                 CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
                 m_arrPlateScrews[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
             }
-        }
-
-        public float GetPlateWeight()
-        {
-            return fArea* fThickness_tz * m_Mat.m_fRho;
         }
     }
 }

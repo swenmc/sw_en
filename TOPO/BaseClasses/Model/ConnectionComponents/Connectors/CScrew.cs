@@ -124,8 +124,23 @@ namespace BaseClasses
             nfi.NumberDecimalSeparator = ".";
 
             Gauge = int.Parse(properties.gauge, nfi);
-            Diameter_thread = float.Parse(properties.threadDiameter, nfi) / 1000f;
-            Diameter_shank = float.Parse(properties.shankDiameter, nfi) / 1000f;
+            try
+            {
+                Diameter_thread = float.Parse(properties.threadDiameter, nfi) / 1000f;
+            }
+            catch
+            {
+                Diameter_thread = 0;
+            }
+
+            try
+            {
+                Diameter_shank = float.Parse(properties.shankDiameter, nfi) / 1000f;
+            }
+            catch
+            {
+                Diameter_shank = 0;
+            }
 
             /*
             properties.threadType1
@@ -137,9 +152,35 @@ namespace BaseClasses
             properties.headSizeInch
             */
 
-            D_h_headdiameter = float.Parse(properties.headSizemm, nfi) / 1000f;
-            D_w_washerdiameter =   float.Parse(properties.washerSizemm, nfi) / 1000f;
-            T_w_washerthickness =  float.Parse(properties.washerThicknessmm, nfi) / 1000f;
+
+            // Temporary - chybajuce data v databaze
+
+            try
+            {
+                D_h_headdiameter = float.Parse(properties.headSizemm, nfi) / 1000f;
+            }
+            catch
+            {
+                D_h_headdiameter = 0;
+            }
+
+            try
+            {
+                D_w_washerdiameter = float.Parse(properties.washerSizemm, nfi) / 1000f;
+            }
+            catch
+            {
+                D_w_washerdiameter = 0;
+            }
+
+            try
+            {
+                T_w_washerthickness = float.Parse(properties.washerThicknessmm, nfi) / 1000f;
+            }
+            catch
+            {
+                T_w_washerthickness = 0;
+            }
 
             // Default
             Length = 0.009f; // m

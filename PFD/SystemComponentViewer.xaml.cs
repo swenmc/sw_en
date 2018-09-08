@@ -29,6 +29,7 @@ namespace PFD
 
         CCrSc_TW crsc;
         CPlate plate;
+        CScrew screw;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
         Color cComponentColor = Colors.Aquamarine; // Default
         float fb_R; // Rafter Width
@@ -45,6 +46,7 @@ namespace PFD
         float fPitch_rad =  11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
         int iNumberofHoles;
 
+        string sGauge_Screw;
 
         double WindowHeight;
         double WindowWidth;
@@ -266,9 +268,8 @@ namespace PFD
                 }
                 else //  Screw
                 {
-                    // Not implemented
+                     sGauge_Screw = (dcomponents.arr_Screws_TEK_Dimensions[vm.ComponentIndex, 0]).ToString();
                 }
-
         }
 
         private void UpdateAll()
@@ -417,7 +418,8 @@ namespace PFD
             }
             else
             {
-                 // Not implemented
+                screw = new CScrew("TEK", sGauge_Screw);
+                vm.SetComponentProperties(screw);
             }
 
             // Create 2D page
@@ -595,7 +597,7 @@ namespace PFD
             }
             else
             {
-                // Not Implemented
+                screw = new CScrew("TEK", sGauge_Screw);
             }
         }
 

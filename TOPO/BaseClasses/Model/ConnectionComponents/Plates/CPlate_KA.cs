@@ -113,7 +113,10 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
 
             fA_g = Get_A_rect(m_ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
@@ -203,7 +206,10 @@ namespace BaseClasses
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
 
             fA_g = Get_A_rect(m_ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek

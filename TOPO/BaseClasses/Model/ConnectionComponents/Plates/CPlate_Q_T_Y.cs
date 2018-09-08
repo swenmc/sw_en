@@ -51,7 +51,10 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
         }
 
         public CConCom_Plate_Q_T_Y(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z1_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
@@ -86,7 +89,10 @@ namespace BaseClasses
             fHeight_hy = m_fhY;
             fThickness_tz = m_ft;
             fArea = PolygonArea();
-            fWeight = GetPlateWeight();
+            fCuttingRouteDistance = GetCuttingRouteDistance();
+            fSurface = GetSurfaceIgnoringHoles();
+            fVolume = GetVolumeIgnoringHoles();
+            fWeight = GetWeightIgnoringHoles();
         }
 
         //----------------------------------------------------------------------------
