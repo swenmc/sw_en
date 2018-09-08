@@ -53,7 +53,7 @@
                       ItemsSource="{Binding SelectedItem.Value, ElementName=Com_Series}" 
                       DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedComponent, UpdateSourceTrigger=PropertyChanged}" />-->
 
-            <StackPanel Grid.Row="0" Grid.RowSpan="5" Grid.Column="2" Margin="10 10 0 0">
+            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="5" Grid.Column="2" Margin="10 10 0 0">
                 <CheckBox Name="chbDrawPoints2D" IsChecked="{Binding Path=DrawPoints2D}" Content="Draw Points 2D" />
                 <CheckBox Name="chbDrawOutLine2D" IsChecked="{Binding Path=DrawOutLine2D}" Content="Draw Outline 2D" />
                 <CheckBox Name="chbDrawPointNumbers2D" IsChecked="{Binding Path=DrawPointNumbers2D}" Content="Draw Point Numbers 2D" />
@@ -77,7 +77,7 @@
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Parameters" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="None" IsReadOnly="True"/>
             
-            <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Name="BtnsPanel" Orientation="Horizontal" >
+            <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" Name="BtnsPanel" Orientation="Horizontal" >
                 <Button Name="BtnExportDXF" Content="Export to DXF" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
                 <Button Name="BtnExportDXF_3D" Content="Export 3D to DXF" Margin="5 0 5 0"
@@ -103,7 +103,7 @@
                 <RowDefinition Height="10" />
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
-            <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0">
+            <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged">
                 <TabItem Name="tabItem2D" Header="View 2D">
                     <Frame Name ="Frame2D" Content="2D Preview" NavigationUIVisibility="Hidden"
                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>

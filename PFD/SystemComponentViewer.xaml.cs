@@ -83,11 +83,60 @@ namespace PFD
             SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
             if (vm != null && vm.IsSetFromCode) return;
 
-            if (e.PropertyName == "ComponentIndex") UpdateAll();
+            if (e.PropertyName == "ComponentIndex") { UpdateAll(); SetUIElementsVisibility(vm); }
 
-            if(e.PropertyName == "DrawPoints2D" || e.PropertyName == "DrawOutLine2D" || e.PropertyName == "DrawPointNumbers2D" || 
+            if (e.PropertyName == "DrawPoints2D" || e.PropertyName == "DrawOutLine2D" || e.PropertyName == "DrawPointNumbers2D" || 
                 e.PropertyName == "DrawHoles2D" || e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
 
+            
+
+        }
+
+        private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
+        {
+            if (vm.ComponentTypeIndex == 0)  //CRSC
+            {
+                DataGridGeometry.IsReadOnly = true;
+                BtnFindCNCPath.Visibility = Visibility.Hidden;
+                BtnExportCNC.Visibility = Visibility.Hidden;
+                BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
+                BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
+
+                CheckBox_MirrorY.Visibility = Visibility.Visible;
+                CheckBox_MirrorX.Visibility = Visibility.Visible;
+                CheckBox_Rotate_CW.Visibility = Visibility.Visible;
+            }
+            else if (vm.ComponentTypeIndex == 1) //plate
+            {
+                DataGridGeometry.IsReadOnly = false;
+                BtnFindCNCPath.Visibility = Visibility.Visible;
+                BtnExportCNC.Visibility = Visibility.Visible;
+                BtnShowCNCSetupFile.Visibility = Visibility.Visible;
+                BtnShowCNCDrillingFile.Visibility = Visibility.Visible;
+                CheckBox_MirrorY.Visibility = Visibility.Visible;
+                CheckBox_MirrorX.Visibility = Visibility.Visible;
+                CheckBox_Rotate_CW.Visibility = Visibility.Visible;
+
+                if (plate != null)
+                {
+                    BtnFindCNCPath.IsEnabled = plate.IHolesNumber > 0;
+                    BtnExportCNC.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
+                    BtnShowCNCDrillingFile.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
+                }
+            }
+            else if (vm.ComponentTypeIndex == 2) //screw
+            {
+                DataGridGeometry.IsReadOnly = true;
+                BtnFindCNCPath.Visibility = Visibility.Hidden;
+                BtnExportCNC.Visibility = Visibility.Hidden;
+                BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
+                BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
+                CheckBox_MirrorY.Visibility = Visibility.Hidden;
+                CheckBox_MirrorX.Visibility = Visibility.Hidden;
+                CheckBox_Rotate_CW.Visibility = Visibility.Hidden;
+            }
+
+            
         }
 
         private void LoadDataFromDatabase()
@@ -939,6 +988,26 @@ namespace PFD
             }
 
             //UpdateAll();
+        }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MainTabControl.SelectedIndex == 0)
+            {
+                CheckBox_MirrorY.Visibility = Visibility.Visible;
+                CheckBox_MirrorX.Visibility = Visibility.Visible;
+                CheckBox_Rotate_CW.Visibility = Visibility.Visible;
+
+                panelOptions2D.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CheckBox_MirrorY.Visibility = Visibility.Hidden;
+                CheckBox_MirrorX.Visibility = Visibility.Hidden;
+                CheckBox_Rotate_CW.Visibility = Visibility.Hidden;
+
+                panelOptions2D.Visibility = Visibility.Hidden;
+            }
         }
     }
 }
