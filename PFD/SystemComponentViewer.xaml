@@ -65,7 +65,7 @@
             <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" 
                       ItemsSource="{Binding Path=ComponentGeometry}" 
                       HeadersVisibility="None" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Single" SelectionUnit="Cell"  >
+                      SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridGeometry_CellEditEnding" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" />
                     <DataGridTextColumn Header="It2" Width="50" IsReadOnly="True" Binding="{Binding ShortCut}" />

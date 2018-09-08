@@ -904,5 +904,41 @@ namespace PFD
             }
 
         }
+
+        private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            string changedText = ((TextBox)e.EditingElement).Text;
+            CComponentParamsView item = ((CComponentParamsView)e.Row.Item);
+            if (changedText == item.Value) return;
+
+            
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (vm.ComponentTypeIndex == 0)
+            {
+                //keby som vedel tak detekujem ktora property sa zmenila takto:
+                //if (item.Name == "Width") crsc.Width = int.Parse(changedText);
+                //a predpokladam,ze by to vykreslilo samo => iba zeby nie :-)
+
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                //keby som vedel tak detekujem ktora property sa zmenila takto:
+                //if (item.Name == "Width") plate.Width = int.Parse(changedText);
+                //a predpokladam,ze by to vykreslilo samo => iba zeby nie :-)
+
+                
+                // Redraw plate in 2D
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+            }
+            else // Screw
+            {
+                throw new NotImplementedException("Component 'screw' is not implemented!");
+            }
+
+            //UpdateAll();
+        }
     }
 }

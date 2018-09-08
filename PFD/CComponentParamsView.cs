@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PFD
 {
-    public class CComponentParamsView
+    public class CComponentParamsView//: INotifyPropertyChanged
     {
+        //-------------------------------------------------------------------------------------------------------------
+        //public event PropertyChangedEventHandler PropertyChanged;
+
         private string MName;
         private string MShortCut;
         private string MValue;
@@ -49,6 +53,7 @@ namespace PFD
             set
             {
                 MValue = value;
+                //NotifyPropertyChanged("Value");
             }
         }
 
@@ -72,5 +77,11 @@ namespace PFD
             MValue = value;
             MUnit = unit;
         }
+
+        //protected void NotifyPropertyChanged(string propertyName)
+        //{
+        //    if (this.PropertyChanged != null)
+        //        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }
