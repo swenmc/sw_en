@@ -38,6 +38,11 @@ namespace M_AS4600
 
         public CCalculJoint(bool bIsDebugging_temp, CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
         {
+            if (joint_temp == null)
+            {
+                throw new ArgumentNullException("Joint object is not defined");
+            }
+
             bIsDebugging = bIsDebugging_temp;
             joint = joint_temp;
             sDIF = sDIF_temp;

@@ -47,14 +47,20 @@ namespace PFD
             CPFDJointsDesign jdinput = sender as CPFDJointsDesign;
             if (jdinput != null && jdinput.IsSetFromCode) return;
 
-            CMember cMember = new CMember();
+            CMemberGroup GroupOfMembersWithSelectedType = Model.listOfModelMemberGroups[jdinput.ComponentTypeIndex];
+
+            // Calculate governing member design ratio in member group
+            CCalculJoint cGoverningMemberStartJointResults;
+            CCalculJoint cGoverningMemberEndJointResults;
+
+            CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberStartJointResults, out cGoverningMemberEndJointResults);
 
             // K diskusii
             // Moznosti su zobrazovat vysledky podla typu spoja alebo po prutoch pre spoje na konci a na zaciatku
             //Model.m_arrMembers.Select(m => m.Name.Contains("girt"))
-            
 
-            // Prva moznost 
+
+            // Prva moznost - asi zacneme tymto
             // Pre vybrany typ spoja prejst vsetky vsetky spoje daneho typu a vybrat najhorsi
             //Model.m_arrConnectionJoints.Select(j => j.mSe)
 
@@ -70,14 +76,76 @@ namespace PFD
 
             // TODO Ondrej - najst pre zaciatocny CNode a koncovy CNode na prute priradeny Joint (CConectionJointTypes)
             // Asi by sa to malo priradit uz priamo v CModel_PFD, resp by tam mala byt tato funckia dostupna
+        }
 
-            designInternalForces sDIF_temp = new designInternalForces(); // TODO nacitat vnutorne sily pre prislusny member a jeho koncovy uzol odpovedajuci spoju
+        // Calculate governing member design ratio
+        public void CalculateGoverningMemberDesignDetails(List<CJointLoadCombinationRatio_ULS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalculJoint cGoverningMemberStartJointResults, out CCalculJoint cGoverningMemberEndJointResults)
+        {
+            cGoverningMemberStartJointResults = null;
+            cGoverningMemberEndJointResults = null;
 
-            // Temporary
-            sDIF_temp.fM_yu = 180000;
-            sDIF_temp.fV_yu = 30000;
+            if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
+            {
+                float fMaximumDesignRatio = 0;
+                foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
+                {
+                    CJointLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
+                    if (res == null) continue;
 
-            CCalculJoint cGoverningMemberStartJointResults = new CCalculJoint(false, Model.m_arrConnectionJoints[0], sDIF_temp);
+                    // TODO - Ondrej
+                    // Najst spoj na zaciatku a na konci pruta vo vysledkovych zaznamoch
+                    CConnectionJointTypes jStart_temp = new CConnectionJointTypes(); // TEMPORARY - nahradit objektom spoja na zaciatku pruta
+                    CConnectionJointTypes jEnd_temp = new CConnectionJointTypes(); // TEMPORARY - nahradit objektom spoja na konci pruta
+
+                    CCalculJoint cJointStart = new CCalculJoint(false, jStart_temp, res.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, jStart_temp, res.DesignInternalForces);
+
+                    if (cJointStart.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatio = cJointStart.fEta_max;
+                        cGoverningMemberStartJointResults = cJointStart;
+                    }
+
+                    if (cJointEnd.fEta_max > fMaximumDesignRatio)
+                    {
+                        fMaximumDesignRatio = cJointEnd.fEta_max;
+                        cGoverningMemberEndJointResults = cJointEnd;
+                    }
+                }
+
+                // TODO - Ondrej
+                // Rozhodujuce vyuzitie pre spoj na zaciatku pruta moze byt napr. z pruta c 5, ale rozhodujuce vyuzitie pre spoj na konci pruta moze byt z pruta 8
+                // Potrebovali by sme z tychto dvoch vyuziti urcit maximum a pre dany prut s tymto maximom zobrazit vyuzite pre start a end joint (hoci jedno z nich nie je maximalne v skupine)
+
+                // Display calculation results - details
+                // Start Joint
+                if (cGoverningMemberStartJointResults != null)
+                    DisplayDesignResultsInGridView(Results_JointAtMemberStart_GridView, cGoverningMemberStartJointResults);
+                else
+                {
+                    // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
+                    // throw new Exception("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available!");
+                }
+
+                // End Joint
+                if (cGoverningMemberEndJointResults != null)
+                    DisplayDesignResultsInGridView(Results_JointAtMemberEnd_GridView, cGoverningMemberEndJointResults);
+                else
+                {
+                    // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
+                    // throw new Exception("Results of selected component are not available!");
+                    MessageBox.Show("Results of selected component are not available!");
+                }
+            }
+        }
+
+        public void DisplayDesignResultsInGridView(DataGrid dataGrid, CCalculJoint obj_CalcDesign)
+        {
+            // TODO  pripravit zoznam parametrov pre datagrid
+            // To Ondrej - Ako by to malo vyzerat, pouzit Tuple, zapracovat do viewmodel
+            // TODO - Ondrej
+            // Prepracovat a refaktorovat DisplayDesignResultsInGridView v UC_MemberDesign.xaml.cs
         }
     }
 }

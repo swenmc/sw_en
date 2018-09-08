@@ -80,8 +80,6 @@ namespace PFD
                 float fMaximumDesignRatio = 0;
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
-
-
                     // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
                     // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
 
@@ -106,7 +104,6 @@ namespace PFD
                     MessageBox.Show("Results of selected component are not available!");
                 }
             }
-
         }
 
         public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_SLS> DesignResults, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
@@ -172,6 +169,9 @@ namespace PFD
                 SetResultsDetailsFor_ULS(obj_CalcDesign);
             else
                 SetResultsDetailsFor_SLS(obj_CalcDesign);
+
+            // TODO Ondrej - prepracovat a spojit s UC_JointDesign
+            // Zadat mi dielcie ulohy
 
             // Create Table
             DataTable table = new DataTable("Table");
@@ -509,7 +509,6 @@ namespace PFD
             zoznamMenuNazvy.Add("η y");
             zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zz.ToString());
             zoznamMenuJednotky.Add("[mm]");
-
         }
     }
 }
