@@ -35,6 +35,12 @@ namespace PFD
         private List<CComponentParamsView> MComponentGeometry;
         private List<Tuple<string, string, string, string>> MComponentDetails;
 
+        bool bDrawPoints;
+        bool bDrawOutLine;
+        bool bDrawPointNumbers;
+        bool bDrawHoles;
+        bool bDrawDrillingRoute;
+
         public bool IsSetFromCode = false;
         
         float fUnitFactor_Length = 1000;
@@ -170,7 +176,76 @@ namespace PFD
                 NotifyPropertyChanged("ComponentDetails");
             }
         }
-        
+
+        public bool DrawPoints2D
+        {
+            get
+            {
+                return bDrawPoints;
+            }
+
+            set
+            {
+                bDrawPoints = value;
+                NotifyPropertyChanged("DrawPoints2D");
+            }
+        }
+
+        public bool DrawOutLine2D
+        {
+            get
+            {
+                return bDrawOutLine;
+            }
+
+            set
+            {
+                bDrawOutLine = value;
+                NotifyPropertyChanged("DrawOutLine2D");
+            }
+        }
+
+        public bool DrawPointNumbers2D
+        {
+            get
+            {
+                return bDrawPointNumbers;
+            }
+
+            set
+            {
+                bDrawPointNumbers = value;
+                NotifyPropertyChanged("DrawPointNumbers2D");
+            }
+        }
+
+        public bool DrawHoles2D
+        {
+            get
+            {
+                return bDrawHoles;
+            }
+
+            set
+            {
+                bDrawHoles = value;
+                NotifyPropertyChanged("DrawHoles2D");
+            }
+        }
+
+        public bool DrawDrillingRoute2D
+        {
+            get
+            {
+                return bDrawDrillingRoute;
+            }
+
+            set
+            {
+                bDrawDrillingRoute = value;
+                NotifyPropertyChanged("DrawDrillingRoute2D");
+            }
+        }
 
         CDatabaseComponents databaseComponents;
         private Dictionary<string, List<CCrSc_TW>> crossSections;
@@ -269,13 +344,19 @@ namespace PFD
             ComponentSerieIndex = 1;
             ComponentIndex = 1;
 
+            DrawPoints2D = true;
+            DrawOutLine2D= true;
+            DrawPointNumbers2D = true;
+            DrawHoles2D = true;
+            DrawDrillingRoute2D = true;
+
             //TODO naplnit zoznamy cross sections, plates, screws
             //CreateCrossSections();
             //CreatePlates();
             //CreateScrews();
 
             //SelectedComponent = Plates["Serie B"][0];
-            
+
             IsSetFromCode = false;
         }
 

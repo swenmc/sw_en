@@ -17,7 +17,8 @@ namespace BaseClasses
         //(mozno uz nejaka aj existuje v inom projekte "SW_EN\GRAPHICS\PAINT" alebo swen_GUI\WindowPaint)
 
 
-        public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage)
+        public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage, 
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawDrillingRoute)
         {
                 float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
                 double dPointInOutDistance_x_real = 0;
@@ -81,11 +82,11 @@ namespace BaseClasses
             canvasForImage.Children.Clear();
                 if (crsc != null)
                     DrawComponent(
-                    true, //bDrawPoints,   // NAPOJIT booly na checkboxy v GUI
-                    true, // bDrawOutLine,
-                    true, // bDrawPointNumbers,
-                    false,
-                    false,
+                    bDrawPoints, //bDrawPoints,   // NAPOJIT booly na checkboxy v GUI
+                    bDrawOutLine, // bDrawOutLine,
+                    bDrawPointNumbers, // bDrawPointNumbers,
+                    bDrawHoles,
+                    bDrawDrillingRoute,
                     crsc.CrScPointsOut,
                     crsc.CrScPointsIn,
                     null,
@@ -101,7 +102,8 @@ namespace BaseClasses
                     canvasForImage);
         }
 
-        public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage)
+        public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawDrillingRoute)
         {
             float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
@@ -176,11 +178,11 @@ namespace BaseClasses
             canvasForImage.Children.Clear();
             if (plate != null)
                 DrawComponent(
-                    true,
-                    true,
-                    true,
-                    true,
-                    true,
+                    bDrawPoints,
+                    bDrawOutLine,
+                    bDrawPointNumbers,
+                    bDrawHoles,
+                    bDrawDrillingRoute,
                     plate.PointsOut2D,
                     null,
                     plate.HolesCentersPoints2D,

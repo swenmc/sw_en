@@ -20,6 +20,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
@@ -40,7 +41,7 @@
                       ItemsSource="{Binding Path=ComponentTypes}" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>-->
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Serie:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
-            <ComboBox Grid.Row="1" Grid.Column="2" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
+            <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_Series" HorizontalAlignment="Left" MinWidth="150" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ComponentSeries}" SelectedIndex="{Binding Path=ComponentSerieIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
             <!--<ComboBox Grid.Row="1" Grid.Column="2" Name ="Com_Series" HorizontalAlignment="Left" Margin="155 0 0 0" MinWidth="150" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=Plates}" DisplayMemberPath="Key" SelectedItem="{Binding Path=}" />-->
@@ -52,6 +53,14 @@
                       ItemsSource="{Binding SelectedItem.Value, ElementName=Com_Series}" 
                       DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedComponent, UpdateSourceTrigger=PropertyChanged}" />-->
 
+            <StackPanel Grid.Row="0" Grid.RowSpan="5" Grid.Column="2" Margin="10 10 0 0">
+                <CheckBox Name="chbDrawPoints2D" IsChecked="{Binding Path=DrawPoints2D}" Content="Draw Points 2D" />
+                <CheckBox Name="chbDrawOutLine2D" IsChecked="{Binding Path=DrawOutLine2D}" Content="Draw Outline 2D" />
+                <CheckBox Name="chbDrawPointNumbers2D" IsChecked="{Binding Path=DrawPointNumbers2D}" Content="Draw Point Numbers 2D" />
+                <CheckBox Name="chbDrawHoles2D" IsChecked="{Binding Path=DrawHoles2D}" Content="Draw Holes 2D" />
+                <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route 2D" />
+            </StackPanel>
+            
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" 
                       ItemsSource="{Binding Path=ComponentGeometry}" 
