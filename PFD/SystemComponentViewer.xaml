@@ -20,7 +20,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
@@ -67,10 +67,10 @@
                       HeadersVisibility="None" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
                       SelectionMode="Single" SelectionUnit="Cell"  >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="It1" Width="100" IsReadOnly="True" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="It2" Width="100" IsReadOnly="True" Binding="{Binding ShortCut}" />
-                    <DataGridTextColumn Header="It3" Width="100" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" />
-                    <DataGridTextColumn Header="It4" Width="100" IsReadOnly="True" Binding="{Binding Unit}" />
+                    <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="It2" Width="50" IsReadOnly="True" Binding="{Binding ShortCut}" />
+                    <DataGridTextColumn Header="It3" Width="50" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" />
+                    <DataGridTextColumn Header="It4" Width="50" IsReadOnly="True" Binding="{Binding Unit}" />
                 </DataGrid.Columns>
             </DataGrid>            
             
