@@ -672,6 +672,13 @@ namespace PFD
                 chbDrawHoles2D.IsEnabled = false;
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
+
+                // Mozno by bolo lepsie pouzit na tabitem pre zobrazenie suborov cnc remove a pre plates ju spat pridat
+                // V takom pripade treba pred remove skontrolovat ci vobec existuje pri prepinani medzi crsc a screw (ci uz nebola odobrata)
+
+                // Do not display tabitem for CNC drilling setup and drilling files
+                TabItem itemCNC = MainTabControl.Items[2] as TabItem;
+                itemCNC.IsEnabled = false;
             }
             else if (vm.ComponentTypeIndex == 1) // Plates
             {
@@ -687,6 +694,10 @@ namespace PFD
                     panelOptions2D.Visibility = Visibility.Visible;
                     panelOptionsTransform2D.Visibility = Visibility.Visible;
                 }
+
+                // Display tabitem for CNC drilling setup and drilling files
+                TabItem itemCNC = MainTabControl.Items[2] as TabItem;
+                itemCNC.IsEnabled = true;
             }
             else // Screws
             {
@@ -696,6 +707,14 @@ namespace PFD
 
                 panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
+
+                // TODO - Ondrej
+                // Mozno by bolo lepsie pouzit na tabitem pre zobrazenie suborov cnc remove a pre plates ju spat pridat
+                // V takom pripade treba pred remove skontrolovat ci vobec existuje pri prepinani medzi crsc a screw (ci uz nebola odobrata)
+
+                // Do not display tabitem for CNC drilling setup and drilling files
+                TabItem itemCNC = MainTabControl.Items[2] as TabItem;
+                itemCNC.IsEnabled = false;
             }
         }
 
