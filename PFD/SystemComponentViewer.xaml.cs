@@ -85,11 +85,12 @@ namespace PFD
 
             if (e.PropertyName == "ComponentIndex") { UpdateAll(); SetUIElementsVisibility(vm); }
 
-            if (e.PropertyName == "DrawPoints2D" || e.PropertyName == "DrawOutLine2D" || e.PropertyName == "DrawPointNumbers2D" || 
-                e.PropertyName == "DrawHoles2D" || e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
-
-            
-
+            if (e.PropertyName == "DrawPoints2D" ||
+                e.PropertyName == "DrawOutLine2D" ||
+                e.PropertyName == "DrawPointNumbers2D" ||
+                e.PropertyName == "DrawHoles2D" ||
+                e.PropertyName == "DrawHoleCentreSymbol2D" ||
+                e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
         }
 
         private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
@@ -120,7 +121,8 @@ namespace PFD
                 if (plate != null)
                 {
                     BtnFindCNCPath.IsEnabled = plate.IHolesNumber > 0;
-                    BtnExportCNC.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
+                    // BtnExportCNC can be enabled for export of plate setup file or cutting file evenif drilling route is not defined or holes are not defined.
+                    //BtnExportCNC.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
                     BtnShowCNCDrillingFile.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
                 }
             }
@@ -135,8 +137,6 @@ namespace PFD
                 CheckBox_MirrorX.Visibility = Visibility.Hidden;
                 CheckBox_Rotate_CW.Visibility = Visibility.Hidden;
             }
-
-            
         }
 
         private void LoadDataFromDatabase()
@@ -478,18 +478,19 @@ namespace PFD
 
             Frame2DWidth = Frame2D.ActualWidth;
             Frame2DHeight = Frame2D.ActualHeight;
-            if (Frame2DWidth == 0) Frame2DWidth = SystemParameters.PrimaryScreenWidth / 2 - 15;
-            if (Frame2DHeight == 0) Frame2DHeight = SystemParameters.PrimaryScreenHeight - 145;
+            // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
+            if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
+            if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
 
             if (vm.ComponentTypeIndex == 0)
             {
                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D, 
-                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
             }
             else
             {
@@ -654,6 +655,44 @@ namespace PFD
             }
         }
 
+        private void Combobox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            // TODO - Ondrej - asi by sa toto malo presunut pod view model, nie som si isty ako to spravit s datagrid ???
+            // Potrebujeme kontrolovat kedy sa, ktory datagrid zobrazi a ci bude readonly atd
+            // Pripadne rozdelit geometricke a dalsie parametre pre vsetky typy component aby sa mohli vzdy zobrazovat oba datagridy
+
+            if (vm.ComponentTypeIndex == 0) // Cross-sections
+            {
+                // skryt alebo nastavit readonly, pripadne sem presunut niektore geometricke parametre
+                TxtGeometry.Visibility = Visibility.Hidden;
+                DataGridGeometry.Visibility = Visibility.Hidden; // Cross-sections
+
+                chbDrawHoles2D.IsEnabled = false;
+                chbDrawHoleCentreSymbol2D.IsEnabled = false;
+                chbDrawDrillingRoute2D.IsEnabled = false;
+            }
+            else if (vm.ComponentTypeIndex == 1) // Plates
+            {
+                TxtGeometry.Visibility = Visibility.Visible;
+                DataGridGeometry.Visibility = Visibility.Visible; // Plates
+
+                chbDrawHoles2D.IsEnabled = true;
+                chbDrawHoleCentreSymbol2D.IsEnabled = true;
+                chbDrawDrillingRoute2D.IsEnabled = true;
+            }
+            else // Screws
+            {
+                // skryt alebo nastavit readonly, pripadne sem presunut niektore geometricke parametre
+                TxtGeometry.Visibility = Visibility.Hidden;
+                DataGridGeometry.Visibility = Visibility.Hidden; // Screws
+
+                panelOptions2D.Visibility = Visibility.Hidden;
+                panelOptionsTransform2D.Visibility = Visibility.Hidden;
+            }
+        }
+
         private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
@@ -683,11 +722,15 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                if (plate.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found."); return; }
+                if (plate.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found. Only setup file is exported."); }
 
                 float fUnitFactor = 1000; // defined in m, exported in mm
 
-                CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.fThickness_tz, fUnitFactor);
+                // Export drilling file
+                if (plate.DrillingRoutePoints != null)
+                    CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.fThickness_tz, fUnitFactor);
+
+                // Export setup file
                 CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(plate.PointsOut2D), fUnitFactor);
             }
             else
@@ -745,7 +788,7 @@ namespace PFD
             if (vm.ComponentTypeIndex == 0)
             {
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -754,7 +797,7 @@ namespace PFD
                 plate.DrillingRoutePoints2D = Geom2D.TransformPointToArrayCoord(plate.DrillingRoutePoints);
                 // Draw plate
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
 
                 // Update value of drilling route in grid view
                 vm.SetComponentProperties(plate);
@@ -766,6 +809,9 @@ namespace PFD
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
+
+            // Enable button to display of CNC drilling file
+            BtnShowCNCDrillingFile.IsEnabled = true;
         }
 
         // TODO Ondrej - je potrebne pridat checkboxy do SystemComponentViewerViewModel ???
@@ -796,7 +842,24 @@ namespace PFD
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
+            // Can't be rotated CW and in the same time CCW
+            if (CheckBox_Rotate_CCW.IsChecked == true)
+                CheckBox_Rotate_CCW.IsChecked = false;
+
             RedrawRotatedComponentIn2D(90);
+        }
+
+        private void CheckBox_Rotate_CCW_Checked(object sender, RoutedEventArgs e)
+        {
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
+            // Can't be rotated CW and in the same time CCW
+            if (CheckBox_Rotate_CW.IsChecked == true)
+                CheckBox_Rotate_CW.IsChecked = false;
+
+            RedrawRotatedComponentIn2D(-90);
         }
 
         private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
@@ -826,6 +889,15 @@ namespace PFD
             RedrawRotatedComponentIn2D(-90);
         }
 
+        private void CheckBox_Rotate_CCW_Unchecked(object sender, RoutedEventArgs e)
+        {
+            plate.DrillingRoutePoints2D = null;
+            plate.DrillingRoutePoints = null;
+            tabItemDoc.Visibility = Visibility.Hidden;
+
+            RedrawRotatedComponentIn2D(90);
+        }
+
         private void RedrawMirroredComponentAboutXIn2D()
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -835,7 +907,7 @@ namespace PFD
                 // Mirror coordinates
                 crsc.MirrorPlateAboutX();
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -843,7 +915,7 @@ namespace PFD
                 plate.MirrorPlateAboutX();
                 // Redraw plate in 2D
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
             }
             else // Screw
             {
@@ -862,7 +934,7 @@ namespace PFD
                 // Mirror coordinates
                 crsc.MirrorPlateAboutY();
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -870,7 +942,7 @@ namespace PFD
                 plate.MirrorPlateAboutY();
                 // Redraw plate in 2D
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
             }
             else // Screw
             {
@@ -889,7 +961,7 @@ namespace PFD
                 // Rotate coordinates
                 crsc.RotateCrsc_CW(fTheta_deg);
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -897,7 +969,7 @@ namespace PFD
                 plate.RotatePlateAboutZ_CW(fTheta_deg);
                 // Redraw plate in 2D
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
             }
             else // Screw
             {
@@ -951,7 +1023,6 @@ namespace PFD
             {
                 MessageBox.Show("Error occurs. Check geometry input.");
             }
-
         }
 
         private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -960,16 +1031,11 @@ namespace PFD
             CComponentParamsView item = ((CComponentParamsView)e.Row.Item);
             if (changedText == item.Value) return;
 
-            
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
             {
-                //keby som vedel tak detekujem ktora property sa zmenila takto:
-                //if (item.Name == "Width") crsc.Width = int.Parse(changedText);
-                //a predpokladam,ze by to vykreslilo samo => iba zeby nie :-)
-
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
@@ -977,36 +1043,28 @@ namespace PFD
                 //if (item.Name == "Width") plate.Width = int.Parse(changedText);
                 //a predpokladam,ze by to vykreslilo samo => iba zeby nie :-)
 
-                
                 // Redraw plate in 2D
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawDrillingRoute2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
             }
             else // Screw
             {
                 throw new NotImplementedException("Component 'screw' is not implemented!");
             }
-
-            //UpdateAll();
         }
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MainTabControl.SelectedIndex == 0)
+            if (MainTabControl.SelectedIndex == 0 && Combobox_Type.SelectedIndex != 2)
             {
-                CheckBox_MirrorY.Visibility = Visibility.Visible;
-                CheckBox_MirrorX.Visibility = Visibility.Visible;
-                CheckBox_Rotate_CW.Visibility = Visibility.Visible;
-
+                // Display only for cross-sections and plates (2D view for screws is not implemented yet)
                 panelOptions2D.Visibility = Visibility.Visible;
+                panelOptionsTransform2D.Visibility = Visibility.Visible;
             }
             else
             {
-                CheckBox_MirrorY.Visibility = Visibility.Hidden;
-                CheckBox_MirrorX.Visibility = Visibility.Hidden;
-                CheckBox_Rotate_CW.Visibility = Visibility.Hidden;
-
                 panelOptions2D.Visibility = Visibility.Hidden;
+                panelOptionsTransform2D.Visibility = Visibility.Hidden;
             }
         }
     }

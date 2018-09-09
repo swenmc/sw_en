@@ -18,7 +18,7 @@ namespace BaseClasses
 
 
         public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage, 
-            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawDrillingRoute)
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers)
         {
                 float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
                 double dPointInOutDistance_x_real = 0;
@@ -85,8 +85,9 @@ namespace BaseClasses
                     bDrawPoints, //bDrawPoints,   // NAPOJIT booly na checkboxy v GUI
                     bDrawOutLine, // bDrawOutLine,
                     bDrawPointNumbers, // bDrawPointNumbers,
-                    bDrawHoles,
-                    bDrawDrillingRoute,
+                    false,
+                    false,
+                    false,
                     crsc.CrScPointsOut,
                     crsc.CrScPointsIn,
                     null,
@@ -103,7 +104,7 @@ namespace BaseClasses
         }
 
         public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
-            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawDrillingRoute)
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawHoleCentreSymbols, bool bDrawDrillingRoute)
         {
             float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
@@ -182,6 +183,7 @@ namespace BaseClasses
                     bDrawOutLine,
                     bDrawPointNumbers,
                     bDrawHoles,
+                    bDrawHoleCentreSymbols,
                     bDrawDrillingRoute,
                     plate.PointsOut2D,
                     null,
@@ -202,6 +204,7 @@ namespace BaseClasses
             bool bDrawOutLine,
             bool bDrawPointNumbers,
             bool bDrawHoles,
+            bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
             float[,] PointsOut,
             float[,] PointsIn,
@@ -229,7 +232,7 @@ namespace BaseClasses
             // Holes
             if (PointsHoles != null)
             {
-                DrawHoles(bDrawHoles, PointsHoles, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, scale_unit, DHolesDiameter, canvasForImage);
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, PointsHoles, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, scale_unit, DHolesDiameter, canvasForImage);
 
                 DrawDrillingRoute(bDrawDrillingRoute, PointsDrillingRoute, fReal_Model_Zoom_Factor, fmodelMarginLeft_x, fmodelMarginBottom_y, canvasForImage);
             }
@@ -362,7 +365,7 @@ namespace BaseClasses
                     {
                         double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
                         double fCanvasLeft = modelMarginLeft_x;
-                        DrawPolyLine(true, PointsOut, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                        DrawPolyLine(true, PointsOut, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
                     }
 
                     // Internal outline lines
@@ -370,7 +373,7 @@ namespace BaseClasses
                     {
                         double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page + dPointInOutDistance_y_page;
                         double fCanvasLeft = modelMarginLeft_x + dPointInOutDistance_x_page;
-                        DrawPolyLine(true, PointsIn, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                        DrawPolyLine(true, PointsIn, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
                     }
                 }
                 else
@@ -401,7 +404,7 @@ namespace BaseClasses
                                 l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0, 1];
                             }
 
-                            DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                            DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
                         }
                     }
 
@@ -457,7 +460,7 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawHoles(bool bDrawHoles, float [,] PointsHoles, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, float scale_unit, double DHolesDiameter, Canvas canvasForImage)
+        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, float [,] PointsHoles, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, float scale_unit, double DHolesDiameter, Canvas canvasForImage)
         {
             if (bDrawHoles)
             {
@@ -467,9 +470,11 @@ namespace BaseClasses
                     for (int i = 0; i < PointsHoles.Length / 2; i++)
                     {
                         // Draw Hole
-                        DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter, Brushes.Black, 2, canvasForImage);
+                        DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter, Brushes.Black, 1, canvasForImage);
+ 
                         // Draw Symbol of Center
-                        DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter + 10, Brushes.Red, 2, canvasForImage);
+                        if(bDrawHoleCentreSymbols)
+                           DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter + 10, Brushes.Red, 1, canvasForImage);
                     }
                 }
             }
@@ -509,7 +514,7 @@ namespace BaseClasses
             double fCanvasLeft = modelMarginLeft_x + fx_min;
 
             if (PointsDrillingRoute != null)
-                DrawPolyLine(false, PointsDrillingRoute, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                DrawPolyLine(false, PointsDrillingRoute, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         }
 
         public static void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)

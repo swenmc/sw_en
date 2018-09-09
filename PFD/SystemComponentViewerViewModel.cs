@@ -33,13 +33,19 @@ namespace PFD
         private string[] MComponents;
 
         private List<CComponentParamsView> MComponentGeometry;
-        private List<Tuple<string, string, string, string>> MComponentDetails;
+        private List<CComponentParamsView> MComponentDetails;
 
         bool bDrawPoints;
         bool bDrawOutLine;
         bool bDrawPointNumbers;
         bool bDrawHoles;
+        bool bDrawHoleCentreSymbol;
         bool bDrawDrillingRoute;
+
+        bool bMirrorY;
+        bool bMirrorX;
+        bool bRotate_90_CW;
+        bool bRotate_90_CCW;
 
         public bool IsSetFromCode = false;
         
@@ -66,7 +72,7 @@ namespace PFD
                     NotifyPropertyChanged("ComponentTypeIndex");
                     ComponentTypeChanged();
                     ComponentSerieIndex = 0;
-                }                
+                }
             }
         }
         //-------------------------------------------------------------------------------------------------------------
@@ -86,7 +92,6 @@ namespace PFD
                     ComponentSeriesChanged();
                     ComponentIndex = 0;
                 }
-                    
             }
         }
 
@@ -104,8 +109,6 @@ namespace PFD
                 if(MComponentIndex != -1) NotifyPropertyChanged("ComponentIndex");
             }
         }
-
-
 
         public List<string> ComponentTypes
         {
@@ -163,7 +166,7 @@ namespace PFD
             }
         }
 
-        public List<Tuple<string, string, string, string>> ComponentDetails
+        public List<CComponentParamsView> ComponentDetails
         {
             get
             {
@@ -233,6 +236,20 @@ namespace PFD
             }
         }
 
+        public bool DrawHoleCentreSymbol2D
+        {
+            get
+            {
+                return bDrawHoleCentreSymbol;
+            }
+
+            set
+            {
+                bDrawHoleCentreSymbol = value;
+                NotifyPropertyChanged("DrawHoleCentreSymbol2D");
+            }
+        }
+
         public bool DrawDrillingRoute2D
         {
             get
@@ -244,6 +261,62 @@ namespace PFD
             {
                 bDrawDrillingRoute = value;
                 NotifyPropertyChanged("DrawDrillingRoute2D");
+            }
+        }
+
+        public bool MirrorY
+        {
+            get
+            {
+                return bMirrorY;
+            }
+
+            set
+            {
+                bMirrorY = value;
+                NotifyPropertyChanged("MirrorY");
+            }
+        }
+
+        public bool MirrorX
+        {
+            get
+            {
+                return bMirrorX;
+            }
+
+            set
+            {
+                bMirrorX = value;
+                NotifyPropertyChanged("MirrorX");
+            }
+        }
+
+        public bool Rotate_90_CW
+        {
+            get
+            {
+                return bRotate_90_CW;
+            }
+
+            set
+            {
+                bRotate_90_CW = value;
+                NotifyPropertyChanged("Rotate90CW");
+            }
+        }
+
+        public bool Rotate_90_CCW
+        {
+            get
+            {
+                return bRotate_90_CCW;
+            }
+
+            set
+            {
+                bRotate_90_CCW = value;
+                NotifyPropertyChanged("Rotate90CCW");
             }
         }
 
@@ -348,7 +421,13 @@ namespace PFD
             DrawOutLine2D= true;
             DrawPointNumbers2D = true;
             DrawHoles2D = true;
+            DrawHoleCentreSymbol2D = true;
             DrawDrillingRoute2D = true;
+
+            MirrorY = false;
+            MirrorX = false;
+            Rotate_90_CW = false;
+            Rotate_90_CCW = false;
 
             //TODO naplnit zoznamy cross sections, plates, screws
             //CreateCrossSections();
@@ -528,16 +607,16 @@ namespace PFD
 
             ComponentGeometry = geometry;
 
-            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
-            details.Add(Tuple.Create("Perimeter - Cutting route distance", "Lcr", (Math.Round(plate.fCuttingRouteDistance * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Surface", "S", (Math.Round(plate.fSurface * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
-            details.Add(Tuple.Create("Area", "A", (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
-            details.Add(Tuple.Create("Volume", "V", (Math.Round(plate.fVolume * fUnitFactor_Volume, iNumberOfDecimalPlaces_Volume)).ToString(nfi), "[mm^3]"));
-            details.Add(Tuple.Create("Weight", "w", Math.Round(plate.fWeight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
+            List<CComponentParamsView> details = new List<CComponentParamsView>();
+            details.Add(new CComponentParamsView("Perimeter - Cutting route distance", "Lcr", (Math.Round(plate.fCuttingRouteDistance * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Surface", "S", (Math.Round(plate.fSurface * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
+            details.Add(new CComponentParamsView("Area", "A", (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
+            details.Add(new CComponentParamsView("Volume", "V", (Math.Round(plate.fVolume * fUnitFactor_Volume, iNumberOfDecimalPlaces_Volume)).ToString(nfi), "[mm^3]"));
+            details.Add(new CComponentParamsView("Weight", "w", Math.Round(plate.fWeight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
             CCNCPathFinder c = new CCNCPathFinder();
             c.RoutePoints = plate.DrillingRoutePoints;
             double dist = c.GetRouteDistance();
-            details.Add(Tuple.Create("Drilling route distance", "Ldr", (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Drilling route distance", "Ldr", (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
             ComponentDetails = details;
         }
@@ -554,7 +633,7 @@ namespace PFD
 
             ComponentGeometry = geometry;
 
-            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
+            List<CComponentParamsView> details = new List<CComponentParamsView>();
             List<CSectionPropertiesText> sectionTexts = CSectionManager.LoadSectionPropertiesNamesSymbolsUnits();
             List<string> listSectionPropertyValue = new List<string>();
 
@@ -565,7 +644,7 @@ namespace PFD
                 foreach (CSectionPropertiesText textRow in sectionTexts)
                 {
                     if (listSectionPropertyValue[textRow.ID - 1] != "") // Add only row for property value which is not empty string
-                        details.Add(Tuple.Create(textRow.text, textRow.symbol, listSectionPropertyValue[textRow.ID - 1], textRow.unit_NmmMpa));
+                        details.Add(new CComponentParamsView(textRow.text, textRow.symbol, listSectionPropertyValue[textRow.ID - 1], textRow.unit_NmmMpa));
                 }
 
                 ComponentDetails = details;
@@ -580,14 +659,14 @@ namespace PFD
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
-            List<Tuple<string, string, string, string>> details = new List<Tuple<string, string, string, string>>();
-            details.Add(Tuple.Create("Gauge", "No", screw.Gauge.ToString(nfi), "[-]"));
-            details.Add(Tuple.Create("Thread diameter", "dt", (Math.Round(screw.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Shank diameter", "ds", (Math.Round(screw.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Head diameter", "dh", (Math.Round(screw.D_h_headdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Washer diameter", "dw", (Math.Round(screw.D_w_washerdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(Tuple.Create("Weight", "w", Math.Round(screw.Weight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
+            List<CComponentParamsView> details = new List<CComponentParamsView>();
+            details.Add(new CComponentParamsView("Gauge", "No", screw.Gauge.ToString(nfi), "[-]"));
+            details.Add(new CComponentParamsView("Thread diameter", "dt", (Math.Round(screw.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Shank diameter", "ds", (Math.Round(screw.Diameter_shank * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Head diameter", "dh", (Math.Round(screw.D_h_headdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Washer diameter", "dw", (Math.Round(screw.D_w_washerdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsView("Weight", "w", Math.Round(screw.Weight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
 
             ComponentDetails = details;
         }
