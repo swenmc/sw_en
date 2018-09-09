@@ -16,7 +16,22 @@ namespace BaseClasses
         public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FormSteel
         public float fWidth_bx;
         public float fHeight_hy;
-        public float fThickness_tz;
+
+        private float m_ft; // Thickness
+
+        public float Ft
+        {
+            get
+            {
+                return m_ft;
+            }
+
+            set
+            {
+                m_ft = value;
+            }
+        }
+
         public float fArea;
         public float fA_g; // Gross area
         public float fA_n; // Net area
@@ -53,7 +68,21 @@ namespace BaseClasses
         public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
         public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
         //public float[,] PointsOut2D; // Array of points coordinates of plate outline in 2D used for DXF
-        public int IHolesNumber;   // Number of holes
+        public int m_iHolesNumber;   // Number of holes
+
+        public int IHolesNumber
+        {
+            get
+            {
+                return m_iHolesNumber;
+            }
+
+            set
+            {
+                m_iHolesNumber = value;
+            }
+        }
+
         public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
         public float[,] DrillingRoutePoints2D; // Array of points coordinates of holes centers - short distance for drilling .nc file
 
@@ -533,12 +562,12 @@ namespace BaseClasses
 
         public float GetSurfaceIgnoringHoles()
         {
-            return fThickness_tz * GetCuttingRouteDistance();
+            return Ft * GetCuttingRouteDistance();
         }
 
         public float GetVolumeIgnoringHoles()
         {
-             return fThickness_tz * PolygonArea();
+             return Ft * PolygonArea();
         }
 
         public float GetWeightIgnoringHoles()

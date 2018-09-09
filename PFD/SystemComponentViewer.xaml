@@ -79,8 +79,8 @@
                       SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridGeometry_CellEditEnding" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="It2" Width="50" IsReadOnly="True" Binding="{Binding ShortCut}" />
-                    <DataGridTextColumn Header="It3" Width="50" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" />
+                    <DataGridTextColumn Header="It2" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}" />
+                    <DataGridTextColumn Header="It3" Width="60" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" />
                     <DataGridTextColumn Header="It4" Width="50" IsReadOnly="True" Binding="{Binding Unit}" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -89,8 +89,8 @@
             <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridDetails" ItemsSource="{Binding Path=ComponentDetails}" HeadersVisibility="None" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="It1" Width="*" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="It2" Width="50" Binding="{Binding ShortCut}" />
-                    <DataGridTextColumn Header="It3" Width="50" Binding="{Binding Value}" />
+                    <DataGridTextColumn Header="It2" Width="40" Binding="{Binding ShortCut}" />
+                    <DataGridTextColumn Header="It3" Width="60" Binding="{Binding Value}" />
                     <DataGridTextColumn Header="It4" Width="50" Binding="{Binding Unit}" />
                 </DataGrid.Columns>
             </DataGrid>

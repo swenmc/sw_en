@@ -7,11 +7,65 @@ namespace BaseClasses
 {
     public class CConCom_Plate_F_or_L : CPlate
     {
-        public float m_fbX1;
-        public float m_fbX2;
-        public float m_fhY;
-        public float m_flZ; // Not used in 2D model
-        public float m_ft; // Not used in 2D model
+        private float m_fbX1;
+
+        public float Fb_X1
+        {
+            get
+            {
+                return m_fbX1;
+            }
+
+            set
+            {
+                m_fbX1 = value;
+            }
+        }
+
+        private float m_fbX2;
+
+        public float Fb_X2
+        {
+            get
+            {
+                return m_fbX2;
+            }
+
+            set
+            {
+                m_fbX2 = value;
+            }
+        }
+
+        private float m_fhY;
+
+        public float Fh_Y
+        {
+            get
+            {
+                return m_fhY;
+            }
+
+            set
+            {
+                m_fhY = value;
+            }
+        }
+
+        private float m_flZ; // Not used in 2D model
+
+        public float Fl_Z
+        {
+            get
+            {
+                return m_flZ;
+            }
+
+            set
+            {
+                m_flZ = value;
+            }
+        }
 
         public CConCom_Plate_F_or_L()
         {
@@ -35,7 +89,7 @@ namespace BaseClasses
             m_fbX2 = m_fbX1; // L Series - without slope
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             // m_arrPlateScrews = arrPlateScrews_temp; // Generate
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -61,19 +115,18 @@ namespace BaseClasses
 
             fWidth_bx = m_fbX1 + m_fbX2;
             fHeight_hy = m_fhY;
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fWeight = GetWeightIgnoringHoles();
 
-            fA_g = Get_A_rect(m_ft, m_fhY);
+            fA_g = Get_A_rect(Ft, m_fhY);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fA_v_zv = Get_A_rect(m_ft, m_fhY);
+            fA_v_zv = Get_A_rect(Ft, m_fhY);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
@@ -92,7 +145,7 @@ namespace BaseClasses
             m_fbX2 = fbX2_temp;
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
@@ -132,7 +185,6 @@ namespace BaseClasses
 
             fWidth_bx = m_fbX1 + m_fbX2;
             fHeight_hy = m_fhY;
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -140,12 +192,12 @@ namespace BaseClasses
             fWeight = GetWeightIgnoringHoles();
 
             // NO SCREWS
-            fA_g = Get_A_rect(m_ft, m_fhY);
+            fA_g = Get_A_rect(Ft, m_fhY);
             //int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g;// - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fA_v_zv = Get_A_rect(m_ft, m_fhY);
+            fA_v_zv = Get_A_rect(Ft, m_fhY);
             fA_vn_zv = fA_v_zv;// - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fI_yu = Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
@@ -197,21 +249,21 @@ namespace BaseClasses
             arrPoints3D[5].Y = m_fhY;
             arrPoints3D[5].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[6].X = arrPoints3D[0].X + m_ft;
+            arrPoints3D[6].X = arrPoints3D[0].X + Ft;
             arrPoints3D[6].Y = arrPoints3D[0].Y;
             arrPoints3D[6].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[7].X = arrPoints3D[1].X + +m_ft;
+            arrPoints3D[7].X = arrPoints3D[1].X + +Ft;
             arrPoints3D[7].Y = arrPoints3D[1].Y;
-            arrPoints3D[7].Z = arrPoints3D[1].Z + m_ft;
+            arrPoints3D[7].Z = arrPoints3D[1].Z + Ft;
 
             arrPoints3D[8].X = arrPoints3D[2].X;
             arrPoints3D[8].Y = arrPoints3D[2].Y;
-            arrPoints3D[8].Z = arrPoints3D[2].Z + m_ft;
+            arrPoints3D[8].Z = arrPoints3D[2].Z + Ft;
 
             arrPoints3D[9].X = arrPoints3D[3].X;
             arrPoints3D[9].Y = arrPoints3D[3].Y;
-            arrPoints3D[9].Z = arrPoints3D[3].Z + m_ft;
+            arrPoints3D[9].Z = arrPoints3D[3].Z + Ft;
 
             arrPoints3D[10].X = arrPoints3D[7].X;
             arrPoints3D[10].Y = arrPoints3D[7].Y + m_fhY;
@@ -334,7 +386,7 @@ namespace BaseClasses
             {
                 // Left Leg
 
-                arrConnectorControlPoints3D[0].X = - m_ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[0].X = - Ft; // TODO Position depends on screw length
                 arrConnectorControlPoints3D[0].Y = fy_edge1;
                 arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -370,7 +422,7 @@ namespace BaseClasses
 
                 arrConnectorControlPoints3D[8].X = fx_edge;
                 arrConnectorControlPoints3D[8].Y = m_fhY - fy_edge1;
-                arrConnectorControlPoints3D[8].Z = -m_ft;  // TODO Position depends on screw length
+                arrConnectorControlPoints3D[8].Z = -Ft;  // TODO Position depends on screw length
 
                 arrConnectorControlPoints3D[9].X = m_fbX1 - fx_edge;
                 arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[8].Y;
@@ -404,7 +456,7 @@ namespace BaseClasses
             {
                 // Left Leg
 
-                arrConnectorControlPoints3D[0].X = - m_ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[0].X = - Ft; // TODO Position depends on screw length
                 arrConnectorControlPoints3D[0].Y = fy_edge1;
                 arrConnectorControlPoints3D[0].Z = m_flZ - fx_edge;
 
@@ -424,7 +476,7 @@ namespace BaseClasses
 
                 arrConnectorControlPoints3D[4].X = fx_edge;
                 arrConnectorControlPoints3D[4].Y = m_fhY - fy_edge1;
-                arrConnectorControlPoints3D[4].Z = -m_ft; // TODO Position depends on screw length
+                arrConnectorControlPoints3D[4].Z = -Ft; // TODO Position depends on screw length
 
                 arrConnectorControlPoints3D[5].X = m_fbX1 - fx_edge;
                 arrConnectorControlPoints3D[5].Y = arrConnectorControlPoints3D[4].Y;

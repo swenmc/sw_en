@@ -467,9 +467,9 @@ namespace PFD
 
                     float fWidth_bx = model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx;
                     float fHeight_hy = model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy;
-                    float fThickness_tz = model.m_arrConnectionJoints[i].m_arrPlates[j].fThickness_tz;
+                    float Ft = model.m_arrConnectionJoints[i].m_arrPlates[j].Ft;
                     float fArea = model.m_arrConnectionJoints[i].m_arrPlates[j].PolygonArea();
-                    float fWeightPerPiece = fArea * fThickness_tz * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
+                    float fWeightPerPiece = fArea * Ft * model.m_arrConnectionJoints[i].m_arrPlates[j].m_Mat.m_fRho;
                     float fTotalArea = iQuantity * fArea;
                     float fTotalWeight = iQuantity * fWeightPerPiece;
                     float fTotalPrice = fTotalWeight * fCFS_PricePerKg_Plates_Total;
@@ -483,7 +483,7 @@ namespace PFD
                             if (ListOfPlateGroups[k].Name == model.m_arrConnectionJoints[i].m_arrPlates[j].Name &&
                             MathF.d_equal(ListOfPlateGroups[k].fWidth_bx, model.m_arrConnectionJoints[i].m_arrPlates[j].fWidth_bx) &&
                             MathF.d_equal(ListOfPlateGroups[k].fHeight_hy, model.m_arrConnectionJoints[i].m_arrPlates[j].fHeight_hy) &&
-                            MathF.d_equal(ListOfPlateGroups[k].fThickness_tz, model.m_arrConnectionJoints[i].m_arrPlates[j].fThickness_tz) &&
+                            MathF.d_equal(ListOfPlateGroups[k].Ft, model.m_arrConnectionJoints[i].m_arrPlates[j].Ft) &&
                             MathF.d_equal(ListOfPlateGroups[k].fArea, model.m_arrConnectionJoints[i].m_arrPlates[j].fArea))
                             {
                                 // Add plate to the one from already created groups
@@ -506,7 +506,7 @@ namespace PFD
                         listPlateMaterialName.Add(sMaterialName);
                         dlistPlateWidth_bx.Add(Math.Round(fWidth_bx, iNumberOfDecimalPlacesPlateDim));
                         dlistPlateHeight_hy.Add(Math.Round(fHeight_hy, iNumberOfDecimalPlacesPlateDim));
-                        dlistPlateThickness_tz.Add(Math.Round(fThickness_tz, iNumberOfDecimalPlacesPlateDim));
+                        dlistPlateThickness_tz.Add(Math.Round(Ft, iNumberOfDecimalPlacesPlateDim));
                         dlistPlateArea.Add(Math.Round(fArea, iNumberOfDecimalPlacesArea));
                         dlistPlateWeightPerPiece.Add(Math.Round(fWeightPerPiece, iNumberOfDecimalPlacesWeight));
                         listPlateTotalArea.Add(Math.Round(fTotalArea, iNumberOfDecimalPlacesArea));
@@ -532,9 +532,9 @@ namespace PFD
                 foreach (CPlate plate in joint.m_arrPlates)
                 {
                     dTotalPlatesArea_Model += plate.fArea;
-                    dTotalPlatesVolume_Model += plate.fArea * plate.fThickness_tz;
-                    dTotalPlatesWeight_Model += plate.fArea * plate.fThickness_tz * plate.m_Mat.m_fRho;
-                    dTotalPlatesPrice_Model += plate.fArea * plate.fThickness_tz * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
+                    dTotalPlatesVolume_Model += plate.fArea * plate.Ft;
+                    dTotalPlatesWeight_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho;
+                    dTotalPlatesPrice_Model += plate.fArea * plate.Ft * plate.m_Mat.m_fRho * fCFS_PricePerKg_Plates_Total;
                     iTotalPlatesNumber_Model += 1;
                 }
             }

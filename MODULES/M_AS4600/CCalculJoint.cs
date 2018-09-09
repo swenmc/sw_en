@@ -74,7 +74,7 @@ namespace M_AS4600
             plate = joint_temp.m_arrPlates[0];
             crsc_mainMember = (CCrSc_TW)joint_temp.m_MainMember.CrScStart;
 
-            ft_1_plate = (float)plate.fThickness_tz;
+            ft_1_plate = (float)plate.Ft;
             ft_2_crscmainMember = (float)crsc_mainMember.t_min;
 
             ff_yk_1_plate = plate.m_Mat.Get_f_yk_by_thickness((float)ft_1_plate);

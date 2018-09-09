@@ -7,12 +7,66 @@ namespace BaseClasses
 {
     public class CConCom_Plate_BB_BG : CPlate
     {
-        public float m_fbX;
-        public float m_fhY;
-        public float m_flZ; // Not used in 2D model
-        public float m_ft; // Not used in 2D model
+        private float m_fbX;
+
+        public float Fb_X
+        {
+            get
+            {
+                return m_fbX;
+            }
+
+            set
+            {
+                m_fbX = value;
+            }
+        }
+
+        private float m_fhY;
+
+        public float Fh_Y
+        {
+            get
+            {
+                return m_fhY;
+            }
+
+            set
+            {
+                m_fhY = value;
+            }
+        }
+
+        private float m_flZ; // Not used in 2D model
+
+        public float Fl_Z
+        {
+            get
+            {
+                return m_flZ;
+            }
+
+            set
+            {
+                m_flZ = value;
+            }
+        }
 
         float m_fDistanceBetweenHoles;
+
+        public float Fd_betweenHoles
+        {
+            get
+            {
+                return m_fDistanceBetweenHoles;
+            }
+
+            set
+            {
+                m_fDistanceBetweenHoles = value;
+            }
+        }
+
 
         public CAnchor referenceAnchor;
 
@@ -37,7 +91,7 @@ namespace BaseClasses
             m_fbX = fbX_temp;
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             IHolesNumber = iHolesNumber_temp = 2;
             referenceScrew = referenceScrew_temp;
             referenceAnchor = referenceAnchor_temp;
@@ -67,19 +121,18 @@ namespace BaseClasses
 
             fWidth_bx = m_fbX;
             fHeight_hy = m_fhY;
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fWeight = GetWeightIgnoringHoles();
 
-            fA_g = Get_A_rect(2 * m_ft, m_fhY);
+            fA_g = Get_A_rect(2 * Ft, m_fhY);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fA_v_zv = Get_A_rect(2 * m_ft, m_fhY);
+            fA_v_zv = Get_A_rect(2 * Ft, m_fhY);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fI_yu = 2 * Get_I_yu_rect(m_ft, m_fhY);  // Moment of inertia of plate
+            fI_yu = 2 * Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
         }
 
@@ -211,15 +264,15 @@ namespace BaseClasses
 
             // Second layer
 
-            arrPoints3D[iNoPoints2Dfor3D + 0].X = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 0].X = Ft;
             arrPoints3D[iNoPoints2Dfor3D + 0].Y = 0;
             arrPoints3D[iNoPoints2Dfor3D + 0].Z = m_flZ;
 
             arrPoints3D[iNoPoints2Dfor3D + 1].X = arrPoints3D[iNoPoints2Dfor3D + 0].X;
             arrPoints3D[iNoPoints2Dfor3D + 1].Y = arrPoints3D[0].Y;
-            arrPoints3D[iNoPoints2Dfor3D + 1].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 1].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 2].X = m_fbX - m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 2].X = m_fbX - Ft;
             arrPoints3D[iNoPoints2Dfor3D + 2].Y = arrPoints3D[iNoPoints2Dfor3D + 0].Y;
             arrPoints3D[iNoPoints2Dfor3D + 2].Z = arrPoints3D[iNoPoints2Dfor3D + 1].Z;
 
@@ -247,42 +300,42 @@ namespace BaseClasses
 
             arrPoints3D[iNoPoints2Dfor3D + 8].X = holesCentersPointsfor3D[0, 0] - fradius;
             arrPoints3D[iNoPoints2Dfor3D + 8].Y = holesCentersPointsfor3D[0, 1] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 8].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 8].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 9].X = holesCentersPointsfor3D[0, 0] - fradius;
             arrPoints3D[iNoPoints2Dfor3D + 9].Y = holesCentersPointsfor3D[0, 1] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 9].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 9].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 10].X = holesCentersPointsfor3D[0, 0] + fradius;
             arrPoints3D[iNoPoints2Dfor3D + 10].Y = holesCentersPointsfor3D[0, 1] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 10].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 10].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 11].X = holesCentersPointsfor3D[0, 0] + fradius;
             arrPoints3D[iNoPoints2Dfor3D + 11].Y = holesCentersPointsfor3D[0, 1] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 11].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 11].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 12].X = holesCentersPointsfor3D[1, 0] - fradius;
             arrPoints3D[iNoPoints2Dfor3D + 12].Y = holesCentersPointsfor3D[1, 1] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 12].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 12].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 13].X = holesCentersPointsfor3D[1, 0] - fradius;
             arrPoints3D[iNoPoints2Dfor3D + 13].Y = holesCentersPointsfor3D[1, 1] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 13].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 13].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 14].X = holesCentersPointsfor3D[1, 0] + fradius;
             arrPoints3D[iNoPoints2Dfor3D + 14].Y = holesCentersPointsfor3D[1, 1] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 14].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 14].Z = Ft;
 
             arrPoints3D[iNoPoints2Dfor3D + 15].X = holesCentersPointsfor3D[1, 0] + fradius;
             arrPoints3D[iNoPoints2Dfor3D + 15].Y = holesCentersPointsfor3D[1, 1] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 15].Z = m_ft;
+            arrPoints3D[iNoPoints2Dfor3D + 15].Z = Ft;
 
             // Holes 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Z = m_ft;
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Z = Ft;
             }
 
             // Hole 2 - upper
@@ -290,7 +343,7 @@ namespace BaseClasses
             {
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = m_ft;
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = Ft;
             }
         }
 

@@ -6,11 +6,66 @@ namespace BaseClasses
 {
     public class CConCom_Plate_Q_T_Y : CPlate
     {
-        public float m_fbX;
-        public float m_fhY;
+        private float m_fbX;
+
+        public float Fb_X
+        {
+            get
+            {
+                return m_fbX;
+            }
+
+            set
+            {
+                m_fbX = value;
+            }
+        }
+
+        private float m_fhY;
+
+        public float Fh_Y
+        {
+            get
+            {
+                return m_fhY;
+            }
+
+            set
+            {
+                m_fhY = value;
+            }
+        }
+
         public float m_flZ1; // Not used in 2D model
-        public float m_flZ2;
-        public float m_ft; // Not used in 2D model
+
+        public float Fl_Z1
+        {
+            get
+            {
+                return m_flZ1;
+            }
+
+            set
+            {
+                m_flZ1 = value;
+            }
+        }
+
+        public float m_flZ2; // Not used in 2D model
+
+        public float Fl_Z2
+        {
+            get
+            {
+                return m_flZ2;
+            }
+
+            set
+            {
+                m_flZ2 = value;
+            }
+        }
+
         public int m_iHolesNumber = 0;
 
         public CConCom_Plate_Q_T_Y()
@@ -33,7 +88,7 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ1 = fl_Z1_temp;
             m_flZ2 = fl_Z2_temp;
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
             // Create Array - allocate memory
@@ -49,7 +104,6 @@ namespace BaseClasses
 
             fWidth_bx = m_fbX;
             fHeight_hy = m_fhY;
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -71,7 +125,7 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ1 = fl_Z1_temp;
             m_flZ2 = m_flZ1; // Same
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
             // Create Array - allocate memory
@@ -87,7 +141,6 @@ namespace BaseClasses
 
             fWidth_bx = m_fbX;
             fHeight_hy = m_fhY;
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
@@ -157,17 +210,17 @@ namespace BaseClasses
             arrPoints3D[7].Y = m_fhY;
             arrPoints3D[7].Z = arrPoints3D[0].Z;
 
-            arrPoints3D[8].X = m_ft;
+            arrPoints3D[8].X = Ft;
             arrPoints3D[8].Y = 0;
             arrPoints3D[8].Z = m_flZ1;
 
             arrPoints3D[9].X = arrPoints3D[8].X;
             arrPoints3D[9].Y = 0;
-            arrPoints3D[9].Z = m_ft;
+            arrPoints3D[9].Z = Ft;
 
-            arrPoints3D[10].X = m_fbX - m_ft;
+            arrPoints3D[10].X = m_fbX - Ft;
             arrPoints3D[10].Y = 0;
-            arrPoints3D[10].Z = m_ft;
+            arrPoints3D[10].Z = Ft;
 
             arrPoints3D[11].X = arrPoints3D[10].X;
             arrPoints3D[11].Y = 0;

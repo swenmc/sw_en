@@ -9,19 +9,140 @@ namespace BaseClasses
 {
     public class CConCom_Plate_KA : CPlate
     {
-        float m_fbX1;
-        float m_fhY1;
-        float m_fbX2;
-        float m_fhY2;
-        float m_ft;
-        float m_fSlope_rad;
+        private float m_fbX1;
 
-        float m_fCrscRafterDepth;
-        float m_fCrscWebStraightDepth;
+        public float Fb_X1
+        {
+            get
+            {
+                return m_fbX1;
+            }
+
+            set
+            {
+                m_fbX1 = value;
+            }
+        }
+
+        private float m_fhY1;
+
+        public float Fh_Y1
+        {
+            get
+            {
+                return m_fhY1;
+            }
+
+            set
+            {
+                m_fhY1 = value;
+            }
+        }
+        private float m_fbX2;
+
+        public float Fb_X2
+        {
+            get
+            {
+                return m_fbX2;
+            }
+
+            set
+            {
+                m_fbX2 = value;
+            }
+        }
+
+        private float m_fhY2;
+
+        public float Fh_Y2
+        {
+            get
+            {
+                return m_fhY2;
+            }
+
+            set
+            {
+                m_fhY2 = value;
+            }
+        }
+
+        private float m_fCrscRafterDepth;
+        public float FCrscRafterDepth
+        {
+            get
+            {
+                return m_fCrscRafterDepth;
+            }
+
+            set
+            {
+                m_fCrscRafterDepth = value;
+            }
+        }
+
+        private float m_fCrscWebStraightDepth;
+
+        public float FCrscWebStraightDepth
+        {
+            get
+            {
+                return m_fCrscWebStraightDepth;
+            }
+
+            set
+            {
+                m_fCrscWebStraightDepth = value;
+            }
+        }
+
         float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
-        bool m_bUseAdditionalCornerScrews;
-        int m_iAdditionalConnectorNumber;
 
+        public float FStiffenerSize
+        {
+            get
+            {
+                return m_fStiffenerSize;
+            }
+
+            set
+            {
+                m_fStiffenerSize = value;
+            }
+        }
+
+        private bool m_bUseAdditionalCornerScrews;
+
+        public bool BUseAdditionalCornerScrews
+        {
+            get
+            {
+                return m_bUseAdditionalCornerScrews;
+            }
+
+            set
+            {
+                m_bUseAdditionalCornerScrews = value;
+            }
+        }
+
+        private int m_iAdditionalConnectorNumber;
+
+        public int IAdditionalConnectorNumber
+        {
+            get
+            {
+                return m_iAdditionalConnectorNumber;
+            }
+
+            set
+            {
+                m_iAdditionalConnectorNumber = value;
+            }
+        }
+
+        float m_fSlope_rad;
         public float[] HolesCenterRadii;
         public int INumberOfCircleJoints = 2;
 
@@ -64,7 +185,7 @@ namespace BaseClasses
             m_fhY1 = fh_1_temp;
             m_fbX2 = fb_2_temp;
             m_fhY2 = fh_2_temp;
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             IHolesNumber = iHolesNumber;
             referenceScrew = referenceScrew_temp;
             m_fCrscRafterDepth = fCrscRafterDepth_temp;
@@ -102,7 +223,7 @@ namespace BaseClasses
                 m_fStiffenerSize,
                 ref HolesCenterRadii);
 
-            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, m_ft);
+            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, Ft);
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -111,19 +232,18 @@ namespace BaseClasses
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fWeight = GetWeightIgnoringHoles();
 
-            fA_g = Get_A_rect(m_ft, m_fbX1);
+            fA_g = Get_A_rect(Ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fA_v_zv = Get_A_rect(m_ft, m_fbX1);
+            fA_v_zv = Get_A_rect(Ft, m_fbX1);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fI_yu = Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
+            fI_yu = Get_I_yu_rect(Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
@@ -157,7 +277,7 @@ namespace BaseClasses
             m_fhY1 = fh_1_temp;
             m_fbX2 = fb_2_temp;
             m_fhY2 = fh_2_temp;
-            m_ft = ft_platethickness;
+            Ft = ft_platethickness;
             IHolesNumber = iHolesNumber;
             referenceScrew = referenceScrew_temp;
             m_fCrscRafterDepth = fCrscRafterDepth_temp;
@@ -195,7 +315,7 @@ namespace BaseClasses
                 m_fStiffenerSize,
                 ref HolesCenterRadii);
 
-            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, m_ft);
+            Calc_HolesControlPointsCoord3D_ApexOrKneePlate(0, Ft);
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -204,19 +324,18 @@ namespace BaseClasses
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
-            fThickness_tz = m_ft;
             fArea = PolygonArea();
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fWeight = GetWeightIgnoringHoles();
 
-            fA_g = Get_A_rect(m_ft, m_fbX1);
+            fA_g = Get_A_rect(Ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
             fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fA_v_zv = Get_A_rect(m_ft, m_fbX1);
+            fA_v_zv = Get_A_rect(Ft, m_fbX1);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
-            fI_yu = Get_I_yu_rect(m_ft, m_fbX1);  // Moment of inertia of plate
+            fI_yu = Get_I_yu_rect(Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
 
@@ -245,7 +364,7 @@ namespace BaseClasses
                 {
                     arrPoints3D[(i * ITotNoPointsin2D) + j].X = PointsOut2D[j, 0];
                     arrPoints3D[(i * ITotNoPointsin2D) + j].Y = PointsOut2D[j, 1];
-                    arrPoints3D[(i * ITotNoPointsin2D) + j].Z = i * m_ft;
+                    arrPoints3D[(i * ITotNoPointsin2D) + j].Z = i * Ft;
                 }
             }
         }

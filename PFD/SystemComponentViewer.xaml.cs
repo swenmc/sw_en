@@ -728,7 +728,7 @@ namespace PFD
 
                 // Export drilling file
                 if (plate.DrillingRoutePoints != null)
-                    CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.fThickness_tz, fUnitFactor);
+                    CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
 
                 // Export setup file
                 CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(plate.PointsOut2D), fUnitFactor);
@@ -1010,7 +1010,7 @@ namespace PFD
                 if (plate.DrillingRoutePoints == null) { MessageBox.Show("Drilling points are not defined."); return; }
                 tabItemDoc.Visibility = Visibility.Visible;
 
-                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(plate.DrillingRoutePoints, plate.fThickness_tz, fUnitFactor);
+                StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");
@@ -1039,9 +1039,34 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // TODO No. 63
                 //keby som vedel tak detekujem ktora property sa zmenila takto:
                 //if (item.Name == "Width") plate.Width = int.Parse(changedText);
                 //a predpokladam,ze by to vykreslilo samo => iba zeby nie :-)
+
+                // TODO - potrebujeme zistit typ konkretneho objektu a pre tento konkretny typ urcit, ktore jeho properties zobrazit a mozu sa editovat
+                // Jedna sa zhruba o toto, neviem kde treba definovat property name kedze je to rozne pre roznych potomkov CPlate
+
+                Type t = plate.GetType();
+
+                CConCom_Plate_KC plateTemp = new CConCom_Plate_KC();
+
+                if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                if (item.Name == "Width1") plateTemp.Fb_X1 = float.Parse(changedText);
+                if (item.Name == "Width2") plateTemp.Fb_X2 = float.Parse(changedText);
+                if (item.Name == "Height1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                if (item.Name == "Height2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+
+                if (item.Name == "CrscRafterDepth") plateTemp.FCrscRafterDepth = float.Parse(changedText);
+                if (item.Name == "CrscWebStraightDepth") plateTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                if (item.Name == "StiffenerSize") plateTemp.FStiffenerSize = float.Parse(changedText);
+                if (item.Name == "UseAdditionalCornerScrews") plateTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
+                if (item.Name == "AdditionalConnectorNumber") plateTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                if (item.Name == "HolesNumber") plateTemp.IHolesNumber = int.Parse(changedText);
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // Redraw plate in 2D
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
