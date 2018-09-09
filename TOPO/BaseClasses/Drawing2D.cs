@@ -200,6 +200,60 @@ namespace BaseClasses
                     canvasForImage);
         }
 
+        public static void DrawScrewToCanvas(CScrew screw, double width, double height, ref Canvas canvasForImage, bool bDrawCentreSymbol)
+        {
+            float fScaleFactor = 0.5f; // 50% of canvas
+            int scale_unit = 1000; // mm
+
+            float fModel_Length_x_page;
+            float fModel_Length_y_page;
+            double dFactor_x;
+            double dFactor_y;
+            float fReal_Model_Zoom_Factor;
+            float fmodelMarginLeft_x;
+            float fmodelMarginBottom_y;
+
+            CalculateBasicValue(
+                screw.D_w_washerdiameter,
+                screw.D_w_washerdiameter,
+                fScaleFactor,
+                scale_unit,
+                width,
+                height,
+                out fModel_Length_x_page,
+                out fModel_Length_y_page,
+                out dFactor_x,
+                out dFactor_y,
+                out fReal_Model_Zoom_Factor,
+                out fmodelMarginLeft_x,
+                out fmodelMarginBottom_y
+                );
+
+            Point pCenterPoint = new Point(width / 2, height / 2);
+
+            // Head Inside Circle
+            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_h_headdiameter, Brushes.Black, 1, canvasForImage);
+
+            // Head Hexagon
+            float[,] headpoints = new float[6, 2];
+            float a = (0.5f * screw.D_h_headdiameter) / (float)Math.Cos(30f / 180f * Math.PI);
+            headpoints = Geom2D.GetHexagonPointCoord(a); // Diameter of outside circle
+
+            // TODO - upravit podla toho ci bude v databaze vnutorny alebo vonkajsi rozmer sesthrannej hlavy (opisana alebo vpisana kruznica)
+            float fInsideDiameterFactor = 0.5f / (float)Math.Tan(30f / 180f * Math.PI); // Radius of inside circle of hexagon
+
+            double dCanvasTop = (height - (fReal_Model_Zoom_Factor * screw.D_h_headdiameter)) / 2;
+            double dCanvasLeft = (width - (fReal_Model_Zoom_Factor * 2* a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
+            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+
+            // Washer Circle
+            DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, 1, canvasForImage);
+
+            // Draw Symbol of Center
+            if (bDrawCentreSymbol)
+                DrawSymbol_Cross(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter + 20, Brushes.Red, 1, canvasForImage);
+        }
+
         public static void DrawComponent(bool bDrawPoints,
             bool bDrawOutLine,
             bool bDrawPointNumbers,
@@ -237,7 +291,7 @@ namespace BaseClasses
                 DrawDrillingRoute(bDrawDrillingRoute, PointsDrillingRoute, fReal_Model_Zoom_Factor, fmodelMarginLeft_x, fmodelMarginBottom_y, canvasForImage);
             }
         }
-        
+
         public static void CalculateBasicValue(
             float fTempMax_X,
             float fTempMin_X,
@@ -328,6 +382,42 @@ namespace BaseClasses
                 dPointInOutDistance_x_page = dPointInOutDistance_x_real * fReal_Model_Zoom_Factor;
                 dPointInOutDistance_y_page = dPointInOutDistance_y_real * fReal_Model_Zoom_Factor;
             }
+        }
+
+        public static void CalculateBasicValue(
+            float fModel_Length_x_real,
+            float fModel_Length_y_real,
+            float fScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 80% or 90 %
+            int scale_unit,
+            double dPageWidth,
+            double dPageHeight,
+            out float fModel_Length_x_page,
+            out float fModel_Length_y_page,
+            out double dFactor_x,
+            out double dFactor_y,
+            out float fReal_Model_Zoom_Factor,
+            out float fmodelMarginLeft_x,
+            out float fmodelMarginBottom_y
+            )
+        {
+            fModel_Length_x_page = scale_unit * fModel_Length_x_real;
+            fModel_Length_y_page = scale_unit * fModel_Length_y_real;
+
+            // Calculate maximum zoom factor
+            // Original ratio
+            dFactor_x = fModel_Length_x_page / dPageWidth;
+            dFactor_y = fModel_Length_y_page / dPageHeight;
+
+            // Calculate new model dimensions (zoom of model size is 90%)
+            fReal_Model_Zoom_Factor = fScale_Factor / (float)MathF.Max(dFactor_x, dFactor_y) * scale_unit;
+
+            // Set new size of model on the page
+            fModel_Length_x_page = fReal_Model_Zoom_Factor * fModel_Length_x_real;
+            fModel_Length_y_page = fReal_Model_Zoom_Factor * fModel_Length_y_real;
+
+            fmodelMarginLeft_x = (float)(0.5 * (dPageWidth - fModel_Length_x_page));
+
+            fmodelMarginBottom_y = (float)(fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page));
         }
 
         public static void DrawPoints(bool bDrawPoints, float[,] PointsOut, float [,] PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)

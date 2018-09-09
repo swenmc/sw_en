@@ -309,12 +309,12 @@ namespace CRSC
             m_fA_z_v_pl = m_ff_z_v_plel * m_fA_z_v_el; // Temp
         }
 
-		protected override void loadCrScIndices()
-		{
+        protected override void loadCrScIndices()
+        {
             CCrSc_0_26 oTemp = new CCrSc_0_26();
-            oTemp.loadCrScIndices_26_28(INoPointsOut, 0);            
+            oTemp.loadCrScIndices_26_28(INoPointsOut, 0);
             TriangleIndices = oTemp.TriangleIndices;
-		}
+        }
 
         protected override void loadCrScIndicesFrontSide()
         {

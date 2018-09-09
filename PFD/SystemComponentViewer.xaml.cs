@@ -494,8 +494,9 @@ namespace PFD
             }
             else
             {
-                // Screw - not implemented
-                //page2D = new WindowCrossSection2D(); // TODO - Display empty window in current state
+                // Screw
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
 
             // Display plate in 2D preview frame
@@ -519,7 +520,6 @@ namespace PFD
                 // Screw
                 PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
                 page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
-                tabItem3D.Focus();
             }
 
             // Display model in 3D preview frame
@@ -661,7 +661,7 @@ namespace PFD
 
             // TODO - Ondrej - asi by sa toto malo presunut pod view model, nie som si isty ako to spravit s datagrid ???
             // Potrebujeme kontrolovat kedy sa, ktory datagrid zobrazi a ci bude readonly atd
-            // Pripadne rozdelit geometricke a dalsie parametre pre vsetky typy component aby sa mohli vzdy zobrazovat oba datagridy
+            // Pripadne mozem rozdelit geometricke a dalsie parametre pre vsetky typy component aby sa mohli vzdy zobrazovat oba datagridy
 
             if (vm.ComponentTypeIndex == 0) // Cross-sections
             {
@@ -681,6 +681,12 @@ namespace PFD
                 chbDrawHoles2D.IsEnabled = true;
                 chbDrawHoleCentreSymbol2D.IsEnabled = true;
                 chbDrawDrillingRoute2D.IsEnabled = true;
+
+                if (MainTabControl.SelectedIndex == 0) // Only if 2D view is displayed
+                {
+                    panelOptions2D.Visibility = Visibility.Visible;
+                    panelOptionsTransform2D.Visibility = Visibility.Visible;
+                }
             }
             else // Screws
             {
@@ -804,7 +810,9 @@ namespace PFD
             }
             else
             {
-                // Screw - not implemented
+                // Screw
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
 
             // Display plate in 2D preview frame
@@ -919,7 +927,8 @@ namespace PFD
             }
             else // Screw
             {
-                throw new NotImplementedException("Component 'screw' is not implemented!");
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
 
             // Display plate in 2D preview frame
@@ -946,7 +955,8 @@ namespace PFD
             }
             else // Screw
             {
-                throw new NotImplementedException("Component 'screw' is not implemented!");
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
 
             // Display component in 2D preview frame
@@ -973,7 +983,8 @@ namespace PFD
             }
             else // Screw
             {
-                throw new NotImplementedException("Component 'screw' is not implemented!");
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
 
             // Display plate in 2D preview frame
@@ -1074,7 +1085,8 @@ namespace PFD
             }
             else // Screw
             {
-                throw new NotImplementedException("Component 'screw' is not implemented!");
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
             }
         }
 
@@ -1082,7 +1094,7 @@ namespace PFD
         {
             if (MainTabControl.SelectedIndex == 0 && Combobox_Type.SelectedIndex != 2)
             {
-                // Display only for cross-sections and plates (2D view for screws is not implemented yet)
+                // Display only for cross-sections and plates (for 2D view of screw display options and transformations are not implemented yet)
                 panelOptions2D.Visibility = Visibility.Visible;
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
             }
