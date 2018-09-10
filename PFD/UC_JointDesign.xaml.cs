@@ -91,12 +91,33 @@ namespace PFD
                 {
                     CJointLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
+                    
+                    CConnectionJointTypes jStart_temp = null;
+                    CConnectionJointTypes jEnd_temp = null;
+                    foreach (CConnectionJointTypes cj in Model.m_arrConnectionJoints)
+                    {
+                        CMember mm = cj.m_SecondaryMembers.First(mem => mem.ID == m.ID);
+                        if (mm != null)
+                        {
+                            if (mm.NodeStart == cj.m_Node) jStart_temp = cj;
+                            if (mm.NodeEnd == cj.m_Node) jEnd_temp = cj;
+                        }
+                    }
 
-                    // TODO - Ondrej
-                    // Najst spoj na zaciatku a na konci pruta vo vysledkovych zaznamoch
-                    CConnectionJointTypes jStart_temp = new CConnectionJointTypes(); // TEMPORARY - nahradit objektom spoja na zaciatku pruta
-                    CConnectionJointTypes jEnd_temp = new CConnectionJointTypes(); // TEMPORARY - nahradit objektom spoja na konci pruta
+                    if(jStart_temp == null || jEnd_temp == null) Model.m_arrConnectionJoints.Select(j => j.m_MainMember != null && j.m_MainMember.ID == m.ID);
 
+                    foreach (CConnectionJointTypes cj in Model.m_arrConnectionJoints)
+                    {
+                        if (cj.m_MainMember != null && cj.m_MainMember.ID == m.ID)
+                        {
+                            if (cj.m_MainMember.NodeStart == cj.m_Node) jStart_temp = cj;
+                            if (cj.m_MainMember.NodeEnd == cj.m_Node) jEnd_temp = cj;
+                        }
+                    }
+
+                    if (jStart_temp == null || jEnd_temp == null) throw new Exception("Start or end connection joint not found.");
+                    
+                    
                     CCalculJoint cJointStart = new CCalculJoint(false, jStart_temp, res.DesignInternalForces);
                     CCalculJoint cJointEnd = new CCalculJoint(false, jStart_temp, res.DesignInternalForces);
 

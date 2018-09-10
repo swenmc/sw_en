@@ -97,27 +97,47 @@ namespace PFD
         {
             if (vm.ComponentTypeIndex == 0)  //CRSC
             {
-                DataGridGeometry.IsReadOnly = true;
+                TxtGeometry.Visibility = Visibility.Hidden;
+                DataGridGeometry.Visibility = Visibility.Hidden;
+
                 BtnFindCNCPath.Visibility = Visibility.Hidden;
                 BtnExportCNC.Visibility = Visibility.Hidden;
                 BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
 
-                CheckBox_MirrorY.Visibility = Visibility.Visible;
-                CheckBox_MirrorX.Visibility = Visibility.Visible;
-                CheckBox_Rotate_CW.Visibility = Visibility.Visible;
+                panelOptions2D.Visibility = Visibility.Visible;
+                chbDrawPoints2D.IsEnabled = true;
+                chbDrawOutLine2D.IsEnabled = true;
+                chbDrawPointNumbers2D.IsEnabled = true;
+                chbDrawHoles2D.IsEnabled = false;
+                chbDrawHoleCentreSymbol2D.IsEnabled = false;
+                chbDrawDrillingRoute2D.IsEnabled = false;
+
+                panelOptionsTransform2D.Visibility = Visibility.Visible;
+                
+                tabItemDoc.IsEnabled = false;
             }
             else if (vm.ComponentTypeIndex == 1) //plate
             {
+                TxtGeometry.Visibility = Visibility.Visible;
                 DataGridGeometry.IsReadOnly = false;
+                DataGridGeometry.Visibility = Visibility.Visible;
                 BtnFindCNCPath.Visibility = Visibility.Visible;
                 BtnExportCNC.Visibility = Visibility.Visible;
                 BtnShowCNCSetupFile.Visibility = Visibility.Visible;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Visible;
-                CheckBox_MirrorY.Visibility = Visibility.Visible;
-                CheckBox_MirrorX.Visibility = Visibility.Visible;
-                CheckBox_Rotate_CW.Visibility = Visibility.Visible;
 
+                panelOptions2D.Visibility = Visibility.Visible;
+                chbDrawPoints2D.IsEnabled = true;
+                chbDrawOutLine2D.IsEnabled = true;
+                chbDrawPointNumbers2D.IsEnabled = true;
+                chbDrawHoles2D.IsEnabled = true;
+                chbDrawHoleCentreSymbol2D.IsEnabled = true;
+                chbDrawDrillingRoute2D.IsEnabled = true;
+
+                panelOptionsTransform2D.Visibility = Visibility.Visible;
+
+                tabItemDoc.IsEnabled = true;
                 if (plate != null)
                 {
                     BtnFindCNCPath.IsEnabled = plate.IHolesNumber > 0;
@@ -128,14 +148,24 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 2) //screw
             {
-                DataGridGeometry.IsReadOnly = true;
+                DataGridGeometry.Visibility = Visibility.Hidden;
+                
                 BtnFindCNCPath.Visibility = Visibility.Hidden;
                 BtnExportCNC.Visibility = Visibility.Hidden;
                 BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
-                CheckBox_MirrorY.Visibility = Visibility.Hidden;
-                CheckBox_MirrorX.Visibility = Visibility.Hidden;
-                CheckBox_Rotate_CW.Visibility = Visibility.Hidden;
+
+                panelOptions2D.Visibility = Visibility.Hidden;
+                chbDrawPoints2D.IsEnabled = false;
+                chbDrawOutLine2D.IsEnabled = false;
+                chbDrawPointNumbers2D.IsEnabled = false;
+                chbDrawHoles2D.IsEnabled = false;
+                chbDrawHoleCentreSymbol2D.IsEnabled = false;
+                chbDrawDrillingRoute2D.IsEnabled = false;
+
+                panelOptionsTransform2D.Visibility = Visibility.Hidden;
+
+                tabItemDoc.IsEnabled = false;
             }
         }
 
@@ -655,77 +685,8 @@ namespace PFD
             }
         }
 
-        private void Combobox_Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
-
-            // TODO - Ondrej - asi by sa toto malo presunut pod view model, nie som si isty ako to spravit s datagrid ???
-            // Potrebujeme kontrolovat kedy sa, ktory datagrid zobrazi a ci bude readonly atd
-            // Pripadne mozem rozdelit geometricke a dalsie parametre pre vsetky typy component aby sa mohli vzdy zobrazovat oba datagridy
-
-            if (vm.ComponentTypeIndex == 0) // Cross-sections
-            {
-                // skryt alebo nastavit readonly, pripadne sem presunut niektore geometricke parametre
-                TxtGeometry.Visibility = Visibility.Hidden;
-                DataGridGeometry.Visibility = Visibility.Hidden; // Cross-sections
-
-                chbDrawHoles2D.IsEnabled = false;
-                chbDrawHoleCentreSymbol2D.IsEnabled = false;
-                chbDrawDrillingRoute2D.IsEnabled = false;
-
-                // Mozno by bolo lepsie pouzit na tabitem pre zobrazenie suborov cnc remove a pre plates ju spat pridat
-                // V takom pripade treba pred remove skontrolovat ci vobec existuje pri prepinani medzi crsc a screw (ci uz nebola odobrata)
-
-                // Do not display tabitem for CNC drilling setup and drilling files
-                TabItem itemCNC = MainTabControl.Items[2] as TabItem;
-                itemCNC.IsEnabled = false;
-            }
-            else if (vm.ComponentTypeIndex == 1) // Plates
-            {
-                TxtGeometry.Visibility = Visibility.Visible;
-                DataGridGeometry.Visibility = Visibility.Visible; // Plates
-
-                chbDrawHoles2D.IsEnabled = true;
-                chbDrawHoleCentreSymbol2D.IsEnabled = true;
-                chbDrawDrillingRoute2D.IsEnabled = true;
-
-                if (MainTabControl.SelectedIndex == 0) // Only if 2D view is displayed
-                {
-                    panelOptions2D.Visibility = Visibility.Visible;
-                    panelOptionsTransform2D.Visibility = Visibility.Visible;
-                }
-
-                // Display tabitem for CNC drilling setup and drilling files
-                TabItem itemCNC = MainTabControl.Items[2] as TabItem;
-                itemCNC.IsEnabled = true;
-            }
-            else // Screws
-            {
-                // skryt alebo nastavit readonly, pripadne sem presunut niektore geometricke parametre
-                TxtGeometry.Visibility = Visibility.Hidden;
-                DataGridGeometry.Visibility = Visibility.Hidden; // Screws
-
-                panelOptions2D.Visibility = Visibility.Hidden;
-                panelOptionsTransform2D.Visibility = Visibility.Hidden;
-
-                // TODO - Ondrej
-                // Mozno by bolo lepsie pouzit na tabitem pre zobrazenie suborov cnc remove a pre plates ju spat pridat
-                // V takom pripade treba pred remove skontrolovat ci vobec existuje pri prepinani medzi crsc a screw (ci uz nebola odobrata)
-
-                // Do not display tabitem for CNC drilling setup and drilling files
-                TabItem itemCNC = MainTabControl.Items[2] as TabItem;
-                itemCNC.IsEnabled = false;
-            }
-        }
-
-        private void Combobox_Series_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        private void Combobox_Component_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
+        
+        
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
             CExportToDXF.ExportCanvas_DXF(page2D,0,0);
@@ -1082,19 +1043,33 @@ namespace PFD
 
                 CConCom_Plate_KC plateTemp = new CConCom_Plate_KC();
 
-                if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                if (item.Name == "Width1") plateTemp.Fb_X1 = float.Parse(changedText);
-                if (item.Name == "Width2") plateTemp.Fb_X2 = float.Parse(changedText);
-                if (item.Name == "Height1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                if (item.Name == "Height2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                if (plate is CConCom_Plate_KC)
+                {
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width1") plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name == "Width2") plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name == "Height1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
 
-                if (item.Name == "CrscRafterDepth") plateTemp.FCrscRafterDepth = float.Parse(changedText);
-                if (item.Name == "CrscWebStraightDepth") plateTemp.FCrscWebStraightDepth = float.Parse(changedText);
-                if (item.Name == "StiffenerSize") plateTemp.FStiffenerSize = float.Parse(changedText);
-                if (item.Name == "UseAdditionalCornerScrews") plateTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                if (item.Name == "AdditionalConnectorNumber") plateTemp.IAdditionalConnectorNumber = int.Parse(changedText);
-                if (item.Name == "HolesNumber") plateTemp.IHolesNumber = int.Parse(changedText);
+                    if (item.Name == "CrscRafterDepth") plateTemp.FCrscRafterDepth = float.Parse(changedText);
+                    if (item.Name == "CrscWebStraightDepth") plateTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                    if (item.Name == "StiffenerSize") plateTemp.FStiffenerSize = float.Parse(changedText);
+                    if (item.Name == "UseAdditionalCornerScrews") plateTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
+                    if (item.Name == "AdditionalConnectorNumber") plateTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                    if (item.Name == "HolesNumber") plateTemp.IHolesNumber = int.Parse(changedText);
+
+                    
+
+                }
+                //if(plate.ScrewsArrangement != null plate.ScrewsArrangement is CircularScrewsArrangement)
+                //{
+                //    if (item.Name == "StiffenerSize") plateTemp.FStiffenerSize = float.Parse(changedText);
+                //    if (item.Name == "UseAdditionalCornerScrews") plateTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
+                //    if (item.Name == "AdditionalConnectorNumber") plateTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                //    if (item.Name == "HolesNumber") plateTemp.IHolesNumber = int.Parse(changedText);
+                //}
+
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
