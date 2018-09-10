@@ -52,23 +52,22 @@ namespace PFD
             
             // Internal forces
             CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
-            ifinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
+            ifinput.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
             this.DataContext = ifinput;
         }
 
 
-        protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        protected void HandleMemberInternalForcesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            CPFDLoadInput loadInput = sender as CPFDLoadInput;
-            if (loadInput != null && loadInput.IsSetFromCode) return;
-
-
+            CPFDMemberInternalForces memberIF = sender as CPFDMemberInternalForces;
+            if (memberIF == null) return;
+            if (memberIF != null && memberIF.IsSetFromCode) return;
+            
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
-
-            // TODO - Ondrej
-            // TODO - zo skupiny prutov s rovnakym typom z component list vybrat prvy alebo prejst vsetky ???
-            CMember member = Model.listOfModelMemberGroups[Combobox_ComponentType.SelectedIndex].ListOfMembers[0];
+            
+            CMember member = Model.listOfModelMemberGroups[memberIF.ComponentTypeIndex].ListOfMembers.First();
+            if (member == null) throw new Exception("No member in List of Members");
             fMemberLength_xMax = member.FLength;
 
             for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
@@ -80,7 +79,7 @@ namespace PFD
             basicInternalForces[] sBIF_x;
 
             // TODO - kombinacia ktorej vysledky chceme zobrazit
-            CLoadCombination lcomb = Model.m_arrLoadCombs[Combobox_LoadCombination.SelectedIndex];
+            CLoadCombination lcomb = Model.m_arrLoadCombs[memberIF.LoadCombinationIndex];
             // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sMomentValuesforCb, out sBIF_x);
 
