@@ -66,7 +66,7 @@ namespace PFD
             
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
             
-            CMember member = Model.listOfModelMemberGroups[memberIF.ComponentTypeIndex].ListOfMembers.First();
+            CMember member = Model.listOfModelMemberGroups[memberIF.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
             if (member == null) throw new Exception("No member in List of Members");
             fMemberLength_xMax = member.FLength;
 

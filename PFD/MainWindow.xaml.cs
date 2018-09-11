@@ -235,17 +235,19 @@ namespace PFD
 
             if (MemberDesignResults_ULS == null)
             {
-                Internal_Forces.IsEnabled = false;
-                Member_Design.IsEnabled = false;
-                Joint_Design.IsEnabled = false;
+                //Internal_Forces.IsEnabled = false;
+                //Member_Design.IsEnabled = false;
+                //Joint_Design.IsEnabled = false;
+
                 //Member_Design.Visibility = Visibility.Hidden;
                 //Internal_Forces.Visibility = Visibility.Hidden;
             }
             else
             {
-                Internal_Forces.IsEnabled = true;
-                Member_Design.IsEnabled = true;
-                Joint_Design.IsEnabled = true;
+                //Internal_Forces.IsEnabled = true;
+                //Member_Design.IsEnabled = true;
+                //Joint_Design.IsEnabled = true;
+
                 //Member_Design.Visibility = Visibility.Visible;
                 //Internal_Forces.Visibility = Visibility.Visible;
             }
