@@ -47,7 +47,7 @@ namespace PFD
 
         bool bDebugging = false;
 
-        public CModel_PFD model;
+        //public CModel_PFD model;
         public CDatabaseModels dmodels; // Todo nahradit databazov modelov
         public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
         public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
@@ -116,26 +116,6 @@ namespace PFD
 
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
-            
-            // Model Geometry
-            vm = new CPFDViewModel(1);
-            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
-            this.DataContext = vm;
-
-            FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
-            FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
-
-            // Set default values for cladding
-            Combobox_RoofCladding.SelectedIndex = 0;
-            Combobox_WallCladding.SelectedIndex = 0;
-            Combobox_RoofCladdingThickness.SelectedIndex = 0;
-            Combobox_WallCladdingThickness.SelectedIndex = 0;
-
-            sGeometryInputData.fH_2 = vm.fh2;
-            sGeometryInputData.fH_1 = vm.WallHeight;
-            sGeometryInputData.fW = vm.GableWidth;
-            sGeometryInputData.fL = vm.Length;
-            sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
             DataTable dt;
             // Prepare data for generating of door blocks
@@ -194,6 +174,45 @@ namespace PFD
                 }
             }
 
+
+            // Calculate loading values as an input to draw loads in 3D
+            CalculateLoadingValues();
+
+            // Model Geometry
+            vm = new CPFDViewModel(1, DoorBlocksToInsertProperties, WindowBlocksToInsertProperties, DoorBlocksProperties, WindowBlocksProperties, generalLoad, wind, snow, eq, loadinput);
+            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+            this.DataContext = vm;
+
+            
+            
+
+            //tento grc je tu len preto,ze metodu CalculateLoadingValues(); nie je mozne zavolat skor ako vytvorit CPFDViewModel
+            //vm.GeneralLoad = generalLoad;
+            //vm.Wind = wind;
+            //vm.Snow = snow;
+            //vm.Eq = eq;
+            //vm.CreateModel();
+            //ani ked som zavolal metody neskor tak to nepomohlo
+
+
+
+            FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
+            FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
+
+            // Set default values for cladding
+            //Combobox_RoofCladding.SelectedIndex = 0;
+            //Combobox_WallCladding.SelectedIndex = 0;
+            //Combobox_RoofCladdingThickness.SelectedIndex = 0;
+            //Combobox_WallCladdingThickness.SelectedIndex = 0;
+
+            //sGeometryInputData.fH_2 = vm.fh2;
+            //sGeometryInputData.fH_1 = vm.WallHeight;
+            //sGeometryInputData.fW = vm.GableWidth;
+            //sGeometryInputData.fL = vm.Length;
+            //sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
+
+            
+
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
 
@@ -202,33 +221,11 @@ namespace PFD
             // polozky z vm by asi bolo lepsie predavat ako nejaku strukturu zakladnej geometrie
             // vid public BuildingGeometryDataInput sGeometryInputData;
 
-            // Calculate loading values as an input to draw loads in 3D
-            CalculateLoadingValues();
-
-            // Create 3D model of structure including loading
-            model = new CModel_PFD_01_GR(
-                    vm.WallHeight,
-                    vm.GableWidth,
-                    vm.fL1, vm.Frames,
-                    vm.fh2,
-                    vm.GirtDistance,
-                    vm.PurlinDistance,
-                    vm.ColumnDistance,
-                    vm.BottomGirtPosition,
-                    vm.FrontFrameRakeAngle,
-                    vm.BackFrameRakeAngle,
-                    DoorBlocksToInsertProperties,
-                    WindowBlocksToInsertProperties,
-                    DoorBlocksProperties,
-                    WindowBlocksProperties,
-                    generalLoad,
-                    wind,
-                    snow,
-                    eq);
-
+            
+                        
             // Load cases
             // Fill combobox items
-            foreach (CLoadCase loadcase in model.m_arrLoadCases)
+            foreach (CLoadCase loadcase in vm.Model.m_arrLoadCases)
                 Combobox_LoadCase.Items.Add(loadcase.Name);
 
             //Combobox_LoadCase.SelectedIndex = 0; // Selected load case  - TOto spusti UpdateAll a model sa vytvara znovu
@@ -256,12 +253,12 @@ namespace PFD
             UpdateDisplayOptions();
 
             // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[0]);
+            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[0]);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
 
-            model.GroupModelMembers();
+            vm.Model.GroupModelMembers();
         }
 
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -346,7 +343,7 @@ namespace PFD
             // Treba sa na to pozriet podrobnejsie
             // Navrhujem napojit nejaky externy solver
 
-            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(model.m_arrMat[0], model.m_arrCrSc[0], model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2, 1000, 1000, 1000, 1000);
+            CExample_2D_13_PF temp2Dmodel = new CExample_2D_13_PF(vm.Model.m_arrMat[0], vm.Model.m_arrCrSc[0], vm.Model.m_arrCrSc[1], vm.GableWidth, vm.WallHeight, vm.fh2, 1000, 1000, 1000, 1000);
             FEM_CALC_1Din2D.CFEM_CALC obj_Calc = new FEM_CALC_1Din2D.CFEM_CALC(temp2Dmodel, bDebugging);
 
             // Auxialiary string - result data
@@ -403,10 +400,10 @@ namespace PFD
             sBuildingInputData.fR_SLS = loadinput.R_SLS;
 
             // Load Generation
-            // General loading
-
-            float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", Combobox_RoofCladdingThickness.SelectedIndex);
-            float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", Combobox_WallCladdingThickness.SelectedIndex);
+            // General loading            
+            //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
+            float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", vm.RoofCladdingThicknessIndex);
+            float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", vm.WallCladdingThicknessIndex);
 
             // General Load (AS / NZS 1170.1)
             CalculateBasicLoad(fMass_Roof, fMass_Wall);
@@ -519,7 +516,7 @@ namespace PFD
             // TODO Ondrej - ziskat hodnotu z databazy
             //float fA_g = DatabaseManager.GetValueFromDatabasebyRowID("MDBSections", "tableSections_m", "A_g", 1, "section");
 
-            float fA_g = (float)model.m_arrCrSc[4].A_g;
+            float fA_g = (float)vm.Model.m_arrCrSc[4].A_g;
             float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
             float fPurlinDeadLoadLinear = generalLoad.fDeadLoadTotal_Roof * vm.PurlinDistance + fPurlinSelfWeight;
             float fPurlinImposedLoadLinear = loadinput.ImposedActionRoof * 1000 * vm.PurlinDistance;
@@ -629,7 +626,7 @@ namespace PFD
 
             System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
             // Calculate Internal Forces For Load Cases
-            foreach (CMember m in model.m_arrMembers)
+            foreach (CMember m in vm.Model.m_arrMembers)
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
@@ -640,7 +637,7 @@ namespace PFD
                     m.MBIF_x = new List<basicInternalForces[]>();
                     m.MBDef_x = new List<basicDeflections[]>();
 
-                    foreach (CLoadCase lc in model.m_arrLoadCases)
+                    foreach (CLoadCase lc in vm.Model.m_arrLoadCases)
                     {
                         // Calculate Internal forces just for Load Cases that are included in ULS
                         if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
@@ -675,14 +672,14 @@ namespace PFD
 
             JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
 
-            foreach (CMember m in model.m_arrMembers)
+            foreach (CMember m in vm.Model.m_arrMembers)
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     for (int i = 0; i < iNumberOfDesignSections; i++)
                         fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
-                    foreach (CLoadCombination lcomb in model.m_arrLoadCombs)
+                    foreach (CLoadCombination lcomb in vm.Model.m_arrLoadCombs)
                     {
                         if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for SLS
                         {
@@ -895,12 +892,12 @@ namespace PFD
         
         public void SetMaterialValuesFromDatabase()
         {
-            CMaterialManager.SetMaterialValuesFromDatabase(model.m_arrMat);
+            CMaterialManager.SetMaterialValuesFromDatabase(vm.Model.m_arrMat);
         }
 
         public void SetCrossSectionValuesFromDatabase()
         {
-            foreach (CCrSc_TW crsc in model.m_arrCrSc)
+            foreach (CCrSc_TW crsc in vm.Model.m_arrCrSc)
             {
                 // TODO - zjednotit nazvy prierezov v database a v GUI programu
                 // TODO - zaviest v databaze meno prierezu ktore sa ma zobrazovat a meno pouzite pre identifikaciu (mozno enum)
@@ -979,7 +976,7 @@ namespace PFD
             CalculateLoadingValues();
 
             // TODO - nove parametre pre nastavenie hodnot zatazenia
-            model = new CModel_PFD_01_GR(
+            vm.Model = new CModel_PFD_01_GR(
                 vm.WallHeight,
                 vm.GableWidth,
                 vm.fL1,
@@ -1003,7 +1000,7 @@ namespace PFD
             // Create 3D window
             UpdateDisplayOptions();
 
-            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
+            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
@@ -1084,7 +1081,7 @@ namespace PFD
 
         private void View_2D_Click(object sender, RoutedEventArgs e)
         {
-            Pokus2DView win = new Pokus2DView(model);
+            Pokus2DView win = new Pokus2DView(vm.Model);
             win.Show();
         }
 
@@ -1107,32 +1104,32 @@ namespace PFD
                 if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
             }
             else if (MainTabControl.SelectedIndex == 3)
-                Load_Cases.Content = new UC_LoadCaseList(model).Content;
+                Load_Cases.Content = new UC_LoadCaseList(vm.Model);
             else if (MainTabControl.SelectedIndex == 4)
-                Load_Combinations.Content = new UC_LoadCombinationList(model).Content;
+                Load_Combinations.Content = new UC_LoadCombinationList(vm.Model);
             else if (MainTabControl.SelectedIndex == 5)
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Internal_Forces.Content = new UC_InternalForces(model, compList, listMemberInternalForces);
+                Internal_Forces.Content = new UC_InternalForces(vm.Model, compList, listMemberInternalForces);
             }
             else if (MainTabControl.SelectedIndex == 6)
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Member_Design.Content = new UC_MemberDesign(model, compList, MemberDesignResults_ULS, MemberDesignResults_SLS);
+                Member_Design.Content = new UC_MemberDesign(vm.Model, compList, MemberDesignResults_ULS, MemberDesignResults_SLS);
             }
             else if (MainTabControl.SelectedIndex == 7)
             {
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Joint_Design.Content = new UC_JointDesign(model, compList, JointDesignResults_ULS).Content;
+                Joint_Design.Content = new UC_JointDesign(vm.Model, compList, JointDesignResults_ULS);
             }
             else if (MainTabControl.SelectedIndex == 8)
-                Part_List.Content = new UC_MaterialList(model).Content;
+                Part_List.Content = new UC_MaterialList(vm.Model);
             else
             {
                 // Not implemented like UC;
@@ -1434,9 +1431,9 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.AxisX);
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.AxisY);
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(model.AxisZ);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisX);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisY);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisZ);
 
 
                 //neviem refreshnut viewport

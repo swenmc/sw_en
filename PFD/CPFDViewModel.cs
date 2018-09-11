@@ -6,11 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Configuration;
+using BaseClasses;
+using FEM_CALC_BASE;
+using System.Data;
+using MATH;
+using M_BASE;
+using M_EC1.AS_NZS;
 
 namespace PFD
 {
     public class CPFDViewModel : INotifyPropertyChanged
     {
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
+        public event EventHandler<TwoOpt.EventArgs<CMember>> InternalForcesCalculatedForMember;
+
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsSetFromCode = false;
@@ -36,12 +45,27 @@ namespace PFD
         private int MWallCladdingColorIndex;
         private int MWallCladdingThicknessIndex;
         private int MLoadCaseIndex;
+
+        private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
         public float fL1;
         public float fh2;
         public float fRoofPitch_radians;
 
+        // TODO - Ondrej zaviest staticku triedu pre fyzikalne konstanty, prevody jednotiek a podobne
+        public const float fg_acceleration = 9.80665f; // gravitational acceleration [m/s^2]
+        public float fMaterial_density = 7850f; //  [kg /m^3] (malo by byt zadane v databaze materialov)
+
+        public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
+        public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
+        public List<DoorProperties> DoorBlocksProperties;
+        public List<WindowProperties> WindowBlocksProperties;
+        public CCalcul_1170_1 GeneralLoad;
+        public CCalcul_1170_2 Wind;
+        public CCalcul_1170_3 Snow;
+        public CCalcul_1170_5 Eq;
+        public CPFDLoadInput Loadinput;
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -464,16 +488,431 @@ namespace PFD
             }
         }
 
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex)
+        public CModel_PFD Model
         {
+            get
+            {
+                return MModel;
+            }
+
+            set
+            {
+                MModel = value;
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        public CPFDViewModel(int modelIndex, List<PropertiesToInsertOpening> doorBlocksToInsertProperties, List<PropertiesToInsertOpening> windowBlocksToInsertProperties, 
+            List<DoorProperties> doorBlocksProperties, List<WindowProperties> windowBlocksProperties, 
+            CCalcul_1170_1 generalLoad, CCalcul_1170_2 wind, CCalcul_1170_3 snow, CCalcul_1170_5 eq,
+            CPFDLoadInput loadinput)
+        {
+            DoorBlocksProperties = doorBlocksProperties;
+            WindowBlocksToInsertProperties = windowBlocksToInsertProperties;
+            DoorBlocksProperties = doorBlocksProperties;
+            WindowBlocksProperties = windowBlocksProperties;
+            GeneralLoad = generalLoad;
+            Wind = wind;
+            Snow = snow;
+            Eq = eq;
+            Loadinput = loadinput;
+            
+            
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
 
             IsSetFromCode = false;
+            
+            _worker.DoWork += CalculateInternalForces;
+            _worker.WorkerSupportsCancellation = true;
+        }
+
+        public void CreateModel()
+        {
+            // Create 3D model of structure including loading
+            MModel = new CModel_PFD_01_GR(
+                    WallHeight,
+                    GableWidth,
+                    fL1, Frames,
+                    fh2,
+                    GirtDistance,
+                    PurlinDistance,
+                    ColumnDistance,
+                    BottomGirtPosition,
+                    FrontFrameRakeAngle,
+                    BackFrameRakeAngle,
+                    DoorBlocksToInsertProperties,
+                    WindowBlocksToInsertProperties,
+                    DoorBlocksProperties,
+                    WindowBlocksProperties,
+                    GeneralLoad,
+                    Wind,
+                    Snow,
+                    Eq);
+        }
+
+        public void Run()
+        {
+            if (!_worker.IsBusy) _worker.RunWorkerAsync();
+        }
+
+        private void CalculateInternalForces(object sender, DoWorkEventArgs e)
+        {
+            Calculate();
+        }
+
+        private void Calculate()
+        {
+
+
+            DateTime start = DateTime.Now;
+          
+            float fA_g = (float)Model.m_arrCrSc[4].A_g;
+            float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
+            float fPurlinDeadLoadLinear = GeneralLoad.fDeadLoadTotal_Roof * PurlinDistance + fPurlinSelfWeight;
+            float fPurlinImposedLoadLinear = Loadinput.ImposedActionRoof * 1000 * PurlinDistance;
+            float fsnowValue = Snow.fs_ULS_Nu_1 * ((0.5f * GableWidth) / ((0.5f * GableWidth) / (float)Math.Cos(fRoofPitch_radians))); // Consider projection acc. to Figure 4.1
+            float fPurlinSnowLoadLinear = fsnowValue * PurlinDistance;
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TEMPORARY - vypocet na modeli jedneho pruta
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            float fPurlinWindLoadLinear = Wind.fp_e_max_D_roof_ULS_Theta_4[0, 0];
+
+            float fp_i_min_min;
+            float fp_i_min_max;
+            float fp_i_max_min;
+            float fp_i_max_max;
+
+            GetMinAndMaxValueInTheArray(Wind.fp_i_min_ULS_Theta_4, out fp_i_min_min, out fp_i_min_max);
+            GetMinAndMaxValueInTheArray(Wind.fp_i_max_ULS_Theta_4, out fp_i_max_min, out fp_i_max_max);
+
+            float[] fp_e_min_min = new float[3];
+            float[] fp_e_min_max = new float[3];
+            float[] fp_e_max_min = new float[3];
+            float[] fp_e_max_max = new float[3];
+
+            GetMinAndMaxValueInTheArray(Wind.fp_e_min_D_roof_ULS_Theta_4, out fp_e_min_min[0], out fp_e_min_max[0]);
+            GetMinAndMaxValueInTheArray(Wind.fp_e_min_U_roof_ULS_Theta_4, out fp_e_min_min[1], out fp_e_min_max[1]);
+            GetMinAndMaxValueInTheArray(Wind.fp_e_min_R_roof_ULS_Theta_4, out fp_e_min_min[2], out fp_e_min_max[2]);
+
+            GetMinAndMaxValueInTheArray(Wind.fp_e_max_D_roof_ULS_Theta_4, out fp_e_max_min[0], out fp_e_max_max[0]);
+            GetMinAndMaxValueInTheArray(Wind.fp_e_max_U_roof_ULS_Theta_4, out fp_e_max_min[1], out fp_e_max_max[1]);
+            GetMinAndMaxValueInTheArray(Wind.fp_e_max_R_roof_ULS_Theta_4, out fp_e_max_min[2], out fp_e_max_max[2]);
+
+            float fp_e_min_min_value;
+            float fp_e_min_max_value;
+            float fp_e_max_min_value;
+            float fp_e_max_max_value;
+
+            GetMinAndMaxValueInTheArray(fp_e_min_min, out fp_e_min_min_value, out fp_e_min_max_value);
+            GetMinAndMaxValueInTheArray(fp_e_max_max, out fp_e_max_min_value, out fp_e_max_max_value);
+
+            float fp_min = fp_i_min_min + fp_e_min_min_value;
+            float fp_max = fp_i_max_max + fp_e_max_max_value;
+
+            float fWu_min_linear = fp_min * PurlinDistance;
+            float fWu_max_linear = fp_max * PurlinDistance;
+
+            // Transform loads from global coordinate system to the purlin coordinate system
+            float fSinAlpha = (float)Math.Sin((RoofPitch_deg / 180f) * MathF.fPI);
+            float fCosAlpha = (float)Math.Cos((RoofPitch_deg / 180f) * MathF.fPI);
+
+            float fPurlinDeadLoadLinear_LCS_y = fPurlinDeadLoadLinear * fSinAlpha;
+            float fPurlinDeadLoadLinear_LCS_z = fPurlinDeadLoadLinear * fCosAlpha;
+
+            float fPurlinImposedLoadLinear_LCS_y = fPurlinImposedLoadLinear * fSinAlpha;
+            float fPurlinImposedLoadLinear_LCS_z = fPurlinImposedLoadLinear * fCosAlpha;
+
+            float fPurlinSnowLoadLinear_LCS_y = fPurlinSnowLoadLinear * fSinAlpha;
+            float fPurlinSnowLoadLinear_LCS_z = fPurlinSnowLoadLinear * fCosAlpha;
+
+            // Combinations of action
+            // 4.2.2 Strength
+            // Purlin (a) (b) (d) (e) (g)
+            /*
+            int iNumberOfLoadCombinations = 5;
+            float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
+
+            // Ukazka generovania kombinacii
+
+            fE_d_load_values_LCS_y[0] = 1.35f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (a)
+            fE_d_load_values_LCS_y[1] = 1.20f * fPurlinDeadLoadLinear_LCS_y + 1.50f * fPurlinImposedLoadLinear_LCS_y;     // 4.2.2 (b)
+            fE_d_load_values_LCS_y[2] = 1.20f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (d)
+            fE_d_load_values_LCS_y[3] = 0.90f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (e)
+            fE_d_load_values_LCS_y[4] = 1.20f * fPurlinDeadLoadLinear_LCS_y + fPurlinSnowLoadLinear_LCS_y;                // 4.2.2 (g)
+
+            float[] fE_d_load_values_LCS_z = new float[iNumberOfLoadCombinations];
+
+            fE_d_load_values_LCS_z[0] = 1.35f * fPurlinDeadLoadLinear_LCS_z;                                              // 4.2.2 (a)
+            fE_d_load_values_LCS_z[1] = 1.20f * fPurlinDeadLoadLinear_LCS_z + 1.50f * fPurlinImposedLoadLinear_LCS_z;     // 4.2.2 (b)
+            fE_d_load_values_LCS_z[2] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fWu_max_linear;                             // 4.2.2 (d)
+            fE_d_load_values_LCS_z[3] = 0.90f * fPurlinDeadLoadLinear_LCS_z + Math.Abs(fWu_min_linear);                   // 4.2.2 (e)
+            fE_d_load_values_LCS_z[4] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fPurlinSnowLoadLinear_LCS_z;                // 4.2.2 (g)
+            */
+            const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
+            const int iNumberOfSegments = iNumberOfDesignSections - 1;
+
+            float[] fx_positions = new float[iNumberOfDesignSections];
+            designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
+            basicInternalForces[] sBIF_x = null;
+            basicDeflections[] sBDeflections_x = null;
+
+            // Tu by sa mal napojit FEM vypocet
+            //RunFEMSOlver();
+            float fMaximumDesignRatioWholeStructure = 0;
+            float fMaximumDesignRatioGirts = 0;
+            float fMaximumDesignRatioPurlins = 0;
+            float fMaximumDesignRatioColumns = 0;
+
+            CMember MaximumDesignRatioWholeStructureMember = new CMember();
+            CMember MaximumDesignRatioGirt = new CMember();
+            CMember MaximumDesignRatioPurlin = new CMember();
+            CMember MaximumDesignRatioColumn = new CMember();
+
+            SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
+            List<CMemberInternalForcesInLoadCases> listMemberInternalForces = new List<CMemberInternalForcesInLoadCases>();
+            List<CMemberDeflectionsInLoadCases> listMemberDeflections = new List<CMemberDeflectionsInLoadCases>();
+
+            System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
+            // Calculate Internal Forces For Load Cases
+            foreach (CMember m in Model.m_arrMembers)
+            {
+                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                {
+                    for (int i = 0; i < iNumberOfDesignSections; i++)
+                        fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
+
+                    m.MMomentValuesforCb = new List<designMomentValuesForCb>();
+                    m.MBIF_x = new List<basicInternalForces[]>();
+                    m.MBDef_x = new List<basicDeflections[]>();
+
+                    foreach (CLoadCase lc in Model.m_arrLoadCases)
+                    {
+                        // Calculate Internal forces just for Load Cases that are included in ULS
+                        if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
+                        {
+                            foreach (CMLoad cmload in lc.MemberLoadsList)
+                            {
+                                if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                {
+                                    // ULS - internal forces
+                                    calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+
+                                    // SLS - deflections
+                                    calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
+                                }
+                            }
+                        }
+
+                        if (sBIF_x != null) listMemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                        if (sBDeflections_x != null) listMemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+
+                        //m.MMomentValuesforCb.Add(sMomentValuesforCb);
+                        //m.MBIF_x.Add(sBIF_x);
+                    }
+                }
+            }
+
+            // Design of members
+            // Calculate Internal Forces For Load Cases
+
+            List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+            List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+
+            List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
+
+            foreach (CMember m in Model.m_arrMembers)
+            {
+                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                {
+                    for (int i = 0; i < iNumberOfDesignSections; i++)
+                        fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
+
+                    foreach (CLoadCombination lcomb in Model.m_arrLoadCombs)
+                    {
+                        if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for SLS
+                        {
+                            // Member basic internal forces
+                            designMomentValuesForCb sMomentValuesforCb_design;
+                            basicInternalForces[] sBIF_x_design;
+                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, listMemberInternalForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
+
+                            // Member design internal forces
+                            if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
+                            {
+                                designInternalForces[] sMemberDIF_x;
+
+                                // Member Design
+                                CMemberDesign memberDesignModel = new CMemberDesign();
+                                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sMemberDIF_x);
+                                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
+
+                                // Set maximum design ratio of whole structure
+                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                {
+                                    fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+                                    MaximumDesignRatioWholeStructureMember = m;
+                                }
+
+                                // Joint Design
+                                designInternalForces[] sJointDIF_x;
+                                CJointDesign jointDesignModel = new CJointDesign();
+                                CConnectionJointTypes joint;
+                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, out joint, out sJointDIF_x);
+                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, joint, lcomb, jointDesignModel.fMaximumDesignRatio, sJointDIF_x[jointDesignModel.fMaximumDesignRatioLocationID]));
+
+                                // Output (for debugging - member results)
+                                bool bDebugging = true; // Testovacie ucely
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
+
+                                // Output (for debugging - member connection / joint results)
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Joint ID: " + joint.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(jointDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
+
+                                // Output - set maximum design ratio by component Type
+                                if (bDebugging)
+                                {
+                                    switch (m.EMemberType)
+                                    {
+                                        case EMemberType_FormSteel.eG: // Girt
+                                            {
+                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                                                {
+                                                    fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioGirt = m;
+                                                }
+                                                break;
+                                            }
+                                        case EMemberType_FormSteel.eP: // Purlin
+                                            {
+                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                                                {
+                                                    fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioPurlin = m;
+                                                }
+                                                break;
+                                            }
+                                        case EMemberType_FormSteel.eC: // Column
+                                            {
+                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                                                {
+                                                    fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
+                                                    MaximumDesignRatioColumn = m;
+                                                }
+                                                break;
+                                            }
+                                        default:
+                                            // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        else // SLS
+                        {
+                            // Member basic deflections
+                            basicDeflections[] sBDeflection_x_design;
+                            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, listMemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
+
+                            // Member design deflections
+                            if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
+                            {
+                                designDeflections[] sDDeflection_x;
+                                CMemberDesign memberDesignModel = new CMemberDesign();
+                                memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
+
+                                // Set maximum design ratio of whole structure
+                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
+                                {
+                                    fMaximumDesignRatioWholeStructure = memberDesignModel.fMaximumDesignRatio;
+                                    MaximumDesignRatioWholeStructureMember = m;
+                                }
+
+                                // Output (for debugging)
+                                bool bDebugging = false; // Testovacie ucely
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString());
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Member_Design.IsEnabled = true;
+            //Internal_Forces.IsEnabled = true;
+            System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);
+            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
+            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
+
+            //MessageBox.Show("Calculation Results \n" +
+            //        "Maximum design ratio \n" +
+            //        "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
+
+            //        "Maximum design ratio - girts\n" +
+            //        "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
+            //        "Maximum design ratio - purlins\n" +
+            //        "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
+            //        "Maximum design ratio - columns\n" +
+            //        "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n"
+            //        );
+
+        }
+
+        private void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)
+        {
+            if (array != null)
+            {
+                min = max = array[0];
+
+                foreach (float f in array)
+                {
+                    if (Math.Abs(f) > Math.Abs(min))
+                        min = f;
+
+                    if (Math.Abs(f) > Math.Abs(max))
+                        max = f;
+                }
+            }
+            else // Exception
+            {
+                min = max = float.MaxValue;
+            }
+        }
+
+        private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
+        {
+            if (array != null)
+            {
+                min = max = array[0, 0];
+
+                foreach (float f in array)
+                {
+                    if (Math.Abs(f) > Math.Abs(min))
+                        min = f;
+
+                    if (Math.Abs(f) > Math.Abs(max))
+                        max = f;
+                }
+            }
+            else // Exception
+            {
+                min = max = float.MaxValue;
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------

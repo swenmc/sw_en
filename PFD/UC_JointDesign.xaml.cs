@@ -84,6 +84,8 @@ namespace PFD
             cGoverningMemberStartJointResults = null;
             cGoverningMemberEndJointResults = null;
 
+            //A co ak DesignResults == null ???
+
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = 0;

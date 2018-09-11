@@ -80,9 +80,6 @@ namespace PFD
                 float fMaximumDesignRatio = 0;
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
-                    // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
-                    // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
-
                     //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
                     CMemberLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
@@ -171,8 +168,8 @@ namespace PFD
                 SetResultsDetailsFor_SLS(obj_CalcDesign);
 
             // TODO Ondrej - prepracovat a spojit s UC_JointDesign
-            // Zadat mi dielcie ulohy
-
+            // hm? co prepracovat? Ako spojit s UCJointDesign?
+            
             // Create Table
             DataTable table = new DataTable("Table");
             // Create Table Rows
@@ -209,10 +206,12 @@ namespace PFD
                     row["Value"] = zoznamMenuHodnoty[i];
                     row["Unit"] = zoznamMenuJednotky[i];
                     i++;
+                    if (i >= zoznamMenuNazvy.Count) break;
                     row["Symbol1"] = zoznamMenuNazvy[i];
                     row["Value1"] = zoznamMenuHodnoty[i];
                     row["Unit1"] = zoznamMenuJednotky[i];
                     i++;
+                    if (i >= zoznamMenuNazvy.Count) break;
                     row["Symbol2"] = zoznamMenuNazvy[i];
                     row["Value2"] = zoznamMenuHodnoty[i];
                     row["Unit2"] = zoznamMenuJednotky[i];
