@@ -41,7 +41,7 @@ namespace PFD
             {
                 MLimitStateIndex = value;
 
-                // TODO - Pri zmene LimitState nacitat load combinations, ktora patria k danemu limit state a maju spocitane vysledky
+                // TODO No. 68 - Pri zmene LimitState nacitat load combinations, ktora patria k danemu limit state a maju spocitane vysledky
                 // PODOBNE PRE INTERNAL FORCES
 
                 NotifyPropertyChanged("LimitStateIndex");
@@ -60,7 +60,7 @@ namespace PFD
             {
                 MLoadCombinationIndex = value;
 
-                // TODO - Pri zmene load combination, spustit vypocet pre vsetky pruty vybraneho typu v component type a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
+                // TODO No. 68 - Pri zmene load combination, spustit vypocet pre vsetky pruty vybraneho typu v component type a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
 
                 NotifyPropertyChanged("LoadCombinationIndex");
             }
@@ -78,7 +78,7 @@ namespace PFD
             {
                 MComponentTypeIndex = value;
 
-                // TODO - Pri zmene typpu pruta, spustit vypocet pre vsetky pruty vybraneho typu pre vybranu kombinaciu a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
+                // TODO No. 68 - Pri zmene typpu pruta, spustit vypocet pre vsetky pruty vybraneho typu pre vybranu kombinaciu a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
 
                 NotifyPropertyChanged("ComponentTypeIndex");
             }

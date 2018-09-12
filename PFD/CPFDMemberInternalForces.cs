@@ -40,7 +40,7 @@ namespace PFD
             set
             {
                 MLimitStateIndex = value;
-
+                //TODO No. 68
                 NotifyPropertyChanged("LimitStateIndex");
             }
         }
@@ -56,7 +56,7 @@ namespace PFD
             set
             {
                 MLoadCombinationIndex = value;
-
+                //TODO No. 68
                 NotifyPropertyChanged("LoadCombinationIndex");
             }
         }
@@ -72,7 +72,7 @@ namespace PFD
             set
             {
                 MComponentTypeIndex = value;
-
+                //TODO No. 68
                 NotifyPropertyChanged("ComponentTypeIndex");
             }
         }

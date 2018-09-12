@@ -165,10 +165,18 @@ namespace PFD
 
         public void DisplayDesignResultsInGridView(DataGrid dataGrid, CCalculJoint obj_CalcDesign)
         {
-            // TODO  pripravit zoznam parametrov pre datagrid
+            // TODO - pripravit zoznam parametrov pre datagrid
             // To Ondrej - Ako by to malo vyzerat, pouzit Tuple, zapracovat do viewmodel
             // TODO - Ondrej
             // Prepracovat a refaktorovat DisplayDesignResultsInGridView v UC_MemberDesign.xaml.cs
+
+            //TODO No. 68
+
+            // Zobrazit v datagridoch
+            // cJointStart.fEta_max
+            // cJointEnd.fEta_max
+            // pre vybrany member a load combination, ostatne veliciny si doplnim
+            // Funkcie pre zobrazenie vysledkov v datagridoch UC_MemberDesign a UC_JointDesign by mali byt nejako zjednotene
         }
     }
 }
