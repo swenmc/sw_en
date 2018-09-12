@@ -175,7 +175,7 @@ namespace PFD
             }
 
             
-            // Tu je nesktocne vela roboty,kym to  bude nejako normalne vyzerat
+            // Tu je nesktocne vela roboty, kym to bude nejako normalne vyzerat
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksToInsertProperties, WindowBlocksToInsertProperties, DoorBlocksProperties, WindowBlocksProperties);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
@@ -189,16 +189,13 @@ namespace PFD
             // Calculate loading values as an input to draw loads in 3D
             CalculateLoadingValues();
             
-            //tento grc je tu len preto,ze metodu CalculateLoadingValues(); nie je mozne zavolat skor ako vytvorit CPFDViewModel
             vm.GeneralLoad = generalLoad;
             vm.Wind = wind;
             vm.Snow = snow;
             vm.Eq = eq;
             vm.Loadinput = loadinput;
             vm.CreateModel();
-            //ani ked som zavolal metody neskor tak to nepomohlo
-
-
+            
 
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
