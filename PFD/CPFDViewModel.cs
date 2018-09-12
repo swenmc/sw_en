@@ -561,93 +561,98 @@ namespace PFD
         }
 
         private void Calculate()
-        {            
+        {
             DateTime start = DateTime.Now;
-          
-            float fA_g = (float)Model.m_arrCrSc[4].A_g;
-            float fPurlinSelfWeight = fA_g * fMaterial_density * GlobalConstants.fg_acceleration;
-            float fPurlinDeadLoadLinear = GeneralLoad.fDeadLoadTotal_Roof * PurlinDistance + fPurlinSelfWeight;
-            float fPurlinImposedLoadLinear = Loadinput.ImposedActionRoof * 1000 * PurlinDistance;
-            float fsnowValue = Snow.fs_ULS_Nu_1 * ((0.5f * GableWidth) / ((0.5f * GableWidth) / (float)Math.Cos(fRoofPitch_radians))); // Consider projection acc. to Figure 4.1
-            float fPurlinSnowLoadLinear = fsnowValue * PurlinDistance;
 
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // TEMPORARY - vypocet na modeli jedneho pruta
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Ukazkovy vypocet pre jednu vaznicu, po kompletnom dokonceni vypoctu zmazat ak sa nic z toho nepouzije
+            if (false) // Ukazkovy vypocet, zatial nemazat
+            {
+                float fA_g = (float)Model.m_arrCrSc[4].A_g;
+                float fPurlinSelfWeight = fA_g * fMaterial_density * GlobalConstants.fg_acceleration;
+                float fPurlinDeadLoadLinear = GeneralLoad.fDeadLoadTotal_Roof * PurlinDistance + fPurlinSelfWeight;
+                float fPurlinImposedLoadLinear = Loadinput.ImposedActionRoof * 1000 * PurlinDistance;
+                float fsnowValue = Snow.fs_ULS_Nu_1 * ((0.5f * GableWidth) / ((0.5f * GableWidth) / (float)Math.Cos(fRoofPitch_radians))); // Consider projection acc. to Figure 4.1
+                float fPurlinSnowLoadLinear = fsnowValue * PurlinDistance;
 
-            float fPurlinWindLoadLinear = Wind.fp_e_max_D_roof_ULS_Theta_4[0, 0];
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // TEMPORARY - vypocet na modeli jedneho pruta
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            float fp_i_min_min;
-            float fp_i_min_max;
-            float fp_i_max_min;
-            float fp_i_max_max;
+                float fPurlinWindLoadLinear = Wind.fp_e_max_D_roof_ULS_Theta_4[0, 0];
 
-            GetMinAndMaxValueInTheArray(Wind.fp_i_min_ULS_Theta_4, out fp_i_min_min, out fp_i_min_max);
-            GetMinAndMaxValueInTheArray(Wind.fp_i_max_ULS_Theta_4, out fp_i_max_min, out fp_i_max_max);
+                float fp_i_min_min;
+                float fp_i_min_max;
+                float fp_i_max_min;
+                float fp_i_max_max;
 
-            float[] fp_e_min_min = new float[3];
-            float[] fp_e_min_max = new float[3];
-            float[] fp_e_max_min = new float[3];
-            float[] fp_e_max_max = new float[3];
+                GetMinAndMaxValueInTheArray(Wind.fp_i_min_ULS_Theta_4, out fp_i_min_min, out fp_i_min_max);
+                GetMinAndMaxValueInTheArray(Wind.fp_i_max_ULS_Theta_4, out fp_i_max_min, out fp_i_max_max);
 
-            GetMinAndMaxValueInTheArray(Wind.fp_e_min_D_roof_ULS_Theta_4, out fp_e_min_min[0], out fp_e_min_max[0]);
-            GetMinAndMaxValueInTheArray(Wind.fp_e_min_U_roof_ULS_Theta_4, out fp_e_min_min[1], out fp_e_min_max[1]);
-            GetMinAndMaxValueInTheArray(Wind.fp_e_min_R_roof_ULS_Theta_4, out fp_e_min_min[2], out fp_e_min_max[2]);
+                float[] fp_e_min_min = new float[3];
+                float[] fp_e_min_max = new float[3];
+                float[] fp_e_max_min = new float[3];
+                float[] fp_e_max_max = new float[3];
 
-            GetMinAndMaxValueInTheArray(Wind.fp_e_max_D_roof_ULS_Theta_4, out fp_e_max_min[0], out fp_e_max_max[0]);
-            GetMinAndMaxValueInTheArray(Wind.fp_e_max_U_roof_ULS_Theta_4, out fp_e_max_min[1], out fp_e_max_max[1]);
-            GetMinAndMaxValueInTheArray(Wind.fp_e_max_R_roof_ULS_Theta_4, out fp_e_max_min[2], out fp_e_max_max[2]);
+                GetMinAndMaxValueInTheArray(Wind.fp_e_min_D_roof_ULS_Theta_4, out fp_e_min_min[0], out fp_e_min_max[0]);
+                GetMinAndMaxValueInTheArray(Wind.fp_e_min_U_roof_ULS_Theta_4, out fp_e_min_min[1], out fp_e_min_max[1]);
+                GetMinAndMaxValueInTheArray(Wind.fp_e_min_R_roof_ULS_Theta_4, out fp_e_min_min[2], out fp_e_min_max[2]);
 
-            float fp_e_min_min_value;
-            float fp_e_min_max_value;
-            float fp_e_max_min_value;
-            float fp_e_max_max_value;
+                GetMinAndMaxValueInTheArray(Wind.fp_e_max_D_roof_ULS_Theta_4, out fp_e_max_min[0], out fp_e_max_max[0]);
+                GetMinAndMaxValueInTheArray(Wind.fp_e_max_U_roof_ULS_Theta_4, out fp_e_max_min[1], out fp_e_max_max[1]);
+                GetMinAndMaxValueInTheArray(Wind.fp_e_max_R_roof_ULS_Theta_4, out fp_e_max_min[2], out fp_e_max_max[2]);
 
-            GetMinAndMaxValueInTheArray(fp_e_min_min, out fp_e_min_min_value, out fp_e_min_max_value);
-            GetMinAndMaxValueInTheArray(fp_e_max_max, out fp_e_max_min_value, out fp_e_max_max_value);
+                float fp_e_min_min_value;
+                float fp_e_min_max_value;
+                float fp_e_max_min_value;
+                float fp_e_max_max_value;
 
-            float fp_min = fp_i_min_min + fp_e_min_min_value;
-            float fp_max = fp_i_max_max + fp_e_max_max_value;
+                GetMinAndMaxValueInTheArray(fp_e_min_min, out fp_e_min_min_value, out fp_e_min_max_value);
+                GetMinAndMaxValueInTheArray(fp_e_max_max, out fp_e_max_min_value, out fp_e_max_max_value);
 
-            float fWu_min_linear = fp_min * PurlinDistance;
-            float fWu_max_linear = fp_max * PurlinDistance;
+                float fp_min = fp_i_min_min + fp_e_min_min_value;
+                float fp_max = fp_i_max_max + fp_e_max_max_value;
 
-            // Transform loads from global coordinate system to the purlin coordinate system
-            float fSinAlpha = (float)Math.Sin((RoofPitch_deg / 180f) * MathF.fPI);
-            float fCosAlpha = (float)Math.Cos((RoofPitch_deg / 180f) * MathF.fPI);
+                float fWu_min_linear = fp_min * PurlinDistance;
+                float fWu_max_linear = fp_max * PurlinDistance;
 
-            float fPurlinDeadLoadLinear_LCS_y = fPurlinDeadLoadLinear * fSinAlpha;
-            float fPurlinDeadLoadLinear_LCS_z = fPurlinDeadLoadLinear * fCosAlpha;
+                // Transform loads from global coordinate system to the purlin coordinate system
+                float fSinAlpha = (float)Math.Sin((RoofPitch_deg / 180f) * MathF.fPI);
+                float fCosAlpha = (float)Math.Cos((RoofPitch_deg / 180f) * MathF.fPI);
 
-            float fPurlinImposedLoadLinear_LCS_y = fPurlinImposedLoadLinear * fSinAlpha;
-            float fPurlinImposedLoadLinear_LCS_z = fPurlinImposedLoadLinear * fCosAlpha;
+                float fPurlinDeadLoadLinear_LCS_y = fPurlinDeadLoadLinear * fSinAlpha;
+                float fPurlinDeadLoadLinear_LCS_z = fPurlinDeadLoadLinear * fCosAlpha;
 
-            float fPurlinSnowLoadLinear_LCS_y = fPurlinSnowLoadLinear * fSinAlpha;
-            float fPurlinSnowLoadLinear_LCS_z = fPurlinSnowLoadLinear * fCosAlpha;
+                float fPurlinImposedLoadLinear_LCS_y = fPurlinImposedLoadLinear * fSinAlpha;
+                float fPurlinImposedLoadLinear_LCS_z = fPurlinImposedLoadLinear * fCosAlpha;
 
-            // Combinations of action
-            // 4.2.2 Strength
-            // Purlin (a) (b) (d) (e) (g)
-            /*
-            int iNumberOfLoadCombinations = 5;
-            float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
+                float fPurlinSnowLoadLinear_LCS_y = fPurlinSnowLoadLinear * fSinAlpha;
+                float fPurlinSnowLoadLinear_LCS_z = fPurlinSnowLoadLinear * fCosAlpha;
 
-            // Ukazka generovania kombinacii
+                // Combinations of action
+                // 4.2.2 Strength
+                // Purlin (a) (b) (d) (e) (g)
+                /*
+                int iNumberOfLoadCombinations = 5;
+                float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
 
-            fE_d_load_values_LCS_y[0] = 1.35f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (a)
-            fE_d_load_values_LCS_y[1] = 1.20f * fPurlinDeadLoadLinear_LCS_y + 1.50f * fPurlinImposedLoadLinear_LCS_y;     // 4.2.2 (b)
-            fE_d_load_values_LCS_y[2] = 1.20f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (d)
-            fE_d_load_values_LCS_y[3] = 0.90f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (e)
-            fE_d_load_values_LCS_y[4] = 1.20f * fPurlinDeadLoadLinear_LCS_y + fPurlinSnowLoadLinear_LCS_y;                // 4.2.2 (g)
+                // Ukazka generovania kombinacii
 
-            float[] fE_d_load_values_LCS_z = new float[iNumberOfLoadCombinations];
+                fE_d_load_values_LCS_y[0] = 1.35f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (a)
+                fE_d_load_values_LCS_y[1] = 1.20f * fPurlinDeadLoadLinear_LCS_y + 1.50f * fPurlinImposedLoadLinear_LCS_y;     // 4.2.2 (b)
+                fE_d_load_values_LCS_y[2] = 1.20f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (d)
+                fE_d_load_values_LCS_y[3] = 0.90f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (e)
+                fE_d_load_values_LCS_y[4] = 1.20f * fPurlinDeadLoadLinear_LCS_y + fPurlinSnowLoadLinear_LCS_y;                // 4.2.2 (g)
 
-            fE_d_load_values_LCS_z[0] = 1.35f * fPurlinDeadLoadLinear_LCS_z;                                              // 4.2.2 (a)
-            fE_d_load_values_LCS_z[1] = 1.20f * fPurlinDeadLoadLinear_LCS_z + 1.50f * fPurlinImposedLoadLinear_LCS_z;     // 4.2.2 (b)
-            fE_d_load_values_LCS_z[2] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fWu_max_linear;                             // 4.2.2 (d)
-            fE_d_load_values_LCS_z[3] = 0.90f * fPurlinDeadLoadLinear_LCS_z + Math.Abs(fWu_min_linear);                   // 4.2.2 (e)
-            fE_d_load_values_LCS_z[4] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fPurlinSnowLoadLinear_LCS_z;                // 4.2.2 (g)
-            */
+                float[] fE_d_load_values_LCS_z = new float[iNumberOfLoadCombinations];
+
+                fE_d_load_values_LCS_z[0] = 1.35f * fPurlinDeadLoadLinear_LCS_z;                                              // 4.2.2 (a)
+                fE_d_load_values_LCS_z[1] = 1.20f * fPurlinDeadLoadLinear_LCS_z + 1.50f * fPurlinImposedLoadLinear_LCS_z;     // 4.2.2 (b)
+                fE_d_load_values_LCS_z[2] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fWu_max_linear;                             // 4.2.2 (d)
+                fE_d_load_values_LCS_z[3] = 0.90f * fPurlinDeadLoadLinear_LCS_z + Math.Abs(fWu_min_linear);                   // 4.2.2 (e)
+                fE_d_load_values_LCS_z[4] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fPurlinSnowLoadLinear_LCS_z;                // 4.2.2 (g)
+                */
+            }
+
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
