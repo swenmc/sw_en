@@ -177,9 +177,11 @@ namespace PFD
             
             // Tu je nesktocne vela roboty,kym to  bude nejako normalne vyzerat
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksToInsertProperties, WindowBlocksToInsertProperties, DoorBlocksProperties, WindowBlocksProperties, generalLoad, wind, snow, eq, loadinput);
+            vm = new CPFDViewModel(1, DoorBlocksToInsertProperties, WindowBlocksToInsertProperties, DoorBlocksProperties, WindowBlocksProperties);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
+            vm.PFDMainWindow = this;
+
 
             Combobox_RoofCladding.SelectedIndex = 1;  //toto len kvoli nasledujucej metode,ktora sa inak zrube
             Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
@@ -192,6 +194,7 @@ namespace PFD
             vm.Wind = wind;
             vm.Snow = snow;
             vm.Eq = eq;
+            vm.Loadinput = loadinput;
             vm.CreateModel();
             //ani ked som zavolal metody neskor tak to nepomohlo
 
@@ -288,18 +291,13 @@ namespace PFD
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
-
-            progressBar.Visibility = Visibility.Visible;
-            Thread.Sleep(300);
-
+            
             DeleteCalculationResults();
             UpdateAll();
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
-            progressBar.Value = 100;
-
-            progressBar.Visibility = Visibility.Hidden;
-
+            
+            
             //waiting = false;
             //Thread.Sleep(2000);
             //bckWrk.Dispose();
@@ -505,6 +503,8 @@ namespace PFD
 
             System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
+            vm.Run();
+            return;
             // Temporary solution
             // Purlin
 
@@ -1494,5 +1494,14 @@ namespace PFD
         //    WindSpeedChart wind_chart = new WindSpeedChart(wind);
         //    wind_chart.Show();
         //}
+
+        public void UpdateProgressBarValue(double progressValue, string labelText)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                progressBar.Value = progressValue;
+                progressBarLabel.Content = labelText;
+            });
+        }
     }
 }

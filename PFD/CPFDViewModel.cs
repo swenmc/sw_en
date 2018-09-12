@@ -20,6 +20,8 @@ namespace PFD
         private readonly BackgroundWorker _worker = new BackgroundWorker();
         public event EventHandler<TwoOpt.EventArgs<CMember>> InternalForcesCalculatedForMember;
 
+        public MainWindow PFDMainWindow;
+
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsSetFromCode = false;
@@ -505,20 +507,12 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         public CPFDViewModel(int modelIndex, List<PropertiesToInsertOpening> doorBlocksToInsertProperties, List<PropertiesToInsertOpening> windowBlocksToInsertProperties, 
-            List<DoorProperties> doorBlocksProperties, List<WindowProperties> windowBlocksProperties, 
-            CCalcul_1170_1 generalLoad, CCalcul_1170_2 wind, CCalcul_1170_3 snow, CCalcul_1170_5 eq,
-            CPFDLoadInput loadinput)
+            List<DoorProperties> doorBlocksProperties, List<WindowProperties> windowBlocksProperties)
         {
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksToInsertProperties = windowBlocksToInsertProperties;
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
-            GeneralLoad = generalLoad;
-            Wind = wind;
-            Snow = snow;
-            Eq = eq;
-            Loadinput = loadinput;
-            
             
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
@@ -679,6 +673,11 @@ namespace PFD
             List<CMemberDeflectionsInLoadCases> listMemberDeflections = new List<CMemberDeflectionsInLoadCases>();
 
             System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
+
+            double step = 100.0 / (Model.m_arrMembers.Length * 2.0);
+            double progressValue = 0;
+            PFDMainWindow.UpdateProgressBarValue(progressValue, "");
+
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in Model.m_arrMembers)
             {
@@ -716,6 +715,8 @@ namespace PFD
                         //m.MBIF_x.Add(sBIF_x);
                     }
                 }
+                progressValue += step;
+                PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Internal Forces. MemberID: " + m.ID);
             }
 
             // Design of members
@@ -850,8 +851,12 @@ namespace PFD
                         }
                     }
                 }
+                progressValue += step;
+                PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Member Design. MemberID: " + m.ID);
             }
 
+            progressValue = 100;
+            PFDMainWindow.UpdateProgressBarValue(progressValue, "Done.");
             //Member_Design.IsEnabled = true;
             //Internal_Forces.IsEnabled = true;
             System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);
