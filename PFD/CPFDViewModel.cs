@@ -18,10 +18,8 @@ namespace PFD
     public class CPFDViewModel : INotifyPropertyChanged
     {
         private readonly BackgroundWorker _worker = new BackgroundWorker();
-        public event EventHandler<TwoOpt.EventArgs<CMember>> InternalForcesCalculatedForMember;
 
         public MainWindow PFDMainWindow;
-
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsSetFromCode = false;
@@ -53,10 +51,7 @@ namespace PFD
         //tieto treba spracovat nejako
         public float fL1;
         public float fh2;
-        public float fRoofPitch_radians;
-
-        // TODO - Ondrej zaviest staticku triedu pre fyzikalne konstanty, prevody jednotiek a podobne
-        public const float fg_acceleration = 9.80665f; // gravitational acceleration [m/s^2]
+        public float fRoofPitch_radians;        
         public float fMaterial_density = 7850f; //  [kg /m^3] (malo by byt zadane v databaze materialov)
 
         public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
@@ -570,7 +565,7 @@ namespace PFD
             DateTime start = DateTime.Now;
           
             float fA_g = (float)Model.m_arrCrSc[4].A_g;
-            float fPurlinSelfWeight = fA_g * fMaterial_density * fg_acceleration;
+            float fPurlinSelfWeight = fA_g * fMaterial_density * GlobalConstants.fg_acceleration;
             float fPurlinDeadLoadLinear = GeneralLoad.fDeadLoadTotal_Roof * PurlinDistance + fPurlinSelfWeight;
             float fPurlinImposedLoadLinear = Loadinput.ImposedActionRoof * 1000 * PurlinDistance;
             float fsnowValue = Snow.fs_ULS_Nu_1 * ((0.5f * GableWidth) / ((0.5f * GableWidth) / (float)Math.Cos(fRoofPitch_radians))); // Consider projection acc. to Figure 4.1
