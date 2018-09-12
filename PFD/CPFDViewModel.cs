@@ -68,6 +68,13 @@ namespace PFD
         public CCalcul_1170_3 Snow;
         public CCalcul_1170_5 Eq;
         public CPFDLoadInput Loadinput;
+
+        public List<CMemberInternalForcesInLoadCases> MemberInternalForces;
+        public List<CMemberDeflectionsInLoadCases> MemberDeflections;
+        public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
+        public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
+        public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
+
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -559,9 +566,7 @@ namespace PFD
         }
 
         private void Calculate()
-        {
-
-
+        {            
             DateTime start = DateTime.Now;
           
             float fA_g = (float)Model.m_arrCrSc[4].A_g;
@@ -669,8 +674,8 @@ namespace PFD
             CMember MaximumDesignRatioColumn = new CMember();
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            List<CMemberInternalForcesInLoadCases> listMemberInternalForces = new List<CMemberInternalForcesInLoadCases>();
-            List<CMemberDeflectionsInLoadCases> listMemberDeflections = new List<CMemberDeflectionsInLoadCases>();
+            MemberInternalForces = new List<CMemberInternalForcesInLoadCases>();
+            MemberDeflections = new List<CMemberDeflectionsInLoadCases>();
 
             System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -708,8 +713,8 @@ namespace PFD
                             }
                         }
 
-                        if (sBIF_x != null) listMemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
-                        if (sBDeflections_x != null) listMemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                        if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                        if (sBDeflections_x != null) MemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
 
                         //m.MMomentValuesforCb.Add(sMomentValuesforCb);
                         //m.MBIF_x.Add(sBIF_x);
@@ -722,10 +727,10 @@ namespace PFD
             // Design of members
             // Calculate Internal Forces For Load Cases
 
-            List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
-            List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
+            MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+            MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
 
-            List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
+            JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
 
             foreach (CMember m in Model.m_arrMembers)
             {
@@ -741,7 +746,7 @@ namespace PFD
                             // Member basic internal forces
                             designMomentValuesForCb sMomentValuesforCb_design;
                             basicInternalForces[] sBIF_x_design;
-                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, listMemberInternalForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
+                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
 
                             // Member design internal forces
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
@@ -768,7 +773,7 @@ namespace PFD
                                 JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, joint, lcomb, jointDesignModel.fMaximumDesignRatio, sJointDIF_x[jointDesignModel.fMaximumDesignRatioLocationID]));
 
                                 // Output (for debugging - member results)
-                                bool bDebugging = true; // Testovacie ucely
+                                bool bDebugging = false; // Testovacie ucely
                                 if (bDebugging)
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
@@ -824,7 +829,7 @@ namespace PFD
                         {
                             // Member basic deflections
                             basicDeflections[] sBDeflection_x_design;
-                            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, listMemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
+                            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
 
                             // Member design deflections
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
@@ -864,17 +869,17 @@ namespace PFD
             // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
             // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
 
-            //MessageBox.Show("Calculation Results \n" +
-            //        "Maximum design ratio \n" +
-            //        "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
+            string txt = "Calculation Results \n" +
+                    "Maximum design ratio \n" +
+                    "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - girts\n" +
+                    "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - purlins\n" +
+                    "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - columns\n" +
+                    "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n";
 
-            //        "Maximum design ratio - girts\n" +
-            //        "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
-            //        "Maximum design ratio - purlins\n" +
-            //        "Member ID: " + MaximumDesignRatioPurlin.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioPurlins, 3).ToString() + "\n\n" +
-            //        "Maximum design ratio - columns\n" +
-            //        "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n"
-            //        );
+            PFDMainWindow.ShowMessageBoxInPFDWindow(txt);
 
         }
 
