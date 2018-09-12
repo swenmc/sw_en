@@ -787,41 +787,38 @@ namespace PFD
                                                       "Design Ratio: " + Math.Round(jointDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
 
                                 // Output - set maximum design ratio by component Type
-                                if (bDebugging)
+                                switch (m.EMemberType)
                                 {
-                                    switch (m.EMemberType)
-                                    {
-                                        case EMemberType_FormSteel.eG: // Girt
+                                    case EMemberType_FormSteel.eG: // Girt
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
                                             {
-                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
-                                                {
-                                                    fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
-                                                    MaximumDesignRatioGirt = m;
-                                                }
-                                                break;
+                                                fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioGirt = m;
                                             }
-                                        case EMemberType_FormSteel.eP: // Purlin
-                                            {
-                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
-                                                {
-                                                    fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
-                                                    MaximumDesignRatioPurlin = m;
-                                                }
-                                                break;
-                                            }
-                                        case EMemberType_FormSteel.eC: // Column
-                                            {
-                                                if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
-                                                {
-                                                    fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
-                                                    MaximumDesignRatioColumn = m;
-                                                }
-                                                break;
-                                            }
-                                        default:
-                                            // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
                                             break;
-                                    }
+                                        }
+                                    case EMemberType_FormSteel.eP: // Purlin
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                                            {
+                                                fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioPurlin = m;
+                                            }
+                                            break;
+                                        }
+                                    case EMemberType_FormSteel.eC: // Column
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                                            {
+                                                fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioColumn = m;
+                                            }
+                                            break;
+                                        }
+                                    default:
+                                        // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+                                        break;
                                 }
                             }
                         }
