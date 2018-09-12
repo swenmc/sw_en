@@ -91,7 +91,7 @@ namespace CRSC
 
             // Calculate coordinates of 2, 5, 8 - Equilateral Triangle
             float[,] fArrTemp = new float[3, 2];
-            fArrTemp = Geom2D.GetTrianEqLatPointCoord1(m_ft);
+            fArrTemp = Geom2D.GetTrianEqLatPointCoord1Array(m_ft);
 
             // Transform Radians to Degrees - input to GetPositionX_deg/Y functions
             fAlpha_Aux = 180f / MathF.fPI * fAlpha_Aux;

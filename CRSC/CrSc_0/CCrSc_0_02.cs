@@ -1,5 +1,6 @@
 ﻿using MATH;
 using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -107,9 +108,10 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetCirclePointCoord_CW(m_fr_out, ITotNoPoints);
+            CrScPointsOut = Geom2D.GetCirclePointCoordArray_CW(m_fr_out, ITotNoPoints);
 
             // Centroid
+            //CrScPointsOut.Add(new Point(0, 0));
             CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
             CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
         }

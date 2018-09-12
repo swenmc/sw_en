@@ -2,6 +2,8 @@
 using System.Windows.Media;
 using MATH;
 using MATERIAL;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -142,7 +144,7 @@ namespace CRSC
             set { m_iNoPointsOut = value; }
         }
 
-        // Use for Inside surface of hollow sections
+        //// Use for Inside surface of hollow sections
         private float[,] m_CrScPointsIn;
 
         public float[,] CrScPointsIn
@@ -159,6 +161,24 @@ namespace CRSC
             get { return m_CrScPointsOut; }
             set { m_CrScPointsOut = value; }
         }
+        //// Use for Inside surface of hollow sections
+        //private List<Point> m_CrScPointsIn;
+
+        //public List<Point> CrScPointsIn
+        //{
+        //    get { return m_CrScPointsIn; }
+        //    set { m_CrScPointsIn = value; }
+        //}
+
+        //// Use for Outside surface of hollow sections and surface of solid sections
+        //private List<Point> m_CrScPointsOut;
+
+        //public List<Point> CrScPointsOut
+        //{
+        //    get { return m_CrScPointsOut; }
+        //    set { m_CrScPointsOut = value; }
+        //}
+
 
         private int m_iCrSc_ID;
 

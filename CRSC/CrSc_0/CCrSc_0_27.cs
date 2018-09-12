@@ -123,10 +123,10 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetHexagonPointCoord(m_fa_out);
+            CrScPointsOut = Geom2D.GetHexagonPointCoordArray(m_fa_out);
 
             // Inside Points
-            CrScPointsIn = Geom2D.GetHexagonPointCoord(m_fa_in);
+            CrScPointsIn = Geom2D.GetHexagonPointCoordArray(m_fa_in);
         }
 
         protected override void loadCrScIndices()

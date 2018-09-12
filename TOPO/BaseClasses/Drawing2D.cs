@@ -237,7 +237,7 @@ namespace BaseClasses
             // Head Hexagon
             float[,] headpoints = new float[6, 2];
             float a = (0.5f * screw.D_h_headdiameter) / (float)Math.Cos(30f / 180f * Math.PI);
-            headpoints = Geom2D.GetHexagonPointCoord(a); // Diameter of outside circle
+            headpoints = Geom2D.GetHexagonPointCoordArray(a); // Diameter of outside circle
 
             // TODO - upravit podla toho ci bude v databaze vnutorny alebo vonkajsi rozmer sesthrannej hlavy (opisana alebo vpisana kruznica)
             float fInsideDiameterFactor = 0.5f / (float)Math.Tan(30f / 180f * Math.PI); // Radius of inside circle of hexagon

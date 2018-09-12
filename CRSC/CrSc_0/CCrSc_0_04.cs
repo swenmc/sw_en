@@ -41,7 +41,7 @@ namespace CRSC
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
-            CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1(m_fa);
+            CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1Array(m_fa);
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
@@ -62,9 +62,9 @@ namespace CRSC
             // Fill Array Data
 
             // Isosceles
-            CrScPointsOut = Geom2D.GetTrianIsosCelPointCoord(m_fh, m_fb);
+            CrScPointsOut = Geom2D.GetTrianIsosCelPointCoordArray(m_fh, m_fb);
             // Right - angled
-            CrScPointsOut = Geom2D.GetTrianRightAngPointCoord(m_fh, m_fb);
+            CrScPointsOut = Geom2D.GetTrianRightAngPointCoordArray(m_fh, m_fb);
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();

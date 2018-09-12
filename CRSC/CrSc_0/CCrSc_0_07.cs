@@ -68,7 +68,7 @@ namespace CRSC
         void CalcCrSc_Coord()
         {
             // Fill Edge Points Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-            CrScPointsOut = Geom2D.AddCentroidPosition_Zero(Geom2D.GetHexagonPointCoord(m_fa));
+            CrScPointsOut = Geom2D.AddCentroidPosition_ZeroArray(Geom2D.GetHexagonPointCoordArray(m_fa));
         }
 
         protected override void loadCrScIndices()

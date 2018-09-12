@@ -92,7 +92,7 @@ namespace CRSC
             // Create Array - allocate memory
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
-
+            
             // Fill Array Data
             CalcCrSc_Coord();
 

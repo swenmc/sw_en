@@ -100,10 +100,10 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetArcPointCoord_CW_deg(m_fr_out, 180, 360, INoPointsOut);
+            CrScPointsOut = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_out, 180, 360, INoPointsOut);
 
             // Inside Points
-            CrScPointsIn = Geom2D.GetArcPointCoord_CW_deg(m_fr_in, 180, 360, INoPointsIn);
+            CrScPointsIn = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_in, 180, 360, INoPointsIn);
         }
 
 		protected override void loadCrScIndices()

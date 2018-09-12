@@ -658,8 +658,8 @@ namespace BaseClasses
             float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
 
             // Circle sequence
-            fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
-            fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            fSequenceTop = Geom2D.GetArcPointCoordArray_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            fSequenceBottom = Geom2D.GetArcPointCoordArray_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
 
             // Add addtional point the sequences
             if(bUseAdditionalCornerScrews)

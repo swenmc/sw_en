@@ -1,5 +1,6 @@
 ﻿using MATH;
 using System;
+using System.Windows;
 
 namespace CRSC
 {
@@ -87,21 +88,13 @@ namespace CRSC
         //----------------------------------------------------------------------------
         void CalcCrSc_Coord()
         {
-            // Basic Ellipse Function
-            // Zbytocne vytvaram nove pole !!!!
-            float [,] arrtemp = new float [ITotNoPoints - 1,2];
-            arrtemp = Geom2D.GetEllipsePointCoord(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));
-            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-            // Outside Points Coordinates
-            for (int i = 0; i < ITotNoPoints-1; i++)
-            {
-                CrScPointsOut[i, 0] = arrtemp[i, 0];  // y
-                CrScPointsOut[i, 1] = arrtemp[i, 1];  // z
-            }
+            CrScPointsOut = Geom2D.GetEllipsePointCoordArray(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));
 
             // Centroid
-            CrScPointsOut[ITotNoPoints-1, 0] = 0f;
-            CrScPointsOut[ITotNoPoints-1, 1] = 0f;
+            //CrScPointsOut.Add(new Point(0, 0));
+            CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
+            CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
+
         }
 
 

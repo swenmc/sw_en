@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -61,6 +63,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -86,7 +89,7 @@ namespace CRSC
         {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
-            CrScPointsOut = Geom2D.GetRectanglePointCoord((float)h, (float)b);
+            CrScPointsOut = Geom2D.GetRectanglePointCoordArray((float)h, (float)b);
         }
 
         // Perimeter of section

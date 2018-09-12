@@ -9,6 +9,7 @@ namespace MATH
     public static class Geom2D
     {
         public static float[,] m_ArrfPointsCoord2D;
+        public static List<Point> m_ListPointsCoord2D;
 
         // Transformation of coordinates
         // Polar to Carthesian, Input angle in degrees
@@ -230,7 +231,7 @@ namespace MATH
         #region Circle
         // Circle
         // Get Points Coordinates
-        public static float[,] GetCirclePointCoord_CW(float fr, int iNumber)
+        public static float[,] GetCirclePointCoordArray_CW(float fr, int iNumber)
         {
             m_ArrfPointsCoord2D = new float[iNumber, 2];
 
@@ -242,7 +243,7 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
-        public static float[,] GetCirclePointCoord_CCW(float fr, int iNumber)
+        public static float[,] GetCirclePointCoordArray_CCW(float fr, int iNumber)
         {
             m_ArrfPointsCoord2D = new float[iNumber, 2];
 
@@ -254,10 +255,28 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
+        public static List<Point> GetCirclePointCoord_CW(float fr, int iNumber)
+        {
+            m_ListPointsCoord2D = new List<Point>(iNumber);
+            for (int i = 0; i < iNumber; i++)
+            {
+                m_ListPointsCoord2D.Add(new Point(GetPositionX_deg(fr, i * 360 / iNumber), GetPositionY_CW_deg(fr, i * 360 / iNumber)));                
+            }
+            return m_ListPointsCoord2D;
+        }
+        public static List<Point> GetCirclePointCoord_CCW(float fr, int iNumber)
+        {
+            m_ListPointsCoord2D = new List<Point>(iNumber);
+            for (int i = 0; i < iNumber; i++)
+            {
+                m_ListPointsCoord2D.Add(new Point(GetPositionX_deg(fr, i * 360 / iNumber), GetPositionY_CCW_deg(fr, i * 360 / iNumber)));                
+            }
+            return m_ListPointsCoord2D;
+        }
         #endregion
         #region Arc
         // Arc
-        public static float[,] GetArcPointCoord_CW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
+        public static float[,] GetArcPointCoordArray_CW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
         {
             if (bIncludeCentroid)
             {
@@ -286,7 +305,7 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
-        public static float[,] GetArcPointCoord_CCW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
+        public static float[,] GetArcPointCoordArray_CCW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
         {
             if (bIncludeCentroid)
             {
@@ -315,6 +334,70 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
+        public static List<Point> GetArcPointCoord_CW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
+        {
+            if (bIncludeCentroid)
+            {
+                // iNumber - number of points of section (arc + centroid)
+                // iNumber - 1 - number of points arc
+                m_ListPointsCoord2D = new List<Point>(iNumber);  // Allocate Memory for whole section (all section points including centroid)
+
+                // Decrease Number
+                --iNumber;
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+            else
+            {
+                m_ListPointsCoord2D = new List<Point>(iNumber);  // Allocate Memory for whole section (all section points excluding centroid)
+
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+
+            
+            for (int i = 0; i < iNumber; i++)
+            {
+                Point p = new Point();
+                p.X = GetPositionX_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // y
+                p.Y = GetPositionY_CW_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // z
+                m_ListPointsCoord2D.Add(p);                
+            }
+
+            return m_ListPointsCoord2D;
+        }
+        public static List<Point> GetArcPointCoord_CCW_deg(float fr, float fStartAngle_deg, float fEndAngle_deg, int iNumber, bool bIncludeCentroid = true)
+        {
+            if (bIncludeCentroid)
+            {
+                // iNumber - number of points of section (arc + centroid)
+                // iNumber - 1 - number of points arc
+                m_ListPointsCoord2D = new List<Point>(iNumber);  // Allocate Memory for whole section (all section points including centroid)
+
+                // Decrease Number
+                --iNumber;
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+            else
+            {
+                m_ListPointsCoord2D = new List<Point>(iNumber);  // Allocate Memory for whole section (all section points excluding centroid)
+
+                // iNumber - number of points of arc
+                // iNumber - 1 - number of segments of arc
+            }
+
+            for (int i = 0; i < iNumber; i++)
+            {
+                Point p = new Point();
+                p.X = GetPositionX_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // y
+                p.Y = GetPositionY_CCW_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // z
+                m_ListPointsCoord2D.Add(p); 
+            }
+
+            return m_ListPointsCoord2D;
+        }
+
         #endregion
         #region Ellipse
         // Ellipse
@@ -331,7 +414,7 @@ namespace MATH
 
         * Read more: http://www.answers.com/topic/ellipse#ixzz1UN0OIaGS
         */
-        public static float[,] GetEllipsePoints(float fx, float fy, float fa, float fb, float fAngle, short isteps)
+        public static float[,] GetEllipsePointsArray(float fx, float fy, float fa, float fb, float fAngle, short isteps)
         {
             //if (isteps == null)
             //    isteps = 36;
@@ -361,18 +444,51 @@ namespace MATH
             }
             return m_ArrfPointsCoord2D;
         }
-        public static float[,] GetEllipsePointCoord(float fa, float fb, float fAngle, short isteps)
+        public static float[,] GetEllipsePointCoordArray(float fa, float fb, float fAngle, short isteps)
         {
             //if (isteps == null)
             //    isteps = 36;
 
-            m_ArrfPointsCoord2D = GetEllipsePoints(0.0f, 0.0f, fa, fb, fAngle, isteps);
+            m_ArrfPointsCoord2D = GetEllipsePointsArray(0.0f, 0.0f, fa, fb, fAngle, isteps);
             return m_ArrfPointsCoord2D;
         }
-        public static float[,] GetEllipsePointCoord(float fa, float fb, float fAngle)
+        public static float[,] GetEllipsePointCoordArray(float fa, float fb, float fAngle)
         {
-            m_ArrfPointsCoord2D = GetEllipsePointCoord(fa, fb, fAngle, 72);
+            m_ArrfPointsCoord2D = GetEllipsePointCoordArray(fa, fb, fAngle, 72);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetEllipsePoints(float fx, float fy, float fa, float fb, float fAngle, short isteps)
+        {
+            m_ListPointsCoord2D = new List<Point>(isteps);
+
+            // Angle is given by Degree Value
+            float fBeta = -fAngle * (MathF.fPI / 180f); //(Math.PI/180) converts Degree Value into Radians
+            double fsinbeta = Math.Sin(fBeta);
+            double fcosbeta = Math.Cos(fBeta);
+
+            int iNodeTemp = 0; // Temporary Number of Current Point
+
+            for (int i = 0; i < 360; i += 360 / isteps)
+            {
+                float falpha = i * (MathF.fPI / 180);
+                double fsinalpha = Math.Sin(falpha);
+                double fcosalpha = Math.Cos(falpha);
+
+                // Clock-wise (for counterclock-wise change sign for vertical coordinate)
+                m_ListPointsCoord2D.Add(new Point(fx + (fa * fcosalpha * fcosbeta - fb * fsinalpha * fsinbeta), fy - (fa * fcosalpha * fsinbeta + fb * fsinalpha * fcosbeta)));
+                iNodeTemp++;
+            }
+            return m_ListPointsCoord2D;
+        }
+        public static List<Point> GetEllipsePointCoord(float fa, float fb, float fAngle, short isteps)
+        {
+            m_ListPointsCoord2D = GetEllipsePoints(0.0f, 0.0f, fa, fb, fAngle, isteps);
+            return m_ListPointsCoord2D;
+        }
+        public static List<Point> GetEllipsePointCoord(float fa, float fb, float fAngle)
+        {
+            m_ListPointsCoord2D = GetEllipsePointCoord(fa, fb, fAngle, 72);
+            return m_ListPointsCoord2D;
         }
         #endregion
 
@@ -398,7 +514,7 @@ namespace MATH
 
         #region n-Polygon
         // (n) polygon
-        public static float[,] GetPolygonPointCoord(float fa, short iNumEdges)
+        public static float[,] GetPolygonPointCoordArray(float fa, short iNumEdges)
         {
             m_ArrfPointsCoord2D = new float[iNumEdges, 2];
 
@@ -412,10 +528,21 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
+        public static List<Point> GetPolygonPointCoord(float fa, short iNumEdges)
+        {
+            m_ListPointsCoord2D = new List<Point>(iNumEdges);
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+            for (int i = 0; i < iNumEdges; i++)
+            {
+                m_ListPointsCoord2D.Add(new Point(GetPositionX_deg(GetRadiusfromSideLength(fa, iNumEdges), i * 360 / iNumEdges), GetPositionY_CW_deg(GetRadiusfromSideLength(fa, iNumEdges), i * 360 / iNumEdges)));                
+            }
+
+            return m_ListPointsCoord2D;
+        }
         #endregion
         #region Triangle
         // Triangle
-        public static float[,] GetTrianEqLatPointCoord1(float fa)
+        public static float[,] GetTrianEqLatPointCoord1Array(float fa)
         {
             m_ArrfPointsCoord2D = new float[3, 2];
 
@@ -435,13 +562,13 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
-        public static float[,] GetTrianEqLatPointCoord2(float fa)
+        public static float[,] GetTrianEqLatPointCoord2Array(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 3);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 3);
             return m_ArrfPointsCoord2D;
         }
         // Isosceles
-        public static float[,] GetTrianIsosCelPointCoord(float fh, float fb)
+        public static float[,] GetTrianIsosCelPointCoordArray(float fh, float fb)
         {
             m_ArrfPointsCoord2D = new float[3, 2];
 
@@ -462,7 +589,7 @@ namespace MATH
             return m_ArrfPointsCoord2D;
         }
         // Right triangle (right-angled triangle, rectangled triangle)
-        public static float[,] GetTrianRightAngPointCoord(float fh, float fb)
+        public static float[,] GetTrianRightAngPointCoordArray(float fh, float fb)
         {
             m_ArrfPointsCoord2D = new float[3, 2];
 
@@ -482,10 +609,66 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
+        public static List<Point> GetTrianEqLatPointCoord1(double fa)
+        {
+            m_ListPointsCoord2D = new List<Point>(3);
+
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            m_ListPointsCoord2D.Add(new Point(0, 2.0 / 3.0 * (fa / 2.0) * MathF.fSqrt3));
+
+            // Point No. 2
+            m_ListPointsCoord2D.Add(new Point(fa / 2.0, -1.0 / 3.0 * (fa / 2.0) * MathF.fSqrt3));
+
+            // Point No. 3
+            m_ListPointsCoord2D.Add(new Point(-m_ListPointsCoord2D[1].X, m_ListPointsCoord2D[1].Y));
+
+            return m_ListPointsCoord2D;
+        }
+        public static List<Point> GetTrianEqLatPointCoord2(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 3);
+            return m_ListPointsCoord2D;
+        }
+        // Isosceles
+        public static List<Point> GetTrianIsosCelPointCoord(float fh, float fb)
+        {
+            List<Point> m_ListPointsCoord2D = new List<Point>(3);
+
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            m_ListPointsCoord2D.Add(new Point(0.0, 2f / 3f * fh));
+
+            // Point No. 2            
+            m_ListPointsCoord2D.Add(new Point(fb / 2f, -1f / 3f * fh));
+
+            // Point No. 3            
+            m_ListPointsCoord2D.Add(new Point(-m_ListPointsCoord2D[1].X, m_ListPointsCoord2D[1].Y));
+
+            return m_ListPointsCoord2D;
+        }
+        // Right triangle (right-angled triangle, rectangled triangle)
+        public static List<Point> GetTrianRightAngPointCoord(float fh, float fb)
+        {
+            m_ListPointsCoord2D = new List<Point>(3);
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            m_ListPointsCoord2D.Add(new Point(-fb / 3f, 2f / 3f * fh));
+
+            // Point No. 2            
+            m_ListPointsCoord2D.Add(new Point(2f / 3f * fb, -1f / 3f * fh));
+
+            // Point No. 3            
+            m_ListPointsCoord2D.Add(new Point(m_ListPointsCoord2D[0].X, m_ListPointsCoord2D[1].Y));
+            return m_ListPointsCoord2D;
+        }
         #endregion
         #region Square
         // Square (4)
-        public static float[,] GetSquarePointCoord1(float fa)
+        public static float[,] GetSquarePointCoord1Array(float fa)
         {
             m_ArrfPointsCoord2D = new float[4, 2];
 
@@ -509,15 +692,39 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
-        public static float[,] GetSquarePointCoord2(float fa)
+        public static float[,] GetSquarePointCoord2Array(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 4);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 4);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetSquarePointCoord1(float fa)
+        {
+            m_ListPointsCoord2D = new List<Point>(4);
+
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            m_ListPointsCoord2D.Add(new Point(-fa / 2f, fa / 2f));
+            // Point No. 2            
+            m_ListPointsCoord2D.Add(new Point(-m_ListPointsCoord2D[0].X, m_ListPointsCoord2D[0].Y));
+
+            // Point No. 3            
+            m_ListPointsCoord2D.Add(new Point(-m_ListPointsCoord2D[0].X, -m_ListPointsCoord2D[0].Y));
+
+            // Point No. 4            
+            m_ListPointsCoord2D.Add(new Point(m_ListPointsCoord2D[0].X, -m_ListPointsCoord2D[0].Y));
+
+            return m_ListPointsCoord2D;
+        }
+        public static List<Point> GetSquarePointCoord2(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 4);
+            return m_ListPointsCoord2D;
         }
         #endregion
         #region Rectangle
         // Rectangle (4)
-        public static float[,] GetRectanglePointCoord(float fh, float fb)
+        public static float[,] GetRectanglePointCoordArray(float fh, float fb)
         {
             m_ArrfPointsCoord2D = new float[4, 2];
 
@@ -541,74 +748,134 @@ namespace MATH
 
             return m_ArrfPointsCoord2D;
         }
+        public static List<Point> GetRectanglePointCoord(float fh, float fb)
+        {
+            m_ListPointsCoord2D = new List<Point>(4);
+
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            m_ListPointsCoord2D.Add(new Point(-fb / 2f, fh / 2f));
+
+            // Point No. 2            
+            m_ListPointsCoord2D.Add(new Point(-m_ListPointsCoord2D[0].X, m_ListPointsCoord2D[0].Y));
+
+            // Point No. 3            
+            m_ListPointsCoord2D.Add(new Point(-m_ListPointsCoord2D[0].X, -m_ListPointsCoord2D[0].Y));
+
+            // Point No. 4            
+            m_ListPointsCoord2D.Add(new Point(m_ListPointsCoord2D[0].X, -m_ListPointsCoord2D[0].Y));
+
+            return m_ListPointsCoord2D;
+        }
         #endregion
         #region Pentagon
         // Pentagon (5)
-        public static float[,] GetPentagonPointCoord(float fa)
+        public static float[,] GetPentagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 5);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 5);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetPentagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 5);
+            return m_ListPointsCoord2D;
         }
         #endregion
         #region Hexagon
         // Hexafgon (6)
-        public static float[,] GetHexagonPointCoord(float fa)
+        public static float[,] GetHexagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 6);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 6);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetHexagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 6);
+            return m_ListPointsCoord2D;
         }
         #endregion
         #region Heptagon
         // Heptagon (7)
-        public static float[,] GetHeptagonPointCoord(float fa)
+        public static float[,] GetHeptagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 7);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 7);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetHeptagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 7);
+            return m_ListPointsCoord2D;
         }
         #endregion
         #region Octagon
         // Octagon  (8)
-        public static float[,] GetOctagonPointCoord(float fa)
+        public static float[,] GetOctagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 8);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 8);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetOctagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 8);
+            return m_ListPointsCoord2D;
         }
         #endregion
         #region Nonagon
         // Nonagon  (9)
-        public static float[,] GetNonagonPointCoord(float fa)
+        public static float[,] GetNonagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 9);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 9);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetNonagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 9);
+            return m_ListPointsCoord2D;
         }
         #endregion
         #region Decagon
         // Decagon  (10)
-        public static float[,] GetDecagonPointCoord(float fa)
+        public static float[,] GetDecagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 10);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 10);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetDecagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 10);
+            return m_ListPointsCoord2D;
         }
         #endregion        
         #region Hendecagon
         // Hendecagon(11)
-        public static float[,] GetHendecagonPointCoord(float fa)
+        public static float[,] GetHendecagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 11);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 11);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetHendecagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 11);
+            return m_ListPointsCoord2D;
         }
         #endregion        
         #region Dodecagon
         // Dodecagon (12)
-        public static float[,] GetDodecagonPointCoord(float fa)
+        public static float[,] GetDodecagonPointCoordArray(float fa)
         {
-            m_ArrfPointsCoord2D = GetPolygonPointCoord(fa, 12);
+            m_ArrfPointsCoord2D = GetPolygonPointCoordArray(fa, 12);
             return m_ArrfPointsCoord2D;
+        }
+        public static List<Point> GetDodecagonPointCoord(float fa)
+        {
+            m_ListPointsCoord2D = GetPolygonPointCoord(fa, 12);
+            return m_ListPointsCoord2D;
         }
         #endregion
 
         #region AddCentroidPosition_Zero
-        public static float[,] AddCentroidPosition_Zero(float[,] fArrayEdgePoints)
+        public static float[,] AddCentroidPosition_ZeroArray(float[,] fArrayEdgePoints)
         {
             float[,] fArrayEdgePointsAndCentroid = new float[fArrayEdgePoints.Length / 2 + 1, 2];
 
@@ -623,6 +890,19 @@ namespace MATH
             fArrayEdgePointsAndCentroid[fArrayEdgePoints.Length / 2, 1] = 0f;
 
             return fArrayEdgePointsAndCentroid;
+        }
+        public static List<Point> AddCentroidPosition_Zero(List<Point> EdgePoints)
+        {
+            List<Point> EdgePointsAndCentroid = new List<Point>(EdgePoints.Count);
+
+            for (int i = 0; i < EdgePoints.Count; i++)
+            {
+                EdgePointsAndCentroid.Add(EdgePoints[i]);
+            }
+            // Centroid
+            EdgePointsAndCentroid.Add(new Point(0, 0));
+
+            return EdgePointsAndCentroid;
         }
         #endregion
 
