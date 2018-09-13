@@ -138,9 +138,9 @@ namespace PFD
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
                 tabItemDoc.IsEnabled = true;
-                if (plate != null && plate.screwArrangement != null)
+                if (plate != null && plate.ScrewArrangement != null)
                 {
-                    BtnFindCNCPath.IsEnabled = plate.screwArrangement.IHolesNumber > 0;
+                    BtnFindCNCPath.IsEnabled = plate.ScrewArrangement.IHolesNumber > 0;
                     // BtnExportCNC can be enabled for export of plate setup file or cutting file evenif drilling route is not defined or holes are not defined.
                     //BtnExportCNC.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
                     BtnShowCNCDrillingFile.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
@@ -739,7 +739,7 @@ namespace PFD
 
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
-            List<Point> points = plate.screwArrangement.GetHolesCentersPoints2D();
+            List<Point> points = plate.ScrewArrangement.GetHolesCentersPoints2D();
             if (points == null || points.Count == 0)
             {
                 MessageBox.Show("Drilling points are not defined for selected plate.");
@@ -1063,9 +1063,9 @@ namespace PFD
                     if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
                 }
 
-                if(plate.screwArrangement != null && plate.screwArrangement is CScrewArrangementCircleApexOrKnee)
+                if(plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
                 {
-                    CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.screwArrangement;
+                    CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
 
                     if (item.Name == "HolesNumber") arrangementTemp.IHolesNumber = int.Parse(changedText);
                     if (item.Name == "CrscRafterDepth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);

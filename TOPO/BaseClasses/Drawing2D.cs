@@ -109,8 +109,8 @@ namespace BaseClasses
             // TODO - pokusy :)))
             float fDiameter = 0;
 
-            if (plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
-                fDiameter = plate.screwArrangement.referenceScrew.Diameter_thread;
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
+                fDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
             CScrewArrangementCircleApexOrKnee sa;
             Type t = plate.GetType();
@@ -128,9 +128,9 @@ namespace BaseClasses
                 // takze mam objekt s rovnakym menom ale ineho typu v predkovi aj v potomkovi
                 // mrzi ma ze neviem programovat :(
 
-                if (plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
+                if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
                 {
-                    sa = (CScrewArrangementCircleApexOrKnee)plate.screwArrangement;
+                    sa = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
                     fDiameter = sa.referenceScrew.Diameter_thread;
                 }
             }

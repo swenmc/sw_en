@@ -603,11 +603,11 @@ namespace PFD
                 geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plate.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             }
 
-            if (plate.screwArrangement != null)
+            if (plate.ScrewArrangement != null)
             {
-                geometry.Add(new CComponentParamsView("Number of holes", "nh", plate.screwArrangement.IHolesNumber.ToString(nfi), "[-]"));
-                geometry.Add(new CComponentParamsView("Hole diameter", "dh", (Math.Round(plate.screwArrangement.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Hole radius", "rh", (Math.Round(plate.screwArrangement.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Number of holes", "nh", plate.ScrewArrangement.IHolesNumber.ToString(nfi), "[-]"));
+                geometry.Add(new CComponentParamsView("Hole diameter", "dh", (Math.Round(plate.ScrewArrangement.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Hole radius", "rh", (Math.Round(plate.ScrewArrangement.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             }
 
             ComponentGeometry = geometry;

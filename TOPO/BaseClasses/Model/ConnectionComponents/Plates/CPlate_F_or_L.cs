@@ -83,7 +83,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement screwArrangement_temp,
+            CScrewArrangement screwArrangement,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -100,7 +100,7 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             Ft = ft_platethickness;
-            screwArrangement = screwArrangement_temp;
+            
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -138,6 +138,8 @@ namespace BaseClasses
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
+
+            ScrewArrangement = screwArrangement;
         }
 
         // F - no holes
@@ -171,8 +173,8 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            if(screwArrangement != null)
-              screwArrangement.IHolesNumber = 0;
+            if(ScrewArrangement != null)
+              ScrewArrangement.IHolesNumber = 0;
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
@@ -192,9 +194,9 @@ namespace BaseClasses
                     PointsOut2D[i, 0] *= -1;
                 }
 
-                if (screwArrangement != null)
+                if (ScrewArrangement != null)
                 {
-                    for (int i = 0; i < screwArrangement.IHolesNumber; i++)
+                    for (int i = 0; i < ScrewArrangement.IHolesNumber; i++)
                     {
                         HolesCentersPoints2D[i, 0] *= -1;
                     }
@@ -309,7 +311,7 @@ namespace BaseClasses
 
             // TODO nahradit enumom a switchom
 
-            if (screwArrangement.IHolesNumber == 16) // LH, LI, LK
+            if (ScrewArrangement.IHolesNumber == 16) // LH, LI, LK
             {
                 // Left Leg
 
@@ -363,7 +365,7 @@ namespace BaseClasses
                 HolesCentersPoints2D[15, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
                 HolesCentersPoints2D[15, 1] = HolesCentersPoints2D[0, 1];
             }
-            else if (screwArrangement.IHolesNumber == 8) // LJ
+            else if (ScrewArrangement.IHolesNumber == 8) // LJ
             {
                 // Left Leg
 
@@ -408,7 +410,7 @@ namespace BaseClasses
 
             // TODO nahradit enumom a switchom
 
-            if (screwArrangement.IHolesNumber == 16) // LH, LI, LK
+            if (ScrewArrangement.IHolesNumber == 16) // LH, LI, LK
             {
                 // Left Leg
 
@@ -478,7 +480,7 @@ namespace BaseClasses
                 arrConnectorControlPoints3D[15].Y = fy_edge1;
                 arrConnectorControlPoints3D[15].Z = arrConnectorControlPoints3D[8].Z;
             }
-            else if (screwArrangement.IHolesNumber == 8) // LJ
+            else if (ScrewArrangement.IHolesNumber == 8) // LJ
             {
                 // Left Leg
 
@@ -524,9 +526,9 @@ namespace BaseClasses
 
         void GenerateConnectors()
         {
-            if (screwArrangement.IHolesNumber > 0)
+            if (ScrewArrangement.IHolesNumber > 0)
             {
-                screwArrangement.Screws = new CScrew[screwArrangement.IHolesNumber];
+                ScrewArrangement.Screws = new CScrew[ScrewArrangement.IHolesNumber];
 
                 // TODO Ondrej 15/07/2018
                 // Tu sa pridava sktrutka do plechu, vklada sa do pozicie na plechu v suradnicovom systeme plechu (controlpoint) a otoci sa do pozicie v LCS plechu
@@ -536,17 +538,17 @@ namespace BaseClasses
                 // Update 1
                 // Po tomto vlozeni skrutiek do plechu by sa mali suradnice skrutiek prepocitat z povodnych v ktorych su zadane do suradnicoveho systemu plechu a ulozit
 
-                for (int i = 0; i < screwArrangement.IHolesNumber; i++)
+                for (int i = 0; i < ScrewArrangement.IHolesNumber; i++)
                 {
-                    if (i < screwArrangement.IHolesNumber / 2) // Left Leg
+                    if (i < ScrewArrangement.IHolesNumber / 2) // Left Leg
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Weight, 0, 0, 0, true);
+                        ScrewArrangement.Screws[i] = new CScrew("TEK", controlpoint, ScrewArrangement.referenceScrew.Gauge, ScrewArrangement.referenceScrew.Diameter_thread, ScrewArrangement.referenceScrew.D_h_headdiameter, ScrewArrangement.referenceScrew.D_w_washerdiameter, ScrewArrangement.referenceScrew.T_w_washerthickness, ScrewArrangement.referenceScrew.Length, ScrewArrangement.referenceScrew.Weight, 0, 0, 0, true);
                     }
                     else
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Weight, 0, -90, 0, true);
+                        ScrewArrangement.Screws[i] = new CScrew("TEK", controlpoint, ScrewArrangement.referenceScrew.Gauge, ScrewArrangement.referenceScrew.Diameter_thread, ScrewArrangement.referenceScrew.D_h_headdiameter, ScrewArrangement.referenceScrew.D_w_washerdiameter, ScrewArrangement.referenceScrew.T_w_washerthickness, ScrewArrangement.referenceScrew.Length, ScrewArrangement.referenceScrew.Weight, 0, -90, 0, true);
                     }
                 }
             }

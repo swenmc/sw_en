@@ -100,7 +100,7 @@ namespace BaseClasses
         public float[] HolesCenterRadii;
         public int INumberOfCircleJoints = 2;
 
-        public new CScrewArrangementCircleApexOrKnee screwArrangement;
+        //public new CScrewArrangementCircleApexOrKnee screwArrangement;
 
         public CConCom_Plate_KE()
         {
@@ -121,7 +121,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangementCircleApexOrKnee screwArrangement_temp,
+            CScrewArrangementCircleApexOrKnee screwArrangement,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -141,8 +141,7 @@ namespace BaseClasses
             m_fbX2 = fb_2_temp;
             m_fhY2 = fh_2_temp;
             m_flZ = fl_temp;
-            Ft = ft_platethickness;
-            screwArrangement = screwArrangement_temp;
+            Ft = ft_platethickness;            
 
             m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / fb_2_temp);
             m_fRotationX_deg = fRotation_x_deg;
@@ -179,6 +178,8 @@ namespace BaseClasses
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fI_yu = Get_I_yu_channel(Math.Min(2f * m_flZ, m_fbXR), Ft, Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
+
+            ScrewArrangement = screwArrangement;
         }
 
         public CConCom_Plate_KE(GraphObj.CPoint controlpoint,
@@ -193,7 +194,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangementCircleApexOrKnee screwArrangement_temp,
+            CScrewArrangementCircleApexOrKnee screwArrangement,
             bool bIsDisplayed)
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -211,7 +212,7 @@ namespace BaseClasses
             m_fhY2 = fh_2_temp;
             m_flZ = fl_temp;
             Ft = ft_platethickness;
-            screwArrangement = screwArrangement_temp;
+            
 
             m_fSlope_rad = fSLope_rad_temp;
             m_fRotationX_deg = fRotation_x_deg;
@@ -248,6 +249,8 @@ namespace BaseClasses
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fI_yu = Get_I_yu_channel(Math.Min(2f * m_flZ, m_fbXR), Ft, Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
+
+            ScrewArrangement = screwArrangement;
         }
 
         //----------------------------------------------------------------------------

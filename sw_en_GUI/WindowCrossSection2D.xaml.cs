@@ -91,9 +91,9 @@ namespace sw_en_GUI
 
             if (plate.HolesCentersPoints2D != null)
             {
-                INoHoles = plate.screwArrangement.IHolesNumber;
+                INoHoles = plate.ScrewArrangement.IHolesNumber;
                 PointsHoles = plate.HolesCentersPoints2D;
-                DHolesDiameter = plate.screwArrangement.referenceScrew.Diameter_thread;
+                DHolesDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
             }
 
             if(plate.DrillingRoutePoints != null)
