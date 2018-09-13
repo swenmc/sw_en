@@ -1049,6 +1049,24 @@ namespace PFD
                 // TODO - potrebujeme zistit typ konkretneho objektu a pre tento konkretny typ urcit, ktore jeho properties zobrazit a mozu sa editovat
                 // Jedna sa zhruba o toto, neviem kde treba definovat property name kedze je to rozne pre roznych potomkov CPlate
 
+                // Set current screw arrangement parameters
+                if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
+                {
+                    CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
+
+                    if (item.Name == "Number of screws in circle") arrangementTemp.IHolesInCirclesNumber = int.Parse(changedText);
+                    if (item.Name == "Screw gauge") arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
+                    if (item.Name == "Radius") arrangementTemp.FRadius = float.Parse(changedText);
+                    if (item.Name == "Cross-section depth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
+                    if (item.Name == "Cross-section web straight depth") arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                    if (item.Name == "Middle stiffener size") arrangementTemp.FStiffenerSize = float.Parse(changedText);
+                    if (item.Name == "Use additional corner screws") arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
+                    if (item.Name == "Number of additional screws") arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+
+                    plate.ScrewArrangement = arrangementTemp;
+                }
+
+                // Set current basic geometry of plate
                 if (plate is CConCom_Plate_KC)
                 {
                     CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
@@ -1060,23 +1078,9 @@ namespace PFD
                     if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
                     if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
 
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
                     plate = plateTemp;
-                }
-
-                if(plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
-                {
-                    CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
-
-                    if (item.Name == "Number of screws") arrangementTemp.IHolesNumber = int.Parse(changedText);
-                    if (item.Name == "Screw gauge") arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name == "Radius") arrangementTemp.FRadius = float.Parse(changedText);
-                    if (item.Name == "Cross-section depth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
-                    if (item.Name == "Cross-section web straight depth") arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
-                    if (item.Name == "Middle stiffener size") arrangementTemp.FStiffenerSize = float.Parse(changedText);
-                    if (item.Name == "Use additional corner screws") arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                    if (item.Name == "Number of additional screws") arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
-
-                    plate.ScrewArrangement = arrangementTemp;
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -595,16 +595,16 @@ namespace PFD
             List<CComponentParamsView> geometry = new List<CComponentParamsView>();
 
             geometry.Add(new CComponentParamsView("Name", "", plate.Name, ""));
+            geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plate.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
             if (plate is CConCom_Plate_KC)
             {
                 CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
 
-                geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plateTemp.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Height 2", "h 1", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             }
 
@@ -612,7 +612,7 @@ namespace PFD
             {
                 CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
 
-                geometry.Add(new CComponentParamsView("Number of screws", "n", arrangementTemp.IHolesNumber.ToString(nfi), "[-]"));
+                geometry.Add(new CComponentParamsView("Number of screws in circle", "n", arrangementTemp.IHolesInCirclesNumber.ToString(nfi), "[-]"));
                 geometry.Add(new CComponentParamsView("Screw gauge", "No", (Math.Round(arrangementTemp.referenceScrew.Diameter_thread * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[-]"));  // TODO prerobit na vyber objektu skrutky z databazy
                 geometry.Add(new CComponentParamsView("Radius", "r", (Math.Round(arrangementTemp.FRadius * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Cross-section depth", "h", (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
