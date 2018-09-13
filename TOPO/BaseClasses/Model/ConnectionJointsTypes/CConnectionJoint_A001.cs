@@ -47,10 +47,11 @@ namespace BaseClasses
 
             int iConnectorNumber = 80;
             CScrew referenceScrew = new CScrew("TEK", "14");
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber);
 
             m_arrPlates = new CPlate[2];
-            m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, iConnectorNumber, referenceScrew, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed); // Rotation angle in degrees
-            m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, iConnectorNumber, referenceScrew, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+            m_arrPlates[1] = new CConCom_Plate_JB("JB", ControlPoint_P2, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 0 + fJointAngleAboutZ_deg, screwArrangement, BIsDisplayed); // Rotation angle in degrees
         }
     }
 }

@@ -70,7 +70,7 @@ namespace M_AS4600
             */
 
             //df = nominal screw diameter
-            screw = joint_temp.m_arrPlates[0].m_arrPlateScrews[0]; // Parametre prvej skrutky prveho plechu
+            screw = joint_temp.m_arrPlates[0].screwArrangement.Screws[0]; // Parametre prvej skrutky prveho plechu
             plate = joint_temp.m_arrPlates[0];
             crsc_mainMember = (CCrSc_TW)joint_temp.m_MainMember.CrScStart;
 
@@ -153,7 +153,7 @@ namespace M_AS4600
             float fVb_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
             float fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_SecondaryMember);
 
-            int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].m_arrPlateScrews.Length; // Temporary
+            int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].screwArrangement.Screws.Length; // Temporary
 
             float fEta_MainMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_MainMember);
             float fEta_SecondaryMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_SecondaryMember);
@@ -171,7 +171,7 @@ namespace M_AS4600
 
             // 5.4.2.4 Tilting and hole bearing
             // Bending - Calculate shear strength of plate connection - main member
-            for (int i = 0; i < a.IHolesNumber / a.INumberOfCircleJoints; i++)
+            for (int i = 0; i < a.screwArrangement.IHolesNumber / a.screwArrangement.INumberOfCircleGroupsInJoint; i++)
             {
                 fMb_MainMember_oneside_plastic += a.HolesCenterRadii[i] * fVb_MainMember;
                 fMb_SecondaryMember_oneside_plastic += a.HolesCenterRadii[/*a.IHolesNumber / 2 +*/ i] * fVb_SecondaryMember;
@@ -187,8 +187,8 @@ namespace M_AS4600
 
             // Elastic resistance
             float fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
-            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / (a.IHolesNumber / a.INumberOfCircleJoints);
-            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / (a.IHolesNumber / a.INumberOfCircleJoints);
+            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / (a.screwArrangement.IHolesNumber / a.screwArrangement.INumberOfCircleGroupsInJoint);
+            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / (a.screwArrangement.IHolesNumber / a.screwArrangement.INumberOfCircleGroupsInJoint);
 
             float fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
 
@@ -249,7 +249,7 @@ namespace M_AS4600
         {
             bool bDisplayWarningForContitions5434and5435 = false;
             /// Purlins, girts .....
-            int iNumberOfScrewsInTension = plate.IHolesNumber;
+            int iNumberOfScrewsInTension = plate.screwArrangement.IHolesNumber;
 
             // 5.4.3 Screwed connections in tension
             // 5.4.3.2 Pull-out and pull-over (pull-through)

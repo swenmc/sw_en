@@ -56,6 +56,7 @@ namespace BaseClasses
                 iConnectorNumberinOnePlate = 8; // Plate LJ
 
             CScrew referenceScrew = new CScrew("TEK", "12");
+            CScrewArrangement screwArrangement = new CScrewArrangement(iConnectorNumberinOnePlate, referenceScrew);
 
             // TODO Ondrej 15/07/2018
             // Tu sa pridavaju plechy (plates) do spoja (joint), vklada sa do pozicie v LCS pruta
@@ -67,8 +68,8 @@ namespace BaseClasses
             // Update 2
             // Po tomto vlozeni plechov a ich skrutiek do spoja by sa mali suradnice vsetkych plechov a skrutiek v spoji prepocitat z povodnych suradnic plechov, v ktorych su plechy zadane do suradnicoveho systemu spoja a ulozit
 
-            CConCom_Plate_F_or_L pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, iConnectorNumberinOnePlate, referenceScrew, BIsDisplayed); // Rotation angle in degrees
-            CConCom_Plate_F_or_L pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, iConnectorNumberinOnePlate, referenceScrew, BIsDisplayed); // Rotation angle in degrees
+            CConCom_Plate_F_or_L pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 0, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+            CConCom_Plate_F_or_L pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
 
             // Identification of current joint node location (start or end definition node of secondary member)
             if (m_Node.ID != m_SecondaryMembers[0].NodeStart.ID) // If true - joint at start node, if false joint at end node (so we need to rotate joint about z-axis 180 deg)
@@ -77,8 +78,8 @@ namespace BaseClasses
                 ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
                 ControlPoint_P2 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_min + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
 
-                pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 0, iConnectorNumberinOnePlate, referenceScrew, BIsDisplayed); // Rotation angle in degrees
-                pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 90, iConnectorNumberinOnePlate, referenceScrew, BIsDisplayed); // Rotation angle in degrees
+                pLeftPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 0, screwArrangement, BIsDisplayed); // Rotation angle in degrees
+                pRightPlate = new CConCom_Plate_F_or_L(sPlateType_ForL, ControlPoint_P2, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 180 + 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees
             }
 
             if (ePlateNumberAndPosition == EPlateNumberAndPositionInJoint.eTwoPlates)

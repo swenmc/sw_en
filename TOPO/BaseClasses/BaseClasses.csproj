@@ -109,8 +109,11 @@
     <Compile Include="Model\CEntityGroup.cs" />
     <Compile Include="Model\CExample.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementCircleApexOrKnee.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CAnchor.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CBolt.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CConnectorArrangement.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CRivet.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CScrew.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KC.cs" />

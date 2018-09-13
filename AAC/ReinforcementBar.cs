@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using BaseClasses;
-using BaseClasses.GraphObj;
-using _3DTools;
-using MATH;
-using MATERIAL;
+﻿using MATERIAL;
 using CRSC;
 
 namespace AAC
@@ -25,7 +14,7 @@ namespace AAC
 
         public ReinforcementBar(float fd_temp, float fL_temp, MATERIAL.CMat_03_00 Reinforcement_temp)
         {
-            Reinforcement = new MATERIAL.CMat_03_00();
+            Reinforcement = new CMat_03_00();
             Reinforcement = Reinforcement_temp;
             Cross_Section = new CCrSc_3_09(fd_temp);
             fL = fL_temp;

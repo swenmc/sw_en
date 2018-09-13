@@ -165,7 +165,10 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
-            float fDiameter = plate.referenceScrew != null ? plate.referenceScrew.Diameter_thread : 0;
+            float fDiameter = 0;
+
+            if(plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
+                fDiameter = plate.screwArrangement.referenceScrew.Diameter_thread;
 
             if(plate.GetType() == typeof(CConCom_Plate_BB_BG)) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
             {

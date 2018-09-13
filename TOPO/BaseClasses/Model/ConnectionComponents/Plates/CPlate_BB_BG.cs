@@ -67,7 +67,23 @@ namespace BaseClasses
             }
         }
 
+        // Temporary - pokial sa nevyriesi samostana definicia anchor, screws atd
+        public int m_iHolesNumber;   // Number of holes
 
+        public int IHolesNumber
+        {
+            get
+            {
+                return m_iHolesNumber;
+            }
+
+            set
+            {
+                m_iHolesNumber = value;
+            }
+        }
+
+        public CScrew referenceScrew;
         public CAnchor referenceAnchor;
 
         int iNoPoints2Dfor3D;

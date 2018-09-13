@@ -75,7 +75,18 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_LL(string sName_temp, CPoint controlpoint, float fbX1_temp, float fbX2_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, int iHolesNumber, CScrew referenceScrew_temp, bool bIsDisplayed)
+        public CConCom_Plate_LL(string sName_temp,
+            CPoint controlpoint,
+            float fbX1_temp,
+            float fbX2_temp,
+            float fhY_temp,
+            float fl_Z_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            CScrewArrangement screwArrangement_temp,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -92,9 +103,8 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_flZ = fl_Z_temp;
             Ft = ft_platethickness;
-            IHolesNumber = iHolesNumber;
-            referenceScrew = referenceScrew_temp;
-            // m_arrPlateScrews = arrPlateConnectors_temp; // Generate
+            screwArrangement = screwArrangement_temp;
+
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
@@ -102,8 +112,8 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
+            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
@@ -126,9 +136,9 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(2 * Ft, m_fbX1);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             fA_v_zv = Get_A_rect(2 * Ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             fI_yu = 2 * Get_I_yu_rect(Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
         }
@@ -297,7 +307,7 @@ namespace BaseClasses
 
             // TODO OPRAVIT SURADNICE
 
-            if (IHolesNumber == 32) // LLH, LLK
+            if (screwArrangement.IHolesNumber == 32) // LLH, LLK
             {
                 HolesCentersPoints2D[0, 0] = - m_fhY + Ft + fy_edge1;
                 HolesCentersPoints2D[0, 1] = fx_edge;
@@ -349,10 +359,10 @@ namespace BaseClasses
                 HolesCentersPoints2D[15, 0] = HolesCentersPoints2D[1, 0];
                 HolesCentersPoints2D[15, 1] = fTemp + HolesCentersPoints2D[0, 1];
 
-                for (int i = 0; i < IHolesNumber / 2; i++)
+                for (int i = 0; i < screwArrangement.IHolesNumber / 2; i++)
                 {
-                    HolesCentersPoints2D[IHolesNumber / 2 + i, 0] = m_fbX2 -HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 0];
-                    HolesCentersPoints2D[IHolesNumber / 2 + i, 1] = HolesCentersPoints2D[(IHolesNumber / 2 - i - 1), 1];
+                    HolesCentersPoints2D[screwArrangement.IHolesNumber / 2 + i, 0] = m_fbX2 -HolesCentersPoints2D[(screwArrangement.IHolesNumber / 2 - i - 1), 0];
+                    HolesCentersPoints2D[screwArrangement.IHolesNumber / 2 + i, 1] = HolesCentersPoints2D[(screwArrangement.IHolesNumber / 2 - i - 1), 1];
                 }
             }
             else
@@ -372,7 +382,7 @@ namespace BaseClasses
 
             // TODO nahradit enumom a switchom
 
-            if (IHolesNumber == 32) // LLH, LLK
+            if (screwArrangement.IHolesNumber == 32) // LLH, LLK
             {
                 arrConnectorControlPoints3D[0].X = fx_edge;
                 arrConnectorControlPoints3D[0].Y = m_fhY - fy_edge1;
@@ -440,11 +450,11 @@ namespace BaseClasses
 
                 float fb_temp = m_fbX1 * 2 + m_fbX2;
 
-                for (int i = 0; i < IHolesNumber / 2; i++)
+                for (int i = 0; i < screwArrangement.IHolesNumber / 2; i++)
                 {
-                    arrConnectorControlPoints3D[IHolesNumber / 2 + i].X = fb_temp - arrConnectorControlPoints3D[(IHolesNumber / 2 - i - 1)].X;
-                    arrConnectorControlPoints3D[IHolesNumber / 2 + i].Y = arrConnectorControlPoints3D[(IHolesNumber / 2 - i - 1)].Y;
-                    arrConnectorControlPoints3D[IHolesNumber / 2 + i].Z = arrConnectorControlPoints3D[(IHolesNumber / 2 - i - 1)].Z;
+                    arrConnectorControlPoints3D[screwArrangement.IHolesNumber / 2 + i].X = fb_temp - arrConnectorControlPoints3D[(screwArrangement.IHolesNumber / 2 - i - 1)].X;
+                    arrConnectorControlPoints3D[screwArrangement.IHolesNumber / 2 + i].Y = arrConnectorControlPoints3D[(screwArrangement.IHolesNumber / 2 - i - 1)].Y;
+                    arrConnectorControlPoints3D[screwArrangement.IHolesNumber / 2 + i].Z = arrConnectorControlPoints3D[(screwArrangement.IHolesNumber / 2 - i - 1)].Z;
                 }
             }
             else
@@ -455,9 +465,9 @@ namespace BaseClasses
 
         void GenerateConnectors()
         {
-            if (IHolesNumber > 0)
+            if (screwArrangement.IHolesNumber > 0)
             {
-                m_arrPlateScrews = new CScrew[IHolesNumber];
+                screwArrangement.Screws = new CScrew[screwArrangement.IHolesNumber];
 
                 // TODO Ondrej 15/07/2018
                 // Tu sa pridava sktrutka do plechu, v klada sa do pozicie na plechu v suradnicovom systeme plechu (controlpoint) a otoci sa do pozicie v LCS plechu
@@ -468,27 +478,27 @@ namespace BaseClasses
                 // Po tomto vlozeni skrutiek do plechu by sa mali suradnice skrutiek prepocitat z povodnych, v ktorych su zadane do suradnicoveho systemu plechu a ulozit
 
                 
-                for (int i = 0; i < IHolesNumber; i++)
+                for (int i = 0; i < screwArrangement.IHolesNumber; i++)
                 {
-                    if (i < IHolesNumber / 4) // Left
+                    if (i < screwArrangement.IHolesNumber / 4) // Left
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Weight, 0, -90, 0, true);
                     }
-                    else if (i < IHolesNumber * 2 / 4) // Front Left
+                    else if (i < screwArrangement.IHolesNumber * 2 / 4) // Front Left
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, 0, 0, true);
+                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Weight, 0, 0, 0, true);
                     }
-                    else if (i < IHolesNumber * 3 / 4) // Front Right
+                    else if (i < screwArrangement.IHolesNumber * 3 / 4) // Front Right
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, 180, 0, true);
+                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Weight, 0, 180, 0, true);
                     }
                     else // Right
                     {
                         CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                        m_arrPlateScrews[i] = new CScrew("TEK", controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
+                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Weight, 0, -90, 0, true);
                     }
                 }
             }

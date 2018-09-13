@@ -138,9 +138,9 @@ namespace PFD
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
                 tabItemDoc.IsEnabled = true;
-                if (plate != null)
+                if (plate != null && plate.screwArrangement != null)
                 {
-                    BtnFindCNCPath.IsEnabled = plate.IHolesNumber > 0;
+                    BtnFindCNCPath.IsEnabled = plate.screwArrangement.IHolesNumber > 0;
                     // BtnExportCNC can be enabled for export of plate setup file or cutting file evenif drilling route is not defined or holes are not defined.
                     //BtnExportCNC.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
                     BtnShowCNCDrillingFile.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
@@ -430,21 +430,27 @@ namespace PFD
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
+                CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
+                int iConnectorNumber = 80;
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate);
+
+
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
+                            // Vynimka, je potrebne prepracovat na screwArrangement a anchorArrangement
                             plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 ,true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, referenceScrew, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, iNumberofHoles, referenceScrew, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, screwArrangement, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -470,23 +476,23 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (vm.ComponentIndex == 0) // JA
-                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, iNumberofHoles, referenceScrew, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, screwArrangementCircle, true);
                             else
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, iNumberofHoles, referenceScrew, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, screwArrangementCircle, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (vm.ComponentIndex == 0) // KA
-                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if(vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 2)
-                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 3)
-                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else
-                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true);
+                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             break;
                         }
                     default:
@@ -613,6 +619,10 @@ namespace PFD
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
 
+                CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
+                int iConnectorNumber = 80;
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate);
+
                 switch ((ESerieTypePlate) vm.ComponentSerieIndex)
                 {
                     case ESerieTypePlate.eSerie_B:
@@ -622,12 +632,12 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, iNumberofHoles, referenceScrew, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -653,23 +663,23 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (vm.ComponentIndex == 0) // JA
-                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             else
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, screwArrangementCircle, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (vm.ComponentIndex == 0) // KA
-                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 2)
-                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 3)
-                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, true);
+                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else
-                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, iNumberofHoles, referenceScrew, true);
+                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             break;
                         }
                     default:
@@ -729,7 +739,7 @@ namespace PFD
 
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
-            List<Point> points = plate.GetHolesCentersPoints2D();
+            List<Point> points = plate.screwArrangement.GetHolesCentersPoints2D();
             if (points == null || points.Count == 0)
             {
                 MessageBox.Show("Drilling points are not defined for selected plate.");
@@ -1051,25 +1061,19 @@ namespace PFD
                     if (item.Name == "Height1") plateTemp.Fh_Y1 = float.Parse(changedText);
                     if (item.Name == "Height2") plateTemp.Fh_Y2 = float.Parse(changedText);
                     if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
-
-                    if (item.Name == "CrscRafterDepth") plateTemp.FCrscRafterDepth = float.Parse(changedText);
-                    if (item.Name == "CrscWebStraightDepth") plateTemp.FCrscWebStraightDepth = float.Parse(changedText);
-                    if (item.Name == "StiffenerSize") plateTemp.FStiffenerSize = float.Parse(changedText);
-                    if (item.Name == "UseAdditionalCornerScrews") plateTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                    if (item.Name == "AdditionalConnectorNumber") plateTemp.IAdditionalConnectorNumber = int.Parse(changedText);
-                    if (item.Name == "HolesNumber") plateTemp.IHolesNumber = int.Parse(changedText);
-
-                    
-
                 }
-                //if(plate.ScrewsArrangement != null plate.ScrewsArrangement is CircularScrewsArrangement)
-                //{
-                //    if (item.Name == "StiffenerSize") plateTemp.FStiffenerSize = float.Parse(changedText);
-                //    if (item.Name == "UseAdditionalCornerScrews") plateTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                //    if (item.Name == "AdditionalConnectorNumber") plateTemp.IAdditionalConnectorNumber = int.Parse(changedText);
-                //    if (item.Name == "HolesNumber") plateTemp.IHolesNumber = int.Parse(changedText);
-                //}
 
+                if(plate.screwArrangement != null && plate.screwArrangement is CScrewArrangementCircleApexOrKnee)
+                {
+                    CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.screwArrangement;
+
+                    if (item.Name == "HolesNumber") arrangementTemp.IHolesNumber = int.Parse(changedText);
+                    if (item.Name == "CrscRafterDepth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
+                    if (item.Name == "CrscWebStraightDepth") arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                    if (item.Name == "StiffenerSize") arrangementTemp.FStiffenerSize = float.Parse(changedText);
+                    if (item.Name == "UseAdditionalCornerScrews") arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
+                    if (item.Name == "AdditionalConnectorNumber") arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
