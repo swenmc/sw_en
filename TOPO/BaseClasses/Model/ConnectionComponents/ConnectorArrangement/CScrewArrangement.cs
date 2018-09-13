@@ -44,6 +44,8 @@ namespace BaseClasses
 
         public Point3D[] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
 
+        public CScrewArrangement()
+        { }
 
         public CScrewArrangement(int iScrewsNumber_temp, CScrew referenceScrew_temp) : base(iScrewsNumber_temp)
         {

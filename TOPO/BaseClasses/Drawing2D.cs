@@ -106,24 +106,41 @@ namespace BaseClasses
         public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
             bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawHoleCentreSymbols, bool bDrawDrillingRoute)
         {
+            // TODO - pokusy :)))
+            float fDiameter = 0;
+
+            if (plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
+                fDiameter = plate.screwArrangement.referenceScrew.Diameter_thread;
+
+            CScrewArrangementCircleApexOrKnee sa;
+            Type t = plate.GetType();
+            if (t == typeof(CConCom_Plate_JA) ||
+                t == typeof(CConCom_Plate_JB) ||
+                t == typeof(CConCom_Plate_KA) ||
+                t == typeof(CConCom_Plate_KB) ||
+                t == typeof(CConCom_Plate_KC) ||
+                t == typeof(CConCom_Plate_KD) ||
+                t == typeof(CConCom_Plate_KE)
+                )
+            {
+                // TODO - tu robim hlupost, ak je to null tak to sem nevojde, problem je ze  v tych vyssie uvedenych triedach som to zadefinoval takto
+                // public new CScrewArrangementCircleApexOrKnee screwArrangement;
+                // takze mam objekt s rovnakym menom ale ineho typu v predkovi aj v potomkovi
+                // mrzi ma ze neviem programovat :(
+
+                if (plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
+                {
+                    sa = (CScrewArrangementCircleApexOrKnee)plate.screwArrangement;
+                    fDiameter = sa.referenceScrew.Diameter_thread;
+                }
+            }
+
             float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
             // Fill arrays of points
             if (plate.PointsOut2D != null && plate.PointsOut2D.Length > 1)
             {
                 CalculateModelLimits(plate.PointsOut2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
-            }
-
-            if (plate.DrillingRoutePoints != null)
-            {
-                float[,] PointsDrillingRoute = new float[plate.DrillingRoutePoints.Count, 2];
-
-                // Fill array of drilling points route
-                for (int i = 0; i < plate.DrillingRoutePoints.Count; i++)
-                {
-                    PointsDrillingRoute[i, 0] = (float)plate.DrillingRoutePoints[i].X;
-                    PointsDrillingRoute[i, 1] = (float)plate.DrillingRoutePoints[i].Y;
-                }
             }
 
             int scale_unit = 1000; // mm
@@ -165,12 +182,12 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
-            float fDiameter = 0;
-
+            /*
             if(plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
                 fDiameter = plate.screwArrangement.referenceScrew.Diameter_thread;
+            */
 
-            if(plate.GetType() == typeof(CConCom_Plate_BB_BG)) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
+            if (plate.GetType() == typeof(CConCom_Plate_BB_BG)) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
             {
                 // TODO - Ondrej - asi by sa to dalo osetrit nejako krajsie
 

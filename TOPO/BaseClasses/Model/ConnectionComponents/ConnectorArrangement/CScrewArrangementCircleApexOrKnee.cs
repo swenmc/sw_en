@@ -137,6 +137,9 @@ namespace BaseClasses
         float m_fSlope_rad;
         public float[] HolesCenterRadii;
 
+        public CScrewArrangementCircleApexOrKnee()
+        { }
+
         public CScrewArrangementCircleApexOrKnee(
             int iHolesInCirclesNumber_temp,
             CScrew referenceScrew_temp,

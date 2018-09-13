@@ -28,7 +28,7 @@ namespace BaseClasses
 
         private float[,] m_HolesCentersPoints2D;
 
-        public float [,] HolesCentersPoints2D
+        public float[,] HolesCentersPoints2D
         {
             get
             {
@@ -40,6 +40,9 @@ namespace BaseClasses
                 m_HolesCentersPoints2D = value;
             }
         }
+
+        public CConnectorArrangement()
+        {}
 
         public CConnectorArrangement(int iHolesNumber)
         {
