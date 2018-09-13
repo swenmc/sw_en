@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -101,6 +103,8 @@ namespace CRSC
             CrScPointsOut = new float[INoPoints, 2];
             CrScPointsIn = new float[INoPoints, 2];
 
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
             // Fill Array Data
 
             if (m_sShape == 0)       // Both radii, coincident centres

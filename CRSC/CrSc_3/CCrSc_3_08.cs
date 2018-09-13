@@ -1,4 +1,5 @@
 ﻿using MATH;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -129,6 +130,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float [ITotNoPoints,2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
 
             if (m_sShape == 0)       // 0 - Five radii, tapered flanges, optional tapered web (5+2 auxiliary points)
@@ -182,6 +184,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
 
             if (m_sShape == 2)       // 2 - Two radii at flanges tips, tapered or parallel flanges, optional tapered web (4 auxiliary points)

@@ -1,4 +1,7 @@
-﻿namespace CRSC
+﻿using System.Collections.Generic;
+using System.Windows;
+
+namespace CRSC
 {
     public class CCrSc_2_00_AAC_Beam : CCrSc_2_00
     {
@@ -19,6 +22,8 @@
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -51,5 +56,20 @@
             CrScPointsOut[3, 0] = CrScPointsOut[0, 0];         // y
             CrScPointsOut[3, 1] = CrScPointsOut[2, 1];         // z
         }
+
+        //public new void CalcCrSc_Coord()
+        //{
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(0, h));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(b, CrScPointsOut[0].Y));
+
+        //    // Point No. 3
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, 0));
+
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[2].Y));
+        //}
     }
 }

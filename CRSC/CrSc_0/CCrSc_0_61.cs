@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -72,6 +74,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float [ITotNoPoints,2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -136,8 +139,54 @@ namespace CRSC
             CrScPointsOut[8, 0] = Geom2D.GetPositionX_deg(fr, 210f - fAlpha_Aux);    // y
             CrScPointsOut[8, 1] = Geom2D.GetPositionY_CW_deg(fr, 210f - fAlpha_Aux);    // z
         }
+        //void CalcCrSc_Coord()
+        //{
 
-		protected override void loadCrScIndices()
+        //    // Polar Coordinates of Points 1,3,4,6,7,9
+        //    // Auxiliary Angle
+        //    float fAlpha_Aux = (float)Math.Atan(m_ft / 2 / (m_fb + m_ft / 3));
+        //    // Calculate Radius
+        //    float fr = (m_ft / 2f) / (float)Math.Sin(fAlpha_Aux);
+
+        //    // Calculate coordinates of 2, 5, 8 - Equilateral Triangle            
+        //    List<Point> TrianEqLatPoints = Geom2D.GetTrianEqLatPointCoord1(m_ft);
+
+        //    // Transform Radians to Degrees - input to GetPositionX_deg/Y functions
+        //    fAlpha_Aux = 180f / MathF.fPI * fAlpha_Aux;
+        //    // Transform Degrees to Radians
+        //    // fAlpha_Aux = MathF.fPI / 180f * fAlpha_Aux;
+
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(Geom2D.GetPositionX_deg(fr, 210f + fAlpha_Aux), Geom2D.GetPositionY_CW_deg(fr, 210f + fAlpha_Aux)));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(TrianEqLatPoints[0].X, TrianEqLatPoints[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(Geom2D.GetPositionX_deg(fr, 330f - fAlpha_Aux), Geom2D.GetPositionY_CW_deg(fr, 330f - fAlpha_Aux)));
+
+        //    // Point No. 4            
+        //    CrScPointsOut.Add(new Point(Geom2D.GetPositionX_deg(fr, 330f + fAlpha_Aux), Geom2D.GetPositionY_CW_deg(fr, 330f + fAlpha_Aux)));
+
+        //    // Point No. 5            
+        //    CrScPointsOut.Add(new Point(TrianEqLatPoints[1].X, TrianEqLatPoints[1].Y));
+
+        //    // Point No. 6
+        //    CrScPointsOut.Add(new Point(Geom2D.GetPositionX_deg(fr, 90f - fAlpha_Aux), Geom2D.GetPositionY_CW_deg(fr, 90f - fAlpha_Aux)));
+
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(Geom2D.GetPositionX_deg(fr, 90f + fAlpha_Aux), Geom2D.GetPositionY_CW_deg(fr, 90f + fAlpha_Aux)));
+
+        //    // Point No. 8            
+        //    CrScPointsOut.Add(new Point(TrianEqLatPoints[2].X, TrianEqLatPoints[2].Y));
+
+        //    // Point No. 9
+        //    CrScPointsOut.Add(new Point(Geom2D.GetPositionX_deg(fr, 210f - fAlpha_Aux), Geom2D.GetPositionY_CW_deg(fr, 210f - fAlpha_Aux)));
+        //}
+
+        protected override void loadCrScIndices()
         {
             // const int secnum = 9;  // Number of points in section (2D)
             TriangleIndices = new Int32Collection(42 + 9 * 6);

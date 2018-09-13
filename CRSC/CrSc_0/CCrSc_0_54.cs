@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -106,6 +108,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float [ITotNoPoints,2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -142,6 +145,28 @@ namespace CRSC
             CrScPointsOut[5, 0] = CrScPointsOut[0, 0];     // y
             CrScPointsOut[5, 1] = CrScPointsOut[4, 1];     // z
         }
+        //void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(-m_fy_c, m_fh - m_fz_c));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X + m_ft_w, CrScPointsOut[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, -m_fz_c + m_ft_f));
+
+        //    // Point No. 4            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X + m_fb, CrScPointsOut[2].Y));
+
+        //    // Point No. 5            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, -m_fz_c));
+
+        //    // Point No. 6            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[4].Y));
+        //}
 
 
         //----------------------------------------------------------------------------

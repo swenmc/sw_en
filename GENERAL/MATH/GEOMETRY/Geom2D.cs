@@ -148,7 +148,7 @@ namespace MATH
         }
 
         // Mirror
-        public static void MirrorAboutY_ChangeXCoordinates(ref float[,] array)
+        public static void MirrorAboutY_ChangeXCoordinatesArray(ref float[,] array)
         {
             if (array != null)
             {
@@ -157,12 +157,36 @@ namespace MATH
             }
         }
 
-        public static void MirrorAboutX_ChangeYCoordinates(ref float[,] array)
+        public static void MirrorAboutX_ChangeYCoordinatesArray(ref float[,] array)
         {
             if (array != null)
             {
                 for (int i = 0; i < array.Length / 2; i++)
                     array[i, 1] *= -1;
+            }
+        }
+
+        public static void MirrorAboutY_ChangeXCoordinates(List<Point> points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    Point p = points[i];
+                    p.X *= -1;
+                }   
+            }
+        }
+
+        public static void MirrorAboutX_ChangeYCoordinates(List<Point> points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Count; i++)
+                {
+                    Point p = points[i];
+                    p.Y *= -1;
+                }
             }
         }
 

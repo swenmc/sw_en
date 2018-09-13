@@ -1,4 +1,7 @@
-﻿namespace CRSC
+﻿using System.Collections.Generic;
+using System.Windows;
+
+namespace CRSC
 {
     public class CCrSc_5_01 : CCrSc_0_05
     {
@@ -11,8 +14,9 @@
 
           // Create Array - allocate memory
           CrScPointsOut = new float[ITotNoPoints, 2];
-          // Fill Array Data
-          CalcCrSc_Coord();
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            // Fill Array Data
+            CalcCrSc_Coord();
       }
     }
 }

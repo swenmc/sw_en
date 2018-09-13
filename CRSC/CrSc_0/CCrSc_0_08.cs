@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -56,7 +58,8 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
-            
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -69,6 +72,7 @@ namespace CRSC
         {
             // Fill Edge Points Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
             CrScPointsOut = Geom2D.AddCentroidPosition_ZeroArray(Geom2D.GetOctagonPointCoordArray(m_fa));
+            //CrScPointsOut = Geom2D.AddCentroidPosition_Zero(Geom2D.GetOctagonPointCoord(m_fa));
         }
 
         protected override void loadCrScIndices()

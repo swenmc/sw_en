@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -40,8 +42,11 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
+
             // Fill Array Data
             CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1Array(m_fa);
+            //CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1(m_fa);
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
@@ -95,6 +100,28 @@ namespace CRSC
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
         }
+        //public CCrSc_0_04(float fN0y, float fN0z, float fN1y, float fN1z, float fN2y, float fN2z)
+        //{
+        //    IsShapeSolid = true;
+        //    ITotNoPoints = 3;
+
+        //    // Create Array - allocate memory            
+        //    CrScPointsOut = new List<Point>(ITotNoPoints);
+        //    // Fill Array Data
+        //    // CalcCrSc_Coord_Scalene();
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(fN0y, fN0z));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(fN1y, fN1z));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(fN2y, fN2z));
+
+        //    // Fill list of indices for drawing of surface - triangles edges
+        //    loadCrScIndices();
+        //}
 
         // Scalene - general
         //----------------------------------------------------------------------------

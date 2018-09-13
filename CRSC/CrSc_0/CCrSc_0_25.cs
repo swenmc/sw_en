@@ -1,6 +1,8 @@
 ﻿using MATH;
 using System;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -92,7 +94,10 @@ namespace CRSC
             // Create Array - allocate memory
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
-            
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -141,6 +146,38 @@ namespace CRSC
             CrScPointsIn[3,0] = CrScPointsIn[0,0];     // y
             CrScPointsIn[3,1] = -CrScPointsIn[0,1];     // z
         }
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Outside
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(-m_fb / 2f, m_fh / 2f));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, -CrScPointsOut[1].Y));
+
+        //    // Point No. 4            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[2].Y));
+
+        //    // Inside
+
+        //    // Point No. 5            
+        //    CrScPointsIn.Add(new Point(CrScPointsOut[0].X + m_ft_w, CrScPointsOut[0].Y - m_ft_f));
+
+        //    // Point No. 6            
+        //    CrScPointsIn.Add(new Point(-CrScPointsIn[0].X, CrScPointsIn[0].Y));
+
+        //    // Point No. 7            
+        //    CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, -CrScPointsIn[1].Y));
+
+        //    // Point No. 8            
+        //    CrScPointsIn.Add(new Point(-CrScPointsIn[0].X, -CrScPointsIn[0].Y));
+        //}
 
 
         // Temporary for hollow rectanngular and square section - steel !!!

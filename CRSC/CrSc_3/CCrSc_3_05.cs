@@ -1,4 +1,7 @@
-﻿namespace CRSC
+﻿using System.Collections.Generic;
+using System.Windows;
+
+namespace CRSC
 {
     public class CCrSc_3_05 : CCrSc_0_22
     {
@@ -23,8 +26,10 @@
           CrScPointsOut = new float[INoPointsOut, 2];
           CrScPointsIn = new float[INoPointsIn, 2];
 
-          // Fill Array Data
-          CalcCrSc_Coord();
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+            // Fill Array Data
+            CalcCrSc_Coord();
 
           // Fill list of indices for drawing of surface - triangles edges
           loadCrScIndices();

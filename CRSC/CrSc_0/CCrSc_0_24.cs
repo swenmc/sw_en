@@ -1,6 +1,8 @@
 ﻿using MATH;
 using System;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -49,8 +51,10 @@ namespace CRSC
            // Create Array - allocate memory
            CrScPointsOut = new float[INoPointsOut, 2];
            CrScPointsIn = new float[INoPointsIn, 2];
-           // Fill Array Data
-           CalcCrSc_Coord_EqLat();
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+            // Fill Array Data
+            CalcCrSc_Coord_EqLat();
 
            // Fill list of indices for drawing of surface - triangles edges
            loadCrScIndices();
@@ -90,7 +94,31 @@ namespace CRSC
             CrScPointsIn[2, 1] = CrScPointsIn[1, 1];                      // z
         }
 
-		protected override void loadCrScIndices()
+        //void CalcCrSc_Coord_EqLat()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Outside
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(0, 2f / 3f * (m_fa / 2f) * MathF.fSqrt3));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(m_fa / 2f, -1f / 3f * (m_fa / 2f) * MathF.fSqrt3));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
+            
+        //    // Inside
+        //    // Point No. 4            
+        //    CrScPointsIn.Add(new Point(0, 2f / 3f * (m_fa / 2f) * MathF.fSqrt3 - 2 * m_ft));
+        //    // Point No. 5            
+        //    CrScPointsIn.Add(new Point((m_fa / 2f) - (m_ft / (float)Math.Tan(0.523598775598299f)), -1f / 3f * (m_fa / 2f) * MathF.fSqrt3 + m_ft));
+        //    // Point No. 6            
+        //    CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+        //}
+
+        protected override void loadCrScIndices()
         {
             // const int secNum = 3+3;  // Number of points in section (2D)
             TriangleIndices = new Int32Collection(12*6);

@@ -1052,15 +1052,15 @@ namespace CRSC
         // Mirror cross-section about x
         public void MirrorPlateAboutX()
         {
-            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsOut);
-            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsIn);
+            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsOut);
+            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsIn);
         }
 
         // Mirror cross-section about y
         public void MirrorPlateAboutY()
         {
-            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsOut);
-            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsIn);
+            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsOut);
+            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsIn);
         }
 
         // Rotate cross-section
