@@ -1,6 +1,8 @@
 ﻿using MATH;
 using System;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -62,6 +64,9 @@ namespace CRSC
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
 
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -87,6 +92,10 @@ namespace CRSC
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
 
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -101,9 +110,11 @@ namespace CRSC
 
             // Outside Points Coordinates
             CrScPointsOut = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_out, 180, 360, INoPointsOut);
+            //CrScPointsOut = Geom2D.GetArcPointCoord_CW_deg(m_fr_out, 180, 360, INoPointsOut);
 
             // Inside Points
             CrScPointsIn = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_in, 180, 360, INoPointsIn);
+            //CrScPointsIn = Geom2D.GetArcPointCoord_CW_deg(m_fr_in, 180, 360, INoPointsIn);
         }
 
 		protected override void loadCrScIndices()

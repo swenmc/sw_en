@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -89,6 +91,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float [ITotNoPoints,2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord_Z_CS();
 
@@ -133,6 +136,33 @@ namespace CRSC
             CrScPointsOut[7, 0] = CrScPointsOut[0, 0];      // y
             CrScPointsOut[7, 1] = CrScPointsOut[6, 1];      // z
         }
+        //void CalcCrSc_Coord_Z_CS()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(-m_fb + m_ft_w / 2f, m_fh / 2f));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(m_ft_w / 2f, CrScPointsOut[0].Y));
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, CrScPointsOut[0].Y - m_fh + m_ft_f));
+
+        //    // Point No. 4            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[2].Y));
+
+        //    // Point No. 5            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[3].X, CrScPointsOut[3].Y - m_ft_f));
+
+        //    // Point No. 6            
+        //    CrScPointsOut.Add(new Point(-m_ft_w / 2f, CrScPointsOut[4].Y));
+
+        //    // Point No. 7            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[5].X, -CrScPointsOut[2].Y));
+
+        //    // Point No. 8            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[6].Y));
+        //}
 
         // Welded asymmetric Z section
 
@@ -242,6 +272,35 @@ namespace CRSC
             CrScPointsOut[7, 0] = CrScPointsOut[0, 0];        // y
             CrScPointsOut[7, 1] = CrScPointsOut[6, 1];        // z
         }
+        //void CalcCrSc_Coord_Z_AS()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(-m_fb_fu - m_fy_c, m_fh - m_fz_c));
+
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X + m_fb_fu, CrScPointsOut[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, CrScPointsOut[1].Y - m_fh + m_ft_fb));
+
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X + m_fb_fb - m_ft_w, CrScPointsOut[2].Y));
+
+        //    // Point No. 5
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, -m_fz_c));
+
+        //    // Point No. 6
+            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[4].X - m_fb_fb, CrScPointsOut[4].Y));
+
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[5].X, CrScPointsOut[5].Y + m_fh - m_ft_fu));
+
+        //    // Point No. 8
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[6].Y));
+        //}
 
         // Welded centrally symmetric Z section with overhangs
 
@@ -280,7 +339,7 @@ namespace CRSC
 
 
 
-		protected override void loadCrScIndices()
+        protected override void loadCrScIndices()
         {
             // const int secNum = 8;  // Number of points in section (2D)
             TriangleIndices = new Int32Collection(36 + 8*6);

@@ -1,4 +1,7 @@
-﻿namespace CRSC
+﻿using System.Collections.Generic;
+using System.Windows;
+
+namespace CRSC
 {
     public class CCrSc_2_00 : CCrSc_0_05
     {
@@ -19,8 +22,9 @@
 
           // Create Array - allocate memory
           CrScPointsOut = new float[ITotNoPoints, 2];
-          // Fill Array Data
-          CalcCrSc_Coord();
+          //CrScPointsOut = new List<Point>(ITotNoPoints);
+            // Fill Array Data
+            CalcCrSc_Coord();
 
           // Particular indices Rozpracovane pre vykreslovanie cela prutu inou farbou
           loadCrScIndicesFrontSide();

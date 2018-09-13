@@ -1,6 +1,8 @@
 ﻿using MATH;
 using System;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -90,8 +92,9 @@ namespace CRSC
 
 		    // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
-		    // Fill Array Data
-		    CalcCrSc_Coord_I_DS_0();
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            // Fill Array Data
+            CalcCrSc_Coord_I_DS_0();
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();

@@ -634,9 +634,9 @@ namespace BaseClasses
         // Mirror plate about x
         public void MirrorPlateAboutX()
         {
-            Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsOut2D);
+            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref PointsOut2D);
             Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
-            Geom2D.MirrorAboutX_ChangeYCoordinates(ref HolesCentersPoints2D);
+            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref HolesCentersPoints2D);
             Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrConnectorControlPoints3D);
 
             // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
@@ -644,7 +644,7 @@ namespace BaseClasses
             // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
             if (DrillingRoutePoints2D != null)
             {
-                Geom2D.MirrorAboutX_ChangeYCoordinates(ref DrillingRoutePoints2D);
+                Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref DrillingRoutePoints2D);
                 DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
@@ -652,9 +652,9 @@ namespace BaseClasses
         // Mirror plate about y
         public void MirrorPlateAboutY()
         {
-            Geom2D.MirrorAboutY_ChangeXCoordinates(ref PointsOut2D);
+            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref PointsOut2D);
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
-            Geom2D.MirrorAboutY_ChangeXCoordinates(ref HolesCentersPoints2D);
+            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref HolesCentersPoints2D);
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrConnectorControlPoints3D);
 
             // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
@@ -662,7 +662,7 @@ namespace BaseClasses
             // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
             if (DrillingRoutePoints2D != null)
             {
-                Geom2D.MirrorAboutY_ChangeXCoordinates(ref DrillingRoutePoints2D);
+                Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref DrillingRoutePoints2D);
                 DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }

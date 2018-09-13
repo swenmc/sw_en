@@ -1,4 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 
 namespace CRSC
 {
@@ -23,6 +25,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -70,6 +73,28 @@ namespace CRSC
             CrScPointsOut[9, 0] = 0;
             CrScPointsOut[9, 1] = yb + 0.5f * xc;
         }
+        //public new void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Outside Points Coordinates
+        //    double xb = 0.18f * b;
+        //    double xa = 0.15f * b;
+        //    double xc = 0.03f; // 30 mm ???
+        //    double ya = 0.5f * h;
+        //    double yb = 0.7f * h;
+            
+        //    CrScPointsOut.Add(new Point(0, h));
+        //    CrScPointsOut.Add(new Point(b - xa, h));
+        //    CrScPointsOut.Add(new Point(b - xb, yb));            
+        //    CrScPointsOut.Add(new Point(b, ya));            
+        //    CrScPointsOut.Add(new Point(b, 0));            
+        //    CrScPointsOut.Add(new Point(0, 0));
+        //    CrScPointsOut.Add(new Point(0, ya));
+        //    CrScPointsOut.Add(new Point(xc, ya + 0.5f * xc));
+        //    CrScPointsOut.Add(new Point(xc, yb));
+        //    CrScPointsOut.Add(new Point(0, yb + 0.5f * xc));
+        //}
 
         protected override void loadCrScIndicesFrontSide()
         {

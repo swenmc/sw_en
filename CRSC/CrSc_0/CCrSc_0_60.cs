@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -78,6 +80,7 @@ namespace CRSC
  
             // Create Array - allocate memory
             CrScPointsOut = new float [ITotNoPoints,2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -138,8 +141,48 @@ namespace CRSC
             CrScPointsOut[11,0] = CrScPointsOut[0,0];     // y
             CrScPointsOut[11,1] = CrScPointsOut[2,1];     // z
         }
+        //void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
-		protected override void loadCrScIndices()
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(-m_ft / 2f, m_fh / 2f));
+
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[].X, CrScPointsOut[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, m_ft / 2f));
+
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(m_fb / 2f, CrScPointsOut[2].Y));
+
+        //    // Point No. 5
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, -CrScPointsOut[3].Y));
+
+        //    // Point No. 6
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X, -CrScPointsOut[2].Y));
+
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, -CrScPointsOut[1].Y));
+
+        //    // Point No. 8
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, -CrScPointsOut[0].Y));
+
+        //    // Point No. 9
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, -CrScPointsOut[2].Y));
+
+        //    // Point No. 10
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, CrScPointsOut[4].Y));
+
+        //    // Point No. 11
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[3].X, CrScPointsOut[3].Y));
+
+        //    // Point No. 12            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[2].Y));
+        //}
+
+        protected override void loadCrScIndices()
         {
             // const int secNum = 12;  // Number of points in section (2D)
             TriangleIndices = new Int32Collection(60 + 12*6);

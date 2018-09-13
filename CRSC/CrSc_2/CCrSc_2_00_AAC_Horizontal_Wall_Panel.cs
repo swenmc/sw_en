@@ -1,4 +1,7 @@
-﻿namespace CRSC
+﻿using System.Collections.Generic;
+using System.Windows;
+
+namespace CRSC
 {
     public class CCrSc_2_00_AAC_Horizontal_Wall_Panel : CCrSc_2_00_AAC_Roof_Panel
     {
@@ -18,7 +21,7 @@
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
-
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 

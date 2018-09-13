@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -110,6 +112,9 @@ namespace CRSC
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
 
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -124,9 +129,11 @@ namespace CRSC
 
             // Outside Points Coordinates
             CrScPointsOut = Geom2D.GetHexagonPointCoordArray(m_fa_out);
+            //CrScPointsOut = Geom2D.GetHexagonPointCoord(m_fa_out);
 
             // Inside Points
             CrScPointsIn = Geom2D.GetHexagonPointCoordArray(m_fa_in);
+            //CrScPointsIn = Geom2D.GetHexagonPointCoord(m_fa_in);
         }
 
         protected override void loadCrScIndices()

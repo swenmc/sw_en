@@ -152,6 +152,46 @@ namespace CRSC
             CrScPointsOut[11,0] = CrScPointsOut[0,0];    // y
             CrScPointsOut[11,1] = CrScPointsOut[2,1];     // z
         }
+        //void CalcCrSc_Coord_I_DS()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(-m_fb / 2f, m_fh / 2f));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft_f));
+
+        //    // Point No. 4            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X - (m_fb - m_ft_w) / 2f, CrScPointsOut[2].Y));
+
+        //    // Point No. 5            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, -CrScPointsOut[3].Y));
+
+        //    // Point No. 6            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, -CrScPointsOut[3].Y));
+
+        //    // Point No. 7            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, -CrScPointsOut[0].Y));
+
+        //    // Point No. 8            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, -CrScPointsOut[0].Y));
+
+        //    // Point No. 9            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, -CrScPointsOut[3].Y));
+
+        //    // Point No. 10            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, -CrScPointsOut[3].Y));
+
+        //    // Point No. 11            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, CrScPointsOut[2].Y));
+
+        //    // Point No. 12            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[2].Y));
+        //}
 
         // Welded monosymmetric I section
 
@@ -209,6 +249,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord_I_MS();
 
@@ -270,6 +311,46 @@ namespace CRSC
             CrScPointsOut[11, 1] = CrScPointsOut[2, 1];     // z
         }
 
+        //void CalcCrSc_Coord_I_MS()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1            
+        //    CrScPointsOut.Add(new Point(-m_fb_fu / 2f, m_fh - m_fz_c));
+
+        //    // Point No. 2            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y));
+
+        //    // Point No. 3            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft_fu));
+
+        //    // Point No. 4            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X - (m_fb_fu - m_ft_w) / 2f, CrScPointsOut[2].Y));
+            
+        //    // Point No. 5            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, -m_fz_c + m_ft_fb));
+
+        //    // Point No. 6            
+        //    CrScPointsOut.Add(new Point(m_fb_fb / 2f, CrScPointsOut[4].Y));
+
+        //    // Point No. 7            
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[5].X, -m_fz_c));
+
+        //    // Point No. 8            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[6].X, CrScPointsOut[6].Y));
+
+        //    // Point No. 9            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[5].X, CrScPointsOut[5].Y));
+
+        //    // Point No. 10            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, CrScPointsOut[4].Y));
+
+        //    // Point No. 11            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[3].X, CrScPointsOut[3].Y));
+
+        //    // Point No. 12            
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[2].X, CrScPointsOut[2].Y));
+        //}
 
         //----------------------------------------------------------------------------
         // Cross-section properties

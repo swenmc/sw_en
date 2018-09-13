@@ -1,4 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 
 namespace CRSC
 {
@@ -82,6 +84,7 @@ namespace CRSC
 
             // Create Array - allocate memory
             CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 

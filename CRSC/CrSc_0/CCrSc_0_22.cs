@@ -1,5 +1,7 @@
 ﻿using MATH;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace CRSC
 {
@@ -82,6 +84,8 @@ namespace CRSC
             // Create Array - allocate memory
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -108,6 +112,9 @@ namespace CRSC
             CrScPointsOut = new float[INoPointsOut, 2];
             CrScPointsIn = new float[INoPointsIn, 2];
 
+            //CrScPointsOut = new List<Point>(INoPointsOut);
+            //CrScPointsIn = new List<Point>(INoPointsIn);
+
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -122,9 +129,11 @@ namespace CRSC
 
             // Outside Points Coordinates
             CrScPointsOut = Geom2D.GetCirclePointCoordArray_CW(m_fr_out, INoPointsOut);
+            //CrScPointsOut = Geom2D.GetCirclePointCoord_CW(m_fr_out, INoPointsOut);
 
             // Inside Points
             CrScPointsIn = Geom2D.GetCirclePointCoordArray_CW(m_fr_in, INoPointsIn);
+            //CrScPointsIn = Geom2D.GetCirclePointCoord_CW(m_fr_in, INoPointsIn);
         }
 
                 
