@@ -26,6 +26,21 @@ namespace BaseClasses
             }
         }
 
+        private float m_fRadius;
+
+        public float FRadius
+        {
+            get
+            {
+                return m_fRadius;
+            }
+
+            set
+            {
+                m_fRadius = value;
+            }
+        }
+
         private float m_fCrscRafterDepth;
 
         public float FCrscRafterDepth
@@ -143,6 +158,7 @@ namespace BaseClasses
         public CScrewArrangementCircleApexOrKnee(
             int iHolesInCirclesNumber_temp,
             CScrew referenceScrew_temp,
+            float fRadius_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
             float fStiffenerSize_temp,
@@ -151,11 +167,12 @@ namespace BaseClasses
         {
             IHolesInCirclesNumber = iHolesInCirclesNumber_temp;
             referenceScrew = referenceScrew_temp;
-            m_fCrscRafterDepth = fCrscRafterDepth_temp;
-            m_fCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            m_fStiffenerSize = fStiffenerSize_temp;
-            m_bUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
-            m_iAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
+            FRadius = fRadius_temp;
+            FCrscRafterDepth = fCrscRafterDepth_temp;
+            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            FStiffenerSize = fStiffenerSize_temp;
+            BUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
+            IAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
 
             IHolesNumber = IHolesInCirclesNumber + IAdditionalConnectorNumber;
             HolesCentersPoints2D = new float[IHolesNumber, 2];
@@ -168,7 +185,6 @@ namespace BaseClasses
         public void Get_ScrewGroup_Circle(
             float fx_c,
             float fy_c,
-            float fRadius,
             float fAngle_seq_rotation_init_point_deg,
             float fRotation_rad,
             bool bUseAdditionalCornerScrews,
@@ -183,8 +199,8 @@ namespace BaseClasses
             float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
 
             // Circle sequence
-            fSequenceTop = Geom2D.GetArcPointCoordArray_CCW_deg(fRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
-            fSequenceBottom = Geom2D.GetArcPointCoordArray_CCW_deg(fRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            fSequenceTop = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            fSequenceBottom = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
 
             // Add addtional point the sequences
             if (bUseAdditionalCornerScrews)
@@ -193,8 +209,8 @@ namespace BaseClasses
                 float fDistance_y = 0.03f; // TODO - konstanta podla rozmerov prierezu
                 float fDistance_x = fDistance_y; // Square arrangement
 
-                float[,] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * fRadius - fDistance_x, -fRadius, fRadius - fDistance_y, 0, 2, 2, fDistance_x, fDistance_y);
-                float[,] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * fRadius - fDistance_x, -fRadius, fRadius - fDistance_y, 180, 2, 2, fDistance_x, fDistance_y);
+                float[,] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - fDistance_x, -FRadius, FRadius - fDistance_y, 0, 2, 2, fDistance_x, fDistance_y);
+                float[,] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - fDistance_x, -FRadius, FRadius - fDistance_y, 180, 2, 2, fDistance_x, fDistance_y);
 
                 // Add additional connectors into the array
                 // Store original array
@@ -315,14 +331,14 @@ namespace BaseClasses
                 float[,] fSequenceLeftBottom;
                 float[] fSequenceLeftTopRadii;
                 float[] fSequenceLeftBottomRadii;
-                Get_ScrewGroup_Circle(fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, fSlope_rad, bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
+                Get_ScrewGroup_Circle(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
 
                 // Right side
                 float[,] fSequenceRightTop;
                 float[,] fSequenceRightBottom;
                 float[] fSequenceRightTopRadii;
                 float[] fSequenceRightBottomRadii;
-                Get_ScrewGroup_Circle(fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, -fSlope_rad, bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
+                Get_ScrewGroup_Circle(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
 
                 // Fill array of holes centers
                 for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
@@ -384,14 +400,14 @@ namespace BaseClasses
             float[,] fSequenceLeftBottom;
             float[] fSequenceLeftTopRadii;
             float[] fSequenceLeftBottomRadii;
-            Get_ScrewGroup_Circle(fx_c1, fy_c1, fRadius, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, BUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
+            Get_ScrewGroup_Circle(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, BUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
 
             // Right side
             float[,] fSequenceRightTop;
             float[,] fSequenceRightBottom;
             float[] fSequenceRightTopRadii;
             float[] fSequenceRightBottomRadii;
-            Get_ScrewGroup_Circle(fx_c2, fy_c2, fRadius, fAngle_seq_rotation_init_point_deg, fSlope_rad, BUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
+            Get_ScrewGroup_Circle(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, BUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
 
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle

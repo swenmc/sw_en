@@ -98,7 +98,7 @@ namespace BaseClasses
             int iConnectorNumber = 80; // Plates LH LI, LK
 
             CScrew referenceScrew = new CScrew("TEK", "12");
-            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber);
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.2f, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber);
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees
