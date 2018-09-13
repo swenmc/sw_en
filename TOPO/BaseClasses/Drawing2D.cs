@@ -106,35 +106,6 @@ namespace BaseClasses
         public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
             bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawHoleCentreSymbols, bool bDrawDrillingRoute)
         {
-            // TODO - pokusy :)))
-            float fDiameter = 0;
-
-            if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-                fDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
-
-            CScrewArrangementCircleApexOrKnee sa;
-            Type t = plate.GetType();
-            if (t == typeof(CConCom_Plate_JA) ||
-                t == typeof(CConCom_Plate_JB) ||
-                t == typeof(CConCom_Plate_KA) ||
-                t == typeof(CConCom_Plate_KB) ||
-                t == typeof(CConCom_Plate_KC) ||
-                t == typeof(CConCom_Plate_KD) ||
-                t == typeof(CConCom_Plate_KE)
-                )
-            {
-                // TODO - tu robim hlupost, ak je to null tak to sem nevojde, problem je ze  v tych vyssie uvedenych triedach som to zadefinoval takto
-                // public new CScrewArrangementCircleApexOrKnee screwArrangement;
-                // takze mam objekt s rovnakym menom ale ineho typu v predkovi aj v potomkovi
-                // mrzi ma ze neviem programovat :(
-
-                if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-                {
-                    sa = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
-                    fDiameter = sa.referenceScrew.Diameter_thread;
-                }
-            }
-
             float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
             // Fill arrays of points
@@ -182,14 +153,15 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
-            /*
-            if(plate.screwArrangement != null && plate.screwArrangement.referenceScrew != null)
-                fDiameter = plate.screwArrangement.referenceScrew.Diameter_thread;
-            */
+            float fDiameter = 0;
+
+            if(plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
+                fDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
             if (plate.GetType() == typeof(CConCom_Plate_BB_BG)) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
             {
                 // TODO - Ondrej - asi by sa to dalo osetrit nejako krajsie
+                // TODO - prepracovat na Anchor Arrangement
 
                 // Ak je plech typu B - zakladova patka, vykreslit priemer z anchor
                 CConCom_Plate_BB_BG temp_plate = plate as CConCom_Plate_BB_BG;
