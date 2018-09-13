@@ -199,6 +199,90 @@ namespace CRSC
             }
         }
 
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(0.001, 0.5f * h - fz_1stif1_out));
+
+
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X + 0.5f * fy_1stif1, 0.5f * h - fz_1stif1_out, 0.5f * h));
+
+        //    // Point No. 3
+        //    CrScPointsOut.Add(new Point(0.5f * b - fr_1_out, 0.5f * h));
+
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(0.5f * b, CrScPointsOut[2].Y - fr_1_out));
+
+        //    // Point No. 5
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, CrScPointsOut[3].Y - (0.5f * h - fr_1_out - 2f * fz_2stif1 - fz_2stif2 - 0.5f * fz_23stif)));
+
+        //    // Point No. 6
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[4].X - fy_2stif1_out, CrScPointsOut[4].Y - fz_2stif1));
+
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[5].X, CrScPointsOut[5].Y - fz_2stif2));
+
+        //    // Point No. 8
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[4].X, CrScPointsOut[6].Y - fz_2stif1));
+
+        //    // Internal
+
+        //    // Point No. 1
+        //    CrScPointsIn.Add(new Point(0.001, 0.5f * h - fz_1stif1_out - m_ft_f));
+
+        //    // Point No. 2
+        //    CrScPointsIn.Add(new Point(CrScPointsIn[0].X + 0.5f * fy_1stif1, 0.5f * h - m_ft_f));
+
+        //    // Point No. 3
+        //    CrScPointsIn.Add(new Point(0.5f * b - fr_1_out, 0.5f * h - m_ft_f));
+
+        //    // Point No. 4
+        //    CrScPointsIn.Add(new Point(0.5f * b - m_ft_w, CrScPointsOut[3].Y));
+
+        //    // Point No. 5
+
+        //    CrScPointsIn.Add(new Point(CrScPointsIn[3].X, CrScPointsIn[3].Y - (0.5f * h - fr_1_out - 2f * fz_2stif1 - fz_2stif2 - 0.5f * fz_23stif)));
+        //    // Point No. 6
+        //    CrScPointsIn.Add(new Point(CrScPointsIn[4].X - fy_2stif1_out, CrScPointsIn[4].Y - fz_2stif1));
+
+        //    // Point No. 7
+        //    CrScPointsIn.Add(new Point(CrScPointsIn[5].X, CrScPointsIn[5].Y - fz_2stif2));
+
+        //    // Point No. 8
+        //    CrScPointsIn.Add(new Point(CrScPointsIn[4].X, CrScPointsIn[6].Y - fz_2stif1));
+
+        //    // Mirror about y-y
+        //    for (int i = 0; i < INoPointsOut / 4; i++)
+        //    {
+        //        CrScPointsOut[INoPointsOut / 2 - i - 1, 0] = CrScPointsOut[i, 0];                  // Outside
+        //        CrScPointsOut[INoPointsOut / 2 - i - 1, 1] = -CrScPointsOut[i, 1];                 // Outside
+
+        //        CrScPointsIn[INoPointsIn / 2 - i - 1, 0] = CrScPointsIn[i, 0];                     // Inside
+        //        CrScPointsIn[INoPointsIn / 2 - i - 1, 1] = -CrScPointsIn[i, 1];                    // Inside
+
+        //        //???
+        //        CrScPointsOut.Add(new Point(CrScPointsOut[i].X, -CrScPointsOut[i].Y));
+        //        CrScPointsIn.Add(new Point(CrScPointsIn[i].X, -CrScPointsIn[i].Y));
+        //    }
+
+        //    // Mirror about z-z
+        //    for (int i = 0; i < INoPointsOut / 2; i++)
+        //    {
+        //        CrScPointsOut[INoPointsOut - i - 1, 0] = -CrScPointsOut[i, 0];                     // Outside
+        //        CrScPointsOut[INoPointsOut - i - 1, 1] = CrScPointsOut[i, 1];                      // Outside
+
+        //        CrScPointsIn[INoPointsIn - i - 1, 0] = -CrScPointsIn[i, 0];                        // Inside
+        //        CrScPointsIn[INoPointsIn - i - 1, 1] = CrScPointsIn[i, 1];                         // Inside
+                
+        //        //???
+        //        CrScPointsOut.Add(new Point(-CrScPointsOut[i].X, CrScPointsOut[i].Y));
+        //        CrScPointsIn.Add(new Point(-CrScPointsIn[i].X, CrScPointsIn[i].Y));
+        //    }
+        //}
+
         public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
         {
             // Temporary - odstranit po implementacii vypoctu
@@ -222,6 +306,31 @@ namespace CRSC
                 CrScPointsIn[i, 1] += (float)D_z_gc;
             }
         }
+        //public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
+        //{
+        //    // Temporary - odstranit po implementacii vypoctu
+        //    D_y_gc = 0; // Temporary - TODO
+        //    D_z_gc = 0;
+
+        //    y_min = -b / 2;
+        //    y_max = b / 2;
+        //    z_min = -h / 2;
+        //    z_max = h / 2;
+
+        //    for (int i = 0; i < INoPointsOut; i++)
+        //    {
+        //        Point p = CrScPointsOut[i];
+        //        p.X += D_y_gc;
+        //        p.Y += D_z_gc;
+        //    }
+
+        //    for (int i = 0; i < INoPointsIn; i++)
+        //    {
+        //        Point p = CrScPointsIn[i];
+        //        p.X += D_y_gc;
+        //        p.Y += D_z_gc;                
+        //    }
+        //}
 
         public void FillCrScPropertiesByTableData()
         {

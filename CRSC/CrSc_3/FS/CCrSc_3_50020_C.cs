@@ -191,6 +191,105 @@ namespace CRSC
             }
         }
 
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(b - m_fc_lip1 - fr_1_out, h / 2f - m_fc_lip2 - fr_1_out - fr_1_in));
+
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X + m_fc_lip1, CrScPointsOut[0].Y));
+
+        //    // Point No. 3
+        //    CrScPointsOut.Add(new Point(b - m_ft_f, h / 2f - fr_1_out - m_fc_lip2));
+
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X, CrScPointsOut[2].Y + m_fc_lip2));
+
+        //    // Point No. 5
+        //    CrScPointsOut.Add(new Point(b - fr_1_out, h / 2f - m_ft_f));
+
+        //    // Point No. 6
+        //    CrScPointsOut.Add(new Point(fr_1_out, CrScPointsOut[4].Y));
+
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(m_ft_w, CrScPointsOut[5].Y - fr_1_out));
+
+        //    // Point No. 8
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[6].X, fz_stif / 2f));
+
+        //    // Point No. 9
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[7].X + fy_stif, 0));
+
+
+        //    //List si vyzaduje generovanie bodov zaradom!!!
+
+        //    // Point No. 34
+        //    CrScPointsOut[33, 0] = (float)b - m_fc_lip1 - fr_1_out;                // y
+        //    CrScPointsOut[33, 1] = (float)h / 2f - m_fc_lip2 - 2 * fr_1_out;       // z
+        //    CrScPointsOut.Add(new Point(b - m_fc_lip1 - fr_1_out, h / 2f - m_fc_lip2 - 2 * fr_1_out));
+
+        //    // Point No. 33
+        //    CrScPointsOut[32, 0] = CrScPointsOut[33, 0] + m_fc_lip1;               // y
+        //    CrScPointsOut[32, 1] = CrScPointsOut[33, 1];                           // z
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[33].X + m_fc_lip1, CrScPointsOut[33].Y));
+
+        //    // Point No. 32
+        //    CrScPointsOut[31, 0] = (float)b;                                       // y
+        //    CrScPointsOut[31, 1] = CrScPointsOut[2, 1];                            // z
+        //    CrScPointsOut.Add(new Point(b, CrScPointsOut[2].Y));
+
+        //    // Point No. 31
+        //    CrScPointsOut[30, 0] = CrScPointsOut[31, 0];                           // y
+        //    CrScPointsOut[30, 1] = CrScPointsOut[3, 1];                            // z
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[31].X, CrScPointsOut[3].Y));
+
+        //    // Point No. 30
+        //    CrScPointsOut[29, 0] = CrScPointsOut[4, 0];                            // y
+        //    CrScPointsOut[29, 1] = (float)h / 2f;                                  // z
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[4].X, h / 2.0));
+
+        //    // Point No. 29
+        //    CrScPointsOut[28, 0] = CrScPointsOut[5, 0];                            // y
+        //    CrScPointsOut[28, 1] = CrScPointsOut[29, 1];                           // z
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[5].X, CrScPointsOut[29].Y));
+
+        //    // Point No. 28
+        //    CrScPointsOut[27, 0] = 0;                                              // y
+        //    CrScPointsOut[27, 1] = CrScPointsOut[6, 1];                            // z
+        //    CrScPointsOut.Add(new Point(0, CrScPointsOut[6].Y));
+
+        //    // Point No. 27
+        //    CrScPointsOut[26, 0] = CrScPointsOut[27, 0];                           // y
+        //    CrScPointsOut[26, 1] = fz_stif / 2f;                                   // z
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[27].X, fz_stif / 2f));
+
+        //    // Point No. 26
+        //    CrScPointsOut[25, 0] = fy_stif;                                        // y
+        //    CrScPointsOut[25, 1] = 0f;                                             // z
+        //    CrScPointsOut.Add(new Point(fy_stif, 0));
+
+        //    // Mirror about y-y
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        CrScPointsOut[ITotNoPoints / 2 - i - 1, 0] = CrScPointsOut[i, 0];
+        //        CrScPointsOut[ITotNoPoints / 2 - i - 1, 1] = -CrScPointsOut[i, 1];
+
+        //        //???
+        //        CrScPointsOut.Add(new Point(CrScPointsOut[i].X, -CrScPointsOut[i].Y));
+        //    }
+
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        CrScPointsOut[ITotNoPoints / 2 + i, 0] = CrScPointsOut[ITotNoPoints - i - 1, 0];
+        //        CrScPointsOut[ITotNoPoints / 2 + i, 1] = -CrScPointsOut[ITotNoPoints - i - 1, 1];
+
+        //        //???
+        //        CrScPointsOut.Add(new Point(CrScPointsOut[ITotNoPoints - i - 1].X, -CrScPointsOut[ITotNoPoints - i - 1].Y));
+        //    }
+        //}
+
         public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
         {
             // Temporary - odstranit po implementacii vypoctu
@@ -210,6 +309,26 @@ namespace CRSC
                 CrScPointsOut[i, 1] += (float)D_z_gc;
             }
         }
+        //public void ChangeCoordToCentroid() // Prepocita suradnice outline podla suradnic taziska
+        //{
+        //    // Temporary - odstranit po implementacii vypoctu
+
+        //    D_y_gc = -0.02923; // Temporary - TODO
+        //    y_min = D_y_gc;
+        //    y_max = b + y_min;
+
+        //    z_min = -h / 2;
+        //    z_max = h / 2;
+
+        //    D_z_gc = 0;
+
+        //    for (int i = 0; i < ITotNoPoints; i++)
+        //    {
+        //        Point p = CrScPointsOut[i];
+        //        p.X += D_y_gc;
+        //        p.Y += D_z_gc;
+        //    }
+        //}
 
         public void FillCrScPropertiesByTableData()
         {
