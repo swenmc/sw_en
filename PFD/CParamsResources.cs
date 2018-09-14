@@ -17,8 +17,15 @@ namespace PFD
         public const string PlateHeight = "Height";
         public const string PlateHeight1 = "Height 1";
         public const string PlateHeight2 = "Height 2";
-        
 
+
+        public struct PlateThicknessS
+        {
+            public const string Name = "Thickness";
+            public const string DBName = "PlateThick";
+            public const string Unit = "[mm]";
+            public const string Symbol = "t";
+        }
 
     }
 }
