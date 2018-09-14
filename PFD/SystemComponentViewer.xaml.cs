@@ -1070,8 +1070,8 @@ namespace PFD
                 {
                     CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width") plateTemp.Fb_X = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThickness)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth)) plateTemp.Fb_X = float.Parse(changedText);
                     if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
                     if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
 
@@ -1083,7 +1083,7 @@ namespace PFD
                 {
                     CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThickness)) plateTemp.Ft = float.Parse(changedText);
                     if (item.Name == "Width") plateTemp.Fb_X = float.Parse(changedText);
                     if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
                     if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
