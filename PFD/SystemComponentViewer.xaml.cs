@@ -432,7 +432,7 @@ namespace PFD
 
                 CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
                 int iConnectorNumber = 80;
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, 0.03f, 0.03f);
 
 
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
@@ -618,10 +618,11 @@ namespace PFD
 
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
+                float fAdditionalConnectorDistance = 0.03f;
 
                 CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
                 int iConnectorNumber = 80;
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
                 switch ((ESerieTypePlate) vm.ComponentSerieIndex)
                 {
@@ -1056,6 +1057,8 @@ namespace PFD
                     if (item.Name == "Middle stiffener size") arrangementTemp.FStiffenerSize = float.Parse(changedText);
                     if (item.Name == "Use additional corner screws") arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
                     if (item.Name == "Number of additional screws") arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                    if (item.Name == "Distance of additional screws x") arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(changedText);
+                    if (item.Name == "Distance of additional screws y") arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(changedText);
 
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;

@@ -146,6 +146,36 @@ namespace BaseClasses
             }
         }
 
+        private float m_fAdditionalScrewsDistance_x;
+
+        public float FAdditionalScrewsDistance_x
+        {
+            get
+            {
+                return m_fAdditionalScrewsDistance_x;
+            }
+
+            set
+            {
+                m_fAdditionalScrewsDistance_x = value;
+            }
+        }
+
+        private float m_fAdditionalScrewsDistance_y;
+
+        public float FAdditionalScrewsDistance_y
+        {
+            get
+            {
+                return m_fAdditionalScrewsDistance_y;
+            }
+
+            set
+            {
+                m_fAdditionalScrewsDistance_y = value;
+            }
+        }
+
         private int iNumberOfScrewsInCircleGroup; // Pocet skrutiek v kruhu
         private int iNumberOfScrewsInOneHalfCircleSequence; // pocet skrutiek v "polkruhu"
         private int iNumberOfAdditionalConnectorsInOneGroup;
@@ -168,7 +198,9 @@ namespace BaseClasses
             float fCrscWebStraightDepth_temp,
             float fStiffenerSize_temp,
             bool bUseAdditionalCornerScrews_temp,
-            int iAdditionalConnectorNumber_temp) : base(iHolesInCirclesNumber_temp + iAdditionalConnectorNumber_temp, referenceScrew_temp)
+            int iAdditionalConnectorNumber_temp,
+            float fAdditionalScrewsDistance_x_temp,
+            float fAdditionalScrewsDistance_y_temp) : base(iHolesInCirclesNumber_temp + (bUseAdditionalCornerScrews_temp ? iAdditionalConnectorNumber_temp : 0), referenceScrew_temp)
         {
             IHolesInCirclesNumber = iHolesInCirclesNumber_temp;
             referenceScrew = referenceScrew_temp;
@@ -178,6 +210,8 @@ namespace BaseClasses
             FStiffenerSize = fStiffenerSize_temp;
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
             IAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
+            FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x_temp;
+            FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y_temp;
 
             UpdateArrangmentData();
         }
@@ -219,12 +253,13 @@ namespace BaseClasses
             // Add addtional point the sequences
             if (BUseAdditionalCornerScrews)
             {
-                // Additional corner connectors in Sequence
-                float fDistance_y = 0.03f; // TODO - konstanta podla rozmerov prierezu
-                float fDistance_x = fDistance_y; // Square arrangement
+                // For square
+                int iNumberOfScrewsInColumn_xDirection = (int)Math.Sqrt(iNumberOfAdditionalConnectorsInOneSequence / 2);
+                int iNumberOfScrewsInRow_yDirection = (int)Math.Sqrt(iNumberOfAdditionalConnectorsInOneSequence / 2);
 
-                float[,] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - fDistance_x, -FRadius, FRadius - fDistance_y, 0, 2, 2, fDistance_x, fDistance_y);
-                float[,] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - fDistance_x, -FRadius, FRadius - fDistance_y, 180, 2, 2, fDistance_x, fDistance_y);
+                // Additional corner connectors in Sequence
+                float[,] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - (iNumberOfScrewsInColumn_xDirection - 1) * FAdditionalScrewsDistance_x, -FRadius, FRadius - (iNumberOfScrewsInRow_yDirection - 1) * FAdditionalScrewsDistance_y, 0, iNumberOfScrewsInColumn_xDirection, iNumberOfScrewsInRow_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+                float[,] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - (iNumberOfScrewsInColumn_xDirection - 1) * FAdditionalScrewsDistance_x, -FRadius, FRadius - (iNumberOfScrewsInRow_yDirection - 1) * FAdditionalScrewsDistance_y, 180, iNumberOfScrewsInColumn_xDirection, iNumberOfScrewsInRow_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
 
                 // Add additional connectors into the array
                 // Store original array
@@ -370,8 +405,7 @@ namespace BaseClasses
             float fhY_1,
             float fSlope_rad,
             ref float[,] fHolesCentersPoints2D,
-            ref float[] fHolesCenterRadii
-    )
+            ref float[] fHolesCenterRadii)
         {
             // Bottom Circle (Main Column)
             float fDistanceOfCenterFromLeftEdge = flZ + fbX_1 / 2f;
