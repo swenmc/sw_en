@@ -9,23 +9,90 @@ namespace PFD
 {
     public static class CParamsResources
     {
-        public const string PlateName = "Name";
-        public const string PlateThickness = "Thickness";
-        public const string PlateWidth = "Width";
-        public const string PlateWidth1 = "Width 1";
-        public const string PlateWidth2 = "Width 2";
-        public const string PlateHeight = "Height";
-        public const string PlateHeight1 = "Height 1";
-        public const string PlateHeight2 = "Height 2";
+        // UNITS
+        public const string sUnit_PlateLength = "[mm]";
 
+        // PLATES
+        public struct PlateNameS
+        {
+            public const string Name = "Name";
+            public const string DBName = " ";
+            public const string Unit = " ";
+            public const string Symbol = " ";
+        }
 
         public struct PlateThicknessS
         {
             public const string Name = "Thickness";
             public const string DBName = "PlateThick";
-            public const string Unit = "[mm]";
+            public const string Unit = sUnit_PlateLength;
             public const string Symbol = "t";
         }
 
+        public struct PlateWidthS
+        {
+            public const string Name = "Width";
+            public const string DBName = "PlateWidth";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "b";
+        }
+
+        public struct PlateWidth1S
+        {
+            public const string Name = "Width 1";
+            public const string DBName = "PlateWidth1";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "b1";
+        }
+
+        public struct PlateWidth2S
+        {
+            public const string Name = "Width 2";
+            public const string DBName = "PlateWidth2";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "b2";
+        }
+
+        public struct PlateHeightS
+        {
+            public const string Name = "Height";
+            public const string DBName = "PlateHeight";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "h";
+        }
+
+        public struct PlateHeight1S
+        {
+            public const string Name = "Height 1";
+            public const string DBName = "PlateHeight1";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "h1";
+        }
+
+        public struct PlateHeight2S
+        {
+            public const string Name = "Height 2";
+            public const string DBName = "PlateHeight2";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "h2";
+        }
+
+        public struct PlateLipS
+        {
+            public const string Name = "Lip";
+            public const string DBName = "PlateHLip";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "c lip";
+        }
+
+        // MEMBER PROPERTIES
+
+        public struct RafterWidthS
+        {
+            public const string Name = "Rafter width";
+            public const string DBName = "RafterWidth";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "b rafter";
+        }
     }
 }

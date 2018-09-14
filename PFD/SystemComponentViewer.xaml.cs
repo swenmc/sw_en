@@ -1071,9 +1071,9 @@ namespace PFD
                     CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
 
                     if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name.Equals(CParamsResources.PlateWidth)) plateTemp.Fb_X = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
@@ -1083,11 +1083,11 @@ namespace PFD
                 {
                     CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
 
-                    if (item.Name.Equals(CParamsResources.PlateThickness)) plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width") plateTemp.Fb_X = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidthS.Name)) plateTemp.Fb_X = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
@@ -1097,11 +1097,11 @@ namespace PFD
                 {
                     CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
@@ -1111,12 +1111,12 @@ namespace PFD
                 {
                     CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
@@ -1126,12 +1126,12 @@ namespace PFD
                 {
                     CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
@@ -1141,12 +1141,12 @@ namespace PFD
                 {
                     CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
@@ -1156,13 +1156,14 @@ namespace PFD
                 {
                     CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
 
-                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
-                    if (item.Name == "Rafter width") plateTemp.Fb_XR = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateWidth2S.Name)) plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText);
+
+                    if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_XR = float.Parse(changedText);
 
                     // Update plate data
                     plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
