@@ -597,63 +597,76 @@ namespace PFD
             geometry.Add(new CComponentParamsView("Name", "", plate.Name, ""));
             geometry.Add(new CComponentParamsView("Thickness", "t", (Math.Round(plate.Ft * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
 
-            if (plate is CConCom_Plate_KA ||
-                plate is CConCom_Plate_KB ||
-                plate is CConCom_Plate_KC ||
-                plate is CConCom_Plate_KD ||
-                plate is CConCom_Plate_KE
-                )
+            if (plate is CConCom_Plate_JA)
             {
-                if(plate is CConCom_Plate_KA)
-                { 
-                    CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
+                CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
 
-                    geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                }
-                else if (plate is CConCom_Plate_KB)
-                {
-                    CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+                geometry.Add(new CComponentParamsView("Width", "b", (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else if (plate is CConCom_Plate_JB)
+            {
+                CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
 
-                    geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                }
-                else if(plate is CConCom_Plate_KC)
-                {
-                    CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+                geometry.Add(new CComponentParamsView("Width", "b", (Math.Round(plateTemp.Fb_X * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
 
-                    geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                }
-                else if (plate is CConCom_Plate_KD)
-                {
-                    CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+                geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
 
-                    geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                }
-                else if (plate is CConCom_Plate_KE)
-                {
-                    CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
 
-                    geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                    geometry.Add(new CComponentParamsView("Rafter width", "b R", (Math.Round(plateTemp.Fb_XR * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                }
+                geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+
+                geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else if (plate is CConCom_Plate_KE)
+            {
+                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+
+                geometry.Add(new CComponentParamsView("Width 1", "b 1", (Math.Round(plateTemp.Fb_X1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Width 2", "b 2", (Math.Round(plateTemp.Fb_X2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 1", "h 1", (Math.Round(plateTemp.Fh_Y1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Height 2", "h 2", (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Lip", "l", (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Rafter width", "b R", (Math.Round(plateTemp.Fb_XR * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else
+            {
+                // Plate is not implemented
             }
 
             if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
@@ -668,6 +681,10 @@ namespace PFD
                 geometry.Add(new CComponentParamsView("Middle stiffener size", "dw.m", (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Use additional corner screws", " ", arrangementTemp.BUseAdditionalCornerScrews.ToString(), "[-]"));
                 geometry.Add(new CComponentParamsView("Number of additional screws", "No", arrangementTemp.IAdditionalConnectorNumber.ToString(nfi), "[-]"));
+            }
+            else
+            {
+                // Screw arrangement is not implemented
             }
 
             ComponentGeometry = geometry;
@@ -863,7 +880,7 @@ namespace PFD
             float fl; // out of plane - Z coord
             float fl2; // out of plane - Z coord
             float ft;
-            float fPitch_rad = 11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
+            //float fPitch_rad = 11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
             int iNumberofHoles;
             bool bUseAdditinalConnectors = true;
             int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
@@ -1003,7 +1020,7 @@ namespace PFD
             iNumberofHoles = (int)databaseComponents.arr_Serie_J_Dimension[1, 5];
 
             screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate);
-            platesInSerie8.Add(new CConCom_Plate_JB(databaseComponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, screwArrangementCircle, true));
+            platesInSerie8.Add(new CConCom_Plate_JB(databaseComponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true));
 
             plates.Add("Serie J", platesInSerie8);
 

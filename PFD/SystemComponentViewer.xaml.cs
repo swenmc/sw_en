@@ -478,7 +478,7 @@ namespace PFD
                             if (vm.ComponentIndex == 0) // JA
                                 plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, screwArrangementCircle, true);
                             else
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad,0,0,0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -665,7 +665,7 @@ namespace PFD
                             if (vm.ComponentIndex == 0) // JA
                                 plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             else
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, fPitch_rad, 0, 0, 0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -1042,12 +1042,6 @@ namespace PFD
             {
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // TODO No. 63
-                //keby som vedel tak detekujem ktora property sa zmenila takto:
-                //if (item.Name == "Width") plate.Width = int.Parse(changedText);
-                //a predpokladam,ze by to vykreslilo samo => iba zeby nie :-)
-
-                // TODO - potrebujeme zistit typ konkretneho objektu a pre tento konkretny typ urcit, ktore jeho properties zobrazit a mozu sa editovat
-                // Jedna sa zhruba o toto, neviem kde treba definovat property name kedze je to rozne pre roznych potomkov CPlate
 
                 // Set current screw arrangement parameters
                 if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
@@ -1066,91 +1060,117 @@ namespace PFD
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
                 }
+                else
+                {
+                    // Screw arrangement is not implemented
+                }
 
                 // Set current basic geometry of plate
-                if (plate is CConCom_Plate_KA ||
-                    plate is CConCom_Plate_KB ||
-                    plate is CConCom_Plate_KC ||
-                    plate is CConCom_Plate_KD ||
-                    plate is CConCom_Plate_KE
-                    )
+                if (plate is CConCom_Plate_JA)
                 {
-                    if (plate is CConCom_Plate_KA)
-                    {
-                        CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
+                    CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
 
-                        if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                        if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                        if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                        if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                        if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width") plateTemp.Fb_X = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
 
-                        // Update plate data
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                        plate = plateTemp;
-                    }
-                    else if (plate is CConCom_Plate_KB)
-                    {
-                        CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_JB)
+                {
+                    CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
 
-                        if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                        if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                        if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                        if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                        if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                        if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width") plateTemp.Fb_X = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
 
-                        // Update plate data
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                        plate = plateTemp;
-                    }
-                    else if (plate is CConCom_Plate_KC)
-                    {
-                        CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_KA)
+                {
+                    CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
 
-                        if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                        if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                        if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                        if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                        if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                        if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
 
-                        // Update plate data
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                        plate = plateTemp;
-                    }
-                    else if (plate is CConCom_Plate_KD)
-                    {
-                        CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_KB)
+                {
+                    CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
 
-                        if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                        if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                        if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                        if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                        if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                        if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
 
-                        // Update plate data
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                        plate = plateTemp;
-                    }
-                    else if (plate is CConCom_Plate_KE)
-                    {
-                        CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_KC)
+                {
+                    CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
 
-                        if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
-                        if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
-                        if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
-                        if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
-                        if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
-                        if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
-                        if (item.Name == "Rafter width") plateTemp.Fb_XR = float.Parse(changedText);
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
 
-                        // Update plate data
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                        plate = plateTemp;
-                    }
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_KD)
+                {
+                    CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
 
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else if (plate is CConCom_Plate_KE)
+                {
+                    CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+
+                    if (item.Name == "Thickness") plateTemp.Ft = float.Parse(changedText);
+                    if (item.Name == "Width 1") plateTemp.Fb_X1 = float.Parse(changedText);
+                    if (item.Name == "Width 2") plateTemp.Fb_X2 = float.Parse(changedText);
+                    if (item.Name == "Height 1") plateTemp.Fh_Y1 = float.Parse(changedText);
+                    if (item.Name == "Height 2") plateTemp.Fh_Y2 = float.Parse(changedText);
+                    if (item.Name == "Lip") plateTemp.Fl_Z = float.Parse(changedText);
+                    if (item.Name == "Rafter width") plateTemp.Fb_XR = float.Parse(changedText);
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
+                else
+                {
+                    // Plate is not implemented
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

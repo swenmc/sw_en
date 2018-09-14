@@ -110,19 +110,24 @@ namespace BaseClasses
             m_fhY2 = fh_2_temp;
             m_flZ = fL_temp;
             Ft = ft_platethickness;
-            
-
-            m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / (0.5 * fb_temp));
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
+            UpdatePlateData(screwArrangement);
+        }
+
+        public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
+        {
+            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber + (screwArrangement.BUseAdditionalCornerScrews ? screwArrangement.IAdditionalConnectorNumber : 0), 2];
+
+            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
             HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber + (screwArrangement.BUseAdditionalCornerScrews ? screwArrangement.IAdditionalConnectorNumber : 0)];
+            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data
             Calc_Coord2D();
@@ -157,84 +162,9 @@ namespace BaseClasses
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY1); // Elastic section modulus
 
             ScrewArrangement = screwArrangement;
-        }
 
-        public CConCom_Plate_JB(string sName_temp,
-            CPoint controlpoint,
-            float fb_temp,
-            float fh_1_temp,
-            float fh_2_temp,
-            float fL_temp,
-            float ft_platethickness,
-            float fSLope_rad_temp,
-            float fRotation_x_deg,
-            float fRotation_y_deg,
-            float fRotation_z_deg,
-            CScrewArrangementCircleApexOrKnee screwArrangement,
-            bool bIsDisplayed)
-        {
-            Name = sName_temp;
-            eConnComponentType = EConnectionComponentType.ePlate;
-            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
-
-            BIsDisplayed = bIsDisplayed;
-
-            ITotNoPointsin2D = 12;
-            ITotNoPointsin3D = 26;
-
-            m_pControlPoint = controlpoint;
-            m_fbX = fb_temp;
-            m_fhY1 = fh_1_temp;
-            m_fhY2 = fh_2_temp;
-            m_flZ = fL_temp;
-            Ft = ft_platethickness;
-            
-
-            m_fSlope_rad = fSLope_rad_temp;
-            m_fRotationX_deg = fRotation_x_deg;
-            m_fRotationY_deg = fRotation_y_deg;
-            m_fRotationZ_deg = fRotation_z_deg;
-
-            // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber + (screwArrangement.BUseAdditionalCornerScrews ? screwArrangement.IAdditionalConnectorNumber : 0), 2];
-            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber + (screwArrangement.BUseAdditionalCornerScrews ? screwArrangement.IAdditionalConnectorNumber : 0)];
-
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX,
-                m_flZ,
-                m_fhY1,
-                m_fSlope_rad,
-                ref HolesCentersPoints2D);
-
-            screwArrangement.Calc_HolesControlPointsCoord3D(m_flZ, Ft);
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            screwArrangement.GenerateConnectors();
-
-            fWidth_bx = m_fbX;
-            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
-            fArea = PolygonArea();
-            fCuttingRouteDistance = GetCuttingRouteDistance();
-            fSurface = GetSurfaceIgnoringHoles();
-            fVolume = GetVolumeIgnoringHoles();
-            fWeight = GetWeightIgnoringHoles();
-
-            fA_g = Get_A_channel(m_flZ, Ft, Ft, m_fhY1); 
-            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
-            fA_v_zv = Get_A_rect(Ft, m_fhY1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
-            fI_yu = Get_I_yu_channel(m_flZ, Ft, Ft, m_fhY1);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY1); // Elastic section modulus
-
-            ScrewArrangement = screwArrangement;
+            DrillingRoutePoints = null;
+            DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------
