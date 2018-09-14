@@ -106,14 +106,10 @@ namespace BaseClasses
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2D(m_fbX,
+            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX,
                 0,
                 m_fhY1,
                 m_fSlope_rad,
-                screwArrangement.BUseAdditionalCornerScrews,
-                screwArrangement.IAdditionalConnectorNumber,
-                screwArrangement.FCrscWebStraightDepth,
-                screwArrangement.FStiffenerSize,
                 ref HolesCentersPoints2D);
 
             screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
@@ -181,14 +177,10 @@ namespace BaseClasses
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2D(m_fbX,
+            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX,
                 0,
                 m_fhY1,
                 m_fSlope_rad,
-                screwArrangement.BUseAdditionalCornerScrews,
-                screwArrangement.IAdditionalConnectorNumber,
-                screwArrangement.FCrscWebStraightDepth,
-                screwArrangement.FStiffenerSize,
                 ref HolesCentersPoints2D);
 
             screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);

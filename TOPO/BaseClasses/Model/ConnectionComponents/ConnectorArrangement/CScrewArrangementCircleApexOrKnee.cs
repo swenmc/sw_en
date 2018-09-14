@@ -11,7 +11,7 @@ namespace BaseClasses
 {
     public class CScrewArrangementCircleApexOrKnee : CScrewArrangement
     {
-        private int m_iHolesInCirclesNumber;
+        private int m_iHolesInCirclesNumber; // Pocet skrutiek v dvoch kruhoch
 
         public int IHolesInCirclesNumber
         {
@@ -86,7 +86,7 @@ namespace BaseClasses
             }
         }
 
-        private bool m_bUseAdditionalCornerScrews;
+        private bool m_bUseAdditionalCornerScrews; // Pocet skrutiek v rohoch - celkovo 4 skrutky * 4 rohy * 2 kruhy
 
         public bool BUseAdditionalCornerScrews
         {
@@ -116,7 +116,7 @@ namespace BaseClasses
             }
         }
 
-        private int m_iNumberOfCircleGroupsInJoint = 2; // Pocet kruhov na jednom plechu
+        private int m_iNumberOfCircleGroupsInJoint = 2; // Pocet kruhov na jednom plechu (skupina - group)
 
         public int INumberOfCircleGroupsInJoint
         {
@@ -131,7 +131,7 @@ namespace BaseClasses
             }
         }
 
-        int m_iNumberOfCircleSequencesInGroup = 2; // pocet polkruhov v "kruhu" na jednom plechu
+        int m_iNumberOfCircleSequencesInGroup = 2; // pocet polkruhov v "kruhu" na jednom plechu (sekvencia - sequence)
 
         public int INumberOfCircleSequencesInGroup
         {
@@ -146,8 +146,13 @@ namespace BaseClasses
             }
         }
 
-        int iNumberOfScrewsInCircleGroup; // Pocet skrutiek v kruhu
-        int iNumberOfScrewsInOneSequence; // pocet skrutiek v "polkruhu"
+        private int iNumberOfScrewsInCircleGroup; // Pocet skrutiek v kruhu
+        private int iNumberOfScrewsInOneHalfCircleSequence; // pocet skrutiek v "polkruhu"
+        private int iNumberOfAdditionalConnectorsInOneGroup;
+        private int iNumberOfAdditionalConnectorsInOneSequence;
+
+        private int iNumberOfScrewsInOneGroupIncludingAdditional;
+        private int iNumberOfScrewsInOneSequenceIncludingAdditional;
 
         float m_fSlope_rad;
         public float[] HolesCenterRadii;
@@ -174,21 +179,30 @@ namespace BaseClasses
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
             IAdditionalConnectorNumber = iAdditionalConnectorNumber_temp;
 
-            IHolesNumber = IHolesInCirclesNumber + IAdditionalConnectorNumber;
+            UpdateArrangmentData();
+        }
+
+        public void UpdateArrangmentData()
+        {
+            IHolesNumber = IHolesInCirclesNumber + (BUseAdditionalCornerScrews ? IAdditionalConnectorNumber : 0);
             HolesCentersPoints2D = new float[IHolesNumber, 2];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
 
             iNumberOfScrewsInCircleGroup = IHolesInCirclesNumber / INumberOfCircleGroupsInJoint;
-            iNumberOfScrewsInOneSequence = iNumberOfScrewsInCircleGroup / INumberOfCircleSequencesInGroup;
+            iNumberOfScrewsInOneHalfCircleSequence = iNumberOfScrewsInCircleGroup / INumberOfCircleSequencesInGroup;
+
+            iNumberOfAdditionalConnectorsInOneGroup = BUseAdditionalCornerScrews ? IAdditionalConnectorNumber / INumberOfCircleGroupsInJoint : 0;
+            iNumberOfAdditionalConnectorsInOneSequence = BUseAdditionalCornerScrews ? iNumberOfAdditionalConnectorsInOneGroup / INumberOfCircleGroupsInJoint : 0;
+
+            iNumberOfScrewsInOneGroupIncludingAdditional = iNumberOfScrewsInCircleGroup + iNumberOfAdditionalConnectorsInOneGroup;
+            iNumberOfScrewsInOneSequenceIncludingAdditional = iNumberOfScrewsInOneHalfCircleSequence + iNumberOfAdditionalConnectorsInOneSequence;
         }
 
-        public void Get_ScrewGroup_Circle(
+        public void Get_ScrewGroup_IncludingAdditionalScrews(
             float fx_c,
             float fy_c,
             float fAngle_seq_rotation_init_point_deg,
             float fRotation_rad,
-            bool bUseAdditionalCornerScrews,
-            int iAdditionalConnectorNumberinGroup,
             out float[,] fSequenceTop,
             out float[,] fSequenceBottom,
             out float[] fSequenceTopRadii,
@@ -198,12 +212,12 @@ namespace BaseClasses
 
             float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
 
-            // Circle sequence
-            fSequenceTop = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
-            fSequenceBottom = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneSequence, false);
+            // Half circle sequence
+            fSequenceTop = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence, false);
+            fSequenceBottom = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence, false);
 
             // Add addtional point the sequences
-            if (bUseAdditionalCornerScrews)
+            if (BUseAdditionalCornerScrews)
             {
                 // Additional corner connectors in Sequence
                 float fDistance_y = 0.03f; // TODO - konstanta podla rozmerov prierezu
@@ -296,70 +310,52 @@ namespace BaseClasses
             return array;
         }
 
-        public void Calc_HolesCentersCoord2D(
+        public void Calc_HolesCentersCoord2DApexPlate(
             float fbX,
             float flZ,
             float fhY_1,
             float fSlope_rad,
-            bool bUseAdditionalCornerScrews,
-            int iAdditionalConnectorNumber,
-            float fCrscWebStraightDepth,
-            float fStiffenerSize,
-            ref float [,] fHolesCentersPoints2D)
+            ref float[,] fHolesCentersPoints2D)
         {
-            // Circle
-            bool bIsCircleJointArrangement = true;
+            float fDistanceOfCenterFromLeftEdge = fbX / 4f;
+            float fx_c1 = fDistanceOfCenterFromLeftEdge;
+            float fy_c1 = flZ + ((fhY_1 / 2f) / (float)Math.Cos(fSlope_rad)) + (fDistanceOfCenterFromLeftEdge * (float)Math.Tan(fSlope_rad));
 
-            if (bIsCircleJointArrangement)
+            float fx_c2 = fbX - fDistanceOfCenterFromLeftEdge; // Symmetrical
+            float fy_c2 = fy_c1;
+
+            float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
+            float fRadius = 0.5f * FCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
+            float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * FStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
+
+            // Left side
+            float[,] fSequenceLeftTop;
+            float[,] fSequenceLeftBottom;
+            float[] fSequenceLeftTopRadii;
+            float[] fSequenceLeftBottomRadii;
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
+
+            // Right side
+            float[,] fSequenceRightTop;
+            float[,] fSequenceRightBottom;
+            float[] fSequenceRightTopRadii;
+            float[] fSequenceRightBottomRadii;
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
+
+            // Fill array of holes centers
+            for (int i = 0; i < iNumberOfScrewsInOneSequenceIncludingAdditional; i++) // Add all 4 sequences in one cycle
             {
-                float fDistanceOfCenterFromLeftEdge = fbX / 4f;
-                float fx_c1 = fDistanceOfCenterFromLeftEdge;
-                float fy_c1 = flZ + ((fhY_1 / 2f) / (float)Math.Cos(fSlope_rad)) + (fDistanceOfCenterFromLeftEdge * (float)Math.Tan(fSlope_rad));
+                HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
+                HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
 
-                float fx_c2 = fbX - fDistanceOfCenterFromLeftEdge; // Symmetrical
-                float fy_c2 = fy_c1;
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceLeftBottom[i, 0];
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceLeftBottom[i, 1];
 
-                int iNumberOfAddionalConnectorsInOneGroup = bUseAdditionalCornerScrews ? (iAdditionalConnectorNumber / INumberOfCircleGroupsInJoint) : 0;
-                int iNumberOfScrewsInOneSequence = IHolesNumber / (INumberOfCircleGroupsInJoint * INumberOfCircleSequencesInGroup);
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightTop[i, 0];
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightTop[i, 1];
 
-                float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
-                float fRadius = 0.5f * fCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
-                float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * fStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
-
-                // Left side
-                float[,] fSequenceLeftTop;
-                float[,] fSequenceLeftBottom;
-                float[] fSequenceLeftTopRadii;
-                float[] fSequenceLeftBottomRadii;
-                Get_ScrewGroup_Circle(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
-
-                // Right side
-                float[,] fSequenceRightTop;
-                float[,] fSequenceRightBottom;
-                float[] fSequenceRightTopRadii;
-                float[] fSequenceRightBottomRadii;
-                Get_ScrewGroup_Circle(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, bUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
-
-                // Fill array of holes centers
-                for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
-                {
-                    HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
-                    HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
-
-                    HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 0] = fSequenceLeftBottom[i, 0];
-                    HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 1] = fSequenceLeftBottom[i, 1];
-
-                    HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightTop[i, 0];
-                    HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightTop[i, 1];
-
-                    HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
-                    HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
-                }
-            }
-            else
-            {
-                // TODO - zapracovat rozne usporiadanie skrutiek
-
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightBottom[i, 0];
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightBottom[i, 1];
             }
 
             // TODO - tempoerary nastavit pre pole suradnic ktore je sucastou plate
@@ -367,7 +363,7 @@ namespace BaseClasses
             fHolesCentersPoints2D = HolesCentersPoints2D;
         }
 
-        public void Calc_HolesCentersCoord2D(
+        public void Calc_HolesCentersCoord2DKneePlate(
             float fbX_1,
             float fbX_2,
             float flZ,
@@ -388,9 +384,6 @@ namespace BaseClasses
             float fx_c2 = fxInTopMemberAxis * (float)Math.Cos(fSlope_rad) + fDistanceOfCenterFromLeftEdge;
             float fy_c2 = fxInTopMemberAxis * (float)Math.Sin(fSlope_rad) + ((fhY_1 + fx_c1 * (float)Math.Atan(fSlope_rad)) - (0.5f * FCrscRafterDepth / (float)Math.Cos(fSlope_rad))); // TODO Dopracovat podla sklonu rafteru
 
-            int iNumberOfAddionalConnectorsInOneGroup = IAdditionalConnectorNumber / INumberOfCircleGroupsInJoint;
-            int iNumberOfScrewsInOneSequence = IHolesNumber / (INumberOfCircleGroupsInJoint * INumberOfCircleSequencesInGroup);
-
             float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
             float fRadius = 0.5f * FCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
             float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * FStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
@@ -400,37 +393,37 @@ namespace BaseClasses
             float[,] fSequenceLeftBottom;
             float[] fSequenceLeftTopRadii;
             float[] fSequenceLeftBottomRadii;
-            Get_ScrewGroup_Circle(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, BUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
 
             // Right side
             float[,] fSequenceRightTop;
             float[,] fSequenceRightBottom;
             float[] fSequenceRightTopRadii;
             float[] fSequenceRightBottomRadii;
-            Get_ScrewGroup_Circle(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, BUseAdditionalCornerScrews, iNumberOfAddionalConnectorsInOneGroup, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
 
             // Fill array of holes centers
-            for (int i = 0; i < iNumberOfScrewsInOneSequence; i++) // Add all 4 sequences in one cycle
+            for (int i = 0; i < iNumberOfScrewsInOneSequenceIncludingAdditional; i++) // Add all 4 sequences in one cycle
             {
                 HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
                 HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
 
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 0] = fSequenceLeftBottom[i, 0];
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequence + i, 1] = fSequenceLeftBottom[i, 1];
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceLeftBottom[i, 0];
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceLeftBottom[i, 1];
 
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightTop[i, 0];
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightTop[i, 1];
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightTop[i, 0];
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightTop[i, 1];
 
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 0] = fSequenceRightBottom[i, 0];
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequence + i, 1] = fSequenceRightBottom[i, 1];
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightBottom[i, 0];
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightBottom[i, 1];
 
                 fHolesCenterRadii[i] = fSequenceLeftTopRadii[i];
-                fHolesCenterRadii[iNumberOfScrewsInOneSequence + i] = fSequenceLeftBottomRadii[i];
-                fHolesCenterRadii[2 * iNumberOfScrewsInOneSequence + i] = fSequenceRightTopRadii[i];
-                fHolesCenterRadii[3 * iNumberOfScrewsInOneSequence + i] = fSequenceRightBottomRadii[i];
+                fHolesCenterRadii[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = fSequenceLeftBottomRadii[i];
+                fHolesCenterRadii[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = fSequenceRightTopRadii[i];
+                fHolesCenterRadii[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = fSequenceRightBottomRadii[i];
             }
 
-            // TODO - tempoerary nastavit pre pole suradnic ktore je sucastou plate
+            // TODO - temporary nastavit pre pole suradnic ktore je sucastou plate
             // teoereticky moze mat usporadanie iny pocet ako je pocet na plate, napriklad ak sa usporiadanie odzrkadli alebo skopiruje vramci plochy (napr. Typ KE)
             fHolesCentersPoints2D = HolesCentersPoints2D;
         }

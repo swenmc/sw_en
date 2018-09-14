@@ -141,12 +141,19 @@ namespace BaseClasses
             m_fbX2 = fb_2_temp;
             m_fhY2 = fh_2_temp;
             m_flZ = fl_temp;
-            Ft = ft_platethickness;            
-
-            m_fSlope_rad = (float)Math.Atan((fh_2_temp - fh_1_temp) / fb_2_temp);
+            Ft = ft_platethickness;
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
+
+            UpdatePlateData(screwArrangement);
+        }
+
+        public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
+        {
+            screwArrangement.IHolesNumber = screwArrangement.IHolesInCirclesNumber + (screwArrangement.BUseAdditionalCornerScrews ? screwArrangement.IAdditionalConnectorNumber : 0);
+
+            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
@@ -180,77 +187,9 @@ namespace BaseClasses
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
 
             ScrewArrangement = screwArrangement;
-        }
 
-        public CConCom_Plate_KE(GraphObj.CPoint controlpoint,
-            float fb_R_temp,
-            float fb_1_temp,
-            float fh_1_temp,
-            float fb_2_temp,
-            float fh_2_temp,
-            float fl_temp,
-            float ft_platethickness,
-            float fSLope_rad_temp,
-            float fRotation_x_deg,
-            float fRotation_y_deg,
-            float fRotation_z_deg,
-            CScrewArrangementCircleApexOrKnee screwArrangement,
-            bool bIsDisplayed)
-        {
-            eConnComponentType = EConnectionComponentType.ePlate;
-            BIsDisplayed = bIsDisplayed;
-
-            ITotNoPointsin2D = 12;
-            INoPoints2Dfor3D = 16;
-            ITotNoPointsin3D = 30;
-
-            m_pControlPoint = controlpoint;
-            m_fbXR = fb_R_temp;
-            m_fbX1 = fb_1_temp;
-            m_fhY1 = fh_1_temp;
-            m_fbX2 = fb_2_temp;
-            m_fhY2 = fh_2_temp;
-            m_flZ = fl_temp;
-            Ft = ft_platethickness;
-            
-
-            m_fSlope_rad = fSLope_rad_temp;
-            m_fRotationX_deg = fRotation_x_deg;
-            m_fRotationY_deg = fRotation_y_deg;
-            m_fRotationZ_deg = fRotation_z_deg;
-
-            // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
-
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
-
-            // Fill list of indices for drawing of surface
-            loadIndices();
-
-            fWidth_bx = Math.Max(m_fbX1, m_fbX2);
-            fHeight_hy = Math.Max(m_fhY1, m_fhY2);
-            fArea = PolygonArea();
-            fCuttingRouteDistance = GetCuttingRouteDistance();
-            fSurface = GetSurfaceIgnoringHoles();
-            fVolume = GetVolumeIgnoringHoles();
-            fWeight = GetWeightIgnoringHoles();
-
-            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
-            fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * Ft, Ft, m_fbX1);
-            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
-            fA_v_zv = Get_A_rect(2 * Ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
-            fI_yu = Get_I_yu_channel(m_flZ, Ft, Ft, m_fbX1);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
-            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
-            fI_yu = Get_I_yu_channel(Math.Min(2f * m_flZ, m_fbXR), Ft, Ft, m_fbX1);  // Moment of inertia of plate
-            fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
-
-            ScrewArrangement = screwArrangement;
+            DrillingRoutePoints = null;
+            DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------

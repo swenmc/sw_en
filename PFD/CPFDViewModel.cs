@@ -51,8 +51,8 @@ namespace PFD
         //tieto treba spracovat nejako
         public float fL1;
         public float fh2;
-        public float fRoofPitch_radians;        
-        public float fMaterial_density = 7850f; //  [kg /m^3] (malo by byt zadane v databaze materialov)
+        public float fRoofPitch_radians;
+        public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
 
         public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
         public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
@@ -101,7 +101,7 @@ namespace PFD
 
                 //tieto riadky by som tu najradsej nemal, resp. ich nejako spracoval ako dalsie property
                 fL1 = MLength / (MFrames - 1);
-                fRoofPitch_radians = MRoofPitch_deg * MATH.MathF.fPI / 180f;
+                fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
                 fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
 
                 RoofCladdingIndex = 1;
@@ -131,7 +131,7 @@ namespace PFD
                     // Recalculate roof pitch
                     fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));
                     // Set new value in GUI
-                    MRoofPitch_deg = (fRoofPitch_radians * 180f / MATH.MathF.fPI);
+                    MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
                 }
 
                 NotifyPropertyChanged("GableWidth");
@@ -206,7 +206,7 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
-                    fRoofPitch_radians = MRoofPitch_deg * MATH.MathF.fPI / 180f;
+                    fRoofPitch_radians = MRoofPitch_deg * MathF.fPI / 180f;
                     // Recalculate h2
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
@@ -343,7 +343,7 @@ namespace PFD
             set
             {
                 float frontFrameRakeAngle_limit_rad = (float)(Math.Atan(fL1 / MGableWidth) - (Math.PI / 180)); // minus 1 radian
-                float frontFrameRakeAngle_limit_deg = frontFrameRakeAngle_limit_rad * 180f / MATH.MathF.fPI;
+                float frontFrameRakeAngle_limit_deg = frontFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -frontFrameRakeAngle_limit_deg || value > frontFrameRakeAngle_limit_deg)
                 {
@@ -367,7 +367,7 @@ namespace PFD
             set
             {
                 float backFrameRakeAngle_limit_rad = (float)(Math.Atan(fL1 / MGableWidth) - (Math.PI / 180)); // minus 1 radian
-                float backFrameRakeAngle_limit_deg = backFrameRakeAngle_limit_rad * 180f / MATH.MathF.fPI;
+                float backFrameRakeAngle_limit_deg = backFrameRakeAngle_limit_rad * 180f / MathF.fPI;
 
                 if (value < -backFrameRakeAngle_limit_deg || value > backFrameRakeAngle_limit_deg)
                 {

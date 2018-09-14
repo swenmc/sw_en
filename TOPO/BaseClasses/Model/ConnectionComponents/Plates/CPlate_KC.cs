@@ -150,7 +150,7 @@ namespace BaseClasses
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2D(
+            screwArrangement.Calc_HolesCentersCoord2DKneePlate(
                 m_fbX1,
                 m_fbX2,
                 m_flZ,
