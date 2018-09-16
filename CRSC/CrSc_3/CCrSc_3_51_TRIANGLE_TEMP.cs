@@ -125,5 +125,32 @@ namespace CRSC
             CrScPointsIn[2, 0] = -CrScPointsIn[1, 0];  // y
             CrScPointsIn[2, 1] = CrScPointsIn[1, 1];   // z
         }
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
+
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(b / 2.0, -h * (1.0 / 3.0)));
+
+        //    // Point No. 3
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
+
+        //    float fAlphaDeg = 30f;
+
+        //    // Internal
+
+        //    // Point No. 1
+        //    CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
+
+
+        //    // Point No. 2
+        //    CrScPointsIn.Add(new Point(CrScPointsOut[1].X - m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
+        //    // Point No. 3
+        //    CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+        //}
+
     }
 }

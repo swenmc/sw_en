@@ -125,6 +125,47 @@ namespace CRSC
             CrScPointsOut[11, 0] = CrScPointsOut[10, 0];                            // y
             CrScPointsOut[11, 1] = CrScPointsOut[0, 1];                             // z
         }
+
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(-Fb_flange + m_ft_f + m_ft_f / 2.0, h / 2.0 - m_fc_lip));
+
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y + (m_fc_lip - m_ft_w)));
+        //    // Point No. 3
+        //    CrScPointsOut.Add(new Point(-m_ft_f / 2.0, CrScPointsOut[1].Y));
+
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X, -h / 2.0));
+
+        //    // Point No. 5
+        //    CrScPointsOut.Add(new Point(Fb_flange - m_ft_w / 2.0, CrScPointsOut[3].Y));
+
+        //    // Point No. 6
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[4].X, -CrScPointsOut[0].Y));
+
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, -CrScPointsOut[0].Y));
+
+        //    // Point No. 8
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, -CrScPointsOut10].Y));
+
+        //    // Point No. 9
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[2].X, -CrScPointsOut[2].Y));
+
+        //    // Point No. 10
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[8].X, h/2.0));
+
+        //    // Point No. 11
+        //    CrScPointsOut.Add(new Point(-Fb_flange + m_ft_w / 2.0, CrScPointsOut[9].Y));
+
+        //    // Point No. 12
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[10].X, CrScPointsOut[0].Y));
+        //}
+
     }
 }
 

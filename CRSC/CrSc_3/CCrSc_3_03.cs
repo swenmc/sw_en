@@ -133,7 +133,62 @@ namespace CRSC
             CrScPointsOut[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints, 1] = -m_fy_c;              // z
         }
 
-		protected override void loadCrScIndices()
+        //void CalcCrSc_Coord_L_MS()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+        //    float[,] CrScPointsOutArr = new float[ITotNoPoints, 2];
+        //    // Auxialiary nodes
+
+        //    //short iNumberAux = 3;
+
+        //    // Point No. 1
+        //    CrScPointsOutArr[0, 0] = -m_fy_c;                         // y
+        //    CrScPointsOutArr[0, 1] = m_fb - m_fy_c - m_fr_2;           // z
+
+        //    // Point No. 2
+        //    CrScPointsOutArr[1, 0] = -m_fy_c + m_ft;                 // y
+        //    CrScPointsOutArr[1, 1] = -m_fy_c + m_ft;                 // z
+
+        //    // Point No. 3
+        //    CrScPointsOutArr[2, 0] = CrScPointsOutArr[0, 1];              // y
+        //    CrScPointsOutArr[2, 1] = CrScPointsOutArr[0, 0];              // z
+
+        //    // Surface points
+
+        //    int iRadiusAngle = 90; // Radius Angle
+
+        //    // 1st radius - centre "1" (270-360 degrees)
+        //    for (short i = 0; i < m_iNumOfArcPoints; i++)
+        //    {
+        //        CrScPointsOutArr[m_iNumOfAuxPoints + i, 0] = CrScPointsOutArr[0, 0] + Geom2D.GetPositionX_deg(m_fr_2, 270 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+        //        CrScPointsOutArr[m_iNumOfAuxPoints + i, 1] = CrScPointsOutArr[0, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 270 + i * iRadiusAngle / m_iNumOfArcSegment);  // z
+        //    }
+
+        //    // 2nd radius - centre "2" (180-270 degrees)
+        //    for (short i = 0; i < m_iNumOfArcPoints; i++)
+        //    {
+        //        CrScPointsOutArr[m_iNumOfAuxPoints + m_iNumOfArcPoints + i, 0] = CrScPointsOutArr[1, 0] + m_fr_1 + Geom2D.GetPositionX_deg(m_fr_1, 180 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+        //        CrScPointsOutArr[m_iNumOfAuxPoints + m_iNumOfArcPoints + i, 1] = CrScPointsOutArr[1, 1] + m_fr_1 + Geom2D.GetPositionY_CCW_deg(m_fr_1, 180 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+        //    }
+
+        //    // 3rd radius - centre "3" (270-360 degrees)
+        //    for (short i = 0; i < m_iNumOfArcPoints; i++)
+        //    {
+        //        CrScPointsOutArr[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + i, 0] = CrScPointsOutArr[2, 0] + Geom2D.GetPositionX_deg(m_fr_2, 270 + i * iRadiusAngle / m_iNumOfArcSegment);     // y
+        //        CrScPointsOutArr[m_iNumOfAuxPoints + 2 * m_iNumOfArcPoints + i, 1] = CrScPointsOutArr[2, 1] + Geom2D.GetPositionY_CW_deg(m_fr_2, 270 + i * iRadiusAngle / m_iNumOfArcSegment); // z
+        //    }
+
+        //    // Point No.  - Last edge point - bottom left
+        //    CrScPointsOutArr[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints, 0] = -m_fy_c;              // y
+        //    CrScPointsOutArr[m_iNumOfAuxPoints + 3 * m_iNumOfArcPoints, 1] = -m_fy_c;              // z
+
+        //    for (int i = 0; i < CrScPointsOutArr.GetLength(0); i++)
+        //    {
+        //        CrScPointsOut.Add(new Point(CrScPointsOutArr[i, 0], CrScPointsOutArr[i, 1]));
+        //    }
+        //}
+
+        protected override void loadCrScIndices()
 		{
             load_3_03_04_TriangelIndices(m_iNumOfAuxPoints, m_iNumOfArcSegment);
 		}
