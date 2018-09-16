@@ -210,11 +210,130 @@ namespace CRSC
 
         //public void CalcCrSc_Coord()
         //{
+        //    float[,] CrScPointsOutArr = new float[INoPointsOut, 2];
+        //    float[,] CrScPointsInArr = new float[INoPointsIn, 2];
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOutArr[0, 0] = fy_stif2 / 2f;                           // y
+        //    CrScPointsOutArr[0, 1] = (float)h / 2f;                           // z
+
+        //    // Point No. 2
+        //    CrScPointsOutArr[1, 0] = CrScPointsOutArr[0, 0] + fy_stif1;          // y
+        //    CrScPointsOutArr[1, 1] = CrScPointsOutArr[0, 1] - fz_stif1_out;      // z
+
+        //    // Point No. 3
+        //    CrScPointsOutArr[2, 0] = CrScPointsOutArr[1, 0] + fy_stif2;          // y
+        //    CrScPointsOutArr[2, 1] = CrScPointsOutArr[1, 1];                     // z
+
+        //    // Point No. 4
+        //    CrScPointsOutArr[3, 0] = CrScPointsOutArr[2, 0] + fy_stif1;          // y
+        //    CrScPointsOutArr[3, 1] = CrScPointsOutArr[0, 1];                     // z
+
+        //    // Point No. 5
+        //    CrScPointsOutArr[4, 0] = 0.5f * (float)b - fr_1_out;              // y
+        //    CrScPointsOutArr[4, 1] = CrScPointsOutArr[0, 1];                     // z
+
+        //    // Point No. 6
+        //    CrScPointsOutArr[5, 0] = 0.5f * (float)b;                         // y
+        //    CrScPointsOutArr[5, 1] = 0.5f * (float)h - fr_1_out;              // z
+
+        //    // Point No. 7
+        //    CrScPointsOutArr[6, 0] = CrScPointsOutArr[5, 0];                                                                    // y
+        //    CrScPointsOutArr[6, 1] = CrScPointsOutArr[5, 1] - (0.5f * (float)h - fr_1_out - 1.5f * fz_stif2 - 2f * fz_stif1);   // z
+
+        //    // Point No. 8
+        //    CrScPointsOutArr[7, 0] = CrScPointsOutArr[6, 0] - fy_stif1_out;      // y
+        //    CrScPointsOutArr[7, 1] = CrScPointsOutArr[6, 1] - fz_stif1;          // z
+
+        //    // Point No. 9
+        //    CrScPointsOutArr[8, 0] = CrScPointsOutArr[7, 0];                     // y
+        //    CrScPointsOutArr[8, 1] = CrScPointsOutArr[7, 1] - fz_stif2;          // z
+
+        //    // Point No. 10
+        //    CrScPointsOutArr[9, 0] = CrScPointsOutArr[6, 0];                     // y
+        //    CrScPointsOutArr[9, 1] = CrScPointsOutArr[8, 1] - fz_stif1;          // z
+
+        //    // Internal
+
+        //    // Point No. 1
+        //    CrScPointsInArr[0, 0] = fy_stif2 / 2f;                           // y
+        //    CrScPointsInArr[0, 1] = (float)h / 2f - m_ft_f;                  // z
+
+        //    // Point No. 2
+        //    CrScPointsInArr[1, 0] = CrScPointsInArr[0, 0] + fy_stif1;           // y
+        //    CrScPointsInArr[1, 1] = CrScPointsInArr[0, 1] - fz_stif1_out;       // z
+
+        //    // Point No. 3
+        //    CrScPointsInArr[2, 0] = CrScPointsInArr[1, 0] + fy_stif2;           // y
+        //    CrScPointsInArr[2, 1] = CrScPointsInArr[1, 1];                      // z
+
+        //    // Point No. 4
+        //    CrScPointsInArr[3, 0] = CrScPointsInArr[2, 0] + fy_stif1;           // y
+        //    CrScPointsInArr[3, 1] = CrScPointsInArr[0, 1];                      // z
+
+        //    // Point No. 5
+        //    CrScPointsInArr[4, 0] = 0.5f * (float)b - fr_1_out;              // y
+        //    CrScPointsInArr[4, 1] = CrScPointsInArr[0, 1];                      // z
+
+        //    // Point No. 6
+        //    CrScPointsInArr[5, 0] = 0.5f * (float)b - m_ft_w;                // y
+        //    CrScPointsInArr[5, 1] = 0.5f * (float)h - fr_1_out;              // z
+
+        //    // Point No. 7
+        //    CrScPointsInArr[6, 0] = CrScPointsInArr[5, 0];                                                                    // y
+        //    CrScPointsInArr[6, 1] = CrScPointsInArr[5, 1] - (0.5f * (float)h - fr_1_out - 1.5f * fz_stif2 - 2f * fz_stif1);   // z
+
+        //    // Point No. 8
+        //    CrScPointsInArr[7, 0] = CrScPointsInArr[6, 0] - fy_stif1_out;      // y
+        //    CrScPointsInArr[7, 1] = CrScPointsInArr[6, 1] - fz_stif1;          // z
+
+        //    // Point No. 9
+        //    CrScPointsInArr[8, 0] = CrScPointsInArr[7, 0];                     // y
+        //    CrScPointsInArr[8, 1] = CrScPointsInArr[7, 1] - fz_stif2;          // z
+
+        //    // Point No. 10
+        //    CrScPointsInArr[9, 0] = CrScPointsInArr[6, 0];                     // y
+        //    CrScPointsInArr[9, 1] = CrScPointsInArr[8, 1] - fz_stif1;          // z
+
+        //    // Mirror about y-y
+        //    for (int i = 0; i < INoPointsOut / 4; i++)
+        //    {
+        //        CrScPointsOutArr[INoPointsOut / 2 - i - 1, 0] = CrScPointsOutArr[i, 0];                  // Outside
+        //        CrScPointsOutArr[INoPointsOut / 2 - i - 1, 1] = -CrScPointsOutArr[i, 1];                 // Outside
+
+        //        CrScPointsInArr[INoPointsIn / 2 - i - 1, 0] = CrScPointsInArr[i, 0];                     // Inside
+        //        CrScPointsInArr[INoPointsIn / 2 - i - 1, 1] = -CrScPointsInArr[i, 1];                    // Inside
+        //    }
+
+        //    // Mirror about z-z
+        //    for (int i = 0; i < INoPointsOut / 2; i++)
+        //    {
+        //        CrScPointsOutArr[INoPointsOut - i - 1, 0] = -CrScPointsOutArr[i, 0];                     // Outside
+        //        CrScPointsOutArr[INoPointsOut - i - 1, 1] = CrScPointsOutArr[i, 1];                      // Outside
+
+        //        CrScPointsInArr[INoPointsIn - i - 1, 0] = -CrScPointsInArr[i, 0];                        // Inside
+        //        CrScPointsInArr[INoPointsIn - i - 1, 1] = CrScPointsInArr[i, 1];                         // Inside
+        //    }
+
+        //    for (int i = 0; i < CrScPointsOutArr.GetLength(0); i++)
+        //    {
+        //        CrScPointsOut.Add(new Point(CrScPointsOutArr[i, 0], CrScPointsOutArr[i, 1]));
+        //    }
+        //    for (int i = 0; i < CrScPointsInArr.GetLength(0); i++)
+        //    {
+        //        CrScPointsIn.Add(new Point(CrScPointsInArr[i, 0], CrScPointsInArr[i, 1]));
+        //    }
+        //}
+
+
+        //public void CalcCrSc_Coord()
+        //{
         //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
         //    // Point No. 1
         //    CrScPointsOut.Add(new Point(fy_stif2 / 2.0, h / 2.0));
-            
+
         //    // Point No. 2
         //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X + fy_stif1, CrScPointsOut[0].Y - fz_stif1_out));
 

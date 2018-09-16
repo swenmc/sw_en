@@ -162,6 +162,52 @@ namespace CRSC
             CrScPointsOut[19, 1] = CrScPointsOut[2, 1];                            // z
         }
 
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Point No. 1
+        //    CrScPointsOut.Add(new Point(b / 2.0, h / 2.0));
+        //    // Point No. 2
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y));
+        //    // Point No. 3
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, CrScPointsOut[1].Y - Fc_lip));
+        //    // Point No. 4
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X - m_ft_f, CrScPointsOut[2].Y));
+        //    // Point No. 5
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[3].X, CrScPointsOut[1].Y - m_ft_f));
+        //    // Point No. 6
+        //    CrScPointsOut.Add(new Point(m_ft_w / 2.0, CrScPointsOut[4].Y));
+        //    // Point No. 7
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[5].X, -CrScPointsOut[5].Y));
+        //    // Point No. 8
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, -CrScPointsOut[4].Y));
+        //    // Point No. 9
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[3].X, -CrScPointsOut[3].Y));
+        //    // Point No. 10
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X, -CrScPointsOut[2].Y));
+        //    // Point No. 11
+        //    CrScPointsOut.Add(new Point(CrScPointsOut[1].X, -CrScPointsOut[1].Y));
+        //    // Point No. 12
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[10].X, CrScPointsOut[10].Y));
+        //    // Point No. 13
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[9].X, CrScPointsOut[9].Y));
+        //    // Point No. 14
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[8].X, CrScPointsOut[8].Y));
+        //    // Point No. 15
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[7].X, CrScPointsOut[7].Y));
+        //    // Point No. 16
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[6].X, CrScPointsOut[6].Y));
+        //    // Point No. 17
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[5].X, CrScPointsOut[5].Y));
+        //    // Point No. 18
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, CrScPointsOut[4].Y));
+        //    // Point No. 19
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[3].X, CrScPointsOut[3].Y));
+        //    // Point No. 20
+        //    CrScPointsOut.Add(new Point(-CrScPointsOut[2].X, CrScPointsOut[2].Y));
+        //}
+
         protected override void loadCrScIndicesFrontSide()
         {
             TriangleIndicesFrontSide = new Int32Collection(7*6);
