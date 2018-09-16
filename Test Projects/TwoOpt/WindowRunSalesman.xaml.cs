@@ -100,6 +100,11 @@ namespace TwoOpt
                 IterationLabel.Content = "Iteration: " + iter;
                 BestLabel.Content = "Best distance: " + Math.Round(best, 4);
 
+                var mainWindowViewModel = DataContext as MainWindowViewModel;
+
+                if (mainWindowViewModel._model.AlgorithmEnded) WaitingLabel.Content = "Route found. Done!";
+                else WaitingLabel.Content = "Recalculating... Please Wait.";
+
                 if (tourCoords == null) return;
 
                 var size = tourCoords.Count;

@@ -14,6 +14,8 @@ namespace TwoOpt
         private double _width, _height;
         public string Title { get; set; }
 
+        public bool AlgorithmEnded;
+
         public List<Pair> DisplayCoords = new List<Pair>();
         public List<Pair> TourCoords = new List<Pair>();
 
@@ -25,6 +27,8 @@ namespace TwoOpt
 
             _worker.DoWork += UpdateTour;
             _worker.WorkerSupportsCancellation = true;
+
+            AlgorithmEnded = false;
         }
 
         public void CancelJobs()
@@ -39,6 +43,7 @@ namespace TwoOpt
             _tour.CreateRandomTour();
             SetTourCoords();
 
+            AlgorithmEnded = false;
             if (!_worker.IsBusy) _worker.RunWorkerAsync();
         }
 
@@ -92,6 +97,8 @@ namespace TwoOpt
 
                 improve++;
             }
+
+            AlgorithmEnded = true;
         }
 
         //// Do all 2-opt combinations

@@ -22,11 +22,15 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <Grid VerticalAlignment="Center" Width="200" Margin="10">
+            <Grid VerticalAlignment="Center" Width="400" Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 
                 <Label 
                     VerticalContentAlignment="Center"
@@ -37,6 +41,10 @@
                     VerticalContentAlignment="Center"
                     Name="IterationLabel"
                     Grid.Row="1" />
+                <Label 
+                    VerticalContentAlignment="Center"
+                    Name="WaitingLabel"
+                    VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
             </Grid>
         </StackPanel>
 
