@@ -156,31 +156,33 @@ namespace BaseClasses
             fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
             fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
 
-            ScrewRectSequence seq1 = new ScrewRectSequence();
-            seq1.iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ1_temp;
-            seq1.iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ1_temp;
-            seq1.fx_c = fx_c_SQ1_temp;
-            seq1.fy_c = fy_c_SQ1_temp;
-            seq1.fDistanceOfPointsX = fDistanceOfPointsX_SQ1_temp;
-            seq1.fDistanceOfPointsY = fDistanceOfPointsY_SQ1_temp;
-            seq1.fHolesCentersPoints2D = new float[seq1.iNumberOfScrewsInRow_xDirection * seq1.iNumberOfScrewsInColumn_yDirection, 2];
-            RectangularSequences.Add(seq1);
-
-            ScrewRectSequence seq2 = new ScrewRectSequence();
-            seq2.iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ2_temp;
-            seq2.iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ2_temp;
-            seq2.fx_c = fx_c_SQ2_temp;
-            seq2.fy_c = fy_c_SQ2_temp;
-            seq2.fDistanceOfPointsX = fDistanceOfPointsX_SQ2_temp;
-            seq2.fDistanceOfPointsY = fDistanceOfPointsY_SQ2_temp;
-            seq2.fHolesCentersPoints2D = new float[seq2.iNumberOfScrewsInRow_xDirection * seq2.iNumberOfScrewsInColumn_yDirection, 2];
-            RectangularSequences.Add(seq2);
-
             UpdateArrangmentData();
         }
 
         public void UpdateArrangmentData()
         {
+            RectangularSequences.Clear(); // Delete previous data otherwise are added more and more new screws to the list
+
+            ScrewRectSequence seq1 = new ScrewRectSequence();
+            seq1.iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ1;
+            seq1.iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ1;
+            seq1.fx_c = fx_c_SQ1;
+            seq1.fy_c = fy_c_SQ1;
+            seq1.fDistanceOfPointsX = fDistanceOfPointsX_SQ1;
+            seq1.fDistanceOfPointsY = fDistanceOfPointsY_SQ1;
+            seq1.fHolesCentersPoints2D = new float[seq1.iNumberOfScrewsInRow_xDirection * seq1.iNumberOfScrewsInColumn_yDirection, 2];
+            RectangularSequences.Add(seq1);
+
+            ScrewRectSequence seq2 = new ScrewRectSequence();
+            seq2.iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ2;
+            seq2.iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ2;
+            seq2.fx_c = fx_c_SQ2;
+            seq2.fy_c = fy_c_SQ2;
+            seq2.fDistanceOfPointsX = fDistanceOfPointsX_SQ2;
+            seq2.fDistanceOfPointsY = fDistanceOfPointsY_SQ2;
+            seq2.fHolesCentersPoints2D = new float[seq2.iNumberOfScrewsInRow_xDirection * seq2.iNumberOfScrewsInColumn_yDirection, 2];
+            RectangularSequences.Add(seq2);
+
             IHolesNumber = 0;
 
             foreach (ScrewRectSequence seq in RectangularSequences)
