@@ -1050,16 +1050,16 @@ namespace PFD
                 {
                     CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
 
-                    if (item.Name == "Number of screws in circle") arrangementTemp.IHolesInCirclesNumber = int.Parse(changedText);
-                    if (item.Name == "Screw gauge") arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name == "Radius") arrangementTemp.FRadius = float.Parse(changedText);
-                    if (item.Name == "Cross-section depth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
-                    if (item.Name == "Cross-section web straight depth") arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
-                    if (item.Name == "Middle stiffener size") arrangementTemp.FStiffenerSize = float.Parse(changedText);
-                    if (item.Name == "Use additional corner screws") arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                    if (item.Name == "Number of additional screws") arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
-                    if (item.Name == "Distance of additional screws x") arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(changedText);
-                    if (item.Name == "Distance of additional screws y") arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleS.Name)) arrangementTemp.IHolesInCirclesNumber = int.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
+                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleS.Name)) arrangementTemp.FRadius = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsS.Name)) arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(changedText);
 
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
@@ -1068,10 +1068,10 @@ namespace PFD
                 {
                     CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
 
-                    if (item.Name == "Screw gauge") arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name == "Cross-section depth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
-                    if (item.Name == "Cross-section web straight depth") arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
-                    if (item.Name == "Middle stiffener size") arrangementTemp.FStiffenerSize = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
+                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText);
 
                     if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(changedText);
                     if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(changedText);

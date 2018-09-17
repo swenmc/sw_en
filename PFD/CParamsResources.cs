@@ -10,15 +10,23 @@ namespace PFD
     public static class CParamsResources
     {
         // UNITS
+        public const string sUnit_CrscLength = "[mm]";
         public const string sUnit_PlateLength = "[mm]";
+        public const string sUnit_CountIntNumber = "[-]";
+        public const string sUnit_None = "";
 
-        // PLATES
+        // AUXILIARY
+        public const string sSymbol_None = "";
+        public const string sDBName_None = "";
+
+        // PLATE PROPERTIES
+
         public struct PlateNameS
         {
             public const string Name = "Name";
-            public const string DBName = " ";
-            public const string Unit = " ";
-            public const string Symbol = " ";
+            public const string DBName = sDBName_None;
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
         }
 
         public struct PlateThicknessS
@@ -85,7 +93,7 @@ namespace PFD
             public const string Symbol = "c lip";
         }
 
-        // MEMBER PROPERTIES
+        // MEMBER / CROSS-SECTION PROPERTIES
 
         public struct RafterWidthS
         {
@@ -93,6 +101,93 @@ namespace PFD
             public const string DBName = "RafterWidth";
             public const string Unit = sUnit_PlateLength;
             public const string Symbol = "b rafter";
+        }
+
+        public struct CrscDepthS
+        {
+            public const string Name = "Cross-section depth";
+            public const string DBName =  "CrscDepth";
+            public const string Unit = sUnit_CrscLength;
+            public const string Symbol = "h";
+        }
+
+        public struct CrscWebStraightDepthS
+        {
+            public const string Name = "Cross-section web straight depth";
+            public const string DBName = "CrscWebStraightDepth";
+            public const string Unit = sUnit_CrscLength;
+            public const string Symbol = "hw";
+        }
+
+        public struct CrscWebMiddleStiffenerSizeS
+        {
+            public const string Name = "Middle stiffener size";
+            public const string DBName = "CrscWebMiddleStiffenerSize";
+            public const string Unit = sUnit_CrscLength;
+            public const string Symbol = "bs";
+        }
+
+        // SCREW ARRANGEMENT PROPERTIES
+
+        // CIRCLE
+        public struct NumberOfScrewsInCircleS
+        {
+            public const string Name = "Number of screws in circle";
+            public const string DBName = "HolesInCircleNumber";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "No";
+        }
+
+        public struct RadiusOfScrewsInCircleS
+        {
+            public const string Name = "Radius";
+            public const string DBName = "Radius";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "r";
+        }
+
+        public struct UseAdditionalCornerScrewsS
+        {
+            public const string Name = "Use additional corner screws";
+            public const string DBName = "UseAdditionalCornerScrews";
+            public const string Unit = sUnit_None;
+            public const string Symbol = sSymbol_None;
+        }
+
+        public struct NumberOfAdditionalScrewsS
+        {
+            public const string Name = "Number of additional screws";
+            public const string DBName = "NumberOfAdditionalScrews";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "No";
+        }
+
+        public struct DistanceOfAdditionalScrewsInxS
+        {
+            public const string Name = "Distance of additional screws x";
+            public const string DBName = "DistanceOfAdditionalScrewsInx";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "bx";
+        }
+
+        public struct DistanceOfAdditionalScrewsInyS
+        {
+            public const string Name = "Distance of additional screws y";
+            public const string DBName = "DistanceOfAdditionalScrewsIny";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "by";
+        }
+
+        // RECTANGULAR
+
+
+        // SCREW PROPERTIES
+        public struct ScrewGaugeS
+        {
+            public const string Name = "Screw gauge";
+            public const string DBName = "ScrewGauge";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "g";
         }
     }
 }
