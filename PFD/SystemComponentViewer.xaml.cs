@@ -433,7 +433,7 @@ namespace PFD
                 CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
                 int iConnectorNumber = 80;
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, 0.03f, 0.03f);
-
+                CScrewArrangementRectApexOrKnee screwArrangementRectangle = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
 
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
@@ -476,7 +476,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (vm.ComponentIndex == 0) // JA
-                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft,0,0,0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangle, true);
                             else
                                 plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
                             break;
@@ -623,6 +623,7 @@ namespace PFD
                 CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
                 int iConnectorNumber = 80;
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+                CScrewArrangementRectApexOrKnee screwArrangementRectangle = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
 
                 switch ((ESerieTypePlate) vm.ComponentSerieIndex)
                 {
@@ -664,7 +665,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             if (vm.ComponentIndex == 0) // JA
-                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangle, true);
                             else
                                 plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             break;
@@ -1063,6 +1064,32 @@ namespace PFD
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
                 }
+                else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+                {
+                    CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
+
+                    if (item.Name == "Screw gauge") arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
+                    if (item.Name == "Cross-section depth") arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
+                    if (item.Name == "Cross-section web straight depth") arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
+                    if (item.Name == "Middle stiffener size") arrangementTemp.FStiffenerSize = float.Parse(changedText);
+
+                    if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(changedText);
+                    if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(changedText);
+                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(changedText);
+                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(changedText);
+                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(changedText);
+                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(changedText);
+
+                    if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(changedText);
+                    if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(changedText);
+                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(changedText);
+                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(changedText);
+                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(changedText);
+                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(changedText);
+
+                    arrangementTemp.UpdateArrangmentData();
+                    plate.ScrewArrangement = arrangementTemp;
+                }
                 else
                 {
                     // Screw arrangement is not implemented
@@ -1079,7 +1106,15 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText);
 
                     // Update plate data
-                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    if (plateTemp.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
+                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    else if (plateTemp.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+                        plateTemp.UpdatePlateData((CScrewArrangementRectApexOrKnee)plateTemp.ScrewArrangement);
+                    else
+                    {
+                        // Not Defined
+                    }
+
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_JB)

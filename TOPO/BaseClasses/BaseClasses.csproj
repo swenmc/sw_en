@@ -109,6 +109,7 @@
     <Compile Include="Model\CEntityGroup.cs" />
     <Compile Include="Model\CExample.cs" />
     <Compile Include="Model\CMemberEccentricity.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementRectApexOrKnee.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementCircleApexOrKnee.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CAnchor.cs" />

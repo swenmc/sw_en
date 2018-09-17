@@ -116,8 +116,6 @@ namespace BaseClasses
 
         public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
         {
-            screwArrangement.IHolesNumber = screwArrangement.IHolesInCirclesNumber + (screwArrangement.BUseAdditionalCornerScrews ? screwArrangement.IAdditionalConnectorNumber : 0);
-
             m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
 
             // Create Array - allocate memory

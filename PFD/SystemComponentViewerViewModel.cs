@@ -684,6 +684,29 @@ namespace PFD
                 geometry.Add(new CComponentParamsView("Distance of additional screws x", "bx", (Math.Round(arrangementTemp.FAdditionalScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
                 geometry.Add(new CComponentParamsView("Distance of additional screws y", "by", (Math.Round(arrangementTemp.FAdditionalScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             }
+            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+            {
+                CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
+
+                geometry.Add(new CComponentParamsView("Screw gauge", "No", arrangementTemp.referenceScrew.Gauge.ToString(), "[-]"));  // TODO prerobit na vyber objektu skrutky z databazy
+                geometry.Add(new CComponentParamsView("Cross-section depth", "h", (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Cross-section web straight depth", "dw", (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Middle stiffener size", "dw.m", (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+                geometry.Add(new CComponentParamsView("Number of screws in row SQ1", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1.ToString(), "[-]"));
+                geometry.Add(new CComponentParamsView("Number of screws in column SQ1", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1.ToString(), "[-]"));
+                geometry.Add(new CComponentParamsView("Inserting point coordinate x SQ1", "xc1", (Math.Round(arrangementTemp.fx_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Inserting point coordinate y SQ1", "yc1", (Math.Round(arrangementTemp.fy_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Distance between screws x SQ1", "x1", (Math.Round(arrangementTemp.fDistanceOfPointsX_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Distance between screws y SQ1", "y1", (Math.Round(arrangementTemp.fDistanceOfPointsY_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+                geometry.Add(new CComponentParamsView("Number of screws in row SQ2", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2.ToString(), "[-]"));
+                geometry.Add(new CComponentParamsView("Number of screws in column SQ2", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2.ToString(), "[-]"));
+                geometry.Add(new CComponentParamsView("Inserting point coordinate x SQ2", "xc2", (Math.Round(arrangementTemp.fx_c_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Inserting point coordinate y SQ2", "yc2", (Math.Round(arrangementTemp.fy_c_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Distance between screws x SQ2", "bx2", (Math.Round(arrangementTemp.fDistanceOfPointsX_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                geometry.Add(new CComponentParamsView("Distance between screws y SQ2", "by2", (Math.Round(arrangementTemp.fDistanceOfPointsY_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
             else
             {
                 // Screw arrangement is not implemented
