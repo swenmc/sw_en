@@ -617,6 +617,7 @@ namespace sw_en_GUI
                     Point p = PointsOut[i];
                     p.X -= fTempMin_X;
                     p.Y -= fTempMin_Y;
+                    PointsOut[i] = p;
                 }
             }
             else
@@ -632,6 +633,7 @@ namespace sw_en_GUI
                     Point p = PointsIn[i];
                     p.X -= fTempMin_X;
                     p.Y -= fTempMin_Y;
+                    PointsIn[i] = p;
                 }
             }
 

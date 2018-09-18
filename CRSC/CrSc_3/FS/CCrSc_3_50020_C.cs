@@ -425,6 +425,7 @@ namespace CRSC
                 Point p = CrScPointsOut[i];
                 p.X += D_y_gc;
                 p.Y += D_z_gc;
+                CrScPointsOut[i] = p;
             }
         }
 

@@ -423,6 +423,7 @@ namespace CRSC
                 Point p = CrScPointsOut[i];
                 p.X += D_y_gc;
                 p.Y += D_z_gc;
+                CrScPointsOut[i] = p;
             }
 
             for (int i = 0; i < INoPointsIn; i++)
@@ -430,6 +431,7 @@ namespace CRSC
                 Point p = CrScPointsIn[i];
                 p.X += D_y_gc;
                 p.Y += D_z_gc;
+                CrScPointsIn[i] = p;
             }
         }
 

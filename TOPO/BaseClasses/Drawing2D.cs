@@ -12,11 +12,6 @@ namespace BaseClasses
 {
     public static class Drawing2D
     {
-        // TODO No 44 Ondrej
-        // Temporary - TODO Ondrej zjednotit metody pre vykreslovanie v 2D do nejakej zakladnej triedy 
-        //(mozno uz nejaka aj existuje v inom projekte "SW_EN\GRAPHICS\PAINT" alebo swen_GUI\WindowPaint)
-
-
         public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage, 
             bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers)
         {
@@ -82,7 +77,7 @@ namespace BaseClasses
             canvasForImage.Children.Clear();
                 if (crsc != null)
                     DrawComponent(
-                    bDrawPoints, //bDrawPoints,   // NAPOJIT booly na checkboxy v GUI
+                    bDrawPoints, //bDrawPoints,   
                     bDrawOutLine, // bDrawOutLine,
                     bDrawPointNumbers, // bDrawPointNumbers,
                     false,
@@ -374,6 +369,7 @@ namespace BaseClasses
                     Point p = PointsOut[i];
                     p.X -= fTempMin_X;
                     p.Y -= fTempMin_Y;
+                    PointsOut[i] = p;
                 }
             }
             else
@@ -389,6 +385,7 @@ namespace BaseClasses
                     Point p = PointsIn[i];
                     p.X -= fTempMin_X;
                     p.Y -= fTempMin_Y;
+                    PointsIn[i] = p;
                 }
             }
 
@@ -458,29 +455,29 @@ namespace BaseClasses
             fmodelMarginBottom_y = (float)(fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page));
         }
 
-        public static void DrawPoints(bool bDrawPoints, float[,] PointsOut, float [,] PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
-        {
-            if (bDrawPoints)
-            {
-                // Outer outline points
-                if (PointsOut != null) // If is array of points not empty
-                {
-                    for (int i = 0; i < PointsOut.Length / 2; i++)
-                    {
-                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
-                    }
-                }
+        //public static void DrawPoints(bool bDrawPoints, float[,] PointsOut, float [,] PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
+        //{
+        //    if (bDrawPoints)
+        //    {
+        //        // Outer outline points
+        //        if (PointsOut != null) // If is array of points not empty
+        //        {
+        //            for (int i = 0; i < PointsOut.Length / 2; i++)
+        //            {
+        //                DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
+        //            }
+        //        }
 
-                // Internal outline points
-                if (PointsIn != null) // If is array of points not empty
-                {
-                    for (int i = 0; i < PointsIn.Length / 2; i++)
-                    {
-                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
-                    }
-                }
-            }
-        }
+        //        // Internal outline points
+        //        if (PointsIn != null) // If is array of points not empty
+        //        {
+        //            for (int i = 0; i < PointsIn.Length / 2; i++)
+        //            {
+        //                DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
+        //            }
+        //        }
+        //    }
+        //}
         public static void DrawPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
         {
             if (bDrawPoints)
@@ -669,29 +666,29 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawPointNumbers(bool bDrawPointNumbers, float [,] PointsOut, float [,] PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
-        {
-            if (bDrawPointNumbers)
-            {
-                // Outer outline points
-                if (PointsOut != null) // If is array of points not empty
-                {
-                    for (int i = 0; i < PointsOut.Length /2; i++)
-                    {
-                        DrawText((i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1], 16, Brushes.Blue, canvasForImage);
-                    }
-                }
+        //public static void DrawPointNumbers(bool bDrawPointNumbers, float [,] PointsOut, float [,] PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
+        //{
+        //    if (bDrawPointNumbers)
+        //    {
+        //        // Outer outline points
+        //        if (PointsOut != null) // If is array of points not empty
+        //        {
+        //            for (int i = 0; i < PointsOut.Length /2; i++)
+        //            {
+        //                DrawText((i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1], 16, Brushes.Blue, canvasForImage);
+        //            }
+        //        }
 
-                // Internal outline points
-                if (PointsIn != null && PointsOut != null) // If is array of points not empty
-                {
-                    for (int i = 0; i < PointsIn.Length / 2; i++)
-                    {
-                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1], 16, Brushes.Green, canvasForImage);
-                    }
-                }
-            }
-        }
+        //        // Internal outline points
+        //        if (PointsIn != null && PointsOut != null) // If is array of points not empty
+        //        {
+        //            for (int i = 0; i < PointsIn.Length / 2; i++)
+        //            {
+        //                DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1], 16, Brushes.Green, canvasForImage);
+        //            }
+        //        }
+        //    }
+        //}
         public static void DrawPointNumbers(bool bDrawPointNumbers, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
         {
             if (bDrawPointNumbers)

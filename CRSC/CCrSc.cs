@@ -1202,6 +1202,7 @@ namespace CRSC
                 Point p = pointsOut[i];
                 p.X -= x;
                 p.Y -= y;
+                pointsOut[i] = p;
 
             }
 
