@@ -60,8 +60,8 @@ namespace CRSC
 
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -73,98 +73,98 @@ namespace CRSC
             loadCrScIndicesBackSide();
         }
 
-        public void CalcCrSc_Coord()
-        {
-            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-
-            // Point No. 1
-            CrScPointsOut[0, 0] = -Fb_flange + m_ft_f + m_ft_f / 2f;                // y
-            CrScPointsOut[0, 1] = (float)h / 2f - m_fc_lip;                         // z
-
-            // Point No. 2
-            CrScPointsOut[1, 0] = CrScPointsOut[0, 0];                              // y
-            CrScPointsOut[1, 1] = CrScPointsOut[0, 1] + (m_fc_lip - m_ft_w);        // z
-
-            // Point No. 3
-            CrScPointsOut[2, 0] = - m_ft_f / 2f;                                    // y
-            CrScPointsOut[2, 1] = CrScPointsOut[1, 1];                              // z
-
-            // Point No. 4
-            CrScPointsOut[3, 0] = CrScPointsOut[2, 0];                              // y
-            CrScPointsOut[3, 1] = -(float)h / 2f;                                   // z
-
-            // Point No. 5
-            CrScPointsOut[4, 0] = (float)Fb_flange - m_ft_w / 2f;                   // y
-            CrScPointsOut[4, 1] = CrScPointsOut[3, 1];                              // z
-
-            // Point No. 6
-            CrScPointsOut[5, 0] = CrScPointsOut[4, 0];                              // y
-            CrScPointsOut[5, 1] = -CrScPointsOut[0, 1];                              // z
-
-            // Point No. 7
-            CrScPointsOut[6, 0] = -CrScPointsOut[0, 0];                             // y
-            CrScPointsOut[6, 1] = -CrScPointsOut[0, 1];                             // z
-
-            // Point No. 8
-            CrScPointsOut[7, 0] = -CrScPointsOut[1, 0];                             // y
-            CrScPointsOut[7, 1] = -CrScPointsOut[1, 1];                             // z
-
-            // Point No. 9
-            CrScPointsOut[8, 0] = -CrScPointsOut[2, 0];                             // y
-            CrScPointsOut[8, 1] = -CrScPointsOut[2, 1];                             // z
-
-            // Point No. 10
-            CrScPointsOut[9, 0] = CrScPointsOut[8, 0];                              // y
-            CrScPointsOut[9, 1] = (float)h / 2f;                                    // z
-
-            // Point No. 11
-            CrScPointsOut[10, 0] = -(float)Fb_flange + m_ft_w / 2f;                 // y
-            CrScPointsOut[10, 1] = CrScPointsOut[9, 1];                             // z
-
-            // Point No. 12
-            CrScPointsOut[11, 0] = CrScPointsOut[10, 0];                            // y
-            CrScPointsOut[11, 1] = CrScPointsOut[0, 1];                             // z
-        }
-
         //public void CalcCrSc_Coord()
         //{
         //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
         //    // Point No. 1
-        //    CrScPointsOut.Add(new Point(-Fb_flange + m_ft_f + m_ft_f / 2.0, h / 2.0 - m_fc_lip));
+        //    CrScPointsOut[0, 0] = -Fb_flange + m_ft_f + m_ft_f / 2f;                // y
+        //    CrScPointsOut[0, 1] = (float)h / 2f - m_fc_lip;                         // z
 
         //    // Point No. 2
-        //    CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y + (m_fc_lip - m_ft_w)));
+        //    CrScPointsOut[1, 0] = CrScPointsOut[0, 0];                              // y
+        //    CrScPointsOut[1, 1] = CrScPointsOut[0, 1] + (m_fc_lip - m_ft_w);        // z
+
         //    // Point No. 3
-        //    CrScPointsOut.Add(new Point(-m_ft_f / 2.0, CrScPointsOut[1].Y));
+        //    CrScPointsOut[2, 0] = - m_ft_f / 2f;                                    // y
+        //    CrScPointsOut[2, 1] = CrScPointsOut[1, 1];                              // z
 
         //    // Point No. 4
-        //    CrScPointsOut.Add(new Point(CrScPointsOut[2].X, -h / 2.0));
+        //    CrScPointsOut[3, 0] = CrScPointsOut[2, 0];                              // y
+        //    CrScPointsOut[3, 1] = -(float)h / 2f;                                   // z
 
         //    // Point No. 5
-        //    CrScPointsOut.Add(new Point(Fb_flange - m_ft_w / 2.0, CrScPointsOut[3].Y));
+        //    CrScPointsOut[4, 0] = (float)Fb_flange - m_ft_w / 2f;                   // y
+        //    CrScPointsOut[4, 1] = CrScPointsOut[3, 1];                              // z
 
         //    // Point No. 6
-        //    CrScPointsOut.Add(new Point(CrScPointsOut[4].X, -CrScPointsOut[0].Y));
+        //    CrScPointsOut[5, 0] = CrScPointsOut[4, 0];                              // y
+        //    CrScPointsOut[5, 1] = -CrScPointsOut[0, 1];                              // z
 
         //    // Point No. 7
-        //    CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, -CrScPointsOut[0].Y));
+        //    CrScPointsOut[6, 0] = -CrScPointsOut[0, 0];                             // y
+        //    CrScPointsOut[6, 1] = -CrScPointsOut[0, 1];                             // z
 
         //    // Point No. 8
-        //    CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, -CrScPointsOut10].Y));
+        //    CrScPointsOut[7, 0] = -CrScPointsOut[1, 0];                             // y
+        //    CrScPointsOut[7, 1] = -CrScPointsOut[1, 1];                             // z
 
         //    // Point No. 9
-        //    CrScPointsOut.Add(new Point(-CrScPointsOut[2].X, -CrScPointsOut[2].Y));
+        //    CrScPointsOut[8, 0] = -CrScPointsOut[2, 0];                             // y
+        //    CrScPointsOut[8, 1] = -CrScPointsOut[2, 1];                             // z
 
         //    // Point No. 10
-        //    CrScPointsOut.Add(new Point(CrScPointsOut[8].X, h/2.0));
+        //    CrScPointsOut[9, 0] = CrScPointsOut[8, 0];                              // y
+        //    CrScPointsOut[9, 1] = (float)h / 2f;                                    // z
 
         //    // Point No. 11
-        //    CrScPointsOut.Add(new Point(-Fb_flange + m_ft_w / 2.0, CrScPointsOut[9].Y));
+        //    CrScPointsOut[10, 0] = -(float)Fb_flange + m_ft_w / 2f;                 // y
+        //    CrScPointsOut[10, 1] = CrScPointsOut[9, 1];                             // z
 
         //    // Point No. 12
-        //    CrScPointsOut.Add(new Point(CrScPointsOut[10].X, CrScPointsOut[0].Y));
+        //    CrScPointsOut[11, 0] = CrScPointsOut[10, 0];                            // y
+        //    CrScPointsOut[11, 1] = CrScPointsOut[0, 1];                             // z
         //}
+
+        public void CalcCrSc_Coord()
+        {
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            CrScPointsOut.Add(new Point(-Fb_flange + m_ft_f + m_ft_f / 2.0, h / 2.0 - m_fc_lip));
+
+            // Point No. 2
+            CrScPointsOut.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y + (m_fc_lip - m_ft_w)));
+            // Point No. 3
+            CrScPointsOut.Add(new Point(-m_ft_f / 2.0, CrScPointsOut[1].Y));
+
+            // Point No. 4
+            CrScPointsOut.Add(new Point(CrScPointsOut[2].X, -h / 2.0));
+
+            // Point No. 5
+            CrScPointsOut.Add(new Point(Fb_flange - m_ft_w / 2.0, CrScPointsOut[3].Y));
+
+            // Point No. 6
+            CrScPointsOut.Add(new Point(CrScPointsOut[4].X, -CrScPointsOut[0].Y));
+
+            // Point No. 7
+            CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, -CrScPointsOut[0].Y));
+
+            // Point No. 8
+            CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, -CrScPointsOut[1].Y));
+
+            // Point No. 9
+            CrScPointsOut.Add(new Point(-CrScPointsOut[2].X, -CrScPointsOut[2].Y));
+
+            // Point No. 10
+            CrScPointsOut.Add(new Point(CrScPointsOut[8].X, h / 2.0));
+
+            // Point No. 11
+            CrScPointsOut.Add(new Point(-Fb_flange + m_ft_w / 2.0, CrScPointsOut[9].Y));
+
+            // Point No. 12
+            CrScPointsOut.Add(new Point(CrScPointsOut[10].X, CrScPointsOut[0].Y));
+        }
 
     }
 }

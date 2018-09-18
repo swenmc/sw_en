@@ -109,13 +109,13 @@ namespace BaseClasses
         }
         public static Point3D GetModelCentre(CMember member)
         {
-            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
+            double fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y, fTempMax_Z, fTempMin_Z;
 
             member.CalculateMemberLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
 
-            float fModel_Length_X = fTempMax_X - fTempMin_X;
-            float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
-            float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+            double fModel_Length_X = fTempMax_X - fTempMin_X;
+            double fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+            double fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
             return new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
         }

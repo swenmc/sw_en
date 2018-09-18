@@ -48,8 +48,8 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
-            CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -69,8 +69,8 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
-            CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -79,22 +79,36 @@ namespace CRSC
         }
 
         //----------------------------------------------------------------------------
+        //void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Outside Points Coordinates
+        //    CrScPointsOut = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_out, 180, 270, ITotNoPoints);
+
+        //    // Centroid
+        //    //Point p = CrScPointsOut[ITotNoPoints - 1];
+        //    //p.X = 0.0;
+        //    //p.Y = 0.0;
+        //    CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
+        //    CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
+        //}
+
         void CalcCrSc_Coord()
         {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_out, 180, 270, ITotNoPoints);
+            CrScPointsOut = Geom2D.GetArcPointCoord_CW_deg(m_fr_out, 180, 270, ITotNoPoints);
 
             // Centroid
+            CrScPointsOut.Add(new Point(0, 0));
             //Point p = CrScPointsOut[ITotNoPoints - 1];
             //p.X = 0.0;
-            //p.Y = 0.0;
-            CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
-            CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
+            //p.Y = 0.0;            
         }
 
-		protected override void loadCrScIndices()
+        protected override void loadCrScIndices()
 		{
             CCrSc_0_00 oTemp = new CCrSc_0_00();
             oTemp.loadCrScIndices_00_01(ITotNoPoints);            

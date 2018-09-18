@@ -100,11 +100,11 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[INoPointsOut, 2];
-            CrScPointsIn  = new float[INoPointsIn, 2];
+            //CrScPointsOut = new float[INoPointsOut, 2];
+            //CrScPointsIn  = new float[INoPointsIn, 2];
 
-            //CrScPointsOut = new List<Point>(INoPointsOut);
-            //CrScPointsIn = new List<Point>(INoPointsIn);
+            CrScPointsOut = new List<Point>(INoPointsOut);
+            CrScPointsIn = new List<Point>(INoPointsIn);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -119,12 +119,12 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetOctagonPointCoordArray(m_fa_out);
-            //CrScPointsOut = Geom2D.GetOctagonPointCoord(m_fa_out);
+            //CrScPointsOut = Geom2D.GetOctagonPointCoordArray(m_fa_out);
+            CrScPointsOut = Geom2D.GetOctagonPointCoord(m_fa_out);
 
             // Inside Points
-            CrScPointsIn = Geom2D.GetOctagonPointCoordArray(m_fa_in);
-            //CrScPointsIn = Geom2D.GetOctagonPointCoord(m_fa_in);
+            //CrScPointsIn = Geom2D.GetOctagonPointCoordArray(m_fa_in);
+            CrScPointsIn = Geom2D.GetOctagonPointCoord(m_fa_in);
         }
 
         protected override void loadCrScIndices()

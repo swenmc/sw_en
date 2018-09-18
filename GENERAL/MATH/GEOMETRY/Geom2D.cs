@@ -54,10 +54,18 @@ namespace MATH
         {
             return (float)(x * Math.Cos(theta_rad) - y * Math.Sin(theta_rad));
         }
+        public static double GetRotatedPosition_x_CCW_rad(double x, double y, double theta_rad)
+        {
+            return (x * Math.Cos(theta_rad) - y * Math.Sin(theta_rad));
+        }
 
         public static float GetRotatedPosition_y_CCW_rad(float x, float y, double theta_rad)
         {
             return (float)(x * Math.Sin(theta_rad) + y * Math.Cos(theta_rad));
+        }
+        public static double GetRotatedPosition_y_CCW_rad(double x, double y, double theta_rad)
+        {
+            return (x * Math.Sin(theta_rad) + y * Math.Cos(theta_rad));
         }
 
         public static float GetRotatedPosition_x_CW_rad(float x, float y, double theta_rad)
@@ -80,6 +88,30 @@ namespace MATH
         {
             float px;
             float py;
+
+            if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
+            {
+                px = (float)(Math.Cos(theta_rad) * (x - x_centerOfRotation) - Math.Sin(theta_rad) * (y - y_centerOfRotation) + x_centerOfRotation);
+                py = (float)(Math.Sin(theta_rad) * (x - x_centerOfRotation) + Math.Cos(theta_rad) * (y - y_centerOfRotation) + y_centerOfRotation);
+            }
+            else // Only translate
+            {
+                px = x + x_centerOfRotation;
+                py = y + y_centerOfRotation;
+            }
+
+            x = px;
+            y = py;
+        }
+        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref double x, ref double y)
+        {
+            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref y);
+        }
+
+        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref double x, ref double y)
+        {
+            double px;
+            double py;
 
             if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
             {
@@ -120,11 +152,34 @@ namespace MATH
             x = px;
             y = py;
         }
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, Point p)
+        {
+            double px;
+            double py;
+
+            if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
+            {
+                px = (float)(Math.Cos(theta_rad) * (p.X - x_centerOfRotation) + Math.Sin(theta_rad) * (p.Y - y_centerOfRotation) + x_centerOfRotation);
+                py = (float)(-Math.Sin(theta_rad) * (p.X - x_centerOfRotation) + Math.Cos(theta_rad) * (p.Y - y_centerOfRotation) + y_centerOfRotation);
+            }
+            else  // Only translate
+            {
+                px = p.X + x_centerOfRotation;
+                py = p.Y + y_centerOfRotation;
+            }
+
+            p.X = px;
+            p.Y = py;
+        }
 
         // Transform array
         public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
+        }
+        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, List<Point> points)
+        {
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, points);
         }
 
         public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float [,] array)
@@ -133,6 +188,14 @@ namespace MATH
             {
                 for (int i = 0; i < array.Length / 2; i++)
                     TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
+            }
+        }
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, List<Point> points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Count; i++)
+                    TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
             }
         }
 

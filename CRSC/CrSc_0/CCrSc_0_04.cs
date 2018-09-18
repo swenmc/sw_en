@@ -41,12 +41,12 @@ namespace CRSC
             m_fa = fa;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
-            CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1Array(m_fa);
-            //CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1(m_fa);
+            //CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1Array(m_fa);
+            CrScPointsOut = Geom2D.GetTrianEqLatPointCoord1(m_fa);
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
@@ -55,6 +55,25 @@ namespace CRSC
         private float m_fh;  // Height
         private float m_fb;  // Base Length
 
+        //public CCrSc_0_04(float fh, float fb)
+        //{
+        //    IsShapeSolid = true;
+        //    ITotNoPoints = 3;
+        //    m_fh = fh;
+        //    m_fb = fb;
+
+        //    // Create Array - allocate memory
+        //    //CrScPointsOut = new float[ITotNoPoints, 2];
+        //    // Fill Array Data
+
+        //    // Isosceles
+        //    CrScPointsOut = Geom2D.GetTrianIsosCelPointCoordArray(m_fh, m_fb);
+        //    // Right - angled
+        //    CrScPointsOut = Geom2D.GetTrianRightAngPointCoordArray(m_fh, m_fb);
+
+        //    // Fill list of indices for drawing of surface - triangles edges
+        //    loadCrScIndices();
+        //}
         public CCrSc_0_04(float fh, float fb)
         {
             IsShapeSolid = true;
@@ -63,65 +82,65 @@ namespace CRSC
             m_fb = fb;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
 
             // Isosceles
-            CrScPointsOut = Geom2D.GetTrianIsosCelPointCoordArray(m_fh, m_fb);
+            CrScPointsOut = Geom2D.GetTrianIsosCelPointCoord(m_fh, m_fb);
             // Right - angled
-            CrScPointsOut = Geom2D.GetTrianRightAngPointCoordArray(m_fh, m_fb);
+            CrScPointsOut = Geom2D.GetTrianRightAngPointCoord(m_fh, m_fb);
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
         }
 
-        public CCrSc_0_04(float fN0y, float fN0z, float fN1y, float fN1z, float fN2y, float fN2z)
-        {
-            IsShapeSolid = true;
-            ITotNoPoints = 3;
-
-            // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            // Fill Array Data
-            // CalcCrSc_Coord_Scalene();
-
-            // Point No. 1
-            CrScPointsOut[0, 0] = fN0y;     // y
-            CrScPointsOut[0, 1] = fN0z;     // z
-
-            // Point No. 2
-            CrScPointsOut[1, 0] = fN1y;     // y
-            CrScPointsOut[1, 1] = fN1z;     // z
-
-            // Point No. 3
-            CrScPointsOut[2, 0] = fN2y;     // y
-            CrScPointsOut[2, 1] = fN2z;     // z
-
-            // Fill list of indices for drawing of surface - triangles edges
-            loadCrScIndices();
-        }
         //public CCrSc_0_04(float fN0y, float fN0z, float fN1y, float fN1z, float fN2y, float fN2z)
         //{
         //    IsShapeSolid = true;
         //    ITotNoPoints = 3;
 
-        //    // Create Array - allocate memory            
-        //    CrScPointsOut = new List<Point>(ITotNoPoints);
+        //    // Create Array - allocate memory
+        //    //CrScPointsOut = new float[ITotNoPoints, 2];
         //    // Fill Array Data
         //    // CalcCrSc_Coord_Scalene();
 
-        //    // Point No. 1            
-        //    CrScPointsOut.Add(new Point(fN0y, fN0z));
+        //    // Point No. 1
+        //    CrScPointsOut[0, 0] = fN0y;     // y
+        //    CrScPointsOut[0, 1] = fN0z;     // z
 
-        //    // Point No. 2            
-        //    CrScPointsOut.Add(new Point(fN1y, fN1z));
+        //    // Point No. 2
+        //    CrScPointsOut[1, 0] = fN1y;     // y
+        //    CrScPointsOut[1, 1] = fN1z;     // z
 
-        //    // Point No. 3            
-        //    CrScPointsOut.Add(new Point(fN2y, fN2z));
+        //    // Point No. 3
+        //    CrScPointsOut[2, 0] = fN2y;     // y
+        //    CrScPointsOut[2, 1] = fN2z;     // z
 
         //    // Fill list of indices for drawing of surface - triangles edges
         //    loadCrScIndices();
         //}
+        public CCrSc_0_04(float fN0y, float fN0z, float fN1y, float fN1z, float fN2y, float fN2z)
+        {
+            IsShapeSolid = true;
+            ITotNoPoints = 3;
+
+            // Create Array - allocate memory            
+            CrScPointsOut = new List<Point>(ITotNoPoints);
+            // Fill Array Data
+            // CalcCrSc_Coord_Scalene();
+
+            // Point No. 1            
+            CrScPointsOut.Add(new Point(fN0y, fN0z));
+
+            // Point No. 2            
+            CrScPointsOut.Add(new Point(fN1y, fN1z));
+
+            // Point No. 3            
+            CrScPointsOut.Add(new Point(fN2y, fN2z));
+
+            // Fill list of indices for drawing of surface - triangles edges
+            loadCrScIndices();
+        }
 
         // Scalene - general
         //----------------------------------------------------------------------------

@@ -32,11 +32,11 @@ namespace CRSC
             m_ft = ft;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[INoPointsOut, 2];
-            CrScPointsIn = new float[INoPointsIn, 2];
+            //CrScPointsOut = new float[INoPointsOut, 2];
+            //CrScPointsIn = new float[INoPointsIn, 2];
 
-            //CrScPointsOut = new List<Point>(INoPointsOut);
-            //CrScPointsIn = new List<Point>(INoPointsIn);
+            CrScPointsOut = new List<Point>(INoPointsOut);
+            CrScPointsIn = new List<Point>(INoPointsIn);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -71,8 +71,8 @@ namespace CRSC
             m_ft = ft;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[INoPointsOut, 2];
-            CrScPointsIn = new float[INoPointsIn, 2];
+            //CrScPointsOut = new float[INoPointsOut, 2];
+            //CrScPointsIn = new float[INoPointsIn, 2];
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -93,64 +93,64 @@ namespace CRSC
             loadCrScWireFrameIndicesLaterals();
         }
 
-        public void CalcCrSc_Coord()
-        {
-            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-
-            // Point No. 1
-            CrScPointsOut[0, 0] = 0;                                    // y
-            CrScPointsOut[0, 1] = (float)h * (2f / 3f);                 // z
-
-            // Point No. 2
-            CrScPointsOut[1, 0] = (float)b / 2f;                        // y
-            CrScPointsOut[1, 1] = -(float)h * (1f / 3f);                // z
-
-            // Point No. 3
-            CrScPointsOut[2, 0] = -CrScPointsOut[1, 0];                 // y
-            CrScPointsOut[2, 1] = CrScPointsOut[1, 1];                  // z
-
-            float fAlphaDeg = 30f;
-
-            // Internal
-
-            // Point No. 1
-            CrScPointsIn[0, 0] = CrScPointsOut[0, 0];   // y
-            CrScPointsIn[0, 1] = CrScPointsOut[0, 1] - m_ft / (float)Math.Sin(fAlphaDeg * MathF.fPI / 180f);   // z
-
-            // Point No. 2
-            CrScPointsIn[1, 0] = CrScPointsOut[1, 0] - m_ft / (float)Math.Tan(fAlphaDeg * MathF.fPI / 180f);   // y
-            CrScPointsIn[1, 1] = CrScPointsOut[1, 1] + m_ft;   // z
-
-            // Point No. 3
-            CrScPointsIn[2, 0] = -CrScPointsIn[1, 0];  // y
-            CrScPointsIn[2, 1] = CrScPointsIn[1, 1];   // z
-        }
         //public void CalcCrSc_Coord()
         //{
         //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
         //    // Point No. 1
-        //    CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
+        //    CrScPointsOut[0, 0] = 0;                                    // y
+        //    CrScPointsOut[0, 1] = (float)h * (2f / 3f);                 // z
 
         //    // Point No. 2
-        //    CrScPointsOut.Add(new Point(b / 2.0, -h * (1.0 / 3.0)));
+        //    CrScPointsOut[1, 0] = (float)b / 2f;                        // y
+        //    CrScPointsOut[1, 1] = -(float)h * (1f / 3f);                // z
 
         //    // Point No. 3
-        //    CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
+        //    CrScPointsOut[2, 0] = -CrScPointsOut[1, 0];                 // y
+        //    CrScPointsOut[2, 1] = CrScPointsOut[1, 1];                  // z
 
         //    float fAlphaDeg = 30f;
 
         //    // Internal
 
         //    // Point No. 1
-        //    CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
-
+        //    CrScPointsIn[0, 0] = CrScPointsOut[0, 0];   // y
+        //    CrScPointsIn[0, 1] = CrScPointsOut[0, 1] - m_ft / (float)Math.Sin(fAlphaDeg * MathF.fPI / 180f);   // z
 
         //    // Point No. 2
-        //    CrScPointsIn.Add(new Point(CrScPointsOut[1].X - m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
+        //    CrScPointsIn[1, 0] = CrScPointsOut[1, 0] - m_ft / (float)Math.Tan(fAlphaDeg * MathF.fPI / 180f);   // y
+        //    CrScPointsIn[1, 1] = CrScPointsOut[1, 1] + m_ft;   // z
+
         //    // Point No. 3
-        //    CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+        //    CrScPointsIn[2, 0] = -CrScPointsIn[1, 0];  // y
+        //    CrScPointsIn[2, 1] = CrScPointsIn[1, 1];   // z
         //}
+        public void CalcCrSc_Coord()
+        {
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Point No. 1
+            CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
+
+            // Point No. 2
+            CrScPointsOut.Add(new Point(b / 2.0, -h * (1.0 / 3.0)));
+
+            // Point No. 3
+            CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
+
+            float fAlphaDeg = 30f;
+
+            // Internal
+
+            // Point No. 1
+            CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
+
+
+            // Point No. 2
+            CrScPointsIn.Add(new Point(CrScPointsOut[1].X - m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
+            // Point No. 3
+            CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+        }
 
     }
 }

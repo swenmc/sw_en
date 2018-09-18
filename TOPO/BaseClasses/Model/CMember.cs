@@ -562,7 +562,7 @@ namespace BaseClasses
 
             // Number of Points per section
             int iNoCrScPoints2D;
-            float fy, fz;
+            double fy, fz;
 
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
@@ -577,8 +577,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsOut[j, 0];
-                        fz = obj_CrScA.CrScPointsOut[j, 1];
+                        fy = obj_CrScA.CrScPointsOut[j].X;
+                        fz = obj_CrScA.CrScPointsOut[j].Y;
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -598,8 +598,8 @@ namespace BaseClasses
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScA.CrScPointsOut[j, 0];
-                            fz = obj_CrScA.CrScPointsOut[j, 1];
+                            fy = obj_CrScA.CrScPointsOut[j].X;
+                            fz = obj_CrScA.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -616,8 +616,8 @@ namespace BaseClasses
                         else
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScB.CrScPointsOut[j, 0];
-                            fz = obj_CrScB.CrScPointsOut[j, 1];
+                            fy = obj_CrScB.CrScPointsOut[j].X;
+                            fz = obj_CrScB.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -655,8 +655,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsOut[j, 0];
-                        fz = obj_CrScA.CrScPointsOut[j, 1];
+                        fy = obj_CrScA.CrScPointsOut[j].X;
+                        fz = obj_CrScA.CrScPointsOut[j].Y;
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -684,8 +684,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsIn[j, 0];
-                        fz = obj_CrScA.CrScPointsIn[j, 1];
+                        fy = obj_CrScA.CrScPointsIn[j].X;
+                        fz = obj_CrScA.CrScPointsIn[j].Y;
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -715,8 +715,8 @@ namespace BaseClasses
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScA.CrScPointsOut[j, 0];
-                            fz = obj_CrScA.CrScPointsOut[j, 1];
+                            fy = obj_CrScA.CrScPointsOut[j].X;
+                            fz = obj_CrScA.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -733,8 +733,8 @@ namespace BaseClasses
                         else
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScB.CrScPointsOut[j, 0];
-                            fz = obj_CrScB.CrScPointsOut[j, 1];
+                            fy = obj_CrScB.CrScPointsOut[j].X;
+                            fz = obj_CrScB.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -764,8 +764,8 @@ namespace BaseClasses
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScA.CrScPointsIn[j, 0];
-                            fz = obj_CrScA.CrScPointsIn[j, 1];
+                            fy = obj_CrScA.CrScPointsIn[j].X;
+                            fz = obj_CrScA.CrScPointsIn[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -782,8 +782,8 @@ namespace BaseClasses
                         else
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScB.CrScPointsIn[j, 0];
-                            fz = obj_CrScB.CrScPointsIn[j, 1];
+                            fy = obj_CrScB.CrScPointsIn[j].X;
+                            fz = obj_CrScB.CrScPointsIn[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -894,7 +894,7 @@ namespace BaseClasses
 
             // Number of Points per section
             int iNoCrScPoints2D;
-            float fy, fz;
+            double fy, fz;
 
             // Points 2D Coordinate Array
             if (obj_CrScA.IsShapeSolid) // Solid I,U,Z,HL,L, ..............
@@ -911,8 +911,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsOut[j, 0];
-                        fz = obj_CrScA.CrScPointsOut[j, 1];
+                        fy = obj_CrScA.CrScPointsOut[j].X;
+                        fz = obj_CrScA.CrScPointsOut[j].Y;
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -934,8 +934,8 @@ namespace BaseClasses
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScA.CrScPointsOut[j, 0];
-                            fz = obj_CrScA.CrScPointsOut[j, 1];
+                            fy = obj_CrScA.CrScPointsOut[j].X;
+                            fz = obj_CrScA.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -953,8 +953,8 @@ namespace BaseClasses
                         else
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScB.CrScPointsOut[j, 0];
-                            fz = obj_CrScB.CrScPointsOut[j, 1];
+                            fy = obj_CrScB.CrScPointsOut[j].X;
+                            fz = obj_CrScB.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -993,8 +993,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsOut[j, 0];
-                        fz = obj_CrScA.CrScPointsOut[j, 1];
+                        fy = obj_CrScA.CrScPointsOut[j].X;
+                        fz = obj_CrScA.CrScPointsOut[j].Y;
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -1023,8 +1023,8 @@ namespace BaseClasses
                         // X - start, Y, Z
 
                         // Set original value to the temporary variable
-                        fy = obj_CrScA.CrScPointsIn[j, 0];
-                        fz = obj_CrScA.CrScPointsIn[j, 1];
+                        fy = obj_CrScA.CrScPointsIn[j].X;
+                        fz = obj_CrScA.CrScPointsIn[j].Y;
 
                         // Set Member Eccentricity
                         if (EccentricityStart != null)
@@ -1055,8 +1055,8 @@ namespace BaseClasses
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScA.CrScPointsOut[j, 0];
-                            fz = obj_CrScA.CrScPointsOut[j, 1];
+                            fy = obj_CrScA.CrScPointsOut[j].X;
+                            fz = obj_CrScA.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -1074,8 +1074,8 @@ namespace BaseClasses
                         else
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScB.CrScPointsOut[j, 0];
-                            fz = obj_CrScB.CrScPointsOut[j, 1];
+                            fy = obj_CrScB.CrScPointsOut[j].X;
+                            fz = obj_CrScB.CrScPointsOut[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -1106,8 +1106,8 @@ namespace BaseClasses
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScA.CrScPointsIn[j, 0];
-                            fz = obj_CrScA.CrScPointsIn[j, 1];
+                            fy = obj_CrScA.CrScPointsIn[j].X;
+                            fz = obj_CrScA.CrScPointsIn[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -1125,8 +1125,8 @@ namespace BaseClasses
                         else
                         {
                             // Set original value to the temporary variable
-                            fy = obj_CrScB.CrScPointsIn[j, 0];
-                            fz = obj_CrScB.CrScPointsIn[j, 1];
+                            fy = obj_CrScB.CrScPointsIn[j].X;
+                            fz = obj_CrScB.CrScPointsIn[j].Y;
 
                             // Set Member Eccentricity
                             if (EccentricityEnd != null)
@@ -1470,38 +1470,38 @@ namespace BaseClasses
 
             float fy, fz;
 
-            if (CrScStart.CrScPointsOut != null && CrScStart.CrScPointsOut.Length > 0)
+            if (CrScStart.CrScPointsOut != null && CrScStart.CrScPointsOut.Count > 0)
             {
-                for (int i = 0; i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints; i++)
+                for (int i = 0; i < CrScStart.CrScPointsOut.Count - CrScStart.INoAuxPoints; i++)
                 {
                     Point3D pi = new Point3D();
                     Point3D pj = new Point3D();
 
-                    if (i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints - 1)
+                    if (i < CrScStart.CrScPointsOut.Count - CrScStart.INoAuxPoints - 1)
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints + 1].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i + 1].Y, DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
                     else // Last line
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + 0].Y, DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
@@ -1512,38 +1512,38 @@ namespace BaseClasses
                 }
             }
 
-            if (CrScStart.CrScPointsIn != null && CrScStart.CrScPointsIn.Length > 0)
+            if (CrScStart.CrScPointsIn != null && CrScStart.CrScPointsIn.Count > 0)
             {
-                for (int i = 0; i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints; i++)
+                for (int i = 0; i < CrScStart.CrScPointsIn.Count - CrScStart.INoAuxPoints; i++)
                 {
                     Point3D pi = new Point3D();
                     Point3D pj = new Point3D();
 
-                    if (i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints - 1)
+                    if (i < CrScStart.CrScPointsIn.Count - CrScStart.INoAuxPoints - 1)
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints + 1].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i + 1].Y, DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
                     else // Last line
                     {
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                         pi = new Point3D(x, fy, fz);
 
                         // Rotate about local x-axis
-                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
-                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0, 1], DTheta_x);
+                        fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0].Y, DTheta_x);
+                        fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + 0].Y, DTheta_x);
 
                         pj = new Point3D(x, fy, fz);
                     }
@@ -1578,22 +1578,22 @@ namespace BaseClasses
 
             float fy, fz;
 
-            if (CrScStart.CrScPointsOut != null && CrScStart.CrScPointsOut.Length > 0)
+            if (CrScStart.CrScPointsOut != null && CrScStart.CrScPointsOut.Count > 0)
             {
-                for (int i = 0; i < CrScStart.CrScPointsOut.Length / 2 - CrScStart.INoAuxPoints; i++)
+                for (int i = 0; i < CrScStart.CrScPointsOut.Count - CrScStart.INoAuxPoints; i++)
                 {
                     Point3D pi = new Point3D();
                     Point3D pj = new Point3D();
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                     pi = new Point3D(- FAlignment_Start, fy, fz);
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsOut[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsOut[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                     pj = new Point3D(FLength + FAlignment_End, fy, fz);
 
@@ -1603,22 +1603,22 @@ namespace BaseClasses
                 }
             }
 
-            if (CrScStart.CrScPointsIn != null && CrScStart.CrScPointsIn.Length > 0)
+            if (CrScStart.CrScPointsIn != null && CrScStart.CrScPointsIn.Count > 0)
             {
-                for (int i = 0; i < CrScStart.CrScPointsIn.Length / 2 - CrScStart.INoAuxPoints; i++)
+                for (int i = 0; i < CrScStart.CrScPointsIn.Count - CrScStart.INoAuxPoints; i++)
                 {
                     Point3D pi = new Point3D();
                     Point3D pj = new Point3D();
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                     pi = new Point3D(-FAlignment_Start, fy, fz);
 
                     // Rotate about local x-axis
-                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
-                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints, 0], CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i, 1], DTheta_x);
+                    fy = (float)Geom2D.GetRotatedPosition_x_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
+                    fz = (float)Geom2D.GetRotatedPosition_y_CCW_rad(CrScStart.CrScPointsIn[i + CrScStart.INoAuxPoints].X, CrScStart.CrScPointsIn[CrScStart.INoAuxPoints + i].Y, DTheta_x);
 
                     pj = new Point3D(FLength + FAlignment_End, fy, fz);
 
@@ -1711,7 +1711,7 @@ namespace BaseClasses
             return memberWireframeIndices;
         }
 
-        public void CalculateMemberLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y, out float fTempMax_Z, out float fTempMin_Z)
+        public void CalculateMemberLimits(out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y, out double fTempMax_Z, out double fTempMin_Z)
         {
             fTempMax_X = float.MinValue;
             fTempMin_X = float.MaxValue;
@@ -1727,20 +1727,20 @@ namespace BaseClasses
                 // Minimum X - coordinate
                 fTempMin_X = NodeEnd.X;
 
-                for (int i = 0; i < CrScStart.CrScPointsOut.Length / 2; i++)
+                for (int i = 0; i < CrScStart.CrScPointsOut.Count; i++)
                 {
                     // Maximum Y - coordinate
-                    if (CrScStart.CrScPointsOut[i, 0] > fTempMax_Y)
-                        fTempMax_Y = CrScStart.CrScPointsOut[i, 0];
+                    if (CrScStart.CrScPointsOut[i].X > fTempMax_Y)
+                        fTempMax_Y = CrScStart.CrScPointsOut[i].X;
                     // Minimum Y - coordinate
-                    if (CrScStart.CrScPointsOut[i, 0] < fTempMin_Y)
-                        fTempMin_Y = CrScStart.CrScPointsOut[i, 0];
+                    if (CrScStart.CrScPointsOut[i].X < fTempMin_Y)
+                        fTempMin_Y = CrScStart.CrScPointsOut[i].X;
                     // Maximum Z - coordinate
-                    if (CrScStart.CrScPointsOut[i, 1] > fTempMax_Z)
-                        fTempMax_Z = CrScStart.CrScPointsOut[i, 1];
+                    if (CrScStart.CrScPointsOut[i].Y > fTempMax_Z)
+                        fTempMax_Z = CrScStart.CrScPointsOut[i].Y;
                     // Minimum Z - coordinate
-                    if (CrScStart.CrScPointsOut[i, 1] < fTempMin_Z)
-                        fTempMin_Z = CrScStart.CrScPointsOut[i, 1];
+                    if (CrScStart.CrScPointsOut[i].Y < fTempMin_Z)
+                        fTempMin_Z = CrScStart.CrScPointsOut[i].Y;
                 }
             }
         }

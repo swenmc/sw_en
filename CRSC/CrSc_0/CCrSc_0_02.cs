@@ -55,8 +55,8 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -83,7 +83,7 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -106,17 +106,27 @@ namespace CRSC
         }
 
         //----------------------------------------------------------------------------
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    // Outside Points Coordinates
+        //    CrScPointsOut = Geom2D.GetCirclePointCoordArray_CW(m_fr_out, ITotNoPoints);
+
+        //    // Centroid
+        //    //CrScPointsOut.Add(new Point(0, 0));
+        //    CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
+        //    CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
+        //}
         public void CalcCrSc_Coord()
         {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetCirclePointCoordArray_CW(m_fr_out, ITotNoPoints);
+            CrScPointsOut = Geom2D.GetCirclePointCoord_CW(m_fr_out, ITotNoPoints);
 
             // Centroid
-            //CrScPointsOut.Add(new Point(0, 0));
-            CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
-            CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
+            //CrScPointsOut.Add(new Point(0, 0));            
         }
 
         //----------------------------------------------------------------------------

@@ -23,8 +23,8 @@ namespace CRSC
             b = fb;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -38,65 +38,65 @@ namespace CRSC
             //loadCrScIndices();
         }
 
-        public new void CalcCrSc_Coord()
-        {
-            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-
-            // Outside Points Coordinates
-
-            float xc = 0.03f; // 30 mm ???
-
-            float ya = 0.3f * (float)h;
-            float yb = 0.4f * (float)h;
-
-            CrScPointsOut[0, 0] = 0.0f;
-            CrScPointsOut[0, 1] = (float)h;
-            CrScPointsOut[1, 0] = (float)b;
-            CrScPointsOut[1, 1] = (float)h;
-            CrScPointsOut[2, 0] = (float)b;
-            CrScPointsOut[2, 1] = (float)h - ya;
-            CrScPointsOut[3, 0] = (float)b - xc;
-            CrScPointsOut[3, 1] = (float)h - yb;
-            CrScPointsOut[4, 0] = (float)b - xc;
-            CrScPointsOut[4, 1] = yb;
-            CrScPointsOut[5, 0] = (float)b;
-            CrScPointsOut[5, 1] = ya;
-            CrScPointsOut[6, 0] = (float)b;
-            CrScPointsOut[6, 1] = 0;
-            CrScPointsOut[7, 0] = 0;
-            CrScPointsOut[7, 1] = 0;
-            CrScPointsOut[8, 0] = 0;
-            CrScPointsOut[8, 1] = ya;
-            CrScPointsOut[9, 0] = xc;
-            CrScPointsOut[9, 1] = yb;
-            CrScPointsOut[10, 0] = xc;
-            CrScPointsOut[10, 1] = (float)h - yb;
-            CrScPointsOut[11, 0] = 0;
-            CrScPointsOut[11, 1] = (float)h - ya;
-        }
-
         //public new void CalcCrSc_Coord()
         //{
         //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
         //    // Outside Points Coordinates
-        //    double xc = 0.03f; // 30 mm ???
-        //    double ya = 0.3f * h;
-        //    double yb = 0.4f * h;
-            
-        //    CrScPointsOut.Add(new Point(0, h));
-        //    CrScPointsOut.Add(new Point(b, h));
-        //    CrScPointsOut.Add(new Point(b, h - ya));
-        //    CrScPointsOut.Add(new Point(b - xc, h - yb));
-        //    CrScPointsOut.Add(new Point(b - xc, yb));
-        //    CrScPointsOut.Add(new Point(b, ya));
-        //    CrScPointsOut.Add(new Point(b, 0));
-        //    CrScPointsOut.Add(new Point(0, 0));
-        //    CrScPointsOut.Add(new Point(0, ya));
-        //    CrScPointsOut.Add(new Point(xc, yb));
-        //    CrScPointsOut.Add(new Point(xc, h - yb));
-        //    CrScPointsOut.Add(new Point(0, h - ya));
+
+        //    float xc = 0.03f; // 30 mm ???
+
+        //    float ya = 0.3f * (float)h;
+        //    float yb = 0.4f * (float)h;
+
+        //    CrScPointsOut[0, 0] = 0.0f;
+        //    CrScPointsOut[0, 1] = (float)h;
+        //    CrScPointsOut[1, 0] = (float)b;
+        //    CrScPointsOut[1, 1] = (float)h;
+        //    CrScPointsOut[2, 0] = (float)b;
+        //    CrScPointsOut[2, 1] = (float)h - ya;
+        //    CrScPointsOut[3, 0] = (float)b - xc;
+        //    CrScPointsOut[3, 1] = (float)h - yb;
+        //    CrScPointsOut[4, 0] = (float)b - xc;
+        //    CrScPointsOut[4, 1] = yb;
+        //    CrScPointsOut[5, 0] = (float)b;
+        //    CrScPointsOut[5, 1] = ya;
+        //    CrScPointsOut[6, 0] = (float)b;
+        //    CrScPointsOut[6, 1] = 0;
+        //    CrScPointsOut[7, 0] = 0;
+        //    CrScPointsOut[7, 1] = 0;
+        //    CrScPointsOut[8, 0] = 0;
+        //    CrScPointsOut[8, 1] = ya;
+        //    CrScPointsOut[9, 0] = xc;
+        //    CrScPointsOut[9, 1] = yb;
+        //    CrScPointsOut[10, 0] = xc;
+        //    CrScPointsOut[10, 1] = (float)h - yb;
+        //    CrScPointsOut[11, 0] = 0;
+        //    CrScPointsOut[11, 1] = (float)h - ya;
         //}
+
+        public new void CalcCrSc_Coord()
+        {
+            // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+            // Outside Points Coordinates
+            double xc = 0.03f; // 30 mm ???
+            double ya = 0.3f * h;
+            double yb = 0.4f * h;
+
+            CrScPointsOut.Add(new Point(0, h));
+            CrScPointsOut.Add(new Point(b, h));
+            CrScPointsOut.Add(new Point(b, h - ya));
+            CrScPointsOut.Add(new Point(b - xc, h - yb));
+            CrScPointsOut.Add(new Point(b - xc, yb));
+            CrScPointsOut.Add(new Point(b, ya));
+            CrScPointsOut.Add(new Point(b, 0));
+            CrScPointsOut.Add(new Point(0, 0));
+            CrScPointsOut.Add(new Point(0, ya));
+            CrScPointsOut.Add(new Point(xc, yb));
+            CrScPointsOut.Add(new Point(xc, h - yb));
+            CrScPointsOut.Add(new Point(0, h - ya));
+        }
 
         protected override void loadCrScIndicesFrontSide()
         {

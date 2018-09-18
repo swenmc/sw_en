@@ -145,39 +145,39 @@ namespace CRSC
         }
 
         //// Use for Inside surface of hollow sections
-        private float[,] m_CrScPointsIn;
+        //private float[,] m_CrScPointsIn;
 
-        public float[,] CrScPointsIn
-        {
-            get { return m_CrScPointsIn; }
-            set { m_CrScPointsIn = value; }
-        }
-
-        // Use for Outside surface of hollow sections and surface of solid sections
-        private float[,] m_CrScPointsOut;
-
-        public float[,] CrScPointsOut
-        {
-            get { return m_CrScPointsOut; }
-            set { m_CrScPointsOut = value; }
-        }
-        //// Use for Inside surface of hollow sections
-        //private List<Point> m_CrScPointsIn;
-
-        //public List<Point> CrScPointsIn
+        //public float[,] CrScPointsIn
         //{
         //    get { return m_CrScPointsIn; }
         //    set { m_CrScPointsIn = value; }
         //}
 
         //// Use for Outside surface of hollow sections and surface of solid sections
-        //private List<Point> m_CrScPointsOut;
+        //private float[,] m_CrScPointsOut;
 
-        //public List<Point> CrScPointsOut
+        //public float[,] CrScPointsOut
         //{
         //    get { return m_CrScPointsOut; }
         //    set { m_CrScPointsOut = value; }
         //}
+        //// Use for Inside surface of hollow sections
+        private List<Point> m_CrScPointsIn;
+
+        public List<Point> CrScPointsIn
+        {
+            get { return m_CrScPointsIn; }
+            set { m_CrScPointsIn = value; }
+        }
+
+        // Use for Outside surface of hollow sections and surface of solid sections
+        private List<Point> m_CrScPointsOut;
+
+        public List<Point> CrScPointsOut
+        {
+            get { return m_CrScPointsOut; }
+            set { m_CrScPointsOut = value; }
+        }
 
 
         private int m_iCrSc_ID;
@@ -879,19 +879,62 @@ namespace CRSC
         // PREDNA A ZADNA STRANA BY MOHLI MAT SPOLOCNY KOD
         // VNUTORNY A VONKAJSI OBRYS BY MOHLI MAT SPOLOCNY KOD
 
+        //public void loadCrScWireFrameIndicesFrontSide()
+        //{
+        //    // Outside outline
+        //    if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+        //    {
+        //        WireFrameIndicesFrontSideOut = new Int32Collection();
+
+        //        for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+        //        {
+        //            if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
+        //            {
+        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
+        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i +1);
+        //            }
+        //            else // Last line
+        //            {
+        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
+        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + 0);
+        //            }
+        //        }
+        //    }
+
+        //    // Inside outline
+        //    if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+        //    {
+        //        WireFrameIndicesFrontSideIn = new Int32Collection();
+
+        //        for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+        //        {
+        //            if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
+        //            {
+        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
+        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i + 1);
+        //            }
+        //            else // Last line
+        //            {
+        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
+        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + 0);
+        //            }
+        //        }
+        //    }
+        //}
+
         public void loadCrScWireFrameIndicesFrontSide()
         {
             // Outside outline
-            if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+            if (CrScPointsOut != null && CrScPointsOut.Count > 0)
             {
                 WireFrameIndicesFrontSideOut = new Int32Collection();
 
-                for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+                for (int i = 0; i < CrScPointsOut.Count - INoAuxPoints; i++)
                 {
-                    if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
+                    if (i < CrScPointsOut.Count - INoAuxPoints - 1)
                     {
                         WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
-                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i +1);
+                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i + 1);
                     }
                     else // Last line
                     {
@@ -902,13 +945,13 @@ namespace CRSC
             }
 
             // Inside outline
-            if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+            if (CrScPointsIn != null && CrScPointsIn.Count > 0)
             {
                 WireFrameIndicesFrontSideIn = new Int32Collection();
 
-                for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+                for (int i = 0; i < CrScPointsIn.Count - INoAuxPoints; i++)
                 {
-                    if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
+                    if (i < CrScPointsIn.Count - INoAuxPoints - 1)
                     {
                         WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
                         WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i + 1);
@@ -922,18 +965,64 @@ namespace CRSC
             }
         }
 
+        //public void loadCrScWireFrameIndicesBackSide()
+        //{
+        //    // Outside outline
+        //    if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+        //    {
+        //        WireFrameIndicesBackSideOut = new Int32Collection();
+
+        //        for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+        //        {
+        //            // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
+
+        //            if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
+        //            {
+        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
+        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i + 1);
+        //            }
+        //            else // Last line
+        //            {
+        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
+        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + 0);
+        //            }
+        //        }
+        //    }
+
+        //    // Inside outline
+        //    if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+        //    {
+        //        WireFrameIndicesBackSideIn = new Int32Collection();
+
+        //        for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+        //        {
+        //            // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
+
+        //            if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
+        //            {
+        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
+        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i + 1);
+        //            }
+        //            else // Last line
+        //            {
+        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
+        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + 0);
+        //            }
+        //        }
+        //    }
+        //}
         public void loadCrScWireFrameIndicesBackSide()
         {
             // Outside outline
-            if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+            if (CrScPointsOut != null && CrScPointsOut.Count > 0)
             {
                 WireFrameIndicesBackSideOut = new Int32Collection();
 
-                for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+                for (int i = 0; i < CrScPointsOut.Count - INoAuxPoints; i++)
                 {
                     // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
 
-                    if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
+                    if (i < CrScPointsOut.Count - INoAuxPoints - 1)
                     {
                         WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
                         WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i + 1);
@@ -947,44 +1036,66 @@ namespace CRSC
             }
 
             // Inside outline
-            if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+            if (CrScPointsIn != null && CrScPointsIn.Count > 0)
             {
                 WireFrameIndicesBackSideIn = new Int32Collection();
 
-                for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+                for (int i = 0; i < CrScPointsIn.Count - INoAuxPoints; i++)
                 {
                     // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
 
-                    if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
+                    if (i < CrScPointsIn.Count - INoAuxPoints - 1)
                     {
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i + 1);
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + i);
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + i + 1);
                     }
                     else // Last line
                     {
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + 0);
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + i);
+                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + 0);
                     }
                 }
             }
         }
 
+        //public void loadCrScWireFrameIndicesLaterals()
+        //{
+        //    if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+        //    {
+        //        WireFrameIndicesLateral = new Int32Collection();
+
+        //        for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+        //        {
+        //            WireFrameIndicesLateral.Add(INoAuxPoints + i);
+        //            WireFrameIndicesLateral.Add(ITotNoPoints + INoAuxPoints + i);
+        //        }
+        //    }
+
+        //    if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+        //    {
+        //        for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+        //        {
+        //            WireFrameIndicesLateral.Add(INoPointsOut + INoAuxPoints + i);
+        //            WireFrameIndicesLateral.Add(ITotNoPoints + INoPointsOut + INoAuxPoints + i);
+        //        }
+        //    }
+        //}
         public void loadCrScWireFrameIndicesLaterals()
         {
-            if (CrScPointsOut != null && CrScPointsOut.Length > 0)
+            if (CrScPointsOut != null && CrScPointsOut.Count > 0)
             {
                 WireFrameIndicesLateral = new Int32Collection();
 
-                for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
+                for (int i = 0; i < CrScPointsOut.Count - INoAuxPoints; i++)
                 {
                     WireFrameIndicesLateral.Add(INoAuxPoints + i);
                     WireFrameIndicesLateral.Add(ITotNoPoints + INoAuxPoints + i);
                 }
             }
 
-            if (CrScPointsIn != null && CrScPointsIn.Length > 0)
+            if (CrScPointsIn != null && CrScPointsIn.Count > 0)
             {
-                for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
+                for (int i = 0; i < CrScPointsIn.Count - INoAuxPoints; i++)
                 {
                     WireFrameIndicesLateral.Add(INoPointsOut + INoAuxPoints + i);
                     WireFrameIndicesLateral.Add(ITotNoPoints + INoPointsOut + INoAuxPoints + i);
@@ -992,7 +1103,38 @@ namespace CRSC
             }
         }
 
-        public void CalculateCrScLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
+
+        //public void CalculateCrScLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
+        //{
+        //    fTempMax_X = float.MinValue;
+        //    fTempMin_X = float.MaxValue;
+        //    fTempMax_Y = float.MinValue;
+        //    fTempMin_Y = float.MaxValue;
+
+        //    if (CrScPointsOut != null) // Some points exist
+        //    {
+        //        for (int i = 0; i < CrScPointsOut.Length / 2; i++)
+        //        {
+        //            // Maximum X - coordinate
+        //            if (CrScPointsOut[i, 0] > fTempMax_X)
+        //                fTempMax_X = CrScPointsOut[i, 0];
+
+        //            // Minimum X - coordinate
+        //            if (CrScPointsOut[i, 0] < fTempMin_X)
+        //                fTempMin_X = CrScPointsOut[i, 0];
+
+        //            // Maximum Y - coordinate
+        //            if (CrScPointsOut[i, 1] > fTempMax_Y)
+        //                fTempMax_Y = CrScPointsOut[i, 1];
+
+        //            // Minimum Y - coordinate
+        //            if (CrScPointsOut[i, 1] < fTempMin_Y)
+        //                fTempMin_Y = CrScPointsOut[i, 1];
+        //        }
+        //    }
+        //}
+
+        public void CalculateCrScLimits(out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
         {
             fTempMax_X = float.MinValue;
             fTempMin_X = float.MaxValue;
@@ -1001,73 +1143,107 @@ namespace CRSC
 
             if (CrScPointsOut != null) // Some points exist
             {
-                for (int i = 0; i < CrScPointsOut.Length / 2; i++)
+                for (int i = 0; i < CrScPointsOut.Count; i++)
                 {
                     // Maximum X - coordinate
-                    if (CrScPointsOut[i, 0] > fTempMax_X)
-                        fTempMax_X = CrScPointsOut[i, 0];
+                    if (CrScPointsOut[i].X > fTempMax_X)
+                        fTempMax_X = CrScPointsOut[i].X;
 
                     // Minimum X - coordinate
-                    if (CrScPointsOut[i, 0] < fTempMin_X)
-                        fTempMin_X = CrScPointsOut[i, 0];
+                    if (CrScPointsOut[i].X < fTempMin_X)
+                        fTempMin_X = CrScPointsOut[i].X;
 
                     // Maximum Y - coordinate
-                    if (CrScPointsOut[i, 1] > fTempMax_Y)
-                        fTempMax_Y = CrScPointsOut[i, 1];
+                    if (CrScPointsOut[i].Y > fTempMax_Y)
+                        fTempMax_Y = CrScPointsOut[i].Y;
 
                     // Minimum Y - coordinate
-                    if (CrScPointsOut[i, 1] < fTempMin_Y)
-                        fTempMin_Y = CrScPointsOut[i, 1];
+                    if (CrScPointsOut[i].Y < fTempMin_Y)
+                        fTempMin_Y = CrScPointsOut[i].Y;
                 }
             }
         }
 
-        public void GetGeometryCenterPointCoordinates(out float x, out float y)
+        public void GetGeometryCenterPointCoordinates(out double x, out double y)
         {
-            float fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y;
+            double fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y;
 
             CalculateCrScLimits(out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
 
-            x = 0.5f * (fTempMax_X - fTempMin_X);
-            y = 0.5f * (fTempMax_Y - fTempMin_Y);
+            x = (0.5f * (fTempMax_X - fTempMin_X));
+            y = (0.5f * (fTempMax_Y - fTempMin_Y));
         }
 
-        public float[,] GetCoordinatesInGeometryRelatedToGeometryCenterPoint(float[,] array_in)
+        //public float[,] GetCoordinatesInGeometryRelatedToGeometryCenterPoint(float[,] array_in)
+        //{
+        //    float[,] array_out = array_in;
+        //    float x, y;
+
+        //    GetGeometryCenterPointCoordinates(out x, out y);
+
+        //    for (int i = 0; i < array_out.Length / 2; i++)
+        //    {
+        //        array_out[i, 0] -= x;
+        //        array_out[i, 1] -= y;
+        //    }
+
+        //    return array_out;
+        //}
+
+        public List<Point> GetCoordinatesInGeometryRelatedToGeometryCenterPoint(List<Point> pointsIn)
         {
-            float[,] array_out = array_in;
-            float x, y;
+            List<Point> pointsOut = new List<Point>(pointsIn);            
 
+            double x, y;
             GetGeometryCenterPointCoordinates(out x, out y);
-
-            for (int i = 0; i < array_out.Length / 2; i++)
+            
+            for (int i = 0; i < pointsOut.Count; i++)
             {
-                array_out[i, 0] -= x;
-                array_out[i, 1] -= y;
+                Point p = pointsOut[i];
+                p.X -= x;
+                p.Y -= y;
+
             }
 
-            return array_out;
+            return pointsOut;
         }
 
         // Modification
         // Mirror cross-section about x
+        //public void MirrorPlateAboutX()
+        //{
+        //    Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsOut);
+        //    Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsIn);
+        //}
         public void MirrorPlateAboutX()
         {
-            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsOut);
-            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsIn);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(m_CrScPointsOut);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(m_CrScPointsIn);
         }
 
+
         // Mirror cross-section about y
+        //public void MirrorPlateAboutY()
+        //{
+        //    Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsOut);
+        //    Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsIn);
+        //}
         public void MirrorPlateAboutY()
         {
-            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsOut);
-            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsIn);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(m_CrScPointsOut);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(m_CrScPointsIn);
         }
 
         // Rotate cross-section
+        //public void RotateCrsc_CW(float fTheta_deg)
+        //{
+        //    Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsOut);
+        //    Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsIn);
+        //}
         public void RotateCrsc_CW(float fTheta_deg)
         {
-            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsOut);
-            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsIn);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, m_CrScPointsOut);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, m_CrScPointsIn);
         }
     }
 }

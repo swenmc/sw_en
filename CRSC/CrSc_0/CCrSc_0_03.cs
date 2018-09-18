@@ -57,8 +57,8 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -80,7 +80,7 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -89,15 +89,21 @@ namespace CRSC
         }
 
         //----------------------------------------------------------------------------
+        //void CalcCrSc_Coord()
+        //{
+        //    CrScPointsOut = Geom2D.GetEllipsePointCoordArray(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));
+        //    //CrScPointsOut = Geom2D.GetEllipsePointCoord(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));
+        //    // Centroid
+        //    //CrScPointsOut.Add(new Point(0, 0));
+        //    CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
+        //    CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
+
+        //}
         void CalcCrSc_Coord()
         {
-            CrScPointsOut = Geom2D.GetEllipsePointCoordArray(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));
-            //CrScPointsOut = Geom2D.GetEllipsePointCoord(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));
+            CrScPointsOut = Geom2D.GetEllipsePointCoord(0.5f * m_fa, 0.5f * m_fb, m_fAngle, (short)((int)ITotNoPoints - 1));            
             // Centroid
-            //CrScPointsOut.Add(new Point(0, 0));
-            CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
-            CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
-
+            CrScPointsOut.Add(new Point(0, 0));
         }
 
 

@@ -56,7 +56,7 @@ namespace sw_en_GUI
             int iNoCrScPoints2D = 4; // Depends on Section Type - nacitavat priamo z objektu objCrSc // I,U,Z,HL, L, ....
 
             // Points 2D Coordinate Array
-            float[,] res = test1.objCrScWF.CrScPointsOut; // I,U,Z,HL, L, ....
+            List<Point> res = test1.objCrScWF.CrScPointsOut; // I,U,Z,HL, L, ....
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,11 +74,11 @@ namespace sw_en_GUI
             // I,U,Z,HL, L, ....
             for (int j = 0; j < iNoCrScPoints2D; j++)
             {
-                mesh.Positions.Add(new Point3D(res[j, 0], res[j, 1], 0));
+                mesh.Positions.Add(new Point3D(res[j].X, res[j].Y, 0));
             }
             for (int j = 0; j < iNoCrScPoints2D; j++)
             {
-                mesh.Positions.Add(new Point3D(res[j, 0], res[j, 1], fELength));
+                mesh.Positions.Add(new Point3D(res[j].X, res[j].Y, fELength));
             }
             mesh.TriangleIndices = M_FBProfileTriangelsIndices;
             model.Geometry = mesh;
