@@ -158,7 +158,7 @@ namespace BaseClasses
             fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
             fA_v_zv = Get_A_rect(Ft, m_fhY1);
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
-            fI_yu = Get_I_yu_channel(m_flZ, Ft, Ft, m_fhY1);  // Moment of inertia of plate
+            fI_yu = Get_I_yu_channel(m_flZ, Ft, Ft, m_fhY1);  // TODO - bug - v strede je horna pasnica rozdelena, takze to musi byt tvar L, nie U // Nesymetricky prierez// Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY1); // Elastic section modulus
 
             ScrewArrangement = screwArrangement;
