@@ -207,7 +207,7 @@ namespace BaseClasses
             iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
             iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
             fx_c_SQ2 = fFreeEdgeDistance;
-            fy_c_SQ2 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fStiffenerSize_temp + fDistanceFromEdgeLine;
+            fy_c_SQ2 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
             fDistanceOfPointsX_SQ2 = fDistanceinX;
             fDistanceOfPointsY_SQ2 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
 
@@ -216,13 +216,13 @@ namespace BaseClasses
             iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
             fx_c_SQ3 = fFreeEdgeDistance;
             fy_c_SQ3 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
-            fDistanceOfPointsX_SQ1 = fDistanceinX;
-            fDistanceOfPointsY_SQ1 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+            fDistanceOfPointsX_SQ3 = fDistanceinX;
+            fDistanceOfPointsY_SQ3 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
 
             iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
             iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
             fx_c_SQ4 = fFreeEdgeDistance;
-            fy_c_SQ4 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fStiffenerSize_temp + fDistanceFromEdgeLine;
+            fy_c_SQ4 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDepthOfOneStraightPartOfWeb + fStiffenerSize_temp + fDistanceFromEdgeLine;
             fDistanceOfPointsX_SQ4 = fDistanceinX;
             fDistanceOfPointsY_SQ4 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
 
@@ -253,6 +253,17 @@ namespace BaseClasses
             seq2.fHolesCentersPoints2D = new float[seq2.iNumberOfScrewsInRow_xDirection * seq2.iNumberOfScrewsInColumn_yDirection, 2];
             RectangularSequences.Add(seq2);
 
+            // Celkovy pocet skrutiek
+            // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
+            IHolesNumber = 0;
+
+            foreach (ScrewRectSequence seq in RectangularSequences)
+                IHolesNumber += seq.iNumberOfScrewsInRow_xDirection * seq.iNumberOfScrewsInColumn_yDirection;
+
+            int iNumberOfGroupsInPlate = 2;
+
+            IHolesNumber *= iNumberOfGroupsInPlate;
+
             if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
                iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
             {
@@ -275,16 +286,13 @@ namespace BaseClasses
                 seq4.fDistanceOfPointsY = fDistanceOfPointsY_SQ4;
                 seq4.fHolesCentersPoints2D = new float[seq4.iNumberOfScrewsInRow_xDirection * seq4.iNumberOfScrewsInColumn_yDirection, 2];
                 RectangularSequences.Add(seq4);
+
+                // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+                IHolesNumber = 0;
+
+                foreach (ScrewRectSequence seq in RectangularSequences)
+                    IHolesNumber += seq.iNumberOfScrewsInRow_xDirection * seq.iNumberOfScrewsInColumn_yDirection;
             }
-
-            IHolesNumber = 0;
-
-            foreach (ScrewRectSequence seq in RectangularSequences)
-               IHolesNumber += seq.iNumberOfScrewsInRow_xDirection * seq.iNumberOfScrewsInColumn_yDirection;
-
-            int iNumberOfGroupsInPlate = 2;
-
-            IHolesNumber *= iNumberOfGroupsInPlate;
 
             HolesCentersPoints2D = new float[IHolesNumber, 2];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
@@ -365,8 +373,8 @@ namespace BaseClasses
             float fx_cBG = flZ + FCrscRafterDepth;
             float fy_cBG = 0.0f;
 
-            float fx_cUG = flZ + FCrscRafterDepth / (float)Math.Sin(fSlope_rad);
-            float fy_cUG = fhY_1 - FCrscRafterDepth / (float)Math.Cos(fSlope_rad);
+            float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
+            float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
 
             // Bottom group - column
             ScrewRectSequence seq1 = RectangularSequences[0]; // TODO - Doriesit ako pristupovat k premennym v struct a menit ich, neda sa odkazovat referenciou
@@ -384,12 +392,12 @@ namespace BaseClasses
 
             // Upper group - rafter
             ScrewRectSequence seq3 = RectangularSequences[0]; // TODO - Doriesit ako pristupovat k premennym v struct a menit ich, neda sa odkazovat referenciou
-            seq3.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[0]);
-            RectangularSequences.Add(seq3);
+            seq3.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[2]);
+            RectangularSequences[2] = seq3;
 
             ScrewRectSequence seq4 = RectangularSequences[1];
-            seq4.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[1]);
-            RectangularSequences.Add(seq4);
+            seq4.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[3]);
+            RectangularSequences[3] = seq4;
 
             // Rotate screws by roof slope (upper group only)
             // Rotate about [0,0]

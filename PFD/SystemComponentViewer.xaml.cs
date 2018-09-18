@@ -435,6 +435,7 @@ namespace PFD
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+                CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
 
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
@@ -485,7 +486,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_K:
                         {
                             if (vm.ComponentIndex == 0) // KA
-                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
                             else if(vm.ComponentIndex == 1)
                                 plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 2)
