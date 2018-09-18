@@ -114,6 +114,40 @@ namespace BaseClasses
             UpdatePlateData(screwArrangement);
         }
 
+        public CConCom_Plate_KA(string sName_temp,
+            CPoint controlpoint,
+            float fb_1_temp,
+            float fh_1_temp,
+            float fb_2_temp,
+            float fh_2_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            CScrewArrangementRectApexOrKnee screwArrangement,
+            bool bIsDisplayed)
+        {
+            Name = sName_temp;
+            eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_K;
+            BIsDisplayed = bIsDisplayed;
+
+            ITotNoPointsin2D = 4;
+            ITotNoPointsin3D = 8;
+
+            m_pControlPoint = controlpoint;
+            m_fbX1 = fb_1_temp;
+            m_fhY1 = fh_1_temp;
+            m_fbX2 = fb_2_temp;
+            m_fhY2 = fh_2_temp;
+            Ft = ft_platethickness;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
+
+            UpdatePlateData(screwArrangement);
+        }
+
         public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
         {
             m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
@@ -121,7 +155,6 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-
             HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
             HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
@@ -145,6 +178,43 @@ namespace BaseClasses
 
             screwArrangement.GenerateConnectors();
 
+            UpdatePlateData_Basic(screwArrangement);
+        }
+
+        public void UpdatePlateData(CScrewArrangementRectApexOrKnee screwArrangement)
+        {
+            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
+
+            // Create Array - allocate memory
+            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
+            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
+            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
+            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+
+            // Fill Array Data
+            Calc_Coord2D();
+            Calc_Coord3D();
+            screwArrangement.Calc_HolesCentersCoord2DKneePlate(
+                m_fbX1,
+                m_fbX2,
+                0,
+                m_fhY1,
+                m_fSlope_rad,
+                ref HolesCentersPoints2D);
+
+            screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+
+            screwArrangement.GenerateConnectors();
+
+            UpdatePlateData_Basic(screwArrangement);
+        }
+
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fArea = PolygonArea();
@@ -167,8 +237,8 @@ namespace BaseClasses
             DrillingRoutePoints2D = null;
         }
 
-            //----------------------------------------------------------------------------
-            void Calc_Coord2D()
+        //----------------------------------------------------------------------------
+        void Calc_Coord2D()
         {
             PointsOut2D[0, 0] = 0;
             PointsOut2D[0, 1] = 0;

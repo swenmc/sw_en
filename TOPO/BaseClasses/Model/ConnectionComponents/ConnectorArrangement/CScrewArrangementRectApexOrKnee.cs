@@ -98,6 +98,8 @@ namespace BaseClasses
         }
 
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+
+        // Bottom (knee plate) or left (apex plate) group
         public int iNumberOfScrewsInRow_xDirection_SQ1;
         public int iNumberOfScrewsInColumn_yDirection_SQ1;
         public float fx_c_SQ1;
@@ -110,6 +112,20 @@ namespace BaseClasses
         public float fy_c_SQ2;
         public float fDistanceOfPointsX_SQ2;
         public float fDistanceOfPointsY_SQ2;
+
+        // Top (knee plate) or right (apex plate) group
+        public int iNumberOfScrewsInRow_xDirection_SQ3;
+        public int iNumberOfScrewsInColumn_yDirection_SQ3;
+        public float fx_c_SQ3;
+        public float fy_c_SQ3;
+        public float fDistanceOfPointsX_SQ3;
+        public float fDistanceOfPointsY_SQ3;
+        public int iNumberOfScrewsInRow_xDirection_SQ4;
+        public int iNumberOfScrewsInColumn_yDirection_SQ4;
+        public float fx_c_SQ4;
+        public float fy_c_SQ4;
+        public float fDistanceOfPointsX_SQ4;
+        public float fDistanceOfPointsY_SQ4;
 
         float m_fSlope_rad;
         public float[] HolesCenterRadii;
@@ -159,6 +175,60 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
+        public CScrewArrangementRectApexOrKnee(
+            CScrew referenceScrew_temp,
+            float fCrscRafterDepth_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            int iNumberOfScrewsInRow_xDirection_G1_SQ_temp,  // Bottom group of knee plate
+            int iNumberOfScrewsInColumn_yDirection_G1_SQ_temp,
+            int iNumberOfScrewsInRow_xDirection_G2_SQ_temp,  // Upper group of knee plate
+            int iNumberOfScrewsInColumn_yDirection_G2_SQ_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ_temp + iNumberOfScrewsInRow_xDirection_G2_SQ_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ_temp, referenceScrew_temp)
+        {
+            RectangularSequences = new List<ScrewRectSequence>(2); // TODO nastavit pocet sekvencii v spoji
+            referenceScrew = referenceScrew_temp;
+            FCrscRafterDepth = fCrscRafterDepth_temp;
+            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            FStiffenerSize = fStiffenerSize_temp;
+
+            float fFreeEdgeDistance = 0.05f;
+            float fDistanceinX = 0.05f;
+            float fDistanceFromEdgeLine = 0.02f;
+            float fDepthOfOneStraightPartOfWeb = 0.5f * (fCrscWebStraightDepth_temp - fStiffenerSize_temp);
+
+            // Bottom group
+            iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
+            fx_c_SQ1 = fFreeEdgeDistance;
+            fy_c_SQ1 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
+            fDistanceOfPointsX_SQ1 = fDistanceinX;
+            fDistanceOfPointsY_SQ1 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+            iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ_temp;
+            fx_c_SQ2 = fFreeEdgeDistance;
+            fy_c_SQ2 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fStiffenerSize_temp + fDistanceFromEdgeLine;
+            fDistanceOfPointsX_SQ2 = fDistanceinX;
+            fDistanceOfPointsY_SQ2 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+            // Upper group
+            iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
+            fx_c_SQ3 = fFreeEdgeDistance;
+            fy_c_SQ3 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fDistanceFromEdgeLine;
+            fDistanceOfPointsX_SQ1 = fDistanceinX;
+            fDistanceOfPointsY_SQ1 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+            iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ_temp;
+            fx_c_SQ4 = fFreeEdgeDistance;
+            fy_c_SQ4 = 0.5f * (fCrscRafterDepth_temp - fCrscWebStraightDepth_temp) + fStiffenerSize_temp + fDistanceFromEdgeLine;
+            fDistanceOfPointsX_SQ4 = fDistanceinX;
+            fDistanceOfPointsY_SQ4 = fDepthOfOneStraightPartOfWeb - 2 * fDistanceFromEdgeLine;
+
+            UpdateArrangmentData();
+        }
+
         public void UpdateArrangmentData()
         {
             RectangularSequences.Clear(); // Delete previous data otherwise are added more and more new screws to the list
@@ -182,6 +252,30 @@ namespace BaseClasses
             seq2.fDistanceOfPointsY = fDistanceOfPointsY_SQ2;
             seq2.fHolesCentersPoints2D = new float[seq2.iNumberOfScrewsInRow_xDirection * seq2.iNumberOfScrewsInColumn_yDirection, 2];
             RectangularSequences.Add(seq2);
+
+            if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
+               iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
+            {
+                ScrewRectSequence seq3 = new ScrewRectSequence();
+                seq3.iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ3;
+                seq3.iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ3;
+                seq3.fx_c = fx_c_SQ3;
+                seq3.fy_c = fy_c_SQ3;
+                seq3.fDistanceOfPointsX = fDistanceOfPointsX_SQ3;
+                seq3.fDistanceOfPointsY = fDistanceOfPointsY_SQ3;
+                seq3.fHolesCentersPoints2D = new float[seq3.iNumberOfScrewsInRow_xDirection * seq3.iNumberOfScrewsInColumn_yDirection, 2];
+                RectangularSequences.Add(seq3);
+
+                ScrewRectSequence seq4 = new ScrewRectSequence();
+                seq4.iNumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ4;
+                seq4.iNumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ4;
+                seq4.fx_c = fx_c_SQ4;
+                seq4.fy_c = fy_c_SQ4;
+                seq4.fDistanceOfPointsX = fDistanceOfPointsX_SQ4;
+                seq4.fDistanceOfPointsY = fDistanceOfPointsY_SQ4;
+                seq4.fHolesCentersPoints2D = new float[seq4.iNumberOfScrewsInRow_xDirection * seq4.iNumberOfScrewsInColumn_yDirection, 2];
+                RectangularSequences.Add(seq4);
+            }
 
             IHolesNumber = 0;
 
@@ -240,6 +334,76 @@ namespace BaseClasses
             // Add mirrored sequences into the list
             RectangularSequences.Add(seq3);
             RectangularSequences.Add(seq4);
+
+            // Fill array of holes centers
+            int iPointIndex = 0;
+            for (int i = 0; i < RectangularSequences.Count; i++) // Add each sequence
+            {
+                for (int j = 0; j < RectangularSequences[i].fHolesCentersPoints2D.Length / 2; j++) // Add each point in the sequence
+                {
+                    HolesCentersPoints2D[iPointIndex + j, 0] = RectangularSequences[i].fHolesCentersPoints2D[j, 0];
+                    HolesCentersPoints2D[iPointIndex + j, 1] = RectangularSequences[i].fHolesCentersPoints2D[j, 1];
+                }
+
+                iPointIndex += RectangularSequences[i].fHolesCentersPoints2D.Length / 2;
+            }
+
+            // TODO - temporary nastavit pre pole suradnic ktore je sucastou plate
+            // teoereticky moze mat usporadanie iny pocet ako je pocet na plate, napriklad ak sa usporiadanie odzrkadli alebo skopiruje vramci plochy (napr. Typ KE)
+            fHolesCentersPoints2D = HolesCentersPoints2D;
+        }
+
+        public void Calc_HolesCentersCoord2DKneePlate(
+            float fbX_1,
+            float fbX_2,
+            float flZ,
+            float fhY_1,
+            float fSlope_rad,
+            ref float[,] fHolesCentersPoints2D)
+        {
+            // Coordinates of [0,0] of sequence point on plate
+            float fx_cBG = flZ + FCrscRafterDepth;
+            float fy_cBG = 0.0f;
+
+            float fx_cUG = flZ + FCrscRafterDepth / (float)Math.Sin(fSlope_rad);
+            float fy_cUG = fhY_1 - FCrscRafterDepth / (float)Math.Cos(fSlope_rad);
+
+            // Bottom group - column
+            ScrewRectSequence seq1 = RectangularSequences[0]; // TODO - Doriesit ako pristupovat k premennym v struct a menit ich, neda sa odkazovat referenciou
+            seq1.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[0]);
+            RectangularSequences[0] = seq1;
+
+            ScrewRectSequence seq2 = RectangularSequences[1];
+            seq2.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[1]);
+            RectangularSequences[1] = seq2;
+
+            // Rotate screws by colum slope (bottom group only)
+            // Rotate about [0,0] 90 deg
+            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, RectangularSequences[0]);
+            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, RectangularSequences[1]);
+
+            // Upper group - rafter
+            ScrewRectSequence seq3 = RectangularSequences[0]; // TODO - Doriesit ako pristupovat k premennym v struct a menit ich, neda sa odkazovat referenciou
+            seq3.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[0]);
+            RectangularSequences.Add(seq3);
+
+            ScrewRectSequence seq4 = RectangularSequences[1];
+            seq4.fHolesCentersPoints2D = Get_ScrewSequencePointCoordinates(RectangularSequences[1]);
+            RectangularSequences.Add(seq4);
+
+            // Rotate screws by roof slope (upper group only)
+            // Rotate about [0,0]
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, RectangularSequences[2]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, RectangularSequences[3]);
+
+            // Translate from [0,0] on plate to the final position
+            // Bottom Group
+            TranslateSequence(fx_cBG, fy_cBG, RectangularSequences[0]);
+            TranslateSequence(fx_cBG, fy_cBG, RectangularSequences[1]);
+
+            // Upper Group
+            TranslateSequence(fx_cUG, fy_cUG, RectangularSequences[2]);
+            TranslateSequence(fx_cUG, fy_cUG, RectangularSequences[3]);
 
             // Fill array of holes centers
             int iPointIndex = 0;
