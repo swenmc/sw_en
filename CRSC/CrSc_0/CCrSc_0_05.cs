@@ -46,7 +46,7 @@ namespace CRSC
             b = fb;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
+            //CrScPointsOut = new float[ITotNoPoints, 2];
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -62,8 +62,8 @@ namespace CRSC
             b = fb;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
             // Fill Array Data
             CalcCrSc_Coord();
 
@@ -85,11 +85,17 @@ namespace CRSC
         }
 
         //----------------------------------------------------------------------------
+        //public void CalcCrSc_Coord()
+        //{
+        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
+
+        //    CrScPointsOut = Geom2D.GetRectanglePointCoordArray((float)h, (float)b);
+        //}
         public void CalcCrSc_Coord()
         {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
-            CrScPointsOut = Geom2D.GetRectanglePointCoordArray((float)h, (float)b);
+            CrScPointsOut = Geom2D.GetRectanglePointCoord((float)h, (float)b);
         }
 
         // Perimeter of section

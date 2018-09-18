@@ -106,10 +106,10 @@ namespace CRSC
 
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[INoPointsOut, 2];
-            CrScPointsIn = new float[INoPointsIn, 2];
-            //CrScPointsOut = new List<Point>(INoPointsOut);
-            //CrScPointsIn = new List<Point>(INoPointsIn);
+            //CrScPointsOut = new float[INoPointsOut, 2];
+            //CrScPointsIn = new float[INoPointsIn, 2];
+            CrScPointsOut = new List<Point>(INoPointsOut);
+            CrScPointsIn = new List<Point>(INoPointsIn);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -137,8 +137,8 @@ namespace CRSC
                 return;
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[INoPointsOut, 2];
-            CrScPointsIn = new float[INoPointsIn, 2];
+            //CrScPointsOut = new float[INoPointsOut, 2];
+            //CrScPointsIn = new float[INoPointsIn, 2];
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -154,12 +154,12 @@ namespace CRSC
             // INoPoints = 72; // vykreslujeme ako n-uholnik
 
             // Outside Points Coordinates
-            CrScPointsOut = Geom2D.GetEllipsePointCoordArray(m_fr_out_major, m_fr_out_minor, m_fAngle, INoPointsOut);
-            //CrScPointsOut = Geom2D.GetEllipsePointCoord(m_fr_out_major, m_fr_out_minor, m_fAngle, INoPointsOut);
+            //CrScPointsOut = Geom2D.GetEllipsePointCoordArray(m_fr_out_major, m_fr_out_minor, m_fAngle, INoPointsOut);
+            CrScPointsOut = Geom2D.GetEllipsePointCoord(m_fr_out_major, m_fr_out_minor, m_fAngle, INoPointsOut);
 
             // Inside Points
-            CrScPointsIn = Geom2D.GetEllipsePointCoordArray(m_fr_in_major, m_fr_in_minor, m_fAngle, INoPointsIn);
-            //CrScPointsIn = Geom2D.GetEllipsePointCoord(m_fr_in_major, m_fr_in_minor, m_fAngle, INoPointsIn);
+            //CrScPointsIn = Geom2D.GetEllipsePointCoordArray(m_fr_in_major, m_fr_in_minor, m_fAngle, INoPointsIn);
+            CrScPointsIn = Geom2D.GetEllipsePointCoord(m_fr_in_major, m_fr_in_minor, m_fAngle, INoPointsIn);
         }
 
 

@@ -56,8 +56,8 @@ namespace CRSC
             m_fd = Geom2D.GetRadiusfromSideLength(m_fa, 12);
 
             // Create Array - allocate memory
-            CrScPointsOut = new float[ITotNoPoints, 2];
-            //CrScPointsOut = new List<Point>(ITotNoPoints);
+            //CrScPointsOut = new float[ITotNoPoints, 2];
+            CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -70,8 +70,8 @@ namespace CRSC
         void CalcCrSc_Coord()
         {
             // Fill Edge Points Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-            CrScPointsOut = Geom2D.AddCentroidPosition_ZeroArray(Geom2D.GetDodecagonPointCoordArray(m_fa));
-            //CrScPointsOut = Geom2D.AddCentroidPosition_Zero(Geom2D.GetDodecagonPointCoord(m_fa));
+            //CrScPointsOut = Geom2D.AddCentroidPosition_ZeroArray(Geom2D.GetDodecagonPointCoordArray(m_fa));
+            CrScPointsOut = Geom2D.AddCentroidPosition_Zero(Geom2D.GetDodecagonPointCoord(m_fa));
         }
 
         protected override void loadCrScIndices()

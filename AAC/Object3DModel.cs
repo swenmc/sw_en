@@ -110,8 +110,8 @@ namespace AAC
                     for (int j = 0; j < iNoCrScPoints2D; j++)
                     {
                         // X - start, Y, Z
-                        meshFrontSide.Positions.Add(new Point3D(0, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
-                        meshShell.Positions.Add(new Point3D(0, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                        meshFrontSide.Positions.Add(new Point3D(0, obj_CrScA.CrScPointsOut[j].X, obj_CrScA.CrScPointsOut[j].Y));
+                        meshShell.Positions.Add(new Point3D(0, obj_CrScA.CrScPointsOut[j].X, obj_CrScA.CrScPointsOut[j].Y));
                     }
 
                     for (int j = 0; j < iNoCrScPoints2D; j++)
@@ -119,13 +119,13 @@ namespace AAC
                         // X - end, Y, Z
                         if (obj_CrScB == null /*|| zistit ci su objekty rovnakeho typu - triedy */)  // Check that data of second cross-section are available
                         {
-                            meshBackSide.Positions.Add(new Point3D(m_dLength, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1])); // Constant size member
-                            meshShell.Positions.Add(new Point3D(m_dLength, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                            meshBackSide.Positions.Add(new Point3D(m_dLength, obj_CrScA.CrScPointsOut[j].X, obj_CrScA.CrScPointsOut[j].Y)); // Constant size member
+                            meshShell.Positions.Add(new Point3D(m_dLength, obj_CrScA.CrScPointsOut[j].X, obj_CrScA.CrScPointsOut[j].Y));
                         }
                         else
                         {
-                            meshBackSide.Positions.Add(new Point3D(m_dLength, obj_CrScB.CrScPointsOut[j, 0], obj_CrScB.CrScPointsOut[j, 1])); // Tapered member
-                            meshShell.Positions.Add(new Point3D(m_dLength, obj_CrScA.CrScPointsOut[j, 0], obj_CrScA.CrScPointsOut[j, 1]));
+                            meshBackSide.Positions.Add(new Point3D(m_dLength, obj_CrScB.CrScPointsOut[j].X, obj_CrScB.CrScPointsOut[j].Y)); // Tapered member
+                            meshShell.Positions.Add(new Point3D(m_dLength, obj_CrScA.CrScPointsOut[j].X, obj_CrScA.CrScPointsOut[j].Y));
                         }
                     }
                 }

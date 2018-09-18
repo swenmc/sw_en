@@ -7,6 +7,7 @@ using System.Windows.Media.Media3D;
 using BaseClasses;
 using MATH;
 using EXPIMP;
+using System.Collections.Generic;
 
 namespace PFD
 {
@@ -127,13 +128,15 @@ namespace PFD
                     }
 
                     // Transform cross-section coordinates in 2D
-                    float[,] crsccoordoutline = null;
-                    float[,] crsccoordinline = null;
+                    List<Point> crsccoordoutline = null;
+                    List<Point> crsccoordinline = null;
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
                     {
-                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+                        //crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Count);
+                        crsccoordoutline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsOut);
+
 
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
@@ -145,35 +148,39 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordoutline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordoutline[j, 0] += (float)p.X;
-                            crsccoordoutline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
                     {
-                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+                        //crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Count);
+
+                        crsccoordinline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsIn);
 
                         // Transfom coordinates to geometry center
                         crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordinline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordinline[j, 0] += (float)p.X;
-                            crsccoordinline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
@@ -263,13 +270,14 @@ namespace PFD
                     }
 
                     // Transform cross-section coordinates in 2D
-                    float[,] crsccoordoutline = null;
-                    float[,] crsccoordinline = null;
+                    List<Point> crsccoordoutline = null;
+                    List<Point> crsccoordinline = null;
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
                     {
-                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+                        //crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Count);
+                        crsccoordoutline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsOut);
 
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
@@ -281,35 +289,39 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordoutline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordoutline[j, 0] += (float)p.X;
-                            crsccoordoutline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
                     {
-                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+                        //crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Count);
+
+                        crsccoordinline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsIn);
 
                         // Transfom coordinates to geometry center
                         crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordinline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordinline[j, 0] += (float)p.X;
-                            crsccoordinline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
@@ -399,13 +411,15 @@ namespace PFD
                     }
 
                     // Transform cross-section coordinates in 2D
-                    float[,] crsccoordoutline = null;
-                    float[,] crsccoordinline = null;
+                    List<Point> crsccoordoutline = null;
+                    List<Point> crsccoordinline = null;
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
                     {
-                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+                        //crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Count);
+
+                        crsccoordoutline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsOut);
 
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
@@ -417,35 +431,39 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordoutline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordoutline[j, 0] += (float)p.X;
-                            crsccoordoutline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
                     {
-                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+                        //crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];                        
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Count);
+
+                        crsccoordinline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsIn);
 
                         // Transfom coordinates to geometry center
                         crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordinline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordinline[j, 0] += (float)p.X;
-                            crsccoordinline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
@@ -535,13 +553,15 @@ namespace PFD
                     }
 
                     // Transform cross-section coordinates in 2D
-                    float[,] crsccoordoutline = null;
-                    float[,] crsccoordinline = null;
+                    List<Point> crsccoordoutline = null;
+                    List<Point> crsccoordinline = null;
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
                     {
-                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+                        //crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Count);
+
+                        crsccoordoutline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsOut);
 
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
@@ -553,35 +573,39 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point= crsccoordoutline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordoutline[j, 0] += (float)p.X;
-                            crsccoordoutline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
                     {
-                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+                        //crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Count);
+
+                        crsccoordinline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsIn);
 
                         // Transfom coordinates to geometry center
                         crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordinline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordinline[j, 0] += (float)p.X;
-                            crsccoordinline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
@@ -671,13 +695,14 @@ namespace PFD
                     }
 
                     // Transform cross-section coordinates in 2D
-                    float[,] crsccoordoutline = null;
-                    float[,] crsccoordinline = null;
+                    List<Point> crsccoordoutline = null;
+                    List<Point> crsccoordinline = null;
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsOut != null)
                     {
-                        crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsOut, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Length);
+                        //crsccoordoutline = new float[model.m_arrMembers[i].CrScStart.INoPointsOut, 2];
+                        crsccoordoutline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsOut);
+                        //Array.Copy(, crsccoordoutline, model.m_arrMembers[i].CrScStart.CrScPointsOut.Count);
 
                         // Transfom coordinates to geometry center
                         crsccoordoutline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordoutline);
@@ -689,35 +714,38 @@ namespace PFD
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsOut; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j, 0], crsccoordoutline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordoutline[j].X, crsccoordoutline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordoutline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordoutline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordoutline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordoutline[j, 0] += (float)p.X;
-                            crsccoordoutline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
                     if (model.m_arrMembers[i].CrScStart.CrScPointsIn != null)
                     {
-                        crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
-                        Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Length);
+                        //crsccoordinline = new float[model.m_arrMembers[i].CrScStart.INoPointsIn, 2];
+                        crsccoordinline = new List<Point>(model.m_arrMembers[i].CrScStart.CrScPointsIn);
+                        //Array.Copy(model.m_arrMembers[i].CrScStart.CrScPointsIn, crsccoordinline, model.m_arrMembers[i].CrScStart.CrScPointsIn.Count);
 
                         // Transfom coordinates to geometry center
                         crsccoordinline = model.m_arrMembers[i].CrScStart.GetCoordinatesInGeometryRelatedToGeometryCenterPoint(crsccoordinline);
 
                         for (int j = 0; j < model.m_arrMembers[i].CrScStart.INoPointsIn; j++)
                         {
-                            float fx = (float)Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
-                            float fy = (float)Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j, 0], crsccoordinline[j, 1], model.m_arrMembers[i].DTheta_x);
+                            double fx = Geom2D.GetRotatedPosition_x_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
+                            double fy = Geom2D.GetRotatedPosition_y_CCW_rad(crsccoordinline[j].X, crsccoordinline[j].Y, model.m_arrMembers[i].DTheta_x);
 
-                            crsccoordinline[j, 0] = (float)(fx * fReal_Model_Zoom_Factor);
-                            crsccoordinline[j, 1] = (float)(fy * fReal_Model_Zoom_Factor);
+                            Point point = crsccoordinline[j];
+                            point.X = (fx * fReal_Model_Zoom_Factor);
+                            point.Y = (fy * fReal_Model_Zoom_Factor);
 
-                            crsccoordinline[j, 0] += (float)p.X;
-                            crsccoordinline[j, 1] += (float)p.Y;
+                            point.X += p.X;
+                            point.Y += p.Y;
                         }
                     }
 
@@ -788,6 +816,34 @@ namespace PFD
             }
         }
 
+        public void DrawCrossSection(Point centroid, double b, double h, double theta_x, List<Point> crsccoordoutline, List<Point> crsccoordinline)
+        {
+            // Outer outline lines
+            if (crsccoordoutline != null) // If is array of points not empty
+            {
+                double fCanvasTop = modelMarginBottom_y /*- fModel_Length_y_page*/ - centroid.Y;
+                double fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * b;
+
+                if (MathF.d_equal(Math.Abs(theta_x), MathF.dPI / 2) || MathF.d_equal(Math.Abs(theta_x), 3 / 2 * MathF.dPI)) // Set different margin for rotated cross-section
+                    fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * h;
+
+                DrawPolyLine(crsccoordoutline, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+            }
+
+            // Internal outline lines
+            if (crsccoordinline != null) // If is array of points not empty
+            {
+                // TODO - doladit posun vonkajsieho obrysu voci vnutornemu (spravidla m_ft)
+                double fCanvasTop = modelMarginBottom_y /*- fModel_Length_y_page*/ - centroid.Y;
+                double fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5f * b;
+
+                if (MathF.d_equal(Math.Abs(theta_x), MathF.dPI / 2) || MathF.d_equal(Math.Abs(theta_x), 3 / 2 * MathF.dPI)) // Set different margin for rotated cross-section
+                    fCanvasLeft = modelMarginLeft_x + centroid.X - 0.5 * h;
+
+                DrawPolyLine(crsccoordinline, fCanvasTop, fCanvasLeft, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+            }
+        }
+
         public void DrawPolyLine(float[,] arrPoints, double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             PointCollection points = new PointCollection();
@@ -798,6 +854,29 @@ namespace PFD
                     points.Add(new Point(arrPoints[i, 0], arrPoints[i, 1]));
                 else
                     points.Add(new Point(arrPoints[0, 0], arrPoints[0, 1])); // Last point is same as first one
+            }
+
+            Polyline myLine = new Polyline();
+            myLine.Stretch = Stretch.Fill;
+            myLine.Stroke = color;
+            myLine.Points = points;
+            myLine.StrokeThickness = thickness;
+            myLine.StrokeStartLineCap = startCap;
+            myLine.StrokeEndLineCap = endCap;
+            Canvas.SetTop(myLine, dCanvasTopTemp);
+            Canvas.SetLeft(myLine, dCanvasLeftTemp);
+            imageCanvas.Children.Add(myLine);
+        }
+        public void DrawPolyLine(List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        {
+            PointCollection points = new PointCollection();
+
+            for (int i = 0; i < listPoints.Count + 1; i++)
+            {
+                if (i < ((listPoints.Count)))
+                    points.Add(new Point(listPoints[i].X, listPoints[i].Y));
+                else
+                    points.Add(new Point(listPoints[0].X, listPoints[0].Y)); // Last point is same as first one
             }
 
             Polyline myLine = new Polyline();

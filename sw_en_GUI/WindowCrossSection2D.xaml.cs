@@ -35,10 +35,10 @@ namespace sw_en_GUI
         double dPageWidth;
         double dPageHeight;
 
-        float fTempMax_X;
-        float fTempMin_X;
-        float fTempMax_Y;
-        float fTempMin_Y;
+        double fTempMax_X;
+        double fTempMin_X;
+        double fTempMax_Y;
+        double fTempMin_Y;
 
         bool bDrawPoints = true;
         bool bDrawOutLine = true;
@@ -46,8 +46,10 @@ namespace sw_en_GUI
         bool bDrawPointNumbers = true;
         bool bDrawHoles = true;
 
-        float[,] PointsOut;
-        float[,] PointsIn;
+        //float[,] PointsOut;
+        //float[,] PointsIn;
+        List<Point> PointsOut;
+        List<Point> PointsIn;
         float[,] PointsHoles;
         float[,] PointsDrillingRoute;
 
@@ -80,9 +82,15 @@ namespace sw_en_GUI
             if (plate.PointsOut2D != null && plate.PointsOut2D.Length > 1)
             {
                 INoPointsOut = plate.ITotNoPointsin2D;
-                PointsOut = plate.PointsOut2D;
+                //PointsOut = plate.PointsOut2D;
 
-                CalculateModelLimits(plate.PointsOut2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+                PointsOut = new List<Point>();
+                for (int i = 0; i < plate.PointsOut2D.GetLength(0); i++)
+                {
+                    PointsOut.Add(new Point(plate.PointsOut2D[i, 0], plate.PointsOut2D[i, 1]));
+                }
+
+                Drawing2D.CalculateModelLimits(PointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             }
 
             PointsIn = null; // Todo - dopracovat (pole viacerych poli bodov pre definovanie otvorov), teoreticky moze mat plech okrem dier pre skrutky aj vacsie vyrezy a rozne otvory
@@ -125,25 +133,25 @@ namespace sw_en_GUI
             dPageHeight = dPageHeight_temp;
 
             // Fill arrays of points
-            if (crsc.CrScPointsOut != null && crsc.CrScPointsOut.Length > 1)
+            if (crsc.CrScPointsOut != null && crsc.CrScPointsOut.Count > 1)
             {
                 INoPointsOut = crsc.INoPointsOut;
                 PointsOut = crsc.CrScPointsOut;
 
-                CalculateModelLimits(crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+                Drawing2D.CalculateModelLimits(crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
 
             }
 
             PointsHoles = null;
 
-            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
+            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Count > 1)
             {
                 INoPointsIn = crsc.INoPointsIn;
                 PointsIn = crsc.CrScPointsIn;
 
-                float fTempMax_X_IN, fTempMin_X_IN, fTempMax_Y_IN, fTempMin_Y_IN;
+                double fTempMax_X_IN, fTempMin_X_IN, fTempMax_Y_IN, fTempMin_Y_IN;
 
-                CalculateModelLimits(crsc.CrScPointsIn, out fTempMax_X_IN, out fTempMin_X_IN, out fTempMax_Y_IN, out fTempMin_Y_IN);
+                Drawing2D.CalculateModelLimits(crsc.CrScPointsIn, out fTempMax_X_IN, out fTempMin_X_IN, out fTempMax_Y_IN, out fTempMin_Y_IN);
 
                 dPointInOutDistance_x_real = fTempMax_X - fTempMax_X_IN;
                 dPointInOutDistance_y_real = fTempMax_Y - fTempMax_Y_IN;
@@ -186,14 +194,14 @@ namespace sw_en_GUI
             PointsIn = crsc.CrScPointsIn;
             PointsHoles = null;
 
-            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
+            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Count > 1)
             {
-                INoPointsIn = crsc.CrScPointsIn.Length / 2;
-                PointsIn = new float[INoPointsIn, 2];   //zbytocny riadok
+                INoPointsIn = crsc.CrScPointsIn.Count;
+                //PointsIn = new float[INoPointsIn, 2];   //zbytocny riadok
                 PointsIn = crsc.CrScPointsIn;
             }
 
-            CalculateModelLimits(PointsOut = crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            Drawing2D.CalculateModelLimits(PointsOut = crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
 
             CaclulateBasicValue();
 
@@ -231,7 +239,7 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoPointsOut; i++)
                     {
-                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
+                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
                     }
                 }
 
@@ -240,7 +248,7 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoPointsIn; i++)
                     {
-                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1]), Brushes.Red, Brushes.Red, 4, canvasForImage);
+                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
                     }
                 }
             }
@@ -282,18 +290,18 @@ namespace sw_en_GUI
                             // Add a Line
                             Line l = new Line();
 
-                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0];
-                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1];
+                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X;
+                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y;
 
                             if (i < (INoPointsOut - 1))
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i + 1, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i + 1, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i + 1].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i + 1].Y;
                             }
                             else
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[0, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[0].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0].Y;
                             }
 
                             DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
@@ -307,18 +315,18 @@ namespace sw_en_GUI
                         {
                             // Add a Line
                             Line l = new Line();
-                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0];
-                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1];
+                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X;
+                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y;
 
                             if (i < (INoPointsIn - 1))
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i + 1, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i + 1, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i + 1].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i + 1].Y;
                             }
                             else
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[0, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[0, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[0].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[0].Y;
                             }
 
                             DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
@@ -337,7 +345,7 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoPointsOut; i++)
                     {
-                        DrawText((i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1], 16, Brushes.Blue, canvasForImage);
+                        DrawText((i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y, 16, Brushes.Blue, canvasForImage);
                     }
                 }
 
@@ -346,7 +354,7 @@ namespace sw_en_GUI
                 {
                     for (int i = 0; i < INoPointsIn; i++)
                     {
-                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1], 16, Brushes.Green, canvasForImage);
+                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y, 16, Brushes.Green, canvasForImage);
                     }
                 }
             }
@@ -462,6 +470,33 @@ namespace sw_en_GUI
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
         }
+        public void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        {
+            PointCollection points = new PointCollection();
+
+            int iNumberOfLineSegments = listPoints.Count + (bIsClosed ? 1 : 0);
+
+            for (int i = 0; i < iNumberOfLineSegments; i++)
+            {
+                if (i < ((listPoints.Count)))
+                    points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * listPoints[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * listPoints[i].Y));
+                else
+                    points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * listPoints[0].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * listPoints[0].Y)); // Last point is same as first one
+            }
+
+            Polyline myLine = new Polyline();
+            myLine.Stretch = Stretch.Fill;
+            myLine.Stroke = color;
+            myLine.Points = points;
+            myLine.StrokeThickness = thickness;
+            myLine.StrokeStartLineCap = startCap;
+            myLine.StrokeEndLineCap = endCap;
+            //myLine.HorizontalAlignment = HorizontalAlignment.Left;
+            //myLine.VerticalAlignment = VerticalAlignment.Center;
+            Canvas.SetTop(myLine, dCanvasTopTemp);
+            Canvas.SetLeft(myLine, dCanvasLeftTemp);
+            imageCanvas.Children.Add(myLine);
+        }
 
         public void DrawText(string text, double posx, double posy, double fontSize, SolidColorBrush color, Canvas imageCanvas)
         {
@@ -558,40 +593,12 @@ namespace sw_en_GUI
             l.Y2 /= 2;
         }
 
-        public void CalculateModelLimits(float[,] Points_temp, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
-        {
-            fTempMax_X = float.MinValue;
-            fTempMin_X = float.MaxValue;
-            fTempMax_Y = float.MinValue;
-            fTempMin_Y = float.MaxValue;
-
-            if (PointsOut != null) // Some points exist
-            {
-                for (int i = 0; i < Points_temp.Length / 2; i++)
-                {
-                    // Maximum X - coordinate
-                    if (Points_temp[i, 0] > fTempMax_X)
-                        fTempMax_X = Points_temp[i, 0];
-
-                    // Minimum X - coordinate
-                    if (Points_temp[i, 0] < fTempMin_X)
-                        fTempMin_X = Points_temp[i, 0];
-
-                    // Maximum Y - coordinate
-                    if (Points_temp[i, 1] > fTempMax_Y)
-                        fTempMax_Y = Points_temp[i, 1];
-
-                    // Minimum Y - coordinate
-                    if (Points_temp[i, 1] < fTempMin_Y)
-                        fTempMin_Y = Points_temp[i, 1];
-                }
-            }
-        }
+        
 
         public void CaclulateBasicValue()
         {
-            float fModel_Length_x_real = fTempMax_X - fTempMin_X;
-            float fModel_Length_y_real = fTempMax_Y - fTempMin_Y;
+            double fModel_Length_x_real = fTempMax_X - fTempMin_X;
+            double fModel_Length_y_real = fTempMax_Y - fTempMin_Y;
 
             fModel_Length_x_page = scale_unit * fModel_Length_x_real;
             fModel_Length_y_page = scale_unit * fModel_Length_y_real;
@@ -607,8 +614,9 @@ namespace sw_en_GUI
             {
                 for (int i = 0; i < INoPointsOut; i++)
                 {
-                    PointsOut[i, 0] -= fTempMin_X;
-                    PointsOut[i, 1] -= fTempMin_Y;
+                    Point p = PointsOut[i];
+                    p.X -= fTempMin_X;
+                    p.Y -= fTempMin_Y;
                 }
             }
             else
@@ -621,8 +629,9 @@ namespace sw_en_GUI
             {
                 for (int i = 0; i < INoPointsIn; i++)
                 {
-                    PointsIn[i, 0] -= fTempMin_X;
-                    PointsIn[i, 1] -= fTempMin_Y;
+                    Point p = PointsIn[i];
+                    p.X -= fTempMin_X;
+                    p.Y -= fTempMin_Y;
                 }
             }
 
@@ -630,8 +639,8 @@ namespace sw_en_GUI
             {
                 for (int i = 0; i < INoHoles; i++)
                 {
-                    PointsHoles[i, 0] -= fTempMin_X;
-                    PointsHoles[i, 1] -= fTempMin_Y;
+                    PointsHoles[i, 0] -= (float)fTempMin_X;
+                    PointsHoles[i, 1] -= (float)fTempMin_Y;
                 }
             }
 

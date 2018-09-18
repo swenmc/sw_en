@@ -20,19 +20,19 @@ namespace BaseClasses
         public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage, 
             bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers)
         {
-                float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
+                double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
                 double dPointInOutDistance_x_real = 0;
                 double dPointInOutDistance_y_real = 0;
 
                 // Fill arrays of points
-                if (crsc.CrScPointsOut != null && crsc.CrScPointsOut.Length > 1)
+                if (crsc.CrScPointsOut != null && crsc.CrScPointsOut.Count > 1)
                 {
                     CalculateModelLimits(crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
                 }
 
-                if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Length > 1)
+                if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Count > 1)
                 {
-                    float fTempMax_X_IN = 0, fTempMin_X_IN = 0, fTempMax_Y_IN = 0, fTempMin_Y_IN = 0;
+                    double fTempMax_X_IN = 0, fTempMin_X_IN = 0, fTempMax_Y_IN = 0, fTempMin_Y_IN = 0;
 
                     CalculateModelLimits(crsc.CrScPointsIn, out fTempMax_X_IN, out fTempMin_X_IN, out fTempMax_Y_IN, out fTempMin_Y_IN);
 
@@ -42,10 +42,10 @@ namespace BaseClasses
 
             int scale_unit = 1000; // mm
 
-            float fModel_Length_x_real;
-            float fModel_Length_y_real;
-            float fModel_Length_x_page;
-            float fModel_Length_y_page;
+            double fModel_Length_x_real;
+            double fModel_Length_y_real;
+            double fModel_Length_x_page;
+            double fModel_Length_y_page;
             double dFactor_x;
             double dFactor_y;
             float fReal_Model_Zoom_Factor;
@@ -116,10 +116,10 @@ namespace BaseClasses
 
             int scale_unit = 1000; // mm
 
-            float fModel_Length_x_real;
-            float fModel_Length_y_real;
-            float fModel_Length_x_page;
-            float fModel_Length_y_page;
+            double fModel_Length_x_real;
+            double fModel_Length_y_real;
+            double fModel_Length_x_page;
+            double fModel_Length_y_page;
             double dFactor_x;
             double dFactor_y;
             float fReal_Model_Zoom_Factor;
@@ -127,6 +127,12 @@ namespace BaseClasses
             float fmodelMarginBottom_y;
             double dPointInOutDistance_x_page;
             double dPointInOutDistance_y_page;
+
+            List<Point> platePointsOut2D = new List<Point>();
+            for (int i = 0; i < plate.PointsOut2D.GetLength(0); i++)
+            {
+                platePointsOut2D.Add(new Point(plate.PointsOut2D[i, 0], plate.PointsOut2D[i, 1]));
+            }
 
             CalculateBasicValue(
                     fTempMax_X,
@@ -136,7 +142,7 @@ namespace BaseClasses
                     scale_unit,
                     width,
                     height,
-                    plate.PointsOut2D,
+                    platePointsOut2D,
                     null,
                     plate.HolesCentersPoints2D,
                     0,
@@ -177,7 +183,7 @@ namespace BaseClasses
                     bDrawHoles,
                     bDrawHoleCentreSymbols,
                     bDrawDrillingRoute,
-                    plate.PointsOut2D,
+                    platePointsOut2D,
                     null,
                     plate.HolesCentersPoints2D,
                     plate.DrillingRoutePoints2D, // TODO Ondrej - Prepracovat vsetky polia bodov na objekt Point alebo opacne, toto pole je potrebne naplnit z poloziek zoznamu List<Point> DrillingRoutePoints
@@ -246,14 +252,52 @@ namespace BaseClasses
                 DrawSymbol_Cross(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter + 20, Brushes.Red, 1, canvasForImage);
         }
 
+        //public static void DrawComponent(bool bDrawPoints,
+        //    bool bDrawOutLine,
+        //    bool bDrawPointNumbers,
+        //    bool bDrawHoles,
+        //    bool bDrawHoleCentreSymbols,
+        //    bool bDrawDrillingRoute,
+        //    float[,] PointsOut,
+        //    float[,] PointsIn,
+        //    float[,] PointsHoles,
+        //    float[,] PointsDrillingRoute,
+        //    float scale_unit,
+        //    double DHolesDiameter,
+        //    float fmodelMarginLeft_x,
+        //    float fmodelMarginBottom_y,
+        //    float fReal_Model_Zoom_Factor,
+        //    double fModel_Length_y_page,
+        //    double dPointInOutDistance_y_page,
+        //    double dPointInOutDistance_x_page,
+        //    Canvas canvasForImage)
+        //{
+        //    // Definition Points
+        //    DrawPoints(bDrawPoints, PointsOut, PointsIn, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
+
+        //    // Outlines
+        //    DrawOutlines(bDrawOutLine, true, PointsOut, PointsIn, fReal_Model_Zoom_Factor, fmodelMarginBottom_y, fmodelMarginLeft_x, fModel_Length_y_page, dPointInOutDistance_y_page, dPointInOutDistance_x_page, canvasForImage);
+
+        //    // Definition Point Numbers
+        //    DrawPointNumbers(bDrawPointNumbers, PointsOut, PointsIn, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
+
+        //    // Holes
+        //    if (PointsHoles != null)
+        //    {
+        //        DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, PointsHoles, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, scale_unit, DHolesDiameter, canvasForImage);
+
+        //        DrawDrillingRoute(bDrawDrillingRoute, PointsDrillingRoute, fReal_Model_Zoom_Factor, fmodelMarginLeft_x, fmodelMarginBottom_y, canvasForImage);
+        //    }
+        //}
+
         public static void DrawComponent(bool bDrawPoints,
             bool bDrawOutLine,
             bool bDrawPointNumbers,
             bool bDrawHoles,
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
-            float[,] PointsOut,
-            float[,] PointsIn,
+            List<Point> PointsOut,
+            List<Point> PointsIn,
             float[,] PointsHoles,
             float[,] PointsDrillingRoute,
             float scale_unit,
@@ -261,7 +305,7 @@ namespace BaseClasses
             float fmodelMarginLeft_x,
             float fmodelMarginBottom_y,
             float fReal_Model_Zoom_Factor,
-            float fModel_Length_y_page,
+            double fModel_Length_y_page,
             double dPointInOutDistance_y_page,
             double dPointInOutDistance_x_page,
             Canvas canvasForImage)
@@ -285,22 +329,22 @@ namespace BaseClasses
         }
 
         public static void CalculateBasicValue(
-            float fTempMax_X,
-            float fTempMin_X,
-            float fTempMax_Y,
-            float fTempMin_Y,
+            double fTempMax_X,
+            double fTempMin_X,
+            double fTempMax_Y,
+            double fTempMin_Y,
             int scale_unit,
             double dPageWidth,
             double dPageHeight,
-            float[,] PointsOut,
-            float[,] PointsIn,
+            List<Point> PointsOut,
+            List<Point> PointsIn,
             float[,] PointsHoles,
             double dPointInOutDistance_x_real,
             double dPointInOutDistance_y_real,
-            out float fModel_Length_x_real,
-            out float fModel_Length_y_real,
-            out float fModel_Length_x_page,
-            out float fModel_Length_y_page,
+            out double fModel_Length_x_real,
+            out double fModel_Length_y_real,
+            out double fModel_Length_x_page,
+            out double fModel_Length_y_page,
             out double dFactor_x,
             out double dFactor_y,
             out float fReal_Model_Zoom_Factor,
@@ -323,12 +367,13 @@ namespace BaseClasses
 
             // Recalculate model coordinates and set minimum point coordinates to [0,0]
 
-            if (PointsOut != null && PointsOut.Length / 2 > 0) // It should exist
+            if (PointsOut != null && PointsOut.Count > 0) // It should exist
             {
-                for (int i = 0; i < PointsOut.Length / 2; i++)
+                for (int i = 0; i < PointsOut.Count; i++)
                 {
-                    PointsOut[i, 0] -= fTempMin_X;
-                    PointsOut[i, 1] -= fTempMin_Y;
+                    Point p = PointsOut[i];
+                    p.X -= fTempMin_X;
+                    p.Y -= fTempMin_Y;
                 }
             }
             else
@@ -337,12 +382,13 @@ namespace BaseClasses
                 MessageBox.Show("Invalid component outline");
             }
 
-            if (PointsIn != null && PointsIn.Length /2 > 0)
+            if (PointsIn != null && PointsIn.Count > 0)
             {
-                for (int i = 0; i < PointsIn.Length / 2; i++)
+                for (int i = 0; i < PointsIn.Count; i++)
                 {
-                    PointsIn[i, 0] -= fTempMin_X;
-                    PointsIn[i, 1] -= fTempMin_Y;
+                    Point p = PointsIn[i];
+                    p.X -= fTempMin_X;
+                    p.Y -= fTempMin_Y;
                 }
             }
 
@@ -350,8 +396,8 @@ namespace BaseClasses
             {
                 for (int i = 0; i < PointsHoles.Length / 2; i++)
                 {
-                    PointsHoles[i, 0] -= fTempMin_X;
-                    PointsHoles[i, 1] -= fTempMin_Y;
+                    PointsHoles[i, 0] -= (float)fTempMin_X;
+                    PointsHoles[i, 1] -= (float)fTempMin_Y;
                 }
             }
 
@@ -369,7 +415,7 @@ namespace BaseClasses
             dPointInOutDistance_x_page = 0;
             dPointInOutDistance_y_page = 0;
 
-            if (PointsIn != null && PointsIn.Length / 2 > 0)
+            if (PointsIn != null && PointsIn.Count > 0)
             {
                 dPointInOutDistance_x_page = dPointInOutDistance_x_real * fReal_Model_Zoom_Factor;
                 dPointInOutDistance_y_page = dPointInOutDistance_y_real * fReal_Model_Zoom_Factor;
@@ -435,8 +481,113 @@ namespace BaseClasses
                 }
             }
         }
+        public static void DrawPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
+        {
+            if (bDrawPoints)
+            {
+                // Outer outline points
+                if (PointsOut != null) // If is array of points not empty
+                {
+                    for (int i = 0; i < PointsOut.Count; i++)
+                    {
+                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
+                    }
+                }
 
-        public static void DrawOutlines(bool bDrawOutLine, bool bUsePolylineforDrawing, float [,] PointsOut, float[,] PointsIn, float fReal_Model_Zoom_Factor, float modelMarginBottom_y, float modelMarginLeft_x, float fModel_Length_y_page, double dPointInOutDistance_y_page, double dPointInOutDistance_x_page, Canvas canvasForImage)
+                // Internal outline points
+                if (PointsIn != null) // If is array of points not empty
+                {
+                    for (int i = 0; i < PointsIn.Count; i++)
+                    {
+                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
+                    }
+                }
+            }
+        }
+
+        //public static void DrawOutlines(bool bDrawOutLine, bool bUsePolylineforDrawing, float [,] PointsOut, float[,] PointsIn, float fReal_Model_Zoom_Factor, float modelMarginBottom_y, float modelMarginLeft_x, float fModel_Length_y_page, double dPointInOutDistance_y_page, double dPointInOutDistance_x_page, Canvas canvasForImage)
+        //{
+        //    if (bDrawOutLine)
+        //    {
+        //        if (bUsePolylineforDrawing)
+        //        {
+        //            // Outer outline lines
+        //            if (PointsOut != null) // If is array of points not empty
+        //            {
+        //                double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
+        //                double fCanvasLeft = modelMarginLeft_x;
+        //                DrawPolyLine(true, PointsOut, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+        //            }
+
+        //            // Internal outline lines
+        //            if (PointsIn != null) // If is array of points not empty
+        //            {
+        //                double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page + dPointInOutDistance_y_page;
+        //                double fCanvasLeft = modelMarginLeft_x + dPointInOutDistance_x_page;
+        //                DrawPolyLine(true, PointsIn, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // ToDo kreslenie po liniach nefunguje spravne, asi je problem s tymito canvas vo funkcii DrawLine
+        //            // Canvas.SetTop(myLine, line.Y1);
+        //            // Canvas.SetLeft(myLine, line.X1);
+
+        //            // Outer outline lines
+        //            if (PointsOut != null) // If is array of points not empty
+        //            {
+        //                for (int i = 0; i < PointsOut.Length / 2; i++)
+        //                {
+        //                    // Add a Line
+        //                    Line l = new Line();
+
+        //                    l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0];
+        //                    l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1];
+
+        //                    if (i < (PointsOut.Length / 2 - 1))
+        //                    {
+        //                        l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i + 1, 0];
+        //                        l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i + 1, 1];
+        //                    }
+        //                    else
+        //                    {
+        //                        l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[0, 0];
+        //                        l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0, 1];
+        //                    }
+
+        //                    DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+        //                }
+        //            }
+
+        //            // Internal outline lines
+        //            if (PointsIn != null) // If is array of points not empty
+        //            {
+        //                for (int i = 0; i < PointsIn.Length / 2; i++)
+        //                {
+        //                    // Add a Line
+        //                    Line l = new Line();
+        //                    l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0];
+        //                    l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1];
+
+        //                    if (i < (PointsIn.Length / 2 - 1))
+        //                    {
+        //                        l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i + 1, 0];
+        //                        l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i + 1, 1];
+        //                    }
+        //                    else
+        //                    {
+        //                        l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[0, 0];
+        //                        l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[0, 1];
+        //                    }
+
+        //                    DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        public static void DrawOutlines(bool bDrawOutLine, bool bUsePolylineforDrawing, List<Point> PointsOut, List<Point> PointsIn, float fReal_Model_Zoom_Factor, float modelMarginBottom_y, float modelMarginLeft_x, double fModel_Length_y_page, double dPointInOutDistance_y_page, double dPointInOutDistance_x_page, Canvas canvasForImage)
         {
             if (bDrawOutLine)
             {
@@ -467,23 +618,23 @@ namespace BaseClasses
                     // Outer outline lines
                     if (PointsOut != null) // If is array of points not empty
                     {
-                        for (int i = 0; i < PointsOut.Length / 2; i++)
+                        for (int i = 0; i < PointsOut.Count; i++)
                         {
                             // Add a Line
                             Line l = new Line();
 
-                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i, 0];
-                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i, 1];
+                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X;
+                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y;
 
-                            if (i < (PointsOut.Length / 2 - 1))
+                            if (i < (PointsOut.Count - 1))
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i + 1, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i + 1, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i + 1].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i + 1].Y;
                             }
                             else
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[0, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[0].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0].Y;
                             }
 
                             DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
@@ -493,22 +644,22 @@ namespace BaseClasses
                     // Internal outline lines
                     if (PointsIn != null) // If is array of points not empty
                     {
-                        for (int i = 0; i < PointsIn.Length / 2; i++)
+                        for (int i = 0; i < PointsIn.Count; i++)
                         {
                             // Add a Line
                             Line l = new Line();
-                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0];
-                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1];
+                            l.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X;
+                            l.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y;
 
-                            if (i < (PointsIn.Length / 2 - 1))
+                            if (i < (PointsIn.Count - 1))
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i + 1, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i + 1, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i + 1].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i + 1].Y;
                             }
                             else
                             {
-                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[0, 0];
-                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[0, 1];
+                                l.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[0].X;
+                                l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[0].Y;
                             }
 
                             DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
@@ -537,6 +688,29 @@ namespace BaseClasses
                     for (int i = 0; i < PointsIn.Length / 2; i++)
                     {
                         DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i, 1], 16, Brushes.Green, canvasForImage);
+                    }
+                }
+            }
+        }
+        public static void DrawPointNumbers(bool bDrawPointNumbers, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
+        {
+            if (bDrawPointNumbers)
+            {
+                // Outer outline points
+                if (PointsOut != null) // If is array of points not empty
+                {
+                    for (int i = 0; i < PointsOut.Count; i++)
+                    {
+                        DrawText((i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y, 16, Brushes.Blue, canvasForImage);
+                    }
+                }
+
+                // Internal outline points
+                if (PointsIn != null && PointsOut != null) // If is array of points not empty
+                {
+                    for (int i = 0; i < PointsIn.Count; i++)
+                    {
+                        DrawText((/*crsc.INoPointsOut +*/ i + 1).ToString(), modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y, 16, Brushes.Green, canvasForImage);
                     }
                 }
             }
@@ -654,6 +828,33 @@ namespace BaseClasses
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
         }
+        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        {
+            PointCollection points = new PointCollection();
+
+            int iNumberOfLineSegments = listPoints.Count + (bIsClosed ? 1 : 0);
+
+            for (int i = 0; i < iNumberOfLineSegments; i++)
+            {
+                if (i < ((listPoints.Count)))
+                    points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * listPoints[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * listPoints[i].Y));
+                else
+                    points.Add(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * listPoints[0].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * listPoints[0].Y)); // Last point is same as first one
+            }
+
+            Polyline myLine = new Polyline();
+            myLine.Stretch = Stretch.Fill;
+            myLine.Stroke = color;
+            myLine.Points = points;
+            myLine.StrokeThickness = thickness;
+            myLine.StrokeStartLineCap = startCap;
+            myLine.StrokeEndLineCap = endCap;
+            //myLine.HorizontalAlignment = HorizontalAlignment.Left;
+            //myLine.VerticalAlignment = VerticalAlignment.Center;
+            Canvas.SetTop(myLine, dCanvasTopTemp);
+            Canvas.SetLeft(myLine, dCanvasLeftTemp);
+            imageCanvas.Children.Add(myLine);
+        }
 
         public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
         {
@@ -720,6 +921,35 @@ namespace BaseClasses
                     // Minimum Y - coordinate
                     if (Points_temp[i, 1] < fTempMin_Y)
                         fTempMin_Y = Points_temp[i, 1];
+                }
+            }
+        }
+        public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
+        {
+            fTempMax_X = double.MinValue;
+            fTempMin_X = double.MaxValue;
+            fTempMax_Y = double.MinValue;
+            fTempMin_Y = double.MaxValue;
+
+            if (Points_temp != null) // Some points exist
+            {
+                for (int i = 0; i < Points_temp.Count; i++)
+                {
+                    // Maximum X - coordinate
+                    if (Points_temp[i].X > fTempMax_X)
+                        fTempMax_X = Points_temp[i].X;
+
+                    // Minimum X - coordinate
+                    if (Points_temp[i].X < fTempMin_X)
+                        fTempMin_X = Points_temp[i].X;
+
+                    // Maximum Y - coordinate
+                    if (Points_temp[i].Y > fTempMax_Y)
+                        fTempMax_Y = Points_temp[i].Y;
+
+                    // Minimum Y - coordinate
+                    if (Points_temp[i].Y < fTempMin_Y)
+                        fTempMin_Y = Points_temp[i].Y;
                 }
             }
         }
