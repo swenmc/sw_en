@@ -152,15 +152,15 @@ namespace MATH
             x = px;
             y = py;
         }
-        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, Point p)
+        public static Point TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, Point p)
         {
             double px;
             double py;
 
             if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
             {
-                px = (float)(Math.Cos(theta_rad) * (p.X - x_centerOfRotation) + Math.Sin(theta_rad) * (p.Y - y_centerOfRotation) + x_centerOfRotation);
-                py = (float)(-Math.Sin(theta_rad) * (p.X - x_centerOfRotation) + Math.Cos(theta_rad) * (p.Y - y_centerOfRotation) + y_centerOfRotation);
+                px = (Math.Cos(theta_rad) * (p.X - x_centerOfRotation) + Math.Sin(theta_rad) * (p.Y - y_centerOfRotation) + x_centerOfRotation);
+                py = (-Math.Sin(theta_rad) * (p.X - x_centerOfRotation) + Math.Cos(theta_rad) * (p.Y - y_centerOfRotation) + y_centerOfRotation);
             }
             else  // Only translate
             {
@@ -168,8 +168,7 @@ namespace MATH
                 py = p.Y + y_centerOfRotation;
             }
 
-            p.X = px;
-            p.Y = py;
+            return new Point(px, py);
         }
 
         // Transform array
@@ -195,7 +194,9 @@ namespace MATH
             if (points != null)
             {
                 for (int i = 0; i < points.Count; i++)
-                    TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
+                {
+                    points[i] = TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
+                }                    
             }
         }
 
@@ -237,6 +238,7 @@ namespace MATH
                 {
                     Point p = points[i];
                     p.X *= -1;
+                    points[i] = p;
                 }   
             }
         }
@@ -249,6 +251,7 @@ namespace MATH
                 {
                     Point p = points[i];
                     p.Y *= -1;
+                    points[i] = p;
                 }
             }
         }
