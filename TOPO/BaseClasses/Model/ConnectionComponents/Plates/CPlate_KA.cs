@@ -158,7 +158,7 @@ namespace BaseClasses
             arrPoints3D = new Point3D[ITotNoPointsin3D];
             //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
             Point[] m_HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            HolesCenterRadii = new float[HolesCentersPoints.Length];
+            HolesCenterRadii = new float[m_HolesCentersPoints.Length];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data
@@ -193,7 +193,7 @@ namespace BaseClasses
             arrPoints3D = new Point3D[ITotNoPointsin3D];
             //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
             Point[] m_HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            HolesCenterRadii = new float[HolesCentersPoints.Length];
+            HolesCenterRadii = new float[m_HolesCentersPoints.Length];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data
