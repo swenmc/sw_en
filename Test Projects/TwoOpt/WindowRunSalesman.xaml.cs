@@ -102,7 +102,7 @@ namespace TwoOpt
 
                 var mainWindowViewModel = DataContext as MainWindowViewModel;
 
-                if (mainWindowViewModel._model.AlgorithmEnded) WaitingLabel.Content = "Route found. Done!";
+                if (mainWindowViewModel._model.AlgorithmEnded) WaitingLabel.Content = "Route found. Close the window please.";
                 else WaitingLabel.Content = "Recalculating... Please Wait.";
 
                 if (tourCoords == null) return;

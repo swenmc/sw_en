@@ -10,16 +10,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
-    public struct ScrewRectSequence
-    {
-        public int iNumberOfScrewsInRow_xDirection;
-        public int iNumberOfScrewsInColumn_yDirection;
-        public float fx_c;
-        public float fy_c;
-        public float fDistanceOfPointsX;
-        public float fDistanceOfPointsY;
-        public float[,] fHolesCentersPoints2D;
-    }
+    
 
     public class CScrewArrangementRectApexOrKnee : CScrewArrangement
     {
@@ -97,6 +88,8 @@ namespace BaseClasses
                 m_iNumberOfCircleGroupsInJoint = value;
             }
         }
+
+        
 
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
 

@@ -1056,7 +1056,7 @@ namespace PFD
 
                     if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleS.Name)) arrangementTemp.IHolesInCirclesNumber = int.Parse(changedText);
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleS.Name)) arrangementTemp.FRadius = float.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleS.Name)) arrangementTemp.FRadius = (float.Parse(changedText) / 1000);
                     if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText);
                     if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText);
                     if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText);

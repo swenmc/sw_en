@@ -54,7 +54,7 @@ namespace BaseClasses
 
         public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
         public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
-        //public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
+        //public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers   //zmazat
         private Point[] m_holesCentersPoints;
         public Point[] HolesCentersPoints
         {
@@ -69,7 +69,7 @@ namespace BaseClasses
             }
         }
 
-        //public float[,] DrillingRoutePoints2D; // Array of points coordinates of holes centers - short distance for drilling .nc file
+        //public float[,] DrillingRoutePoints2D; // Array of points coordinates of holes centers - short distance for drilling .nc file   //zmazat
         private List<Point> m_drillingRoutePoints;
         public List<Point> DrillingRoutePoints
         {

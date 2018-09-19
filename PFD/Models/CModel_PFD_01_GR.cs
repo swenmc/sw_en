@@ -113,6 +113,8 @@ namespace PFD
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
             // TODO Nastavit podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
+
+            //treba nastavit v konstruktore CRSC ID
             m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);   // Main Column
             m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);           // Rafter
             m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin

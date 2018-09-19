@@ -12,6 +12,20 @@ namespace BaseClasses
 {
     public class CScrewArrangement : CConnectorArrangement
     {
+        private List<CScrewSequenceGroup> m_listOfSequenceGroups;
+        public List<CScrewSequenceGroup> ListOfSequenceGroups
+        {
+            get
+            {
+                return m_listOfSequenceGroups;
+            }
+
+            set
+            {
+                m_listOfSequenceGroups = value;
+            }
+        }
+
         private CScrew m_referenceScrew;
 
         public CScrew referenceScrew
