@@ -49,6 +49,27 @@ namespace BaseClasses
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;
 
+        
+
+
+        public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
+        public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
+        //public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
+        private Point[] m_holesCentersPoints;
+        public Point[] HolesCentersPoints
+        {
+            get
+            {
+                return m_holesCentersPoints;
+            }
+
+            set
+            {
+                m_holesCentersPoints = value;
+            }
+        }
+
+        //public float[,] DrillingRoutePoints2D; // Array of points coordinates of holes centers - short distance for drilling .nc file
         private List<Point> m_drillingRoutePoints;
         public List<Point> DrillingRoutePoints
         {
@@ -63,11 +84,6 @@ namespace BaseClasses
             }
         }
 
-
-        public int ITotNoPointsin3D; // Number of all points in 3D (excluding auxiliary)
-        public int ITotNoPointsin2D; // Number of all points in 2D (excluding auxiliary)
-        public float[,] HolesCentersPoints2D; // Array of points coordinates of holes centers
-        public float[,] DrillingRoutePoints2D; // Array of points coordinates of holes centers - short distance for drilling .nc file
 
         public int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
         public Point3D[] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
@@ -636,16 +652,16 @@ namespace BaseClasses
         {
             Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref PointsOut2D);
             Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
-            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref HolesCentersPoints2D);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_holesCentersPoints);
             Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrConnectorControlPoints3D);
 
             // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
             // TODO - Ondrej - checkbox pre transformaciu by mal byt aktivny len ak je vybrany typ componenty plate alebo crsc, asi nema zmysel pre skrutku
             // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
-            if (DrillingRoutePoints2D != null)
+            if (DrillingRoutePoints != null)
             {
-                Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref DrillingRoutePoints2D);
-                DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_drillingRoutePoints);
+                //DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
 
@@ -654,16 +670,16 @@ namespace BaseClasses
         {
             Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref PointsOut2D);
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
-            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref HolesCentersPoints2D);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_holesCentersPoints);
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrConnectorControlPoints3D);
 
             // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
             // TODO - Ondrej - checkbox pre transformaciu by mal byt aktivny len ak je vybrany typ componenty plate alebo crsc, asi nema zmysel pre skrutku
             // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
-            if (DrillingRoutePoints2D != null)
+            if (DrillingRoutePoints != null)
             {
-                Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref DrillingRoutePoints2D);
-                DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
+                Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_drillingRoutePoints);
+                //DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
 
@@ -672,16 +688,16 @@ namespace BaseClasses
         {
             Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref PointsOut2D);
             Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrPoints3D);
-            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref HolesCentersPoints2D);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_holesCentersPoints);
             Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrConnectorControlPoints3D);
 
             // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
 
             // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
-            if (DrillingRoutePoints2D != null)
+            if (DrillingRoutePoints != null)
             {
-                Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref DrillingRoutePoints2D);
-                DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
+                Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);
+                //DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
     }

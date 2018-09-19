@@ -60,12 +60,9 @@ namespace BaseClasses
 
         public CCNCPathFinder(CPlate plate)
         {
-            if (plate.HolesCentersPoints2D != null)
+            if (plate.HolesCentersPoints != null)
             {
-                for (int i = 0; i < plate.HolesCentersPoints2D.Length / 2; i++)
-                {
-                    Points.Add(new Point(plate.HolesCentersPoints2D[i, 0], plate.HolesCentersPoints2D[i, 1]));
-                }
+                Points.AddRange(plate.HolesCentersPoints);                
             }
 
             /*

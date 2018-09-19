@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using MATH;
 using BaseClasses.GraphObj;
+using System.Windows;
 
 namespace BaseClasses
 {
@@ -219,7 +220,7 @@ namespace BaseClasses
         public void UpdateArrangmentData()
         {
             IHolesNumber = IHolesInCirclesNumber + (BUseAdditionalCornerScrews ? IAdditionalConnectorNumber : 0);
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
+            HolesCentersPoints2D = new Point[IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
 
             iNumberOfScrewsInCircleGroup = IHolesInCirclesNumber / INumberOfCircleGroupsInJoint;
@@ -350,7 +351,7 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float fSlope_rad,
-            ref float[,] fHolesCentersPoints2D)
+            ref Point[] fHolesCentersPoints2D)
         {
             float fDistanceOfCenterFromLeftEdge = fbX / 4f;
             float fx_c1 = fDistanceOfCenterFromLeftEdge;
@@ -380,17 +381,10 @@ namespace BaseClasses
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequenceIncludingAdditional; i++) // Add all 4 sequences in one cycle
             {
-                HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
-                HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
-
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceLeftBottom[i, 0];
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceLeftBottom[i, 1];
-
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightTop[i, 0];
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightTop[i, 1];
-
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightBottom[i, 0];
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightBottom[i, 1];
+                HolesCentersPoints2D[i] = new Point(fSequenceLeftTop[i, 0], fSequenceLeftTop[i, 1]);
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceLeftBottom[i, 0], fSequenceLeftBottom[i, 1]);
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightTop[i, 0], fSequenceRightTop[i, 1]);
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightBottom[i, 0], fSequenceRightBottom[i, 1]);
             }
 
             // TODO - tempoerary nastavit pre pole suradnic ktore je sucastou plate
@@ -404,7 +398,7 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float fSlope_rad,
-            ref float[,] fHolesCentersPoints2D,
+            ref Point[] fHolesCentersPoints2D,
             ref float[] fHolesCenterRadii)
         {
             // Bottom Circle (Main Column)
@@ -439,17 +433,12 @@ namespace BaseClasses
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequenceIncludingAdditional; i++) // Add all 4 sequences in one cycle
             {
-                HolesCentersPoints2D[i, 0] = fSequenceLeftTop[i, 0];
-                HolesCentersPoints2D[i, 1] = fSequenceLeftTop[i, 1];
+                HolesCentersPoints2D[i] = new Point(fSequenceLeftTop[i, 0], fSequenceLeftTop[i, 1]);
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceLeftBottom[i, 0], fSequenceLeftBottom[i, 1]);
 
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceLeftBottom[i, 0];
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceLeftBottom[i, 1];
-
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightTop[i, 0];
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightTop[i, 1];
-
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 0] = fSequenceRightBottom[i, 0];
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i, 1] = fSequenceRightBottom[i, 1];
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightTop[i, 0], fSequenceRightTop[i, 1]);
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightBottom[i, 0], fSequenceRightBottom[i, 1]);
+                
 
                 fHolesCenterRadii[i] = fSequenceLeftTopRadii[i];
                 fHolesCenterRadii[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = fSequenceLeftBottomRadii[i];
@@ -466,8 +455,8 @@ namespace BaseClasses
         {
             for (int i = 0; i < IHolesNumber; i++)
             {
-                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i, 0];
-                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i, 1] - flZ; // Musime odpocitat zalomenie hrany plechu, v 2D zobrazeni sa totiz pripocitalo
+                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X;
+                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - flZ; // Musime odpocitat zalomenie hrany plechu, v 2D zobrazeni sa totiz pripocitalo
                 arrConnectorControlPoints3D[i].Z = -ft; // TODO Position depends on screw length;
             }
         }

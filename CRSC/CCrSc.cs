@@ -1218,8 +1218,8 @@ namespace CRSC
         //}
         public void MirrorPlateAboutX()
         {
-            Geom2D.MirrorAboutX_ChangeYCoordinates(m_CrScPointsOut);
-            Geom2D.MirrorAboutX_ChangeYCoordinates(m_CrScPointsIn);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsOut);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsIn);
         }
 
 
@@ -1231,8 +1231,8 @@ namespace CRSC
         //}
         public void MirrorPlateAboutY()
         {
-            Geom2D.MirrorAboutY_ChangeXCoordinates(m_CrScPointsOut);
-            Geom2D.MirrorAboutY_ChangeXCoordinates(m_CrScPointsIn);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsOut);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsIn);
         }
 
         // Rotate cross-section
@@ -1243,8 +1243,8 @@ namespace CRSC
         //}
         public void RotateCrsc_CW(float fTheta_deg)
         {
-            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, m_CrScPointsOut);
-            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, m_CrScPointsIn);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsOut);
+            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsIn);
         }
     }
 }

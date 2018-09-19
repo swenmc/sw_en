@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -109,7 +110,8 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
+            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
+            HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Calculate point positions
@@ -300,6 +302,105 @@ namespace BaseClasses
             arrPoints3D[11].Z = arrPoints3D[6].Z;
         }
 
+        //void Calc_HolesCentersCoord2D(CScrewArrangement screwArrangement)
+        //{
+        //    float fx_edge = 0.010f;
+        //    float fy_edge1 = 0.010f;
+        //    float fy_edge2 = 0.030f;
+        //    float fy_edge3 = 0.120f;
+
+        //    // TODO nahradit enumom a switchom
+
+        //    if (screwArrangement.IHolesNumber == 16) // LH, LI, LK
+        //    {
+        //        // Left Leg
+
+        //        HolesCentersPoints2D[0, 0] = fx_edge;
+        //        HolesCentersPoints2D[0, 1] = fy_edge1;
+
+        //        HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
+        //        HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
+
+        //        HolesCentersPoints2D[2, 0] = 0.5f * m_flZ;
+        //        HolesCentersPoints2D[2, 1] = fy_edge2;
+
+        //        HolesCentersPoints2D[3, 0] = 0.5f * m_flZ;
+        //        HolesCentersPoints2D[3, 1] = fy_edge3;
+
+        //        HolesCentersPoints2D[4, 0] = HolesCentersPoints2D[3, 0];
+        //        HolesCentersPoints2D[4, 1] = m_fhY - fy_edge3;
+
+        //        HolesCentersPoints2D[5, 0] = HolesCentersPoints2D[3, 0];
+        //        HolesCentersPoints2D[5, 1] = m_fhY - fy_edge2;
+
+        //        HolesCentersPoints2D[6, 0] = HolesCentersPoints2D[0, 0];
+        //        HolesCentersPoints2D[6, 1] = m_fhY - fy_edge1;
+
+        //        HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[1, 0];
+        //        HolesCentersPoints2D[7, 1] = m_fhY - fy_edge1;
+
+        //        // Right Leg
+
+        //        HolesCentersPoints2D[8, 0] = m_fbX1 + HolesCentersPoints2D[6, 0];
+        //        HolesCentersPoints2D[8, 1] = HolesCentersPoints2D[6, 1];
+
+        //        HolesCentersPoints2D[9, 0] = m_fbX1 + HolesCentersPoints2D[7, 0];
+        //        HolesCentersPoints2D[9, 1] = HolesCentersPoints2D[7, 1];
+
+        //        HolesCentersPoints2D[10, 0] = m_fbX1 + HolesCentersPoints2D[5, 0];
+        //        HolesCentersPoints2D[10, 1] = HolesCentersPoints2D[5, 1];
+
+        //        HolesCentersPoints2D[11, 0] = m_fbX1 + HolesCentersPoints2D[4, 0];
+        //        HolesCentersPoints2D[11, 1] = HolesCentersPoints2D[4, 1];
+
+        //        HolesCentersPoints2D[12, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
+        //        HolesCentersPoints2D[12, 1] = HolesCentersPoints2D[3, 1];
+
+        //        HolesCentersPoints2D[13, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
+        //        HolesCentersPoints2D[13, 1] = HolesCentersPoints2D[2, 1];
+
+        //        HolesCentersPoints2D[14, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
+        //        HolesCentersPoints2D[14, 1] = HolesCentersPoints2D[1, 1];
+
+        //        HolesCentersPoints2D[15, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
+        //        HolesCentersPoints2D[15, 1] = HolesCentersPoints2D[0, 1];
+        //    }
+        //    else if (screwArrangement.IHolesNumber == 8) // LJ
+        //    {
+        //        // Left Leg
+
+        //        HolesCentersPoints2D[0, 0] = fx_edge;
+        //        HolesCentersPoints2D[0, 1] = fy_edge1;
+
+        //        HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
+        //        HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
+
+        //        HolesCentersPoints2D[2, 0] = HolesCentersPoints2D[0, 0];
+        //        HolesCentersPoints2D[2, 1] = m_fhY - fy_edge1;
+
+        //        HolesCentersPoints2D[3, 0] = HolesCentersPoints2D[1, 0];
+        //        HolesCentersPoints2D[3, 1] = HolesCentersPoints2D[2, 1];
+
+        //        // Right Leg
+
+        //        HolesCentersPoints2D[4, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
+        //        HolesCentersPoints2D[4, 1] = HolesCentersPoints2D[2, 1];
+
+        //        HolesCentersPoints2D[5, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
+        //        HolesCentersPoints2D[5, 1] = HolesCentersPoints2D[2, 1];
+
+        //        HolesCentersPoints2D[6, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
+        //        HolesCentersPoints2D[6, 1] = HolesCentersPoints2D[0, 1];
+
+        //        HolesCentersPoints2D[7, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
+        //        HolesCentersPoints2D[7, 1] = HolesCentersPoints2D[0, 1];
+        //    }
+        //    else
+        //    {
+        //        // Not defined expected number of holes for L or F plate
+        //    }
+        //}
+
         void Calc_HolesCentersCoord2D(CScrewArrangement screwArrangement)
         {
             float fx_edge = 0.010f;
@@ -313,85 +414,59 @@ namespace BaseClasses
             {
                 // Left Leg
 
-                HolesCentersPoints2D[0, 0] = fx_edge;
-                HolesCentersPoints2D[0, 1] = fy_edge1;
+                HolesCentersPoints[0] = new Point(fx_edge, fy_edge1);
+                
+                HolesCentersPoints[1] = new Point(m_flZ - fx_edge, HolesCentersPoints[0].Y);
 
-                HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
-                HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
+                HolesCentersPoints[2] = new Point(0.5f * m_flZ, fy_edge2);
 
-                HolesCentersPoints2D[2, 0] = 0.5f * m_flZ;
-                HolesCentersPoints2D[2, 1] = fy_edge2;
+                HolesCentersPoints[3] = new Point(0.5f * m_flZ, fy_edge3);
 
-                HolesCentersPoints2D[3, 0] = 0.5f * m_flZ;
-                HolesCentersPoints2D[3, 1] = fy_edge3;
+                HolesCentersPoints[4] = new Point(HolesCentersPoints[3].X, m_fhY - fy_edge3);
 
-                HolesCentersPoints2D[4, 0] = HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[4, 1] = m_fhY - fy_edge3;
+                HolesCentersPoints[5] = new Point(HolesCentersPoints[3].X ,m_fhY - fy_edge2);
 
-                HolesCentersPoints2D[5, 0] = HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[5, 1] = m_fhY - fy_edge2;
+                HolesCentersPoints[6] = new Point(HolesCentersPoints[0].X, m_fhY - fy_edge1);
 
-                HolesCentersPoints2D[6, 0] = HolesCentersPoints2D[0, 0];
-                HolesCentersPoints2D[6, 1] = m_fhY - fy_edge1;
-
-                HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[1, 0];
-                HolesCentersPoints2D[7, 1] = m_fhY - fy_edge1;
+                HolesCentersPoints[7] = new Point(HolesCentersPoints[1].X, m_fhY - fy_edge1);
 
                 // Right Leg
+                HolesCentersPoints[8] = new Point(m_fbX1 + HolesCentersPoints[6].X, HolesCentersPoints[6].Y);
 
-                HolesCentersPoints2D[8, 0] = m_fbX1 + HolesCentersPoints2D[6, 0];
-                HolesCentersPoints2D[8, 1] = HolesCentersPoints2D[6, 1];
+                HolesCentersPoints[9] = new Point(m_fbX1 + HolesCentersPoints[7].X, HolesCentersPoints[7].Y);
 
-                HolesCentersPoints2D[9, 0] = m_fbX1 + HolesCentersPoints2D[7, 0];
-                HolesCentersPoints2D[9, 1] = HolesCentersPoints2D[7, 1];
+                HolesCentersPoints[10] = new Point(m_fbX1 + HolesCentersPoints[5].X, HolesCentersPoints[5].Y);
 
-                HolesCentersPoints2D[10, 0] = m_fbX1 + HolesCentersPoints2D[5, 0];
-                HolesCentersPoints2D[10, 1] = HolesCentersPoints2D[5, 1];
+                HolesCentersPoints[11] = new Point(m_fbX1 + HolesCentersPoints[4].X, HolesCentersPoints[4].Y);
 
-                HolesCentersPoints2D[11, 0] = m_fbX1 + HolesCentersPoints2D[4, 0];
-                HolesCentersPoints2D[11, 1] = HolesCentersPoints2D[4, 1];
+                HolesCentersPoints[12] = new Point(m_fbX1 + HolesCentersPoints[3].X, HolesCentersPoints[3].Y);
 
-                HolesCentersPoints2D[12, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[12, 1] = HolesCentersPoints2D[3, 1];
+                HolesCentersPoints[13] = new Point(m_fbX1 + HolesCentersPoints[2].X, HolesCentersPoints[2].Y);
 
-                HolesCentersPoints2D[13, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
-                HolesCentersPoints2D[13, 1] = HolesCentersPoints2D[2, 1];
+                HolesCentersPoints[14] = new Point(m_fbX1 + HolesCentersPoints[1].X, HolesCentersPoints[1].Y);
 
-                HolesCentersPoints2D[14, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
-                HolesCentersPoints2D[14, 1] = HolesCentersPoints2D[1, 1];
-
-                HolesCentersPoints2D[15, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
-                HolesCentersPoints2D[15, 1] = HolesCentersPoints2D[0, 1];
+                HolesCentersPoints[15] = new Point(m_fbX1 + HolesCentersPoints[0].X, HolesCentersPoints[0].Y);
             }
             else if (screwArrangement.IHolesNumber == 8) // LJ
             {
                 // Left Leg
 
-                HolesCentersPoints2D[0, 0] = fx_edge;
-                HolesCentersPoints2D[0, 1] = fy_edge1;
+                HolesCentersPoints[0] = new Point(fx_edge, fy_edge1);
 
-                HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
-                HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
+                HolesCentersPoints[1] = new Point(m_flZ - fx_edge, HolesCentersPoints[0].Y);
 
-                HolesCentersPoints2D[2, 0] = HolesCentersPoints2D[0, 0];
-                HolesCentersPoints2D[2, 1] = m_fhY - fy_edge1;
+                HolesCentersPoints[2] = new Point(HolesCentersPoints[0].X, m_fhY - fy_edge1);
 
-                HolesCentersPoints2D[3, 0] = HolesCentersPoints2D[1, 0];
-                HolesCentersPoints2D[3, 1] = HolesCentersPoints2D[2, 1];
+                HolesCentersPoints[3] = new Point(HolesCentersPoints[1].X, HolesCentersPoints[2].Y);
 
                 // Right Leg
+                HolesCentersPoints[4] = new Point(m_fbX1 + HolesCentersPoints[2].X, HolesCentersPoints[2].Y);
 
-                HolesCentersPoints2D[4, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
-                HolesCentersPoints2D[4, 1] = HolesCentersPoints2D[2, 1];
+                HolesCentersPoints[5] = new Point(m_fbX1 + HolesCentersPoints[3].X, HolesCentersPoints[2].Y);
 
-                HolesCentersPoints2D[5, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
-                HolesCentersPoints2D[5, 1] = HolesCentersPoints2D[2, 1];
+                HolesCentersPoints[6] = new Point(m_fbX1 + HolesCentersPoints[0].X, HolesCentersPoints[0].Y);
 
-                HolesCentersPoints2D[6, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
-                HolesCentersPoints2D[6, 1] = HolesCentersPoints2D[0, 1];
-
-                HolesCentersPoints2D[7, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
-                HolesCentersPoints2D[7, 1] = HolesCentersPoints2D[0, 1];
+                HolesCentersPoints[7] = new Point(m_fbX1 + HolesCentersPoints[1].X, HolesCentersPoints[0].Y);
             }
             else
             {

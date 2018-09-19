@@ -50,7 +50,7 @@ namespace sw_en_GUI
         //float[,] PointsIn;
         List<Point> PointsOut;
         List<Point> PointsIn;
-        float[,] PointsHoles;
+        Point[] PointsHoles;
         float[,] PointsDrillingRoute;
 
         double dPointInOutDistance_x_real;
@@ -95,12 +95,12 @@ namespace sw_en_GUI
 
             PointsIn = null; // Todo - dopracovat (pole viacerych poli bodov pre definovanie otvorov), teoreticky moze mat plech okrem dier pre skrutky aj vacsie vyrezy a rozne otvory
 
-            PointsHoles = plate.HolesCentersPoints2D;
+            PointsHoles = plate.HolesCentersPoints;
 
-            if (plate.HolesCentersPoints2D != null)
+            if (plate.HolesCentersPoints != null)
             {
                 INoHoles = plate.ScrewArrangement.IHolesNumber;
-                PointsHoles = plate.HolesCentersPoints2D;
+                PointsHoles = plate.HolesCentersPoints;
                 DHolesDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
             }
 
@@ -370,9 +370,9 @@ namespace sw_en_GUI
                     for (int i = 0; i < INoHoles; i++)
                     {
                         // Draw Hole
-                        DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter, Brushes.Black, 2, canvasForImage);
+                        DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i].Y), scale_unit * DHolesDiameter, Brushes.Black, 2, canvasForImage);
                         // Draw Symbol of Center
-                        DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter + 10, Brushes.Red, 2, canvasForImage);
+                        DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i].Y), scale_unit * DHolesDiameter + 10, Brushes.Red, 2, canvasForImage);
                     }
                 }
             }
@@ -641,8 +641,8 @@ namespace sw_en_GUI
             {
                 for (int i = 0; i < INoHoles; i++)
                 {
-                    PointsHoles[i, 0] -= (float)fTempMin_X;
-                    PointsHoles[i, 1] -= (float)fTempMin_Y;
+                    PointsHoles[i].X -= fTempMin_X;
+                    PointsHoles[i].Y -= fTempMin_Y;
                 }
             }
 

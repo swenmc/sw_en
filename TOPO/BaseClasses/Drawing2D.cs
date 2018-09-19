@@ -139,7 +139,7 @@ namespace BaseClasses
                     height,
                     platePointsOut2D,
                     null,
-                    plate.HolesCentersPoints2D,
+                    plate.HolesCentersPoints,
                     0,
                     0,
                     out fModel_Length_x_real,
@@ -180,8 +180,8 @@ namespace BaseClasses
                     bDrawDrillingRoute,
                     platePointsOut2D,
                     null,
-                    plate.HolesCentersPoints2D,
-                    plate.DrillingRoutePoints2D, // TODO Ondrej - Prepracovat vsetky polia bodov na objekt Point alebo opacne, toto pole je potrebne naplnit z poloziek zoznamu List<Point> DrillingRoutePoints
+                    plate.HolesCentersPoints,
+                    plate.DrillingRoutePoints, // TODO Ondrej - Prepracovat vsetky polia bodov na objekt Point alebo opacne, toto pole je potrebne naplnit z poloziek zoznamu List<Point> DrillingRoutePoints
                     scale_unit,
                     fDiameter,
                     fmodelMarginLeft_x,
@@ -293,8 +293,8 @@ namespace BaseClasses
             bool bDrawDrillingRoute,
             List<Point> PointsOut,
             List<Point> PointsIn,
-            float[,] PointsHoles,
-            float[,] PointsDrillingRoute,
+            Point[] PointsHoles,
+            List<Point> PointsDrillingRoute,
             float scale_unit,
             double DHolesDiameter,
             float fmodelMarginLeft_x,
@@ -333,7 +333,7 @@ namespace BaseClasses
             double dPageHeight,
             List<Point> PointsOut,
             List<Point> PointsIn,
-            float[,] PointsHoles,
+            Point[] PointsHoles,
             double dPointInOutDistance_x_real,
             double dPointInOutDistance_y_real,
             out double fModel_Length_x_real,
@@ -389,12 +389,13 @@ namespace BaseClasses
                 }
             }
 
-            if (PointsHoles != null && PointsHoles.Length / 2 > 0)
+            if (PointsHoles != null && PointsHoles.Length > 0)
             {
-                for (int i = 0; i < PointsHoles.Length / 2; i++)
+                for (int i = 0; i < PointsHoles.Length; i++)
                 {
-                    PointsHoles[i, 0] -= (float)fTempMin_X;
-                    PointsHoles[i, 1] -= (float)fTempMin_Y;
+                    //kedze je to pole, je mozne priamo menit property objektov
+                    PointsHoles[i].X -= fTempMin_X;
+                    PointsHoles[i].Y -= fTempMin_Y;
                 }
             }
 
@@ -713,27 +714,46 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, float [,] PointsHoles, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, float scale_unit, double DHolesDiameter, Canvas canvasForImage)
+        //public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, float [,] PointsHoles, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, float scale_unit, double DHolesDiameter, Canvas canvasForImage)
+        //{
+        //    if (bDrawHoles)
+        //    {
+        //        // Holes
+        //        if (PointsHoles != null) // If is array of holes centers is not empty
+        //        {
+        //            for (int i = 0; i < PointsHoles.Length / 2; i++)
+        //            {
+        //                // Draw Hole
+        //                DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter, Brushes.Black, 1, canvasForImage);
+ 
+        //                // Draw Symbol of Center
+        //                if(bDrawHoleCentreSymbols)
+        //                   DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter + 10, Brushes.Red, 1, canvasForImage);
+        //            }
+        //        }
+        //    }
+        //}
+        public static void DrawHoles(bool bDrawHoles, bool bDrawHoleCentreSymbols, Point[] PointsHoles, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, float scale_unit, double DHolesDiameter, Canvas canvasForImage)
         {
             if (bDrawHoles)
             {
                 // Holes
                 if (PointsHoles != null) // If is array of holes centers is not empty
                 {
-                    for (int i = 0; i < PointsHoles.Length / 2; i++)
+                    for (int i = 0; i < PointsHoles.Length; i++)
                     {
                         // Draw Hole
-                        DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter, Brushes.Black, 1, canvasForImage);
- 
+                        DrawCircle(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i].Y), scale_unit * DHolesDiameter, Brushes.Black, 1, canvasForImage);
+
                         // Draw Symbol of Center
-                        if(bDrawHoleCentreSymbols)
-                           DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i, 0], modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i, 1]), scale_unit * DHolesDiameter + 10, Brushes.Red, 1, canvasForImage);
+                        if (bDrawHoleCentreSymbols)
+                            DrawSymbol_Cross(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsHoles[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsHoles[i].Y), scale_unit * DHolesDiameter + 10, Brushes.Red, 1, canvasForImage);
                     }
                 }
             }
         }
 
-        public static void DrawDrillingRoute(bool bDrawDrillingRoute, float [,] PointsDrillingRoute, float fReal_Model_Zoom_Factor, float modelMarginLeft_x, float modelMarginBottom_y, Canvas canvasForImage)
+        public static void DrawDrillingRoute(bool bDrawDrillingRoute, List<Point> PointsDrillingRoute, float fReal_Model_Zoom_Factor, float modelMarginLeft_x, float modelMarginBottom_y, Canvas canvasForImage)
         {
             if (!bDrawDrillingRoute || PointsDrillingRoute == null) return;
             // ??? TODO upravit odsadenie
@@ -742,20 +762,20 @@ namespace BaseClasses
             double fy_min = double.MaxValue;
             double fx_max = double.MinValue;
             double fy_max = double.MinValue;
-
-            for (int i = 0; i < PointsDrillingRoute.Length / 2; i++)
+            
+            for (int i = 0; i < PointsDrillingRoute.Count; i++)
             {
-                if (PointsDrillingRoute[i, 0] < fx_min)
-                    fx_min = PointsDrillingRoute[i, 0];
+                if (PointsDrillingRoute[i].X < fx_min)
+                    fx_min = PointsDrillingRoute[i].X;
 
-                if (PointsDrillingRoute[i, 1] < fy_min)
-                    fy_min = PointsDrillingRoute[i, 1];
+                if (PointsDrillingRoute[i].Y < fy_min)
+                    fy_min = PointsDrillingRoute[i].Y;
 
-                if (PointsDrillingRoute[i, 0] > fx_max)
-                    fx_max = PointsDrillingRoute[i, 0];
+                if (PointsDrillingRoute[i].X > fx_max)
+                    fx_max = PointsDrillingRoute[i].X;
 
-                if (PointsDrillingRoute[i, 1] > fy_max)
-                    fy_max = PointsDrillingRoute[i, 1];
+                if (PointsDrillingRoute[i].Y > fy_max)
+                    fy_max = PointsDrillingRoute[i].Y;
             }
 
             fx_min *= fReal_Model_Zoom_Factor;
@@ -931,6 +951,36 @@ namespace BaseClasses
             if (Points_temp != null) // Some points exist
             {
                 for (int i = 0; i < Points_temp.Count; i++)
+                {
+                    // Maximum X - coordinate
+                    if (Points_temp[i].X > fTempMax_X)
+                        fTempMax_X = Points_temp[i].X;
+
+                    // Minimum X - coordinate
+                    if (Points_temp[i].X < fTempMin_X)
+                        fTempMin_X = Points_temp[i].X;
+
+                    // Maximum Y - coordinate
+                    if (Points_temp[i].Y > fTempMax_Y)
+                        fTempMax_Y = Points_temp[i].Y;
+
+                    // Minimum Y - coordinate
+                    if (Points_temp[i].Y < fTempMin_Y)
+                        fTempMin_Y = Points_temp[i].Y;
+                }
+            }
+        }
+
+        public static void CalculateModelLimits(Point[] Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
+        {
+            fTempMax_X = double.MinValue;
+            fTempMin_X = double.MaxValue;
+            fTempMax_Y = double.MinValue;
+            fTempMin_Y = double.MaxValue;
+
+            if (Points_temp != null) // Some points exist
+            {
+                for (int i = 0; i < Points_temp.Length; i++)
                 {
                     // Maximum X - coordinate
                     if (Points_temp[i].X > fTempMax_X)

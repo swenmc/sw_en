@@ -4,6 +4,7 @@ using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
 using _3DTools;
 using MATH;
+using System.Windows;
 
 namespace BaseClasses
 {
@@ -125,8 +126,9 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
-            HolesCenterRadii = new float[HolesCentersPoints2D.Length / 2];
+            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
+            Point[] m_HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
+            HolesCenterRadii = new float[HolesCentersPoints.Length];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data
@@ -136,8 +138,9 @@ namespace BaseClasses
                 m_flZ,
                 m_fhY1,
                 m_fSlope_rad,
-                ref HolesCentersPoints2D);
+                ref m_HolesCentersPoints);
 
+            HolesCentersPoints = m_HolesCentersPoints;
             screwArrangement.Calc_HolesControlPointsCoord3D(m_flZ, Ft);
 
             // Fill list of indices for drawing of surface
@@ -164,7 +167,7 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
-            DrillingRoutePoints2D = null;
+            //DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------

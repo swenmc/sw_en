@@ -176,9 +176,13 @@ namespace MATH
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
         }
-        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, List<Point> points)
+        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref List<Point> points)
         {
-            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, points);
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref points);
+        }
+        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref Point[] points)
+        {
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref points);
         }
 
         public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float [,] array)
@@ -189,7 +193,7 @@ namespace MATH
                     TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
             }
         }
-        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, List<Point> points)
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref List<Point> points)
         {
             if (points != null)
             {
@@ -197,6 +201,16 @@ namespace MATH
                 {
                     points[i] = TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
                 }                    
+            }
+        }
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref Point[] points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i] = TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
+                }
             }
         }
 
@@ -230,7 +244,7 @@ namespace MATH
             }
         }
 
-        public static void MirrorAboutY_ChangeXCoordinates(List<Point> points)
+        public static void MirrorAboutY_ChangeXCoordinates(ref List<Point> points)
         {
             if (points != null)
             {
@@ -242,8 +256,18 @@ namespace MATH
                 }   
             }
         }
+        public static void MirrorAboutY_ChangeXCoordinates(ref Point[] points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i].X *= -1;                    
+                }
+            }
+        }
 
-        public static void MirrorAboutX_ChangeYCoordinates(List<Point> points)
+        public static void MirrorAboutX_ChangeYCoordinates(ref List<Point> points)
         {
             if (points != null)
             {
@@ -252,6 +276,16 @@ namespace MATH
                     Point p = points[i];
                     p.Y *= -1;
                     points[i] = p;
+                }
+            }
+        }
+        public static void MirrorAboutX_ChangeYCoordinates(ref Point[] points)
+        {
+            if (points != null)
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    points[i].Y *= -1;                    
                 }
             }
         }

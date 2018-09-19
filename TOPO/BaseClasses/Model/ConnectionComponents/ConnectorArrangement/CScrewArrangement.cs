@@ -74,10 +74,10 @@ namespace BaseClasses
             List<Point> points = null;
             if (this.HolesCentersPoints2D != null)
             {
-                points = new List<Point>(this.HolesCentersPoints2D.Length / 2);
-                for (int i = 0; i < this.HolesCentersPoints2D.Length / 2; i++)
+                points = new List<Point>(this.HolesCentersPoints2D.Length);
+                for (int i = 0; i < this.HolesCentersPoints2D.Length; i++)
                 {
-                    points.Add(new Point(this.HolesCentersPoints2D[i, 0], this.HolesCentersPoints2D[i, 1]));
+                    points.Add(new Point(this.HolesCentersPoints2D[i].X, this.HolesCentersPoints2D[i].Y));
                 }
             }
             return points;

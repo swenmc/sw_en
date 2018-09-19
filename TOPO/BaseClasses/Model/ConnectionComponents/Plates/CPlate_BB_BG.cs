@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using MATH;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -125,7 +126,8 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
+            //HolesCentersPoints2D = new float[IHolesNumber, 2];
+            HolesCentersPoints = new Point[IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
@@ -363,13 +365,18 @@ namespace BaseClasses
             }
         }
 
+        //void Calc_HolesCentersCoord2D()
+        //{
+        //    HolesCentersPoints2D[0, 0] = m_flZ + 0.5f * m_fbX;
+        //    HolesCentersPoints2D[0, 1] = 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles;
+
+        //    HolesCentersPoints2D[1, 0] = HolesCentersPoints2D[0, 0];
+        //    HolesCentersPoints2D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
+        //}
         void Calc_HolesCentersCoord2D()
         {
-            HolesCentersPoints2D[0, 0] = m_flZ + 0.5f * m_fbX;
-            HolesCentersPoints2D[0, 1] = 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles;
-
-            HolesCentersPoints2D[1, 0] = HolesCentersPoints2D[0, 0];
-            HolesCentersPoints2D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
+            HolesCentersPoints[0] = new Point(m_flZ + 0.5f * m_fbX, 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles);
+            HolesCentersPoints[1] = new Point(HolesCentersPoints[0].X, 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles);
         }
 
         protected override void loadIndices()

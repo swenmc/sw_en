@@ -187,7 +187,7 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
-            DrillingRoutePoints2D = null;
+            //DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------

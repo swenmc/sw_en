@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using MATH;
 using BaseClasses.GraphObj;
+using System.Windows;
 
 namespace BaseClasses
 {
@@ -294,7 +295,7 @@ namespace BaseClasses
                     IHolesNumber += seq.iNumberOfScrewsInRow_xDirection * seq.iNumberOfScrewsInColumn_yDirection;
             }
 
-            HolesCentersPoints2D = new float[IHolesNumber, 2];
+            HolesCentersPoints2D = new Point[IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
@@ -309,7 +310,7 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float fSlope_rad,
-            ref float[,] fHolesCentersPoints2D)
+            ref Point[] fHolesCentersPoints2D)
         {
             // Coordinates of [0,0] of sequence point on plate
             float fx_c = 0.05f;
@@ -349,8 +350,8 @@ namespace BaseClasses
             {
                 for (int j = 0; j < RectangularSequences[i].fHolesCentersPoints2D.Length / 2; j++) // Add each point in the sequence
                 {
-                    HolesCentersPoints2D[iPointIndex + j, 0] = RectangularSequences[i].fHolesCentersPoints2D[j, 0];
-                    HolesCentersPoints2D[iPointIndex + j, 1] = RectangularSequences[i].fHolesCentersPoints2D[j, 1];
+                    HolesCentersPoints2D[iPointIndex + j].X = RectangularSequences[i].fHolesCentersPoints2D[j, 0];
+                    HolesCentersPoints2D[iPointIndex + j].Y = RectangularSequences[i].fHolesCentersPoints2D[j, 1];
                 }
 
                 iPointIndex += RectangularSequences[i].fHolesCentersPoints2D.Length / 2;
@@ -367,7 +368,7 @@ namespace BaseClasses
             float flZ,
             float fhY_1,
             float fSlope_rad,
-            ref float[,] fHolesCentersPoints2D)
+            ref Point[] fHolesCentersPoints2D)
         {
             // Coordinates of [0,0] of sequence point on plate
             float fx_cBG = flZ + FCrscRafterDepth;
@@ -419,8 +420,8 @@ namespace BaseClasses
             {
                 for (int j = 0; j < RectangularSequences[i].fHolesCentersPoints2D.Length / 2; j++) // Add each point in the sequence
                 {
-                    HolesCentersPoints2D[iPointIndex + j, 0] = RectangularSequences[i].fHolesCentersPoints2D[j, 0];
-                    HolesCentersPoints2D[iPointIndex + j, 1] = RectangularSequences[i].fHolesCentersPoints2D[j, 1];
+                    HolesCentersPoints2D[iPointIndex + j].X = RectangularSequences[i].fHolesCentersPoints2D[j, 0];
+                    HolesCentersPoints2D[iPointIndex + j].Y = RectangularSequences[i].fHolesCentersPoints2D[j, 1];
                 }
 
                 iPointIndex += RectangularSequences[i].fHolesCentersPoints2D.Length / 2;
@@ -461,8 +462,8 @@ namespace BaseClasses
         {
             for (int i = 0; i < IHolesNumber; i++)
             {
-                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i, 0];
-                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i, 1] - flZ; // Musime odpocitat zalomenie hrany plechu, v 2D zobrazeni sa totiz pripocitalo
+                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X;
+                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - flZ; // Musime odpocitat zalomenie hrany plechu, v 2D zobrazeni sa totiz pripocitalo
                 arrConnectorControlPoints3D[i].Z = -ft; // TODO Position depends on screw length;
             }
         }

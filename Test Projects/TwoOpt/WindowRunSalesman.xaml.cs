@@ -12,7 +12,7 @@ namespace TwoOpt
     /// </summary>
     public partial class WindowRunSalesman : IMainWindow
     {
-        public WindowRunSalesman(List<Point> Points, float fHeightToWidthRatio = 1)
+        public WindowRunSalesman(List<Point> Points, double fHeightToWidthRatio = 1)
         {
             InitializeComponent();
 
