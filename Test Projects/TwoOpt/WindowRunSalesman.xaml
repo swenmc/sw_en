@@ -29,7 +29,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
                 
                 <Label 
@@ -42,7 +42,7 @@
                     Name="IterationLabel"
                     Grid.Row="1" />
                 <Label 
-                    VerticalContentAlignment="Center"
+                    VerticalContentAlignment="Center" HorizontalAlignment="Left"
                     Name="WaitingLabel"
                     VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
             </Grid>

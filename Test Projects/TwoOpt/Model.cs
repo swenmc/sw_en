@@ -62,10 +62,10 @@ namespace TwoOpt
             // repeat until no improvement is made 
             var improve = 0;
             var iteration = 0;
-
-            while (improve < 700)
+            var bestDistance = _tour.TourDistance();
+            while (improve < 20)
             {
-                var bestDistance = _tour.TourDistance();
+                bestDistance = _tour.TourDistance();
 
                 for (var i = 1; i < size - 1; i++)
                 {
@@ -99,6 +99,7 @@ namespace TwoOpt
             }
 
             AlgorithmEnded = true;
+            TourUpdated.Raise(this, new Tuple<double, int>(bestDistance, iteration));
         }
 
         //// Do all 2-opt combinations
