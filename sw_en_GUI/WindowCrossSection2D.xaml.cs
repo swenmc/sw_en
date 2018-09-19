@@ -185,7 +185,7 @@ namespace sw_en_GUI
         {
             canvasForImage.Children.Clear();
 
-            CCrSc_3_10075_BOX crsc = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.0075f, Colors.LawnGreen);
+            CCrSc_3_10075_BOX crsc = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.0075f, Colors.LawnGreen);
             dPageWidth = this.Width;
             dPageHeight = this.Height;
 

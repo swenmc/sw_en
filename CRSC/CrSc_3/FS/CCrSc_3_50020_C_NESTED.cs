@@ -48,8 +48,10 @@ namespace CRSC
             set { m_fc_lip2 = value; }
         }
 
-        public CCrSc_3_50020_C_NESTED(float fh, float fb, float ft, Color color_temp)
+        public CCrSc_3_50020_C_NESTED(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
+            ID = iID_temp;
+
             Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString() + " nested"; // Original Description
             Name = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // Formsteel Description
             NameDatabase = (fh * 1000).ToString() + (20).ToString() + "n";

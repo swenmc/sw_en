@@ -38,8 +38,10 @@ namespace CRSC
             set { m_fd = value; }
         }
 
-        public CCrSc_3_10075_BOX(float fh, float fb, float ft, Color color_temp)
+        public CCrSc_3_10075_BOX(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
+            ID = iID_temp;
+
             Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
             NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 100).ToString();
 

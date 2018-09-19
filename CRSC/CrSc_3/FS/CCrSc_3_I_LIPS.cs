@@ -34,8 +34,10 @@ namespace CRSC
             set { m_fc_lip = value; }
         }
 
-        public CCrSc_3_I_LIPS(float fh, float fb, float fc_lip, float ft, Color color_temp)
+        public CCrSc_3_I_LIPS(int iID_temp, float fh, float fb, float fc_lip, float ft, Color color_temp)
         {
+            ID = iID_temp;
+
             Name = "I " + (fh * 1000).ToString() + (ft * 1000).ToString();
             NameDatabase = (fh * 1000).ToString() + (ft * 1000).ToString();
 

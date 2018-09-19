@@ -51,7 +51,7 @@ namespace PFD
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[0] = ReferenceGirt.CrScStart; // Girts
-            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
+            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
             m_arrCrSc[1].Name = "Box 10075";
 
             INumberOfGirtsToDeactivate = (int)((fDoorHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt

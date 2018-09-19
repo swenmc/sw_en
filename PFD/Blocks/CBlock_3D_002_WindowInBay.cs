@@ -60,7 +60,7 @@ namespace PFD
 
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             m_arrCrSc[0] = ReferenceGirt.CrScStart; // Girts
-            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
+            m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
             m_arrCrSc[1].Name = "Box 10075";
 
             iNumberOfGirtsUnderWindow = (int)((fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;

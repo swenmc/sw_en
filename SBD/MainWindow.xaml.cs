@@ -101,7 +101,7 @@ namespace SBD
             this.DataContext = vm;
 
             // Pomocny prierez pre testovanie
-            CCrSc_3_50020_C sectionC_temp = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.Orange);
+            CCrSc_3_50020_C sectionC_temp = new CCrSc_3_50020_C(0, 0.5f, 0.2f, 0.00195f, Colors.Orange);
 
             // TODO Temporary
             // Suradnice bodov na strednici C 50020

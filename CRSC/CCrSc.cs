@@ -87,6 +87,15 @@ namespace CRSC
             set { m_TriangleIndicesBackSide = value; }
         }
 
+        // Cross-section object ID
+        private int m_ID;
+
+        public int ID
+        {
+            get { return m_ID; }
+            set { m_ID = value; }
+        }
+
         // Name of cross-section
         private string m_sName;
 
@@ -177,15 +186,6 @@ namespace CRSC
         {
             get { return m_CrScPointsOut; }
             set { m_CrScPointsOut = value; }
-        }
-
-
-        private int m_iCrSc_ID;
-
-        public int ICrSc_ID
-        {
-            get { return m_iCrSc_ID; }
-            set { m_iCrSc_ID = value; }
         }
 
         // Number of auxliary points in one section in one surface (auxialiary points of section in 2D in one surface), these points should be defined before real edges (outside or inside points) definition

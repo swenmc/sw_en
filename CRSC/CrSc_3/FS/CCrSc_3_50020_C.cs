@@ -44,8 +44,10 @@ namespace CRSC
             set { m_fc_lip2 = value; }
         }
 
-        public CCrSc_3_50020_C(float fh, float fb, float ft, Color color_temp)
+        public CCrSc_3_50020_C(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
+            ID = iID_temp;
+
             Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
             Name = "C " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
             NameDatabase = (fh * 1000).ToString() + (20).ToString();

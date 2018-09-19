@@ -235,7 +235,7 @@ namespace sw_en_GUI
                 model.m_arrMembers[i].NodeEnd = model.m_arrNodes[model.m_arrMembers[i].NodeEnd.ID - 1];
 
                 // Set Cross-section
-                model.m_arrMembers[i].CrScStart = model.m_arrCrSc[model.m_arrMembers[i].CrScStart.ICrSc_ID - 1];
+                model.m_arrMembers[i].CrScStart = model.m_arrCrSc[model.m_arrMembers[i].CrScStart.ID - 1];
 
                 // Temp - nacitava sa z tabulky alebo z databazy, dopracovat
                 // Parametre pre IPN 300
@@ -328,11 +328,11 @@ namespace sw_en_GUI
                     //Cross-sections
                     CrSc1 = new CCrSc_3_00();
                     int.TryParse(row["CrossSectionStartID"].ToString(), out iCrSc1ID);
-                    CrSc1.ICrSc_ID = iCrSc1ID;
+                    CrSc1.ID = iCrSc1ID;
 
                     CrSc2 = new CCrSc_3_00();
                     int.TryParse(row["CrossSectionEndID"].ToString(), out iCrSc2ID);
-                    CrSc2.ICrSc_ID = iCrSc2ID;
+                    CrSc2.ID = iCrSc2ID;
 
                     // Create member
                     member = new CMember(Line_ID, Node1, Node2, CrSc1, Time);
@@ -373,7 +373,7 @@ namespace sw_en_GUI
                     crsc = new CCrSc_0_05(0.1f, 0.05f);
 
                     int.TryParse(row["MaterialID"].ToString(), out CrSc_ID);
-                    crsc.ICrSc_ID = CrSc_ID;
+                    crsc.ID = CrSc_ID;
 
                     float.TryParse(row["fI_t"].ToString(), out fI_t);
                     crsc.I_t = fI_t;

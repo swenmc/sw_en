@@ -45,8 +45,10 @@ namespace CRSC
             set { m_fd = value; }
         }
 
-        public CCrSc_3_63020_BOX(float fh, float fb, float ft, float ft_flange, Color color_temp)
+        public CCrSc_3_63020_BOX(int iID_temp, float fh, float fb, float ft, float ft_flange, Color color_temp)
         {
+            ID = iID_temp;
+
             Name = "Box " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString(); // Original Description
             Name = "Box " + (fh * 1000).ToString() + (20).ToString(); // Formsteel Description
             NameDatabase = (fh * 1000).ToString() + (20).ToString();

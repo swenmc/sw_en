@@ -41,8 +41,10 @@ namespace CRSC
             set { m_fd = value; }
         }
 
-        public CCrSc_3_270XX_C_NESTED(float fh, float fb, float ft, Color color_temp)
+        public CCrSc_3_270XX_C_NESTED(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
+            ID = iID_temp;
+
             Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + " nested";
             NameDatabase = (fh * 1000).ToString() + (ft * 1000 * 100).ToString() + "n";
 

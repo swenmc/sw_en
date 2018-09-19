@@ -112,18 +112,16 @@ namespace PFD
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
-            // TODO Nastavit podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
-
-            //treba nastavit v konstruktore CRSC ID
-            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);   // Main Column
-            m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);           // Rafter
-            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Orange);                   // Girt - Wall
-            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                  // Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(0.29f, 0.071f, 0.00115f, Colors.BlueViolet);    // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(0.29f, 0.071f, 0.00115f, Colors.BlueViolet);     // Back Column
-            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00115f, Colors.Brown);                   // Front Girt
-            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(0.27f, 0.07f, 0.00095f, Colors.YellowGreen);              // Back Girt
+            // TODO Ondrej - Nastavit objekt prierezu podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);   // Main Column
+            m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);           // Rafter
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(3, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(4, 0.27f, 0.07f, 0.00115f, Colors.Orange);                   // Girt - Wall
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(5, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                  // Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(6, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);    // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(7, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);     // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(8, 0.27f, 0.07f, 0.00115f, Colors.Brown);                   // Front Girt
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(9, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);              // Back Girt
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(9);
@@ -1874,7 +1872,7 @@ namespace PFD
             {
                 // Preskocit prvy prvok v poli block crsc, pretoze odkaz na girt section uz existuje, nie je potrebne prierez kopirovat znova
                 m_arrCrSc[arraysizeoriginal + i - 1] = block.m_arrCrSc[i];
-                m_arrCrSc[arraysizeoriginal + i - 1].ICrSc_ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
+                m_arrCrSc[arraysizeoriginal + i - 1].ID = arraysizeoriginal + i/* -1 + 1*/; // Odcitat index pretoze prvy prierez ignorujeme a pridat 1 pre ID (+ 1)
             }
 
             // Nodes
@@ -2464,12 +2462,9 @@ namespace PFD
             
             foreach (CMember member in m_arrMembers)
             {
-
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
                 {
-                    
-
-                    if (member.CrScStart.ICrSc_ID == group.CrossSection.ICrSc_ID) // In case that cross-section ID is same add member to the list
+                    if (member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
                     {
                         member.BIsDSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
                         member.BIsDSelectedForDesign = true;

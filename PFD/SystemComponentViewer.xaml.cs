@@ -369,49 +369,49 @@ namespace PFD
                             //temp test 
                             //crsc = new CCrSc_3_10075_BOX(fh * 3 , fb * 3, ft * 3, Colors.Red); 
 
-                            crsc = new CCrSc_3_10075_BOX(fh, fb, ft, cComponentColor); // BOX
+                            crsc = new CCrSc_3_10075_BOX(0,fh, fb, ft, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Z:
                         {
-                            crsc = new CCrSc_3_Z(fh, fb_fl, fc_lip1, ft, cComponentColor);
+                            crsc = new CCrSc_3_Z(0,fh, fb_fl, fc_lip1, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
                             if(vm.ComponentIndex < 3) // C270
-                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, cComponentColor);
+                                crsc = new CCrSc_3_270XX_C(0,fh, fb, ft, cComponentColor);
                             else
-                                crsc = new CCrSc_3_50020_C(fh, fb, ft, cComponentColor);
+                                crsc = new CCrSc_3_50020_C(0,fh, fb, ft, cComponentColor);
 
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
                         {
-                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(fh, fb, fc_lip1, ft, cComponentColor);
+                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(0, fh, fb, fc_lip1, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         {
                             if (vm.ComponentIndex == 0)
-                                crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, cComponentColor); // C270115n
+                                crsc = new CCrSc_3_270XX_C_NESTED(0, fh, fb, ft, cComponentColor); // C270115n
                             else
-                                crsc = new CCrSc_3_50020_C_NESTED(fh, fb, ft, cComponentColor); // C50020n
+                                crsc = new CCrSc_3_50020_C_NESTED(0, fh, fb, ft, cComponentColor); // C50020n
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
-                            crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, cComponentColor); // BOX
+                            crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
                         {
-                            crsc = new CCrSc_3_TR_SMARTDEK(fh, fb, ft, cComponentColor); // Trapezoidal sheeting
+                            crsc = new CCrSc_3_TR_SMARTDEK(0, fh, fb, ft, cComponentColor); // Trapezoidal sheeting
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
                         {
-                            crsc = new CCrSc_3_TR_PURLINDEK(fh, fb, ft, cComponentColor); // Trapezoidal sheeting
+                            crsc = new CCrSc_3_TR_PURLINDEK(0, fh, fb, ft, cComponentColor); // Trapezoidal sheeting
                             break;
                         }
                     default:
@@ -575,35 +575,35 @@ namespace PFD
                 {
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
                         {
-                            crsc = new CCrSc_3_10075_BOX(fh, fb, ft, cComponentColor); // BOX
+                            crsc = new CCrSc_3_10075_BOX(0, fh, fb, ft, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Z:
                         {
-                            crsc = new CCrSc_3_Z(fh, fb_fl, fc_lip1, ft, cComponentColor); // BOX
+                            crsc = new CCrSc_3_Z(0, fh, fb_fl, fc_lip1, ft, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
                             if (vm.ComponentIndex < 3) // C270
-                                crsc = new CCrSc_3_270XX_C(fh, fb, ft, cComponentColor);
+                                crsc = new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor);
                             else
-                                crsc = new CCrSc_3_50020_C(fh, fb, ft, cComponentColor);
+                                crsc = new CCrSc_3_50020_C(0, fh, fb, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
                         {
-                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(fh, fb, fc_lip1, ft, cComponentColor);
+                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(0, fh, fb, fc_lip1, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
                         {
-                            crsc = new CCrSc_3_270XX_C_NESTED(fh, fb, ft, cComponentColor);
+                            crsc = new CCrSc_3_270XX_C_NESTED(0, fh, fb, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
                         {
-                            crsc = new CCrSc_3_63020_BOX(fh, fb, ft, ft_f, cComponentColor); // Box
+                            crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor); // Box
                             break;
                         }
                     default:

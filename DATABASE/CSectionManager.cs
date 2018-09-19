@@ -160,7 +160,7 @@ namespace DATABASE
                 {
                     if (reader.Read())
                     {
-                        crsc.ICrSc_ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        crsc.ID = reader.GetInt32(reader.GetOrdinal("ID"));
                         crsc.NameDatabase = sectionNameDatabase;
                         crsc.h = double.Parse(reader["h"].ToString(), nfi);
                         crsc.b = double.Parse(reader["b"].ToString(), nfi);
