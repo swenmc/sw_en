@@ -238,8 +238,8 @@ namespace BaseClasses
             float fy_c,
             float fAngle_seq_rotation_init_point_deg,
             float fRotation_rad,
-            out float[,] fSequenceTop,
-            out float[,] fSequenceBottom,
+            out Point[] fSequenceTop,
+            out Point[] fSequenceBottom,
             out float[] fSequenceTopRadii,
             out float[] fSequenceBottomRadii)
         {
@@ -248,8 +248,12 @@ namespace BaseClasses
             float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
 
             // Half circle sequence
-            fSequenceTop = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence, false);
-            fSequenceBottom = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence, false);
+            float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence, false);
+            float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence, false);
+
+            // TODO - docasne, previest pole float na pole Points
+            fSequenceTop = GetConvertedFloatToPointArray(fSequenceTop_temp);
+            fSequenceBottom = GetConvertedFloatToPointArray(fSequenceBottom_temp);
 
             // Add addtional point the sequences
             if (BUseAdditionalCornerScrews)
@@ -259,42 +263,42 @@ namespace BaseClasses
                 int iNumberOfScrewsInRow_yDirection = (int)Math.Sqrt(iNumberOfAdditionalConnectorsInOneSequence / 2);
 
                 // Additional corner connectors in Sequence
-                float[,] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - (iNumberOfScrewsInColumn_xDirection - 1) * FAdditionalScrewsDistance_x, -FRadius, FRadius - (iNumberOfScrewsInRow_yDirection - 1) * FAdditionalScrewsDistance_y, 0, iNumberOfScrewsInColumn_xDirection, iNumberOfScrewsInRow_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
-                float[,] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - (iNumberOfScrewsInColumn_xDirection - 1) * FAdditionalScrewsDistance_x, -FRadius, FRadius - (iNumberOfScrewsInRow_yDirection - 1) * FAdditionalScrewsDistance_y, 180, iNumberOfScrewsInColumn_xDirection, iNumberOfScrewsInRow_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+                Point[] cornerConnectorsInTopSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - (iNumberOfScrewsInColumn_xDirection - 1) * FAdditionalScrewsDistance_x, new Point(-FRadius, FRadius - (iNumberOfScrewsInRow_yDirection - 1) * FAdditionalScrewsDistance_y), 0, iNumberOfScrewsInColumn_xDirection, iNumberOfScrewsInRow_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+                Point[] cornerConnectorsInBottomSequence = GetAdditionaConnectorsCoordinatesInOneSequence(2 * FRadius - (iNumberOfScrewsInColumn_xDirection - 1) * FAdditionalScrewsDistance_x, new Point(-FRadius, FRadius - (iNumberOfScrewsInRow_yDirection - 1) * FAdditionalScrewsDistance_y), 180, iNumberOfScrewsInColumn_xDirection, iNumberOfScrewsInRow_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
 
                 // Add additional connectors into the array
                 // Store original array
-                float[,] fSequenceTop_original = fSequenceTop;
-                float[,] fSequenceBottom_original = fSequenceBottom;
+                Point[] fSequenceTop_original = fSequenceTop;
+                Point[] fSequenceBottom_original = fSequenceBottom;
 
                 // Set new size of array (items are deleted), TODO - find way how to resize two dimensional array
-                fSequenceTop = new float[fSequenceTop_original.Length / 2 + cornerConnectorsInTopSequence.Length / 2, 2];
-                fSequenceBottom = new float[fSequenceBottom_original.Length / 2 + cornerConnectorsInBottomSequence.Length / 2, 2];
+                fSequenceTop = new Point[fSequenceTop_original.Length + cornerConnectorsInTopSequence.Length];
+                fSequenceBottom = new Point[fSequenceBottom_original.Length + cornerConnectorsInBottomSequence.Length];
 
                 // Add items (point coordinates) from original array
-                for (int i = 0; i < fSequenceTop_original.Length / 2; i++)
+                for (int i = 0; i < fSequenceTop_original.Length; i++)
                 {
-                    fSequenceTop[i, 0] = fSequenceTop_original[i, 0];
-                    fSequenceTop[i, 1] = fSequenceTop_original[i, 1];
+                    fSequenceTop[i].X = fSequenceTop_original[i].X;
+                    fSequenceTop[i].Y = fSequenceTop_original[i].Y;
                 }
 
-                for (int i = 0; i < fSequenceBottom_original.Length / 2; i++)
+                for (int i = 0; i < fSequenceBottom_original.Length; i++)
                 {
-                    fSequenceBottom[i, 0] = fSequenceBottom_original[i, 0];
-                    fSequenceBottom[i, 1] = fSequenceBottom_original[i, 1];
+                    fSequenceBottom[i].X = fSequenceBottom_original[i].X;
+                    fSequenceBottom[i].Y = fSequenceBottom_original[i].Y;
                 }
 
                 // Add items (point coordinates) from additional array of connectors
                 for (int i = 0; i < cornerConnectorsInTopSequence.Length / 2; i++)
                 {
-                    fSequenceTop[fSequenceTop_original.Length / 2 + i, 0] = cornerConnectorsInTopSequence[i, 0];
-                    fSequenceTop[fSequenceTop_original.Length / 2 + i, 1] = cornerConnectorsInTopSequence[i, 1];
+                    fSequenceTop[fSequenceTop_original.Length + i].X = cornerConnectorsInTopSequence[i].X;
+                    fSequenceTop[fSequenceTop_original.Length + i].Y = cornerConnectorsInTopSequence[i].Y;
                 }
 
                 for (int i = 0; i < cornerConnectorsInBottomSequence.Length / 2; i++)
                 {
-                    fSequenceBottom[fSequenceBottom_original.Length / 2 + i, 0] = cornerConnectorsInBottomSequence[i, 0];
-                    fSequenceBottom[fSequenceBottom_original.Length / 2 + i, 1] = cornerConnectorsInBottomSequence[i, 1];
+                    fSequenceBottom[fSequenceBottom_original.Length + i].X = cornerConnectorsInBottomSequence[i].X;
+                    fSequenceBottom[fSequenceBottom_original.Length + i].Y = cornerConnectorsInBottomSequence[i].Y;
                 }
             }
 
@@ -303,41 +307,42 @@ namespace BaseClasses
             Geom2D.TransformPositions_CCW_deg(0, 0, fAngle_seq_rotation_deg, ref fSequenceBottom);
 
             // Set radii of connectors / screws in the connection
-            fSequenceTopRadii = new float[fSequenceTop.Length / 2];
+            fSequenceTopRadii = new float[fSequenceTop.Length];
 
-            for (int i = 0; i < fSequenceTop.Length / 2; i++)
-                fSequenceTopRadii[i] = (float)Math.Sqrt(MathF.Pow2(fSequenceTop[i, 0]) + MathF.Pow2(fSequenceTop[i, 1]));
+            for (int i = 0; i < fSequenceTop.Length; i++)
+                fSequenceTopRadii[i] = (float)Math.Sqrt(MathF.Pow2(fSequenceTop[i].X) + MathF.Pow2(fSequenceTop[i].Y));
 
-            fSequenceBottomRadii = new float[fSequenceBottom.Length / 2];
-            for (int i = 0; i < fSequenceTop.Length / 2; i++)
-                fSequenceBottomRadii[i] = (float)Math.Sqrt(MathF.Pow2(fSequenceBottom[i, 0]) + MathF.Pow2(fSequenceBottom[i, 1]));
+            fSequenceBottomRadii = new float[fSequenceBottom.Length];
+            for (int i = 0; i < fSequenceTop.Length; i++)
+                fSequenceBottomRadii[i] = (float)Math.Sqrt(MathF.Pow2(fSequenceBottom[i].X) + MathF.Pow2(fSequenceBottom[i].Y));
 
             // Translate
             Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceTop);
             Geom2D.TransformPositions_CCW_deg(fx_c, fy_c, 0, ref fSequenceBottom);
         }
 
-        public float[,] GetAdditionaConnectorsCoordinatesInOneSequence(float fDistanceBetweenCornerPartsControlPointsX,
-            float fcPointX,
-            float fcPointY,
+        public Point[] GetAdditionaConnectorsCoordinatesInOneSequence(float fDistanceBetweenCornerPartsControlPointsX,
+            Point refPoint,
             float fRotationAngle_deg,
             int iNumberOfPointsInXDirection,
             int iNumberOfPointsInYDirection,
             float fDistanceOfPointsX,
             float fDistanceOfPointsY)
         {
-            float[,] fLeftPoints = GetRegularArrayOfPointsInCartesianCoordinates(fcPointX, fcPointY, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, fDistanceOfPointsX, fDistanceOfPointsY);
-            float[,] fRightPoints = GetRegularArrayOfPointsInCartesianCoordinates(fDistanceBetweenCornerPartsControlPointsX + fcPointX, fcPointY, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, fDistanceOfPointsX, fDistanceOfPointsY);
+            Point[] fLeftPoints = GetRegularArrayOfPointsInCartesianCoordinates(refPoint, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, fDistanceOfPointsX, fDistanceOfPointsY);
 
-            float[,] array = new float[2 * iNumberOfPointsInXDirection * iNumberOfPointsInYDirection, 2];
+            Point pRefRight = new Point(fDistanceBetweenCornerPartsControlPointsX + refPoint.X, refPoint.Y);
+            Point[] fRightPoints = GetRegularArrayOfPointsInCartesianCoordinates(pRefRight, iNumberOfPointsInXDirection, iNumberOfPointsInYDirection, fDistanceOfPointsX, fDistanceOfPointsY);
+
+            Point[] array = new Point[2 * iNumberOfPointsInXDirection * iNumberOfPointsInYDirection];
 
             for (int i = 0; i < iNumberOfPointsInXDirection * iNumberOfPointsInYDirection; i++) // Merge two array into one
             {
-                array[i, 0] = fLeftPoints[i, 0];
-                array[i, 1] = fLeftPoints[i, 1];
+                array[i].X = fLeftPoints[i].X;
+                array[i].Y = fLeftPoints[i].Y;
 
-                array[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection + i, 0] = fRightPoints[i, 0];
-                array[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection + i, 1] = fRightPoints[i, 1];
+                array[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection + i].X = fRightPoints[i].X;
+                array[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection + i].Y = fRightPoints[i].Y;
             }
 
             // Rotate points about [0,0] // Used for top or bottom sequence (0 or 180 degrees)
@@ -365,15 +370,15 @@ namespace BaseClasses
             float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * FStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
 
             // Left side
-            float[,] fSequenceLeftTop;
-            float[,] fSequenceLeftBottom;
+            Point[] fSequenceLeftTop;
+            Point[] fSequenceLeftBottom;
             float[] fSequenceLeftTopRadii;
             float[] fSequenceLeftBottomRadii;
             Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
 
             // Right side
-            float[,] fSequenceRightTop;
-            float[,] fSequenceRightBottom;
+            Point[] fSequenceRightTop;
+            Point[] fSequenceRightBottom;
             float[] fSequenceRightTopRadii;
             float[] fSequenceRightBottomRadii;
             Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
@@ -381,10 +386,10 @@ namespace BaseClasses
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequenceIncludingAdditional; i++) // Add all 4 sequences in one cycle
             {
-                HolesCentersPoints2D[i] = new Point(fSequenceLeftTop[i, 0], fSequenceLeftTop[i, 1]);
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceLeftBottom[i, 0], fSequenceLeftBottom[i, 1]);
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightTop[i, 0], fSequenceRightTop[i, 1]);
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightBottom[i, 0], fSequenceRightBottom[i, 1]);
+                HolesCentersPoints2D[i] = new Point(fSequenceLeftTop[i].X, fSequenceLeftTop[i].Y);
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceLeftBottom[i].X, fSequenceLeftBottom[i].Y);
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightTop[i].X, fSequenceRightTop[i].Y);
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightBottom[i].X, fSequenceRightBottom[i].Y);
             }
 
             // TODO - tempoerary nastavit pre pole suradnic ktore je sucastou plate
@@ -417,15 +422,15 @@ namespace BaseClasses
             float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * FStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
 
             // Left side
-            float[,] fSequenceLeftTop;
-            float[,] fSequenceLeftBottom;
+            Point[] fSequenceLeftTop;
+            Point[] fSequenceLeftBottom;
             float[] fSequenceLeftTopRadii;
             float[] fSequenceLeftBottomRadii;
             Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, out fSequenceLeftTop, out fSequenceLeftBottom, out fSequenceLeftTopRadii, out fSequenceLeftBottomRadii);
 
             // Right side
-            float[,] fSequenceRightTop;
-            float[,] fSequenceRightBottom;
+            Point[] fSequenceRightTop;
+            Point[] fSequenceRightBottom;
             float[] fSequenceRightTopRadii;
             float[] fSequenceRightBottomRadii;
             Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, out fSequenceRightTop, out fSequenceRightBottom, out fSequenceRightTopRadii, out fSequenceRightBottomRadii);
@@ -433,12 +438,10 @@ namespace BaseClasses
             // Fill array of holes centers
             for (int i = 0; i < iNumberOfScrewsInOneSequenceIncludingAdditional; i++) // Add all 4 sequences in one cycle
             {
-                HolesCentersPoints2D[i] = new Point(fSequenceLeftTop[i, 0], fSequenceLeftTop[i, 1]);
-                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceLeftBottom[i, 0], fSequenceLeftBottom[i, 1]);
-
-                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightTop[i, 0], fSequenceRightTop[i, 1]);
-                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightBottom[i, 0], fSequenceRightBottom[i, 1]);
-                
+                HolesCentersPoints2D[i] = new Point(fSequenceLeftTop[i].X, fSequenceLeftTop[i].Y);
+                HolesCentersPoints2D[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceLeftBottom[i].X, fSequenceLeftBottom[i].Y);
+                HolesCentersPoints2D[2 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightTop[i].X, fSequenceRightTop[i].Y);
+                HolesCentersPoints2D[3 * iNumberOfScrewsInOneSequenceIncludingAdditional + i] = new Point(fSequenceRightBottom[i].X, fSequenceRightBottom[i].Y);
 
                 fHolesCenterRadii[i] = fSequenceLeftTopRadii[i];
                 fHolesCenterRadii[iNumberOfScrewsInOneSequenceIncludingAdditional + i] = fSequenceLeftBottomRadii[i];
@@ -471,5 +474,5 @@ namespace BaseClasses
                 Screws[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
             }
         }
-    }
+}
 }

@@ -49,7 +49,7 @@ namespace BaseClasses
 
             CPoint ControlPoint_P1 = new CPoint(0, m_Node.X + fy, fControlPointYCoord1, m_Node.Z - fz, 0);
             CScrew referenceScrew = new CScrew("TEK", "12");
-            CScrewArrangement screwArrangement = new CScrewArrangement(0, referenceScrew);
+            CScrewArrangement_LL screwArrangement = new CScrewArrangement_LL(0, referenceScrew);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, 0.05f, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, 0.05f, 0.003f, 90, rotation_x_member, fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees

@@ -55,7 +55,7 @@ namespace BaseClasses
 
             int iConnectorNumberinOnePlate = 32;
             CScrew referenceScrew = new CScrew("TEK", "12");
-            CScrewArrangement screwArrangement = new CScrewArrangement(iConnectorNumberinOnePlate, referenceScrew);
+            CScrewArrangement_LL screwArrangement = new CScrewArrangement_LL(iConnectorNumberinOnePlate, referenceScrew);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_LL("LLH", ControlPoint_P1, m_fPlate_Angle_Leg, (float)m_SecondaryMembers[0].CrScStart.b, (float)m_SecondaryMembers[0].CrScStart.h, m_fPlate_Angle_Leg, m_ft, 90, 0, 90, screwArrangement, BIsDisplayed); // Rotation angle in degrees

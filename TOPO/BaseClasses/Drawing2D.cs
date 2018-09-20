@@ -139,7 +139,7 @@ namespace BaseClasses
                     height,
                     platePointsOut2D,
                     null,
-                    plate.HolesCentersPoints,
+                    plate.ScrewArrangement.HolesCentersPoints2D,
                     0,
                     0,
                     out fModel_Length_x_real,
@@ -180,7 +180,7 @@ namespace BaseClasses
                     bDrawDrillingRoute,
                     platePointsOut2D,
                     null,
-                    plate.HolesCentersPoints,
+                    plate.ScrewArrangement.HolesCentersPoints2D,
                     plate.DrillingRoutePoints, // TODO Ondrej - Prepracovat vsetky polia bodov na objekt Point alebo opacne, toto pole je potrebne naplnit z poloziek zoznamu List<Point> DrillingRoutePoints
                     scale_unit,
                     fDiameter,

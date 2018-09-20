@@ -67,16 +67,16 @@ namespace BaseClasses
             referenceScrew = referenceScrew_temp;
         }
 
-        public float[,] GetRegularArrayOfPointsInCartesianCoordinates(float fcPointX, float fcPointY, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float fDistanceOfPointsX, float fDistanceOfPointsY)
+        public Point[] GetRegularArrayOfPointsInCartesianCoordinates(Point refPoint, int iNumberOfPointsInXDirection, int iNumberOfPointsInYDirection, float fDistanceOfPointsX, float fDistanceOfPointsY)
         {
-            float[,] array = new float[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection, 2];
+            Point[] array = new Point[iNumberOfPointsInXDirection * iNumberOfPointsInYDirection];
 
             for (int i = 0; i < iNumberOfPointsInYDirection; i++) // Rows
             {
                 for (int j = 0; j < iNumberOfPointsInXDirection; j++) // Columns
                 {
-                    array[i * iNumberOfPointsInXDirection + j, 0] = fcPointX + j * fDistanceOfPointsX; // Fill items in row [i], column [j]
-                    array[i * iNumberOfPointsInXDirection + j, 1] = fcPointY + i * fDistanceOfPointsY; // Fill items in row [i], column [j]
+                    array[i * iNumberOfPointsInXDirection + j].X = refPoint.X + j * fDistanceOfPointsX; // Fill items in row [i], column [j]
+                    array[i * iNumberOfPointsInXDirection + j].Y = refPoint.Y + i * fDistanceOfPointsY; // Fill items in row [i], column [j]
                 }
             }
 
@@ -97,10 +97,17 @@ namespace BaseClasses
             return points;
         }
 
-        public void Calc_HolesCentersCoord2D()
-        { }
+        // Docasne kym sa neprevedu vsetky funkcie z float[,] na Point[]
+        public Point[] GetConvertedFloatToPointArray(float[,] fArray)
+        {
+            Point[] pArray = new Point[fArray.Length / 2];
+            for (int i = 0; i < fArray.Length / 2; i++)
+            {
+                pArray[i].X = fArray[i, 0];
+                pArray[i].Y = fArray[i, 1];
+            }
 
-        public void Calc_HolesControlPointsCoord3D()
-        { }
+            return pArray;
+        }
     }
 }

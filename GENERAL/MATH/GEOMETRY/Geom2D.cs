@@ -79,9 +79,41 @@ namespace MATH
         }
 
         // Trasnform point
-        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
+        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref Point[] pArray)
         {
-            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref  y);
+            for (int i = 0; i < pArray.Length; i++)
+                TransformPositions_CCW_deg(x_centerOfRotation, y_centerOfRotation, theta_deg, ref pArray[i]);
+        }
+
+        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref Point p)
+        {
+            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref p);
+        }
+
+        public static void TransformPositions_CCW_deg(Point centerOfRotation, double theta_deg, ref Point p)
+        {
+            TransformPositions_CCW_rad(centerOfRotation, theta_deg / 180f * Math.PI, ref p);
+        }
+
+        public static void TransformPositions_CCW_rad(Point centerOfRotation, double theta_rad, ref Point p)
+        {
+            TransformPositions_CCW_rad((float)centerOfRotation.X, (float)centerOfRotation.Y, theta_rad, ref p);
+        }
+
+        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref Point [] pArray)
+        {
+            for(int i = 0; i < pArray.Length; i++)
+                TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref pArray[i]);
+        }
+
+        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref Point p)
+        {
+            float px = (float)p.X;
+            float py = (float)p.Y;
+            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref px, ref py);
+
+            p.X = px;
+            p.Y = py;
         }
 
         public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float x, ref float y)
@@ -128,7 +160,17 @@ namespace MATH
             y = py;
         }
 
-        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
+        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref Point p)
+        {
+            float x = (float)p.X;
+            float y = (float)p.Y;
+
+            TransformPositions_CW_deg(x_centerOfRotation, y_centerOfRotation, theta_deg, ref x, ref y);
+
+            p.X = x;
+            p.Y = y;
+        }
+            public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref y);
         }
@@ -175,6 +217,10 @@ namespace MATH
         public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
+        }
+        public static void TransformPositions_CW_deg(Point centerOfRotation, double theta_deg, ref List<Point> points)
+        {
+            TransformPositions_CW_deg((float)centerOfRotation.X, (float)centerOfRotation.Y, theta_deg, ref points);
         }
         public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref List<Point> points)
         {
@@ -262,7 +308,7 @@ namespace MATH
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    points[i].X *= -1;                    
+                    points[i].X *= -1;
                 }
             }
         }
@@ -285,7 +331,7 @@ namespace MATH
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    points[i].Y *= -1;                    
+                    points[i].Y *= -1;
                 }
             }
         }
@@ -485,7 +531,7 @@ namespace MATH
                 Point p = new Point();
                 p.X = GetPositionX_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // y
                 p.Y = GetPositionY_CW_deg(fr, fStartAngle_deg + i * (fEndAngle_deg - fStartAngle_deg) / (iNumber - 1));  // z
-                m_ListPointsCoord2D.Add(p);                
+                m_ListPointsCoord2D.Add(p);
             }
 
             return m_ListPointsCoord2D;

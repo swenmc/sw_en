@@ -95,12 +95,12 @@ namespace sw_en_GUI
 
             PointsIn = null; // Todo - dopracovat (pole viacerych poli bodov pre definovanie otvorov), teoreticky moze mat plech okrem dier pre skrutky aj vacsie vyrezy a rozne otvory
 
-            PointsHoles = plate.HolesCentersPoints;
+            PointsHoles = plate.ScrewArrangement.HolesCentersPoints2D;
 
-            if (plate.HolesCentersPoints != null)
+            if (plate.ScrewArrangement.HolesCentersPoints2D != null)
             {
                 INoHoles = plate.ScrewArrangement.IHolesNumber;
-                PointsHoles = plate.HolesCentersPoints;
+                PointsHoles = plate.ScrewArrangement.HolesCentersPoints2D;
                 DHolesDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
             }
 

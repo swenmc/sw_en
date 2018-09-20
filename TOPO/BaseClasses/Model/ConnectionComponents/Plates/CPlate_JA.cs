@@ -152,7 +152,6 @@ namespace BaseClasses
                 m_fSlope_rad,
                 ref m_HolesCentersPoints);
 
-            HolesCentersPoints = m_HolesCentersPoints;
             screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
 
             // Fill list of indices for drawing of surface
@@ -182,7 +181,6 @@ namespace BaseClasses
                 m_fSlope_rad,
                 ref m_HolesCentersPoints);
 
-            HolesCentersPoints = m_HolesCentersPoints;
             screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
 
             // Fill list of indices for drawing of surface

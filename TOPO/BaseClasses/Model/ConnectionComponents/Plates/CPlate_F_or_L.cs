@@ -84,7 +84,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement screwArrangement,
+            CScrewArrangement_F_or_L screwArrangement_temp,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -96,12 +96,11 @@ namespace BaseClasses
             ITotNoPointsin3D = 12;
 
             m_pControlPoint = controlpoint;
-            m_fbX1 = fbX_temp;
-            m_fbX2 = m_fbX1; // L Series - without slope
-            m_fhY = fhY_temp;
-            m_flZ = fl_Z_temp;
+            Fb_X1 = fbX_temp;
+            Fb_X2 = m_fbX1; // L Series - without slope
+            Fh_Y = fhY_temp;
+            Fl_Z = fl_Z_temp;
             Ft = ft_platethickness;
-            
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
@@ -110,20 +109,18 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
-            HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            Calc_HolesCentersCoord2D(screwArrangement);
-            Calc_HolesControlPointsCoord3D(screwArrangement);
+            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, Fh_Y, Fl_Z);
+            Calc_HolesControlPointsCoord3D(screwArrangement_temp);
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            GenerateConnectors(screwArrangement);
+            GenerateConnectors(screwArrangement_temp);
 
             fWidth_bx = m_fbX1 + m_fbX2;
             fHeight_hy = m_fhY;
@@ -135,13 +132,13 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(Ft, m_fhY);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fA_v_zv = Get_A_rect(Ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
-            ScrewArrangement = screwArrangement;
+            ScrewArrangement = screwArrangement_temp;
         }
 
         // F - no holes
@@ -300,178 +297,6 @@ namespace BaseClasses
             arrPoints3D[11].X = arrPoints3D[6].X;
             arrPoints3D[11].Y = arrPoints3D[6].Y + m_fhY;
             arrPoints3D[11].Z = arrPoints3D[6].Z;
-        }
-
-        //void Calc_HolesCentersCoord2D(CScrewArrangement screwArrangement)
-        //{
-        //    float fx_edge = 0.010f;
-        //    float fy_edge1 = 0.010f;
-        //    float fy_edge2 = 0.030f;
-        //    float fy_edge3 = 0.120f;
-
-        //    // TODO nahradit enumom a switchom
-
-        //    if (screwArrangement.IHolesNumber == 16) // LH, LI, LK
-        //    {
-        //        // Left Leg
-
-        //        HolesCentersPoints2D[0, 0] = fx_edge;
-        //        HolesCentersPoints2D[0, 1] = fy_edge1;
-
-        //        HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
-        //        HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
-
-        //        HolesCentersPoints2D[2, 0] = 0.5f * m_flZ;
-        //        HolesCentersPoints2D[2, 1] = fy_edge2;
-
-        //        HolesCentersPoints2D[3, 0] = 0.5f * m_flZ;
-        //        HolesCentersPoints2D[3, 1] = fy_edge3;
-
-        //        HolesCentersPoints2D[4, 0] = HolesCentersPoints2D[3, 0];
-        //        HolesCentersPoints2D[4, 1] = m_fhY - fy_edge3;
-
-        //        HolesCentersPoints2D[5, 0] = HolesCentersPoints2D[3, 0];
-        //        HolesCentersPoints2D[5, 1] = m_fhY - fy_edge2;
-
-        //        HolesCentersPoints2D[6, 0] = HolesCentersPoints2D[0, 0];
-        //        HolesCentersPoints2D[6, 1] = m_fhY - fy_edge1;
-
-        //        HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[1, 0];
-        //        HolesCentersPoints2D[7, 1] = m_fhY - fy_edge1;
-
-        //        // Right Leg
-
-        //        HolesCentersPoints2D[8, 0] = m_fbX1 + HolesCentersPoints2D[6, 0];
-        //        HolesCentersPoints2D[8, 1] = HolesCentersPoints2D[6, 1];
-
-        //        HolesCentersPoints2D[9, 0] = m_fbX1 + HolesCentersPoints2D[7, 0];
-        //        HolesCentersPoints2D[9, 1] = HolesCentersPoints2D[7, 1];
-
-        //        HolesCentersPoints2D[10, 0] = m_fbX1 + HolesCentersPoints2D[5, 0];
-        //        HolesCentersPoints2D[10, 1] = HolesCentersPoints2D[5, 1];
-
-        //        HolesCentersPoints2D[11, 0] = m_fbX1 + HolesCentersPoints2D[4, 0];
-        //        HolesCentersPoints2D[11, 1] = HolesCentersPoints2D[4, 1];
-
-        //        HolesCentersPoints2D[12, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
-        //        HolesCentersPoints2D[12, 1] = HolesCentersPoints2D[3, 1];
-
-        //        HolesCentersPoints2D[13, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
-        //        HolesCentersPoints2D[13, 1] = HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[14, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
-        //        HolesCentersPoints2D[14, 1] = HolesCentersPoints2D[1, 1];
-
-        //        HolesCentersPoints2D[15, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
-        //        HolesCentersPoints2D[15, 1] = HolesCentersPoints2D[0, 1];
-        //    }
-        //    else if (screwArrangement.IHolesNumber == 8) // LJ
-        //    {
-        //        // Left Leg
-
-        //        HolesCentersPoints2D[0, 0] = fx_edge;
-        //        HolesCentersPoints2D[0, 1] = fy_edge1;
-
-        //        HolesCentersPoints2D[1, 0] = m_flZ - fx_edge;
-        //        HolesCentersPoints2D[1, 1] = HolesCentersPoints2D[0, 1];
-
-        //        HolesCentersPoints2D[2, 0] = HolesCentersPoints2D[0, 0];
-        //        HolesCentersPoints2D[2, 1] = m_fhY - fy_edge1;
-
-        //        HolesCentersPoints2D[3, 0] = HolesCentersPoints2D[1, 0];
-        //        HolesCentersPoints2D[3, 1] = HolesCentersPoints2D[2, 1];
-
-        //        // Right Leg
-
-        //        HolesCentersPoints2D[4, 0] = m_fbX1 + HolesCentersPoints2D[2, 0];
-        //        HolesCentersPoints2D[4, 1] = HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[5, 0] = m_fbX1 + HolesCentersPoints2D[3, 0];
-        //        HolesCentersPoints2D[5, 1] = HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[6, 0] = m_fbX1 + HolesCentersPoints2D[0, 0];
-        //        HolesCentersPoints2D[6, 1] = HolesCentersPoints2D[0, 1];
-
-        //        HolesCentersPoints2D[7, 0] = m_fbX1 + HolesCentersPoints2D[1, 0];
-        //        HolesCentersPoints2D[7, 1] = HolesCentersPoints2D[0, 1];
-        //    }
-        //    else
-        //    {
-        //        // Not defined expected number of holes for L or F plate
-        //    }
-        //}
-
-        void Calc_HolesCentersCoord2D(CScrewArrangement screwArrangement)
-        {
-            float fx_edge = 0.010f;
-            float fy_edge1 = 0.010f;
-            float fy_edge2 = 0.030f;
-            float fy_edge3 = 0.120f;
-
-            // TODO nahradit enumom a switchom
-
-            if (screwArrangement.IHolesNumber == 16) // LH, LI, LK
-            {
-                // Left Leg
-
-                HolesCentersPoints[0] = new Point(fx_edge, fy_edge1);
-                
-                HolesCentersPoints[1] = new Point(m_flZ - fx_edge, HolesCentersPoints[0].Y);
-
-                HolesCentersPoints[2] = new Point(0.5f * m_flZ, fy_edge2);
-
-                HolesCentersPoints[3] = new Point(0.5f * m_flZ, fy_edge3);
-
-                HolesCentersPoints[4] = new Point(HolesCentersPoints[3].X, m_fhY - fy_edge3);
-
-                HolesCentersPoints[5] = new Point(HolesCentersPoints[3].X ,m_fhY - fy_edge2);
-
-                HolesCentersPoints[6] = new Point(HolesCentersPoints[0].X, m_fhY - fy_edge1);
-
-                HolesCentersPoints[7] = new Point(HolesCentersPoints[1].X, m_fhY - fy_edge1);
-
-                // Right Leg
-                HolesCentersPoints[8] = new Point(m_fbX1 + HolesCentersPoints[6].X, HolesCentersPoints[6].Y);
-
-                HolesCentersPoints[9] = new Point(m_fbX1 + HolesCentersPoints[7].X, HolesCentersPoints[7].Y);
-
-                HolesCentersPoints[10] = new Point(m_fbX1 + HolesCentersPoints[5].X, HolesCentersPoints[5].Y);
-
-                HolesCentersPoints[11] = new Point(m_fbX1 + HolesCentersPoints[4].X, HolesCentersPoints[4].Y);
-
-                HolesCentersPoints[12] = new Point(m_fbX1 + HolesCentersPoints[3].X, HolesCentersPoints[3].Y);
-
-                HolesCentersPoints[13] = new Point(m_fbX1 + HolesCentersPoints[2].X, HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[14] = new Point(m_fbX1 + HolesCentersPoints[1].X, HolesCentersPoints[1].Y);
-
-                HolesCentersPoints[15] = new Point(m_fbX1 + HolesCentersPoints[0].X, HolesCentersPoints[0].Y);
-            }
-            else if (screwArrangement.IHolesNumber == 8) // LJ
-            {
-                // Left Leg
-
-                HolesCentersPoints[0] = new Point(fx_edge, fy_edge1);
-
-                HolesCentersPoints[1] = new Point(m_flZ - fx_edge, HolesCentersPoints[0].Y);
-
-                HolesCentersPoints[2] = new Point(HolesCentersPoints[0].X, m_fhY - fy_edge1);
-
-                HolesCentersPoints[3] = new Point(HolesCentersPoints[1].X, HolesCentersPoints[2].Y);
-
-                // Right Leg
-                HolesCentersPoints[4] = new Point(m_fbX1 + HolesCentersPoints[2].X, HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[5] = new Point(m_fbX1 + HolesCentersPoints[3].X, HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[6] = new Point(m_fbX1 + HolesCentersPoints[0].X, HolesCentersPoints[0].Y);
-
-                HolesCentersPoints[7] = new Point(m_fbX1 + HolesCentersPoints[1].X, HolesCentersPoints[0].Y);
-            }
-            else
-            {
-                // Not defined expected number of holes for L or F plate
-            }
         }
 
         void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)

@@ -56,7 +56,7 @@ namespace BaseClasses
                 iConnectorNumberinOnePlate = 8; // Plate LJ
 
             CScrew referenceScrew = new CScrew("TEK", "12");
-            CScrewArrangement screwArrangement = new CScrewArrangement(iConnectorNumberinOnePlate, referenceScrew);
+            CScrewArrangement_F_or_L screwArrangement = new CScrewArrangement_F_or_L(iConnectorNumberinOnePlate, referenceScrew);
 
             // TODO Ondrej 15/07/2018
             // Tu sa pridavaju plechy (plates) do spoja (joint), vklada sa do pozicie v LCS pruta

@@ -426,11 +426,12 @@ namespace PFD
             {
                 CScrew referenceScrew = new CScrew("TEK", "14");
                 CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
+                CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+                CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
-
-                CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
                 int iConnectorNumber = 80;
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
@@ -442,17 +443,17 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             // Vynimka, je potrebne prepracovat na screwArrangement a anchorArrangement
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 ,true); // L
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 , screwArrangement_BB_BG, true); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement_ForL, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, screwArrangement, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, screwArrangement_LL, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -617,13 +618,15 @@ namespace PFD
             {
                 CScrew referenceScrew = new CScrew("TEK", "14");
                 CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
+                CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+                CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
                 bool bUseAdditinalConnectors = true;
                 int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
                 float fAdditionalConnectorDistance = 0.03f;
-
-                CScrewArrangement screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
                 int iConnectorNumber = 80;
+
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 15, 2, 0.0f, 0.0f, 0.05f, 0.04f, 15, 2, 0.1f, 0.5f, 0.04f, 0.04f);
@@ -633,17 +636,17 @@ namespace PFD
                 {
                     case ESerieTypePlate.eSerie_B:
                         {
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 ,true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 , screwArrangement_BB_BG, true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement_ForL, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
@@ -754,7 +757,7 @@ namespace PFD
 
             // Calculate size of plate and width to height ratio to set size of "salesman" algorthim window
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
-            Drawing2D.CalculateModelLimits(plate.HolesCentersPoints, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            Drawing2D.CalculateModelLimits(plate.ScrewArrangement.HolesCentersPoints2D, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
             double fWidth = fTempMax_X - fTempMin_X;
             double fHeigth = fTempMax_Y - fTempMin_Y;
             double fHeightToWidthRatio = fHeigth / fWidth;

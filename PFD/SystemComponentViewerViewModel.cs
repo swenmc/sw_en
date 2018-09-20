@@ -919,8 +919,6 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
             CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
 
-            CScrewArrangement screwArrangement;
-
             CScrewArrangementCircleApexOrKnee screwArrangementCircle;
 
             databaseComponents = new CDatabaseComponents();
@@ -937,7 +935,9 @@ namespace PFD
                 fl = databaseComponents.arr_Serie_B_Dimension[i, 2] / 1000f;
                 ft = databaseComponents.arr_Serie_B_Dimension[i, 3] / 1000f;
                 iNumberofHoles = (int)databaseComponents.arr_Serie_B_Dimension[i, 4];
-                platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, true)); // B
+
+                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(iNumberofHoles, referenceScrew, referenceAnchor);
+                platesInSerie1.Add(new CConCom_Plate_BB_BG(databaseComponents.arr_Serie_B_Names[i], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BB_BG, true)); // B
             }
             plates.Add("Serie B", platesInSerie1);
 
@@ -952,8 +952,8 @@ namespace PFD
                 ft = databaseComponents.arr_Serie_L_Dimension[i, 3] / 1000f;
                 iNumberofHoles = (int)databaseComponents.arr_Serie_L_Dimension[i, 4];
 
-                screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
-                platesInSerie2.Add(new CConCom_Plate_F_or_L(databaseComponents.arr_Serie_L_Names[i], controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement, true)); // L
+                CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+                platesInSerie2.Add(new CConCom_Plate_F_or_L(databaseComponents.arr_Serie_L_Names[i], controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement_ForL, true)); // L
             }
             plates.Add("Serie L", platesInSerie2);
 
@@ -968,8 +968,8 @@ namespace PFD
                 ft = databaseComponents.arr_Serie_LL_Dimension[i, 4] / 1000f;
                 iNumberofHoles = (int)databaseComponents.arr_Serie_LL_Dimension[i, 5];
 
-                screwArrangement = new CScrewArrangement(iNumberofHoles, referenceScrew);
-                platesInSerie3.Add(new CConCom_Plate_LL(databaseComponents.arr_Serie_LL_Names[i], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement, true)); // LL
+                CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+                platesInSerie3.Add(new CConCom_Plate_LL(databaseComponents.arr_Serie_LL_Names[i], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true)); // LL
             }
             plates.Add("Serie LL", platesInSerie3);
 

@@ -96,7 +96,20 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_BB_BG(string sName_temp, GraphObj.CPoint controlpoint, float fbX_temp, float fhY_temp, float fl_Z_temp, float ft_platethickness, int iHolesNumber_temp, CScrew referenceScrew_temp, CAnchor referenceAnchor_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConCom_Plate_BB_BG(string sName_temp,
+            GraphObj.CPoint controlpoint,
+            float fbX_temp,
+            float fhY_temp,
+            float fl_Z_temp,
+            float ft_platethickness,
+            int iHolesNumber_temp,
+            CScrew referenceScrew_temp,
+            CAnchor referenceAnchor_temp,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            CScrewArrangement_BB_BG screwArrangement_temp,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -105,9 +118,9 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
 
             m_pControlPoint = controlpoint;
-            m_fbX = fbX_temp;
-            m_fhY = fhY_temp;
-            m_flZ = fl_Z_temp;
+            Fb_X = fbX_temp;
+            Fh_Y = fhY_temp;
+            Fl_Z = fl_Z_temp;
             Ft = ft_platethickness;
             IHolesNumber = iHolesNumber_temp = 2;
             referenceScrew = referenceScrew_temp;
@@ -126,13 +139,11 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            //HolesCentersPoints2D = new float[IHolesNumber, 2];
-            HolesCentersPoints = new Point[IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            Calc_HolesCentersCoord2D();
+            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X, Fh_Y, Fl_Z);
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -152,6 +163,8 @@ namespace BaseClasses
             fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
             fI_yu = 2 * Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
+
+            ScrewArrangement = screwArrangement_temp;
         }
 
         //----------------------------------------------------------------------------
@@ -363,20 +376,6 @@ namespace BaseClasses
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
                 arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = Ft;
             }
-        }
-
-        //void Calc_HolesCentersCoord2D()
-        //{
-        //    HolesCentersPoints2D[0, 0] = m_flZ + 0.5f * m_fbX;
-        //    HolesCentersPoints2D[0, 1] = 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles;
-
-        //    HolesCentersPoints2D[1, 0] = HolesCentersPoints2D[0, 0];
-        //    HolesCentersPoints2D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
-        //}
-        void Calc_HolesCentersCoord2D()
-        {
-            HolesCentersPoints[0] = new Point(m_flZ + 0.5f * m_fbX, 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles);
-            HolesCentersPoints[1] = new Point(HolesCentersPoints[0].X, 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles);
         }
 
         protected override void loadIndices()

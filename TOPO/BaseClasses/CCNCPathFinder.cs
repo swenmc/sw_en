@@ -60,41 +60,10 @@ namespace BaseClasses
 
         public CCNCPathFinder(CPlate plate)
         {
-            if (plate.HolesCentersPoints != null)
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement.HolesCentersPoints2D != null)
             {
-                Points.AddRange(plate.HolesCentersPoints);                
+                Points.AddRange(plate.ScrewArrangement.HolesCentersPoints2D);
             }
-
-            /*
-            Points.Add(new Point(1, 1));
-            Points.Add(new Point(2, 2));
-            Points.Add(new Point(3, 3));
-            Points.Add(new Point(4, 4));
-            Points.Add(new Point(4, 5));
-            Points.Add(new Point(3, 6));
-            Points.Add(new Point(3, 1));
-            Points.Add(new Point(1, 3));
-            */
-            //IEnumerable<IEnumerable<Point>> res = GetPermutations(Points.GetRange(0, 10), 10);
-
-
-            //List<List<CLine2D>> allLines = new List<List<CLine2D>>(res.Count());
-            //int count = 0;
-            //foreach (IEnumerable<Point> ie in res)
-            //{
-            //    allLines.Add(GetLinesFromPoints(ie));                
-            //    //String s = "";
-            //    //foreach (Point p in ie)
-            //    //{                    
-            //    //    s += string.Format("[{0},{1}],", p.X, p.Y);
-            //    //}
-            //    //Console.WriteLine(s);
-            //    count++;
-            //}
-
-            //List<List<CLine2D>> noIntersectionPolyLines = GetAllPolylinesWithNoIntersection(allLines);
-            //List<CLine2D>  shortestPolyline = GetShortestPolyLine(noIntersectionPolyLines);
-            //Console.WriteLine("Number of rows: "+ count);
 
             FindShortestRoute();
         }
@@ -140,8 +109,6 @@ namespace BaseClasses
             return closestPoint;
         }
 
-        
-
         public double GetPointsDistance(Point p1, Point p2)
         {
             return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
@@ -165,8 +132,6 @@ namespace BaseClasses
             }
             return lines;
         }
-
-
 
         private static List<List<CLine2D>> GetAllPolylinesWithNoIntersection(List<List<CLine2D>> allLines)
         {

@@ -86,7 +86,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangement screwArrangement,
+            CScrewArrangement_LL screwArrangement_temp,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -99,10 +99,10 @@ namespace BaseClasses
             ITotNoPointsin3D = 26;
 
             m_pControlPoint = controlpoint;
-            m_fbX1 = fbX1_temp;
-            m_fbX2 = fbX2_temp;
-            m_fhY = fhY_temp;
-            m_flZ = fl_Z_temp;
+            Fb_X1 = fbX1_temp;
+            Fb_X2 = fbX2_temp;
+            Fh_Y = fhY_temp;
+            Fl_Z = fl_Z_temp;
             Ft = ft_platethickness;
 
             m_fRotationX_deg = fRotation_x_deg;
@@ -112,20 +112,18 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
-            HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
 
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
-            Calc_HolesCentersCoord2D(screwArrangement);
-            Calc_HolesControlPointsCoord3D(screwArrangement);
+            screwArrangement_temp.Calc_HolesCentersCoord2D(Ft, Fb_X1, Fb_X2, Fh_Y, Fl_Z);
+            Calc_HolesControlPointsCoord3D(screwArrangement_temp);
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
-            GenerateConnectors(screwArrangement);
+            GenerateConnectors(screwArrangement_temp);
 
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = m_fhY;
@@ -137,13 +135,13 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(2 * Ft, m_fbX1);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fA_v_zv = Get_A_rect(2 * Ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fI_yu = 2 * Get_I_yu_rect(Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
 
-            ScrewArrangement = screwArrangement;
+            ScrewArrangement = screwArrangement_temp;
         }
 
         //----------------------------------------------------------------------------
@@ -374,65 +372,7 @@ namespace BaseClasses
         //    }
         //}
 
-        void Calc_HolesCentersCoord2D(CScrewArrangement screwArrangement)
-        {
-            float fx_edge = 0.010f;  // y-direction
-            float fy_edge1 = 0.010f; // x-direction
-            float fy_edge2 = 0.030f; // x-direction
-            float fy_edge3 = 0.120f; // x-direction
 
-            // TODO nahradit enumom a switchom
-
-            // TODO OPRAVIT SURADNICE
-
-            if (screwArrangement.IHolesNumber == 32) // LLH, LLK
-            {
-                HolesCentersPoints[0] = new Point(-m_fhY + Ft + fy_edge1, fx_edge);
-
-                HolesCentersPoints[1] = new Point(HolesCentersPoints[0].X, m_fbX1 - fx_edge);
-
-                HolesCentersPoints[2] = new Point(-m_fhY + Ft + fy_edge2, 0.5f * m_fbX1);
-
-                HolesCentersPoints[3] = new Point(-m_fhY + Ft + fy_edge3, HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[4] = new Point(-fy_edge3, HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[5] = new Point(-fy_edge2, HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[6] = new Point(-fy_edge1, HolesCentersPoints[0].Y);
-
-                HolesCentersPoints[7] = new Point(HolesCentersPoints[6].X, HolesCentersPoints[1].Y);
-
-                float fTemp = (0.5f * m_fbX1 + 0.5f * m_flZ);
-
-                HolesCentersPoints[8] = new Point(HolesCentersPoints[7].X, fTemp + HolesCentersPoints[7].Y);
-
-                HolesCentersPoints[9] = new Point(HolesCentersPoints[6].X, fTemp + HolesCentersPoints[6].Y);
-
-                HolesCentersPoints[10] = new Point(HolesCentersPoints[5].X, fTemp + HolesCentersPoints[5].Y);
-
-                HolesCentersPoints[11] = new Point(HolesCentersPoints[4].X, fTemp + HolesCentersPoints[4].Y);
-
-                HolesCentersPoints[12] = new Point(HolesCentersPoints[3].X, fTemp + HolesCentersPoints[3].Y);
-
-                HolesCentersPoints[13] = new Point(HolesCentersPoints[2].X, fTemp + HolesCentersPoints[2].Y);
-
-                HolesCentersPoints[14] = new Point(HolesCentersPoints[0].X, fTemp + HolesCentersPoints[1].Y);
-
-                HolesCentersPoints[15] = new Point(HolesCentersPoints[1].X, fTemp + HolesCentersPoints[0].Y);
-
-                for (int i = 0; i < screwArrangement.IHolesNumber / 2; i++)
-                {
-                    HolesCentersPoints[screwArrangement.IHolesNumber / 2 + i] = 
-                        new Point(m_fbX2 - HolesCentersPoints[(screwArrangement.IHolesNumber / 2 - i - 1)].X, HolesCentersPoints[(screwArrangement.IHolesNumber / 2 - i - 1)].Y);
-                    
-                }
-            }
-            else
-            {
-                // Not defined expected number of holes for LL plate
-            }
-        }
 
         void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)
         {

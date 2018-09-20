@@ -112,6 +112,9 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementRectApexOrKnee.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangementCircleApexOrKnee.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BB_BG.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F_or_L.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_LL.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewSequenceGroup.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewSequence.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewRectSequence.cs" />
