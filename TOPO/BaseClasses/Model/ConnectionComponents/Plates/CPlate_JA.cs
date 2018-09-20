@@ -175,18 +175,13 @@ namespace BaseClasses
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX,
-                0,
-                m_fhY1,
-                m_fSlope_rad,
-                ref m_HolesCentersPoints);
 
+            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, 0, m_fhY1, m_fSlope_rad);
             screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
+            screwArrangement.GenerateConnectors();
 
             // Fill list of indices for drawing of surface
             loadIndices();
-
-            screwArrangement.GenerateConnectors();
 
             UpdatePlateData_Basic(screwArrangement);
         }
@@ -212,7 +207,6 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
-            //DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------

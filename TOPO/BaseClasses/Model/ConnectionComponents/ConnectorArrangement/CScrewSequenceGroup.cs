@@ -27,8 +27,7 @@ namespace BaseClasses
 
         public CScrewSequenceGroup()
         {
-
+            ListScrewSequence = new List<CScrewSequence>();
         }
-
     }
 }
