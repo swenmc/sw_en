@@ -289,13 +289,13 @@ namespace BaseClasses
                 }
 
                 // Add items (point coordinates) from additional array of connectors
-                for (int i = 0; i < cornerConnectorsInTopSequence.Length / 2; i++)
+                for (int i = 0; i < cornerConnectorsInTopSequence.Length; i++)
                 {
                     fSequenceTop[fSequenceTop_original.Length + i].X = cornerConnectorsInTopSequence[i].X;
                     fSequenceTop[fSequenceTop_original.Length + i].Y = cornerConnectorsInTopSequence[i].Y;
                 }
 
-                for (int i = 0; i < cornerConnectorsInBottomSequence.Length / 2; i++)
+                for (int i = 0; i < cornerConnectorsInBottomSequence.Length; i++)
                 {
                     fSequenceBottom[fSequenceBottom_original.Length + i].X = cornerConnectorsInBottomSequence[i].X;
                     fSequenceBottom[fSequenceBottom_original.Length + i].Y = cornerConnectorsInBottomSequence[i].Y;

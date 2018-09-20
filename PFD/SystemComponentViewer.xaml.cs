@@ -748,7 +748,16 @@ namespace PFD
 
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
-            List<Point> points = plate.ScrewArrangement.GetHolesCentersPoints2D();
+            List<Point> points = null;
+
+            if(plate.ScrewArrangement != null) // Screw arrangmenet must exists
+                points = plate.ScrewArrangement.GetHolesCentersPoints2D(); // TODO Ondrej - neviem ci potrebujeme pouzit tuto funkciu alebo mozeme priamo volat //points = plate.ScrewArrangement.HolesCentersPoints2D;
+            else
+            {
+                MessageBox.Show("Screws are not defined.");
+                return;
+            }
+
             if (points == null || points.Count == 0)
             {
                 MessageBox.Show("Drilling points are not defined for selected plate.");
