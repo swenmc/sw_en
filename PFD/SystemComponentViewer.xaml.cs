@@ -808,7 +808,6 @@ namespace PFD
             {
                 // Set drilling route points
                 plate.DrillingRoutePoints = PathPoints;
-                //plate.DrillingRoutePoints2D = Geom2D.TransformPointToArrayCoord(plate.DrillingRoutePoints);
                 // Draw plate
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
                     vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
@@ -836,7 +835,6 @@ namespace PFD
 
         private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints=null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -845,7 +843,6 @@ namespace PFD
 
         private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -854,7 +851,6 @@ namespace PFD
 
         private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -867,7 +863,6 @@ namespace PFD
 
         private void CheckBox_Rotate_CCW_Checked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -880,7 +875,6 @@ namespace PFD
 
         private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -889,7 +883,6 @@ namespace PFD
 
         private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -898,7 +891,6 @@ namespace PFD
 
         private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 
@@ -907,7 +899,6 @@ namespace PFD
 
         private void CheckBox_Rotate_CCW_Unchecked(object sender, RoutedEventArgs e)
         {
-            //plate.DrillingRoutePoints2D = null;
             plate.DrillingRoutePoints = null;
             tabItemDoc.Visibility = Visibility.Hidden;
 

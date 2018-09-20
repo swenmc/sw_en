@@ -69,8 +69,12 @@ namespace M_AS4600
                 pull - over(pull - through) of connected parts 5.4.3.2      0.50
             */
 
+            // Check that some screws exist in the connection
+            if (joint_temp.m_arrPlates[0].ScrewArrangement == null || joint_temp.m_arrPlates[0].ScrewArrangement.Screws == null)
+                return; // Invalid data, joint without connectors
+
             //df = nominal screw diameter
-            screw = joint_temp.m_arrPlates[0].ScrewArrangement.Screws[0]; // Parametre prvej skrutky prveho plechu
+            screw = joint_temp.m_arrPlates[0].ScrewArrangement.referenceScrew; // Parametre prvej skrutky prveho plechu
             plate = joint_temp.m_arrPlates[0];
             crsc_mainMember = (CCrSc_TW)joint_temp.m_MainMember.CrScStart;
 
@@ -164,19 +168,69 @@ namespace M_AS4600
             float fSumri2tormax = 0; // F_max = Mxu / (Σ ri^2 / r_max)
 
             // TEMPORARY
-            // Moze sa lisit podla rozneho usporiadania skrutiek a vzdialenosti skrutiek od ich fiktivneho taziska (mali by byt symetricky)
-            CConCom_Plate_KA a = (CConCom_Plate_KA)plate; // TODO - Ondrej potrebujeme sa dostat k property konkretneho objektu, ktory vstupil do funkcie (potomok CPlate)
+            // fHolesCentersRadii - Moze sa lisit podla rozneho usporiadania skrutiek a vzdialenosti skrutiek od ich fiktivneho taziska (mali by byt symetricky)
+            // TODO - Ondrej potrebujeme sa dostat k property konkretneho objektu, ktory vstupil do funkcie (potomok CPlate), asi by to mohlo vyzerat krajsie
 
-            float fr_max = MathF.Max(a.HolesCenterRadii);
+            float[] fHolesCentersRadii;
+            int iNumberOfScrewGroupsInPlate;
+
+            if (plate is CConCom_Plate_JA)
+            {
+                CConCom_Plate_JA a = (CConCom_Plate_JA)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else if (plate is CConCom_Plate_JB)
+            {
+                CConCom_Plate_JB a = (CConCom_Plate_JB)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA a = (CConCom_Plate_KA)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB a = (CConCom_Plate_KB)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC a = (CConCom_Plate_KC)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD a = (CConCom_Plate_KD)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else if (plate is CConCom_Plate_KE)
+            {
+                CConCom_Plate_KE a = (CConCom_Plate_KE)plate;
+                fHolesCentersRadii = a.HolesCenterRadii;
+                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+            }
+            else
+            {
+                throw new ArgumentException("Unknow type of plate object.");
+            }
+
+            float fr_max = MathF.Max(fHolesCentersRadii);
 
             // 5.4.2.4 Tilting and hole bearing
             // Bending - Calculate shear strength of plate connection - main member
-            for (int i = 0; i < a.ScrewArrangement.IHolesNumber / ((CScrewArrangementCircleApexOrKnee)a.ScrewArrangement).INumberOfCircleGroupsInJoint; i++)
+            for (int i = 0; i < fHolesCentersRadii.Length / iNumberOfScrewGroupsInPlate; i++)
             {
-                fMb_MainMember_oneside_plastic += a.HolesCenterRadii[i] * fVb_MainMember;
-                fMb_SecondaryMember_oneside_plastic += a.HolesCenterRadii[/*a.IHolesNumber / 2 +*/ i] * fVb_SecondaryMember;
+                fMb_MainMember_oneside_plastic += fHolesCentersRadii[i] * fVb_MainMember;
+                fMb_SecondaryMember_oneside_plastic += fHolesCentersRadii[/*a.IHolesNumber / 2 +*/ i] * fVb_SecondaryMember;
 
-                fSumri2tormax += MathF.Pow2(a.HolesCenterRadii[i]) / fr_max;
+                fSumri2tormax += MathF.Pow2(fHolesCentersRadii[i]) / fr_max;
             }
 
             // Plastic resistance (Design Ratio)
@@ -187,8 +241,8 @@ namespace M_AS4600
 
             // Elastic resistance
             float fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
-            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / (a.ScrewArrangement.IHolesNumber / ((CScrewArrangementCircleApexOrKnee)a.ScrewArrangement).INumberOfCircleGroupsInJoint);
-            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / (a.ScrewArrangement.IHolesNumber / ((CScrewArrangementCircleApexOrKnee)a.ScrewArrangement).INumberOfCircleGroupsInJoint);
+            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / (fHolesCentersRadii.Length / iNumberOfScrewGroupsInPlate);
+            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / (fHolesCentersRadii.Length / iNumberOfScrewGroupsInPlate);
 
             float fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
 
