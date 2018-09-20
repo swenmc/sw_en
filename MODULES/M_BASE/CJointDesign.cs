@@ -13,8 +13,11 @@ namespace M_BASE
     {
         bool bDebugging;
         public List<CCalculJoint> listOfJointDesignInStartandEndLocation;
-        public int fMaximumDesignRatioLocationID = 0;
-        public float fMaximumDesignRatio = 0;
+        public int fDesignRatioLocationID_Start = 0;
+        public float fDesignRatio_Start = 0;
+
+        public int fDesignRatioLocationID_End = 0;
+        public float fDesignRatio_End = 0;
 
         public CJointDesign(bool bDebugging_temp = false)
         {
@@ -22,62 +25,52 @@ namespace M_BASE
         }
 
         // PFD
-        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, CModel model, CMember member, basicInternalForces[] sBIF_x, out CConnectionJointTypes joint, out designInternalForces[] sDIF_x)
+        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, CModel model, CMember member, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces[] sDIF_x)
         {
-            int iNumberOfJointSections = 2; // Start and end of Member
-            
+            int iNumberOfJointSections = 2; // Start and end of member - design internal forces
+            model.GetModelMemberStartEndConnectionJoints(member, out jointStart, out jointEnd);
+
             listOfJointDesignInStartandEndLocation = new List<CCalculJoint>(iNumberOfJointSections);
+
             // Design
             sDIF_x = new designInternalForces[iNumberOfDesignSections];
-            joint = null; // Temporary
 
             for (int j = 0; j < iNumberOfDesignSections; j++)
             {
                 if (j == 0 || j == iNumberOfDesignSections - 1) // Start or end result section
+                {
                     sDIF_x[j].fN = sBIF_x[j].fN;
-                sDIF_x[j].fN_c = sDIF_x[j].fN > 0 ? 0f : Math.Abs(sDIF_x[j].fN);
-                sDIF_x[j].fN_t = sDIF_x[j].fN < 0 ? 0f : sDIF_x[j].fN;
-                sDIF_x[j].fT = sBIF_x[j].fT;
+                    sDIF_x[j].fN_c = sDIF_x[j].fN > 0 ? 0f : Math.Abs(sDIF_x[j].fN);
+                    sDIF_x[j].fN_t = sDIF_x[j].fN < 0 ? 0f : sDIF_x[j].fN;
+                    sDIF_x[j].fT = sBIF_x[j].fT;
 
-                sDIF_x[j].fV_yu = sBIF_x[j].fV_yu;
-                sDIF_x[j].fM_zv = sBIF_x[j].fM_zv;
+                    sDIF_x[j].fV_yu = sBIF_x[j].fV_yu;
+                    sDIF_x[j].fM_zv = sBIF_x[j].fM_zv;
 
-                sDIF_x[j].fV_zv = sBIF_x[j].fV_zv;
-                sDIF_x[j].fM_yu = sBIF_x[j].fM_yu;
+                    sDIF_x[j].fV_zv = sBIF_x[j].fV_zv;
+                    sDIF_x[j].fM_yu = sBIF_x[j].fM_yu;
 
-                ////////////////////////////////
-                // TODO - identifikovat spoj v zaciatocnom a koncovom uzle pruta, skontrolovat ci nejake spoj existuje
+                    CCalculJoint obj_CalcDesign;
 
-                // TODO Ondrej - najst spoj ktory patri k zaciatocnemu a koncovemu uzlu pruta;
-                //tak toto fakt neviem ako funguje, ked sa tu vytvara len nejaky temporary prut
+                    if (j == 0) // Start Joint Design
+                    {
+                        obj_CalcDesign = new CCalculJoint(bDebugging, jointStart, sDIF_x[j]);
 
-                //CConnectionJoint_T001 temporaryJoint = new CConnectionJoint_T001("LH", member.NodeStart, member, member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true);
-                //joint = temporaryJoint; // Temporary output
-                //CCalculJoint obj_CalcDesign = new CCalculJoint(bDebugging, temporaryJoint /*j == 0 ? member.NodeStart.Joint : member.NodeEnd.Joint*/, sDIF_x[j]);
+                        fDesignRatioLocationID_Start = j;
+                        fDesignRatio_Start = obj_CalcDesign.fEta_max;
 
+                        listOfJointDesignInStartandEndLocation.Add(obj_CalcDesign);
+                    }
+                    else // End Joint Design
+                    {
+                        obj_CalcDesign = new CCalculJoint(bDebugging, jointEnd, sDIF_x[j]);
 
-                CConnectionJointTypes jStart = null;
-                CConnectionJointTypes jEnd = null;
-                model.GetModelMemberStartEndConnectionJoints(member, out jStart, out jEnd);
+                        fDesignRatioLocationID_End = j;
+                        fDesignRatio_End = obj_CalcDesign.fEta_max;
 
-                CCalculJoint obj_CalcDesign = new CCalculJoint(bDebugging, jStart, sDIF_x[j]);
-                if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
-                {
-                    fMaximumDesignRatioLocationID = j;
-                    fMaximumDesignRatio = obj_CalcDesign.fEta_max;
+                        listOfJointDesignInStartandEndLocation.Add(obj_CalcDesign);
+                    }
                 }
-                listOfJointDesignInStartandEndLocation.Add(obj_CalcDesign);
-
-                obj_CalcDesign = new CCalculJoint(bDebugging, jEnd, sDIF_x[j]);
-                if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
-                {
-                    fMaximumDesignRatioLocationID = j;
-                    fMaximumDesignRatio = obj_CalcDesign.fEta_max;
-                }
-                listOfJointDesignInStartandEndLocation.Add(obj_CalcDesign);
-
-                //je jeden, ci je ich viac, kto tomu ma rozumiet???
-                //parameter je jeden out CConnectionJointTypes joint,
             }
         }
     }

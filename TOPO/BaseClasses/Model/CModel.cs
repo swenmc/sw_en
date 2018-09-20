@@ -38,13 +38,13 @@ namespace BaseClasses
 
         public CNode[] m_arrNodes;
         // 1D Elements (not FEM)
-        public CMember [] m_arrMembers;
+        public CMember[] m_arrMembers;
         // Nodal Supports
         public CNSupport[] m_arrNSupports;
         // Member Releases
         public CNRelease[] m_arrNReleases;
         // Connections
-        public List <CConnectionJointTypes> m_arrConnectionJoints;
+        public List<CConnectionJointTypes> m_arrConnectionJoints;
         // Loading
         // Nodal Loads
         public CNLoad[] m_arrNLoads;
@@ -145,11 +145,11 @@ namespace BaseClasses
         public void GroupModelMembers()
         {
             GroupedMembers = new Dictionary<Tuple<float, string, string>, List<CMember>>();
-            
+
             //pre kazdy member v poli members
             foreach (CMember m in m_arrMembers)
             {
-                string startCrscName = m.CrScStart != null ?  m.CrScStart.GetType().Name : string.Empty;
+                string startCrscName = m.CrScStart != null ? m.CrScStart.GetType().Name : string.Empty;
                 string endCrscName = m.CrScEnd != null ? m.CrScEnd.GetType().Name : string.Empty;
                 //vytvori n-ticu 3 property
                 Tuple<float, string, string> t = Tuple.Create(m.FLength, startCrscName, endCrscName);
@@ -194,7 +194,7 @@ namespace BaseClasses
                         if (secMem.NodeStart == cj.m_Node) jStart = cj;
                         if (secMem.NodeEnd == cj.m_Node) jEnd = cj;
                     }
-                }                
+                }
             }
             if (jStart != null && jEnd != null) return;
 
@@ -210,5 +210,16 @@ namespace BaseClasses
             if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
         }
 
+        public void GetModelMemberStartConnectionJoint(CMember m, out CConnectionJointTypes jStart)
+        {
+            CConnectionJointTypes jEnd_temp;
+            GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd_temp);
+        }
+
+        public void GetModelMemberEndConnectionJoint(CMember m, out CConnectionJointTypes jEnd)
+        {
+            CConnectionJointTypes jStart_temp;
+            GetModelMemberStartEndConnectionJoints(m, out jStart_temp, out jEnd);
+        }
     }
 }

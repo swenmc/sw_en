@@ -768,9 +768,16 @@ namespace PFD
                                 // Joint Design
                                 designInternalForces[] sJointDIF_x;
                                 CJointDesign jointDesignModel = new CJointDesign();
-                                CConnectionJointTypes joint;
-                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, Model, m, sBIF_x_design, out joint, out sJointDIF_x);
-                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, joint, lcomb, jointDesignModel.fMaximumDesignRatio, sJointDIF_x[jointDesignModel.fMaximumDesignRatioLocationID]));
+
+                                CConnectionJointTypes jointStart;
+                                CConnectionJointTypes jointEnd;
+                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sJointDIF_x);
+
+                                // Start Joint
+                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointStart, lcomb, jointDesignModel.fDesignRatio_Start, sJointDIF_x[jointDesignModel.fDesignRatioLocationID_Start]));
+
+                                // End Joint
+                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sJointDIF_x[jointDesignModel.fDesignRatioLocationID_End]));
 
                                 // Output (for debugging - member results)
                                 bool bDebugging = false; // Testovacie ucely
@@ -782,9 +789,15 @@ namespace PFD
                                 // Output (for debugging - member connection / joint results)
                                 if (bDebugging)
                                     System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
-                                                      "Joint ID: " + joint.ID + "\t | " +
+                                                      "Joint ID: " + jointStart.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
-                                                      "Design Ratio: " + Math.Round(jointDesignModel.fMaximumDesignRatio, 3).ToString() + "\n");
+                                                      "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_Start, 3).ToString() + "\n");
+
+                                if (bDebugging)
+                                    System.Diagnostics.Trace.WriteLine("Member ID: " + m.ID + "\t | " +
+                                                      "Joint ID: " + jointEnd.ID + "\t | " +
+                                                      "Load Combination ID: " + lcomb.ID + "\t | " +
+                                                      "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_End, 3).ToString() + "\n");
 
                                 // Output - set maximum design ratio by component Type
                                 switch (m.EMemberType)
