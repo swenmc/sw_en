@@ -769,7 +769,7 @@ namespace PFD
                                 designInternalForces[] sJointDIF_x;
                                 CJointDesign jointDesignModel = new CJointDesign();
                                 CConnectionJointTypes joint;
-                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, out joint, out sJointDIF_x);
+                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, Model, m, sBIF_x_design, out joint, out sJointDIF_x);
                                 JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, joint, lcomb, jointDesignModel.fMaximumDesignRatio, sJointDIF_x[jointDesignModel.fMaximumDesignRatioLocationID]));
 
                                 // Output (for debugging - member results)

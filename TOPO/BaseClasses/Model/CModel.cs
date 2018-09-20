@@ -179,5 +179,36 @@ namespace BaseClasses
             return members;
         }
 
+        public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)
+        {
+            jStart = null;
+            jEnd = null;
+            foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
+            {
+                CMember[] secondary_members = cj.m_SecondaryMembers;
+                if (secondary_members == null) continue;
+                foreach (CMember secMem in secondary_members)
+                {
+                    if (secMem.ID == m.ID)
+                    {
+                        if (secMem.NodeStart == cj.m_Node) jStart = cj;
+                        if (secMem.NodeEnd == cj.m_Node) jEnd = cj;
+                    }
+                }                
+            }
+            if (jStart != null && jEnd != null) return;
+
+            foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
+            {
+                if (cj.m_MainMember != null && cj.m_MainMember.ID == m.ID)
+                {
+                    if (cj.m_MainMember.NodeStart == cj.m_Node) jStart = cj;
+                    if (cj.m_MainMember.NodeEnd == cj.m_Node) jEnd = cj;
+                }
+            }
+
+            if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
+        }
+
     }
 }
