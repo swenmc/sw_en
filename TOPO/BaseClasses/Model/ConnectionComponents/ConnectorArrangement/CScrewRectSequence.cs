@@ -71,5 +71,13 @@ namespace BaseClasses
 
         public CScrewRectSequence()
         { }
+
+        public CScrewRectSequence(int iNumberOfScrewsInRow_xDirection_temp, int iNumberOfScrewsInColumn_yDirection_temp)
+        {
+            NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_temp;
+            NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_temp;
+            INumberOfScrews = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            HolesCentersPoints = new Point[INumberOfScrews];
+        }
     }
 }

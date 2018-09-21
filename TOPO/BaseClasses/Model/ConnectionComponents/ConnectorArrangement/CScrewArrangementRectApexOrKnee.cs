@@ -57,23 +57,6 @@ namespace BaseClasses
             }
         }
 
-        private int m_iNumberOfCircleGroupsInJoint = 2; // Pocet kruhov na jednom plechu (skupina - group)
-
-        public int INumberOfCircleGroupsInJoint
-        {
-            get
-            {
-                return m_iNumberOfCircleGroupsInJoint;
-            }
-
-            set
-            {
-                m_iNumberOfCircleGroupsInJoint = value;
-            }
-        }
-
-        
-
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
 
         // Bottom (knee plate) or left (apex plate) group
@@ -103,9 +86,6 @@ namespace BaseClasses
         public float fy_c_SQ4;
         public float fDistanceOfPointsX_SQ4;
         public float fDistanceOfPointsY_SQ4;
-
-        float m_fSlope_rad;
-        public float[] HolesCenterRadii;
 
         public CScrewArrangementRectApexOrKnee()
         { }

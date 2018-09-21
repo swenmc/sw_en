@@ -98,9 +98,6 @@ namespace BaseClasses
 
         float m_fSlope_rad;
         public float[] HolesCenterRadii;
-        public int INumberOfCircleJoints = 2;
-
-        //public new CScrewArrangementCircleApexOrKnee screwArrangement;
 
         public CConCom_Plate_KE()
         {
@@ -187,7 +184,6 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
-            //DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------

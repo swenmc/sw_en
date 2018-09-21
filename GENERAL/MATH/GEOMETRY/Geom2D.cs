@@ -8,6 +8,19 @@ namespace MATH
 {
     public static class Geom2D
     {
+        // Docasne kym sa neprevedu vsetky funkcie z float[,] na Point[]
+        public static Point[] GetConvertedFloatToPointArray(float[,] fArray)
+        {
+            Point[] pArray = new Point[fArray.Length / 2];
+            for (int i = 0; i < fArray.Length / 2; i++)
+            {
+                pArray[i].X = fArray[i, 0];
+                pArray[i].Y = fArray[i, 1];
+            }
+
+            return pArray;
+        }
+
         public static float[,] m_ArrfPointsCoord2D;
         public static List<Point> m_ListPointsCoord2D;
 

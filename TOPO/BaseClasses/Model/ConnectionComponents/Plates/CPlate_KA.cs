@@ -72,8 +72,6 @@ namespace BaseClasses
         float m_fSlope_rad;
         public float[] HolesCenterRadii;
 
-        //public new CScrewArrangementCircleApexOrKnee screwArrangement;
-
         public CConCom_Plate_KA()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -156,30 +154,20 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
-            Point[] m_HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            HolesCenterRadii = new float[m_HolesCentersPoints.Length];
+
+            HolesCenterRadii = new float[screwArrangement.IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2DKneePlate(
-                m_fbX1,
-                m_fbX2,
-                0,
-                m_fhY1,
-                m_fSlope_rad,
-                ref m_HolesCentersPoints,
-                ref HolesCenterRadii);
 
-            screwArrangement.HolesCentersPoints2D = m_HolesCentersPoints;
+            screwArrangement.Calc_HolesCentersCoord2DKneePlate(m_fbX1, m_fbX2, 0, m_fhY1, m_fSlope_rad);
             screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
+            screwArrangement.GenerateConnectors();
 
             // Fill list of indices for drawing of surface
             loadIndices();
-
-            screwArrangement.GenerateConnectors();
 
             UpdatePlateData_Basic(screwArrangement);
         }
@@ -191,9 +179,8 @@ namespace BaseClasses
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
-            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
-            Point[] m_HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            HolesCenterRadii = new float[m_HolesCentersPoints.Length];
+
+            HolesCenterRadii = new float[screwArrangement.IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data

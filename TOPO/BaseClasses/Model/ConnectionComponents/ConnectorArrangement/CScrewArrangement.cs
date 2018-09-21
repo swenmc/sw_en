@@ -97,19 +97,6 @@ namespace BaseClasses
             return points;
         }
 
-        // Docasne kym sa neprevedu vsetky funkcie z float[,] na Point[]
-        public Point[] GetConvertedFloatToPointArray(float[,] fArray)
-        {
-            Point[] pArray = new Point[fArray.Length / 2];
-            for (int i = 0; i < fArray.Length / 2; i++)
-            {
-                pArray[i].X = fArray[i, 0];
-                pArray[i].Y = fArray[i, 1];
-            }
-
-            return pArray;
-        }
-
         public void FillArrayOfHolesCentersInWholeArrangement()
         {
             // Fill array of holes centers - whole arrangement

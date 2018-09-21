@@ -115,6 +115,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BB_BG.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F_or_L.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_LL.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewHalfCircleSequence.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewSequenceGroup.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewSequence.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewRectSequence.cs" />

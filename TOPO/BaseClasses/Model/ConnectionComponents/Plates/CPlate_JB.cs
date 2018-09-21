@@ -72,9 +72,6 @@ namespace BaseClasses
 
         float m_fSlope_rad;
         public float[] HolesCenterRadii;
-        public int INumberOfCircleJoints = 2;
-
-        //public new CScrewArrangementCircleApexOrKnee screwArrangement;
 
         public CConCom_Plate_JB()
         {
@@ -126,26 +123,19 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            //HolesCentersPoints2D = new float[screwArrangement.IHolesNumber, 2];
-            Point[] m_HolesCentersPoints = new Point[screwArrangement.IHolesNumber];
-            HolesCenterRadii = new float[m_HolesCentersPoints.Length];
+            HolesCenterRadii = new float[screwArrangement.IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
-            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX,
-                m_flZ,
-                m_fhY1,
-                m_fSlope_rad,
-                ref m_HolesCentersPoints);
 
+            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, m_flZ, m_fhY1, m_fSlope_rad);
             screwArrangement.Calc_HolesControlPointsCoord3D(m_flZ, Ft);
+            screwArrangement.GenerateConnectors();
 
             // Fill list of indices for drawing of surface
             loadIndices();
-
-            screwArrangement.GenerateConnectors();
 
             fWidth_bx = m_fbX;
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
@@ -166,7 +156,6 @@ namespace BaseClasses
             ScrewArrangement = screwArrangement;
 
             DrillingRoutePoints = null;
-            //DrillingRoutePoints2D = null;
         }
 
         //----------------------------------------------------------------------------
