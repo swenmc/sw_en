@@ -94,12 +94,12 @@ namespace BaseClasses
             CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
 
             bool bUseAdditionalCornerScrews = true;
-            int iAdditionalConnectorNumber = 2*4*4; //2 kruhy, 4 rohy, 4 skrutky v kazom rohu
-            int iConnectorNumber = 80;
+            int iAdditionalConnectorInCornerNumber = 4; // 4 skrutky v kazom rohu
+            int iConnectorInCircleSegmentNumber = 20;
             float fAdditionalConnectorDistance = 0.03f;
 
             CScrew referenceScrew = new CScrew("TEK", "12");
-            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.2f, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, iConnectorInCircleSegmentNumber, 0.2f, bUseAdditionalCornerScrews, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees

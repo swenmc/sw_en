@@ -73,18 +73,33 @@ namespace BaseClasses
         }
 
 
-        private int m_iNumberOfCircleGroupsInJoint = 2; // Pocet kruhov na jednom plechu (skupina - group)
+        private int m_iNumberOfGroupsInJoint = 2; // Pocet kruhov na jednom plechu
 
-        public int INumberOfCircleGroupsInJoint
+        public int INumberOfGroupsInJoint
         {
             get
             {
-                return m_iNumberOfCircleGroupsInJoint;
+                return m_iNumberOfGroupsInJoint;
             }
 
             set
             {
-                m_iNumberOfCircleGroupsInJoint = value;
+                m_iNumberOfGroupsInJoint = value;
+            }
+        }
+
+        int m_iNumberOfCirclesInGroup = 1; // pocet kruhov v jednej skupine (group)
+
+        public int INumberOfCirclesInGroup
+        {
+            get
+            {
+                return m_iNumberOfCirclesInGroup;
+            }
+
+            set
+            {
+                m_iNumberOfCirclesInGroup = value;
             }
         }
 
@@ -103,19 +118,27 @@ namespace BaseClasses
             }
         }
 
-
-        private int iNumberOfScrewsInCircleGroup; // Pocet skrutiek v kruhu
-        private int iNumberOfAdditionalConnectorsInOneGroup;
         private int iNumberOfAdditionalConnectorsInOneSequence;
-
-        private int iNumberOfScrewsInOneGroupIncludingAdditional;
-        private int iNumberOfScrewsInOneSequenceIncludingAdditional;
-
+ 
         public float[] HolesCenterRadii;
 
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
         public int iNumberOfCircleScrewsSequencesInOneGroup = 2;
-        public int iNumberOfScrewsInOneHalfCircleSequence_SQ1; // pocet skrutiek v "polkruhu"
+
+        private int iNumberOfScrewsInOneHalfCircleSequence_SQ1; // pocet skrutiek v "polkruhu"
+
+        public int INumberOfScrewsInOneHalfCircleSequence_SQ1
+        {
+            get
+            {
+                return iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+            }
+
+            set
+            {
+                iNumberOfScrewsInOneHalfCircleSequence_SQ1 = value;
+            }
+        }
 
         private float m_fRadius_SQ1;
 
@@ -193,6 +216,21 @@ namespace BaseClasses
             }
         }
 
+        private int m_iAdditionalConnectorInCornerNumber;
+
+        public int IAdditionalConnectorInCornerNumber
+        {
+            get
+            {
+                return m_iAdditionalConnectorInCornerNumber;
+            }
+
+            set
+            {
+                m_iAdditionalConnectorInCornerNumber = value;
+            }
+        }
+
         private float m_fAdditionalScrewsDistance_x;
 
         public float FAdditionalScrewsDistance_x
@@ -229,16 +267,17 @@ namespace BaseClasses
         { }
 
         public CScrewArrangementCircleApexOrKnee(
-            int iHolesInCirclesNumber_temp,
             CScrew referenceScrew_temp,
-            float fRadius_temp,
             float fCrscRafterDepth_temp,
             float fCrscWebStraightDepth_temp,
             float fStiffenerSize_temp,
+            int iNumberOfCirclesInGroup_temp,
+            int iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp,
+            float fRadius_SQ1_temp,
             bool bUseAdditionalCornerScrews_temp,
-            int iAdditionalConnectorNumber_temp,
+            int iAdditionalConnectorInCornerNumber_temp,
             float fAdditionalScrewsDistance_x_temp,
-            float fAdditionalScrewsDistance_y_temp) : base(iHolesInCirclesNumber_temp + (bUseAdditionalCornerScrews_temp ? iAdditionalConnectorNumber_temp : 0), referenceScrew_temp)
+            float fAdditionalScrewsDistance_y_temp)
         {
             referenceScrew = referenceScrew_temp;
             FCrscRafterDepth = fCrscRafterDepth_temp;
@@ -247,13 +286,15 @@ namespace BaseClasses
 
             // Circle
             // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-            IHolesInCirclesNumber = iHolesInCirclesNumber_temp;
-            FRadius_SQ1 = fRadius_temp;
+            INumberOfCirclesInGroup = iNumberOfCirclesInGroup_temp; // pocet kruhov
+            INumberOfScrewsInOneHalfCircleSequence_SQ1 = iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp; // Pocet v segmente kruhu
+            FRadius_SQ1 = fRadius_SQ1_temp;
 
             // Corner screws parameters
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
-            IAdditionalConnectorNumberInRow_xDirection = iAdditionalConnectorNumber_temp/2; // Docasne
-            IAdditionalConnectorNumberInColumn_yDirection = iAdditionalConnectorNumber_temp/2; // Docasne
+            IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber_temp; // Spolu v jendom rohu
+            IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
+            IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x_temp;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y_temp;
 
@@ -315,9 +356,7 @@ namespace BaseClasses
                     IHolesNumber += seq.INumberOfScrews;
             }
 
-            int iNumberOfGroupsInPlate = 2;
-
-            IHolesNumber *= iNumberOfGroupsInPlate;
+            IHolesNumber *= INumberOfGroupsInJoint;
 
             if (false) // TODO - rozlisit knee a apex plate
             {
@@ -387,8 +426,8 @@ namespace BaseClasses
                 // For square
                 if (IAdditionalConnectorNumberInRow_xDirection == 0 && IAdditionalConnectorNumberInColumn_yDirection == 0)
                 {
-                    IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(iNumberOfAdditionalConnectorsInOneSequence / 2);
-                    IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(iNumberOfAdditionalConnectorsInOneSequence / 2);
+                    IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber);
+                    IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber);
                 }
 
                 // Additional corner connectors

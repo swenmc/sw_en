@@ -431,9 +431,9 @@ namespace PFD
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
                 bool bUseAdditinalConnectors = true;
-                int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
-                int iConnectorNumber = 80;
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, 0.03f, 0.03f);
+                int iNumberOfAdditionalConnectorsInCorner = 4;
+                int iConnectorNumberInCircleSeuence = 20;
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
@@ -623,11 +623,10 @@ namespace PFD
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
                 bool bUseAdditinalConnectors = true;
-                int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
-                float fAdditionalConnectorDistance = 0.03f;
-                int iConnectorNumber = 80;
+                int iNumberOfAdditionalConnectorsInCorner = 4;
+                int iConnectorNumberInCircleSeuence = 20;
 
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.25f, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 15, 2, 0.0f, 0.0f, 0.05f, 0.04f, 15, 2, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
@@ -1059,14 +1058,19 @@ namespace PFD
                 {
                     CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
 
-                    if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleS.Name)) arrangementTemp.IHolesInCirclesNumber = int.Parse(changedText);
                     if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(changedText) / fLengthUnitFactor);
                     if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText) / fLengthUnitFactor;
+
+                    // Circle screws
+                    if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name)) arrangementTemp.INumberOfCirclesInGroup = int.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(changedText); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(changedText) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+
+                    // Corner screws
                     if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                    if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsS.Name)) arrangementTemp.IAdditionalConnectorNumber = int.Parse(changedText);
+                    if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(changedText);
                     if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(changedText) / fLengthUnitFactor;
 

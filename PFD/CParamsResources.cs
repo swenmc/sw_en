@@ -130,15 +130,23 @@ namespace PFD
         // SCREW ARRANGEMENT PROPERTIES
 
         // CIRCLE
-        public struct NumberOfScrewsInCircleS
+        public struct NumberOfCirclesInGroupS
         {
-            public const string Name = "Number of screws in circle";
-            public const string DBName = "HolesInCircleNumber";
+            public const string Name = "Number of circles in group";
+            public const string DBName = "NumberOfCirclesInGroup";
             public const string Unit = sUnit_CountIntNumber;
             public const string Symbol = "No";
         }
 
-        public struct RadiusOfScrewsInCircleS
+        public struct NumberOfScrewsInCircleSequenceS
+        {
+            public const string Name = "Number of screws in circle sequence";
+            public const string DBName = "HolesInCircleSequenceNumber";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "No";
+        }
+
+        public struct RadiusOfScrewsInCircleSequenceS
         {
             public const string Name = "Radius";
             public const string DBName = "Radius";
@@ -158,6 +166,30 @@ namespace PFD
         {
             public const string Name = "Number of additional screws";
             public const string DBName = "NumberOfAdditionalScrews";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "No";
+        }
+
+        public struct NumberOfAdditionalScrewsInCornerS
+        {
+            public const string Name = "Number of additional screws in corner";
+            public const string DBName = "NumberOfAdditionalScrewsInCorner";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "No";
+        }
+
+        public struct NumberOfAdditionalScrewsInRowS
+        {
+            public const string Name = "Number of additional screws in row";
+            public const string DBName = "NumberOfAdditionalScrewsInRow";
+            public const string Unit = sUnit_CountIntNumber;
+            public const string Symbol = "No";
+        }
+
+        public struct NumberOfAdditionalScrewsInColumnS
+        {
+            public const string Name = "Number of additional screws in column";
+            public const string DBName = "NumberOfAdditionalScrewsInRow";
             public const string Unit = sUnit_CountIntNumber;
             public const string Symbol = "No";
         }

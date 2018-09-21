@@ -35,7 +35,7 @@ namespace BaseClasses
             float fStiffenerSize = 0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
 
             bool bUseAdditionalCornerScrews = true;
-            int iAdditionalConnectorNumber = 2 * 4 * 4; //2 kruhy, 4 rohy, 4 skrutky v kazom rohu
+            int iAdditionalConnectorInCornerNumber = 4; //4 skrutky v kazom rohu
             float fAdditionalConnectorDistance = 0.03f;
             m_fh_1 = (float)m_MainMember.CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * 0.5f * m_fb;
@@ -46,9 +46,9 @@ namespace BaseClasses
             CPoint ControlPoint_P1 = new CPoint(0, m_Node.X + 0.5 * m_fb, m_Node.Y - 0.5f * m_MainMember.CrScStart.b - 0.5f * m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1), 0);
             CPoint ControlPoint_P2 = new CPoint(1, m_Node.X - 0.5 * m_fb, m_Node.Y + 0.5f * m_MainMember.CrScStart.b + 1.5f * m_ft, m_Node.Z - (m_fh_2 - 0.5 * m_fh_1), 0);
 
-            int iConnectorNumber = 80;
+            int iConnectorInCircleSequenceNumber = 20;
             CScrew referenceScrew = new CScrew("TEK", "14");
-            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(iConnectorNumber, referenceScrew, 0.2f, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, bUseAdditionalCornerScrews, iAdditionalConnectorNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, iConnectorInCircleSequenceNumber, 0.2f, bUseAdditionalCornerScrews, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, screwArrangement, BIsDisplayed); // Rotation angle in degrees

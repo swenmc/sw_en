@@ -673,14 +673,17 @@ namespace PFD
             {
                 CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
 
-                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfScrewsInCircleS.Name, CParamsResources.NumberOfScrewsInCircleS.Symbol, arrangementTemp.IHolesInCirclesNumber.ToString(nfi), CParamsResources.NumberOfScrewsInCircleS.Unit));
                 geometry.Add(new CComponentParamsView(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, arrangementTemp.referenceScrew.Gauge.ToString(), CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
-                geometry.Add(new CComponentParamsView(CParamsResources.RadiusOfScrewsInCircleS.Name, CParamsResources.RadiusOfScrewsInCircleS.Symbol, (Math.Round(arrangementTemp.FRadius_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleS.Unit));
                 geometry.Add(new CComponentParamsView(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
                 geometry.Add(new CComponentParamsView(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
                 geometry.Add(new CComponentParamsView(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
+
+                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfCirclesInGroupS.Name, CParamsResources.NumberOfCirclesInGroupS.Symbol, arrangementTemp.INumberOfCirclesInGroup.ToString(), CParamsResources.NumberOfCirclesInGroupS.Unit));
+                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfScrewsInCircleSequenceS.Name, CParamsResources.NumberOfScrewsInCircleSequenceS.Symbol, arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1.ToString(), CParamsResources.NumberOfScrewsInCircleSequenceS.Unit));
+                geometry.Add(new CComponentParamsView(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name, CParamsResources.RadiusOfScrewsInCircleSequenceS.Symbol, (Math.Round(arrangementTemp.FRadius_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleSequenceS.Unit));
+
                 geometry.Add(new CComponentParamsView(CParamsResources.UseAdditionalCornerScrewsS.Name, CParamsResources.UseAdditionalCornerScrewsS.Symbol, arrangementTemp.BUseAdditionalCornerScrews.ToString(), CParamsResources.UseAdditionalCornerScrewsS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfAdditionalScrewsS.Name, CParamsResources.NumberOfAdditionalScrewsS.Symbol, arrangementTemp.IAdditionalConnectorNumber.ToString(nfi), CParamsResources.NumberOfAdditionalScrewsS.Unit));
+                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, arrangementTemp.IAdditionalConnectorInCornerNumber.ToString(nfi), CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
                 geometry.Add(new CComponentParamsView(CParamsResources.DistanceOfAdditionalScrewsInxS.Name, CParamsResources.DistanceOfAdditionalScrewsInxS.Symbol, (Math.Round(arrangementTemp.FAdditionalScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInxS.Unit));
                 geometry.Add(new CComponentParamsView(CParamsResources.DistanceOfAdditionalScrewsInyS.Name, CParamsResources.DistanceOfAdditionalScrewsInyS.Symbol, (Math.Round(arrangementTemp.FAdditionalScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInyS.Unit));
             }
@@ -908,7 +911,8 @@ namespace PFD
             //float fPitch_rad = 11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
             int iNumberofHoles;
             bool bUseAdditinalConnectors = true;
-            int iNumberOfAdditionalConnectorsInPlate = 32; // 2*4*4
+            int iNumberOfConnectorsInCircleSegment;
+            int iNumberOfAdditionalConnectorsInCorner;
             float fRadius = 0.25f; // Radius of screws in circle
             float fRafterDepth = 0.63f;
             float fRafterStraightDepth = 0.63f - 2 * 0.025f - 2 * 0.002f;
@@ -1034,9 +1038,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_J_Dimension[0, 2] / 1000f;
             fl = databaseComponents.arr_Serie_J_Dimension[0, 3] / 1000f;
             ft = databaseComponents.arr_Serie_J_Dimension[0, 4] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_J_Dimension[0, 5];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_J_Dimension[0, 5];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_J_Dimension[0, 6];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie8.Add(new CConCom_Plate_JA(databaseComponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true));
 
             fb = databaseComponents.arr_Serie_J_Dimension[1, 0] / 1000f;
@@ -1044,9 +1049,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_J_Dimension[1, 2] / 1000f;
             fl = databaseComponents.arr_Serie_J_Dimension[1, 3] / 1000f;
             ft = databaseComponents.arr_Serie_J_Dimension[1, 4] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_J_Dimension[1, 5];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_J_Dimension[1, 5];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_J_Dimension[1, 6];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie8.Add(new CConCom_Plate_JB(databaseComponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true));
 
             plates.Add("Serie J", platesInSerie8);
@@ -1060,9 +1066,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_K_Dimension[0, 4] / 1000f;
             fl = databaseComponents.arr_Serie_K_Dimension[0, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[0, 6] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[0, 7];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_K_Dimension[0, 7];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_K_Dimension[0, 8];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie9.Add(new CConCom_Plate_KA(databaseComponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementCircle, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[1, 0] / 1000f;
@@ -1072,9 +1079,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_K_Dimension[1, 4] / 1000f;
             fl = databaseComponents.arr_Serie_K_Dimension[1, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[1, 6] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[1, 7];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_K_Dimension[1, 7];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_K_Dimension[1, 8];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie9.Add(new CConCom_Plate_KB(databaseComponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[2, 0] / 1000f;
@@ -1084,9 +1092,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_K_Dimension[2, 4] / 1000f;
             fl = databaseComponents.arr_Serie_K_Dimension[2, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[2, 6] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[2, 7];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_K_Dimension[2, 7];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_K_Dimension[2, 8];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie9.Add(new CConCom_Plate_KC(databaseComponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[3, 0] / 1000f;
@@ -1096,9 +1105,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_K_Dimension[3, 4] / 1000f;
             fl = databaseComponents.arr_Serie_K_Dimension[3, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[3, 6] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[3, 7];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_K_Dimension[3, 7];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_K_Dimension[3, 8];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie9.Add(new CConCom_Plate_KD(databaseComponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true));
 
             fb_R = databaseComponents.arr_Serie_K_Dimension[4, 0] / 1000f;
@@ -1108,9 +1118,10 @@ namespace PFD
             fh2 = databaseComponents.arr_Serie_K_Dimension[4, 4] / 1000f;
             fl = databaseComponents.arr_Serie_K_Dimension[4, 5] / 1000f;
             ft = databaseComponents.arr_Serie_K_Dimension[4, 6] / 1000f;
-            iNumberofHoles = (int)databaseComponents.arr_Serie_K_Dimension[4, 7];
+            iNumberOfConnectorsInCircleSegment = (int)databaseComponents.arr_Serie_K_Dimension[4, 7];
+            iNumberOfAdditionalConnectorsInCorner = (int)databaseComponents.arr_Serie_K_Dimension[4, 8];
 
-            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(iNumberofHoles, referenceScrew, fRadius, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInPlate, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, fRafterDepth, fRafterStraightDepth, fMiddleStiffenerSize, 1, iNumberOfConnectorsInCircleSegment, fRadius, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
             platesInSerie9.Add(new CConCom_Plate_KE(databaseComponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true));
 
             plates.Add("Serie K", platesInSerie9);
