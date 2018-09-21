@@ -495,8 +495,9 @@ namespace BaseClasses
 
             // Right side
             CScrewSequenceGroup group2 = GetMirroredScrewGroupAboutY(group1);
+            group2.TransformGroup(new Point(fx_c2, fy_c2), 0);
             // TODO - skontrolovat - Toto je asi zbytocne ak bola skupina na predchadzajucom riadku odzkradlena staci ju pridat do zoznamu
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
+            //Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
 
             // TODO - toto by malo byt osetrene vopred, pozname pocet skupin
             if (ListOfSequenceGroups.Count == 1)
@@ -574,14 +575,18 @@ namespace BaseClasses
         {
             CScrewSequenceGroup groupOut = new CScrewSequenceGroup();
 
-            groupOut = group;
-
-            foreach (CScrewSequence seq in groupOut.ListScrewSequence)
+            for(int i = 0; i < group.ListScrewSequence.Count; i++)
             {
-                for (int i = 0; i < seq.INumberOfScrews; i++)
+                CScrewSequence seqTemp = new CScrewSequence();
+                seqTemp.HolesCentersPoints = new Point[group.ListScrewSequence[i].HolesCentersPoints.Length];
+
+                for (int j = 0; j < group.ListScrewSequence[i].HolesCentersPoints.Length; j++)
                 {
-                    seq.HolesCentersPoints[i].X *= -1; // Change X coordinate (mirror about Y)
+                    seqTemp.HolesCentersPoints[j].X = group.ListScrewSequence[i].HolesCentersPoints[j].X * -1; // Change X coordinate (mirror about Y)
+                    seqTemp.HolesCentersPoints[j].Y = group.ListScrewSequence[i].HolesCentersPoints[j].Y;
                 }
+
+                groupOut.ListScrewSequence.Add(seqTemp);
             }
 
             return groupOut;
