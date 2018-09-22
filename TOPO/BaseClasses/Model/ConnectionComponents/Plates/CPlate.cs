@@ -633,8 +633,10 @@ namespace BaseClasses
             Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref PointsOut2D);
             Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
 
-            // TODO ??? neda sa predat refenciou
-            Point [] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
+            // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
+            // BUG No. 72 - Ondrej - tu sa do ScrewArrangement.HolesCentersPoints2D nastavia odzrkadlene suradnice ale ked sa to zavola znova tak su tam povodne resp nejake uplne ine po opakovanom spusteni funckie
+            // Problem je vo vsetkych funkciach pre mirror, rotate of plate
+            Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref pArrayTemp);
             ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
 
@@ -646,7 +648,6 @@ namespace BaseClasses
             if (DrillingRoutePoints != null)
             {
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_drillingRoutePoints);
-                //DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
 
@@ -656,7 +657,9 @@ namespace BaseClasses
             Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref PointsOut2D);
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
 
-            // TODO ??? neda sa predat refenciou
+            // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
+            // BUG No. 72 - Ondrej - tu sa do ScrewArrangement.HolesCentersPoints2D nastavia odzrkadlene suradnice ale ked sa to zavola znova tak su tam povodne resp nejake uplne ine po opakovanom spusteni funckie
+            // Problem je vo vsetkych funkciach pre mirror, rotate of plate
             Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
             Geom2D.MirrorAboutY_ChangeXCoordinates(ref pArrayTemp);
             ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
@@ -669,7 +672,6 @@ namespace BaseClasses
             if (DrillingRoutePoints != null)
             {
                 Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_drillingRoutePoints);
-                //DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
 
@@ -679,7 +681,8 @@ namespace BaseClasses
             Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref PointsOut2D);
             Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrPoints3D);
 
-            // TODO ??? neda sa predat refenciou
+            // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
+            // BUG No. 72 - pri opakovanom volani sa nepouziji nastavene suradnice ale podovne, resp uplne ineProblem je vo vsetkych funkciach pre mirror, rotate of plate
             Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
             Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref pArrayTemp);
             ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
@@ -692,7 +695,6 @@ namespace BaseClasses
             if (DrillingRoutePoints != null)
             {
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);
-                //DrillingRoutePoints = Geom2D.TransformArrayToPointCoord(DrillingRoutePoints2D);
             }
         }
     }
