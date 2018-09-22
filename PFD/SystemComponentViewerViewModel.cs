@@ -27,11 +27,14 @@ namespace PFD
         private int MComponentTypeIndex;
         private int MComponentSerieIndex;
         private int MComponentIndex;
+        private int MScrewArrangementIndex;
 
         private List<string> MComponentTypes;
         private string[] MComponentSeries;
         private string[] MComponents;
+        private List<string> MScrewArrangements;
 
+        private List<CComponentParamsView> MScrewArrangementParameters;
         private List<CComponentParamsView> MComponentGeometry;
         private List<CComponentParamsView> MComponentDetails;
 
@@ -110,6 +113,21 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public int ScrewArrangementIndex
+        {
+            get
+            {
+                return MScrewArrangementIndex;
+            }
+
+            set
+            {
+                MScrewArrangementIndex = value;
+                if (MScrewArrangementIndex != -1) NotifyPropertyChanged("ScrewArrangementIndex");
+            }
+        }
+
         public List<string> ComponentTypes
         {
             get
@@ -149,6 +167,34 @@ namespace PFD
             {
                 MComponents = value;
                 NotifyPropertyChanged("Components");
+            }
+        }
+
+        public List<string> ScrewArrangements
+        {
+            get
+            {
+                return MScrewArrangements;
+            }
+
+            set
+            {
+                MScrewArrangements = value;
+                NotifyPropertyChanged("ScrewArrangements");
+            }
+        }
+
+        public List<CComponentParamsView> ScrewArrangementParameters
+        {
+            get
+            {
+                return MScrewArrangementParameters;
+            }
+
+            set
+            {
+                MScrewArrangementParameters = value;
+                NotifyPropertyChanged("ScrewArrangementParameters");
             }
         }
 
@@ -411,11 +457,13 @@ namespace PFD
             MComponentTypes = new List<string>() { "Cross-section", "Plate", "Screw" };
             MComponentSeries = dcomponents.arr_SeriesNames;
             MComponents = dcomponents.arr_Serie_L_Names;
+            MScrewArrangements = new List<string>() { "Rectangular", "Circle"};
 
             // Set default
             ComponentTypeIndex = 1;
             ComponentSerieIndex = 1;
             ComponentIndex = 1;
+            ScrewArrangementIndex = 0;
 
             DrawPoints2D = true;
             DrawOutLine2D= true;
@@ -587,6 +635,62 @@ namespace PFD
             }
         }
 
+        public void SetScrewArrangementProperties(CPlate plate /*CScrewArrangement arrangement*/) // Mala by sem vstupovat cela plate alebo len arrangement ???
+        {
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            List<CComponentParamsView> screwArrangmenetProperties = new List<CComponentParamsView>();
+
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
+            {
+                CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
+
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, arrangementTemp.referenceScrew.Gauge.ToString(), CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
+
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.NumberOfCirclesInGroupS.Name, CParamsResources.NumberOfCirclesInGroupS.Symbol, arrangementTemp.INumberOfCirclesInGroup.ToString(), CParamsResources.NumberOfCirclesInGroupS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.NumberOfScrewsInCircleSequenceS.Name, CParamsResources.NumberOfScrewsInCircleSequenceS.Symbol, arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1.ToString(), CParamsResources.NumberOfScrewsInCircleSequenceS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name, CParamsResources.RadiusOfScrewsInCircleSequenceS.Symbol, (Math.Round(arrangementTemp.FRadius_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleSequenceS.Unit));
+
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.UseAdditionalCornerScrewsS.Name, CParamsResources.UseAdditionalCornerScrewsS.Symbol, arrangementTemp.BUseAdditionalCornerScrews.ToString(), CParamsResources.UseAdditionalCornerScrewsS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, arrangementTemp.IAdditionalConnectorInCornerNumber.ToString(nfi), CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.DistanceOfAdditionalScrewsInxS.Name, CParamsResources.DistanceOfAdditionalScrewsInxS.Symbol, (Math.Round(arrangementTemp.FAdditionalScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInxS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.DistanceOfAdditionalScrewsInyS.Name, CParamsResources.DistanceOfAdditionalScrewsInyS.Symbol, (Math.Round(arrangementTemp.FAdditionalScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInyS.Unit));
+            }
+            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+            {
+                CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
+
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, arrangementTemp.referenceScrew.Gauge.ToString(), CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
+                screwArrangmenetProperties.Add(new CComponentParamsView(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
+
+                screwArrangmenetProperties.Add(new CComponentParamsView("Number of screws in row SQ1", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1.ToString(), "[-]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Number of screws in column SQ1", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1.ToString(), "[-]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Inserting point coordinate x SQ1", "xc1", (Math.Round(arrangementTemp.fx_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Inserting point coordinate y SQ1", "yc1", (Math.Round(arrangementTemp.fy_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Distance between screws x SQ1", "x1", (Math.Round(arrangementTemp.fDistanceOfPointsX_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Distance between screws y SQ1", "y1", (Math.Round(arrangementTemp.fDistanceOfPointsY_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+
+                screwArrangmenetProperties.Add(new CComponentParamsView("Number of screws in row SQ2", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2.ToString(), "[-]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Number of screws in column SQ2", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2.ToString(), "[-]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Inserting point coordinate x SQ2", "xc2", (Math.Round(arrangementTemp.fx_c_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Inserting point coordinate y SQ2", "yc2", (Math.Round(arrangementTemp.fy_c_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Distance between screws x SQ2", "bx2", (Math.Round(arrangementTemp.fDistanceOfPointsX_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+                screwArrangmenetProperties.Add(new CComponentParamsView("Distance between screws y SQ2", "by2", (Math.Round(arrangementTemp.fDistanceOfPointsY_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            }
+            else
+            {
+                // Screw arrangement is not implemented
+            }
+
+            ScrewArrangementParameters = screwArrangmenetProperties;
+
+        }
         public void SetComponentProperties(CPlate plate)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
@@ -667,52 +771,6 @@ namespace PFD
             else
             {
                 // Plate is not implemented
-            }
-
-            if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
-            {
-                CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
-
-                geometry.Add(new CComponentParamsView(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, arrangementTemp.referenceScrew.Gauge.ToString(), CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
-                geometry.Add(new CComponentParamsView(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
-
-                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfCirclesInGroupS.Name, CParamsResources.NumberOfCirclesInGroupS.Symbol, arrangementTemp.INumberOfCirclesInGroup.ToString(), CParamsResources.NumberOfCirclesInGroupS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfScrewsInCircleSequenceS.Name, CParamsResources.NumberOfScrewsInCircleSequenceS.Symbol, arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1.ToString(), CParamsResources.NumberOfScrewsInCircleSequenceS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name, CParamsResources.RadiusOfScrewsInCircleSequenceS.Symbol, (Math.Round(arrangementTemp.FRadius_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleSequenceS.Unit));
-
-                geometry.Add(new CComponentParamsView(CParamsResources.UseAdditionalCornerScrewsS.Name, CParamsResources.UseAdditionalCornerScrewsS.Symbol, arrangementTemp.BUseAdditionalCornerScrews.ToString(), CParamsResources.UseAdditionalCornerScrewsS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name, CParamsResources.NumberOfAdditionalScrewsInCornerS.Symbol, arrangementTemp.IAdditionalConnectorInCornerNumber.ToString(nfi), CParamsResources.NumberOfAdditionalScrewsInCornerS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.DistanceOfAdditionalScrewsInxS.Name, CParamsResources.DistanceOfAdditionalScrewsInxS.Symbol, (Math.Round(arrangementTemp.FAdditionalScrewsDistance_x * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInxS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.DistanceOfAdditionalScrewsInyS.Name, CParamsResources.DistanceOfAdditionalScrewsInyS.Symbol, (Math.Round(arrangementTemp.FAdditionalScrewsDistance_y * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.DistanceOfAdditionalScrewsInyS.Unit));
-            }
-            else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
-            {
-                CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
-
-                geometry.Add(new CComponentParamsView(CParamsResources.ScrewGaugeS.Name, CParamsResources.ScrewGaugeS.Symbol, arrangementTemp.referenceScrew.Gauge.ToString(), CParamsResources.ScrewGaugeS.Unit));  // TODO prerobit na vyber objektu skrutky z databazy
-                geometry.Add(new CComponentParamsView(CParamsResources.CrscDepthS.Name, CParamsResources.CrscDepthS.Symbol, (Math.Round(arrangementTemp.FCrscRafterDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscDepthS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
-                geometry.Add(new CComponentParamsView(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
-
-                geometry.Add(new CComponentParamsView("Number of screws in row SQ1", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1.ToString(), "[-]"));
-                geometry.Add(new CComponentParamsView("Number of screws in column SQ1", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1.ToString(), "[-]"));
-                geometry.Add(new CComponentParamsView("Inserting point coordinate x SQ1", "xc1", (Math.Round(arrangementTemp.fx_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Inserting point coordinate y SQ1", "yc1", (Math.Round(arrangementTemp.fy_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Distance between screws x SQ1", "x1", (Math.Round(arrangementTemp.fDistanceOfPointsX_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Distance between screws y SQ1", "y1", (Math.Round(arrangementTemp.fDistanceOfPointsY_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-
-                geometry.Add(new CComponentParamsView("Number of screws in row SQ2", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2.ToString(), "[-]"));
-                geometry.Add(new CComponentParamsView("Number of screws in column SQ2", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2.ToString(), "[-]"));
-                geometry.Add(new CComponentParamsView("Inserting point coordinate x SQ2", "xc2", (Math.Round(arrangementTemp.fx_c_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Inserting point coordinate y SQ2", "yc2", (Math.Round(arrangementTemp.fy_c_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Distance between screws x SQ2", "bx2", (Math.Round(arrangementTemp.fDistanceOfPointsX_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-                geometry.Add(new CComponentParamsView("Distance between screws y SQ2", "by2", (Math.Round(arrangementTemp.fDistanceOfPointsY_SQ2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            }
-            else
-            {
-                // Screw arrangement is not implemented
             }
 
             ComponentGeometry = geometry;
@@ -897,7 +955,6 @@ namespace PFD
 
             crossSections.Add("Box-63020", sectionsInSerie6);
         }
-
         private void CreatePlates()
         {
             float fb_R; // Rafter Width
@@ -1126,7 +1183,6 @@ namespace PFD
 
             plates.Add("Serie K", platesInSerie9);
         }
-
         private void CreateScrews()
         {
             // TODO - prepracovat a nacitavat vlastnosti z databazy, plati pre vsetky komponenty - prierezy, plechy, skrutky

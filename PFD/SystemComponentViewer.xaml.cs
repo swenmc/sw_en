@@ -97,6 +97,11 @@ namespace PFD
         {
             if (vm.ComponentTypeIndex == 0)  //CRSC
             {
+                TxtCombScrewArrangment.Visibility = Visibility.Hidden;
+                Combobox_ScrewArrangement.Visibility = Visibility.Hidden;
+                TxtScrewArrangment.Visibility = Visibility.Hidden;
+                DataGridScrewArrangement.Visibility = Visibility.Hidden;
+
                 TxtGeometry.Visibility = Visibility.Hidden;
                 DataGridGeometry.Visibility = Visibility.Hidden;
 
@@ -119,6 +124,11 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1) //plate
             {
+                TxtCombScrewArrangment.Visibility = Visibility.Visible;
+                Combobox_ScrewArrangement.Visibility = Visibility.Visible;
+                TxtScrewArrangment.Visibility = Visibility.Visible;
+                DataGridScrewArrangement.Visibility = Visibility.Visible;
+
                 TxtGeometry.Visibility = Visibility.Visible;
                 DataGridGeometry.IsReadOnly = false;
                 DataGridGeometry.Visibility = Visibility.Visible;
@@ -148,8 +158,14 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 2) //screw
             {
+                TxtCombScrewArrangment.Visibility = Visibility.Hidden;
+                Combobox_ScrewArrangement.Visibility = Visibility.Hidden;
+                TxtScrewArrangment.Visibility = Visibility.Hidden;
+                DataGridScrewArrangement.Visibility = Visibility.Hidden;
+
+                TxtGeometry.Visibility = Visibility.Hidden;
                 DataGridGeometry.Visibility = Visibility.Hidden;
-                
+
                 BtnFindCNCPath.Visibility = Visibility.Hidden;
                 BtnExportCNC.Visibility = Visibility.Hidden;
                 BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
@@ -505,6 +521,7 @@ namespace PFD
                         }
                 }
                 vm.SetComponentProperties(plate);
+                vm.SetScrewArrangementProperties(plate); // Parameter cela plate alebo len screw arrangement ???
             }
             else
             {
@@ -703,8 +720,6 @@ namespace PFD
             }
         }
 
-        
-        
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
             CExportToDXF.ExportCanvas_DXF(page2D,0,0);
@@ -1034,7 +1049,7 @@ namespace PFD
             }
         }
 
-        private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void DataGridScrewArrangement_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             string changedText = ((TextBox)e.EditingElement).Text;
             CComponentParamsView item = ((CComponentParamsView)e.Row.Item);
@@ -1043,12 +1058,7 @@ namespace PFD
             float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
-            if (vm.ComponentTypeIndex == 0)
-            {
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
+            if (vm.ComponentTypeIndex == 1) // Only plates
             {
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 // TODO No. 63
@@ -1107,7 +1117,25 @@ namespace PFD
                 {
                     // Screw arrangement is not implemented
                 }
+            }
+        }
 
+        private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            string changedText = ((TextBox)e.EditingElement).Text;
+            CComponentParamsView item = ((CComponentParamsView)e.Row.Item);
+            if (changedText == item.Value) return;
+
+            float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
+
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (vm.ComponentTypeIndex == 0)
+            {
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
                 // Set current basic geometry of plate
                 if (plate is CConCom_Plate_JA)
                 {
