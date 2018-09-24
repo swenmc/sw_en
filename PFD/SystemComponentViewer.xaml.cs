@@ -494,17 +494,54 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
+                            // TODO - Ondrej
+                            // TEMPORARY
+                            if (vm.ComponentIndex == 0) // JA
+                            {
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                {
+                                    screwArrangementRectangleApex = null; // Screw arrangement je null, skrutky nie su definovane
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                }
+                                else if (vm.ScrewArrangementIndex == 0) // Rectangular
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                else//(vm.ScrewArrangementIndex == 1) // Circle
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+                            }
+
+                            /*
                             if (vm.ComponentIndex == 0) // JA
                                 plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                            else
+                            else*/if (vm.ComponentIndex == 1)
                                 plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
+                            // TODO - Ondrej
+                            // TEMPORARY - vyriesit ako vytvorit plate s roznym typom objektu screwArrangement
+                            // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
+                            // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
+
+                            // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
                             if (vm.ComponentIndex == 0) // KA
-                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
-                            else if(vm.ComponentIndex == 1)
+                            {
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                {
+                                    screwArrangementRectangleKnee2 = null; // Screw arrangement je null, skrutky nie su definovane
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
+                                }
+                                if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+                            }
+
+                            /*
+                            if (vm.ComponentIndex == 0) // KA
+                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
+                            else */
+                            if (vm.ComponentIndex == 1)
                                 plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 2)
                                 plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
@@ -687,17 +724,53 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
+                            // TODO - Ondrej
+                            // TEMPORARY
+                            if (vm.ComponentIndex == 0) // JA
+                            {
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                {
+                                    screwArrangementRectangleApex = null; // Screw arrangement je null, skrutky nie su definovane
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                }
+                                else if (vm.ScrewArrangementIndex == 0) // Rectangular
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                else//(vm.ScrewArrangementIndex == 1) // Circle
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+                            }
+
+                            /*
                             if (vm.ComponentIndex == 0) // JA
                                 plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                            else
+                            else*/ if(vm.ComponentIndex == 1)
                                 plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
+                            // TODO - Ondrej
+                            // TEMPORARY - vyriesit ako vytvorit plate s roznym typom objektu screwArrangement
+                            // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
+                            // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
+
+                            // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
+                            if (vm.ComponentIndex == 0) // KA
+                            {
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                {
+                                    screwArrangementRectangleKnee2 = null; // Screw arrangement je null, skrutky nie su definovane
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
+                                }
+                                if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+                            }
+
+                            /*
                             if (vm.ComponentIndex == 0) // KA
                                 plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
-                            else if (vm.ComponentIndex == 1)
+                            else */if (vm.ComponentIndex == 1)
                                 plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 2)
                                 plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
@@ -1058,6 +1131,7 @@ namespace PFD
             float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
             if (vm.ComponentTypeIndex == 1) // Only plates
             {
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

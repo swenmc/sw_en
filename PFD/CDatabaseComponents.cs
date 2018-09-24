@@ -147,6 +147,17 @@ namespace PFD
              "BI",
              "BJ"};
 
+        public string[] arr_Serie_B_ScrewArrangement_Names = new string[8]
+            {"Undefined",
+             "Arrangement 2x2 - BA/BC",
+             "Arrangement 2x1 - BB/BG",
+             "Arrangement 3x1 - BD/BJ",
+             "Arrangement 4x1 - BE",
+             "Arrangement 3x2 - BF",
+             "Arrangement 1x2 - BH",
+             "Arrangement 1x1 - BH"
+            };
+
         public string[] arr_Serie_L_Names = new string[11]
             {"LA",
              "LB",
@@ -160,9 +171,18 @@ namespace PFD
              "LJ",
              "LK"};
 
+        public string[] arr_Serie_L_ScrewArrangement_Names = new string[3]
+         {"Undefined",
+          "Arrangement LH/LI/LK",
+          "Arrangement LJ"};
+
         public string[] arr_Serie_LL_Names = new string[2]
             {"LLH",
              "LLK"};
+
+        public string[] arr_Serie_LL_ScrewArrangement_Names = new string[2]
+            {"Undefined",
+             "Arrangement LLH/LLK"};
 
         public string[] arr_Serie_F_Names = new string[10]
             {"FA - LH",
@@ -194,8 +214,18 @@ namespace PFD
         public string[] arr_Serie_J_Names = new string[2]
         {"JA", "JB"};
 
+        public string[] arr_Serie_J_ScrewArrangement_Names = new string[3]
+        {"Undefined",
+         "Rectangular",
+         "Circle"};
+
         public string[] arr_Serie_K_Names = new string[5]
         {"KA", "KB", "KC", "KD", "KE"};
+
+        public string[] arr_Serie_K_ScrewArrangement_Names = new string[3]
+        {"Undefined",
+         "Rectangular",
+         "Circle"};
 
         public float[,] arr_Serie_B_Dimension = new float[10, 5]
             {

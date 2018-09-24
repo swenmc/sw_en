@@ -180,16 +180,22 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            HolesCenterRadii = new float[screwArrangement.IHolesNumber];
-            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            if (screwArrangement != null)
+            {
+                HolesCenterRadii = new float[screwArrangement.IHolesNumber];
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
 
-            screwArrangement.Calc_HolesCentersCoord2DKneePlate( m_fbX1, m_fbX2, 0, m_fhY1, m_fSlope_rad);
-            screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
-            screwArrangement.GenerateConnectors();
+            if (screwArrangement != null)
+            {
+                screwArrangement.Calc_HolesCentersCoord2DKneePlate(m_fbX1, m_fbX2, 0, m_fhY1, m_fSlope_rad);
+                screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
+                screwArrangement.GenerateConnectors();
+            }
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -209,9 +215,23 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(Ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+
+            fA_n = fA_g;
+
+            if (screwArrangement != null)
+            {
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fA_v_zv = Get_A_rect(Ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+
+            fA_vn_zv = fA_v_zv;
+
+            if (screwArrangement != null)
+            {
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fI_yu = Get_I_yu_rect(Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
 

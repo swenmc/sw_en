@@ -32,7 +32,7 @@ namespace PFD
         private List<string> MComponentTypes;
         private string[] MComponentSeries;
         private string[] MComponents;
-        private List<string> MScrewArrangements;
+        private string[] MScrewArrangements;
 
         private List<CComponentParamsView> MScrewArrangementParameters;
         private List<CComponentParamsView> MComponentGeometry;
@@ -170,7 +170,7 @@ namespace PFD
             }
         }
 
-        public List<string> ScrewArrangements
+        public string[] ScrewArrangements
         {
             get
             {
@@ -457,7 +457,7 @@ namespace PFD
             MComponentTypes = new List<string>() { "Cross-section", "Plate", "Screw" };
             MComponentSeries = dcomponents.arr_SeriesNames;
             MComponents = dcomponents.arr_Serie_L_Names;
-            MScrewArrangements = new List<string>() { "Rectangular", "Circle"};
+            MScrewArrangements = dcomponents.arr_Serie_L_ScrewArrangement_Names;
 
             // Set default
             ComponentTypeIndex = 1;
@@ -512,6 +512,7 @@ namespace PFD
             {
                 ComponentSeries = databaseComponents.arr_SeriesNames; // Plates
                 Components = databaseComponents.arr_Serie_B_Names;
+                ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
             }
             else // Screws
             {
@@ -570,56 +571,67 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             Components = databaseComponents.arr_Serie_B_Names;
+                            ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
                             Components = databaseComponents.arr_Serie_L_Names;
+                            ScrewArrangements = databaseComponents.arr_Serie_L_ScrewArrangement_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
                             Components = databaseComponents.arr_Serie_LL_Names;
+                            ScrewArrangements = databaseComponents.arr_Serie_LL_ScrewArrangement_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
                             Components = databaseComponents.arr_Serie_F_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
                         {
                             Components = databaseComponents.arr_Serie_Q_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
                             break;
                         }
                     case ESerieTypePlate.eSerie_S:
                         {
                             Components = databaseComponents.arr_Serie_S_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
                             break;
                         }
                     case ESerieTypePlate.eSerie_T:
                         {
                             Components = databaseComponents.arr_Serie_T_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
                             break;
                         }
                     case ESerieTypePlate.eSerie_X:
                         {
                             Components = databaseComponents.arr_Serie_X_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
                             break;
                         }
                     case ESerieTypePlate.eSerie_Y:
                         {
                             Components = databaseComponents.arr_Serie_Y_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
                             break;
                         }
                     case ESerieTypePlate.eSerie_J:
                         {
                             Components = databaseComponents.arr_Serie_J_Names;
+                            ScrewArrangements = databaseComponents.arr_Serie_J_ScrewArrangement_Names;
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
                         {
                             Components = databaseComponents.arr_Serie_K_Names;
+                            ScrewArrangements = databaseComponents.arr_Serie_K_ScrewArrangement_Names;
                             break;
                         }
                     default:
