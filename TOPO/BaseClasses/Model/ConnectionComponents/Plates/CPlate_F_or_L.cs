@@ -101,7 +101,6 @@ namespace BaseClasses
             Fh_Y = fhY_temp;
             Fl_Z = fl_Z_temp;
             Ft = ft_platethickness;
-
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;

@@ -344,14 +344,18 @@ namespace BaseClasses
             {
                 ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 4;
 
+                // TODO - Ondrej - temporary, zadavat polomer a poce skrutiek dynamicky v GUI
+                int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
+                float FRadius_SQ2 = 0.7f * FRadius_SQ1;
+
                 CScrewHalfCircleSequence seq12 = new CScrewHalfCircleSequence();
-                seq12.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-                seq12.Radius = 0.7f * FRadius_SQ1;
+                seq12.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+                seq12.Radius = FRadius_SQ2;
                 ListOfSequenceGroups[0].ListScrewSequence.Add(seq12);
 
                 CScrewHalfCircleSequence seq22 = new CScrewHalfCircleSequence();
-                seq22.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-                seq22.Radius = 0.7f * FRadius_SQ1;
+                seq22.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+                seq22.Radius = FRadius_SQ2;
                 ListOfSequenceGroups[0].ListScrewSequence.Add(seq22);
             }
             //---------------------------------------------------------------------------------------------------------------------------------
@@ -401,16 +405,20 @@ namespace BaseClasses
             // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
             if (INumberOfCirclesInGroup == 2)
             {
+                // TODO - Ondrej - temporary, zadavat polomer a poce skrutiek dynamicky v GUI
+                int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
+                float FRadius_SQ2 = 0.7f * FRadius_SQ1;
+
                 ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 4;
 
                 CScrewHalfCircleSequence seq32 = new CScrewHalfCircleSequence();
-                seq32.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-                seq32.Radius = 0.7f * FRadius_SQ1;
+                seq32.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+                seq32.Radius = FRadius_SQ2;
                 ListOfSequenceGroups[1].ListScrewSequence.Add(seq32);
 
                 CScrewHalfCircleSequence seq42 = new CScrewHalfCircleSequence();
-                seq42.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-                seq42.Radius = 0.7f * FRadius_SQ1;
+                seq42.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+                seq42.Radius = FRadius_SQ2;
                 ListOfSequenceGroups[1].ListScrewSequence.Add(seq42);
             }
             //---------------------------------------------------------------------------------------------------------------------------------
@@ -482,11 +490,12 @@ namespace BaseClasses
                 // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
                 if (iNumberOfCirclesInGroup == 2)
                 {
-                    // Polomer je natvrdo 0,7 r pre prvy kruh, prevziat z GUI
-
+                    // Polomer pre druhy kruh je natvrdo 0,7 * r pre prvy kruh, pocet skrutiek v polkruhu je o 5ks mensi, obe hodnoty je potrebne prevziat z GUI, v GUI by malo byt mozne dynamicky zadavat podla poctu zvolenych kruhov radiusy a pocty skrutiek v pre kazdy radius
+                    float FRadius_SQ2 = 0.7f * FRadius_SQ1;
+                    int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
                     // Half circle sequence
-                    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(0.7f * FRadius_SQ1, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
-                    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(0.7f * FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+                    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
+                    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
 
                     // TODO - docasne, previest pole float na pole Points
                     Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp2);
