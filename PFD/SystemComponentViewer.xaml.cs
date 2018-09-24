@@ -446,10 +446,11 @@ namespace PFD
                 CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
-                bool bUseAdditinalConnectors = true;
+                bool bUseAdditionalConnectors = true;
                 int iNumberOfAdditionalConnectorsInCorner = 4;
                 int iConnectorNumberInCircleSeuence = 20;
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
@@ -541,7 +542,7 @@ namespace PFD
                             if (vm.ComponentIndex == 0) // KA
                                 plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
                             */else if (vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle2, true);
                             else if (vm.ComponentIndex == 2)
                                 plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 3)
@@ -675,11 +676,12 @@ namespace PFD
                 CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
-                bool bUseAdditinalConnectors = true;
+                bool bUseAdditionalConnectors = true;
                 int iNumberOfAdditionalConnectorsInCorner = 4;
                 int iConnectorNumberInCircleSeuence = 20;
 
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditinalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 15, 2, 0.0f, 0.0f, 0.05f, 0.04f, 15, 2, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
@@ -770,7 +772,7 @@ namespace PFD
                             if (vm.ComponentIndex == 0) // KA
                                 plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
                             else */if (vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, screwArrangementCircle2, true);
                             else if (vm.ComponentIndex == 2)
                                 plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 3)

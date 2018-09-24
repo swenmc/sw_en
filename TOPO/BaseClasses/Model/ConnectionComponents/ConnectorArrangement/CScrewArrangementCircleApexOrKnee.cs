@@ -337,6 +337,25 @@ namespace BaseClasses
             seq2.Radius = FRadius_SQ1;
             ListOfSequenceGroups[0].ListScrewSequence.Add(seq2);
 
+            //---------------------------------------------------------------------------------------------------------------------------------
+            // Temporary 2 circles in group
+            // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
+            if (INumberOfCirclesInGroup == 2)
+            {
+                ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 4;
+
+                CScrewHalfCircleSequence seq12 = new CScrewHalfCircleSequence();
+                seq12.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+                seq12.Radius = 0.7f * FRadius_SQ1;
+                ListOfSequenceGroups[0].ListScrewSequence.Add(seq12);
+
+                CScrewHalfCircleSequence seq22 = new CScrewHalfCircleSequence();
+                seq22.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+                seq22.Radius = 0.7f * FRadius_SQ1;
+                ListOfSequenceGroups[0].ListScrewSequence.Add(seq22);
+            }
+            //---------------------------------------------------------------------------------------------------------------------------------
+
             if (BUseAdditionalCornerScrews) // 4 corners in one group
             {
                 ListOfSequenceGroups[0].NumberOfRectangularSequences = 4;
@@ -377,6 +396,25 @@ namespace BaseClasses
             seq4.Radius = FRadius_SQ1;
             ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
 
+            //---------------------------------------------------------------------------------------------------------------------------------
+            // Temporary 2 circles in group
+            // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
+            if (INumberOfCirclesInGroup == 2)
+            {
+                ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 4;
+
+                CScrewHalfCircleSequence seq32 = new CScrewHalfCircleSequence();
+                seq32.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+                seq32.Radius = 0.7f * FRadius_SQ1;
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq32);
+
+                CScrewHalfCircleSequence seq42 = new CScrewHalfCircleSequence();
+                seq42.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+                seq42.Radius = 0.7f * FRadius_SQ1;
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq42);
+            }
+            //---------------------------------------------------------------------------------------------------------------------------------
+
             if (BUseAdditionalCornerScrews) // 4 corners in one group
             {
                 ListOfSequenceGroups[1].NumberOfRectangularSequences = 4;
@@ -415,7 +453,7 @@ namespace BaseClasses
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
         }
 
-        public void Get_ScrewGroup_IncludingAdditionalScrews(
+        public void Get_ScrewGroup_IncludingAdditionalScrews(int iNumberOfCirclesInGroup,
             float fx_c,
             float fy_c,
             float fAngle_seq_rotation_init_point_deg,
@@ -424,20 +462,40 @@ namespace BaseClasses
         {
             float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
 
-            float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
-
-            // Half circle sequence
-            float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
-            float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
-
             if (group.NumberOfHalfCircleSequences > 0)
             {
+                float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
+
+                // Half circle sequence
+                float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+                float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+
                 // TODO - docasne, previest pole float na pole Points
                 Point[] fSequenceTop = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp);
                 Point[] fSequenceBottom = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp);
 
                 group.ListScrewSequence[0].HolesCentersPoints = fSequenceTop;
                 group.ListScrewSequence[1].HolesCentersPoints = fSequenceBottom;
+
+                //---------------------------------------------------------------------------------------------------------------------------------
+                // Temporary 2 circles in group
+                // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
+                if (iNumberOfCirclesInGroup == 2)
+                {
+                    // Polomer je natvrdo 0,7 r pre prvy kruh, prevziat z GUI
+
+                    // Half circle sequence
+                    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(0.7f * FRadius_SQ1, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+                    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(0.7f * FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+
+                    // TODO - docasne, previest pole float na pole Points
+                    Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp);
+                    Point[] fSequenceBottom2 = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp);
+
+                    group.ListScrewSequence[2].HolesCentersPoints = fSequenceTop2;
+                    group.ListScrewSequence[3].HolesCentersPoints = fSequenceBottom2;
+                }
+                //---------------------------------------------------------------------------------------------------------------------------------
             }
 
             // Add addtional point the sequences
@@ -510,12 +568,12 @@ namespace BaseClasses
 
             // Left side
             CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group1);
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group1);
             ListOfSequenceGroups[0] = group1;
 
             // Right side
             CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // GetMirroredScrewGroupAboutY(group1);
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
             ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
@@ -546,12 +604,12 @@ namespace BaseClasses
 
             // Bottom side
             CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
             ListOfSequenceGroups[0] = group1;
 
             // Top side
             CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group2); // Rotate - Roof Slope
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group2); // Rotate - Roof Slope
             ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
