@@ -54,7 +54,6 @@ namespace BaseClasses
         }
 
         float m_fSlope_rad;
-        public float[] HolesCenterRadii;
 
         public CConCom_Plate_JA()
         {
@@ -139,7 +138,6 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                HolesCenterRadii = new float[screwArrangement.IHolesNumber];
                 arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
             }
 
@@ -170,7 +168,6 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                HolesCenterRadii = new float[screwArrangement.IHolesNumber];
                 arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
             }
 

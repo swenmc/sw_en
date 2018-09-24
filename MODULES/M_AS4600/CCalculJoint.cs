@@ -177,44 +177,37 @@ namespace M_AS4600
             if (plate is CConCom_Plate_JA)
             {
                 CConCom_Plate_JA a = (CConCom_Plate_JA)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else if (plate is CConCom_Plate_JB)
             {
                 CConCom_Plate_JB a = (CConCom_Plate_JB)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else if (plate is CConCom_Plate_KA)
             {
                 CConCom_Plate_KA a = (CConCom_Plate_KA)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else if (plate is CConCom_Plate_KB)
             {
                 CConCom_Plate_KB a = (CConCom_Plate_KB)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else if (plate is CConCom_Plate_KC)
             {
                 CConCom_Plate_KC a = (CConCom_Plate_KC)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else if (plate is CConCom_Plate_KD)
             {
                 CConCom_Plate_KD a = (CConCom_Plate_KD)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else if (plate is CConCom_Plate_KE)
             {
                 CConCom_Plate_KE a = (CConCom_Plate_KE)plate;
-                fHolesCentersRadii = a.HolesCenterRadii;
-                iNumberOfScrewGroupsInPlate = a.ScrewArrangement.ListOfSequenceGroups.Count();
+                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
             }
             else
             {
@@ -424,6 +417,28 @@ namespace M_AS4600
         {
             // Not implemented
             fEta_max = 0;
+        }
+
+        private void SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(CScrewArrangement arrangement, out float[] fHolesCentersRadii, out int iNumberOfScrewGroupsInPlate)
+        {
+            fHolesCentersRadii = null;
+            iNumberOfScrewGroupsInPlate = 0;
+
+            if (arrangement != null)
+            {
+                if (arrangement is CScrewArrangementCircleApexOrKnee)
+                {
+                    CScrewArrangementCircleApexOrKnee b = (CScrewArrangementCircleApexOrKnee)arrangement;
+                    fHolesCentersRadii = b.HolesCenterRadii;
+                }
+                else if (arrangement is CScrewArrangementCircleApexOrKnee)
+                {
+                    CScrewArrangementRectApexOrKnee b = (CScrewArrangementRectApexOrKnee)arrangement;
+                    fHolesCentersRadii = b.HolesCenterRadii;
+                }
+
+                iNumberOfScrewGroupsInPlate = arrangement.ListOfSequenceGroups.Count();
+            }
         }
     }
 }

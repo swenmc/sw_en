@@ -540,8 +540,7 @@ namespace PFD
                             /*
                             if (vm.ComponentIndex == 0) // KA
                                 plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
-                            else */
-                            if (vm.ComponentIndex == 1)
+                            */else if (vm.ComponentIndex == 1)
                                 plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             else if (vm.ComponentIndex == 2)
                                 plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);

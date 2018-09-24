@@ -71,7 +71,6 @@ namespace BaseClasses
         }
 
         float m_fSlope_rad;
-        public float[] HolesCenterRadii;
 
         public CConCom_Plate_JB()
         {
@@ -123,7 +122,6 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            HolesCenterRadii = new float[screwArrangement.IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
 
             // Fill Array Data

@@ -97,7 +97,6 @@ namespace BaseClasses
         }
 
         float m_fSlope_rad;
-        public float[] HolesCenterRadii;
 
         public CConCom_Plate_KE()
         {

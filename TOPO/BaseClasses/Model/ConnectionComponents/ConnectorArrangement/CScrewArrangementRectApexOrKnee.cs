@@ -57,6 +57,21 @@ namespace BaseClasses
             }
         }
 
+        private float[] m_HolesCenterRadii; // Array of screw radii in one group related to the screw arrangement centroid
+
+        public float[] HolesCenterRadii
+        {
+            get
+            {
+                return m_HolesCenterRadii;
+            }
+
+            set
+            {
+                m_HolesCenterRadii = value;
+            }
+        }
+
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
 
         // Bottom (knee plate) or left (apex plate) group

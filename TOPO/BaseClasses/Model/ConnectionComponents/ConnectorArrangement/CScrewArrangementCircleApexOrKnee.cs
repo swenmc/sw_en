@@ -118,9 +118,20 @@ namespace BaseClasses
             }
         }
 
-        private int iNumberOfAdditionalConnectorsInOneSequence;
- 
-        public float[] HolesCenterRadii;
+        private float[] m_HolesCenterRadii; // Array of screw radii in one group related to the screw arrangement centroid
+
+        public float[] HolesCenterRadii
+        {
+            get
+            {
+                return m_HolesCenterRadii;
+            }
+
+            set
+            {
+                m_HolesCenterRadii = value;
+            }
+        }
 
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
         public int iNumberOfCircleScrewsSequencesInOneGroup = 2;
@@ -292,12 +303,13 @@ namespace BaseClasses
 
             // Corner screws parameters
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
-            IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber_temp; // Spolu v jendom rohu
+            IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber_temp; // Spolu v jednom rohu
             IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
             IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x_temp;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y_temp;
 
+            // TODO -  Ondrej zadefinovane 2 skupiny (spoj dvoch prvkov), teoreticky ich moze byt viac (napr. pre spoj 3 nosnikov v jednej plate), vytvorit univerzalny system pre rozny pocet groups
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups, each for the connection of one member in joint
 
             UpdateArrangmentData();
@@ -307,6 +319,10 @@ namespace BaseClasses
         {
             ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(2);
+
+            // TODO -  Ondrej zadefinovane 2 skupiny (spoj dvoch prvkov), teoreticky ich moze byt viac (napr. pre spoj 3 nosnikov v jednej plate), vytvorit univerzalny system pre rozny pocet groups
+
+            // GROUP 1
             ListOfSequenceGroups.Add(new CScrewSequenceGroup());
 
             ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 2;
@@ -346,49 +362,53 @@ namespace BaseClasses
                 ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner4);
             }
 
-            // Celkovy pocet skrutiek
-            // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
+            // GROUP 2
+            ListOfSequenceGroups.Add(new CScrewSequenceGroup());
+
+            ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 2;
+
+            CScrewHalfCircleSequence seq3 = new CScrewHalfCircleSequence();
+            seq3.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+            seq3.Radius = FRadius_SQ1;
+            ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
+
+            CScrewHalfCircleSequence seq4 = new CScrewHalfCircleSequence();
+            seq4.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+            seq4.Radius = FRadius_SQ1;
+            ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
+
+            if (BUseAdditionalCornerScrews) // 4 corners in one group
+            {
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 4;
+
+                CScrewRectSequence seq_Corner1 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+                seq_Corner1.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                seq_Corner1.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner1);
+
+                CScrewRectSequence seq_Corner2 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+                seq_Corner2.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                seq_Corner2.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner2);
+
+                CScrewRectSequence seq_Corner3 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+                seq_Corner3.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                seq_Corner3.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner3);
+
+                CScrewRectSequence seq_Corner4 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+                seq_Corner4.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+                seq_Corner4.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner4);
+            }
+
+            // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
             IHolesNumber = 0;
 
             foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
             {
                 foreach (CScrewSequence seq in group.ListScrewSequence)
                     IHolesNumber += seq.INumberOfScrews;
-            }
-
-            IHolesNumber *= INumberOfGroupsInJoint;
-
-            if (false) // TODO - rozlisit knee a apex plate
-            {
-                /*
-                ListOfSequenceGroups.Add(new CScrewSequenceGroup());
-
-                CScrewRectSequence seq3 = new CScrewRectSequence();
-                seq3.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ3;
-                seq3.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ3;
-                seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
-                seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
-                seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
-                seq3.HolesCentersPoints = new Point[seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection];
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
-
-                CScrewRectSequence seq4 = new CScrewRectSequence();
-                seq4.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ4;
-                seq4.NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_SQ4;
-                seq4.ReferencePoint = new Point(fx_c_SQ4, fy_c_SQ4);
-                seq4.DistanceOfPointsX = fDistanceOfPointsX_SQ4;
-                seq4.DistanceOfPointsY = fDistanceOfPointsY_SQ4;
-                seq4.HolesCentersPoints = new Point[seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection];
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
-                */
-                // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
-                IHolesNumber = 0;
-
-                foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
-                {
-                    foreach (CScrewSequence seq in group.ListScrewSequence)
-                        IHolesNumber += seq.INumberOfScrews;
-                }
             }
 
             HolesCentersPoints2D = new Point[IHolesNumber];
@@ -494,16 +514,9 @@ namespace BaseClasses
             ListOfSequenceGroups[0] = group1;
 
             // Right side
-            CScrewSequenceGroup group2 = GetMirroredScrewGroupAboutY(group1);
-            group2.TransformGroup(new Point(fx_c2, fy_c2), 0);
-            // TODO - skontrolovat - Toto je asi zbytocne ak bola skupina na predchadzajucom riadku odzkradlena staci ju pridat do zoznamu
-            //Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
-
-            // TODO - toto by malo byt osetrene vopred, pozname pocet skupin
-            if (ListOfSequenceGroups.Count == 1)
-                ListOfSequenceGroups.Add(group2);
-            else
-                ListOfSequenceGroups[1] = group2;
+            CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // GetMirroredScrewGroupAboutY(group1);
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
+            ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
             FillArrayOfHolesCentersInWholeArrangement();
@@ -533,18 +546,13 @@ namespace BaseClasses
 
             // Bottom side
             CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, ref group1);
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
             ListOfSequenceGroups[0] = group1;
 
             // Top side
-            CScrewSequenceGroup group2 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group1);
-
-            // TODO - toto by malo byt osetrene vopred, pozname pocet skupin
-            if (ListOfSequenceGroups.Count == 1)
-                ListOfSequenceGroups.Add(group2);
-            else
-                ListOfSequenceGroups[1] = group2;
+            CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // Indexovana polozka sa neda predat referenciou
+            Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group2); // Rotate - Roof Slope
+            ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
             FillArrayOfHolesCentersInWholeArrangement();
