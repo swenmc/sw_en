@@ -489,8 +489,8 @@ namespace BaseClasses
                     float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(0.7f * FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
 
                     // TODO - docasne, previest pole float na pole Points
-                    Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp);
-                    Point[] fSequenceBottom2 = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp);
+                    Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp2);
+                    Point[] fSequenceBottom2 = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp2);
 
                     group.ListScrewSequence[2].HolesCentersPoints = fSequenceTop2;
                     group.ListScrewSequence[3].HolesCentersPoints = fSequenceBottom2;

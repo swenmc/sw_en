@@ -514,7 +514,7 @@ namespace PFD
                             if (vm.ComponentIndex == 0) // JA
                                 plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
                             else*/if (vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0,0,0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0,0,0, screwArrangementCircle2, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -744,7 +744,7 @@ namespace PFD
                             if (vm.ComponentIndex == 0) // JA
                                 plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
                             else*/ if(vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle2, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
