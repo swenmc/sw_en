@@ -804,6 +804,8 @@ namespace PFD
                 // s uvedenym importanceLevel_ID
                 // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
                 // TODO Mato - Ak je to OK, tak koment vymazat
+                // 26.09.2018 - TO Ondrej, nefunguje to - ten SQL dodaz nie je spravny, malo by to nacitavat hodnoty podla kombinacie riadkov designWorkingLife_ID a importanceLevel_ID
+                // berie to podla importanceLevel_ID
 
                 SQLiteCommand command = new SQLiteCommand(
                     "Select * from " +
@@ -827,6 +829,7 @@ namespace PFD
                         // Bolo by super ak by sa zlomok v textboxe zobrazoval ako zlomok a potom sa previedol na float az vo vypocte
                         // uzivatel by mohol zadavat do textboxu zlomok x / y alebo priamo float
 
+                        // TODO Ondrej - pridat som tuto triedu pre zadavanie zlomkov, mozes sa na to prosim pozriet a pripadne ju presunut na nejake bazove miesto aby sa dala pre GUI pouzivat univerzalne
                         // Pridana trieda "FractionConverter.cs" - presunut ???
 
                         /*
