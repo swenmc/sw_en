@@ -189,7 +189,7 @@ namespace PFD
             vm.MirrorX = false;
             vm.MirrorY = false;
             vm.Rotate_90_CCW = false;
-            vm.Rotate_90_CW = false;            
+            vm.Rotate_90_CW = false;
         }
 
         private void LoadDataFromDatabase()
@@ -506,6 +506,12 @@ namespace PFD
                             // TODO - Mato nerozumiem,co tu mam robit/opravit
                             // TEMPORARY
 
+                            // 26.9.2018 - To Ondrej, pointa bola ze pre kazdy vm.ComponentIndex (pre J plate 2 polozky, pre K plate 5 poloziek)
+                            // mam dalsi if podla vm.ScrewArrangementIndex s 3 polozkami (undefined, rectangular, circle)
+                            // nechcel som do kazdeho z tych 7 blokov pre plates rozkopirovat zase dalsi if s tromi polozkami
+                            // neda sa to nejako elegantnejsie zobecnit, aby to co je v if pre KA bolo vo vsetkych plates pre K ???
+                            // pripadne zmenit konstruktor aby zobral len obecne screwarrangement a v objekte riesit ako sa podla toho zachovat
+
                             if (vm.ComponentIndex == 0) // JA
                             {          
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
@@ -533,9 +539,9 @@ namespace PFD
                             // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
                             // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
 
-
                             //TODO - Mato
-                             // su komenty hore aktualne? CScrewArrangement sme riesili
+                            // su komenty hore aktualne? CScrewArrangement sme riesili
+                            // Je to aktualne vid vyssie, nechcem do kazdeho bloku tohoto if (vm.ComponentIndex == xxx) vkladat dalsi if podla typu objekty screw arrangement, najradsej by som bol keby sa to riesilo az v konstruktore plate
 
                             // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
                             if (vm.ComponentIndex == 0) // KA
@@ -613,9 +619,6 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-                // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch - component serie, podobne to nefunguje ani pre plates
-                //TODO Mato - ak to funguje, tak koment hore je potrebne zmazat
-
                 page3D = new Page3Dmodel(crsc, sDisplayOptions);
             }
             else if (vm.ComponentTypeIndex == 1)
@@ -931,16 +934,9 @@ namespace PFD
             BtnShowCNCDrillingFile.IsEnabled = true;
         }
 
-        // TODO Ondrej - je potrebne pridat checkboxy do SystemComponentViewerViewModel ???
-        // TO Mato - viem ja ci treba pridat checkboxy??? ake checkboxy? naco checkboxy?
-
-        
-        // TODO Ondrej, po zmene typu, serie alebo objektu by sa mali checkboxy odchecknut
-        // spravene v metode SetVisibility
-        // ak je to OK, tak zmazat koment
-
-        // Uvazujem ze by tam mohol byt nielen uhol 90 deg ale aj 180, 270 alebo nejaky combobox, spinbuttons kde by sa dal nastavit lubovolny uhol rotacie prierezu alebo plechu
-        // TODO Mato - kludne sa da spravit, staci len povedat
+        // Plate rotation
+        // To Ondrej - Uvazujem ze by tam mohol byt nielen uhol 90 de,g ale aj 180, 270 alebo nejaky combobox, spinbuttons, kde by sa dal nastavit lubovolny uhol rotacie prierezu alebo plechu
+        // 26.9.2018 - To Ondrej - zatial nam asi staci + 90 a -90 stupnov, ktore som uz implementovat, mozno to urobime inokedy, nie je to az take dolezite
 
         private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         {
@@ -1164,15 +1160,15 @@ namespace PFD
                 {
                     CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
 
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
+                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy, zmenit polozky na combobox TODO 75
                     if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText) / fLengthUnitFactor;
                     if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Circle screws
                     if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name)) arrangementTemp.INumberOfCirclesInGroup = int.Parse(changedText);
-                    if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(changedText); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
-                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(changedText) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+                    if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(changedText); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov) TODO 77
+                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(changedText) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov) TODO 77
 
                     // Corner screws
                     if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
