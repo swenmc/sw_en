@@ -731,14 +731,12 @@ namespace PFD
                         // Co tak v databaze dat spravny typ ???
                         // TO Ondrej - potrebujem najst conventor ktory to urobi automaticky a nebude tam pridavat ako prvy stlpec svoje ID
                         // Teraz pouzivam convertor ktory vsetko nastavi ako default na string
+                        // TO Mato - mam ja hladat convertor??? je tych dat tak vela,ze sa nedaju povytvarat tabulky priamo v DB? a nastavit im spravne hodnoty?Vytvorime nejaky export z excelu do DB?                            
 
                         SnowRegionIndex = int.Parse(reader["snow_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("snow_zone"));
                         WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
                         WindRegion = (EWindRegion)WindRegionIndex;
-
-                        // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
-                        //23.7.2018 O.P.
-
+                        
                         int iMultiplier_M_lee_ID = 1; // Could be empty
                         try
                         {
@@ -807,15 +805,19 @@ namespace PFD
                 // s uvedenym importanceLevel_ID
                 // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
 
-                SQLiteCommand command = new SQLiteCommand(
-                    "Select * from " +
-                    " ( " +
-                    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
-                    "')," +
-                    " ( " +
-                    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
-                    "')"
-                    , conn);
+                //SQLiteCommand command = new SQLiteCommand(
+                //    "Select * from " +
+                //    " ( " +
+                //    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
+                //    "')," +
+                //    " ( " +
+                //    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
+                //    "')"
+                //    , conn);
+
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where designWorkingLife_ID = @designLifeIndex AND importanceLevel_ID = @importanceClassIndex", conn);
+                command.Parameters.AddWithValue("@designLifeIndex", DesignLifeIndex);
+                command.Parameters.AddWithValue("@importanceClassIndex", ImportanceClassIndex);
 
                 using (reader = command.ExecuteReader())
                 {
@@ -824,10 +826,13 @@ namespace PFD
                         //SnowRegionIndex = int.Parse(reader["snow_zone"].ToString());
                         //WindRegionIndex = int.Parse(reader["wind_zone"].ToString());
 
-                        // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
-                        // Osetrit ako nacitat zlomok zadany ako string v databaze do float
+                        // TODO - Ondrej 
+                        // Osetrit ako nacitat zlomok zadany ako string v databaze do float 
+                        // aktualne? lebo vidim nejaky FractionConverter
+
                         // Bolo by super ak by sa zlomok v textboxe zobrazoval ako zlomok a potom sa previedol na float az vo vypocte
                         // uzivatel by mohol zadavat do textboxu zlomok x / y alebo priamo float
+                        // Mato - a kde je problem? kde je ten textbox? kde sa zadava do textboxu zlomok alebo float? tu asi nie...
 
                         // Pridana trieda "FractionConverter.cs" - presunut ???
 
@@ -845,6 +850,7 @@ namespace PFD
                         string sAnnualProbabilitySLS2 = "";
                         try
                         {
+                            //Mato - Takto osetrit pripady ked nie je v databaze vyplnena hodnota
                             if (!reader.IsDBNull(reader.GetOrdinal("SLS2")))
                             {
                                 sAnnualProbabilitySLS2 = reader["SLS2"].ToString();
