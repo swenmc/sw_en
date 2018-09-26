@@ -121,7 +121,8 @@ namespace PFD
 
                 if (e.PropertyName == "ScrewArrangementIndex")
                 {
-                    SetUIElementsVisibility(vm);
+                    SetUIElementsVisibilityForScrewArrangement(vm);
+                    UpdateAll();
                 }
             }
             else if (sender is CComponentParamsViewBool)
@@ -242,11 +243,14 @@ namespace PFD
             }
 
             //uncheck all Transformation Options
-            vm.MirrorX = false;
-            vm.MirrorY = false;
-            vm.Rotate90CCW = false;
-            vm.Rotate90CW = false;
+            if(vm.MirrorX) vm.MirrorX = false;
+            if (vm.MirrorY) vm.MirrorY = false;
+            if (vm.Rotate90CCW) vm.Rotate90CCW = false;
+            if (vm.Rotate90CW) vm.Rotate90CW = false;
+        }
 
+        private void SetUIElementsVisibilityForScrewArrangement(SystemComponentViewerViewModel vm)
+        {
             if (vm.ScrewArrangementIndex == 0)
             {
                 TxtScrewArrangment.Visibility = Visibility.Hidden;
@@ -1319,10 +1323,10 @@ namespace PFD
                         CComponentParamsViewList itemList = item as CComponentParamsViewList;
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                     }
-
-
+                    
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
+                    RedrawComponentIn2D();
                 }
                 else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
                 {
@@ -1360,6 +1364,7 @@ namespace PFD
 
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
+                    RedrawComponentIn2D();
                 }
                 else
                 {
@@ -1533,6 +1538,42 @@ namespace PFD
                 panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
             }
+        }
+
+
+        private void RedrawComponentIn2D()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (vm.ComponentTypeIndex == 0)
+            {
+                if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+                if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+                if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
+                if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
+
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                if (vm.MirrorX) plate.MirrorPlateAboutX();
+                if (vm.MirrorY) plate.MirrorPlateAboutY();
+                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+                
+                // Redraw plate in 2D
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+            }
+            else // Screw
+            {
+                bool bDrawCentreSymbol = true;
+                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+            }
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
         }
     }
 }
