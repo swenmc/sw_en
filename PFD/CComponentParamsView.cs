@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace PFD
 {
-    public class CComponentParamsView//: INotifyPropertyChanged
+    public class CComponentParamsView : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         //-------------------------------------------------------------------------------------------------------------
-        //public event PropertyChangedEventHandler PropertyChanged;
-
         private string MName;
         private string MShortCut;
-        private string MValue;
         private string MUnit;
+        private string MCheckType;
 
         public string Name
         {
@@ -43,19 +42,19 @@ namespace PFD
             }
         }
 
-        public string Value
-        {
-            get
-            {
-                return MValue;
-            }
+        //public string Value
+        //{
+        //    get
+        //    {
+        //        return MValue;
+        //    }
 
-            set
-            {
-                MValue = value;
-                //NotifyPropertyChanged("Value");
-            }
-        }
+        //    set
+        //    {
+        //        MValue = value;
+        //        //NotifyPropertyChanged("Value");
+        //    }
+        //}
 
         public string Unit
         {
@@ -70,18 +69,33 @@ namespace PFD
             }
         }
 
-        public CComponentParamsView(string name, string shortcut, string value, string unit)
+        public string CheckType
+        {
+            get
+            {
+                return MCheckType;
+            }
+
+            set
+            {
+                MCheckType = value;
+            }
+        }
+
+        public CComponentParamsView(string name, string shortcut, string unit, string checkType)
         {
             MName = name;
             MShortCut = shortcut;
-            MValue = value;
+            //MValue = value;
             MUnit = unit;
+            MCheckType = checkType;
         }
 
-        //protected void NotifyPropertyChanged(string propertyName)
-        //{
-        //    if (this.PropertyChanged != null)
-        //        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        //}
+        //-------------------------------------------------------------------------------------------------------------
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

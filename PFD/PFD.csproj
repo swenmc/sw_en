@@ -69,6 +69,8 @@
     <Compile Include="CComponentInfo.cs" />
     <Compile Include="CComponentListVM.cs" />
     <Compile Include="CComboBoxHelper.cs" />
+    <Compile Include="CComponentParamsViewString.cs" />
+    <Compile Include="CComponentParamsViewBool.cs" />
     <Compile Include="CParamsResources.cs" />
     <Compile Include="CComponentParamsView.cs" />
     <Compile Include="CDatabaseModels.cs" />

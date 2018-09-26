@@ -81,13 +81,53 @@
 
             <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"
-                      ItemsSource="{Binding Path=ScrewArrangementParameters}" 
+                      ItemsSource="{Binding Path=ScrewArrangementParameters}"
                       HeadersVisibility="None" AutoGenerateColumns="False" IsEnabled="True" IsReadOnly="False" 
-                      SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridScrewArrangement_CellEditEnding" >
+                      SelectionMode="Single" SelectionUnit="Cell" >                
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" />
                     <DataGridTextColumn Header="It2" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}" />
-                    <DataGridTextColumn Header="It3" Width="60" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" />
+                    <DataGridTemplateColumn Header="It3" Width="60" IsReadOnly="False" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CheckType}" Value="CheckBox">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CheckType}" Value="ComboBox">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <ComboBox ItemsSource="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CheckType}" Value="TextBox">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="It4" Width="50" IsReadOnly="True" Binding="{Binding Unit}" />
                 </DataGrid.Columns>
             </DataGrid>

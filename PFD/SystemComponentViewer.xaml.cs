@@ -81,46 +81,67 @@ namespace PFD
         private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
-            if (vm != null && vm.IsSetFromCode) return;
-
-            if (e.PropertyName == "ComponentIndex") { UpdateAll(); SetUIElementsVisibility(vm); }
-
-            if (e.PropertyName == "DrawPoints2D" ||
-                e.PropertyName == "DrawOutLine2D" ||
-                e.PropertyName == "DrawPointNumbers2D" ||
-                e.PropertyName == "DrawHoles2D" ||
-                e.PropertyName == "DrawHoleCentreSymbol2D" ||
-                e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
-
-            if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
+            if (sender is SystemComponentViewerViewModel)
             {
-                plate.DrillingRoutePoints = null;
-                tabItemDoc.Visibility = Visibility.Hidden;
-                UpdateAll();
+                SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
+                if (vm != null && vm.IsSetFromCode) return;
+
+                if (e.PropertyName == "ComponentIndex") { UpdateAll(); SetUIElementsVisibility(vm); }
+
+                if (e.PropertyName == "DrawPoints2D" ||
+                    e.PropertyName == "DrawOutLine2D" ||
+                    e.PropertyName == "DrawPointNumbers2D" ||
+                    e.PropertyName == "DrawHoles2D" ||
+                    e.PropertyName == "DrawHoleCentreSymbol2D" ||
+                    e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
+
+                if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
+                {
+                    plate.DrillingRoutePoints = null;
+                    tabItemDoc.Visibility = Visibility.Hidden;
+                    UpdateAll();
+                }
+
+                if (e.PropertyName == "Rotate90CW")
+                {
+                    plate.DrillingRoutePoints = null;
+                    tabItemDoc.Visibility = Visibility.Hidden;
+                    if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CCW = false;
+
+                    UpdateAll();
+                }
+                if (e.PropertyName == "Rotate90CCW")
+                {
+                    plate.DrillingRoutePoints = null;
+                    tabItemDoc.Visibility = Visibility.Hidden;
+                    if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CW = false;
+
+                    UpdateAll();
+                }
+
+                if (e.PropertyName == "ScrewArrangementIndex")
+                {
+                    SetUIElementsVisibility(vm);
+                }
+            }
+            else if (sender is CComponentParamsViewBool)
+            {
+                CComponentParamsViewBool cpw = sender as CComponentParamsViewBool;
+                if (e.PropertyName == "Value")
+                {
+                    DataGridScrewArrangement_ValueChanged(cpw);
+                }
+            }
+            else if (sender is CComponentParamsViewString)
+            {
+                CComponentParamsViewString cpw = sender as CComponentParamsViewString;
+                if (e.PropertyName == "Value")
+                {
+                    DataGridScrewArrangement_ValueChanged(cpw);
+                }
             }
 
-            if (e.PropertyName == "Rotate90CW")
-            {
-                plate.DrillingRoutePoints = null;
-                tabItemDoc.Visibility = Visibility.Hidden;
-                if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CCW = false;
 
-                UpdateAll();
-            }
-            if (e.PropertyName == "Rotate90CCW")
-            {
-                plate.DrillingRoutePoints = null;
-                tabItemDoc.Visibility = Visibility.Hidden;
-                if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CW = false;
-
-                UpdateAll();
-            }
-
-            if (e.PropertyName == "ScrewArrangementIndex")
-            {
-                SetUIElementsVisibility(vm);
-            }
         }
 
         private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
@@ -1247,12 +1268,8 @@ namespace PFD
             }
         }
 
-        private void DataGridScrewArrangement_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void DataGridScrewArrangement_ValueChanged(CComponentParamsView item)
         {
-            string changedText = ((TextBox)e.EditingElement).Text;
-            CComponentParamsView item = ((CComponentParamsView)e.Row.Item);
-            if (changedText == item.Value) return;
-
             float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -1266,22 +1283,31 @@ namespace PFD
                 if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
                 {
                     CScrewArrangementCircleApexOrKnee arrangementTemp = (CScrewArrangementCircleApexOrKnee)plate.ScrewArrangement;
+                    if (item is CComponentParamsViewString)
+                    {
+                        CComponentParamsViewString itemStr = item as CComponentParamsViewString;
+                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemStr.Value); // TODO prerobit na vyber objektu skrutky z databazy
+                        if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText) / fLengthUnitFactor;
+                        // Circle screws
+                        if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name)) arrangementTemp.INumberOfCirclesInGroup = int.Parse(itemStr.Value);
+                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(itemStr.Value) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
 
-                    // Circle screws
-                    if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name)) arrangementTemp.INumberOfCirclesInGroup = int.Parse(changedText);
-                    if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(changedText); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
-                    if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(changedText) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
-
-                    // Corner screws
-                    if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = bool.Parse(changedText);
-                    if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(changedText);
-                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(changedText) / fLengthUnitFactor;
+                        // Corner screws
+                        
+                        if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(itemStr.Value);
+                        if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    }
+                    else if (item is CComponentParamsViewBool)
+                    {
+                        CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
+                        if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
+                    }
+                    
 
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
@@ -1290,25 +1316,29 @@ namespace PFD
                 {
                     CScrewArrangementRectApexOrKnee arrangementTemp = (CScrewArrangementRectApexOrKnee)plate.ScrewArrangement;
 
-                    if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(changedText); // TODO prerobit na vyber objektu skrutky z databazy
-                    if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item is CComponentParamsViewString)
+                    {
+                        CComponentParamsViewString itemStr = item as CComponentParamsViewString;
+                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemStr.Value); // TODO prerobit na vyber objektu skrutky z databazy
+                        if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                    if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(changedText);
-                    if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(changedText);
-                    if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(changedText) / fLengthUnitFactor;
+                        if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                        if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                        if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
-                    if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(changedText);
-                    if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(changedText);
-                    if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(changedText) / fLengthUnitFactor;
-                    if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(changedText) / fLengthUnitFactor;
-
+                        if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
+                        if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
+                        if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    }
+                        
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
                 }
@@ -1322,7 +1352,7 @@ namespace PFD
         private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             string changedText = ((TextBox)e.EditingElement).Text;
-            CComponentParamsView item = ((CComponentParamsView)e.Row.Item);
+            CComponentParamsViewString item = ((CComponentParamsViewString)e.Row.Item);
             if (changedText == item.Value) return;
 
             float fLengthUnitFactor = 1000; // GUI input in mm, change to m used in source code
