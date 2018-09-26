@@ -731,23 +731,22 @@ namespace PFD
                         // Co tak v databaze dat spravny typ ???
                         // TO Ondrej - potrebujem najst conventor ktory to urobi automaticky a nebude tam pridavat ako prvy stlpec svoje ID
                         // Teraz pouzivam convertor ktory vsetko nastavi ako default na string
-                        // TO Mato - mam ja hladat convertor??? je tych dat tak vela,ze sa nedaju povytvarat tabulky priamo v DB? a nastavit im spravne hodnoty?Vytvorime nejaky export z excelu do DB?                            
 
                         SnowRegionIndex = int.Parse(reader["snow_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("snow_zone"));
                         WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
                         WindRegion = (EWindRegion)WindRegionIndex;
-                        
-                        int iMultiplier_M_lee_ID = 1; // Could be empty
+
+                        int iMultiplier_M_lee_ID; // Could be empty
                         try
                         {
                             if (!reader.IsDBNull(reader.GetOrdinal("windMultiplierM_lee")))
                             {
-                                iMultiplier_M_lee_ID = reader.GetInt32(reader.GetOrdinal("windMultiplierM_lee"));
+                                iMultiplier_M_lee_ID = int.Parse(reader["windMultiplierM_lee"].ToString());
 
                                 // TODO nacitat data pre index fMultiplier_M_lee_ID z databazy - tabulka multiplierM_lee, vzdialenost (zone_min a zone_max)
                             }
                         }
-                        catch (ArgumentNullException) { iMultiplier_M_lee_ID = 0; }
+                        catch (ArgumentNullException) { iMultiplier_M_lee_ID = -1; }
 
                         int iRainZone = int.Parse(reader["rain_zone"].ToString());
                         int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
@@ -806,19 +805,15 @@ namespace PFD
                 // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
                 // TODO Mato - Ak je to OK, tak koment vymazat
 
-                //SQLiteCommand command = new SQLiteCommand(
-                //    "Select * from " +
-                //    " ( " +
-                //    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
-                //    "')," +
-                //    " ( " +
-                //    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
-                //    "')"
-                //    , conn);
-
-                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where designWorkingLife_ID = @designLifeIndex AND importanceLevel_ID = @importanceClassIndex", conn);
-                command.Parameters.AddWithValue("@designLifeIndex", DesignLifeIndex);
-                command.Parameters.AddWithValue("@importanceClassIndex", ImportanceClassIndex);
+                SQLiteCommand command = new SQLiteCommand(
+                    "Select * from " +
+                    " ( " +
+                    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
+                    "')," +
+                    " ( " +
+                    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
+                    "')"
+                    , conn);
 
                 using (reader = command.ExecuteReader())
                 {
@@ -827,13 +822,10 @@ namespace PFD
                         //SnowRegionIndex = int.Parse(reader["snow_zone"].ToString());
                         //WindRegionIndex = int.Parse(reader["wind_zone"].ToString());
 
-                        // TODO - Ondrej 
-                        // Osetrit ako nacitat zlomok zadany ako string v databaze do float 
-                        // aktualne? lebo vidim nejaky FractionConverter
-
+                        // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
+                        // Osetrit ako nacitat zlomok zadany ako string v databaze do float
                         // Bolo by super ak by sa zlomok v textboxe zobrazoval ako zlomok a potom sa previedol na float az vo vypocte
                         // uzivatel by mohol zadavat do textboxu zlomok x / y alebo priamo float
-                        // Mato - a kde je problem? kde je ten textbox? kde sa zadava do textboxu zlomok alebo float? tu asi nie...
 
                         // Pridana trieda "FractionConverter.cs" - presunut ???
 
@@ -851,7 +843,6 @@ namespace PFD
                         string sAnnualProbabilitySLS2 = "";
                         try
                         {
-                            //Mato - Takto osetrit pripady ked nie je v databaze vyplnena hodnota
                             if (!reader.IsDBNull(reader.GetOrdinal("SLS2")))
                             {
                                 sAnnualProbabilitySLS2 = reader["SLS2"].ToString();
