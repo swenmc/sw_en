@@ -804,6 +804,7 @@ namespace PFD
                 // vybrat vsetky riadky s designWorkingLife_ID a uz vybranych riadkov vybrat vsetky riadky s 
                 // s uvedenym importanceLevel_ID
                 // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
+                // TODO Mato - Ak je to OK, tak koment vymazat
 
                 //SQLiteCommand command = new SQLiteCommand(
                 //    "Select * from " +

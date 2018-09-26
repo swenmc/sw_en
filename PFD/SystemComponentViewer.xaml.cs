@@ -12,6 +12,7 @@ using EXPIMP;
 using System.Windows.Media.Media3D;
 using System.Windows.Documents;
 using System.Text;
+using System.Linq;
 
 namespace PFD
 {
@@ -183,6 +184,12 @@ namespace PFD
 
                 tabItemDoc.IsEnabled = false;
             }
+
+            //uncheck all Transformation Options
+            vm.MirrorX = false;
+            vm.MirrorY = false;
+            vm.Rotate_90_CCW = false;
+            vm.Rotate_90_CW = false;            
         }
 
         private void LoadDataFromDatabase()
@@ -496,17 +503,19 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             // TODO - Ondrej
+                            // TODO - Mato nerozumiem,co tu mam robit/opravit
                             // TEMPORARY
+
                             if (vm.ComponentIndex == 0) // JA
-                            {
+                            {          
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
                                 {
                                     screwArrangementRectangleApex = null; // Screw arrangement je null, skrutky nie su definovane
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
                                 }
-                                else if (vm.ScrewArrangementIndex == 0) // Rectangular
+                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                else//(vm.ScrewArrangementIndex == 1) // Circle
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
 
@@ -523,6 +532,10 @@ namespace PFD
                             // TEMPORARY - vyriesit ako vytvorit plate s roznym typom objektu screwArrangement
                             // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
                             // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
+
+
+                            //TODO - Mato
+                             // su komenty hore aktualne? CScrewArrangement sme riesili
 
                             // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
                             if (vm.ComponentIndex == 0) // KA
@@ -601,6 +614,7 @@ namespace PFD
             if (vm.ComponentTypeIndex == 0)
             {
                 // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch - component serie, podobne to nefunguje ani pre plates
+                //TODO Mato - ak to funguje, tak koment hore je potrebne zmazat
 
                 page3D = new Page3Dmodel(crsc, sDisplayOptions);
             }
@@ -839,7 +853,7 @@ namespace PFD
             List<Point> points = null;
 
             if(plate.ScrewArrangement != null) // Screw arrangmenet must exists
-                points = plate.ScrewArrangement.GetHolesCentersPoints2D(); // TODO Ondrej - neviem ci potrebujeme pouzit tuto funkciu alebo mozeme priamo volat //points = plate.ScrewArrangement.HolesCentersPoints2D;
+                points = plate.ScrewArrangement.HolesCentersPoints2D.ToList();
             else
             {
                 MessageBox.Show("Screws are not defined.");
@@ -918,8 +932,15 @@ namespace PFD
         }
 
         // TODO Ondrej - je potrebne pridat checkboxy do SystemComponentViewerViewModel ???
+        // TO Mato - viem ja ci treba pridat checkboxy??? ake checkboxy? naco checkboxy?
+
+        
         // TODO Ondrej, po zmene typu, serie alebo objektu by sa mali checkboxy odchecknut
+        // spravene v metode SetVisibility
+        // ak je to OK, tak zmazat koment
+
         // Uvazujem ze by tam mohol byt nielen uhol 90 deg ale aj 180, 270 alebo nejaky combobox, spinbuttons kde by sa dal nastavit lubovolny uhol rotacie prierezu alebo plechu
+        // TODO Mato - kludne sa da spravit, staci len povedat
 
         private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         {
