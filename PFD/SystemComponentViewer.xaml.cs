@@ -116,6 +116,11 @@ namespace PFD
 
                 UpdateAll();
             }
+
+            if (e.PropertyName == "ScrewArrangementIndex")
+            {
+                SetUIElementsVisibility(vm);
+            }
         }
 
         private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
@@ -213,7 +218,28 @@ namespace PFD
             vm.MirrorX = false;
             vm.MirrorY = false;
             vm.Rotate90CCW = false;
-            vm.Rotate90CW = false;            
+            vm.Rotate90CW = false;
+
+            if (vm.ScrewArrangementIndex == 0)
+            {
+                TxtScrewArrangment.Visibility = Visibility.Hidden;
+                DataGridScrewArrangement.Visibility = Visibility.Hidden;
+                chbDrawHoles2D.IsEnabled = false;
+                chbDrawHoleCentreSymbol2D.IsEnabled = false;
+                chbDrawDrillingRoute2D.IsEnabled = false;
+                BtnFindCNCPath.IsEnabled = false;
+                BtnShowCNCDrillingFile.IsEnabled = false;
+            }
+            else
+            {
+                TxtScrewArrangment.Visibility = Visibility.Visible;
+                DataGridScrewArrangement.Visibility = Visibility.Visible;
+                chbDrawHoles2D.IsEnabled = true;
+                chbDrawHoleCentreSymbol2D.IsEnabled = true;
+                chbDrawDrillingRoute2D.IsEnabled = true;
+                BtnFindCNCPath.IsEnabled = true;
+                BtnShowCNCDrillingFile.IsEnabled = true;
+            }
         }
 
         private void LoadDataFromDatabase()
