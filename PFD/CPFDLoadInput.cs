@@ -736,20 +736,17 @@ namespace PFD
                         WindRegionIndex = int.Parse(reader["wind_zone"].ToString()); //reader.GetInt32(reader.GetOrdinal("wind_zone"));
                         WindRegion = (EWindRegion)WindRegionIndex;
 
-                        // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
-                        //23.7.2018 O.P.
-
-                        int iMultiplier_M_lee_ID = 1; // Could be empty
+                        int iMultiplier_M_lee_ID; // Could be empty
                         try
                         {
                             if (!reader.IsDBNull(reader.GetOrdinal("windMultiplierM_lee")))
                             {
-                                iMultiplier_M_lee_ID = reader.GetInt32(reader.GetOrdinal("windMultiplierM_lee"));
+                                iMultiplier_M_lee_ID = int.Parse(reader["windMultiplierM_lee"].ToString());
 
                                 // TODO nacitat data pre index fMultiplier_M_lee_ID z databazy - tabulka multiplierM_lee, vzdialenost (zone_min a zone_max)
                             }
                         }
-                        catch (ArgumentNullException) { iMultiplier_M_lee_ID = 0; }
+                        catch (ArgumentNullException) { iMultiplier_M_lee_ID = -1; }
 
                         int iRainZone = int.Parse(reader["rain_zone"].ToString());
                         int iCorrosionZone = int.Parse(reader["corrosion_zone"].ToString());
