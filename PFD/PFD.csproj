@@ -75,7 +75,6 @@
     <Compile Include="CPFDJointsDesign.cs" />
     <Compile Include="CPFDMemberInternalForces.cs" />
     <Compile Include="CPFDMemberDesign.cs" />
-    <Compile Include="FractionConverter.cs" />
     <Compile Include="CPFDLoadInput.cs" />
     <Compile Include="CPFDViewModel.cs" />
     <Compile Include="CDatabaseComponents.cs" />
