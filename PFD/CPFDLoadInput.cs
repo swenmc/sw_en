@@ -800,11 +800,11 @@ namespace PFD
                 string sTableName = "ASNZS1170_Tab3_3_APOE";
 
                 // TODO - Ondrej - SQL subquery in database
-                // vybrat vsetky riadky s designWorkingLife_ID a uz vybranych riadkov vybrat vsetky riadky s 
+                // vybrat vsetky riadky s designWorkingLife_ID a z uz vybranych riadkov vybrat vsetky riadky s 
                 // s uvedenym importanceLevel_ID
                 // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
                 // TODO Mato - Ak je to OK, tak koment vymazat
-                // 26.09.2018 - TO Ondrej, nefunguje to - ten SQL dodaz nie je spravny, malo by to nacitavat hodnoty podla kombinacie riadkov designWorkingLife_ID a importanceLevel_ID
+                // 26.09.2018 - TO Ondrej, nefunguje to - ten SQL dodaz nie je spravny, malo by to nacitavat hodnoty podla kombinacie stlpcov designWorkingLife_ID a importanceLevel_ID
                 // berie to podla importanceLevel_ID
 
                 SQLiteCommand command = new SQLiteCommand(
@@ -829,8 +829,8 @@ namespace PFD
                         // Bolo by super ak by sa zlomok v textboxe zobrazoval ako zlomok a potom sa previedol na float az vo vypocte
                         // uzivatel by mohol zadavat do textboxu zlomok x / y alebo priamo float
 
-                        // TODO Ondrej - pridat som tuto triedu pre zadavanie zlomkov, mozes sa na to prosim pozriet a pripadne ju presunut na nejake bazove miesto aby sa dala pre GUI pouzivat univerzalne
-                        // Pridana trieda "FractionConverter.cs" - presunut ???
+                        // TODO Ondrej - pridal som tuto triedu pre zadavanie zlomkov ako riesenie vyssie uvedeneho, mozes sa na to prosim pozriet a pripadne ju presunut na nejake bazove miesto aby sa dala pre GUI pouzivat univerzalne
+                        // Pridana trieda "FractionConverter.cs" - presunut inam ???
 
                         /*
                         AnnualProbabilityULS_Wind = float.Parse(reader["apoeULS_Wind"].ToString());

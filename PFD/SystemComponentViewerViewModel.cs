@@ -429,6 +429,8 @@ namespace PFD
                 ComponentSeries = databaseComponents.arr_SeriesNames; // Plates
                 Components = databaseComponents.arr_Serie_B_Names;
                 ScrewArrangements = databaseComponents.arr_Serie_B_ScrewArrangement_Names;
+                // Set default index // TODO - Ondrej, pri zmene typu komponenty alebo serie tu nastavujem index pre screw arrangement, ale neviem ci je to spravne miesto, ak nie tak to presun inam 
+                ScrewArrangementIndex = 0;
             }
             else // Screws
             {
@@ -556,6 +558,8 @@ namespace PFD
                             break;
                         }
                 }
+                // Set default index // TODO - Ondrej, pri zmene typu komponenty alebo serie tu nastavujem index pre screw arrangement, ale neviem ci je to spravne miesto, ak nie tak to presun inam 
+                ScrewArrangementIndex = 0;
             }
             else // Screws
             {
@@ -563,7 +567,7 @@ namespace PFD
             }
         }
 
-        public void SetScrewArrangementProperties(CPlate plate /*CScrewArrangement arrangement*/) // Mala by sem vstupovat cela plate alebo len arrangement ???
+        public void SetScrewArrangementProperties(CPlate plate /*CScrewArrangement arrangement*/) // TODO - Ondrej - Mala by sem vstupovat cela plate alebo len arrangement ???
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -581,6 +585,7 @@ namespace PFD
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
 
+                // TODO Ondrej, toto by malo byt obecne pre rozny pocet circle groups
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.NumberOfCirclesInGroupS.Name, CParamsResources.NumberOfCirclesInGroupS.Symbol, arrangementTemp.INumberOfCirclesInGroup.ToString(), CParamsResources.NumberOfCirclesInGroupS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.NumberOfScrewsInCircleSequenceS.Name, CParamsResources.NumberOfScrewsInCircleSequenceS.Symbol, arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1.ToString(), CParamsResources.NumberOfScrewsInCircleSequenceS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name, CParamsResources.RadiusOfScrewsInCircleSequenceS.Symbol, (Math.Round(arrangementTemp.FRadius_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleSequenceS.Unit));
@@ -601,6 +606,7 @@ namespace PFD
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(arrangementTemp.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(arrangementTemp.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
 
+                // TODO Ondrej, toto by malo byt obecne pre rozny pocet rectangular sequences, pripadne groups
                 screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of screws in row SQ1", "No", arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1.ToString(), "[-]"));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString("Number of screws in column SQ1", "No", arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1.ToString(), "[-]"));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString("Inserting point coordinate x SQ1", "xc1", (Math.Round(arrangementTemp.fx_c_SQ1 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
