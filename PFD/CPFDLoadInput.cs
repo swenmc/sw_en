@@ -807,15 +807,20 @@ namespace PFD
                 // 26.09.2018 - TO Ondrej, nefunguje to - ten SQL dodaz nie je spravny, malo by to nacitavat hodnoty podla kombinacie riadkov designWorkingLife_ID a importanceLevel_ID
                 // berie to podla importanceLevel_ID
 
-                SQLiteCommand command = new SQLiteCommand(
-                    "Select * from " +
-                    " ( " +
-                    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
-                    "')," +
-                    " ( " +
-                    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
-                    "')"
-                    , conn);
+                //SQLiteCommand command = new SQLiteCommand(
+                //    "Select * from " +
+                //    " ( " +
+                //    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
+                //    "')," +
+                //    " ( " +
+                //    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
+                //    "')"
+                //    , conn);
+
+                // tak este raz...ak je to OK, tak zmazat vsetky predosle komenty
+                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where designWorkingLife_ID = @designLifeIndex AND importanceLevel_ID = @importanceClassIndex", conn);
+                command.Parameters.AddWithValue("@designLifeIndex", DesignLifeIndex);
+                command.Parameters.AddWithValue("@importanceClassIndex", ImportanceClassIndex);
 
                 using (reader = command.ExecuteReader())
                 {
