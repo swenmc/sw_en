@@ -1541,11 +1541,13 @@ namespace PFD
                 // Display only for cross-sections and plates (for 2D view of screw display options and transformations are not implemented yet)
                 panelOptions2D.Visibility = Visibility.Visible;
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
+                panelOptions3D.Visibility = Visibility.Hidden;
             }
             else
             {
-                panelOptions2D.Visibility = Visibility.Hidden;
+                panelOptions2D.Visibility = Visibility.Hidden;                
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
+                panelOptions3D.Visibility = Visibility.Visible;
             }
         }
 
