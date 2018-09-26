@@ -585,8 +585,13 @@ namespace PFD
                         {
                             // TODO - Ondrej
                             // TODO - Mato nerozumiem,co tu mam robit/opravit
-                            // TEMPORARY
 
+                            // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
+                            // Momentalne to mam pre JA a KA spravene tak ze maju 2 konstruktory, jeden pre circle, druhy pre rectangular (pre undefined tam posielam teraz screwArrangementRectangleApex = null)
+                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA a KA) rozkopiroval dalsi if/else s troma blokmi
+                            // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
+
+                            // TEMPORARY
                             if (vm.ComponentIndex == 0) // JA
                             {          
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
@@ -614,11 +619,15 @@ namespace PFD
                             // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
                             // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
 
+                            // TODO - Ondrej
+                            // TODO - Mato nerozumiem,co tu mam robit/opravit
 
-                            //TODO - Mato
-                             // su komenty hore aktualne? CScrewArrangement sme riesili
+                            // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
+                            // Momentalne to mam pre JA a KA spravene tak ze maju 2 konstruktory, jeden pre circle, druhy pre rectangular (pre undefined tam posielam teraz screwArrangementRectangleApex = null)
+                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA a KA) rozkopiroval dalsi if/else s troma blokmi
+                            // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
 
-                            // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
+                            // TEMPORARY for KA, potrebujeme vyriesit obecne pre vsetky plates
                             if (vm.ComponentIndex == 0) // KA
                             {
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
