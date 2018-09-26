@@ -338,7 +338,7 @@ namespace PFD
             }
         }
 
-        public bool Rotate_90_CW
+        public bool Rotate90CW
         {
             get
             {
@@ -352,7 +352,7 @@ namespace PFD
             }
         }
 
-        public bool Rotate_90_CCW
+        public bool Rotate90CCW
         {
             get
             {
@@ -474,8 +474,8 @@ namespace PFD
 
             MirrorY = false;
             MirrorX = false;
-            Rotate_90_CW = false;
-            Rotate_90_CCW = false;
+            Rotate90CW = false;
+            Rotate90CCW = false;
 
             //TODO naplnit zoznamy cross sections, plates, screws
             //CreateCrossSections();

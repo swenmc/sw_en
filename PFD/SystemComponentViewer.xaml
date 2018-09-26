@@ -73,10 +73,10 @@
 
             <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,10,0,0">
                 <TextBlock Text="Transformation Options" HorizontalAlignment="Left"/>
-                <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"/>
-                <CheckBox x:Name="CheckBox_MirrorX" IsChecked="{Binding Path=MirrorX}" Content="Mirror about horizontal axis x-x" Margin="0 5 0 0" Checked="CheckBox_MirrorX_Checked" Unchecked="CheckBox_MirrorX_Unchecked"/>
-                <CheckBox x:Name="CheckBox_Rotate_CW" IsChecked="{Binding Path=Rotate90CW}" Content="Rotate 90 deg clockwise" Margin="0 5 0 0" Checked="CheckBox_Rotate_CW_Checked" Unchecked="CheckBox_Rotate_CW_Unchecked"/>
-                <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" Checked ="CheckBox_Rotate_CCW_Checked"  Unchecked="CheckBox_Rotate_CCW_Unchecked"/>
+                <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" /> <!--Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"-->
+                <CheckBox x:Name="CheckBox_MirrorX" IsChecked="{Binding Path=MirrorX}" Content="Mirror about horizontal axis x-x" Margin="0 5 0 0" /> <!--Checked="CheckBox_MirrorX_Checked" Unchecked="CheckBox_MirrorX_Unchecked"-->
+                <CheckBox x:Name="CheckBox_Rotate_CW" IsChecked="{Binding Path=Rotate90CW}" Content="Rotate 90 deg clockwise" Margin="0 5 0 0" /> <!--Checked="CheckBox_Rotate_CW_Checked" Unchecked="CheckBox_Rotate_CW_Unchecked"-->
+                <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" /> <!--Checked ="CheckBox_Rotate_CCW_Checked"  Unchecked="CheckBox_Rotate_CCW_Unchecked"-->
             </StackPanel>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>

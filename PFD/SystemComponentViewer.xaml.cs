@@ -92,6 +92,30 @@ namespace PFD
                 e.PropertyName == "DrawHoles2D" ||
                 e.PropertyName == "DrawHoleCentreSymbol2D" ||
                 e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
+
+            if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
+            {
+                plate.DrillingRoutePoints = null;
+                tabItemDoc.Visibility = Visibility.Hidden;
+                UpdateAll();
+            }
+
+            if (e.PropertyName == "Rotate90CW")
+            {
+                plate.DrillingRoutePoints = null;
+                tabItemDoc.Visibility = Visibility.Hidden;
+                if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CCW = false;
+
+                UpdateAll();
+            }
+            if (e.PropertyName == "Rotate90CCW")
+            {
+                plate.DrillingRoutePoints = null;
+                tabItemDoc.Visibility = Visibility.Hidden;
+                if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CW = false;
+
+                UpdateAll();
+            }
         }
 
         private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
@@ -188,8 +212,8 @@ namespace PFD
             //uncheck all Transformation Options
             vm.MirrorX = false;
             vm.MirrorY = false;
-            vm.Rotate_90_CCW = false;
-            vm.Rotate_90_CW = false;            
+            vm.Rotate90CCW = false;
+            vm.Rotate90CW = false;            
         }
 
         private void LoadDataFromDatabase()
@@ -590,12 +614,22 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-               Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D, 
+                if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+                if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+                if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
+                if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
+
+                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D, 
                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-               Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+                if (vm.MirrorX) plate.MirrorPlateAboutX();
+                if (vm.MirrorY) plate.MirrorPlateAboutY();
+                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
             }
             else
@@ -942,162 +976,205 @@ namespace PFD
         // Uvazujem ze by tam mohol byt nielen uhol 90 deg ale aj 180, 270 alebo nejaky combobox, spinbuttons kde by sa dal nastavit lubovolny uhol rotacie prierezu alebo plechu
         // TODO Mato - kludne sa da spravit, staci len povedat
 
-        private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints=null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints=null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
 
-            RedrawMirroredComponentAboutXIn2D();
-        }
+        //    UpdateAll();
+        //    //RedrawMirroredComponentAboutXIn2D();
+        //    //RedrawComponentIn2D();
+        //}
 
-        private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //private void CheckBox_MirrorY_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
 
-            RedrawMirroredComponentAboutYIn2D();
-        }
+        //    //RedrawMirroredComponentAboutYIn2D();
+        //    RedrawComponentIn2D();
+        //}
 
-        private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //private void CheckBox_Rotate_CW_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
+            
+        //    // Can't be rotated CW and in the same time CCW
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //    if (vm.Rotate_90_CCW) vm.Rotate_90_CCW = false;
+        //    //RedrawRotatedComponentIn2D(90);
+        //    RedrawComponentIn2D();
+        //}
 
-            // Can't be rotated CW and in the same time CCW
-            if (CheckBox_Rotate_CCW.IsChecked == true)
-                CheckBox_Rotate_CCW.IsChecked = false;
+        //private void CheckBox_Rotate_CCW_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
+            
+        //    // Can't be rotated CW and in the same time CCW
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //    if (vm.Rotate_90_CW) vm.Rotate_90_CW = false;
 
-            RedrawRotatedComponentIn2D(90);
-        }
+        //    //RedrawRotatedComponentIn2D(-90);
+        //    RedrawComponentIn2D();
+        //}
 
-        private void CheckBox_Rotate_CCW_Checked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
 
-            // Can't be rotated CW and in the same time CCW
-            if (CheckBox_Rotate_CW.IsChecked == true)
-                CheckBox_Rotate_CW.IsChecked = false;
+        //    //RedrawMirroredComponentAboutXIn2D();
+        //    RedrawComponentIn2D();
+        //}
 
-            RedrawRotatedComponentIn2D(-90);
-        }
+        //private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
 
-        private void CheckBox_MirrorX_Unchecked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //    //RedrawMirroredComponentAboutYIn2D();
+        //    RedrawComponentIn2D();
+        //}
 
-            RedrawMirroredComponentAboutXIn2D();
-        }
+        //private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
 
-        private void CheckBox_MirrorY_Unchecked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //    //RedrawRotatedComponentIn2D(-90);
+        //    RedrawComponentIn2D();
+        //}
 
-            RedrawMirroredComponentAboutYIn2D();
-        }
+        //private void CheckBox_Rotate_CCW_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    plate.DrillingRoutePoints = null;
+        //    tabItemDoc.Visibility = Visibility.Hidden;
 
-        private void CheckBox_Rotate_CW_Unchecked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //    //RedrawRotatedComponentIn2D(90);
+        //    RedrawComponentIn2D();
+        //}
 
-            RedrawRotatedComponentIn2D(-90);
-        }
+        //private void RedrawMirroredComponentAboutXIn2D()
+        //{
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-        private void CheckBox_Rotate_CCW_Unchecked(object sender, RoutedEventArgs e)
-        {
-            plate.DrillingRoutePoints = null;
-            tabItemDoc.Visibility = Visibility.Hidden;
+        //    if (vm.ComponentTypeIndex == 0)
+        //    {
+        //        // Mirror coordinates
+        //        crsc.MirrorCRSCAboutX();
+        //        Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1)
+        //    {
+        //        // Mirror coordinates
+        //        plate.MirrorPlateAboutX();
+        //        // Redraw plate in 2D
+        //        Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+        //    }
+        //    else // Screw
+        //    {
+        //        bool bDrawCentreSymbol = true;
+        //        Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+        //    }
 
-            RedrawRotatedComponentIn2D(90);
-        }
+        //    // Display plate in 2D preview frame
+        //    Frame2D.Content = page2D;
+        //}
+        //private void RedrawMirroredComponentAboutYIn2D()
+        //{
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-        private void RedrawMirroredComponentAboutXIn2D()
-        {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //    if (vm.ComponentTypeIndex == 0)
+        //    {
+        //        // Mirror coordinates
+        //        crsc.MirrorCRSCAboutY();
+        //        Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1)
+        //    {
+        //        // Mirror coordinates
+        //        plate.MirrorPlateAboutY();
+        //        // Redraw plate in 2D
+        //        Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+        //    }
+        //    else // Screw
+        //    {
+        //        bool bDrawCentreSymbol = true;
+        //        Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+        //    }
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                // Mirror coordinates
-                crsc.MirrorPlateAboutX();
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                // Mirror coordinates
-                plate.MirrorPlateAboutX();
-                // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-            }
-            else // Screw
-            {
-                bool bDrawCentreSymbol = true;
-                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
-            }
+        //    // Display component in 2D preview frame
+        //    Frame2D.Content = page2D;
+        //}
+        //private void RedrawRotatedComponentIn2D(float fTheta_deg)
+        //{
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
-        }
-        private void RedrawMirroredComponentAboutYIn2D()
-        {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //    if (vm.ComponentTypeIndex == 0)
+        //    {
+        //        // Rotate coordinates
+        //        crsc.RotateCrsc_CW(fTheta_deg);
+        //        Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1)
+        //    {
+        //        // Rotate coordinates
+        //        plate.RotatePlateAboutZ_CW(fTheta_deg);
+        //        // Redraw plate in 2D
+        //        Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+        //    }
+        //    else // Screw
+        //    {
+        //        bool bDrawCentreSymbol = true;
+        //        Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+        //    }
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                // Mirror coordinates
-                crsc.MirrorPlateAboutY();
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                // Mirror coordinates
-                plate.MirrorPlateAboutY();
-                // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-            }
-            else // Screw
-            {
-                bool bDrawCentreSymbol = true;
-                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
-            }
+        //    // Display plate in 2D preview frame
+        //    Frame2D.Content = page2D;
+        //}
 
-            // Display component in 2D preview frame
-            Frame2D.Content = page2D;
-        }
-        private void RedrawRotatedComponentIn2D(float fTheta_deg)
-        {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //private void RedrawComponentIn2D()
+        //{
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                // Rotate coordinates
-                crsc.RotateCrsc_CW(fTheta_deg);
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                // Rotate coordinates
-                plate.RotatePlateAboutZ_CW(fTheta_deg);
-                // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-            }
-            else // Screw
-            {
-                bool bDrawCentreSymbol = true;
-                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
-            }
+        //    if (vm.ComponentTypeIndex == 0)
+        //    {
+        //        if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+        //        if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+        //        if (vm.Rotate_90_CW) crsc.RotateCrsc_CW(90);
+        //        if (vm.Rotate_90_CCW) crsc.RotateCrsc_CW(-90);
 
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
-        }
+        //        Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1)
+        //    {
+        //        if (vm.MirrorX) plate.MirrorPlateAboutX();
+        //        if (vm.MirrorY) plate.MirrorPlateAboutY();
+        //        if (vm.Rotate_90_CW) plate.RotatePlateAboutZ_CW(90);
+        //        if (vm.Rotate_90_CCW) plate.RotatePlateAboutZ_CW(-90);
+                
+        //        // Redraw plate in 2D
+        //        Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+        //    }
+        //    else // Screw
+        //    {
+        //        bool bDrawCentreSymbol = true;
+        //        Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+        //    }
+
+        //    // Display plate in 2D preview frame
+        //    Frame2D.Content = page2D;
+        //}
 
         private void BtnShowCNCSetupFile_Click(object sender, RoutedEventArgs e)
         {

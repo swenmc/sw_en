@@ -1216,7 +1216,7 @@ namespace CRSC
         //    Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsOut);
         //    Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsIn);
         //}
-        public void MirrorPlateAboutX()
+        public void MirrorCRSCAboutX()
         {
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsOut);
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsIn);
@@ -1229,7 +1229,7 @@ namespace CRSC
         //    Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsOut);
         //    Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsIn);
         //}
-        public void MirrorPlateAboutY()
+        public void MirrorCRSCAboutY()
         {
             Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsOut);
             Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsIn);
