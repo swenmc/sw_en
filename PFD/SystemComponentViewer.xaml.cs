@@ -140,6 +140,12 @@ namespace PFD
                     DataGridScrewArrangement_ValueChanged(cpw);
                 }
             }
+            else if (sender is CComponentParamsViewList)
+            {
+                CComponentParamsViewList cpw = sender as CComponentParamsViewList;
+                DataGridScrewArrangement_ValueChanged(cpw);
+                
+            }
 
 
         }
@@ -1286,7 +1292,8 @@ namespace PFD
                     if (item is CComponentParamsViewString)
                     {
                         CComponentParamsViewString itemStr = item as CComponentParamsViewString;
-                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemStr.Value); // TODO prerobit na vyber objektu skrutky z databazy
+                        if (string.IsNullOrEmpty(itemStr.Value)) return;
+                        
                         if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1307,7 +1314,12 @@ namespace PFD
                         CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
                         if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
                     }
-                    
+                    else if (item is CComponentParamsViewList)
+                    {
+                        CComponentParamsViewList itemList = item as CComponentParamsViewList;
+                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    }
+
 
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
@@ -1319,7 +1331,9 @@ namespace PFD
                     if (item is CComponentParamsViewString)
                     {
                         CComponentParamsViewString itemStr = item as CComponentParamsViewString;
-                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemStr.Value); // TODO prerobit na vyber objektu skrutky z databazy
+                        if (string.IsNullOrEmpty(itemStr.Value)) return;
+
+                        
                         if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1338,7 +1352,12 @@ namespace PFD
                         if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
                     }
-                        
+                    else if (item is CComponentParamsViewList)
+                    {
+                        CComponentParamsViewList itemList = item as CComponentParamsViewList;
+                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    }
+
                     arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
                 }

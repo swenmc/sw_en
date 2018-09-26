@@ -107,7 +107,7 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <ComboBox ItemsSource="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                <ComboBox SelectedValue="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>
