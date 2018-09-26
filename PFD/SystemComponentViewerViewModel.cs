@@ -49,6 +49,7 @@ namespace PFD
         bool bMirrorX;
         bool bRotate_90_CW;
         bool bRotate_90_CCW;
+        bool bDrawScrews3D;
 
         public bool IsSetFromCode = false;
         
@@ -372,6 +373,20 @@ namespace PFD
             }
         }
 
+        public bool DrawScrews3D
+        {
+            get
+            {
+                return bDrawScrews3D;
+            }
+
+            set
+            {
+                bDrawScrews3D = value;
+                NotifyPropertyChanged("DrawScrews3D");
+            }
+        }
+
         CDatabaseComponents databaseComponents;        
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -396,12 +411,14 @@ namespace PFD
             DrawHoles2D = true;
             DrawHoleCentreSymbol2D = true;
             DrawDrillingRoute2D = true;
-
+            
             MirrorY = false;
             MirrorX = false;
             Rotate90CW = false;
             Rotate90CCW = false;
-            
+
+            DrawScrews3D = true;
+
             IsSetFromCode = false;
         }
 
