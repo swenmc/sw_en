@@ -84,28 +84,42 @@ namespace DATABASE
             }
             return model;
         }
-        public static CComponentPrefixes LoadModelComponent(int ID)
+
+        
+        private static Dictionary<int, CComponentPrefixes> DictComponentPrefixes;
+        private static void LoadModelComponents()
         {
-            CComponentPrefixes component = null;
+            DictComponentPrefixes = new Dictionary<int, CComponentPrefixes>();             
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from componentPrefixes WHERE ID = @id", conn);
-                command.Parameters.AddWithValue("@id", ID);
+                SQLiteCommand command = new SQLiteCommand("Select * from componentPrefixes", conn);                
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        component = new CComponentPrefixes();
+                        CComponentPrefixes component = new CComponentPrefixes();
                         component.ID = reader.GetInt32(reader.GetOrdinal("ID"));
                         component.ComponentPrefix = reader["componentPrefix"].ToString();
                         component.ComponentName = reader["componentName"].ToString();
                         component.ComponentColorCodeRGB = reader["componentColorRGB"].ToString();
+                        DictComponentPrefixes.Add(component.ID, component);
                     }
                 }
             }
+        }
+
+        public static CComponentPrefixes GetModelComponent(int ID)
+        {
+            CComponentPrefixes component = null;
+            if (DictComponentPrefixes == null) LoadModelComponents();
+            DictComponentPrefixes.TryGetValue(ID, out component);
             return component;
         }
+
+
+
+
     }
 }

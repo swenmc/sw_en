@@ -413,7 +413,7 @@ namespace BaseClasses
             //    m_CrScEnd.AssignedMembersList.Add(this);
 
             // Set member name according to enum value of member type
-            CComponentPrefixes component = CModelsManager.LoadModelComponent((int)EMemberType + 1);
+            CComponentPrefixes component = CModelsManager.GetModelComponent((int)EMemberType + 1);
 
             Prefix = component.ComponentPrefix;
             Name = component.ComponentName;

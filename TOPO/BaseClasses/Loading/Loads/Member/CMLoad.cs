@@ -12,6 +12,7 @@ namespace BaseClasses
         private EMLoadTypeDistr m_mLoadTypeDistr; // Type of external force distribution
         private EMLoadType m_mLoadType; // Type of external force
         private EMLoadDirPCC1 m_eDirPPC; // External Force Direction in Principal Coordinate System of Member
+        private CMember m_member;
         //----------------------------------------------------------------------------
         public int[] IMemberCollection
         {
@@ -34,7 +35,13 @@ namespace BaseClasses
             set { m_eDirPPC = value; }
         }
 
-        public CMember Member = new CMember(); // Temporary
+        public CMember Member
+        {
+            get { return m_member; }
+            set { m_member = value; }
+        }
+
+        //public CMember Member = new CMember(); // Temporary   ked je to temporary,tak som to zakomentoval
         public float m_fOpacity;
         public Color m_Color = new Color(); // Default
 
