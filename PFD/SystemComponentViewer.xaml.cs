@@ -93,7 +93,8 @@ namespace PFD
                     e.PropertyName == "DrawPointNumbers2D" ||
                     e.PropertyName == "DrawHoles2D" ||
                     e.PropertyName == "DrawHoleCentreSymbol2D" ||
-                    e.PropertyName == "DrawDrillingRoute2D") UpdateAll();
+                    e.PropertyName == "DrawDrillingRoute2D" ||
+                    e.PropertyName == "DrawScrews3D") UpdateAll();
 
                 if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
                 {
@@ -174,7 +175,22 @@ namespace PFD
                 BtnShowCNCSetupFile.Visibility = Visibility.Hidden;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
 
-                panelOptions2D.Visibility = Visibility.Visible;
+                if (MainTabControl.SelectedIndex == 0) // 2D
+                {
+                    panelOptions2D.Visibility = Visibility.Visible;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }
+                else if (MainTabControl.SelectedIndex == 1) //3D
+                {
+                    panelOptions2D.Visibility = Visibility.Hidden;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    panelOptions2D.Visibility = Visibility.Hidden;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }
+                
                 chbDrawPoints2D.IsEnabled = true;
                 chbDrawOutLine2D.IsEnabled = true;
                 chbDrawPointNumbers2D.IsEnabled = true;
@@ -201,7 +217,22 @@ namespace PFD
                 BtnShowCNCSetupFile.Visibility = Visibility.Visible;
                 BtnShowCNCDrillingFile.Visibility = Visibility.Visible;
 
-                panelOptions2D.Visibility = Visibility.Visible;
+                if (MainTabControl.SelectedIndex == 0) // 2D
+                {
+                    panelOptions2D.Visibility = Visibility.Visible;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }
+                else if (MainTabControl.SelectedIndex == 1) //3D
+                {
+                    panelOptions2D.Visibility = Visibility.Hidden;
+                    panelOptions3D.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    panelOptions2D.Visibility = Visibility.Hidden;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }
+                
                 chbDrawPoints2D.IsEnabled = true;
                 chbDrawOutLine2D.IsEnabled = true;
                 chbDrawPointNumbers2D.IsEnabled = true;
@@ -236,6 +267,7 @@ namespace PFD
                 BtnShowCNCDrillingFile.Visibility = Visibility.Hidden;
 
                 panelOptions2D.Visibility = Visibility.Hidden;
+                panelOptions3D.Visibility = Visibility.Hidden;
                 chbDrawPoints2D.IsEnabled = false;
                 chbDrawOutLine2D.IsEnabled = false;
                 chbDrawPointNumbers2D.IsEnabled = false;
@@ -727,6 +759,7 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
+                sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
                 page3D = new Page3Dmodel(plate, sDisplayOptions);
             }
             else

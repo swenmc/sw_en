@@ -478,8 +478,49 @@ namespace BaseClasses
             model.Material = new DiffuseMaterial(brush);  // Set Model Material
 
             TransformPlateCoord(model);
-
             return model;
+        }
+
+        public Model3DGroup CreateGeomModel3DWithConnectors(SolidColorBrush brush, SolidColorBrush brushConnectors)
+        {
+            GeometryModel3D model = new GeometryModel3D();
+
+            // All in one mesh
+            MeshGeometry3D mesh = new MeshGeometry3D();
+            mesh.Positions = new Point3DCollection();
+            mesh.Positions = GetDefinitionPoints();
+
+            // Add Positions of plate edge nodes
+            loadIndices();
+            mesh.TriangleIndices = TriangleIndices;
+
+            model.Geometry = mesh;
+
+            model.Material = new DiffuseMaterial(brush);  // Set Model Material
+
+            TransformPlateCoord(model);
+
+            Model3DGroup gr = new Model3DGroup();
+
+            // Add plate connectors
+            if (ScrewArrangement != null && ScrewArrangement.Screws != null && ScrewArrangement.Screws.Length > 0)
+            {
+                Model3DGroup plateConnectorsModelGroup = new Model3DGroup();
+                if (brushConnectors == null) brushConnectors = new SolidColorBrush(Colors.Red);
+
+                for (int m = 0; m < ScrewArrangement.Screws.Length; m++)
+                {
+                    GeometryModel3D plateConnectorgeom = ScrewArrangement.Screws[m].CreateGeomModel3D(brushConnectors);
+                    ScrewArrangement.Screws[m].Visual_Connector = plateConnectorgeom;
+                    plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
+                }
+                plateConnectorsModelGroup.Transform = model.Transform;
+                                
+                gr.Children.Add(model);
+                gr.Children.Add(plateConnectorsModelGroup);                
+            }
+            
+            return gr;
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()
@@ -546,7 +587,7 @@ namespace BaseClasses
 
         public float GetVolumeIgnoringHoles()
         {
-             return Ft * PolygonArea();
+            return Ft * PolygonArea();
         }
 
         public float GetWeightIgnoringHoles()
@@ -623,7 +664,7 @@ namespace BaseClasses
 
         public float Get_W_el_yu(float fI_yu_rect, float fh)
         {
-            return 2f  * fI_yu_rect / fh; // Elastic section modulus
+            return 2f * fI_yu_rect / fh; // Elastic section modulus
         }
 
         // Modification

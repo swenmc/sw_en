@@ -89,6 +89,61 @@ namespace PFD
             _trackport.SetupScene();
         }
 
+        public Page3Dmodel(CPlate model, DisplayOptions sDisplayOptions_temp)
+        {
+            sDisplayOptions = sDisplayOptions_temp;
+
+            InitializeComponent();
+
+            // Default color
+            SolidColorBrush brushDefault = new SolidColorBrush(Colors.Cyan);
+            
+            float fTempMax_X;
+            float fTempMin_X;
+            float fTempMax_Y;
+            float fTempMin_Y;
+            float fTempMax_Z;
+            float fTempMin_Z;
+
+            if (model != null)
+            {
+                
+                
+
+                // Get model limits
+                CalculateModelLimits(model, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y, out fTempMax_Z, out fTempMin_Z);
+
+                float fModel_Length_X = fTempMax_X - fTempMin_X;
+                float fModel_Length_Y = fTempMax_Y - fTempMin_Y;
+                float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
+
+                Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
+                Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 0.1, pModelGeomCentre.Z + 1);
+
+                _trackport.PerspectiveCamera.Position = cameraPosition;
+                _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+
+                if (sDisplayOptions.bDisplaySolidModel)
+                {
+                    if(sDisplayOptions.bDisplayConnectors) _trackport.Model = (Model3D)model.CreateGeomModel3DWithConnectors(brushDefault, null);
+                    else _trackport.Model = (Model3D) model.CreateGeomModel3D(brushDefault);
+                }
+                
+                // Component - Wire Frame
+                if (sDisplayOptions.bDisplayWireFrameModel && model != null)
+                {
+                    // Create WireFrime in LCS
+                    ScreenSpaceLines3D wireFrame = model.CreateWireFrameModel();
+
+                    // Add Wireframe Lines to the trackport
+                    _trackport.ViewPort.Children.Add(wireFrame);
+                }
+            }
+
+            _trackport.SetupScene();
+        }
+
+
         public Page3Dmodel(CCrSc_TW crsc, DisplayOptions sDisplayOptions_temp)
         {
             sDisplayOptions = sDisplayOptions_temp;
