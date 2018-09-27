@@ -752,9 +752,6 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0)
             {
-                // TODO / BUG - Ondrej neprekresluje za prierez podla vyberu v comboboxoch - component serie, podobne to nefunguje ani pre plates
-                //TODO Mato - ak to funguje, tak koment hore je potrebne zmazat
-
                 page3D = new Page3Dmodel(crsc, sDisplayOptions);
             }
             else if (vm.ComponentTypeIndex == 1)
@@ -1077,20 +1074,7 @@ namespace PFD
 
             //// Display plate in 2D preview frame
             //Frame2D.Content = page2D;
-
-            
         }
-
-        // TODO Ondrej - je potrebne pridat checkboxy do SystemComponentViewerViewModel ???
-        // TO Mato - viem ja ci treba pridat checkboxy??? ake checkboxy? naco checkboxy?
-
-        
-        // TODO Ondrej, po zmene typu, serie alebo objektu by sa mali checkboxy odchecknut
-        // spravene v metode SetVisibility
-        // ak je to OK, tak zmazat koment
-
-        // Uvazujem ze by tam mohol byt nielen uhol 90 deg ale aj 180, 270 alebo nejaky combobox, spinbuttons kde by sa dal nastavit lubovolny uhol rotacie prierezu alebo plechu
-        // TODO Mato - kludne sa da spravit, staci len povedat
 
         //private void CheckBox_MirrorX_Checked(object sender, RoutedEventArgs e)
         //{
