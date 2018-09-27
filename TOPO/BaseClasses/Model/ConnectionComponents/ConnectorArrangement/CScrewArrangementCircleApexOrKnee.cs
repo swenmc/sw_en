@@ -464,19 +464,20 @@ namespace BaseClasses
         public void Get_ScrewGroup_IncludingAdditionalScrews(int iNumberOfCirclesInGroup,
             float fx_c,
             float fy_c,
-            float fAngle_seq_rotation_init_point_deg,
             float fRotation_rad,
             ref CScrewSequenceGroup group)
         {
             float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
+            float fAdditionalMargin = 0.01f;
 
             if (group.NumberOfHalfCircleSequences > 0)
             {
-                float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
+                float fAngle_seq_rotation_init_point_deg_SQ1 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ1) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
+                float fAngle_interval_deg_SQ1 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ1); // Angle between sequence center, first and last point in the sequence
 
                 // Half circle sequence
-                float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
-                float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+                float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, fAngle_seq_rotation_init_point_deg_SQ1, fAngle_seq_rotation_init_point_deg_SQ1 + fAngle_interval_deg_SQ1, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+                float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg_SQ1, 180 + fAngle_seq_rotation_init_point_deg_SQ1 + fAngle_interval_deg_SQ1, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
 
                 // TODO - docasne, previest pole float na pole Points
                 Point[] fSequenceTop = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp);
@@ -493,9 +494,13 @@ namespace BaseClasses
                     // Polomer pre druhy kruh je natvrdo 0,7 * r pre prvy kruh, pocet skrutiek v polkruhu je o 5ks mensi, obe hodnoty je potrebne prevziat z GUI, v GUI by malo byt mozne dynamicky zadavat podla poctu zvolenych kruhov radiusy a pocty skrutiek v pre kazdy radius
                     float FRadius_SQ2 = 0.7f * FRadius_SQ1;
                     int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
+
+                    float fAngle_seq_rotation_init_point_deg_SQ2 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ2) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
+                    float fAngle_interval_deg_SQ2 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ2); // Angle between sequence center, first and last point in the sequence
+
                     // Half circle sequence
-                    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
-                    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
+                    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, fAngle_seq_rotation_init_point_deg_SQ2, fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
+                    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
 
                     // TODO - docasne, previest pole float na pole Points
                     Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp2);
@@ -571,18 +576,14 @@ namespace BaseClasses
             float fx_c2 = fbX - fDistanceOfCenterFromLeftEdge; // Symmetrical
             float fy_c2 = fy_c1;
 
-            float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
-            float fRadius = 0.5f * FCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
-            float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * FStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
-
             // Left side
             CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group1);
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fSlope_rad, ref group1);
             ListOfSequenceGroups[0] = group1;
 
             // Right side
             CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // GetMirroredScrewGroupAboutY(group1);
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, -fSlope_rad, ref group2);
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, -fSlope_rad, ref group2);
             ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
@@ -607,18 +608,14 @@ namespace BaseClasses
             float fx_c2 = fxInTopMemberAxis * (float)Math.Cos(fSlope_rad) + fDistanceOfCenterFromLeftEdge;
             float fy_c2 = fxInTopMemberAxis * (float)Math.Sin(fSlope_rad) + ((fhY_1 + fx_c1 * (float)Math.Atan(fSlope_rad)) - (0.5f * FCrscRafterDepth / (float)Math.Cos(fSlope_rad))); // TODO Dopracovat podla sklonu rafteru
 
-            float fAdditionalMargin = 0.01f; // Temp - TODO - put to the input data
-            float fRadius = 0.5f * FCrscWebStraightDepth - 2 * fAdditionalMargin; // m // Input - depending on depth of cross-section
-            float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan(0.5f * FStiffenerSize / fDistanceOfCenterFromLeftEdge) / MathF.fPI * 180f); // Input - constant for cross-section according to the size of middle sfiffener
-
             // Bottom side
             CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fAngle_seq_rotation_init_point_deg, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
             ListOfSequenceGroups[0] = group1;
 
             // Top side
             CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fAngle_seq_rotation_init_point_deg, fSlope_rad, ref group2); // Rotate - Roof Slope
+            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fSlope_rad, ref group2); // Rotate - Roof Slope
             ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
