@@ -14,6 +14,7 @@ using BaseClasses.GraphObj;
 using CRSC;
 using DATABASE;
 using DATABASE.DTO;
+using System.Windows;
 
 namespace PFD
 {
@@ -60,6 +61,8 @@ namespace PFD
         int iNumberOfDecimalPlaces_Area = 1;
         int iNumberOfDecimalPlaces_Volume = 1;
         int iNumberOfDecimalPlaces_Weight = 1;
+
+        List<Point> MDrillingRoutePoints;
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
         {
@@ -384,6 +387,19 @@ namespace PFD
             {
                 bDrawScrews3D = value;
                 NotifyPropertyChanged("DrawScrews3D");
+            }
+        }
+
+        public List<Point> DrillingRoutePoints
+        {
+            get
+            {
+                return MDrillingRoutePoints;
+            }
+
+            set
+            {
+                MDrillingRoutePoints = value;
             }
         }
 

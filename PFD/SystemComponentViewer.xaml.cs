@@ -97,23 +97,29 @@ namespace PFD
 
                 if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
                 {
-                    plate.DrillingRoutePoints = null;
+                    //plate.DrillingRoutePoints = null;
+                    vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
+                    BtnShowCNCDrillingFile.IsEnabled = false;
                     UpdateAll();
                 }
 
                 if (e.PropertyName == "Rotate90CW")
                 {
-                    plate.DrillingRoutePoints = null;
+                    //plate.DrillingRoutePoints = null;
+                    vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
+                    BtnShowCNCDrillingFile.IsEnabled = false;
                     if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CCW = false;
 
                     UpdateAll();
                 }
                 if (e.PropertyName == "Rotate90CCW")
                 {
-                    plate.DrillingRoutePoints = null;
+                    //plate.DrillingRoutePoints = null;
+                    vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
+                    BtnShowCNCDrillingFile.IsEnabled = false;
                     if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CW = false;
 
                     UpdateAll();
@@ -684,7 +690,7 @@ namespace PFD
                 if (vm.MirrorY) crsc.MirrorCRSCAboutY();
                 if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
                 if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
-
+                
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D, 
                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
             }
@@ -694,6 +700,7 @@ namespace PFD
                 if (vm.MirrorY) plate.MirrorPlateAboutY();
                 if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
                 if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+                if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
@@ -1001,34 +1008,44 @@ namespace PFD
             Frame2DWidth = Frame2D.ActualWidth;
             Frame2DHeight = Frame2D.ActualHeight;
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
-            if (vm.ComponentTypeIndex == 0)
-            {
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
+
+            if (vm.ComponentTypeIndex == 1) //ma to vyznam iba pre Plates
             {
                 // Set drilling route points
-                plate.DrillingRoutePoints = PathPoints;
-                // Draw plate
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+                vm.DrillingRoutePoints = PathPoints;
+                // Enable button to display of CNC drilling file
+                BtnShowCNCDrillingFile.IsEnabled = true;
 
-                // Update value of drilling route in grid view
-                vm.SetComponentProperties(plate);
-            }
-            else
-            {
-                // Screw
-                bool bDrawCentreSymbol = true;
-                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+                UpdateAll();
             }
 
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            //if (vm.ComponentTypeIndex == 0)
+            //{
+            //    Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+            //        vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+            //}
+            //else if (vm.ComponentTypeIndex == 1)
+            //{
+            //    // Set drilling route points
+            //    vm.DrillingRoutePoints = PathPoints;
+            //    // Draw plate
+            //    Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+            //        vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
 
-            // Enable button to display of CNC drilling file
-            BtnShowCNCDrillingFile.IsEnabled = true;
+            //    // Update value of drilling route in grid view
+            //    vm.SetComponentProperties(plate);
+            //}
+            //else
+            //{
+            //    // Screw
+            //    bool bDrawCentreSymbol = true;
+            //    Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+            //}
+
+            //// Display plate in 2D preview frame
+            //Frame2D.Content = page2D;
+
+            
         }
 
         // TODO Ondrej - je potrebne pridat checkboxy do SystemComponentViewerViewModel ???
@@ -1379,6 +1396,8 @@ namespace PFD
                 {
                     // Screw arrangement is not implemented
                 }
+                vm.DrillingRoutePoints = null;
+                plate.DrillingRoutePoints = null;
             }
         }
 
@@ -1538,16 +1557,31 @@ namespace PFD
         {
             if (MainTabControl.SelectedIndex == 0 && Combobox_Type.SelectedIndex != 2)
             {
-                // Display only for cross-sections and plates (for 2D view of screw display options and transformations are not implemented yet)
-                panelOptions2D.Visibility = Visibility.Visible;
-                panelOptionsTransform2D.Visibility = Visibility.Visible;
-                panelOptions3D.Visibility = Visibility.Hidden;
+                if (Combobox_Type.SelectedIndex != 2)
+                {
+                    // Display only for cross-sections and plates (for 2D view of screw display options and transformations are not implemented yet)
+                    panelOptions2D.Visibility = Visibility.Visible;
+                    panelOptionsTransform2D.Visibility = Visibility.Visible;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    panelOptions2D.Visibility = Visibility.Hidden;
+                    panelOptionsTransform2D.Visibility = Visibility.Hidden;
+                    panelOptions3D.Visibility = Visibility.Hidden;
+                }                
             }
-            else
+            else if(MainTabControl.SelectedIndex == 1)
             {
                 panelOptions2D.Visibility = Visibility.Hidden;                
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
                 panelOptions3D.Visibility = Visibility.Visible;
+            }
+            else if (MainTabControl.SelectedIndex == 2)
+            {
+                panelOptions2D.Visibility = Visibility.Hidden;
+                panelOptionsTransform2D.Visibility = Visibility.Hidden;
+                panelOptions3D.Visibility = Visibility.Hidden;
             }
         }
 
