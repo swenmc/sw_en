@@ -88,6 +88,39 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            bool bIsDisplayed)
+        {
+            Name = sName_temp;
+            eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_K;
+            BIsDisplayed = bIsDisplayed;
+
+            ITotNoPointsin2D = 4;
+            ITotNoPointsin3D = 8;
+
+            m_pControlPoint = controlpoint;
+            m_fbX1 = fb_1_temp;
+            m_fhY1 = fh_1_temp;
+            m_fbX2 = fb_2_temp;
+            m_fhY2 = fh_2_temp;
+            Ft = ft_platethickness;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
+
+            UpdatePlateData();
+        }
+
+        public CConCom_Plate_KA(string sName_temp,
+            CPoint controlpoint,
+            float fb_1_temp,
+            float fh_1_temp,
+            float fb_2_temp,
+            float fh_2_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
             CScrewArrangementCircleApexOrKnee screwArrangement,
             bool bIsDisplayed)
         {
@@ -144,6 +177,24 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             UpdatePlateData(screwArrangement);
+        }
+
+        public void UpdatePlateData()
+        {
+            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
+
+            // Create Array - allocate memory
+            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
+
+            // Fill Array Data
+            Calc_Coord2D();
+            Calc_Coord3D();
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+
+            UpdatePlateData_Basic(null);
         }
 
         public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)

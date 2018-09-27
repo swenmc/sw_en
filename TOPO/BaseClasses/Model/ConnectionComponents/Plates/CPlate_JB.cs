@@ -89,6 +89,40 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            bool bIsDisplayed)
+        {
+            Name = sName_temp;
+            eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
+
+            BIsDisplayed = bIsDisplayed;
+
+            ITotNoPointsin2D = 12;
+            ITotNoPointsin3D = 26;
+
+            m_pControlPoint = controlpoint;
+            m_fbX = fb_temp;
+            m_fhY1 = fh_1_temp;
+            m_fhY2 = fh_2_temp;
+            m_flZ = fL_temp;
+            Ft = ft_platethickness;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
+
+            UpdatePlateData();
+        }
+
+        public CConCom_Plate_JB(string sName_temp,
+            CPoint controlpoint,
+            float fb_temp,
+            float fh_1_temp,
+            float fh_2_temp,
+            float fL_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
             CScrewArrangementCircleApexOrKnee screwArrangement,
             bool bIsDisplayed)
         {
@@ -114,6 +148,61 @@ namespace BaseClasses
             UpdatePlateData(screwArrangement);
         }
 
+        public CConCom_Plate_JB(string sName_temp,
+            CPoint controlpoint,
+            float fb_temp,
+            float fh_1_temp,
+            float fh_2_temp,
+            float fL_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            CScrewArrangementRectApexOrKnee screwArrangement,
+            bool bIsDisplayed)
+        {
+            Name = sName_temp;
+            eConnComponentType = EConnectionComponentType.ePlate;
+            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
+
+            BIsDisplayed = bIsDisplayed;
+
+            ITotNoPointsin2D = 12;
+            ITotNoPointsin3D = 26;
+
+            m_pControlPoint = controlpoint;
+            m_fbX = fb_temp;
+            m_fhY1 = fh_1_temp;
+            m_fhY2 = fh_2_temp;
+            m_flZ = fL_temp;
+            Ft = ft_platethickness;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
+
+            UpdatePlateData(screwArrangement);
+        }
+
+        // Undefined Screw Arrangement
+        public void UpdatePlateData()
+        {
+            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+
+            // Create Array - allocate memory
+            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
+
+            // Fill Array Data
+            Calc_Coord2D();
+            Calc_Coord3D();
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+
+            UpdatePlateData_Basic(null);
+        }
+
+        // Circle Screw Arrangement
         public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
         {
             m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
@@ -122,19 +211,61 @@ namespace BaseClasses
             PointsOut2D = new float[ITotNoPointsin2D, 2];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            if (screwArrangement != null)
+            {
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
 
             // Fill Array Data
             Calc_Coord2D();
             Calc_Coord3D();
 
-            screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, m_flZ, m_fhY1, m_fSlope_rad);
-            screwArrangement.Calc_HolesControlPointsCoord3D(m_flZ, Ft);
-            screwArrangement.GenerateConnectors();
+            if (screwArrangement != null)
+            {
+                screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, m_flZ, m_fhY1, m_fSlope_rad);
+                screwArrangement.Calc_HolesControlPointsCoord3D(m_flZ, Ft);
+                screwArrangement.GenerateConnectors();
+            }
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
+            UpdatePlateData_Basic(screwArrangement);
+        }
+
+        // Rectangular Screw Arrangement
+        public void UpdatePlateData(CScrewArrangementRectApexOrKnee screwArrangement)
+        {
+            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+
+            // Create Array - allocate memory
+            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            arrPoints3D = new Point3D[ITotNoPointsin3D];
+
+            if (screwArrangement != null)
+            {
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
+
+            // Fill Array Data
+            Calc_Coord2D();
+            Calc_Coord3D();
+
+            if (screwArrangement != null)
+            {
+                screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, m_flZ, m_fhY1, m_fSlope_rad);
+                screwArrangement.Calc_HolesControlPointsCoord3D(m_flZ, Ft);
+                screwArrangement.GenerateConnectors();
+            }
+
+            // Fill list of indices for drawing of surface
+            loadIndices();
+
+            UpdatePlateData_Basic(screwArrangement);
+        }
+
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             fWidth_bx = m_fbX;
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fArea = PolygonArea();
@@ -145,9 +276,22 @@ namespace BaseClasses
 
             fA_g = Get_A_channel(m_flZ, Ft, Ft, m_fhY1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+
+            fA_n = fA_g;
+
+            if (screwArrangement != null)
+            {
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fA_v_zv = Get_A_rect(Ft, m_fhY1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+
+            fA_vn_zv = fA_v_zv;
+            if (screwArrangement != null)
+            {
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fI_yu = Get_I_yu_channel(m_flZ, Ft, Ft, m_fhY1);  // TODO - bug - v strede je horna pasnica rozdelena, takze to musi byt tvar L, nie U // Nesymetricky prierez// Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY1); // Elastic section modulus
 

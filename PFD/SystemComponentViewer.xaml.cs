@@ -625,29 +625,32 @@ namespace PFD
                             // TODO - Mato nerozumiem,co tu mam robit/opravit
 
                             // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
-                            // Momentalne to mam pre JA a KA spravene tak ze maju 2 konstruktory, jeden pre circle, druhy pre rectangular (pre undefined tam posielam teraz screwArrangementRectangleApex = null)
-                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA a KA) rozkopiroval dalsi if/else s troma blokmi
+                            // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
+                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
                             // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
 
                             // TEMPORARY
                             if (vm.ComponentIndex == 0) // JA
-                            {          
+                            {
+                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                {
-                                    screwArrangementRectangleApex = null; // Screw arrangement je null, skrutky nie su definovane
-                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                }
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
                                 else if (vm.ScrewArrangementIndex == 1) // Rectangular
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
+                            else //if (vm.ComponentIndex == 1) // JB
+                            {
+                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true);
+                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0,screwArrangementRectangleApex, true);
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0,screwArrangementCircle2, true);
+                            }
 
-                            /*
-                            if (vm.ComponentIndex == 0) // JA
-                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                            else*/if (vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0,0,0, screwArrangementCircle2, true);
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -661,18 +664,16 @@ namespace PFD
                             // TODO - Mato nerozumiem,co tu mam robit/opravit
 
                             // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
-                            // Momentalne to mam pre JA a KA spravene tak ze maju 2 konstruktory, jeden pre circle, druhy pre rectangular (pre undefined tam posielam teraz screwArrangementRectangleApex = null)
-                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA a KA) rozkopiroval dalsi if/else s troma blokmi
+                            // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
+                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
                             // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
 
                             // TEMPORARY for KA, potrebujeme vyriesit obecne pre vsetky plates
                             if (vm.ComponentIndex == 0) // KA
                             {
+                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                {
-                                    screwArrangementRectangleKnee2 = null; // Screw arrangement je null, skrutky nie su definovane
-                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
-                                }
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, true);
                                 if (vm.ScrewArrangementIndex == 1) // Rectangular
                                     plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
@@ -877,25 +878,33 @@ namespace PFD
                     case ESerieTypePlate.eSerie_J:
                         {
                             // TODO - Ondrej
-                            // TEMPORARY
+                            // TODO - Mato nerozumiem,co tu mam robit/opravit
+
+                            // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
+                            // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
+                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
+                            // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
+
                             if (vm.ComponentIndex == 0) // JA
                             {
+                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                {
-                                    screwArrangementRectangleApex = null; // Screw arrangement je null, skrutky nie su definovane
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
+                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                }
-                                else if (vm.ScrewArrangementIndex == 0) // Rectangular
-                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                else//(vm.ScrewArrangementIndex == 1) // Circle
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
-
-                            /*
-                            if (vm.ComponentIndex == 0) // JA
-                                plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                            else*/ if(vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle2, true);
+                            else //if (vm.ComponentIndex == 1) // JB
+                            {
+                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
+                                if (vm.ScrewArrangementIndex == 0) // Undefined
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true);
+                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                else//(vm.ScrewArrangementIndex == 2) // Circle
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle2, true);
+                            }
                             break;
                         }
                     case ESerieTypePlate.eSerie_K:
@@ -905,14 +914,21 @@ namespace PFD
                             // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
                             // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
 
+                            // TODO - Ondrej
+                            // TODO - Mato nerozumiem,co tu mam robit/opravit
+
+                            // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
+                            // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
+                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
+                            // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
+
+
                             // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
                             if (vm.ComponentIndex == 0) // KA
                             {
+                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                {
-                                    screwArrangementRectangleKnee2 = null; // Screw arrangement je null, skrutky nie su definovane
-                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
-                                }
+                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, true);
                                 if (vm.ScrewArrangementIndex == 1) // Rectangular
                                     plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
@@ -1467,7 +1483,15 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    if (plateTemp.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
+                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    else if (plateTemp.ScrewArrangement is CScrewArrangementRectApexOrKnee)
+                        plateTemp.UpdatePlateData((CScrewArrangementRectApexOrKnee)plateTemp.ScrewArrangement);
+                    else
+                    {
+                        // Not Defined
+                    }
+
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_KA)
