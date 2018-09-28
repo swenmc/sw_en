@@ -3,6 +3,7 @@ using BaseClasses.GraphObj.Objects_3D;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Globalization;
+using MATERIAL;
 using DATABASE;
 using DATABASE.DTO;
 
@@ -85,6 +86,10 @@ namespace BaseClasses
 
         public CScrew(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_thread_temp, float fHeadDiameter_temp, float fWasherDiameter_temp, float fWasherThickness_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
+            m_Mat = new CMat_03_00(); // Todo - material ako parameter
+            m_Mat.Name = "Class 3 / 4 / B8"; // TODO - pripravit databazu materialov pre skrutky
+            Prefix = "TEK"; // TODO - Urcit co je Prefix a co je Name u skrutiek
+
             Name = sName_temp;
             m_pControlPoint = controlpoint;
             m_iGauge = iGauge_temp;
