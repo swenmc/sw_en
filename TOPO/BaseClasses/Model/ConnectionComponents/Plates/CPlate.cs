@@ -501,6 +501,7 @@ namespace BaseClasses
             TransformPlateCoord(model);
 
             Model3DGroup gr = new Model3DGroup();
+            gr.Children.Add(model);
 
             // Add plate connectors
             if (ScrewArrangement != null && ScrewArrangement.Screws != null && ScrewArrangement.Screws.Length > 0)
@@ -515,8 +516,6 @@ namespace BaseClasses
                     plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
                 }
                 plateConnectorsModelGroup.Transform = model.Transform;
-                                
-                gr.Children.Add(model);
                 gr.Children.Add(plateConnectorsModelGroup);                
             }
             
@@ -672,20 +671,20 @@ namespace BaseClasses
         public void MirrorPlateAboutX()
         {
             Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref PointsOut2D);
-            Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
+            //Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
 
             // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
             // BUG No. 72 - Ondrej - tu sa do ScrewArrangement.HolesCentersPoints2D nastavia odzrkadlene suradnice ale ked sa to zavola znova tak su tam povodne resp nejake uplne ine po opakovanom spusteni funckie
             // Problem je vo vsetkych funkciach pre mirror, rotate of plate
-            Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
-            Geom2D.MirrorAboutX_ChangeYCoordinates(ref pArrayTemp);
-            ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
+            if (ScrewArrangement != null)
+            {
+                Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
+                Geom2D.MirrorAboutX_ChangeYCoordinates(ref pArrayTemp);
+                ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
+            }            
 
-            Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrConnectorControlPoints3D);
+            //Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrConnectorControlPoints3D);
 
-            // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
-            // TODO - Ondrej - checkbox pre transformaciu by mal byt aktivny len ak je vybrany typ componenty plate alebo crsc, asi nema zmysel pre skrutku
-            // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
             if (DrillingRoutePoints != null)
             {
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_drillingRoutePoints);
@@ -696,20 +695,20 @@ namespace BaseClasses
         public void MirrorPlateAboutY()
         {
             Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref PointsOut2D);
-            Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
+            //Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
 
             // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
             // BUG No. 72 - Ondrej - tu sa do ScrewArrangement.HolesCentersPoints2D nastavia odzrkadlene suradnice ale ked sa to zavola znova tak su tam povodne resp nejake uplne ine po opakovanom spusteni funckie
             // Problem je vo vsetkych funkciach pre mirror, rotate of plate
-            Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
-            Geom2D.MirrorAboutY_ChangeXCoordinates(ref pArrayTemp);
-            ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
-
+            if (ScrewArrangement != null)
+            {
+                Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
+                Geom2D.MirrorAboutY_ChangeXCoordinates(ref pArrayTemp);
+                ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
+            }
+            
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrConnectorControlPoints3D);
 
-            // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
-            // TODO - Ondrej - checkbox pre transformaciu by mal byt aktivny len ak je vybrany typ componenty plate alebo crsc, asi nema zmysel pre skrutku
-            // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
             if (DrillingRoutePoints != null)
             {
                 Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_drillingRoutePoints);
@@ -720,19 +719,19 @@ namespace BaseClasses
         public void RotatePlateAboutZ_CW(float fTheta_deg)
         {
             Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref PointsOut2D);
-            Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrPoints3D);
+            //Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrPoints3D);
 
             // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
             // BUG No. 72 - pri opakovanom volani sa nepouziji nastavene suradnice ale podovne, resp uplne ineProblem je vo vsetkych funkciach pre mirror, rotate of plate
-            Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
-            Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref pArrayTemp);
-            ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
+            if (ScrewArrangement != null)
+            {
+                Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
+                Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref pArrayTemp);
+                ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
+            }            
 
-            Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrConnectorControlPoints3D);
-
-            // Nemenit suradnice drilling points ak neboli naplnene pretoze su naviazane na HolesCentersPoints2D, ktore uz boli transformovane
-
-            // TODO - Ondrej - vygenerovana cesta by sa mala po odzrkadleni alebo rotacii zmazat alebo musime opravit vykreslovanie drilling points
+            //Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrConnectorControlPoints3D);
+            
             if (DrillingRoutePoints != null)
             {
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);

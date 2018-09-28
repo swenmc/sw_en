@@ -15,10 +15,18 @@ namespace BaseClasses
             set { m_TriangleIndices = value; }
         }
 
+        private Point3D[] m_arrPoints3D;
+        public Point3D[] arrPoints3D
+        {
+            get { return m_arrPoints3D; }
+            set { m_arrPoints3D = value; }
+        }
+
         public new CMat_03_00 m_Mat;
 
         public float[,] PointsOut2D;
-        public Point3D[] arrPoints3D;
+        
+        //public Point3D[] arrPoints3D;
 
         public EConnectionComponentType eConnComponentType;
 
