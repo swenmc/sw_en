@@ -48,7 +48,14 @@ namespace BaseClasses
 
             int iConnectorInCircleSequenceNumber = 20;
             CScrew referenceScrew = new CScrew("TEK", "14");
-            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, iConnectorInCircleSequenceNumber, 0.2f, bUseAdditionalCornerScrews, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            //CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, iConnectorInCircleSequenceNumber, 0.2f, bUseAdditionalCornerScrews, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
+            CScrewSequenceGroup gr = new CScrewSequenceGroup();
+            gr.NumberOfHalfCircleSequences = 2;
+            gr.NumberOfRectangularSequences = 0;
+            gr.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.2f, iConnectorInCircleSequenceNumber));
+
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_JB("JB", ControlPoint_P1, m_fb, m_fh_1, m_fh_2, 0.050f, m_ft, 90, 0, 180 + fJointAngleAboutZ_deg, screwArrangement, BIsDisplayed); // Rotation angle in degrees

@@ -131,6 +131,12 @@ namespace PFD
                     SetUIElementsVisibilityForScrewArrangement(vm);
                     UpdateAll();
                 }
+
+                //if (e.PropertyName == "ScrewArrangementParameters")
+                //{
+                //    UpdateAll();
+                //}
+
             }
             else if (sender is CComponentParamsViewBool)
             {
@@ -575,8 +581,27 @@ namespace PFD
                 bool bUseAdditionalConnectors = true;
                 int iNumberOfAdditionalConnectorsInCorner = 4;
                 int iConnectorNumberInCircleSeuence = 20;
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+
+                List<CScrewSequenceGroup> screwSeqGroups1 = new List<CScrewSequenceGroup>();
+                CScrewSequenceGroup gr = new CScrewSequenceGroup();
+                gr.NumberOfHalfCircleSequences = 2;
+                gr.NumberOfRectangularSequences = 0;
+                gr.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                screwSeqGroups1.Add(gr);
+
+                List<CScrewSequenceGroup> screwSeqGroups2 = new List<CScrewSequenceGroup>();
+                CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
+                gr2.NumberOfHalfCircleSequences = 2;
+                gr2.NumberOfRectangularSequences = 0;
+                gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f * 0.7f, iConnectorNumberInCircleSeuence - 5));
+                screwSeqGroups2.Add(gr);
+                screwSeqGroups2.Add(gr2);
+
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups1, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, screwSeqGroups2, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+
+                //CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                //CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
@@ -700,7 +725,7 @@ namespace PFD
                         }
                 }
                 vm.SetComponentProperties(plate);
-                vm.SetScrewArrangementProperties(plate); // Parameter cela plate alebo len screw arrangement ???
+                if(plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement); 
             }
             else
             {
@@ -773,193 +798,193 @@ namespace PFD
             this.UpdateLayout();
         }
 
-        public void CreateModelObject()
-        {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
-            if (vm.ComponentTypeIndex == 0) // Cross-sections
-            {
-                switch ((ESerieTypeCrSc_FormSteel) vm.ComponentSerieIndex)
-                {
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
-                        {
-                            crsc = new CCrSc_3_10075_BOX(0, fh, fb, ft, cComponentColor); // BOX
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
-                        {
-                            crsc = new CCrSc_3_Z(0, fh, fb_fl, fc_lip1, ft, cComponentColor); // BOX
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_single:
-                        {
-                            if (vm.ComponentIndex < 3) // C270
-                                crsc = new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor);
-                            else
-                                crsc = new CCrSc_3_50020_C(0, fh, fb, ft, cComponentColor);
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
-                        {
-                            crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(0, fh, fb, fc_lip1, ft, cComponentColor);
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
-                        {
-                            crsc = new CCrSc_3_270XX_C_NESTED(0, fh, fb, ft, cComponentColor);
-                            break;
-                        }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
-                        {
-                            crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor); // Box
-                            break;
-                        }
-                    default:
-                        {
-                            // Not implemented
-                            break;
-                        }
-                }
-            }
-            else if (vm.ComponentTypeIndex == 1) // Plates
-            {
-                CScrew referenceScrew = new CScrew("TEK", "14");
-                CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
-                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
-                CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
-                CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+        //public void CreateModelObject()
+        //{
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //    if (vm.ComponentTypeIndex == 0) // Cross-sections
+        //    {
+        //        switch ((ESerieTypeCrSc_FormSteel) vm.ComponentSerieIndex)
+        //        {
+        //            case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
+        //                {
+        //                    crsc = new CCrSc_3_10075_BOX(0, fh, fb, ft, cComponentColor); // BOX
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_Z:
+        //                {
+        //                    crsc = new CCrSc_3_Z(0, fh, fb_fl, fc_lip1, ft, cComponentColor); // BOX
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_C_single:
+        //                {
+        //                    if (vm.ComponentIndex < 3) // C270
+        //                        crsc = new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor);
+        //                    else
+        //                        crsc = new CCrSc_3_50020_C(0, fh, fb, ft, cComponentColor);
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+        //                {
+        //                    crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(0, fh, fb, fc_lip1, ft, cComponentColor);
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+        //                {
+        //                    crsc = new CCrSc_3_270XX_C_NESTED(0, fh, fb, ft, cComponentColor);
+        //                    break;
+        //                }
+        //            case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
+        //                {
+        //                    crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor); // Box
+        //                    break;
+        //                }
+        //            default:
+        //                {
+        //                    // Not implemented
+        //                    break;
+        //                }
+        //        }
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1) // Plates
+        //    {
+        //        CScrew referenceScrew = new CScrew("TEK", "14");
+        //        CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+        //        CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
+        //        CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+        //        CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
-                bool bUseAdditionalConnectors = true;
-                int iNumberOfAdditionalConnectorsInCorner = 4;
-                int iConnectorNumberInCircleSeuence = 20;
+        //        bool bUseAdditionalConnectors = true;
+        //        int iNumberOfAdditionalConnectorsInCorner = 4;
+        //        int iConnectorNumberInCircleSeuence = 20;
 
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-                CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
-                CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 15, 2, 0.0f, 0.0f, 0.05f, 0.04f, 15, 2, 0.1f, 0.5f, 0.04f, 0.04f);
-                CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+        //        CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+        //        CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+        //        CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.0f, 0.0f, 0.07f, 0.05f, 15, 3, 0.1f, 0.5f, 0.04f, 0.04f);
+        //        CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 15, 2, 0.0f, 0.0f, 0.05f, 0.04f, 15, 2, 0.1f, 0.5f, 0.04f, 0.04f);
+        //        CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee2 = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
 
-                switch ((ESerieTypePlate) vm.ComponentSerieIndex)
-                {
-                    case ESerieTypePlate.eSerie_B:
-                        {
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 , screwArrangement_BB_BG, true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_L:
-                        {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement_ForL, true); // L
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_LL:
-                        {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_F:
-                        {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_Q:
-                        {
-                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_T:
-                        {
-                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_Y:
-                        {
-                            plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_J:
-                        {
-                            // TODO - Ondrej
-                            // TODO - Mato nerozumiem,co tu mam robit/opravit
+        //        switch ((ESerieTypePlate) vm.ComponentSerieIndex)
+        //        {
+        //            case ESerieTypePlate.eSerie_B:
+        //                {
+        //                    plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 , screwArrangement_BB_BG, true); // B - TODO pridat vsetky typy, zatial len BB a BG, pridat do databazy rozmery dier
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_L:
+        //                {
+        //                    plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement_ForL, true); // L
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_LL:
+        //                {
+        //                    plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_F:
+        //                {
+        //                    plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_Q:
+        //                {
+        //                    plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Q_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // Q
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_T:
+        //                {
+        //                    plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_T_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, true); // T
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_Y:
+        //                {
+        //                    plate = new CConCom_Plate_Q_T_Y(dcomponents.arr_Serie_Y_Names[0], controlpoint, fb, fh, fl, fl2, ft, iNumberofHoles, true); // Y
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_J:
+        //                {
+        //                    // TODO - Ondrej
+        //                    // TODO - Mato nerozumiem,co tu mam robit/opravit
 
-                            // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
-                            // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
-                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
-                            // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
+        //                    // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
+        //                    // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
+        //                    // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
+        //                    // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
 
-                            if (vm.ComponentIndex == 0) // JA
-                            {
-                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
-                                if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
-                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
-                            }
-                            else //if (vm.ComponentIndex == 1) // JB
-                            {
-                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
-                                if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true);
-                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle2, true);
-                            }
-                            break;
-                        }
-                    case ESerieTypePlate.eSerie_K:
-                        {
-                            // TODO - Ondrej
-                            // TEMPORARY - vyriesit ako vytvorit plate s roznym typom objektu screwArrangement
-                            // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
-                            // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
+        //                    if (vm.ComponentIndex == 0) // JA
+        //                    {
+        //                        // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
+        //                        if (vm.ScrewArrangementIndex == 0) // Undefined
+        //                            plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
+        //                        else if (vm.ScrewArrangementIndex == 1) // Rectangular
+        //                            plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+        //                        else//(vm.ScrewArrangementIndex == 2) // Circle
+        //                            plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+        //                    }
+        //                    else //if (vm.ComponentIndex == 1) // JB
+        //                    {
+        //                        // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
+        //                        if (vm.ScrewArrangementIndex == 0) // Undefined
+        //                            plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, true);
+        //                        else if (vm.ScrewArrangementIndex == 1) // Rectangular
+        //                            plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+        //                        else//(vm.ScrewArrangementIndex == 2) // Circle
+        //                            plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle2, true);
+        //                    }
+        //                    break;
+        //                }
+        //            case ESerieTypePlate.eSerie_K:
+        //                {
+        //                    // TODO - Ondrej
+        //                    // TEMPORARY - vyriesit ako vytvorit plate s roznym typom objektu screwArrangement
+        //                    // Plate KA ma rozne konstruktory podla typu arrangement ale bolo by krajsie ak by bol konstruktor len jeden s obecnym CScrewArrangement
+        //                    // a v objekte plate by sa identifikovalo o ktory potomok CScrewArrangement sa jedna a ako s nim nalozit
 
-                            // TODO - Ondrej
-                            // TODO - Mato nerozumiem,co tu mam robit/opravit
+        //                    // TODO - Ondrej
+        //                    // TODO - Mato nerozumiem,co tu mam robit/opravit
 
-                            // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
-                            // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
-                            // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
-                            // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
+        //                    // To Ondrej - pre Plates J a K mame zatial 3 mozne typy screwArrangements (undefined, circle, rectangular)
+        //                    // Momentalne to mam pre JA/JB a KA spravene tak ze maju 3 konstruktory, jeden undefined, dalsi pre circle, a dalsi pre rectangular
+        //                    // Pointa je, ze mam pre J - 2 bloky if/else a pre K - 5 blokov kodu if/else, do ktorych by som (tak to som zacal u JA/JB a KA) rozkopiroval dalsi if/else s troma blokmi
+        //                    // Urcite mi poradis ako by to malo byt krajsie, najradsej by som mal u plate len jeden konstruktor s obecnym screwArrangement a az v ramci triedy JA, JB, KA, KB, KC, KD, KE sa rozhodoval akeho je typu a ako ho pouzit a ktore funkcie zavolat
 
 
-                            // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
-                            if (vm.ComponentIndex == 0) // KA
-                            {
-                                // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
-                                if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, true);
-                                if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
-                                else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
-                            }
+        //                    // Temporary for KA, potrebujeme vyriesit obecne pre vsetky plates
+        //                    if (vm.ComponentIndex == 0) // KA
+        //                    {
+        //                        // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
+        //                        if (vm.ScrewArrangementIndex == 0) // Undefined
+        //                            plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, true);
+        //                        if (vm.ScrewArrangementIndex == 1) // Rectangular
+        //                            plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementRectangleKnee2, true);
+        //                        else//(vm.ScrewArrangementIndex == 2) // Circle
+        //                            plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0, 0, 0, screwArrangementCircle, true);
+        //                    }
 
-                            /*
-                            if (vm.ComponentIndex == 0) // KA
-                                plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
-                            else */if (vm.ComponentIndex == 1)
-                                plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, screwArrangementCircle2, true);
-                            else if (vm.ComponentIndex == 2)
-                                plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
-                            else if (vm.ComponentIndex == 3)
-                                plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
-                            else
-                                plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
-                            break;
-                        }
-                    default:
-                        {
-                            // Not implemented
-                            break;
-                        }
-                }
-            }
-            else
-            {
-                screw = new CScrew("TEK", sGauge_Screw);
-            }
-        }
+        //                    /*
+        //                    if (vm.ComponentIndex == 0) // KA
+        //                        plate = new CConCom_Plate_KA(dcomponents.arr_Serie_K_Names[0], controlpoint, fb, fh, fb2, fh2, ft, 0,0,0, screwArrangementRectangleKnee2, true);
+        //                    else */if (vm.ComponentIndex == 1)
+        //                        plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0,0,0, screwArrangementCircle2, true);
+        //                    else if (vm.ComponentIndex == 2)
+        //                        plate = new CConCom_Plate_KC(dcomponents.arr_Serie_K_Names[2], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+        //                    else if (vm.ComponentIndex == 3)
+        //                        plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+        //                    else
+        //                        plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+        //                    break;
+        //                }
+        //            default:
+        //                {
+        //                    // Not implemented
+        //                    break;
+        //                }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        screw = new CScrew("TEK", sGauge_Screw);
+        //    }
+        //}
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
@@ -1362,12 +1387,19 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
                         // Circle screws
-                        if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name)) arrangementTemp.INumberOfCirclesInGroup = int.Parse(itemStr.Value);
-                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
-                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(itemStr.Value) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+                        if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name))
+                        {
+                            int numberOfCirclesInGroup = int.Parse(itemStr.Value);
+                            //arrangementTemp.INumberOfCirclesInGroup = int.Parse(itemStr.Value);
+                            arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
+                        }
 
-                        // Corner screws
                         
+
+                        //if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+                        //if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(itemStr.Value) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+
+                        // Corner screws                        
                         if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(itemStr.Value);
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1383,7 +1415,7 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                     }
                     
-                    arrangementTemp.UpdateArrangmentData();
+                    //arrangementTemp.UpdateArrangmentData();
                     plate.ScrewArrangement = arrangementTemp;
                     RedrawComponentIn2D();
                 }

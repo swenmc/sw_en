@@ -13,6 +13,25 @@ namespace BaseClasses
     public class CScrewArrangementCircleApexOrKnee : CScrewArrangement
     {
         private int m_iHolesInCirclesNumber; // Pocet skrutiek v dvoch kruhoch
+        private float m_fCrscRafterDepth;
+        private float m_fCrscWebStraightDepth;
+        private float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
+        private int m_iNumberOfGroupsInJoint = 2; // Pocet kruhov na jednom plechu
+        private int m_iNumberOfCirclesInGroup = 1; // pocet kruhov v jednej skupine (group)
+        private int m_iNumberOfCircleSequencesInGroup = 2; // pocet polkruhov v "kruhu" na jednom plechu (sekvencia - sequence)
+        private float[] m_HolesCenterRadii; // Array of screw radii in one group related to the screw arrangement centroid
+        private int iNumberOfCircleScrewsSequencesInOneGroup = 2;
+
+        // Corner screws
+        private bool m_bUseAdditionalCornerScrews; // Pocet skrutiek v rohoch - celkovo 4 skrutky * 4 rohy * 2 kruhy
+        private int m_iAdditionalConnectorNumberInRow_xDirection;
+        private int m_iAdditionalConnectorNumberInColumn_yDirection;
+        private int m_iAdditionalConnectorNumber;
+        private int m_iAdditionalConnectorInCornerNumber;
+        private float m_fAdditionalScrewsDistance_x;
+        private float m_fAdditionalScrewsDistance_y;
+
+        #region properties
 
         public int IHolesInCirclesNumber
         {
@@ -26,9 +45,6 @@ namespace BaseClasses
                 m_iHolesInCirclesNumber = value;
             }
         }
-
-        private float m_fCrscRafterDepth;
-
         public float FCrscRafterDepth
         {
             get
@@ -41,9 +57,6 @@ namespace BaseClasses
                 m_fCrscRafterDepth = value;
             }
         }
-
-        private float m_fCrscWebStraightDepth;
-
         public float FCrscWebStraightDepth
         {
             get
@@ -56,9 +69,6 @@ namespace BaseClasses
                 m_fCrscWebStraightDepth = value;
             }
         }
-
-        float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
-
         public float FStiffenerSize
         {
             get
@@ -70,11 +80,7 @@ namespace BaseClasses
             {
                 m_fStiffenerSize = value;
             }
-        }
-
-
-        private int m_iNumberOfGroupsInJoint = 2; // Pocet kruhov na jednom plechu
-
+        }        
         public int INumberOfGroupsInJoint
         {
             get
@@ -87,9 +93,6 @@ namespace BaseClasses
                 m_iNumberOfGroupsInJoint = value;
             }
         }
-
-        int m_iNumberOfCirclesInGroup = 1; // pocet kruhov v jednej skupine (group)
-
         public int INumberOfCirclesInGroup
         {
             get
@@ -102,9 +105,6 @@ namespace BaseClasses
                 m_iNumberOfCirclesInGroup = value;
             }
         }
-
-        int m_iNumberOfCircleSequencesInGroup = 2; // pocet polkruhov v "kruhu" na jednom plechu (sekvencia - sequence)
-
         public int INumberOfCircleSequencesInGroup
         {
             get
@@ -117,9 +117,6 @@ namespace BaseClasses
                 m_iNumberOfCircleSequencesInGroup = value;
             }
         }
-
-        private float[] m_HolesCenterRadii; // Array of screw radii in one group related to the screw arrangement centroid
-
         public float[] HolesCenterRadii
         {
             get
@@ -132,43 +129,6 @@ namespace BaseClasses
                 m_HolesCenterRadii = value;
             }
         }
-
-        // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-        public int iNumberOfCircleScrewsSequencesInOneGroup = 2;
-
-        private int iNumberOfScrewsInOneHalfCircleSequence_SQ1; // pocet skrutiek v "polkruhu"
-
-        public int INumberOfScrewsInOneHalfCircleSequence_SQ1
-        {
-            get
-            {
-                return iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-            }
-
-            set
-            {
-                iNumberOfScrewsInOneHalfCircleSequence_SQ1 = value;
-            }
-        }
-
-        private float m_fRadius_SQ1;
-
-        public float FRadius_SQ1
-        {
-            get
-            {
-                return m_fRadius_SQ1;
-            }
-
-            set
-            {
-                m_fRadius_SQ1 = value;
-            }
-        }
-
-        // Corner screws
-        private bool m_bUseAdditionalCornerScrews; // Pocet skrutiek v rohoch - celkovo 4 skrutky * 4 rohy * 2 kruhy
-
         public bool BUseAdditionalCornerScrews
         {
             get
@@ -181,9 +141,6 @@ namespace BaseClasses
                 m_bUseAdditionalCornerScrews = value;
             }
         }
-
-        private int m_iAdditionalConnectorNumberInRow_xDirection;
-
         public int IAdditionalConnectorNumberInRow_xDirection
         {
             get
@@ -196,9 +153,6 @@ namespace BaseClasses
                 m_iAdditionalConnectorNumberInRow_xDirection = value;
             }
         }
-
-        private int m_iAdditionalConnectorNumberInColumn_yDirection;
-
         public int IAdditionalConnectorNumberInColumn_yDirection
         {
             get
@@ -211,9 +165,6 @@ namespace BaseClasses
                 m_iAdditionalConnectorNumberInColumn_yDirection = value;
             }
         }
-
-        private int m_iAdditionalConnectorNumber;
-
         public int IAdditionalConnectorNumber
         {
             get
@@ -226,9 +177,6 @@ namespace BaseClasses
                 m_iAdditionalConnectorNumber = value;
             }
         }
-
-        private int m_iAdditionalConnectorInCornerNumber;
-
         public int IAdditionalConnectorInCornerNumber
         {
             get
@@ -241,9 +189,6 @@ namespace BaseClasses
                 m_iAdditionalConnectorInCornerNumber = value;
             }
         }
-
-        private float m_fAdditionalScrewsDistance_x;
-
         public float FAdditionalScrewsDistance_x
         {
             get
@@ -256,9 +201,6 @@ namespace BaseClasses
                 m_fAdditionalScrewsDistance_x = value;
             }
         }
-
-        private float m_fAdditionalScrewsDistance_y;
-
         public float FAdditionalScrewsDistance_y
         {
             get
@@ -272,6 +214,21 @@ namespace BaseClasses
             }
         }
 
+        public int INumberOfCircleScrewsSequencesInOneGroup
+        {
+            get
+            {
+                return iNumberOfCircleScrewsSequencesInOneGroup;
+            }
+
+            set
+            {
+                iNumberOfCircleScrewsSequencesInOneGroup = value;
+            }
+        }
+
+        #endregion
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public CScrewArrangementCircleApexOrKnee()
@@ -279,279 +236,322 @@ namespace BaseClasses
 
         public CScrewArrangementCircleApexOrKnee(
             CScrew referenceScrew_temp,
-            float fCrscRafterDepth_temp,
-            float fCrscWebStraightDepth_temp,
-            float fStiffenerSize_temp,
-            int iNumberOfCirclesInGroup_temp,
-            int iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp,
-            float fRadius_SQ1_temp,
-            bool bUseAdditionalCornerScrews_temp,
-            int iAdditionalConnectorInCornerNumber_temp,
-            float fAdditionalScrewsDistance_x_temp,
-            float fAdditionalScrewsDistance_y_temp)
+            float fCrscRafterDepth,
+            float fCrscWebStraightDepth,
+            float fStiffenerSize,
+            int iNumberOfCirclesInGroup,
+            List<CScrewSequenceGroup> screwSequenceGroup,
+            //int iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp,
+            //float fRadius_SQ1_temp,
+            bool bUseAdditionalCornerScrews,
+            int iAdditionalConnectorInCornerNumber,
+            float fAdditionalScrewsDistance_x,
+            float fAdditionalScrewsDistance_y)
         {
             referenceScrew = referenceScrew_temp;
-            FCrscRafterDepth = fCrscRafterDepth_temp;
-            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
-            FStiffenerSize = fStiffenerSize_temp;
+            FCrscRafterDepth = fCrscRafterDepth;
+            FCrscWebStraightDepth = fCrscWebStraightDepth;
+            FStiffenerSize = fStiffenerSize;
 
             // Circle
             // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
-            INumberOfCirclesInGroup = iNumberOfCirclesInGroup_temp; // pocet kruhov
-            INumberOfScrewsInOneHalfCircleSequence_SQ1 = iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp; // Pocet v segmente kruhu
-            FRadius_SQ1 = fRadius_SQ1_temp;
+            INumberOfCirclesInGroup = iNumberOfCirclesInGroup; // pocet kruhov
+            //INumberOfScrewsInOneHalfCircleSequence_SQ1 = iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp; // Pocet v segmente kruhu
+            //FRadius_SQ1 = fRadius_SQ1_temp;
 
             // Corner screws parameters
-            BUseAdditionalCornerScrews = bUseAdditionalCornerScrews_temp;
-            IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber_temp; // Spolu v jednom rohu
+            BUseAdditionalCornerScrews = bUseAdditionalCornerScrews;
+            IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber; // Spolu v jednom rohu
             IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
             IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
-            FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x_temp;
-            FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y_temp;
-
-            // TODO -  Ondrej zadefinovane 2 skupiny (spoj dvoch prvkov), teoreticky ich moze byt viac (napr. pre spoj 3 nosnikov v jednej plate), vytvorit univerzalny system pre rozny pocet groups
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups, each for the connection of one member in joint
-
-            UpdateArrangmentData();
-        }
-
-        public void UpdateArrangmentData()
-        {
-            ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2);
+            FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x;
+            FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y;
 
             // TODO -  Ondrej zadefinovane 2 skupiny (spoj dvoch prvkov), teoreticky ich moze byt viac (napr. pre spoj 3 nosnikov v jednej plate), vytvorit univerzalny system pre rozny pocet groups
 
-            // GROUP 1
-            ListOfSequenceGroups.Add(new CScrewSequenceGroup());
+            ListOfSequenceGroups = screwSequenceGroup;
 
-            ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 2;
-
-            CScrewHalfCircleSequence seq1 = new CScrewHalfCircleSequence();
-            seq1.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-            seq1.Radius = FRadius_SQ1;
-            ListOfSequenceGroups[0].ListScrewSequence.Add(seq1);
-
-            CScrewHalfCircleSequence seq2 = new CScrewHalfCircleSequence();
-            seq2.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-            seq2.Radius = FRadius_SQ1;
-            ListOfSequenceGroups[0].ListScrewSequence.Add(seq2);
-
-            //---------------------------------------------------------------------------------------------------------------------------------
-            // Temporary 2 circles in group
-            // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
-            if (INumberOfCirclesInGroup == 2)
-            {
-                ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 4;
-
-                // TODO - Ondrej - temporary, zadavat polomer a poce skrutiek dynamicky v GUI
-                int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
-                float FRadius_SQ2 = 0.7f * FRadius_SQ1;
-
-                CScrewHalfCircleSequence seq12 = new CScrewHalfCircleSequence();
-                seq12.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
-                seq12.Radius = FRadius_SQ2;
-                ListOfSequenceGroups[0].ListScrewSequence.Add(seq12);
-
-                CScrewHalfCircleSequence seq22 = new CScrewHalfCircleSequence();
-                seq22.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
-                seq22.Radius = FRadius_SQ2;
-                ListOfSequenceGroups[0].ListScrewSequence.Add(seq22);
-            }
-            //---------------------------------------------------------------------------------------------------------------------------------
-
-            if (BUseAdditionalCornerScrews) // 4 corners in one group
-            {
-                ListOfSequenceGroups[0].NumberOfRectangularSequences = 4;
-
-                CScrewRectSequence seq_Corner1 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner1.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner1.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner1);
-
-                CScrewRectSequence seq_Corner2 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner2.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner2.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner2);
-
-                CScrewRectSequence seq_Corner3 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner3.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner3.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner3);
-
-                CScrewRectSequence seq_Corner4 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner4.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner4.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner4);
-            }
-
-            // GROUP 2
-            ListOfSequenceGroups.Add(new CScrewSequenceGroup());
-
-            ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 2;
-
-            CScrewHalfCircleSequence seq3 = new CScrewHalfCircleSequence();
-            seq3.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-            seq3.Radius = FRadius_SQ1;
-            ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
-
-            CScrewHalfCircleSequence seq4 = new CScrewHalfCircleSequence();
-            seq4.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
-            seq4.Radius = FRadius_SQ1;
-            ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
-
-            //---------------------------------------------------------------------------------------------------------------------------------
-            // Temporary 2 circles in group
-            // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
-            if (INumberOfCirclesInGroup == 2)
-            {
-                // TODO - Ondrej - temporary, zadavat polomer a poce skrutiek dynamicky v GUI
-                int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
-                float FRadius_SQ2 = 0.7f * FRadius_SQ1;
-
-                ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 4;
-
-                CScrewHalfCircleSequence seq32 = new CScrewHalfCircleSequence();
-                seq32.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
-                seq32.Radius = FRadius_SQ2;
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq32);
-
-                CScrewHalfCircleSequence seq42 = new CScrewHalfCircleSequence();
-                seq42.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
-                seq42.Radius = FRadius_SQ2;
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq42);
-            }
-            //---------------------------------------------------------------------------------------------------------------------------------
-
-            if (BUseAdditionalCornerScrews) // 4 corners in one group
-            {
-                ListOfSequenceGroups[1].NumberOfRectangularSequences = 4;
-
-                CScrewRectSequence seq_Corner1 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner1.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner1.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner1);
-
-                CScrewRectSequence seq_Corner2 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner2.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner2.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner2);
-
-                CScrewRectSequence seq_Corner3 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner3.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner3.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner3);
-
-                CScrewRectSequence seq_Corner4 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
-                seq_Corner4.DistanceOfPointsX = FAdditionalScrewsDistance_x;
-                seq_Corner4.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner4);
-            }
-
-            // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
-            IHolesNumber = 0;
-
-            foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
-            {
-                foreach (CScrewSequence seq in group.ListScrewSequence)
-                    IHolesNumber += seq.INumberOfScrews;
-            }
-
-            HolesCentersPoints2D = new Point[IHolesNumber];
-            arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+            //UpdateArrangmentData();
         }
 
-        public void Get_ScrewGroup_IncludingAdditionalScrews(int iNumberOfCirclesInGroup,
-            float fx_c,
-            float fy_c,
-            float fRotation_rad,
-            ref CScrewSequenceGroup group)
+        public void NumberOfCirclesInGroup_Updated(int newNumberOfCirclesInGroup)
         {
-            float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
-            float fAdditionalMargin = 0.01f;
-
-            if (group.NumberOfHalfCircleSequences > 0)
+            if (newNumberOfCirclesInGroup < 0) return;
+            if (newNumberOfCirclesInGroup < INumberOfCirclesInGroup)
             {
-                float fAngle_seq_rotation_init_point_deg_SQ1 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ1) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
-                float fAngle_interval_deg_SQ1 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ1); // Angle between sequence center, first and last point in the sequence
+                CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
+                if (gr == null) return;
+                int actualNumOfScrewSequences = gr.ListScrewSequence.Count;
 
-                // Half circle sequence
-                float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, fAngle_seq_rotation_init_point_deg_SQ1, fAngle_seq_rotation_init_point_deg_SQ1 + fAngle_interval_deg_SQ1, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
-                float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg_SQ1, 180 + fAngle_seq_rotation_init_point_deg_SQ1 + fAngle_interval_deg_SQ1, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
-
-                // TODO - docasne, previest pole float na pole Points
-                Point[] fSequenceTop = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp);
-                Point[] fSequenceBottom = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp);
-
-                group.ListScrewSequence[0].HolesCentersPoints = fSequenceTop;
-                group.ListScrewSequence[1].HolesCentersPoints = fSequenceBottom;
-
-                //---------------------------------------------------------------------------------------------------------------------------------
-                // Temporary 2 circles in group
-                // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
-                if (iNumberOfCirclesInGroup == 2)
+                foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
                 {
-                    // Polomer pre druhy kruh je natvrdo 0,7 * r pre prvy kruh, pocet skrutiek v polkruhu je o 5ks mensi, obe hodnoty je potrebne prevziat z GUI, v GUI by malo byt mozne dynamicky zadavat podla poctu zvolenych kruhov radiusy a pocty skrutiek v pre kazdy radius
-                    float FRadius_SQ2 = 0.7f * FRadius_SQ1;
-                    int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
-
-                    float fAngle_seq_rotation_init_point_deg_SQ2 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ2) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
-                    float fAngle_interval_deg_SQ2 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ2); // Angle between sequence center, first and last point in the sequence
-
-                    // Half circle sequence
-                    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, fAngle_seq_rotation_init_point_deg_SQ2, fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
-                    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
-
-                    // TODO - docasne, previest pole float na pole Points
-                    Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp2);
-                    Point[] fSequenceBottom2 = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp2);
-
-                    group.ListScrewSequence[2].HolesCentersPoints = fSequenceTop2;
-                    group.ListScrewSequence[3].HolesCentersPoints = fSequenceBottom2;
+                    g.ListScrewSequence.RemoveRange(newNumberOfCirclesInGroup - 1, (actualNumOfScrewSequences - newNumberOfCirclesInGroup));
                 }
-                //---------------------------------------------------------------------------------------------------------------------------------
+            }
+            else if (newNumberOfCirclesInGroup > INumberOfCirclesInGroup)
+            {
+                int numToAdd = newNumberOfCirclesInGroup - INumberOfCirclesInGroup;
+                for (int i = 0; i < numToAdd; i++)
+                {
+                    CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
+                    if (gr == null) return;
+
+                    CScrewSequence screwSequence = gr.ListScrewSequence.FirstOrDefault(p => p is CScrewHalfCircleSequence);
+                    if (screwSequence == null)
+                    {
+                        CScrewHalfCircleSequence screwHalfCircleSequence = new CScrewHalfCircleSequence();
+                        screwHalfCircleSequence.INumberOfScrews = 20;
+                        screwHalfCircleSequence.Radius = 1;
+                        screwSequence = screwHalfCircleSequence;
+                    }
+                    foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
+                    {
+                        g.ListScrewSequence.Add(screwSequence);
+                    }
+                }
             }
 
-            // Add addtional point the sequences
-            if (BUseAdditionalCornerScrews && group.NumberOfRectangularSequences > 0)
-            {
-                // For square
-                if (IAdditionalConnectorNumberInRow_xDirection == 0 && IAdditionalConnectorNumberInColumn_yDirection == 0)
-                {
-                    IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber);
-                    IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber);
-                }
-
-                // Additional corner connectors
-                // Top part of group
-                Point[] cornerConnectorsInGroupTopLeft = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FRadius_SQ1, FRadius_SQ1 - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
-                float fDistanceBetweenLeftAndRightReferencePoint = 2 * FRadius_SQ1 - (IAdditionalConnectorNumberInRow_xDirection - 1) * FAdditionalScrewsDistance_x;
-                Point[] cornerConnectorsInGroupTopRight = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FRadius_SQ1 + fDistanceBetweenLeftAndRightReferencePoint, FRadius_SQ1 - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
-
-                // Bottom part of group
-                Point[] cornerConnectorsInGroupBottomLeft = new Point[cornerConnectorsInGroupTopLeft.Length];
-                Point[] cornerConnectorsInGroupBottomRight = new Point[cornerConnectorsInGroupTopRight.Length];
-
-                // Copy items
-                cornerConnectorsInGroupTopLeft.CopyTo(cornerConnectorsInGroupBottomLeft, 0);
-                cornerConnectorsInGroupTopRight.CopyTo(cornerConnectorsInGroupBottomRight, 0);
-
-                // Rotate bottom part
-                Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref cornerConnectorsInGroupBottomLeft);
-                Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref cornerConnectorsInGroupBottomRight);
-
-                // Set group parameters
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 0].HolesCentersPoints = cornerConnectorsInGroupTopLeft;
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 1].HolesCentersPoints = cornerConnectorsInGroupTopRight;
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 2].HolesCentersPoints = cornerConnectorsInGroupBottomLeft;
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 3].HolesCentersPoints = cornerConnectorsInGroupBottomRight;
-            }
-
-            // Set radii of connectors / screws in the connection
-            group.Get_RadiiOfScrewsInGroup();
-
-            group.TransformGroup(new Point(fx_c, fy_c), fAngle_seq_rotation_deg);
+            INumberOfCirclesInGroup = newNumberOfCirclesInGroup;
         }
+
+        //public void UpdateArrangmentData()
+        //{
+        //    ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
+        //    ListOfSequenceGroups = new List<CScrewSequenceGroup>();
+
+
+        //    // TODO -  Ondrej zadefinovane 2 skupiny (spoj dvoch prvkov), teoreticky ich moze byt viac (napr. pre spoj 3 nosnikov v jednej plate), vytvorit univerzalny system pre rozny pocet groups
+
+        //    // GROUP 1
+        //    ListOfSequenceGroups.Add(new CScrewSequenceGroup());
+
+        //    ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 2;
+
+        //    CScrewHalfCircleSequence seq1 = new CScrewHalfCircleSequence();
+        //    seq1.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+        //    seq1.Radius = FRadius_SQ1;
+        //    ListOfSequenceGroups[0].ListScrewSequence.Add(seq1);
+
+        //    CScrewHalfCircleSequence seq2 = new CScrewHalfCircleSequence();
+        //    seq2.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+        //    seq2.Radius = FRadius_SQ1;
+        //    ListOfSequenceGroups[0].ListScrewSequence.Add(seq2);
+
+        //    //---------------------------------------------------------------------------------------------------------------------------------
+        //    // Temporary 2 circles in group
+        //    // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
+        //    if (INumberOfCirclesInGroup == 2)
+        //    {
+        //        ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 4;
+
+        //        // TODO - Ondrej - temporary, zadavat polomer a poce skrutiek dynamicky v GUI
+        //        int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
+        //        float FRadius_SQ2 = 0.7f * FRadius_SQ1;
+
+        //        CScrewHalfCircleSequence seq12 = new CScrewHalfCircleSequence();
+        //        seq12.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+        //        seq12.Radius = FRadius_SQ2;
+        //        ListOfSequenceGroups[0].ListScrewSequence.Add(seq12);
+
+        //        CScrewHalfCircleSequence seq22 = new CScrewHalfCircleSequence();
+        //        seq22.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+        //        seq22.Radius = FRadius_SQ2;
+        //        ListOfSequenceGroups[0].ListScrewSequence.Add(seq22);
+        //    }
+        //    //---------------------------------------------------------------------------------------------------------------------------------
+
+        //    if (BUseAdditionalCornerScrews) // 4 corners in one group
+        //    {
+        //        ListOfSequenceGroups[0].NumberOfRectangularSequences = 4;
+
+        //        CScrewRectSequence seq_Corner1 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner1.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner1.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner1);
+
+        //        CScrewRectSequence seq_Corner2 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner2.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner2.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner2);
+
+        //        CScrewRectSequence seq_Corner3 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner3.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner3.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner3);
+
+        //        CScrewRectSequence seq_Corner4 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner4.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner4.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[0].ListScrewSequence.Add(seq_Corner4);
+        //    }
+
+        //    // GROUP 2
+        //    ListOfSequenceGroups.Add(new CScrewSequenceGroup());
+
+        //    ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 2;
+
+        //    CScrewHalfCircleSequence seq3 = new CScrewHalfCircleSequence();
+        //    seq3.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+        //    seq3.Radius = FRadius_SQ1;
+        //    ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
+
+        //    CScrewHalfCircleSequence seq4 = new CScrewHalfCircleSequence();
+        //    seq4.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ1;
+        //    seq4.Radius = FRadius_SQ1;
+        //    ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
+
+        //    //---------------------------------------------------------------------------------------------------------------------------------
+        //    // Temporary 2 circles in group
+        //    // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
+        //    if (INumberOfCirclesInGroup == 2)
+        //    {
+        //        // TODO - Ondrej - temporary, zadavat polomer a poce skrutiek dynamicky v GUI
+        //        int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
+        //        float FRadius_SQ2 = 0.7f * FRadius_SQ1;
+
+        //        ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 4;
+
+        //        CScrewHalfCircleSequence seq32 = new CScrewHalfCircleSequence();
+        //        seq32.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+        //        seq32.Radius = FRadius_SQ2;
+        //        ListOfSequenceGroups[1].ListScrewSequence.Add(seq32);
+
+        //        CScrewHalfCircleSequence seq42 = new CScrewHalfCircleSequence();
+        //        seq42.INumberOfScrews = iNumberOfScrewsInOneHalfCircleSequence_SQ2;
+        //        seq42.Radius = FRadius_SQ2;
+        //        ListOfSequenceGroups[1].ListScrewSequence.Add(seq42);
+        //    }
+        //    //---------------------------------------------------------------------------------------------------------------------------------
+
+        //    if (BUseAdditionalCornerScrews) // 4 corners in one group
+        //    {
+        //        ListOfSequenceGroups[1].NumberOfRectangularSequences = 4;
+
+        //        CScrewRectSequence seq_Corner1 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner1.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner1.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner1);
+
+        //        CScrewRectSequence seq_Corner2 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner2.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner2.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner2);
+
+        //        CScrewRectSequence seq_Corner3 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner3.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner3.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner3);
+
+        //        CScrewRectSequence seq_Corner4 = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
+        //        seq_Corner4.DistanceOfPointsX = FAdditionalScrewsDistance_x;
+        //        seq_Corner4.DistanceOfPointsY = FAdditionalScrewsDistance_y;
+        //        ListOfSequenceGroups[1].ListScrewSequence.Add(seq_Corner4);
+        //    }
+
+        //    // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+        //    IHolesNumber = 0;
+
+        //    foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
+        //    {
+        //        foreach (CScrewSequence seq in group.ListScrewSequence)
+        //            IHolesNumber += seq.INumberOfScrews;
+        //    }
+
+        //    HolesCentersPoints2D = new Point[IHolesNumber];
+        //    arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+        //}
+
+        //public void Get_ScrewGroup_IncludingAdditionalScrews(int iNumberOfCirclesInGroup,
+        //    float fx_c,
+        //    float fy_c,
+        //    float fRotation_rad,
+        //    ref CScrewSequenceGroup group)
+        //{
+        //    float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
+        //    float fAdditionalMargin = 0.01f;
+
+        //    if (group.NumberOfHalfCircleSequences > 0)
+        //    {
+        //        float fAngle_seq_rotation_init_point_deg_SQ1 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ1) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
+        //        float fAngle_interval_deg_SQ1 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ1); // Angle between sequence center, first and last point in the sequence
+
+        //        // Half circle sequence
+        //        float[,] fSequenceTop_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, fAngle_seq_rotation_init_point_deg_SQ1, fAngle_seq_rotation_init_point_deg_SQ1 + fAngle_interval_deg_SQ1, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+        //        float[,] fSequenceBottom_temp = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ1, 180 + fAngle_seq_rotation_init_point_deg_SQ1, 180 + fAngle_seq_rotation_init_point_deg_SQ1 + fAngle_interval_deg_SQ1, iNumberOfScrewsInOneHalfCircleSequence_SQ1, false);
+
+        //        // TODO - docasne, previest pole float na pole Points
+        //        Point[] fSequenceTop = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp);
+        //        Point[] fSequenceBottom = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp);
+
+        //        group.ListScrewSequence[0].HolesCentersPoints = fSequenceTop;
+        //        group.ListScrewSequence[1].HolesCentersPoints = fSequenceBottom;
+
+        //        //---------------------------------------------------------------------------------------------------------------------------------
+        //        // Temporary 2 circles in group
+        //        // TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
+        //        if (iNumberOfCirclesInGroup == 2)
+        //        {
+        //            // Polomer pre druhy kruh je natvrdo 0,7 * r pre prvy kruh, pocet skrutiek v polkruhu je o 5ks mensi, obe hodnoty je potrebne prevziat z GUI, v GUI by malo byt mozne dynamicky zadavat podla poctu zvolenych kruhov radiusy a pocty skrutiek v pre kazdy radius
+        //            float FRadius_SQ2 = 0.7f * FRadius_SQ1;
+        //            int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
+
+        //            float fAngle_seq_rotation_init_point_deg_SQ2 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ2) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
+        //            float fAngle_interval_deg_SQ2 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ2); // Angle between sequence center, first and last point in the sequence
+
+        //            // Half circle sequence
+        //            float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, fAngle_seq_rotation_init_point_deg_SQ2, fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
+        //            float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
+
+        //            // TODO - docasne, previest pole float na pole Points
+        //            Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp2);
+        //            Point[] fSequenceBottom2 = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp2);
+
+        //            group.ListScrewSequence[2].HolesCentersPoints = fSequenceTop2;
+        //            group.ListScrewSequence[3].HolesCentersPoints = fSequenceBottom2;
+        //        }
+        //        //---------------------------------------------------------------------------------------------------------------------------------
+        //    }
+
+        //    // Add addtional point the sequences
+        //    if (BUseAdditionalCornerScrews && group.NumberOfRectangularSequences > 0)
+        //    {
+        //        // For square
+        //        if (IAdditionalConnectorNumberInRow_xDirection == 0 && IAdditionalConnectorNumberInColumn_yDirection == 0)
+        //        {
+        //            IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber);
+        //            IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber);
+        //        }
+
+        //        // Additional corner connectors
+        //        // Top part of group
+        //        Point[] cornerConnectorsInGroupTopLeft = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FRadius_SQ1, FRadius_SQ1 - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+        //        float fDistanceBetweenLeftAndRightReferencePoint = 2 * FRadius_SQ1 - (IAdditionalConnectorNumberInRow_xDirection - 1) * FAdditionalScrewsDistance_x;
+        //        Point[] cornerConnectorsInGroupTopRight = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FRadius_SQ1 + fDistanceBetweenLeftAndRightReferencePoint, FRadius_SQ1 - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+
+        //        // Bottom part of group
+        //        Point[] cornerConnectorsInGroupBottomLeft = new Point[cornerConnectorsInGroupTopLeft.Length];
+        //        Point[] cornerConnectorsInGroupBottomRight = new Point[cornerConnectorsInGroupTopRight.Length];
+
+        //        // Copy items
+        //        cornerConnectorsInGroupTopLeft.CopyTo(cornerConnectorsInGroupBottomLeft, 0);
+        //        cornerConnectorsInGroupTopRight.CopyTo(cornerConnectorsInGroupBottomRight, 0);
+
+        //        // Rotate bottom part
+        //        Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref cornerConnectorsInGroupBottomLeft);
+        //        Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref cornerConnectorsInGroupBottomRight);
+
+        //        // Set group parameters
+        //        group.ListScrewSequence[group.NumberOfHalfCircleSequences + 0].HolesCentersPoints = cornerConnectorsInGroupTopLeft;
+        //        group.ListScrewSequence[group.NumberOfHalfCircleSequences + 1].HolesCentersPoints = cornerConnectorsInGroupTopRight;
+        //        group.ListScrewSequence[group.NumberOfHalfCircleSequences + 2].HolesCentersPoints = cornerConnectorsInGroupBottomLeft;
+        //        group.ListScrewSequence[group.NumberOfHalfCircleSequences + 3].HolesCentersPoints = cornerConnectorsInGroupBottomRight;
+        //    }
+
+        //    // Set radii of connectors / screws in the connection
+        //    group.Get_RadiiOfScrewsInGroup();
+
+        //    group.TransformGroup(new Point(fx_c, fy_c), fAngle_seq_rotation_deg);
+        //}
 
         public Point[] GetAdditionaConnectorsCoordinatesInOneSequence(Point refPoint,
             int iNumberOfPointsInXDirection,
@@ -577,14 +577,14 @@ namespace BaseClasses
             float fy_c2 = fy_c1;
 
             // Left side
-            CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fSlope_rad, ref group1);
-            ListOfSequenceGroups[0] = group1;
+            //CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
+            //Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fSlope_rad, ref group1);
+            //ListOfSequenceGroups[0] = group1;
 
             // Right side
-            CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // GetMirroredScrewGroupAboutY(group1);
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, -fSlope_rad, ref group2);
-            ListOfSequenceGroups[1] = group2;
+            //CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // GetMirroredScrewGroupAboutY(group1);
+            //Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, -fSlope_rad, ref group2);
+            //ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
             FillArrayOfHolesCentersInWholeArrangement();
@@ -609,14 +609,14 @@ namespace BaseClasses
             float fy_c2 = fxInTopMemberAxis * (float)Math.Sin(fSlope_rad) + ((fhY_1 + fx_c1 * (float)Math.Atan(fSlope_rad)) - (0.5f * FCrscRafterDepth / (float)Math.Cos(fSlope_rad))); // TODO Dopracovat podla sklonu rafteru
 
             // Bottom side
-            CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
-            ListOfSequenceGroups[0] = group1;
+            //CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
+            //Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
+            //ListOfSequenceGroups[0] = group1;
 
             // Top side
-            CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // Indexovana polozka sa neda predat referenciou
-            Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fSlope_rad, ref group2); // Rotate - Roof Slope
-            ListOfSequenceGroups[1] = group2;
+            //CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // Indexovana polozka sa neda predat referenciou
+            //Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fSlope_rad, ref group2); // Rotate - Roof Slope
+            //ListOfSequenceGroups[1] = group2;
 
             // Fill array of holes centers
             FillArrayOfHolesCentersInWholeArrangement();

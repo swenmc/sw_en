@@ -10,6 +10,8 @@ namespace DATABASE
 {
     public static class CTEKScrewsManager
     {
+        public static Dictionary<string, CTEKScrewProperties> DictTEKScrewProperties;
+
         public static List<CTEKScrewProperties> LoadTEKScrewsProperties()
         {
             CTEKScrewProperties properties = null;
@@ -32,25 +34,54 @@ namespace DATABASE
             return items;
         }
 
-        public static CTEKScrewProperties LoadScrewProperties(string gauge)
+        private static void LoadTEKScrewsPropertiesDictionary()
         {
-            CTEKScrewProperties properties = null;
+            DictTEKScrewProperties = new Dictionary<string, CTEKScrewProperties>();
+            
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TEKScrewsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from TEKScrews WHERE gauge = @gauge", conn);
-                command.Parameters.AddWithValue("@gauge", gauge);
-
+                SQLiteCommand command = new SQLiteCommand("Select * from TEKScrews", conn);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        properties = GetScrewProperties(reader);
+                        CTEKScrewProperties properties = GetScrewProperties(reader);
+                        DictTEKScrewProperties.Add(properties.gauge, properties);
                     }
                 }
             }
-            return properties;
         }
+
+        public static CTEKScrewProperties GetScrewProperties(string gauge)
+        {
+            if (DictTEKScrewProperties == null) LoadTEKScrewsPropertiesDictionary();
+
+            CTEKScrewProperties prop = null;
+            DictTEKScrewProperties.TryGetValue(gauge, out prop);
+
+            return prop;
+        }
+
+        //public static CTEKScrewProperties LoadScrewPropertiesFromDB(string gauge)
+        //{
+        //    CTEKScrewProperties properties = null;
+        //    using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["TEKScrewsSQLiteDB"].ConnectionString))
+        //    {
+        //        conn.Open();
+        //        SQLiteCommand command = new SQLiteCommand("Select * from TEKScrews WHERE gauge = @gauge", conn);
+        //        command.Parameters.AddWithValue("@gauge", gauge);
+
+        //        using (SQLiteDataReader reader = command.ExecuteReader())
+        //        {
+        //            if (reader.Read())
+        //            {
+        //                properties = GetScrewProperties(reader);
+        //            }
+        //        }
+        //    }
+        //    return properties;
+        //}
 
         private static CTEKScrewProperties GetScrewProperties(SQLiteDataReader reader)
         {
