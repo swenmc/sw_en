@@ -271,7 +271,7 @@ namespace BaseClasses
 
             ListOfSequenceGroups = screwSequenceGroup;
 
-            UpdateArrangmentData();
+            UpdateAdditionalCornerScrews();
         }
 
         public void NumberOfCirclesInGroup_Updated(int newNumberOfCirclesInGroup)
@@ -314,7 +314,7 @@ namespace BaseClasses
             INumberOfCirclesInGroup = newNumberOfCirclesInGroup;
         }
 
-        public void UpdateArrangmentData()
+        public void UpdateAdditionalCornerScrews()
         {
             //---------------------------------------------------------------------------------------------------------------------------------
             if (BUseAdditionalCornerScrews) // 4 corners in one group
@@ -443,50 +443,33 @@ namespace BaseClasses
         ref CScrewSequenceGroup group)
         {
             float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
-            float fAdditionalMargin = 0.01f;
+            float fAdditionalMargin = 0.01f; //naco je toto dobre???
 
             if (group.NumberOfHalfCircleSequences > 0)
             {
-
-                foreach (CScrewHalfCircleSequence screwSequence in group.ListScrewSequence)
+                int count = 0;
+                foreach (CScrewSequence screwSequence in group.ListScrewSequence)
                 {
-                    float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / screwSequence.Radius) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
-                    float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); // Angle between sequence center, first and last point in the sequence
+                    if (!(screwSequence is CScrewHalfCircleSequence)) continue;
+                    CScrewHalfCircleSequence circSeq = screwSequence as CScrewHalfCircleSequence;
 
-                    // Half circle sequence
-                    List<Point> fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(screwSequence.Radius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, screwSequence.INumberOfScrews, false);
-                    //List<Point> fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(screwSequence.Radius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, screwSequence.INumberOfScrews, false);
-
-                    screwSequence.HolesCentersPoints = fSequenceTop.ToArray();
-                    //group.ListScrewSequence[1].HolesCentersPoints = fSequenceBottom;
+                    // Input - according to the size of middle sfiffener and circle radius
+                    float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / circSeq.Radius) / MathF.fPI * 180f);
+                    // Angle between sequence center, first and last point in the sequence
+                    float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); 
+                    if (count % 2 == 0)
+                    {
+                        // Half circle sequence
+                        List<Point> fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(circSeq.Radius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, circSeq.INumberOfScrews, false);
+                        screwSequence.HolesCentersPoints = fSequenceTop.ToArray();
+                    }
+                    else
+                    {
+                        List<Point> fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(circSeq.Radius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, circSeq.INumberOfScrews, false);
+                        screwSequence.HolesCentersPoints = fSequenceBottom.ToArray();
+                    }
+                    count++;
                 }
-
-                
-
-                ////---------------------------------------------------------------------------------------------------------------------------------
-                //// Temporary 2 circles in group
-                //// TODO - Ondrej - testovacie data - dva kruhy v jednej skupine zobecnit podla poctu v INumberOfCirclesInGroup
-                //if (iNumberOfCirclesInGroup == 2)
-                //{
-                //    // Polomer pre druhy kruh je natvrdo 0,7 * r pre prvy kruh, pocet skrutiek v polkruhu je o 5ks mensi, obe hodnoty je potrebne prevziat z GUI, v GUI by malo byt mozne dynamicky zadavat podla poctu zvolenych kruhov radiusy a pocty skrutiek v pre kazdy radius
-                //    float FRadius_SQ2 = 0.7f * FRadius_SQ1;
-                //    int iNumberOfScrewsInOneHalfCircleSequence_SQ2 = iNumberOfScrewsInOneHalfCircleSequence_SQ1 - 5;
-
-                //    float fAngle_seq_rotation_init_point_deg_SQ2 = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / FRadius_SQ2) / MathF.fPI * 180f); // Input - according to the size of middle sfiffener and circle radius
-                //    float fAngle_interval_deg_SQ2 = 180 - (2f * fAngle_seq_rotation_init_point_deg_SQ2); // Angle between sequence center, first and last point in the sequence
-
-                //    // Half circle sequence
-                //    float[,] fSequenceTop_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, fAngle_seq_rotation_init_point_deg_SQ2, fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
-                //    float[,] fSequenceBottom_temp2 = Geom2D.GetArcPointCoordArray_CCW_deg(FRadius_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2, 180 + fAngle_seq_rotation_init_point_deg_SQ2 + fAngle_interval_deg_SQ2, iNumberOfScrewsInOneHalfCircleSequence_SQ2, false);
-
-                //    // TODO - docasne, previest pole float na pole Points
-                //    Point[] fSequenceTop2 = Geom2D.GetConvertedFloatToPointArray(fSequenceTop_temp2);
-                //    Point[] fSequenceBottom2 = Geom2D.GetConvertedFloatToPointArray(fSequenceBottom_temp2);
-
-                //    group.ListScrewSequence[2].HolesCentersPoints = fSequenceTop2;
-                //    group.ListScrewSequence[3].HolesCentersPoints = fSequenceBottom2;
-                //}
-                //---------------------------------------------------------------------------------------------------------------------------------
             }
 
             // Add addtional point the sequences

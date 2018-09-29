@@ -582,23 +582,40 @@ namespace PFD
                 int iNumberOfAdditionalConnectorsInCorner = 4;
                 int iConnectorNumberInCircleSeuence = 20;
 
-                List<CScrewSequenceGroup> screwSeqGroups1 = new List<CScrewSequenceGroup>();
-                CScrewSequenceGroup gr = new CScrewSequenceGroup();
-                gr.NumberOfHalfCircleSequences = 2;
-                gr.NumberOfRectangularSequences = 0;
-                gr.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
-                screwSeqGroups1.Add(gr);
-
-                List<CScrewSequenceGroup> screwSeqGroups2 = new List<CScrewSequenceGroup>();
+                List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
+                CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
+                gr1.NumberOfHalfCircleSequences = 2;
+                gr1.NumberOfRectangularSequences = 4;
+                gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                screwSeqGroups.Add(gr1);
                 CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
                 gr2.NumberOfHalfCircleSequences = 2;
-                gr2.NumberOfRectangularSequences = 0;
-                gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f * 0.7f, iConnectorNumberInCircleSeuence - 5));
-                screwSeqGroups2.Add(gr);
-                screwSeqGroups2.Add(gr2);
+                gr2.NumberOfRectangularSequences = 4;
+                gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                screwSeqGroups.Add(gr2);
 
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups1, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
-                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, screwSeqGroups2, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                List<CScrewSequenceGroup> screwSeqGroups2Circles = new List<CScrewSequenceGroup>();
+                CScrewSequenceGroup gr2_1 = new CScrewSequenceGroup();
+                gr2_1.NumberOfHalfCircleSequences = 4;
+                gr2_1.NumberOfRectangularSequences = 4;
+                gr2_1.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                gr2_1.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                gr2_1.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f * 0.7f, iConnectorNumberInCircleSeuence - 5));
+                gr2_1.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f * 0.7f, iConnectorNumberInCircleSeuence - 5));
+                screwSeqGroups2Circles.Add(gr2_1);
+                CScrewSequenceGroup gr2_2 = new CScrewSequenceGroup();
+                gr2_2.NumberOfHalfCircleSequences = 4;
+                gr2_2.NumberOfRectangularSequences = 4;
+                gr2_2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                gr2_2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f, iConnectorNumberInCircleSeuence));
+                gr2_2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f * 0.7f, iConnectorNumberInCircleSeuence - 5));
+                gr2_2.ListScrewSequence.Add(new CScrewHalfCircleSequence(0.25f * 0.7f, iConnectorNumberInCircleSeuence - 5));
+                screwSeqGroups2Circles.Add(gr2_2);                
+
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+                CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, screwSeqGroups2Circles, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
 
                 //CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 //CScrewArrangementCircleApexOrKnee screwArrangementCircle2 = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 2, iConnectorNumberInCircleSeuence, 0.25f, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
@@ -1407,15 +1424,18 @@ namespace PFD
                     else if (item is CComponentParamsViewBool)
                     {
                         CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
-                        if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name)) arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
+                        if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name))
+                        {
+                            arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
+                            arrangementTemp.UpdateAdditionalCornerScrews();
+                        }
                     }
                     else if (item is CComponentParamsViewList)
                     {
                         CComponentParamsViewList itemList = item as CComponentParamsViewList;
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                     }
-                    
-                    //arrangementTemp.UpdateArrangmentData();
+                                        
                     plate.ScrewArrangement = arrangementTemp;
                     RedrawComponentIn2D();
                 }
