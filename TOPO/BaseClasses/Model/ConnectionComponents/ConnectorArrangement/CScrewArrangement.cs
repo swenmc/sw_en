@@ -101,17 +101,19 @@ namespace BaseClasses
         {
             // Fill array of holes centers - whole arrangement
             int iPointIndex = 0;
-            for (int i = 0; i < this.ListOfSequenceGroups.Count; i++) // Add each group
+            for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
             {
-                for (int j = 0; j < this.ListOfSequenceGroups[i].ListScrewSequence.Count; j++) // Add each sequence in group
+                for (int j = 0; j < ListOfSequenceGroups[i].ListScrewSequence.Count; j++) // Add each sequence in group
                 {
-                    for (int k = 0; k < this.ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
+                    if (ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints == null) continue;
+
+                    for (int k = 0; k < ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
                     {
-                        HolesCentersPoints2D[iPointIndex + k].X = this.ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints[k].X;
-                        HolesCentersPoints2D[iPointIndex + k].Y = this.ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints[k].Y;
+                        HolesCentersPoints2D[iPointIndex + k].X = ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints[k].X;
+                        HolesCentersPoints2D[iPointIndex + k].Y = ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints[k].Y;
                     }
 
-                    iPointIndex += this.ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints.Length;
+                    iPointIndex += ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints.Length;
                 }
             }
         }
