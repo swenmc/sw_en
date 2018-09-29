@@ -1426,8 +1426,7 @@ namespace PFD
                         CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
                         if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name))
                         {
-                            arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
-                            arrangementTemp.UpdateAdditionalCornerScrews();
+                            arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;                            
                         }
                     }
                     else if (item is CComponentParamsViewList)
@@ -1437,6 +1436,7 @@ namespace PFD
                     }
                                         
                     plate.ScrewArrangement = arrangementTemp;
+                    plate.UpdatePlateData(plate.ScrewArrangement);
                     RedrawComponentIn2D();
                 }
                 else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)

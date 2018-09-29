@@ -117,5 +117,25 @@ namespace BaseClasses
                 }
             }
         }
+
+
+        public virtual void Calc_HolesCentersCoord2DKneePlate(
+            float fbX_1,
+            float fbX_2,
+            float flZ,
+            float fhY_1,
+            float fSlope_rad)
+        { }
+
+        public virtual void Calc_HolesCentersCoord2DApexPlate(
+            float fbX,
+            float flZ,
+            float fhY_1,
+            float fSlope_rad)
+        { }
+
+        public virtual void Calc_HolesControlPointsCoord3D(float flZ, float ft) { }
+
+        public virtual void GenerateConnectors() { }
     }
 }

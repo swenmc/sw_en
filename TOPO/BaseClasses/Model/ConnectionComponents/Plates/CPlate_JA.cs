@@ -91,7 +91,7 @@ namespace BaseClasses
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
-            UpdatePlateData();
+            UpdatePlateData(null);
         }
 
         public CConCom_Plate_JA(string sName_temp,
@@ -160,27 +160,27 @@ namespace BaseClasses
             UpdatePlateData(screwArrangement);
         }
 
-        // Undefined Screw Arrangement
-        public void UpdatePlateData()
-        {
-            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+        //// Undefined Screw Arrangement
+        //public void UpdatePlateData()
+        //{
+        //    m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
 
-            // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
+        //    // Create Array - allocate memory
+        //    PointsOut2D = new float[ITotNoPointsin2D, 2];
+        //    arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
+        //    // Fill Array Data
+        //    Calc_Coord2D();
+        //    Calc_Coord3D();
 
-            // Fill list of indices for drawing of surface
-            loadIndices();
+        //    // Fill list of indices for drawing of surface
+        //    loadIndices();
 
-            UpdatePlateData_Basic(null);
-        }
+        //    UpdatePlateData_Basic(null);
+        //}
 
         // Circle Screw Arrangement
-        public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
             m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
 
@@ -210,36 +210,36 @@ namespace BaseClasses
             UpdatePlateData_Basic(screwArrangement);
         }
 
-        // Rectangular Screw Arrangement
-        public void UpdatePlateData(CScrewArrangementRectApexOrKnee screwArrangement)
-        {
-            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+        //// Rectangular Screw Arrangement
+        //public void UpdatePlateData(CScrewArrangementRectApexOrKnee screwArrangement)
+        //{
+        //    m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
 
-            // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
-            arrPoints3D = new Point3D[ITotNoPointsin3D];
+        //    // Create Array - allocate memory
+        //    PointsOut2D = new float[ITotNoPointsin2D, 2];
+        //    arrPoints3D = new Point3D[ITotNoPointsin3D];
 
-            if (screwArrangement != null)
-            {
-                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
-            }
+        //    if (screwArrangement != null)
+        //    {
+        //        arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+        //    }
 
-            // Fill Array Data
-            Calc_Coord2D();
-            Calc_Coord3D();
+        //    // Fill Array Data
+        //    Calc_Coord2D();
+        //    Calc_Coord3D();
 
-            if (screwArrangement != null)
-            {
-                screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, 0, m_fhY1, m_fSlope_rad);
-                screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
-                screwArrangement.GenerateConnectors();
-            }
+        //    if (screwArrangement != null)
+        //    {
+        //        screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, 0, m_fhY1, m_fSlope_rad);
+        //        screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
+        //        screwArrangement.GenerateConnectors();
+        //    }
 
-            // Fill list of indices for drawing of surface
-            loadIndices();
+        //    // Fill list of indices for drawing of surface
+        //    loadIndices();
 
-            UpdatePlateData_Basic(screwArrangement);
-        }
+        //    UpdatePlateData_Basic(screwArrangement);
+        //}
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
         {

@@ -253,11 +253,8 @@ namespace BaseClasses
             FCrscWebStraightDepth = fCrscWebStraightDepth;
             FStiffenerSize = fStiffenerSize;
 
-            // Circle
-            // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+            // Circle            
             INumberOfCirclesInGroup = iNumberOfCirclesInGroup; // pocet kruhov
-            //INumberOfScrewsInOneHalfCircleSequence_SQ1 = iNumberOfScrewsInOneHalfCircleSequence_SQ1_temp; // Pocet v segmente kruhu
-            //FRadius_SQ1 = fRadius_SQ1_temp;
 
             // Corner screws parameters
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews;
@@ -266,9 +263,7 @@ namespace BaseClasses
             IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y;
-
-            // TODO -  Ondrej zadefinovane 2 skupiny (spoj dvoch prvkov), teoreticky ich moze byt viac (napr. pre spoj 3 nosnikov v jednej plate), vytvorit univerzalny system pre rozny pocet groups
-
+            
             ListOfSequenceGroups = screwSequenceGroup;
 
             UpdateAdditionalCornerScrews();
@@ -528,7 +523,7 @@ namespace BaseClasses
             return arrayPoints;
         }
 
-        public void Calc_HolesCentersCoord2DApexPlate(
+        public override void Calc_HolesCentersCoord2DApexPlate(
             float fbX,
             float flZ,
             float fhY_1,
@@ -558,7 +553,7 @@ namespace BaseClasses
             FillArrayOfHolesCentersInWholeArrangement();
         }
 
-        public void Calc_HolesCentersCoord2DKneePlate(
+        public override void Calc_HolesCentersCoord2DKneePlate(
             float fbX_1,
             float fbX_2,
             float flZ,
@@ -593,7 +588,7 @@ namespace BaseClasses
             FillArrayOfHolesCentersInWholeArrangement();
         }
 
-        public void Calc_HolesControlPointsCoord3D(float flZ, float ft)
+        public override void Calc_HolesControlPointsCoord3D(float flZ, float ft)
         {
             for (int i = 0; i < IHolesNumber; i++)
             {
@@ -603,7 +598,7 @@ namespace BaseClasses
             }
         }
 
-        public void GenerateConnectors()
+        public override void GenerateConnectors()
         {
             Screws = new CScrew[IHolesNumber];
 

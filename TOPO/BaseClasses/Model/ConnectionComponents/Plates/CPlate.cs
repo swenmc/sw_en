@@ -737,5 +737,11 @@ namespace BaseClasses
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);
             }
         }
+
+
+        public virtual void UpdatePlateData(CScrewArrangement screwArrangement)
+        {
+            //to override
+        }
     }
 }
