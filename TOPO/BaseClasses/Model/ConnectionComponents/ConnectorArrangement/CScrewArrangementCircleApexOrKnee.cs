@@ -240,7 +240,7 @@ namespace BaseClasses
             float fCrscWebStraightDepth,
             float fStiffenerSize,
             int iNumberOfCirclesInGroup,
-            List<CScrewSequenceGroup> screwSequenceGroup,            
+            List<CScrewSequenceGroup> screwSequenceGroup,
             bool bUseAdditionalCornerScrews,
             int iAdditionalConnectorInCornerNumber,
             float fAdditionalScrewsDistance_x,
@@ -396,7 +396,7 @@ namespace BaseClasses
                 // Remove all rectangular sequences
                 foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
                 {
-                    group.ListScrewSequence.RemoveAll(s => s is CScrewRectSequence);                    
+                    group.ListScrewSequence.RemoveAll(s => s is CScrewRectSequence);
                     // Set current number of rectangular sequences (it should be "0" in case that corner screw sequences are not used, all other sequences are half-circle)
                     group.NumberOfRectangularSequences = 0;
                 }
@@ -591,7 +591,6 @@ namespace BaseClasses
 
             group.TransformGroup(new Point(fx_c, fy_c), fAngle_seq_rotation_deg);
         }
-
 
         public Point[] GetAdditionaConnectorsCoordinatesInOneSequence(Point refPoint,
             int iNumberOfPointsInXDirection,

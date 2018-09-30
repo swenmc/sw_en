@@ -118,7 +118,6 @@ namespace BaseClasses
             }
         }
 
-
         public virtual void Calc_HolesCentersCoord2DKneePlate(
             float fbX_1,
             float fbX_2,

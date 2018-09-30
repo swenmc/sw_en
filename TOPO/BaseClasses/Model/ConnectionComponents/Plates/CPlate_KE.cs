@@ -117,7 +117,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            CScrewArrangementCircleApexOrKnee screwArrangement,
+            CScrewArrangement screwArrangement,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -145,8 +145,10 @@ namespace BaseClasses
             UpdatePlateData(screwArrangement);
         }
 
-        public void UpdatePlateData(CScrewArrangementCircleApexOrKnee screwArrangement)
+        public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
+            // TODO - screw arrangement pre tento plech nie je implementovany!!!! (zdvojene usporiadanie pre obe strany)
+
             m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / Fb_X2);
 
             // Create Array - allocate memory
@@ -160,6 +162,11 @@ namespace BaseClasses
             // Fill list of indices for drawing of surface
             loadIndices();
 
+            UpdatePlateData_Basic(screwArrangement);
+        }
+
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             fWidth_bx = Math.Max(m_fbX1, m_fbX2);
             fHeight_hy = Math.Max(m_fhY1, m_fhY2);
             fArea = PolygonArea();
@@ -171,12 +178,26 @@ namespace BaseClasses
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * Ft, Ft, m_fbX1);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+
+            fA_n = fA_g;
+
+            if (screwArrangement != null)
+            {
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fA_v_zv = Get_A_rect(2 * Ft, m_fbX1);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+
+            fA_vn_zv = fA_v_zv;
+
+            if (screwArrangement != null)
+            {
+                fA_vn_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * Ft;
+            }
+
             fI_yu = Get_I_yu_channel(m_flZ, Ft, Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
-            // Priblizne predpoklad ze 2 * mflZ = m_fbXR
+            // TODO - Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fI_yu = Get_I_yu_channel(Math.Min(2f * m_flZ, m_fbXR), Ft, Ft, m_fbX1);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fbX1); // Elastic section modulus
 
