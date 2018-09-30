@@ -316,16 +316,71 @@ namespace BaseClasses
             {
                 foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
                 {
+                    bool bAddNewSequences;
+
+                    if (group.NumberOfRectangularSequences == 0) // if number of rectangular sequences is less than 4 set four (each corner)
+                        bAddNewSequences = true;
+                    else if (group.NumberOfRectangularSequences == 4)
+                        bAddNewSequences = false;
+                    else
+                    {
+                        if (group.NumberOfRectangularSequences < 4)
+                        {
+                            // Exception - not all rectangular sequences in corner were deleted!
+                            throw new Exception("Not all rectangular sequences in corner were deleted!");
+                        }
+                        else
+                        {
+                            // Exception - more than 4 corner sequences
+                            throw new Exception("More than 4 corner sequences were defined!");
+                        }
+                    }
+
+                    // Set number of rectangular sequences
+                    group.NumberOfRectangularSequences = 4;
+
                     for (int i = 0; i < group.NumberOfRectangularSequences; i++)
                     {
                         CScrewRectSequence seq_Corner = new CScrewRectSequence(IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection);
                         seq_Corner.DistanceOfPointsX = FAdditionalScrewsDistance_x;
                         seq_Corner.DistanceOfPointsY = FAdditionalScrewsDistance_y;
-                        group.ListScrewSequence.Add(seq_Corner);
-                    }   
+
+                        if (bAddNewSequences)
+                            group.ListScrewSequence.Add(seq_Corner); // Add new sequence
+                        else
+                        {
+                            int index = group.NumberOfHalfCircleSequences + i;
+
+                            if (index < group.ListScrewSequence.Count)
+                                group.ListScrewSequence[index] = seq_Corner; // Update date of current rectangular sequence
+                            else
+                                group.ListScrewSequence.Add(seq_Corner);     // Sequence item is note defined - Add new sequence
+                        }
+                    }
                 }
             }
-            
+            else // Corner screws are deactivated (remove all sequences - type rectangluar from group
+            {
+                // Remove all rectangular sequences
+                foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
+                {
+                    List<CScrewSequence> listNew = new List<CScrewSequence>(); // New list of current sequences
+
+                    foreach (CScrewSequence seq in group.ListScrewSequence)
+                    {
+                        if (!(seq is CScrewRectSequence))
+                        {
+                            listNew.Add(seq);    // Add non-rectangular sequence
+                        }
+                    }
+
+                    // Set current list of sequences
+                    group.ListScrewSequence = listNew;
+                    // Set current number of rectangular sequences (it should be "0" in case that corner screw sequences are not used, all other sequences are half-circle)
+                    group.NumberOfRectangularSequences = 0;
+                }
+            }
+
             // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
             IHolesNumber = 0;
 

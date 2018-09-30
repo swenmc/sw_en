@@ -1411,12 +1411,12 @@ namespace PFD
                             arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
                         }
 
-                        
+
 
                         //if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
                         //if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(itemStr.Value) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
 
-                        // Corner screws                        
+                        // Corner screws
                         if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(itemStr.Value);
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1426,7 +1426,7 @@ namespace PFD
                         CComponentParamsViewBool itemBool = item as CComponentParamsViewBool;
                         if (item.Name.Equals(CParamsResources.UseAdditionalCornerScrewsS.Name))
                         {
-                            arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;                            
+                            arrangementTemp.BUseAdditionalCornerScrews = itemBool.Value;
                         }
                     }
                     else if (item is CComponentParamsViewList)
@@ -1434,10 +1434,12 @@ namespace PFD
                         CComponentParamsViewList itemList = item as CComponentParamsViewList;
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                     }
-                                        
-                    plate.ScrewArrangement = arrangementTemp;
-                    plate.UpdatePlateData(plate.ScrewArrangement);
-                    RedrawComponentIn2D();
+
+                    // TODO - Objekt screw arrangement, ktory vstupuje do plate.UpdatePlateData musi mat prepocitane a aktualizovane dalsie svoje parametre (pocet sekvencii, pocet skrutiek v sekvenciach, ...)
+                    arrangementTemp.UpdateAdditionalCornerScrews();     // Update data of screw arrangement
+                    plate.ScrewArrangement = arrangementTemp;           // Set current screw arrangement to the plate
+                    plate.UpdatePlateData(plate.ScrewArrangement);      // Update data of plate
+                    RedrawComponentIn2D();                              // Redraw plate
                 }
                 else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
                 {
