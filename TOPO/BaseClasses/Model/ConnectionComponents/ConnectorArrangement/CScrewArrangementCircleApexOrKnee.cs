@@ -270,7 +270,12 @@ namespace BaseClasses
         public void NumberOfCirclesInGroup_Updated(int newNumberOfCirclesInGroup)
         {
             if (newNumberOfCirclesInGroup < 0) return;
-            if (newNumberOfCirclesInGroup < INumberOfCirclesInGroup)
+
+            if (newNumberOfCirclesInGroup == 0)
+            {
+                ListOfSequenceGroups.Clear();
+            }
+            else if (newNumberOfCirclesInGroup < INumberOfCirclesInGroup)
             {
                 CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
                 if (gr == null) return;
@@ -299,30 +304,28 @@ namespace BaseClasses
 
                         // Add one circle - two half-circle sequences
 
-                        // Add first half-circle sequence
-                        CScrewSequence screwSequence1 = null; // CScrewSequence screwSequence1 = gr.ListScrewSequence.FirstOrDefault(p => p is CScrewHalfCircleSequence); // First (top) sequence of circle
-                        if (screwSequence1 == null)
+                        int lastHalfCircleNumberOfScrews = 16;
+                        float lastHalfCircleRadius = 0.25f;
+
+                        CScrewSequence lastCircleScrewSequence = g.ListScrewSequence.LastOrDefault(p => p is CScrewHalfCircleSequence); 
+                        if (lastCircleScrewSequence != null)
                         {
-                            CScrewHalfCircleSequence screwHalfCircleSequence = new CScrewHalfCircleSequence();
-                            screwHalfCircleSequence.INumberOfScrews = 16 - (i + 1) * 2; // Kazdy novy kruh o 2 skrutky menej
-                            screwHalfCircleSequence.Radius = 0.25f - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
-                            screwSequence1 = screwHalfCircleSequence;
+                            lastHalfCircleNumberOfScrews = lastCircleScrewSequence.INumberOfScrews;
+                            lastHalfCircleRadius = ((CScrewHalfCircleSequence)lastCircleScrewSequence).Radius;
                         }
 
-                        g.ListScrewSequence.Add(screwSequence1);
+                        // Add first half-circle sequence
+                        CScrewHalfCircleSequence screwHalfCircleSequence1 = new CScrewHalfCircleSequence();
+                        screwHalfCircleSequence1.INumberOfScrews = lastHalfCircleNumberOfScrews - (i + 1) * 2; // Kazdy novy kruh o 2 skrutky menej
+                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer                        
+                        g.ListScrewSequence.Add(screwHalfCircleSequence1);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
 
-                        // Add second half-circle sequence
-                        CScrewSequence screwSequence2 = null; //  CScrewSequence screwSequence2 = gr.ListScrewSequence[1]; // Second (bottom) sequence of circle
-                        if (screwSequence2 == null)
-                        {
-                            CScrewHalfCircleSequence screwHalfCircleSequence = new CScrewHalfCircleSequence();
-                            screwHalfCircleSequence.INumberOfScrews = 16 - (i + 1) * 2; // Kazdy novy kruh o 2 skrutky menej
-                            screwHalfCircleSequence.Radius = 0.25f - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
-                            screwSequence2 = screwHalfCircleSequence;
-                        }
-
-                        g.ListScrewSequence.Add(screwSequence2);
+                        // Add second half-circle sequence                        
+                        CScrewHalfCircleSequence screwHalfCircleSequence2 = new CScrewHalfCircleSequence();
+                        screwHalfCircleSequence2.INumberOfScrews = lastHalfCircleNumberOfScrews - (i + 1) * 2; // Kazdy novy kruh o 2 skrutky menej
+                        screwHalfCircleSequence2.Radius = lastHalfCircleRadius - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
+                        g.ListScrewSequence.Add(screwHalfCircleSequence2);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
                     }
                 }
