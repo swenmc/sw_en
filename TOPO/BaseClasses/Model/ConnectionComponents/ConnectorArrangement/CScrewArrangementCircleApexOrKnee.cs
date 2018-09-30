@@ -286,21 +286,48 @@ namespace BaseClasses
                 int numToAdd = newNumberOfCirclesInGroup - INumberOfCirclesInGroup;
                 for (int i = 0; i < numToAdd; i++)
                 {
-                    CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
-                    if (gr == null) return;
+                    //foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
+                    //{
+                        // To Ondrej - ma sa pridat (i+1) kruhov (teda (i+1) * 2 sekvencie do kazdej skupiny
 
-                    CScrewSequence screwSequence = gr.ListScrewSequence.FirstOrDefault(p => p is CScrewHalfCircleSequence);
-                    if (screwSequence == null)
-                    {
-                        CScrewHalfCircleSequence screwHalfCircleSequence = new CScrewHalfCircleSequence();
-                        screwHalfCircleSequence.INumberOfScrews = 20;
-                        screwHalfCircleSequence.Radius = 1;
-                        screwSequence = screwHalfCircleSequence;
+                        CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
+                        if (gr == null) return;
+
+                        // TO Ondrej - tu je potrebne pridat do jedneho kruhu 2 sekvencie (2 polkruhy do jednej group) 
+                        // nepridaval by som sekvencie s rovnakymmi parametrami ako ma predosla ale urcite s inym polomerom, aby bolo vidno ze nieco pribudlo a skrutky a neprekryvali
+
+                        // Add one circle - two half-circle sequences
+
+                        // Add first half-circle sequence
+                        CScrewSequence screwSequence1 = null; // CScrewSequence screwSequence1 = gr.ListScrewSequence.FirstOrDefault(p => p is CScrewHalfCircleSequence); // First (top) sequence of circle
+                        if (screwSequence1 == null)
+                        {
+                            CScrewHalfCircleSequence screwHalfCircleSequence = new CScrewHalfCircleSequence();
+                            screwHalfCircleSequence.INumberOfScrews = 16 - (i + 1) * 2; // Kazdy novy kruh o 2 skrutky menej
+                            screwHalfCircleSequence.Radius = 0.25f - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
+                            screwSequence1 = screwHalfCircleSequence;
+                        }
+                        foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
+                        {
+                            g.ListScrewSequence.Add(screwSequence1);
+                            g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
+                        }
+
+                        // Add second half-circle sequence
+                        CScrewSequence screwSequence2 = null; //  CScrewSequence screwSequence2 = gr.ListScrewSequence[1]; // Second (bottom) sequence of circle
+                        if (screwSequence2 == null)
+                        {
+                            CScrewHalfCircleSequence screwHalfCircleSequence = new CScrewHalfCircleSequence();
+                            screwHalfCircleSequence.INumberOfScrews = 16 - (i + 1) * 2; // Kazdy novy kruh o 2 skrutky menej
+                            screwHalfCircleSequence.Radius = 0.25f - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
+                            screwSequence2 = screwHalfCircleSequence;
+                        }
+                        foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
+                        {
+                            g.ListScrewSequence.Add(screwSequence2);
+                            g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
                     }
-                    foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
-                    {
-                        g.ListScrewSequence.Add(screwSequence);
-                    }
+                    //}
                 }
             }
 
@@ -350,7 +377,10 @@ namespace BaseClasses
                             group.ListScrewSequence.Add(seq_Corner); // Add new sequence
                         else
                         {
-                            int index = group.NumberOfHalfCircleSequences + i;
+                            // Todo Ondrej - tu by sa malo nejako "inteligentne" ktore sekvencie budeme updatovat, momentalne je to tak ze prve dve su dve polkruhove sekvencie prveho kruhu, potom su 4 rohove sekvencie a potom su dalsie polkruhove sekvencie dalsich kruhov
+                            // Todo Ondrej - dalej by sa mal osetrit aj teoreticky pripat, ak bude pocet kruhov 0, takze budu len rohove skrutky
+
+                            int index = /*group.NumberOfHalfCircleSequences*/ 2 + i; // Two first sequences are half-circle
 
                             if (index < group.ListScrewSequence.Count)
                                 group.ListScrewSequence[index] = seq_Corner; // Update date of current rectangular sequence
@@ -560,10 +590,16 @@ namespace BaseClasses
                 Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref cornerConnectorsInGroupBottomRight);
 
                 // Set group parameters
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 0].HolesCentersPoints = cornerConnectorsInGroupTopLeft;
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 1].HolesCentersPoints = cornerConnectorsInGroupTopRight;
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 2].HolesCentersPoints = cornerConnectorsInGroupBottomLeft;
-                group.ListScrewSequence[group.NumberOfHalfCircleSequences + 3].HolesCentersPoints = cornerConnectorsInGroupBottomRight;
+
+                // TODO - Ondrej tu sa nastavuje ktorym sekvenciam sa priradi pole bodov, prve dve su polkruhove, potom su 4 rohove rectangular a potom su dalsie polkruhove pre dalsie pridavne kruhy
+                // Povodne som si myslel ze vsetky polkruhove budu na zaciatku a za ne sa pridaju rohove rectangular group.NumberOfHalfCircleSequences + 0 az group.NumberOfHalfCircleSequences + 3
+                // Je na zvazenie ci by to nemalo byt preusporiadane tak ze prve su vzdy sekvencie kruhov a potom rohove
+                // Teoreticky moze existovat aj pripad ze polkruhove alebo rohove sekvencie neexistuju
+
+                group.ListScrewSequence[/*group.NumberOfHalfCircleSequences*/ 2 + 0].HolesCentersPoints = cornerConnectorsInGroupTopLeft;
+                group.ListScrewSequence[/*group.NumberOfHalfCircleSequences*/ 2 + 1].HolesCentersPoints = cornerConnectorsInGroupTopRight;
+                group.ListScrewSequence[/*group.NumberOfHalfCircleSequences*/ 2 + 2].HolesCentersPoints = cornerConnectorsInGroupBottomLeft;
+                group.ListScrewSequence[/*group.NumberOfHalfCircleSequences*/ 2 + 3].HolesCentersPoints = cornerConnectorsInGroupBottomRight;
             }
 
             // Set radii of connectors / screws in the connection
