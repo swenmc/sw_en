@@ -286,15 +286,16 @@ namespace BaseClasses
                 int numToAdd = newNumberOfCirclesInGroup - INumberOfCirclesInGroup;
                 for (int i = 0; i < numToAdd; i++)
                 {
-                    //foreach (CScrewSequenceGroup gr in ListOfSequenceGroups)
-                    //{
-                        // To Ondrej - ma sa pridat (i+1) kruhov (teda (i+1) * 2 sekvencie do kazdej skupiny
-
-                        CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
-                        if (gr == null) return;
+                    // To Ondrej - ma sa pridat (i+1) kruhov (teda (i+1) * 2 sekvencie do kazdej skupiny (group)
+                    foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
+                    {
+                        //CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
+                        //if (gr == null) return;
 
                         // TO Ondrej - tu je potrebne pridat do jedneho kruhu 2 sekvencie (2 polkruhy do jednej group) 
                         // nepridaval by som sekvencie s rovnakymmi parametrami ako ma predosla ale urcite s inym polomerom, aby bolo vidno ze nieco pribudlo a skrutky a neprekryvali
+
+                        // To co som zakomentoval line 303 a 316 gr.ListScrewSequence.FirstOrDefault(p => p is CScrewHalfCircleSequence) a nastavil objekty na null, tak mi to nejako mi to nefungovalo, ale robil som aj dalsie upravy, tak mozno sa to moze uz pouzit
 
                         // Add one circle - two half-circle sequences
 
@@ -307,11 +308,9 @@ namespace BaseClasses
                             screwHalfCircleSequence.Radius = 0.25f - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
                             screwSequence1 = screwHalfCircleSequence;
                         }
-                        foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
-                        {
-                            g.ListScrewSequence.Add(screwSequence1);
-                            g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
-                        }
+
+                        g.ListScrewSequence.Add(screwSequence1);
+                        g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
 
                         // Add second half-circle sequence
                         CScrewSequence screwSequence2 = null; //  CScrewSequence screwSequence2 = gr.ListScrewSequence[1]; // Second (bottom) sequence of circle
@@ -322,12 +321,10 @@ namespace BaseClasses
                             screwHalfCircleSequence.Radius = 0.25f - (i + 1) * 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
                             screwSequence2 = screwHalfCircleSequence;
                         }
-                        foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
-                        {
-                            g.ListScrewSequence.Add(screwSequence2);
-                            g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
+
+                        g.ListScrewSequence.Add(screwSequence2);
+                        g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
                     }
-                    //}
                 }
             }
 
@@ -517,8 +514,7 @@ namespace BaseClasses
         //    group.TransformGroup(new Point(fx_c, fy_c), fAngle_seq_rotation_deg);
         //}
 
-        public void Get_ScrewGroup_IncludingAdditionalScrews(int iNumberOfCirclesInGroup,
-        float fx_c,
+        public void Get_ScrewGroup_IncludingAdditionalScrews(float fx_c,
         float fy_c,
         float fRotation_rad,
         ref CScrewSequenceGroup group)
@@ -636,12 +632,12 @@ namespace BaseClasses
             {
                 // Left side
                 CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-                Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, fSlope_rad, ref group1);
+                Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, fSlope_rad, ref group1);
                 ListOfSequenceGroups[0] = group1;
 
                 // Right side
                 CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // GetMirroredScrewGroupAboutY(group1);
-                Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, -fSlope_rad, ref group2);
+                Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, -fSlope_rad, ref group2);
                 ListOfSequenceGroups[1] = group2;
             }
             
@@ -671,14 +667,14 @@ namespace BaseClasses
             {
                 // Bottom side
                 CScrewSequenceGroup group1 = ListOfSequenceGroups[0]; // Indexovana polozka sa neda predat referenciou
-                Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c1, fy_c1, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
+                Get_ScrewGroup_IncludingAdditionalScrews(fx_c1, fy_c1, MathF.fPI / 2f, ref group1); // Rotate - 90 deg
                 ListOfSequenceGroups[0] = group1;
 
                 // Top side
                 CScrewSequenceGroup group2 = ListOfSequenceGroups[1]; // Indexovana polozka sa neda predat referenciou
-                Get_ScrewGroup_IncludingAdditionalScrews(INumberOfCirclesInGroup, fx_c2, fy_c2, fSlope_rad, ref group2); // Rotate - Roof Slope
+                Get_ScrewGroup_IncludingAdditionalScrews(fx_c2, fy_c2, fSlope_rad, ref group2); // Rotate - Roof Slope
                 ListOfSequenceGroups[1] = group2;
-            }            
+            }
 
             // Fill array of holes centers
             FillArrayOfHolesCentersInWholeArrangement();
