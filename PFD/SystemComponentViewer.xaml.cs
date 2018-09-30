@@ -1411,8 +1411,6 @@ namespace PFD
                             arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
                         }
 
-
-
                         //if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
                         //if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(itemStr.Value) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
 
@@ -1450,7 +1448,6 @@ namespace PFD
                         CComponentParamsViewString itemStr = item as CComponentParamsViewString;
                         if (string.IsNullOrEmpty(itemStr.Value)) return;
 
-                        
                         if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1664,11 +1661,11 @@ namespace PFD
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptionsTransform2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Hidden;
-                }                
+                }
             }
             else if(MainTabControl.SelectedIndex == 1)
             {
-                panelOptions2D.Visibility = Visibility.Hidden;                
+                panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
                 panelOptions3D.Visibility = Visibility.Visible;
             }
@@ -1679,7 +1676,6 @@ namespace PFD
                 panelOptions3D.Visibility = Visibility.Hidden;
             }
         }
-
 
         private void RedrawComponentIn2D()
         {

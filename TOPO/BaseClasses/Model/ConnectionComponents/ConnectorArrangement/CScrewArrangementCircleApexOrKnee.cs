@@ -494,6 +494,10 @@ namespace BaseClasses
         {
             float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
             float fAdditionalMargin = 0.01f; //naco je toto dobre???
+            // To Ondrej Uprostred prierezu 63020 (vid crsc 3D view je "vyztuha", teda je tam medzera, do ktorej sa neda pripevnit plech skrutkami (preto je kruh skrutiek rozdeleny na 2 segmenty)
+            // hodnota additional margin je pouzita na to aby nebola krajna skrutka v kruhovej sekvencii priamo na zakrivenej hrane ale dalej, nastavene je tvrdo 10 mm ale moze to byt aj viac a nastavitelne uzivatelom)
+            // dalo by sa to pripocitavat priamo k FStiffenerSize
+            // Zatial som to nerobil user-defined, lebo to nie je az take dolezite, nastavovat 10 mm alebo 30 mm, uvidim ci to budu chciet naozaj nastavovat
 
             if (group.NumberOfHalfCircleSequences > 0)
             {
