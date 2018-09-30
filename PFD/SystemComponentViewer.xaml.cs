@@ -1437,7 +1437,9 @@ namespace PFD
                     arrangementTemp.UpdateAdditionalCornerScrews();     // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;           // Set current screw arrangement to the plate
                     plate.UpdatePlateData(plate.ScrewArrangement);      // Update data of plate
+                    vm.SetScrewArrangementProperties(plate.ScrewArrangement);
                     RedrawComponentIn2D();                              // Redraw plate
+                    
                 }
                 else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
                 {
