@@ -253,14 +253,12 @@ namespace BaseClasses
             FCrscWebStraightDepth = fCrscWebStraightDepth;
             FStiffenerSize = fStiffenerSize;
 
-            // Circle            
+            // Circle
             INumberOfCirclesInGroup = iNumberOfCirclesInGroup; // pocet kruhov
 
             // Corner screws parameters
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews;
             IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber; // Spolu v jednom rohu
-            IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
-            IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y;
             
@@ -311,6 +309,9 @@ namespace BaseClasses
 
         public void UpdateAdditionalCornerScrews()
         {
+            IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
+            IAdditionalConnectorNumberInColumn_yDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere y, pocet v stlpci
+
             //---------------------------------------------------------------------------------------------------------------------------------
             if (BUseAdditionalCornerScrews) // 4 corners in one group
             {
