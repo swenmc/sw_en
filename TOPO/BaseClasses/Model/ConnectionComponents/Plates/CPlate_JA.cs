@@ -62,6 +62,71 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
+        //public CConCom_Plate_JA(string sName_temp,
+        //    GraphObj.CPoint controlpoint,
+        //    float fb_temp,
+        //    float fh_1_temp,
+        //    float fh_2_temp,
+        //    float ft_platethickness,
+        //    float fRotation_x_deg,
+        //    float fRotation_y_deg,
+        //    float fRotation_z_deg,
+        //    bool bIsDisplayed)
+        //{
+        //    Name = sName_temp;
+        //    eConnComponentType = EConnectionComponentType.ePlate;
+        //    m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
+
+        //    BIsDisplayed = bIsDisplayed;
+
+        //    ITotNoPointsin2D = 5;
+        //    ITotNoPointsin3D = 10;
+
+        //    m_pControlPoint = controlpoint;
+        //    m_fbX = fb_temp;
+        //    m_fhY1 = fh_1_temp;
+        //    m_fhY2 = fh_2_temp;
+        //    Ft = ft_platethickness;
+        //    m_fRotationX_deg = fRotation_x_deg;
+        //    m_fRotationY_deg = fRotation_y_deg;
+        //    m_fRotationZ_deg = fRotation_z_deg;
+
+        //    UpdatePlateData(null);
+        //}
+
+        //public CConCom_Plate_JA(string sName_temp,
+        //    GraphObj.CPoint controlpoint,
+        //    float fb_temp,
+        //    float fh_1_temp,
+        //    float fh_2_temp,
+        //    float ft_platethickness,
+        //    float fRotation_x_deg,
+        //    float fRotation_y_deg,
+        //    float fRotation_z_deg,
+        //    CScrewArrangementCircleApexOrKnee screwArrangement,
+        //    bool bIsDisplayed)
+        //{
+        //    Name = sName_temp;
+        //    eConnComponentType = EConnectionComponentType.ePlate;
+        //    m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
+
+        //    BIsDisplayed = bIsDisplayed;
+
+        //    ITotNoPointsin2D = 5;
+        //    ITotNoPointsin3D = 10;
+
+        //    m_pControlPoint = controlpoint;
+        //    m_fbX = fb_temp;
+        //    m_fhY1 = fh_1_temp;
+        //    m_fhY2 = fh_2_temp;
+        //    Ft = ft_platethickness;
+        //    m_fRotationX_deg = fRotation_x_deg;
+        //    m_fRotationY_deg = fRotation_y_deg;
+        //    m_fRotationZ_deg = fRotation_z_deg;
+
+        //    UpdatePlateData(screwArrangement);
+        //}
+
         public CConCom_Plate_JA(string sName_temp,
             GraphObj.CPoint controlpoint,
             float fb_temp,
@@ -71,72 +136,7 @@ namespace BaseClasses
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
-            bool bIsDisplayed)
-        {
-            Name = sName_temp;
-            eConnComponentType = EConnectionComponentType.ePlate;
-            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
-
-            BIsDisplayed = bIsDisplayed;
-
-            ITotNoPointsin2D = 5;
-            ITotNoPointsin3D = 10;
-
-            m_pControlPoint = controlpoint;
-            m_fbX = fb_temp;
-            m_fhY1 = fh_1_temp;
-            m_fhY2 = fh_2_temp;
-            Ft = ft_platethickness;
-            m_fRotationX_deg = fRotation_x_deg;
-            m_fRotationY_deg = fRotation_y_deg;
-            m_fRotationZ_deg = fRotation_z_deg;
-
-            UpdatePlateData(null);
-        }
-
-        public CConCom_Plate_JA(string sName_temp,
-            GraphObj.CPoint controlpoint,
-            float fb_temp,
-            float fh_1_temp,
-            float fh_2_temp,
-            float ft_platethickness,
-            float fRotation_x_deg,
-            float fRotation_y_deg,
-            float fRotation_z_deg,
-            CScrewArrangementCircleApexOrKnee screwArrangement,
-            bool bIsDisplayed)
-        {
-            Name = sName_temp;
-            eConnComponentType = EConnectionComponentType.ePlate;
-            m_ePlateSerieType_FS = ESerieTypePlate.eSerie_J;
-
-            BIsDisplayed = bIsDisplayed;
-
-            ITotNoPointsin2D = 5;
-            ITotNoPointsin3D = 10;
-
-            m_pControlPoint = controlpoint;
-            m_fbX = fb_temp;
-            m_fhY1 = fh_1_temp;
-            m_fhY2 = fh_2_temp;
-            Ft = ft_platethickness;
-            m_fRotationX_deg = fRotation_x_deg;
-            m_fRotationY_deg = fRotation_y_deg;
-            m_fRotationZ_deg = fRotation_z_deg;
-
-            UpdatePlateData(screwArrangement);
-        }
-
-        public CConCom_Plate_JA(string sName_temp,
-            GraphObj.CPoint controlpoint,
-            float fb_temp,
-            float fh_1_temp,
-            float fh_2_temp,
-            float ft_platethickness,
-            float fRotation_x_deg,
-            float fRotation_y_deg,
-            float fRotation_z_deg,
-            CScrewArrangementRectApexOrKnee screwArrangement,
+            CScrewArrangement screwArrangement,
             bool bIsDisplayed)
         {
             Name = sName_temp;
@@ -210,6 +210,7 @@ namespace BaseClasses
             UpdatePlateData_Basic(screwArrangement);
         }
 
+        //ak funguje tak zmazat
         //// Rectangular Screw Arrangement
         //public void UpdatePlateData(CScrewArrangementRectApexOrKnee screwArrangement)
         //{

@@ -676,7 +676,7 @@ namespace PFD
                             {
                                 // TODO - Ondrej tymto stylom to nechcem mat rozkopirovane 7 krat, asi sa to da urobit elegantnejsie
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, true);
+                                    plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, null, true);
                                 else if (vm.ScrewArrangementIndex == 1) // Rectangular
                                     plate = new CConCom_Plate_JA(dcomponents.arr_Serie_J_Names[0], controlpoint, fb, fh, fh2, ft, 0, 0, 0, screwArrangementRectangleApex, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
@@ -1409,6 +1409,7 @@ namespace PFD
                             int numberOfCirclesInGroup = int.Parse(itemStr.Value);
                             //arrangementTemp.INumberOfCirclesInGroup = int.Parse(itemStr.Value);
                             arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
+                            vm.SetScrewArrangementProperties(arrangementTemp);
                         }
 
                         //if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
@@ -1436,8 +1437,8 @@ namespace PFD
                     // TODO - Objekt screw arrangement, ktory vstupuje do plate.UpdatePlateData musi mat prepocitane a aktualizovane dalsie svoje parametre (pocet sekvencii, pocet skrutiek v sekvenciach, ...)
                     arrangementTemp.UpdateAdditionalCornerScrews();     // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;           // Set current screw arrangement to the plate
-                    plate.UpdatePlateData(plate.ScrewArrangement);      // Update data of plate
-                    vm.SetScrewArrangementProperties(plate.ScrewArrangement);
+
+                    plate.UpdatePlateData(plate.ScrewArrangement);      // Update data of plate                    
                     RedrawComponentIn2D();                              // Redraw plate
                     
                 }
