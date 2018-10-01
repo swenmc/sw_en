@@ -44,7 +44,7 @@ namespace PFD
         float ft_f;
         float fb_fl; // Flange - Z-section
         float fc_lip1; // LIP - Z-section
-        float fPitch_rad =  11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
+        float fPitch_rad = 11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
         int iNumberofHoles;
 
         string sGauge_Screw;
@@ -196,7 +196,7 @@ namespace PFD
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Hidden;
                 }
-                
+
                 chbDrawPoints2D.IsEnabled = true;
                 chbDrawOutLine2D.IsEnabled = true;
                 chbDrawPointNumbers2D.IsEnabled = true;
@@ -205,7 +205,7 @@ namespace PFD
                 chbDrawDrillingRoute2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
-                
+
                 tabItemDoc.IsEnabled = false;
             }
             else if (vm.ComponentTypeIndex == 1) //plate
@@ -238,7 +238,7 @@ namespace PFD
                     panelOptions2D.Visibility = Visibility.Hidden;
                     panelOptions3D.Visibility = Visibility.Hidden;
                 }
-                
+
                 chbDrawPoints2D.IsEnabled = true;
                 chbDrawOutLine2D.IsEnabled = true;
                 chbDrawPointNumbers2D.IsEnabled = true;
@@ -287,7 +287,7 @@ namespace PFD
             }
 
             //uncheck all Transformation Options
-            if(vm.MirrorX) vm.MirrorX = false;
+            if (vm.MirrorX) vm.MirrorX = false;
             if (vm.MirrorY) vm.MirrorY = false;
             if (vm.Rotate90CCW) vm.Rotate90CCW = false;
             if (vm.Rotate90CW) vm.Rotate90CW = false;
@@ -507,52 +507,109 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 1) // Plate
             {
-                if(plate.ScrewArrangement != null)
-                  plate.ScrewArrangement.UpdateArrangmentData();
+                if (plate.ScrewArrangement != null)
+                    plate.ScrewArrangement.UpdateArrangmentData();
 
                 plate.UpdatePlateData(plate.ScrewArrangement);
 
-                // TODO - Ondrej - toto by sa dalo nejako refaktrovat s UpdateAll
-                // KOPIA Z UPDATE ALL TYKAJUCA SA PLATE
-                //------------------------------------------------------------------------------------------------------------------------------------------------------------
-                // Create 2D page
-                page2D = new Canvas();
-
-                Frame2DWidth = Frame2D.ActualWidth;
-                Frame2DHeight = Frame2D.ActualHeight;
-                // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
-                if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
-                if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
-
-                if (vm.MirrorX) plate.MirrorPlateAboutX();
-                if (vm.MirrorY) plate.MirrorPlateAboutY();
-                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
-                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
-                if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
-
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-
-                // Display plate in 2D preview frame
-                Frame2D.Content = page2D;
-
-                // Create 3D window
-                page3D = null;
-
-                sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
-                page3D = new Page3Dmodel(plate, sDisplayOptions);
-
-                // Display model in 3D preview frame
-                Frame3D.Content = page3D;
-
-                this.UpdateLayout();
-                //------------------------------------------------------------------------------------------------------------------------------------------------------------
+                DisplayPlate();                
             }
+        }
+
+        private void SetFrame2DSize()
+        {
+            Frame2DWidth = Frame2D.ActualWidth;
+            Frame2DHeight = Frame2D.ActualHeight;
+            // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
+            if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
+            if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
+        }
+        private void DisplayPlate()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            // Create 2D page
+            page2D = new Canvas();
+
+            SetFrame2DSize();
+
+            if (vm.MirrorX) plate.MirrorPlateAboutX();
+            if (vm.MirrorY) plate.MirrorPlateAboutY();
+            if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+            if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+            if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
+
+            Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+
+            // Create 3D window
+            sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
+            page3D = new Page3Dmodel(plate, sDisplayOptions);
+
+            // Display model in 3D preview frame
+            Frame3D.Content = page3D;
+
+            this.UpdateLayout();
+        }
+
+        private void DisplayCRSC()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            // Create 2D page
+            page2D = new Canvas();
+
+            SetFrame2DSize();
+
+            if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+            if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+            if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
+            if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
+
+            Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+
+            // Create 3D window
+            page3D = new Page3Dmodel(crsc, sDisplayOptions);            
+
+            // Display model in 3D preview frame
+            Frame3D.Content = page3D;
+
+            this.UpdateLayout();
+        }
+        private void DisplayScrew()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            // Create 2D page
+            page2D = new Canvas();
+
+            SetFrame2DSize();
+
+            // Screw
+            bool bDrawCentreSymbol = true;
+            Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+
+            // Display plate in 2D preview frame
+            Frame2D.Content = page2D;
+
+            // Create 3D window
+            // Screw
+            PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
+            page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
+
+            // Display model in 3D preview frame
+            Frame3D.Content = page3D;
+
+            this.UpdateLayout();
         }
 
         private void UpdateAll()
         {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel; 
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             LoadDataFromDatabase();
 
             // Create Model
@@ -566,20 +623,20 @@ namespace PFD
                             //temp test 
                             //crsc = new CCrSc_3_10075_BOX(fh * 3 , fb * 3, ft * 3, Colors.Red); 
 
-                            crsc = new CCrSc_3_10075_BOX(0,fh, fb, ft, cComponentColor); // BOX
+                            crsc = new CCrSc_3_10075_BOX(0, fh, fb, ft, cComponentColor); // BOX
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_Z:
                         {
-                            crsc = new CCrSc_3_Z(0,fh, fb_fl, fc_lip1, ft, cComponentColor);
+                            crsc = new CCrSc_3_Z(0, fh, fb_fl, fc_lip1, ft, cComponentColor);
                             break;
                         }
                     case ESerieTypeCrSc_FormSteel.eSerie_C_single:
                         {
-                            if(vm.ComponentIndex < 3) // C270
-                                crsc = new CCrSc_3_270XX_C(0,fh, fb, ft, cComponentColor);
+                            if (vm.ComponentIndex < 3) // C270
+                                crsc = new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor);
                             else
-                                crsc = new CCrSc_3_50020_C(0,fh, fb, ft, cComponentColor);
+                                crsc = new CCrSc_3_50020_C(0, fh, fb, ft, cComponentColor);
 
                             break;
                         }
@@ -654,22 +711,22 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             // Vynimka, je potrebne prepracovat na screwArrangement a anchorArrangement
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0 ,0 ,0 , screwArrangement_BB_BG, true); // B
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BB_BG, true); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft,0,0,0, screwArrangement_ForL, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement_ForL, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
                         {
-                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft,0, 0, 0, screwArrangement_LL, true); // LL
+                            plate = new CConCom_Plate_LL(dcomponents.arr_Serie_LL_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0, 0, 0, screwArrangement_LL, true); // LL
                             break;
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft,0f,0f,0f, true); // F
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft, 0f, 0f, 0f, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:
@@ -703,7 +760,7 @@ namespace PFD
                                 if (vm.ScrewArrangementIndex == 0) // Undefined
                                     plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, null, true);
                                 else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0,screwArrangementRectangleApex, true);
+                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
@@ -767,7 +824,7 @@ namespace PFD
                         }
                 }
                 vm.SetComponentProperties(plate);
-                if(plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement); 
+                if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
             }
             else
             {
@@ -775,74 +832,89 @@ namespace PFD
                 vm.SetComponentProperties(screw);
             }
 
-            // Create 2D page
-            page2D = new Canvas();
-
-            Frame2DWidth = Frame2D.ActualWidth;
-            Frame2DHeight = Frame2D.ActualHeight;
-            // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
-            if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
-            if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
-
+            //Display Component
             if (vm.ComponentTypeIndex == 0)
             {
-                if (vm.MirrorX) crsc.MirrorCRSCAboutX();
-                if (vm.MirrorY) crsc.MirrorCRSCAboutY();
-                if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
-                if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
-                
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D, 
-                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+                DisplayCRSC();
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                if (vm.MirrorX) plate.MirrorPlateAboutX();
-                if (vm.MirrorY) plate.MirrorPlateAboutY();
-                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
-                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
-                if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
-
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+                DisplayPlate();
             }
             else
             {
-                // Screw
-                bool bDrawCentreSymbol = true;
-                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+                DisplayScrew();
             }
 
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
+            //TODO Mato - ak funguje, tak vsetko zakomentovane dole zmazat
+            //// Create 2D page
+            //page2D = new Canvas();
 
-            // Create 3D window
-            page3D = null;
+            //Frame2DWidth = Frame2D.ActualWidth;
+            //Frame2DHeight = Frame2D.ActualHeight;
+            //// Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
+            //if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
+            //if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                page3D = new Page3Dmodel(crsc, sDisplayOptions);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
-                page3D = new Page3Dmodel(plate, sDisplayOptions);
-            }
-            else
-            {
-                // Screw
-                PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
-                page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
-            }
+            //if (vm.ComponentTypeIndex == 0)
+            //{
+            //    if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+            //    if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+            //    if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
+            //    if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
 
-            // Display model in 3D preview frame
-            Frame3D.Content = page3D;
+            //    Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+            //       vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+            //}
+            //else if (vm.ComponentTypeIndex == 1)
+            //{
+            //    if (vm.MirrorX) plate.MirrorPlateAboutX();
+            //    if (vm.MirrorY) plate.MirrorPlateAboutY();
+            //    if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+            //    if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+            //    if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
-            this.UpdateLayout();
+            //    Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+            //       vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+            //}
+            //else
+            //{
+            //    // Screw
+            //    bool bDrawCentreSymbol = true;
+            //    Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+            //}
+
+            //// Display plate in 2D preview frame
+            //Frame2D.Content = page2D;
+
+            //// Create 3D window
+            //page3D = null;
+
+            //if (vm.ComponentTypeIndex == 0)
+            //{
+            //    page3D = new Page3Dmodel(crsc, sDisplayOptions);
+            //}
+            //else if (vm.ComponentTypeIndex == 1)
+            //{
+            //    sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
+            //    page3D = new Page3Dmodel(plate, sDisplayOptions);
+            //}
+            //else
+            //{
+            //    // Screw
+            //    PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
+            //    page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
+            //}
+
+            //// Display model in 3D preview frame
+            //Frame3D.Content = page3D;
+
+            //this.UpdateLayout();
         }
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
         {
-            CExportToDXF.ExportCanvas_DXF(page2D,0,0);
+            CExportToDXF.ExportCanvas_DXF(page2D, 0, 0);
         }
 
         private void BtnExportDXF_3D_Click(object sender, RoutedEventArgs e)
@@ -884,7 +956,7 @@ namespace PFD
         {
             List<Point> points = null;
 
-            if(plate.ScrewArrangement != null) // Screw arrangmenet must exists
+            if (plate.ScrewArrangement != null) // Screw arrangmenet must exists
                 points = plate.ScrewArrangement.HolesCentersPoints2D.ToList();
             else
             {
@@ -909,7 +981,7 @@ namespace PFD
             points.Insert(0, new Point(0, 0));
 
             TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points, fHeightToWidthRatio);
-            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel; 
+            TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
 
             w.Show();
             w.Closing += SalesmanWindow_Closing;
@@ -1009,7 +1081,7 @@ namespace PFD
                     {
                         CComponentParamsViewString itemStr = item as CComponentParamsViewString;
                         if (string.IsNullOrEmpty(itemStr.Value)) return;
-                        
+
                         if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1018,32 +1090,26 @@ namespace PFD
                         // Changed number of circles
                         if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name))
                         {
-                            int numberOfCirclesInGroup = int.Parse(itemStr.Value);
-                            //arrangementTemp.INumberOfCirclesInGroup = int.Parse(itemStr.Value);
+                            int numberOfCirclesInGroup = int.Parse(itemStr.Value);                            
                             arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
                             vm.SetScrewArrangementProperties(arrangementTemp);
                         }
 
-                        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                        // TODO - Ondrej - je potrebne urobit dynamicky, je potrebne zistit, ktorym sekvenciam sa ma zmeneny pocet skrutiek alebo radius nastavit
-                        // Changed number of scres in circle or radius
-
-                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 1)) UpdateCircleSequencesNumberOfScrews(1, itemStr, ref arrangementTemp);
-                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 1)) UpdateCircleSequencesRadius(1, fLengthUnitFactor, itemStr, ref arrangementTemp);
-
-                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 2)) UpdateCircleSequencesNumberOfScrews(2, itemStr, ref arrangementTemp);
-                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 2)) UpdateCircleSequencesRadius(2, fLengthUnitFactor, itemStr, ref arrangementTemp);
-
-                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 3)) UpdateCircleSequencesNumberOfScrews(3, itemStr, ref arrangementTemp);
-                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 3)) UpdateCircleSequencesRadius(3, fLengthUnitFactor, itemStr, ref arrangementTemp);
-
-                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 4)) UpdateCircleSequencesNumberOfScrews(4, itemStr, ref arrangementTemp);
-                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 4)) UpdateCircleSequencesRadius(4, fLengthUnitFactor, itemStr, ref arrangementTemp);
-
-                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 5)) UpdateCircleSequencesNumberOfScrews(5, itemStr, ref arrangementTemp);
-                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 5)) UpdateCircleSequencesRadius(5, fLengthUnitFactor, itemStr, ref arrangementTemp);
-                        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+                        //------------------------------------------------------------------------------------------------------------------------------------------                        
+                        // Changed number of screws in circle
+                        if (item.Name.Contains(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " "))
+                        {
+                            int circleNum = int.Parse(item.Name.Substring((CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " ").Length));
+                            UpdateCircleSequencesNumberOfScrews(circleNum, itemStr, ref arrangementTemp);
+                        }
+                        // Changed Radius
+                        if (item.Name.Contains(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " "))
+                        {
+                            int circleNum = int.Parse(item.Name.Substring((CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " ").Length));
+                            UpdateCircleSequencesRadius(circleNum, fLengthUnitFactor, itemStr, ref arrangementTemp);
+                        }
+                        
+                        //--------------------------------------------------------------------------------------------------------------------------------------------
                         // Corner screws
                         if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(itemStr.Value);
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
@@ -1115,115 +1181,145 @@ namespace PFD
             }
         }
 
-        // TODO - Ondrej, tu som spravil dve funkcie na nastavovanie poctu skrutiek a polomeru z GUI do prislusnych polkruhovych sekvencii, je potrebne zrefaktorovat a upravit
         private void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
         {
-            if (int.Parse(itemNewValueString.Value) > 1) // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
+            int numberOfScrews = int.Parse(itemNewValueString.Value);
+            if (numberOfScrews < 2) return; // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
+                        
+            // Change each group
+            foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
-                if (iCircleNumberInGroup == 1) // First circle
-                {
-                    // Change each group
-                    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-                    {
-                        if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
-                        {
-                            CScrewHalfCircleSequence seq = null;
-
-                            if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
-                            {
-                                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
-                                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-                            }
-
-                            if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
-                            {
-                                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
-                                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-                            }
-                        }
-                    }
-                }
-                else // other circles (2 or more)
-                {
-                    // Change each group
-                    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-                    {
-                        // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
-                        // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
-                        // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
-
-                        int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
-                        CScrewHalfCircleSequence seq = null;
-
-                        if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
-                        {
-                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
-                            seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-                        }
-
-                        if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
-                        {
-                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
-                            seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-                        }
-                    }
-                }
-
-                // Recalculate total number of screws in the arrangement
-                arrangementTemp.RecalculateTotalNumberOfScrews();
+                IEnumerable<CScrewSequence> halfCircleSequences = gr.ListScrewSequence.Where(s => s is CScrewHalfCircleSequence);
+                CScrewSequence seq = null;
+                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
+                if (seq != null) seq.INumberOfScrews = numberOfScrews;
+                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
+                if (seq != null) seq.INumberOfScrews = numberOfScrews;
             }
+            // Recalculate total number of screws in the arrangement
+            arrangementTemp.RecalculateTotalNumberOfScrews();
+
+
+            //TODO Mato - ak refaktorovany kod funguje tak toto dole zmazat
+            //if (int.Parse(itemNewValueString.Value) > 1) // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
+            //{
+            //    if (iCircleNumberInGroup == 1) // First circle
+            //    {
+            //        // Change each group
+            //        foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+            //        {
+            //            if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
+            //            {
+            //                CScrewHalfCircleSequence seq = null;
+
+            //                if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
+            //                {
+            //                    seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
+            //                    seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+            //                }
+
+            //                if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
+            //                {
+            //                    seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
+            //                    seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else // other circles (2 or more)
+            //    {
+            //        // Change each group
+            //        foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+            //        {
+            //            // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
+            //            // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
+            //            // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
+
+            //            int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
+            //            CScrewHalfCircleSequence seq = null;
+
+            //            if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
+            //            {
+            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
+            //                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+            //            }
+
+            //            if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
+            //            {
+            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
+            //                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+            //            }
+            //        }
+            //    }
+
+            //    // Recalculate total number of screws in the arrangement
+            //    arrangementTemp.RecalculateTotalNumberOfScrews();
+            //}
         }
 
         private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
         {
-            if (iCircleNumberInGroup == 1) // First circle
+            float radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);            
+            // Change each group
+            foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
-                // Change each group
-                foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-                {
-                    if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
-                    {
-                        CScrewHalfCircleSequence seq = null;
-
-                        if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
-                        {
-                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
-                            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-                        }
-
-                        if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
-                        {
-                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
-                            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-                        }
-                    }
-                }
+                IEnumerable<CScrewSequence> halfCircleSequences = gr.ListScrewSequence.Where(s => s is CScrewHalfCircleSequence);
+                CScrewSequence seq = null;
+                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
+                if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
+                seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
+                if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
             }
-            else // other circles (2 or more)
-            {
-                // Change each group
-                foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-                {
-                    // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
-                    // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
-                    // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
+            
+            //TODO Mato - ak refaktorovany kod funguje, tak toto dole zmazat
+            //if (iCircleNumberInGroup == 1) // First circle
+            //{
+            //    // Change each group
+            //    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+            //    {
+            //        if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
+            //        {
+            //            CScrewHalfCircleSequence seq = null;
 
-                    int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
-                    CScrewHalfCircleSequence seq = null;
+            //            if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
+            //            {
+            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
+            //                seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+            //            }
 
-                    if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
-                    {
-                        seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
-                        seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-                    }
+            //            if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
+            //            {
+            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
+            //                seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+            //            }
+            //        }
+            //    }
+            //}
+            //else // other circles (2 or more)
+            //{
+            //    // Change each group
+            //    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+            //    {
+            //        // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
+            //        // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
+            //        // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
 
-                    if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
-                    {
-                        seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
-                        seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-                    }
-                }
-            }
+            //        int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
+            //        CScrewHalfCircleSequence seq = null;
+
+            //        if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
+            //        {
+            //            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
+            //            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+            //        }
+
+            //        if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
+            //        {
+            //            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
+            //            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+            //        }
+            //    }
+            //}
         }
 
         private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1382,7 +1478,7 @@ namespace PFD
                     panelOptions3D.Visibility = Visibility.Hidden;
                 }
             }
-            else if(MainTabControl.SelectedIndex == 1)
+            else if (MainTabControl.SelectedIndex == 1)
             {
                 panelOptions2D.Visibility = Visibility.Hidden;
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
