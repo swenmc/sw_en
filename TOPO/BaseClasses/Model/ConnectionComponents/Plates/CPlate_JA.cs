@@ -114,9 +114,7 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                screwArrangement.Calc_HolesCentersCoord2DApexPlate(m_fbX, 0, m_fhY1, m_fSlope_rad);
-                screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
-                screwArrangement.GenerateConnectors();
+                screwArrangement.Calc_ApexPlateData(m_fbX, 0, m_fhY1, Ft, m_fSlope_rad);
             }
 
             // Fill list of indices for drawing of surface

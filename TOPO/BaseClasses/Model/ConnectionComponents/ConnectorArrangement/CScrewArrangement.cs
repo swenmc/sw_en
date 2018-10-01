@@ -118,6 +118,15 @@ namespace BaseClasses
             }
         }
 
+        public virtual void Calc_KneePlateData(
+            float fbX1,
+            float fbX2,
+            float flZ,
+            float fhY1,
+            float ft,
+            float fSlope_rad)
+        { }
+
         public virtual void Calc_HolesCentersCoord2DKneePlate(
             float fbX_1,
             float fbX_2,
@@ -126,6 +135,13 @@ namespace BaseClasses
             float fSlope_rad)
         { }
 
+        public virtual void Calc_ApexPlateData(
+            float fbX,
+            float flZ,
+            float fhY_1,
+            float ft,
+            float fSlope_rad)
+        { }
         public virtual void Calc_HolesCentersCoord2DApexPlate(
             float fbX,
             float flZ,
@@ -135,9 +151,26 @@ namespace BaseClasses
 
         public virtual void UpdateArrangmentData() { }
 
-        public virtual void Calc_HolesControlPointsCoord3D(float flZ, float ft) { }
+        public virtual void Calc_HolesControlPointsCoord3D_FlatPlate(float fx, float fy, float ft)
+        {
+            for (int i = 0; i < IHolesNumber; i++)
+            {
+                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X - fx; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (knee plate)
+                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - fy; // Odpocitat hodnotu flZ pridanu pre 2D zobrazenie (apex plate)
+                arrConnectorControlPoints3D[i].Z = -ft; // TODO Position depends on screw length;
+            }
+        }
 
-        public virtual void GenerateConnectors() { }
+        public virtual void GenerateConnectors_FlatPlate()
+        {
+            Screws = new CScrew[IHolesNumber];
+
+            for (int i = 0; i < IHolesNumber; i++)
+            {
+                CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                Screws[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
+            }
+        }
 
         public virtual void RecalculateTotalNumberOfScrews()
         {

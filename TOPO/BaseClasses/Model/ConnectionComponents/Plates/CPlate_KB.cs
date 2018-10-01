@@ -149,9 +149,7 @@ namespace BaseClasses
             if (screwArrangement != null)
             {
                 // Parameter flZ - // Distance from the left edge is the same as KA plate (lz is used for KC and KD plates)
-                screwArrangement.Calc_HolesCentersCoord2DKneePlate(m_fbX1, m_fbX2, 0, m_fhY1, m_fSlope_rad);
-                screwArrangement.Calc_HolesControlPointsCoord3D(0, Ft);
-                screwArrangement.GenerateConnectors();
+                screwArrangement.Calc_KneePlateData(m_fbX1, m_fbX2, 0, m_fhY1, Ft, m_fSlope_rad);
             }
 
             // Fill list of indices for drawing of surface

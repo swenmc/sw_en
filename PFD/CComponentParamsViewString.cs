@@ -9,9 +9,9 @@ namespace PFD
 {
     public class CComponentParamsViewString : CComponentParamsView
     {
-        //-------------------------------------------------------------------------------------------------------------        
-        private string MValue;        
-                
+        //-------------------------------------------------------------------------------------------------------------
+        private string MValue;
+
         public string Value
         {
             get
@@ -25,13 +25,10 @@ namespace PFD
                 NotifyPropertyChanged("Value");
             }
         }
-        
 
         public CComponentParamsViewString(string name, string shortcut, string value, string unit) : base(name, shortcut, unit, "TextBox")
         {
-            MValue = value;            
+            MValue = value;
         }
-        
-
     }
 }

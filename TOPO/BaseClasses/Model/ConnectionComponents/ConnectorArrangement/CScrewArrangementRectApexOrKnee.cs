@@ -288,9 +288,9 @@ namespace BaseClasses
             float fhY_1,
             float fSlope_rad)
         {
-            // Coordinates of [0,0] of sequence point on plate
-            float fx_c = 0.05f;
-            float fy_c = 0.05f;
+            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
+            float fx_c = 0.00f;
+            float fy_c = flZ + 0.00f;
 
             // Left side
             ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
@@ -340,9 +340,9 @@ namespace BaseClasses
             float fhY_1,
             float fSlope_rad)
         {
-            // Coordinates of [0,0] of sequence point on plate
+            // Coordinates of [0,0] of sequence point on plate (used to translate all sequences in the group)
             float fx_cBG = flZ + FCrscRafterDepth;
-            float fy_cBG = 0.0f;
+            float fy_cBG = 0;
 
             float fx_cUG = flZ + FCrscRafterDepth * (float)Math.Sin(fSlope_rad);
             float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
@@ -377,6 +377,31 @@ namespace BaseClasses
             FillArrayOfHolesCentersInWholeArrangement();
         }
 
+        public override void Calc_ApexPlateData(
+            float fbX,
+            float flZ,
+            float fhY_1,
+            float ft,
+            float fSlope_rad)
+        {
+            Calc_HolesCentersCoord2DApexPlate(fbX, flZ, fhY_1, fSlope_rad);
+            Calc_HolesControlPointsCoord3D_FlatPlate(0, flZ, ft);
+            GenerateConnectors_FlatPlate();
+        }
+
+        public override void Calc_KneePlateData(
+            float fbX_1,
+            float fbX_2,
+            float flZ,
+            float fhY_1,
+            float ft,
+            float fSlope_rad)
+        {
+            Calc_HolesCentersCoord2DKneePlate(fbX_1, fbX_2, flZ, fhY_1, fSlope_rad);
+            Calc_HolesControlPointsCoord3D_FlatPlate(flZ, 0, ft);
+            GenerateConnectors_FlatPlate();
+        }
+
         public Point[] GetMirroredSequenceAboutY(float fXDistanceOfMirrorAxis, CScrewSequence InputSequence)
         {
             Point[] OutputSequence = new  Point[InputSequence.HolesCentersPoints.Length];
@@ -393,35 +418,14 @@ namespace BaseClasses
         {
             Point[] seqPoints = sequence.HolesCentersPoints;
             Geom2D.TransformPositions_CCW_rad(fRotationCenterPoint_x, fRotationCenterPoint_y, fRotationAngle_rad, ref seqPoints);
-            sequence.HolesCentersPoints = seqPoints; // Skontrolovat ci je to potrebne nastavit
+            sequence.HolesCentersPoints = seqPoints; // TODO Ondrej - Skontrolovat ci je to potrebne takto nastavit alebo sa to da zapisat jednoduchsie
         }
 
         public void TranslateSequence(float fPoint_x, float fPoint_y, CScrewRectSequence sequence)
         {
             Point[] seqPoints = sequence.HolesCentersPoints;
             Geom2D.TransformPositions_CCW_rad(fPoint_x, fPoint_y, 0, ref seqPoints);
-            sequence.HolesCentersPoints = seqPoints; // Skontrolovat ci je to potrebne nastavit
-        }
-
-        public override void Calc_HolesControlPointsCoord3D(float flZ, float ft)
-        {
-            for (int i = 0; i < IHolesNumber; i++)
-            {
-                arrConnectorControlPoints3D[i].X = HolesCentersPoints2D[i].X;
-                arrConnectorControlPoints3D[i].Y = HolesCentersPoints2D[i].Y - flZ; // Musime odpocitat zalomenie hrany plechu, v 2D zobrazeni sa totiz pripocitalo
-                arrConnectorControlPoints3D[i].Z = -ft; // TODO Position depends on screw length;
-            }
-        }
-
-        public override void GenerateConnectors()
-        {
-            Screws = new CScrew[IHolesNumber];
-
-            for (int i = 0; i < IHolesNumber; i++)
-            {
-                CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
-                Screws[i] = new CScrew(referenceScrew.Name, controlpoint, referenceScrew.Gauge, referenceScrew.Diameter_thread, referenceScrew.D_h_headdiameter, referenceScrew.D_w_washerdiameter, referenceScrew.T_w_washerthickness, referenceScrew.Length, referenceScrew.Weight, 0, -90, 0, true);
-            }
+            sequence.HolesCentersPoints = seqPoints; // TODO Ondrej - Skontrolovat ci je to potrebne takto nastavit alebo sa to da zapisat jednoduchsie
         }
     }
 }
