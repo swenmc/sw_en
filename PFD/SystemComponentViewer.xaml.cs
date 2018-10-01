@@ -98,7 +98,6 @@ namespace PFD
 
                 if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
                 {
-                    //plate.DrillingRoutePoints = null;
                     vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
                     BtnShowCNCDrillingFile.IsEnabled = false;
@@ -107,7 +106,6 @@ namespace PFD
 
                 if (e.PropertyName == "Rotate90CW")
                 {
-                    //plate.DrillingRoutePoints = null;
                     vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
                     BtnShowCNCDrillingFile.IsEnabled = false;
@@ -117,7 +115,6 @@ namespace PFD
                 }
                 if (e.PropertyName == "Rotate90CCW")
                 {
-                    //plate.DrillingRoutePoints = null;
                     vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
                     BtnShowCNCDrillingFile.IsEnabled = false;
@@ -129,14 +126,20 @@ namespace PFD
                 if (e.PropertyName == "ScrewArrangementIndex")
                 {
                     SetUIElementsVisibilityForScrewArrangement(vm);
+
+                    // TODO - Ondrej, pri zmene vyberu screw arrangement v comboboxe by sa mala zmazat drilling route, neviem ci je to tu na spravnom mieste, prosim o pripadny presun
+                    vm.DrillingRoutePoints = null;
                     UpdateAll();
+                    //UpdateAndDisplayPlate(); // TODO - Ondrej ak sa ma v ramci update plate aj vygenerovat prislusne screwarrangement podla vyberu v comboboxe treba to pridat do funckie, teraz to len prepocita hodnoty pre screw arrangement ktore uz bolo plechu priradene
                 }
 
-                //if (e.PropertyName == "ScrewArrangementParameters")
-                //{
-                //    UpdateAll();
-                //}
-
+                /* To Ondrej - toto sa bude pouzivat?
+                if (e.PropertyName == "ScrewArrangementParameters")
+                {
+                    // TODO - Ondrej, pri zmene parametrov arrangement by sa mala zmazat drilling route, neviem ci je to tu na spravnom mieste, prosim o pripadny presun
+                    vm.DrillingRoutePoints = null;
+                    UpdateAndDisplayPlate();
+                }*/
             }
             else if (sender is CComponentParamsViewBool)
             {
@@ -504,9 +507,12 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 1) // Plate
             {
-                plate.ScrewArrangement.UpdateArrangmentData();
+                if(plate.ScrewArrangement != null)
+                  plate.ScrewArrangement.UpdateArrangmentData();
+
                 plate.UpdatePlateData(plate.ScrewArrangement);
 
+                // TODO - Ondrej - toto by sa dalo nejako refaktrovat s UpdateAll
                 // KOPIA Z UPDATE ALL TYKAJUCA SA PLATE
                 //------------------------------------------------------------------------------------------------------------------------------------------------------------
                 // Create 2D page
@@ -1108,7 +1114,6 @@ namespace PFD
                 plate.DrillingRoutePoints = null;
             }
         }
-
 
         // TODO - Ondrej, tu som spravil dve funkcie na nastavovanie poctu skrutiek a polomeru z GUI do prislusnych polkruhovych sekvencii, je potrebne zrefaktorovat a upravit
         private void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)

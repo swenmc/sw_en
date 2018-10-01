@@ -673,7 +673,6 @@ namespace PFD
             }
 
             ScrewArrangementParameters = screwArrangmenetProperties;
-
         }
 
         public void SetComponentProperties(CPlate plate)
