@@ -498,6 +498,52 @@ namespace PFD
             }
         }
 
+        private void UpdateAndDisplayPlate()
+        {
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            if (vm.ComponentTypeIndex == 1) // Plate
+            {
+                plate.ScrewArrangement.UpdateArrangmentData();
+                plate.UpdatePlateData(plate.ScrewArrangement);
+
+                // KOPIA Z UPDATE ALL TYKAJUCA SA PLATE
+                //------------------------------------------------------------------------------------------------------------------------------------------------------------
+                // Create 2D page
+                page2D = new Canvas();
+
+                Frame2DWidth = Frame2D.ActualWidth;
+                Frame2DHeight = Frame2D.ActualHeight;
+                // Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
+                if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
+                if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
+
+                if (vm.MirrorX) plate.MirrorPlateAboutX();
+                if (vm.MirrorY) plate.MirrorPlateAboutY();
+                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+                if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
+
+                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+                   vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+
+                // Display plate in 2D preview frame
+                Frame2D.Content = page2D;
+
+                // Create 3D window
+                page3D = null;
+
+                sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
+                page3D = new Page3Dmodel(plate, sDisplayOptions);
+
+                // Display model in 3D preview frame
+                Frame3D.Content = page3D;
+
+                this.UpdateLayout();
+                //------------------------------------------------------------------------------------------------------------------------------------------------------------
+            }
+        }
+
         private void UpdateAll()
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel; 
@@ -596,7 +642,6 @@ namespace PFD
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 10, 2, 0.15f, 0.55f, 0.07f, 0.05f);
                 CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
-
 
                 switch ((ESerieTypePlate)vm.ComponentSerieIndex)
                 {
@@ -889,35 +934,9 @@ namespace PFD
                 vm.DrillingRoutePoints = PathPoints;
                 // Enable button to display of CNC drilling file
                 BtnShowCNCDrillingFile.IsEnabled = true;
-
-                UpdateAll();
+                // Update plate data and display
+                UpdateAndDisplayPlate();
             }
-
-            //if (vm.ComponentTypeIndex == 0)
-            //{
-            //    Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-            //        vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            //}
-            //else if (vm.ComponentTypeIndex == 1)
-            //{
-            //    // Set drilling route points
-            //    vm.DrillingRoutePoints = PathPoints;
-            //    // Draw plate
-            //    Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-            //        vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-
-            //    // Update value of drilling route in grid view
-            //    vm.SetComponentProperties(plate);
-            //}
-            //else
-            //{
-            //    // Screw
-            //    bool bDrawCentreSymbol = true;
-            //    Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
-            //}
-
-            //// Display plate in 2D preview frame
-            //Frame2D.Content = page2D;
         }
 
         private void BtnShowCNCSetupFile_Click(object sender, RoutedEventArgs e)
@@ -1392,7 +1411,8 @@ namespace PFD
                 if (vm.MirrorY) plate.MirrorPlateAboutY();
                 if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
                 if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
-                
+                if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
+
                 // Redraw plate in 2D
                 Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
                     vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);

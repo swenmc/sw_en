@@ -259,7 +259,7 @@ namespace BaseClasses
             IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber; // Spolu v jednom rohu
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y;
-            
+
             ListOfSequenceGroups = screwSequenceGroup;
 
             UpdateAdditionalCornerScrews();
