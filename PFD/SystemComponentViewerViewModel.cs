@@ -618,20 +618,20 @@ namespace PFD
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebStraightDepthS.Name, CParamsResources.CrscWebStraightDepthS.Symbol, (Math.Round(circArrangement.FCrscWebStraightDepth * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebStraightDepthS.Unit));
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.CrscWebMiddleStiffenerSizeS.Name, CParamsResources.CrscWebMiddleStiffenerSizeS.Symbol, (Math.Round(circArrangement.FStiffenerSize * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.CrscWebMiddleStiffenerSizeS.Unit));
 
-                // TODO Ondrej, toto by malo byt obecne pre rozny pocet circle groups
+
                 screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.NumberOfCirclesInGroupS.Name, CParamsResources.NumberOfCirclesInGroupS.Symbol, circArrangement.INumberOfCirclesInGroup.ToString(), CParamsResources.NumberOfCirclesInGroupS.Unit));
                 CScrewSequenceGroup gr = circArrangement.ListOfSequenceGroups.FirstOrDefault();
                 if (gr != null)
                 {
                     int c = 0;
                     for (int i = 0; i < gr.ListScrewSequence.Count; i++)
-                    {                        
+                    {
                         if (gr.ListScrewSequence[i] is CScrewHalfCircleSequence && i % 2 == 1)
                         {
                             c++;
                             CScrewHalfCircleSequence screwHalfCircleSequence = gr.ListScrewSequence[i] as CScrewHalfCircleSequence;
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.NumberOfScrewsInCircleSequenceS.Name +" "+ (c), CParamsResources.NumberOfScrewsInCircleSequenceS.Symbol, screwHalfCircleSequence.INumberOfScrews.ToString(), CParamsResources.NumberOfScrewsInCircleSequenceS.Unit));
-                            screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " "+ (c), CParamsResources.RadiusOfScrewsInCircleSequenceS.Symbol, (Math.Round(screwHalfCircleSequence.Radius * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleSequenceS.Unit));                            
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + (c), CParamsResources.NumberOfScrewsInCircleSequenceS.Symbol, screwHalfCircleSequence.INumberOfScrews.ToString(), CParamsResources.NumberOfScrewsInCircleSequenceS.Unit));
+                            screwArrangmenetProperties.Add(new CComponentParamsViewString(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + (c), CParamsResources.RadiusOfScrewsInCircleSequenceS.Symbol, (Math.Round(screwHalfCircleSequence.Radius * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.RadiusOfScrewsInCircleSequenceS.Unit));                            
                         }
                     }
                 }
@@ -675,6 +675,7 @@ namespace PFD
             ScrewArrangementParameters = screwArrangmenetProperties;
 
         }
+
         public void SetComponentProperties(CPlate plate)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();

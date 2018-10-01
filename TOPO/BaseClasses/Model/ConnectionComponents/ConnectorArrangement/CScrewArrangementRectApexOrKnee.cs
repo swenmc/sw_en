@@ -315,9 +315,20 @@ namespace BaseClasses
             seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq4);
 
             // Add mirrored sequences into the list
-            ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
-            ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
-            ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
+            if (ListOfSequenceGroups.Count == 1) // Just in case that mirrored (right side) group doesn't exists
+            {
+                ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
+
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
+                ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+            }
+            else // In case that group already exists set current sequences
+            {
+                ListOfSequenceGroups[1].ListScrewSequence[0] = seq3;
+                ListOfSequenceGroups[1].ListScrewSequence[1] = seq4;
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
+            }
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
@@ -337,31 +348,31 @@ namespace BaseClasses
             float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
 
             // Bottom group - column
-            this.ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)this.ListOfSequenceGroups[0].ListScrewSequence[0]);
-            this.ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)this.ListOfSequenceGroups[0].ListScrewSequence[1]);
+            ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
+            ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
 
             // Rotate screws by colum slope (bottom group only)
             // Rotate about [0,0] 90 deg
-            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)this.ListOfSequenceGroups[0].ListScrewSequence[0]);
-            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)this.ListOfSequenceGroups[0].ListScrewSequence[1]);
+            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
+            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
 
             // Upper group - rafter
-            this.ListOfSequenceGroups[1].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)this.ListOfSequenceGroups[1].ListScrewSequence[0]);
-            this.ListOfSequenceGroups[1].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)this.ListOfSequenceGroups[1].ListScrewSequence[1]);
+            ListOfSequenceGroups[1].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
+            ListOfSequenceGroups[1].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
 
             // Rotate screws by roof slope (upper group only)
             // Rotate about [0,0]
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)this.ListOfSequenceGroups[1].ListScrewSequence[0]);
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)this.ListOfSequenceGroups[1].ListScrewSequence[1]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
 
             // Translate from [0,0] on plate to the final position
             // Bottom Group
-            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)this.ListOfSequenceGroups[0].ListScrewSequence[0]);
-            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)this.ListOfSequenceGroups[0].ListScrewSequence[1]);
+            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
+            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
 
             // Upper Group
-            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)this.ListOfSequenceGroups[1].ListScrewSequence[0]);
-            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)this.ListOfSequenceGroups[1].ListScrewSequence[1]);
+            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
+            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
