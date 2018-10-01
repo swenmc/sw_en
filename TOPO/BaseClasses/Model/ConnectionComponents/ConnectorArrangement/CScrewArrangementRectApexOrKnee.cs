@@ -284,7 +284,7 @@ namespace BaseClasses
             return GetRegularArrayOfPointsInCartesianCoordinates(srectSeq.ReferencePoint, srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
         }
 
-        public void Calc_HolesCentersCoord2DApexPlate(
+        public override void Calc_HolesCentersCoord2DApexPlate(
             float fbX,
             float flZ,
             float fhY_1,
@@ -324,7 +324,7 @@ namespace BaseClasses
             FillArrayOfHolesCentersInWholeArrangement();
         }
 
-        public void Calc_HolesCentersCoord2DKneePlate(
+        public override void Calc_HolesCentersCoord2DKneePlate(
             float fbX_1,
             float fbX_2,
             float flZ,

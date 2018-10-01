@@ -540,7 +540,7 @@ namespace BaseClasses
                 }
             }
 
-            // Add addtional point the sequences
+            // Add additional point the sequences
             if (BUseAdditionalCornerScrews && group.NumberOfRectangularSequences > 0)
             {
                 CScrewSequence seq = group.ListScrewSequence.FirstOrDefault(s => s is CScrewHalfCircleSequence);
