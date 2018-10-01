@@ -136,5 +136,17 @@ namespace BaseClasses
         public virtual void Calc_HolesControlPointsCoord3D(float flZ, float ft) { }
 
         public virtual void GenerateConnectors() { }
+
+        public virtual void RecalculateTotalNumberOfScrews()
+        {
+            // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+            IHolesNumber = 0;
+
+            foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
+            {
+                foreach (CScrewSequence seq in group.ListScrewSequence)
+                    IHolesNumber += seq.INumberOfScrews;
+            }
+        }
     }
 }

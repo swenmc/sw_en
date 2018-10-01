@@ -297,7 +297,7 @@ namespace BaseClasses
                 for (int i = 0; i < numToAdd; i++)
                 {
                     foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
-                    {                        
+                    {
                         // Add one circle - two half-circle sequences
                         int lastHalfCircleNumberOfScrews = 16;
                         float lastHalfCircleRadius = 0.25f;
@@ -312,11 +312,11 @@ namespace BaseClasses
                         // Add first half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence1 = new CScrewHalfCircleSequence();
                         screwHalfCircleSequence1.INumberOfScrews = lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
-                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.05f; // Kazdy novy kruh o 50 mm mensi priemer                        
+                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
                         g.ListScrewSequence.Add(screwHalfCircleSequence1);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
 
-                        // Add second half-circle sequence                        
+                        // Add second half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence2 = new CScrewHalfCircleSequence();
                         screwHalfCircleSequence2.INumberOfScrews = lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
                         screwHalfCircleSequence2.Radius = lastHalfCircleRadius - 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
@@ -403,13 +403,7 @@ namespace BaseClasses
             }
 
             // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
-            IHolesNumber = 0;
-
-            foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
-            {
-                foreach (CScrewSequence seq in group.ListScrewSequence)
-                    IHolesNumber += seq.INumberOfScrews;
-            }
+            RecalculateTotalNumberOfScrews();
 
             HolesCentersPoints2D = new Point[IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];

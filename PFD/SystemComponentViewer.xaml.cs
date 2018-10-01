@@ -1385,6 +1385,7 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
 
                         // Circle screws
+                        // Changed number of circles
                         if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name))
                         {
                             int numberOfCirclesInGroup = int.Parse(itemStr.Value);
@@ -1393,8 +1394,25 @@ namespace PFD
                             vm.SetScrewArrangementProperties(arrangementTemp);
                         }
 
-                        //if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name)) arrangementTemp.INumberOfScrewsInOneHalfCircleSequence_SQ1 = int.Parse(itemStr.Value); // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
-                        //if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name)) arrangementTemp.FRadius_SQ1 = (float.Parse(itemStr.Value) / fLengthUnitFactor);  // TODO - pre SQ1 (ale moze byt rozne podla poctu kruhov)
+                        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        // TODO - Ondrej - je potrebne urobit dynamicky, je potrebne zistit, ktorym sekvenciam sa ma zmeneny pocet skrutiek alebo radius nastavit
+                        // Changed number of scres in circle or radius
+
+                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 1)) UpdateCircleSequencesNumberOfScrews(1, itemStr, ref arrangementTemp);
+                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 1)) UpdateCircleSequencesRadius(1, fLengthUnitFactor, itemStr, ref arrangementTemp);
+
+                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 2)) UpdateCircleSequencesNumberOfScrews(2, itemStr, ref arrangementTemp);
+                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 2)) UpdateCircleSequencesRadius(2, fLengthUnitFactor, itemStr, ref arrangementTemp);
+
+                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 3)) UpdateCircleSequencesNumberOfScrews(3, itemStr, ref arrangementTemp);
+                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 3)) UpdateCircleSequencesRadius(3, fLengthUnitFactor, itemStr, ref arrangementTemp);
+
+                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 4)) UpdateCircleSequencesNumberOfScrews(4, itemStr, ref arrangementTemp);
+                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 4)) UpdateCircleSequencesRadius(4, fLengthUnitFactor, itemStr, ref arrangementTemp);
+
+                        if (item.Name.Equals(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " " + 5)) UpdateCircleSequencesNumberOfScrews(5, itemStr, ref arrangementTemp);
+                        if (item.Name.Equals(CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " " + 5)) UpdateCircleSequencesRadius(5, fLengthUnitFactor, itemStr, ref arrangementTemp);
+                        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                         // Corner screws
                         if (item.Name.Equals(CParamsResources.NumberOfAdditionalScrewsInCornerS.Name)) arrangementTemp.IAdditionalConnectorInCornerNumber = int.Parse(itemStr.Value);
@@ -1465,6 +1483,118 @@ namespace PFD
                 }
                 vm.DrillingRoutePoints = null;
                 plate.DrillingRoutePoints = null;
+            }
+        }
+
+
+        // TODO - Ondrej, tu som spravil dve funkcie na nastavovanie poctu skrutiek a polomeru z GUI do prislusnych polkruhovych sekvencii, je potrebne zrefaktorovat a upravit
+        private void UpdateCircleSequencesNumberOfScrews(int iCircleNumberInGroup, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
+        {
+            if (int.Parse(itemNewValueString.Value) > 1) // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
+            {
+                if (iCircleNumberInGroup == 1) // First circle
+                {
+                    // Change each group
+                    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+                    {
+                        if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
+                        {
+                            CScrewHalfCircleSequence seq = null;
+
+                            if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
+                            {
+                                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
+                                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+                            }
+
+                            if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
+                            {
+                                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
+                                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+                            }
+                        }
+                    }
+                }
+                else // other circles (2 or more)
+                {
+                    // Change each group
+                    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+                    {
+                        // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
+                        // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
+                        // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
+
+                        int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
+                        CScrewHalfCircleSequence seq = null;
+
+                        if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
+                        {
+                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
+                            seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+                        }
+
+                        if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
+                        {
+                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
+                            seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
+                        }
+                    }
+                }
+
+                // Recalculate total number of screws in the arrangement
+                arrangementTemp.RecalculateTotalNumberOfScrews();
+            }
+        }
+
+        private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
+        {
+            if (iCircleNumberInGroup == 1) // First circle
+            {
+                // Change each group
+                foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+                {
+                    if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
+                    {
+                        CScrewHalfCircleSequence seq = null;
+
+                        if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
+                        {
+                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
+                            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+                        }
+
+                        if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
+                        {
+                            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
+                            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+                        }
+                    }
+                }
+            }
+            else // other circles (2 or more)
+            {
+                // Change each group
+                foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
+                {
+                    // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
+                    // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
+                    // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
+
+                    int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
+                    CScrewHalfCircleSequence seq = null;
+
+                    if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
+                    {
+                        seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
+                        seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+                    }
+
+                    if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
+                    {
+                        seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
+                        seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+                    }
+                }
             }
         }
 
