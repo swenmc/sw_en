@@ -1434,11 +1434,10 @@ namespace PFD
                     }
 
                     // TODO - Objekt screw arrangement, ktory vstupuje do plate.UpdatePlateData musi mat prepocitane a aktualizovane dalsie svoje parametre (pocet sekvencii, pocet skrutiek v sekvenciach, ...)
-                    arrangementTemp.UpdateAdditionalCornerScrews();     // Update data of screw arrangement
-                    plate.ScrewArrangement = arrangementTemp;           // Set current screw arrangement to the plate
-
-                    plate.UpdatePlateData(plate.ScrewArrangement);      // Update data of plate
-                    RedrawComponentIn2D();                              // Redraw plate
+                    arrangementTemp.UpdateAdditionalCornerScrews(); // Update data of screw arrangement
+                    plate.ScrewArrangement = arrangementTemp;       // Set current screw arrangement to the plate
+                    plate.UpdatePlateData(plate.ScrewArrangement);  // Update data of plate
+                    RedrawComponentIn2D();                          // Redraw plate
                 }
                 else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
                 {
@@ -1473,9 +1472,10 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                     }
 
-                    arrangementTemp.UpdateArrangmentData();
-                    plate.ScrewArrangement = arrangementTemp;
-                    RedrawComponentIn2D();
+                    arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
+                    plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
+                    plate.UpdatePlateData(plate.ScrewArrangement); // Update data of plate
+                    RedrawComponentIn2D();                         // Redraw plate
                 }
                 else
                 {
