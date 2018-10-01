@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
+using System.Windows;
+using System.Globalization;
 using MATH;
 using BaseClasses.GraphObj;
-using System.Windows;
 
 namespace BaseClasses
 {
@@ -399,6 +400,14 @@ namespace BaseClasses
 
         public override void UpdateArrangmentData()
         {
+            // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
+            NumberFormatInfo nfi = new NumberFormatInfo();
+            nfi.NumberDecimalSeparator = ".";
+
+            // Update reference screw properties
+            DATABASE.DTO.CTEKScrewProperties screwProp = DATABASE.CTEKScrewsManager.GetScrewProperties(referenceScrew.Gauge.ToString());
+            referenceScrew.Diameter_thread = float.Parse(screwProp.threadDiameter, nfi) / 1000; // Convert mm to m
+
             // Tu treba updatovat vsetko
             // To Ondrej - velmi uz ani nie je co
 
