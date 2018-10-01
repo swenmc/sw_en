@@ -1433,11 +1433,8 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
                     }
 
-                    // TODO - Objekt screw arrangement, ktory vstupuje do plate.UpdatePlateData musi mat prepocitane a aktualizovane dalsie svoje parametre (pocet sekvencii, pocet skrutiek v sekvenciach, ...)
-                    arrangementTemp.UpdateAdditionalCornerScrews(); // Update data of screw arrangement
+                    arrangementTemp.UpdateArrangmentData();         // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;       // Set current screw arrangement to the plate
-                    plate.UpdatePlateData(plate.ScrewArrangement);  // Update data of plate
-                    RedrawComponentIn2D();                          // Redraw plate
                 }
                 else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangementRectApexOrKnee)
                 {
@@ -1474,13 +1471,15 @@ namespace PFD
 
                     arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
-                    plate.UpdatePlateData(plate.ScrewArrangement); // Update data of plate
-                    RedrawComponentIn2D();                         // Redraw plate
                 }
                 else
                 {
                     // Screw arrangement is not implemented
                 }
+
+                plate.UpdatePlateData(plate.ScrewArrangement);  // Update data of plate
+                RedrawComponentIn2D();                          // Redraw plate
+
                 vm.DrillingRoutePoints = null;
                 plate.DrillingRoutePoints = null;
             }
@@ -1625,15 +1624,7 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    if (plateTemp.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                    else if (plateTemp.ScrewArrangement is CScrewArrangementRectApexOrKnee)
-                        plateTemp.UpdatePlateData((CScrewArrangementRectApexOrKnee)plateTemp.ScrewArrangement);
-                    else
-                    {
-                        // Not Defined
-                    }
-
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_JB)
@@ -1647,15 +1638,7 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    if (plateTemp.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                    else if (plateTemp.ScrewArrangement is CScrewArrangementRectApexOrKnee)
-                        plateTemp.UpdatePlateData((CScrewArrangementRectApexOrKnee)plateTemp.ScrewArrangement);
-                    else
-                    {
-                        // Not Defined
-                    }
-
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_KA)
@@ -1669,14 +1652,8 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    if (plateTemp.ScrewArrangement is CScrewArrangementCircleApexOrKnee)
-                        plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
-                    else if (plateTemp.ScrewArrangement is CScrewArrangementRectApexOrKnee)
-                        plateTemp.UpdatePlateData((CScrewArrangementRectApexOrKnee)plateTemp.ScrewArrangement);
-                    else
-                    {
-                        // Not Defined
-                    }
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_KB)
                 {
@@ -1690,7 +1667,7 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_KC)
@@ -1705,7 +1682,7 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_KD)
@@ -1720,7 +1697,7 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.PlateLipS.Name)) plateTemp.Fl_Z = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
                 else if (plate is CConCom_Plate_KE) // Nepouzivat, kym nebude zobecnene screw arrangement
@@ -1737,7 +1714,7 @@ namespace PFD
                     if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_XR = float.Parse(changedText) / fLengthUnitFactor;
 
                     // Update plate data
-                    plateTemp.UpdatePlateData((CScrewArrangementCircleApexOrKnee)plateTemp.ScrewArrangement);
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
                 else

@@ -133,6 +133,8 @@ namespace BaseClasses
             float fSlope_rad)
         { }
 
+        public virtual void UpdateArrangmentData() { }
+
         public virtual void Calc_HolesControlPointsCoord3D(float flZ, float ft) { }
 
         public virtual void GenerateConnectors() { }

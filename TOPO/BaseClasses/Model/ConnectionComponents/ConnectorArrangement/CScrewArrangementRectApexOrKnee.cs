@@ -203,7 +203,7 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
-        public void UpdateArrangmentData()
+        public override void UpdateArrangmentData()
         {
             ListOfSequenceGroups.Clear(); // Delete previous data otherwise are added more and more new screws to the list
             ListOfSequenceGroups = new List<CScrewSequenceGroup>(2);
@@ -215,7 +215,8 @@ namespace BaseClasses
             seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
             seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
             seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;
-            seq1.HolesCentersPoints = new Point[seq1.NumberOfScrewsInRow_xDirection * seq1.NumberOfScrewsInColumn_yDirection];
+            seq1.INumberOfScrews = seq1.NumberOfScrewsInRow_xDirection * seq1.NumberOfScrewsInColumn_yDirection;
+            seq1.HolesCentersPoints = new Point[seq1.INumberOfScrews];
             ListOfSequenceGroups[0].ListScrewSequence.Add(seq1);
 
             CScrewRectSequence seq2 = new CScrewRectSequence();
@@ -224,18 +225,16 @@ namespace BaseClasses
             seq2.ReferencePoint = new Point(fx_c_SQ2, fy_c_SQ2);
             seq2.DistanceOfPointsX = fDistanceOfPointsX_SQ2;
             seq2.DistanceOfPointsY = fDistanceOfPointsY_SQ2;
-            seq2.HolesCentersPoints = new Point[seq2.NumberOfScrewsInRow_xDirection * seq2.NumberOfScrewsInColumn_yDirection];
+            seq2.INumberOfScrews = seq2.NumberOfScrewsInRow_xDirection * seq2.NumberOfScrewsInColumn_yDirection;
+            seq2.HolesCentersPoints = new Point[seq2.INumberOfScrews];
             ListOfSequenceGroups[0].ListScrewSequence.Add(seq2);
+
+            ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
+            ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
 
             // Celkovy pocet skrutiek
             // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
-            IHolesNumber = 0;
-
-            foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
-            {
-                foreach (CScrewRectSequence seq in group.ListScrewSequence)
-                    IHolesNumber += seq.NumberOfScrewsInRow_xDirection * seq.NumberOfScrewsInColumn_yDirection;
-            }
+            RecalculateTotalNumberOfScrews();
 
             int iNumberOfGroupsInPlate = 2;
 
@@ -252,7 +251,8 @@ namespace BaseClasses
                 seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
                 seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
                 seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
-                seq3.HolesCentersPoints = new Point[seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection];
+                seq3.INumberOfScrews = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
+                seq3.HolesCentersPoints = new Point[seq3.INumberOfScrews];
                 ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
 
                 CScrewRectSequence seq4 = new CScrewRectSequence();
@@ -261,17 +261,15 @@ namespace BaseClasses
                 seq4.ReferencePoint = new Point(fx_c_SQ4, fy_c_SQ4);
                 seq4.DistanceOfPointsX = fDistanceOfPointsX_SQ4;
                 seq4.DistanceOfPointsY = fDistanceOfPointsY_SQ4;
-                seq4.HolesCentersPoints = new Point[seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection];
+                seq4.INumberOfScrews = seq3.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
+                seq4.HolesCentersPoints = new Point[seq4.INumberOfScrews];
                 ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
 
-                // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
-                IHolesNumber = 0;
+                ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 0;
+                ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
 
-                foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
-                {
-                    foreach (CScrewRectSequence seq in group.ListScrewSequence)
-                        IHolesNumber += seq.NumberOfScrewsInRow_xDirection * seq.NumberOfScrewsInColumn_yDirection;
-                }
+                // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
+                RecalculateTotalNumberOfScrews();
             }
 
             HolesCentersPoints2D = new Point[IHolesNumber];
@@ -394,7 +392,7 @@ namespace BaseClasses
             sequence.HolesCentersPoints = seqPoints; // Skontrolovat ci je to potrebne nastavit
         }
 
-        public void Calc_HolesControlPointsCoord3D(float flZ, float ft)
+        public override void Calc_HolesControlPointsCoord3D(float flZ, float ft)
         {
             for (int i = 0; i < IHolesNumber; i++)
             {
@@ -404,7 +402,7 @@ namespace BaseClasses
             }
         }
 
-        public void GenerateConnectors()
+        public override void GenerateConnectors()
         {
             Screws = new CScrew[IHolesNumber];
 

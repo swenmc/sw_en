@@ -329,18 +329,6 @@ namespace BaseClasses
             INumberOfCirclesInGroup = newNumberOfCirclesInGroup;
         }
 
-        public void UpdateScrewArrangement()
-        {
-            //Tu treba updatovat vsetko
-
-            //Circles
-
-
-
-            //AdditionalCorners
-            UpdateAdditionalCornerScrews();
-        }
-
         public void UpdateAdditionalCornerScrews()
         {
             IAdditionalConnectorNumberInRow_xDirection = (int)Math.Sqrt(IAdditionalConnectorInCornerNumber); // v smere x, pocet v riadku
@@ -407,6 +395,27 @@ namespace BaseClasses
 
             HolesCentersPoints2D = new Point[IHolesNumber];
             arrConnectorControlPoints3D = new Point3D[IHolesNumber];
+        }
+
+        public override void UpdateArrangmentData()
+        {
+            // Tu treba updatovat vsetko
+            // To Ondrej - velmi uz ani nie je co
+
+            // Mohli by sa tu presunut casti funkcii:
+            // NumberOfCirclesInGroup_Updated
+            // Calc_HolesCentersCoord2DApexPlate
+            // Calc_HolesCentersCoord2DKneePlate
+
+            // ale Calc_xxxx sa potom volaju pri plate update - public override void UpdatePlateData(CScrewArrangement screwArrangement)
+            // pretoze poloha screw group sa pocita z rozmerov plechu
+
+            // Circles
+
+
+
+            // Additional Corner Screws
+            UpdateAdditionalCornerScrews();
         }
 
         //public void Get_ScrewGroup_IncludingAdditionalScrews(int iNumberOfCirclesInGroup,
