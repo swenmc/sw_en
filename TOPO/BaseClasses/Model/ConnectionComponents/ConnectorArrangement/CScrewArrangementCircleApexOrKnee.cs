@@ -437,11 +437,11 @@ namespace BaseClasses
         ref CScrewSequenceGroup group)
         {
             float fAngle_seq_rotation_deg = fRotation_rad * 180f / MathF.fPI; // Input value (roof pitch)
-            float fAdditionalMargin = 0.01f; //naco je toto dobre???
+            float fAdditionalMargin = 0.02f; //naco je toto dobre???
             // To Ondrej Uprostred prierezu 63020 (vid crsc 3D view je "vyztuha", teda je tam medzera, do ktorej sa neda pripevnit plech skrutkami (preto je kruh skrutiek rozdeleny na 2 segmenty)
-            // hodnota additional margin je pouzita na to aby nebola krajna skrutka v kruhovej sekvencii priamo na zakrivenej hrane ale dalej, nastavene je tvrdo 10 mm ale moze to byt aj viac a nastavitelne uzivatelom)
+            // hodnota additional margin je pouzita na to aby nebola krajna skrutka v kruhovej sekvencii priamo na zakrivenej hrane ale dalej, nastavene je tvrdo 20 mm ale moze to byt aj viac a nastavitelne uzivatelom)
             // dalo by sa to pripocitavat priamo k FStiffenerSize
-            // Zatial som to nerobil user-defined, lebo to nie je az take dolezite, nastavovat 10 mm alebo 30 mm, uvidim ci to budu chciet naozaj nastavovat
+            // Zatial som to nerobil user-defined, lebo to nie je az take dolezite, nastavovat 20 mm alebo 30 mm, uvidim ci to budu chciet naozaj nastavovat
 
             if (group.NumberOfHalfCircleSequences > 0)
             {
@@ -451,8 +451,8 @@ namespace BaseClasses
                     if (!(screwSequence is CScrewHalfCircleSequence)) continue;
                     CScrewHalfCircleSequence circSeq = screwSequence as CScrewHalfCircleSequence;
 
-                    // Input - according to the size of middle sfiffener and circle radius
-                    float fAngle_seq_rotation_init_point_deg = (float)(Math.Atan((0.5f * FStiffenerSize + 2 * fAdditionalMargin) / circSeq.Radius) / MathF.fPI * 180f);
+                    // Input - according to the size of middle sfiffener, additional margin and circle radius
+                    float fAngle_seq_rotation_init_point_deg = (float)(Math.Asin((0.5f * FStiffenerSize + fAdditionalMargin) / circSeq.Radius) / MathF.fPI * 180f);
                     // Angle between sequence center, first and last point in the sequence
                     float fAngle_interval_deg = 180 - (2f * fAngle_seq_rotation_init_point_deg); 
                     if (count % 2 == 0)
