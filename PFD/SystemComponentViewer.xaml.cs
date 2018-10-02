@@ -117,7 +117,7 @@ namespace PFD
                     tabItemDoc.Visibility = Visibility.Hidden;
                     BtnShowCNCDrillingFile.IsEnabled = false;
 
-                    MirrorComponentX(vm);                    
+                    MirrorComponentX(vm);
                     DisplayComponent(vm);
                 }
                 if (e.PropertyName == "MirrorY")
@@ -625,7 +625,7 @@ namespace PFD
                 if (vm.MirrorY) plate.MirrorPlateAboutY();
                 if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
                 if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
-            }            
+            }
             if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
             Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
@@ -1108,12 +1108,11 @@ namespace PFD
                         // Changed number of circles
                         if (item.Name.Equals(CParamsResources.NumberOfCirclesInGroupS.Name))
                         {
-                            int numberOfCirclesInGroup = int.Parse(itemStr.Value);                            
+                            int numberOfCirclesInGroup = int.Parse(itemStr.Value);
                             arrangementTemp.NumberOfCirclesInGroup_Updated(numberOfCirclesInGroup);
                             vm.SetScrewArrangementProperties(arrangementTemp);
                         }
 
-                        //------------------------------------------------------------------------------------------------------------------------------------------                        
                         // Changed number of screws in circle
                         if (item.Name.Contains(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " "))
                         {
@@ -1126,9 +1125,8 @@ namespace PFD
                             int circleNum = int.Parse(item.Name.Substring((CParamsResources.RadiusOfScrewsInCircleSequenceS.Name + " ").Length));
                             UpdateCircleSequencesRadius(circleNum, fLengthUnitFactor, itemStr, ref arrangementTemp);
                         }
-                        
-                        //--------------------------------------------------------------------------------------------------------------------------------------------
-                        // Corner screws                        
+
+                        // Corner screws
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInxS.Name)) arrangementTemp.FAdditionalScrewsDistance_x = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.DistanceOfAdditionalScrewsInyS.Name)) arrangementTemp.FAdditionalScrewsDistance_y = float.Parse(itemStr.Value) / fLengthUnitFactor;
                     }
@@ -1162,6 +1160,11 @@ namespace PFD
                         if (item.Name.Equals(CParamsResources.CrscDepthS.Name)) arrangementTemp.FCrscRafterDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebStraightDepthS.Name)) arrangementTemp.FCrscWebStraightDepth = float.Parse(itemStr.Value) / fLengthUnitFactor;
                         if (item.Name.Equals(CParamsResources.CrscWebMiddleStiffenerSizeS.Name)) arrangementTemp.FStiffenerSize = float.Parse(itemStr.Value) / fLengthUnitFactor;
+
+                        // TODO - Ondrej, TODO No. 105
+                        // Toto by sme mali zobecnit, pridat parametre pre pocet groups (default 2) pocet sekvencii v kazdej group (default 2) a moznost menit ich (podobne ako pri circle arrangement - circle number)
+                        // Groups pridane navyse voci defaultu by mali pocet skrutiek 0 a vsetky parametre 0, nie generovane ako circle
+                        // Pred spustenim generovania drilling route by sa mohlo skontrolovat ci nie su niektore zo skrutiek v poli HolesCenter2D identicke
 
                         if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
                         if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
