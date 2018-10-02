@@ -278,7 +278,7 @@ namespace BaseClasses
                 // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
                 RecalculateTotalNumberOfScrews();
                 int iNumberOfGroupsInPlate = 2;
-                IHolesNumber *= iNumberOfGroupsInPlate;                
+                IHolesNumber *= iNumberOfGroupsInPlate;
             }
 
             HolesCentersPoints2D = new Point[IHolesNumber];
