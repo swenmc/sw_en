@@ -240,17 +240,9 @@ namespace BaseClasses
 
             ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
             ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
-
-            // Celkovy pocet skrutiek
-            // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
-            RecalculateTotalNumberOfScrews();
-
-            int iNumberOfGroupsInPlate = 2;
-
-            IHolesNumber *= iNumberOfGroupsInPlate;
-
+            
             if (iNumberOfScrewsInRow_xDirection_SQ3 != 0 && iNumberOfScrewsInColumn_yDirection_SQ3 != 0 &&
-               iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
+                iNumberOfScrewsInRow_xDirection_SQ4 != 0 && iNumberOfScrewsInColumn_yDirection_SQ4 != 0)
             {
                 ListOfSequenceGroups.Add(new CScrewSequenceGroup());
 
@@ -270,7 +262,7 @@ namespace BaseClasses
                 seq4.ReferencePoint = new Point(fx_c_SQ4, fy_c_SQ4);
                 seq4.DistanceOfPointsX = fDistanceOfPointsX_SQ4;
                 seq4.DistanceOfPointsY = fDistanceOfPointsY_SQ4;
-                seq4.INumberOfScrews = seq3.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
+                seq4.INumberOfScrews = seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
                 seq4.HolesCentersPoints = new Point[seq4.INumberOfScrews];
                 ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
 
@@ -279,6 +271,14 @@ namespace BaseClasses
 
                 // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny
                 RecalculateTotalNumberOfScrews();
+            }
+            else
+            {
+                // Celkovy pocet skrutiek
+                // Definovane su len sekvencie v jednej group, ocakava sa ze pocet v groups je rovnaky a hodnoty sa skopiruju (napr. pre apex plate)
+                RecalculateTotalNumberOfScrews();
+                int iNumberOfGroupsInPlate = 2;
+                IHolesNumber *= iNumberOfGroupsInPlate;                
             }
 
             HolesCentersPoints2D = new Point[IHolesNumber];
@@ -427,14 +427,14 @@ namespace BaseClasses
         {
             Point[] seqPoints = sequence.HolesCentersPoints;
             Geom2D.TransformPositions_CCW_rad(fRotationCenterPoint_x, fRotationCenterPoint_y, fRotationAngle_rad, ref seqPoints);
-            sequence.HolesCentersPoints = seqPoints; // TODO Ondrej - Skontrolovat ci je to potrebne takto nastavit alebo sa to da zapisat jednoduchsie
+            sequence.HolesCentersPoints = seqPoints; // je to potrebne takto nastavovat lebo nie je mozne volat [ref sequence.HolesCentersPoints]
         }
 
         public void TranslateSequence(float fPoint_x, float fPoint_y, CScrewRectSequence sequence)
         {
             Point[] seqPoints = sequence.HolesCentersPoints;
             Geom2D.TransformPositions_CCW_rad(fPoint_x, fPoint_y, 0, ref seqPoints);
-            sequence.HolesCentersPoints = seqPoints; // TODO Ondrej - Skontrolovat ci je to potrebne takto nastavit alebo sa to da zapisat jednoduchsie
+            sequence.HolesCentersPoints = seqPoints; // je to potrebne takto nastavovat lebo nie je mozne volat [ref sequence.HolesCentersPoints]
         }
     }
 }
