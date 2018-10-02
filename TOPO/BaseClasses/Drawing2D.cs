@@ -77,9 +77,9 @@ namespace BaseClasses
             canvasForImage.Children.Clear();
                 if (crsc != null)
                     DrawComponent(
-                    bDrawPoints, //bDrawPoints,   
-                    bDrawOutLine, // bDrawOutLine,
-                    bDrawPointNumbers, // bDrawPointNumbers,
+                    bDrawPoints,
+                    bDrawOutLine,
+                    bDrawPointNumbers,
                     false,
                     false,
                     false,
@@ -367,8 +367,8 @@ namespace BaseClasses
                 }
             }
 
-            // Calculate new model dimensions (zoom of model size is 90%)
-            fReal_Model_Zoom_Factor = 0.9f / (float)MathF.Max(dFactor_x, dFactor_y) * scale_unit;
+            // Calculate new model dimensions (zoom of model size is 80%)
+            fReal_Model_Zoom_Factor = 0.8f / (float)MathF.Max(dFactor_x, dFactor_y) * scale_unit;
 
             // Set new size of model on the page
             fModel_Length_x_page = fReal_Model_Zoom_Factor * fModel_Length_x_real;
@@ -391,7 +391,7 @@ namespace BaseClasses
         public static void CalculateBasicValue(
             float fModel_Length_x_real,
             float fModel_Length_y_real,
-            float fScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 80% or 90 %
+            float fScale_Factor, // zoom ratio 0-1 (zoom of 2D view), default 0.8 (80%)
             int scale_unit,
             double dPageWidth,
             double dPageHeight,
@@ -412,7 +412,7 @@ namespace BaseClasses
             dFactor_x = fModel_Length_x_page / dPageWidth;
             dFactor_y = fModel_Length_y_page / dPageHeight;
 
-            // Calculate new model dimensions (zoom of model size is 90%)
+            // Calculate new model dimensions (zoom of model is defined by factor 0.0 - 1.0)
             fReal_Model_Zoom_Factor = fScale_Factor / (float)MathF.Max(dFactor_x, dFactor_y) * scale_unit;
 
             // Set new size of model on the page
