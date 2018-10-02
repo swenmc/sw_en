@@ -70,6 +70,7 @@ namespace PFD
             this.DataContext = vm;
             vm.ComponentIndex = 1;
         }
+
         protected void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
         {
             WindowHeight = e.NewSize.Height;
@@ -559,6 +560,7 @@ namespace PFD
                 plate.MirrorPlateAboutX();
             }
         }
+
         private void MirrorComponentY(SystemComponentViewerViewModel vm)
         {
             if (vm.ComponentTypeIndex == 0)
@@ -570,6 +572,7 @@ namespace PFD
                 plate.MirrorPlateAboutY();
             }
         }
+
         private void RotateComponent90CW(SystemComponentViewerViewModel vm)
         {
             if (vm.ComponentTypeIndex == 0)
@@ -581,6 +584,7 @@ namespace PFD
                 plate.RotatePlateAboutZ_CW(90);
             }
         }
+
         private void RotateComponent90CCW(SystemComponentViewerViewModel vm)
         {
             if (vm.ComponentTypeIndex == 0)
@@ -1232,63 +1236,6 @@ namespace PFD
             }
             // Recalculate total number of screws in the arrangement
             arrangementTemp.RecalculateTotalNumberOfScrews();
-
-
-            //TODO Mato - ak refaktorovany kod funguje tak toto dole zmazat
-            //if (int.Parse(itemNewValueString.Value) > 1) // Validacia - pocet skrutiek v kruhu musi byt min 2, inak ignorovat
-            //{
-            //    if (iCircleNumberInGroup == 1) // First circle
-            //    {
-            //        // Change each group
-            //        foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-            //        {
-            //            if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
-            //            {
-            //                CScrewHalfCircleSequence seq = null;
-
-            //                if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
-            //                {
-            //                    seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
-            //                    seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-            //                }
-
-            //                if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
-            //                {
-            //                    seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
-            //                    seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else // other circles (2 or more)
-            //    {
-            //        // Change each group
-            //        foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-            //        {
-            //            // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
-            //            // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
-            //            // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
-
-            //            int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
-            //            CScrewHalfCircleSequence seq = null;
-
-            //            if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
-            //            {
-            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
-            //                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-            //            }
-
-            //            if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
-            //            {
-            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
-            //                seq.INumberOfScrews = int.Parse(itemNewValueString.Value);
-            //            }
-            //        }
-            //    }
-
-            //    // Recalculate total number of screws in the arrangement
-            //    arrangementTemp.RecalculateTotalNumberOfScrews();
-            //}
         }
 
         private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
@@ -1304,56 +1251,6 @@ namespace PFD
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
                 if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
             }
-            
-            //TODO Mato - ak refaktorovany kod funguje, tak toto dole zmazat
-            //if (iCircleNumberInGroup == 1) // First circle
-            //{
-            //    // Change each group
-            //    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-            //    {
-            //        if (gr.NumberOfHalfCircleSequences > 0 && gr.ListScrewSequence[0] is CScrewHalfCircleSequence && gr.ListScrewSequence[1] is CScrewHalfCircleSequence) // First two sequences are half circle (could be rectangular in case that not circle sequences exist)
-            //        {
-            //            CScrewHalfCircleSequence seq = null;
-
-            //            if (gr.ListScrewSequence[0] is CScrewHalfCircleSequence)
-            //            {
-            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[0]; // First circle sequence in first circle
-            //                seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-            //            }
-
-            //            if (gr.ListScrewSequence[1] is CScrewHalfCircleSequence)
-            //            {
-            //                seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[1]; // Second circle sequence in first circle
-            //                seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-            //            }
-            //        }
-            //    }
-            //}
-            //else // other circles (2 or more)
-            //{
-            //    // Change each group
-            //    foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
-            //    {
-            //        // 4 pravouhle rohove + (id zmeneneho kruhu - prvy kruh) * 2 sekvencie v kruhu
-            //        // TODO Ondrej - je to nastavene tak ze prve su 2 polkruhove, potom 4 rohove a potom dalsie polkruhove, ak si to zmenil tak ze vzdy budu prve polkruhove a az potom na konci rohove rectangular tak je potrebne upravit
-            //        // TODO Ondrej - Moze nastat pripad ze neexistuju ziadne polkruhove alebo neexistuju ziadne rohove, prosim osetrit
-
-            //        int index = gr.NumberOfRectangularSequences + (iCircleNumberInGroup - 1) * 2;
-            //        CScrewHalfCircleSequence seq = null;
-
-            //        if (gr.ListScrewSequence[index] is CScrewHalfCircleSequence)
-            //        {
-            //            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index]; // First circle sequence in first circle
-            //            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-            //        }
-
-            //        if (gr.ListScrewSequence[index + 1] is CScrewHalfCircleSequence)
-            //        {
-            //            seq = (CScrewHalfCircleSequence)gr.ListScrewSequence[index + 1]; // Second circle sequence in first circle
-            //            seq.Radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
-            //        }
-            //    }
-            //}
         }
 
         private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1489,7 +1386,6 @@ namespace PFD
 
                 //Update ComponentDetails Datagrid
                 vm.SetComponentProperties(plate);
-
             }
             else // Screw
             {
