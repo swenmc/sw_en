@@ -95,7 +95,7 @@ namespace PFD
                 SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
                 if (vm != null && vm.IsSetFromCode) return;
 
-                if (e.PropertyName == "ComponentIndex") { UpdateAll(); SetUIElementsVisibility(vm); }
+                if (e.PropertyName == "ComponentIndex") { vm.DrillingRoutePoints = null; UpdateAll(); SetUIElementsVisibility(vm); }
 
                 if (e.PropertyName == "DrawPoints2D" ||
                     e.PropertyName == "DrawOutLine2D" ||
@@ -1396,6 +1396,10 @@ namespace PFD
                 plate.DrillingRoutePoints = null;
                 // Redraw plate in 2D and 3D
                 DisplayPlate();
+
+                //Update ComponentDetails Datagrid
+                vm.SetComponentProperties(plate);
+
             }
             else // Screw
             {
