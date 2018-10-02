@@ -79,11 +79,14 @@ namespace PFD
 
             if (MainTabControl.SelectedIndex == 0) // 2D View TabItem
             {
-                // Bug No 96 - prekreslit plech - TODO - Ondrej - ma to tu byt ??
-                // Ak je okno defaultne a som 2D, prepnem na 3D, maximalizujem okno a prepnem na 2D tak sa sem nacitaju hodnoty z defaultnej velkosti, nie z maximalizovanej
-                Frame2DWidth = Frame2D.ActualWidth;
-                Frame2DHeight = Frame2D.ActualHeight;
-                RedrawComponentIn2D();
+                //// Bug No 96 - prekreslit plech - TODO - Ondrej - ma to tu byt ??
+                //// Ak je okno defaultne a som 2D, prepnem na 3D, maximalizujem okno a prepnem na 2D tak sa sem nacitaju hodnoty z defaultnej velkosti, nie z maximalizovanej
+                //Frame2DWidth = Frame2D.ActualWidth;
+                //Frame2DHeight = Frame2D.ActualHeight;
+                //RedrawComponentIn2D();
+
+                SystemComponentViewerViewModel vm = sender as SystemComponentViewerViewModel;
+                DisplayComponent(vm);
             }
         }
 
@@ -103,14 +106,28 @@ namespace PFD
                     e.PropertyName == "DrawHoles2D" ||
                     e.PropertyName == "DrawHoleCentreSymbol2D" ||
                     e.PropertyName == "DrawDrillingRoute2D" ||
-                    e.PropertyName == "DrawScrews3D") UpdateAll();
+                    e.PropertyName == "DrawScrews3D")
+                {
+                    DisplayComponent(vm);
+                }
 
-                if (e.PropertyName == "MirrorX" || e.PropertyName == "MirrorY")
+                if (e.PropertyName == "MirrorX")
                 {
                     vm.DrillingRoutePoints = null;
                     tabItemDoc.Visibility = Visibility.Hidden;
                     BtnShowCNCDrillingFile.IsEnabled = false;
-                    UpdateAll();
+
+                    MirrorComponentX(vm);                    
+                    DisplayComponent(vm);
+                }
+                if (e.PropertyName == "MirrorY")
+                {
+                    vm.DrillingRoutePoints = null;
+                    tabItemDoc.Visibility = Visibility.Hidden;
+                    BtnShowCNCDrillingFile.IsEnabled = false;
+
+                    MirrorComponentY(vm);
+                    DisplayComponent(vm);
                 }
 
                 if (e.PropertyName == "Rotate90CW")
@@ -120,7 +137,9 @@ namespace PFD
                     BtnShowCNCDrillingFile.IsEnabled = false;
                     if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CCW = false;
 
-                    UpdateAll();
+                    if(vm.Rotate90CW) RotateComponent90CW(vm);
+                    else RotateComponent90CCW(vm);
+                    DisplayComponent(vm);
                 }
                 if (e.PropertyName == "Rotate90CCW")
                 {
@@ -129,7 +148,10 @@ namespace PFD
                     BtnShowCNCDrillingFile.IsEnabled = false;
                     if (vm.Rotate90CW == true && vm.Rotate90CCW == true) vm.Rotate90CW = false;
 
-                    UpdateAll();
+                    if (vm.Rotate90CCW) RotateComponent90CCW(vm);
+                    else RotateComponent90CW(vm);
+                    
+                    DisplayComponent(vm);
                 }
 
                 if (e.PropertyName == "ScrewArrangementIndex")
@@ -141,14 +163,6 @@ namespace PFD
                     UpdateAll();
                     //UpdateAndDisplayPlate(); // TODO - Ondrej ak sa ma v ramci update plate aj vygenerovat prislusne screwarrangement podla vyberu v comboboxe treba to pridat do funckie, teraz to len prepocita hodnoty pre screw arrangement ktore uz bolo plechu priradene
                 }
-
-                /* To Ondrej - toto sa bude pouzivat?
-                if (e.PropertyName == "ScrewArrangementParameters")
-                {
-                    // TODO - Ondrej, pri zmene parametrov arrangement by sa mala zmazat drilling route, neviem ci je to tu na spravnom mieste, prosim o pripadny presun
-                    vm.DrillingRoutePoints = null;
-                    UpdateAndDisplayPlate();
-                }*/
             }
             else if (sender is CComponentParamsViewBool)
             {
@@ -521,7 +535,7 @@ namespace PFD
 
                 plate.UpdatePlateData(plate.ScrewArrangement);
 
-                DisplayPlate();
+                DisplayPlate(true);
             }
         }
 
@@ -533,18 +547,85 @@ namespace PFD
             if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
             if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
         }
-        private void DisplayPlate()
+
+        private void MirrorComponentX(SystemComponentViewerViewModel vm)
+        {
+            if (vm.ComponentTypeIndex == 0)
+            {
+                crsc.MirrorCRSCAboutX();
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                plate.MirrorPlateAboutX();
+            }
+        }
+        private void MirrorComponentY(SystemComponentViewerViewModel vm)
+        {
+            if (vm.ComponentTypeIndex == 0)
+            {
+                crsc.MirrorCRSCAboutY();
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                plate.MirrorPlateAboutY();
+            }
+        }
+        private void RotateComponent90CW(SystemComponentViewerViewModel vm)
+        {
+            if (vm.ComponentTypeIndex == 0)
+            {
+                crsc.RotateCrsc_CW(90);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                plate.RotatePlateAboutZ_CW(90);
+            }
+        }
+        private void RotateComponent90CCW(SystemComponentViewerViewModel vm)
+        {
+            if (vm.ComponentTypeIndex == 0)
+            {
+                crsc.RotateCrsc_CW(-90);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                plate.RotatePlateAboutZ_CW(-90);
+            }
+        }
+
+        private void DisplayComponent(SystemComponentViewerViewModel vm)
+        {
+            if (vm == null) return;
+            // Display Component
+            if (vm.ComponentTypeIndex == 0)
+            {
+                DisplayCRSC(false);
+            }
+            else if (vm.ComponentTypeIndex == 1)
+            {
+                //DisplayPlate(false);
+                UpdateAndDisplayPlate();
+            }
+            else
+            {
+                DisplayScrew();
+            }
+        }
+
+        private void DisplayPlate(bool useTransformOptions)
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             // Create 2D page
             page2D = new Canvas();
 
             SetFrame2DSize();
-
-            if (vm.MirrorX) plate.MirrorPlateAboutX();
-            if (vm.MirrorY) plate.MirrorPlateAboutY();
-            if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
-            if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+            if (useTransformOptions)
+            {
+                if (vm.MirrorX) plate.MirrorPlateAboutX();
+                if (vm.MirrorY) plate.MirrorPlateAboutY();
+                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+            }            
             if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
             Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
@@ -563,7 +644,7 @@ namespace PFD
             this.UpdateLayout();
         }
 
-        private void DisplayCRSC()
+        private void DisplayCRSC(bool useTransformOptions)
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             // Create 2D page
@@ -571,10 +652,13 @@ namespace PFD
 
             SetFrame2DSize();
 
-            if (vm.MirrorX) crsc.MirrorCRSCAboutX();
-            if (vm.MirrorY) crsc.MirrorCRSCAboutY();
-            if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
-            if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
+            if (useTransformOptions)
+            {
+                if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+                if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+                if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
+                if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
+            }            
 
             Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
                vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
@@ -843,18 +927,7 @@ namespace PFD
             }
 
             // Display Component
-            if (vm.ComponentTypeIndex == 0)
-            {
-                DisplayCRSC();
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                DisplayPlate();
-            }
-            else
-            {
-                DisplayScrew();
-            }
+            DisplayComponent(vm);
         }
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
@@ -1395,7 +1468,7 @@ namespace PFD
                 vm.DrillingRoutePoints = null;
                 plate.DrillingRoutePoints = null;
                 // Redraw plate in 2D and 3D
-                DisplayPlate();
+                DisplayPlate(false);
 
                 //Update ComponentDetails Datagrid
                 vm.SetComponentProperties(plate);
@@ -1421,9 +1494,11 @@ namespace PFD
 
                     // Bug No 96 - prekreslit plech - TODO - Ondrej - ma to tu byt alebo to ma reagovat v OnWindowSizeChanged ???
                     // Ak je okno defaultne a som 2D, prepnem na 3D, maximalizujem okno a prepnem na 2D tak sa sem nacitaju hodnoty z defaultnej velkosti, nie z maximalizovanej
-                    Frame2DWidth = Frame2D.ActualWidth;
-                    Frame2DHeight = Frame2D.ActualHeight;
-                    RedrawComponentIn2D();
+                    //Frame2DWidth = Frame2D.ActualWidth;
+                    //Frame2DHeight = Frame2D.ActualHeight;
+                    //RedrawComponentIn2D();
+                    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+                    DisplayComponent(vm);
                 }
                 else
                 {
@@ -1446,40 +1521,40 @@ namespace PFD
             }
         }
 
-        private void RedrawComponentIn2D()
-        {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+        //private void RedrawComponentIn2D()
+        //{
+        //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
-            if (vm.ComponentTypeIndex == 0)
-            {
-                if (vm.MirrorX) crsc.MirrorCRSCAboutX();
-                if (vm.MirrorY) crsc.MirrorCRSCAboutY();
-                if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
-                if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
+        //    if (vm.ComponentTypeIndex == 0)
+        //    {
+        //        if (vm.MirrorX) crsc.MirrorCRSCAboutX();
+        //        if (vm.MirrorY) crsc.MirrorCRSCAboutY();
+        //        if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
+        //        if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
 
-                Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            }
-            else if (vm.ComponentTypeIndex == 1)
-            {
-                if (vm.MirrorX) plate.MirrorPlateAboutX();
-                if (vm.MirrorY) plate.MirrorPlateAboutY();
-                if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
-                if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
-                if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
+        //        Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+        //    }
+        //    else if (vm.ComponentTypeIndex == 1)
+        //    {
+        //        if (vm.MirrorX) plate.MirrorPlateAboutX();
+        //        if (vm.MirrorY) plate.MirrorPlateAboutY();
+        //        if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
+        //        if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
+        //        if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
-                // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-            }
-            else // Screw
-            {
-                bool bDrawCentreSymbol = true;
-                Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
-            }
+        //        // Redraw plate in 2D
+        //        Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
+        //            vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+        //    }
+        //    else // Screw
+        //    {
+        //        bool bDrawCentreSymbol = true;
+        //        Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
+        //    }
 
-            // Display plate in 2D preview frame
-            Frame2D.Content = page2D;
-        }
+        //    // Display plate in 2D preview frame
+        //    Frame2D.Content = page2D;
+        //}
     }
 }
