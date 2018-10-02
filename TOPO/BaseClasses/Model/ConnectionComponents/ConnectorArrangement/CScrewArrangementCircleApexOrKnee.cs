@@ -375,7 +375,11 @@ namespace BaseClasses
                         {
                             CScrewSequence seq = group.ListScrewSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
                             if (seq == null) group.ListScrewSequence.Add(seq_Corner);
-                            else seq = seq_Corner; // BUG 88  - TODO - Ondrej - Tu sa nastavi spravne sekvencia seq_Corner do seq, ale do group.ListScrewSequence sa to nedostane, tak ostanu povodne hodnoty
+                            else
+                            {
+                                int index = group.ListScrewSequence.IndexOf(seq);
+                                if (index != -1) group.ListScrewSequence[index] = seq_Corner;
+                            }                                
                         }
                     }
                 }
