@@ -313,14 +313,14 @@ namespace BaseClasses
                         // Add first half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence1 = new CScrewHalfCircleSequence();
                         screwHalfCircleSequence1.INumberOfScrews = lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
-                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
+                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 50 mm mensi priemer
                         g.ListScrewSequence.Add(screwHalfCircleSequence1);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
 
                         // Add second half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence2 = new CScrewHalfCircleSequence();
                         screwHalfCircleSequence2.INumberOfScrews = lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
-                        screwHalfCircleSequence2.Radius = lastHalfCircleRadius - 0.05f; // Kazdy novy kruh o 50 mm mensi priemer
+                        screwHalfCircleSequence2.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 50 mm mensi priemer
                         g.ListScrewSequence.Add(screwHalfCircleSequence2);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
                     }

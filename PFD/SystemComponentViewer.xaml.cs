@@ -76,6 +76,15 @@ namespace PFD
             WindowWidth = e.NewSize.Width;
             double prevWindowHeight = e.PreviousSize.Height;
             double prevWindowWidth = e.PreviousSize.Width;
+
+            if (MainTabControl.SelectedIndex == 0) // 2D View TabItem
+            {
+                // Bug No 96 - prekreslit plech - TODO - Ondrej - ma to tu byt ??
+                // Ak je okno defaultne a som 2D, prepnem na 3D, maximalizujem okno a prepnem na 2D tak sa sem nacitaju hodnoty z defaultnej velkosti, nie z maximalizovanej
+                Frame2DWidth = Frame2D.ActualWidth;
+                Frame2DHeight = Frame2D.ActualHeight;
+                RedrawComponentIn2D();
+            }
         }
 
         private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -512,7 +521,7 @@ namespace PFD
 
                 plate.UpdatePlateData(plate.ScrewArrangement);
 
-                DisplayPlate();                
+                DisplayPlate();
             }
         }
 
@@ -574,13 +583,14 @@ namespace PFD
             Frame2D.Content = page2D;
 
             // Create 3D window
-            page3D = new Page3Dmodel(crsc, sDisplayOptions);            
+            page3D = new Page3Dmodel(crsc, sDisplayOptions);
 
             // Display model in 3D preview frame
             Frame3D.Content = page3D;
 
             this.UpdateLayout();
         }
+
         private void DisplayScrew()
         {
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -832,7 +842,7 @@ namespace PFD
                 vm.SetComponentProperties(screw);
             }
 
-            //Display Component
+            // Display Component
             if (vm.ComponentTypeIndex == 0)
             {
                 DisplayCRSC();
@@ -845,71 +855,6 @@ namespace PFD
             {
                 DisplayScrew();
             }
-
-            //TODO Mato - ak funguje, tak vsetko zakomentovane dole zmazat
-            //// Create 2D page
-            //page2D = new Canvas();
-
-            //Frame2DWidth = Frame2D.ActualWidth;
-            //Frame2DHeight = Frame2D.ActualHeight;
-            //// Nenastavovat z maximalnych rozmerov screen, ale z aktualnych rozmerov okna System Component Viewer
-            //if (Frame2DWidth == 0) Frame2DWidth = this.Width - 669; // SystemParameters.PrimaryScreenWidth / 2 - 15;
-            //if (Frame2DHeight == 0) Frame2DHeight = this.Height - 116; // SystemParameters.PrimaryScreenHeight - 145;
-
-            //if (vm.ComponentTypeIndex == 0)
-            //{
-            //    if (vm.MirrorX) crsc.MirrorCRSCAboutX();
-            //    if (vm.MirrorY) crsc.MirrorCRSCAboutY();
-            //    if (vm.Rotate90CW) crsc.RotateCrsc_CW(90);
-            //    if (vm.Rotate90CCW) crsc.RotateCrsc_CW(-90);
-
-            //    Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-            //       vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
-            //}
-            //else if (vm.ComponentTypeIndex == 1)
-            //{
-            //    if (vm.MirrorX) plate.MirrorPlateAboutX();
-            //    if (vm.MirrorY) plate.MirrorPlateAboutY();
-            //    if (vm.Rotate90CW) plate.RotatePlateAboutZ_CW(90);
-            //    if (vm.Rotate90CCW) plate.RotatePlateAboutZ_CW(-90);
-            //    if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
-
-            //    Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-            //       vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
-            //}
-            //else
-            //{
-            //    // Screw
-            //    bool bDrawCentreSymbol = true;
-            //    Drawing2D.DrawScrewToCanvas(screw, Frame2DWidth, Frame2DHeight, ref page2D, bDrawCentreSymbol);
-            //}
-
-            //// Display plate in 2D preview frame
-            //Frame2D.Content = page2D;
-
-            //// Create 3D window
-            //page3D = null;
-
-            //if (vm.ComponentTypeIndex == 0)
-            //{
-            //    page3D = new Page3Dmodel(crsc, sDisplayOptions);
-            //}
-            //else if (vm.ComponentTypeIndex == 1)
-            //{
-            //    sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
-            //    page3D = new Page3Dmodel(plate, sDisplayOptions);
-            //}
-            //else
-            //{
-            //    // Screw
-            //    PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
-            //    page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
-            //}
-
-            //// Display model in 3D preview frame
-            //Frame3D.Content = page3D;
-
-            //this.UpdateLayout();
         }
 
         private void BtnExportDXF_Click(object sender, RoutedEventArgs e)
@@ -1173,11 +1118,10 @@ namespace PFD
                     // Screw arrangement is not implemented
                 }
 
-                plate.UpdatePlateData(plate.ScrewArrangement);  // Update data of plate
-                RedrawComponentIn2D();                          // Redraw plate
-
+                // Delete drilling route
                 vm.DrillingRoutePoints = null;
-                plate.DrillingRoutePoints = null;
+                // Redraw plate in 2D and 3D
+                UpdateAndDisplayPlate();
             }
         }
 
@@ -1447,11 +1391,11 @@ namespace PFD
                     // Plate is not implemented
                 }
 
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                // Redraw plate in 2D
-                Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+                //Delete drilling route
+                vm.DrillingRoutePoints = null;
+                plate.DrillingRoutePoints = null;
+                // Redraw plate in 2D and 3D
+                DisplayPlate();
             }
             else // Screw
             {
@@ -1470,6 +1414,12 @@ namespace PFD
                     panelOptions2D.Visibility = Visibility.Visible;
                     panelOptionsTransform2D.Visibility = Visibility.Visible;
                     panelOptions3D.Visibility = Visibility.Hidden;
+
+                    // Bug No 96 - prekreslit plech - TODO - Ondrej - ma to tu byt alebo to ma reagovat v OnWindowSizeChanged ???
+                    // Ak je okno defaultne a som 2D, prepnem na 3D, maximalizujem okno a prepnem na 2D tak sa sem nacitaju hodnoty z defaultnej velkosti, nie z maximalizovanej
+                    Frame2DWidth = Frame2D.ActualWidth;
+                    Frame2DHeight = Frame2D.ActualHeight;
+                    RedrawComponentIn2D();
                 }
                 else
                 {
