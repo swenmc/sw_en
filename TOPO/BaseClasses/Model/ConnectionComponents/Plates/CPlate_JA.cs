@@ -197,13 +197,13 @@ namespace BaseClasses
             TriangleIndices = new Int32Collection();
 
             // Front Side / Forehead
-            AddPenthagonIndices_CCW_12345(TriangleIndices, 0, 1, 2, 3, 4);
+            AddPenthagonIndices_CW_12345(TriangleIndices, 0, 1, 2, 3, 4);
 
             // Back Side
-            AddPenthagonIndices_CW_12345(TriangleIndices, 5, 6, 7, 8, 9);
+            AddPenthagonIndices_CCW_12345(TriangleIndices, 5, 6, 7, 8, 9);
 
             // Shell Surface
-            DrawCaraLaterals_CCW(secNum, TriangleIndices);
+            DrawCaraLaterals_CW(secNum, TriangleIndices);
         }
 
         public override ScreenSpaceLines3D CreateWireFrameModel()

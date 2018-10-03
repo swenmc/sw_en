@@ -162,6 +162,22 @@ namespace PFD
             public const string Symbol = sSymbol_None;
         }
 
+        public struct PositionOfCornerSequence_xS
+        {
+            public const string Name = "Position of additional screws x";
+            public const string DBName = "PositionOfAdditionalScrewsX";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "ax";
+        }
+
+        public struct PositionOfCornerSequence_yS
+        {
+            public const string Name = "Position of additional screws y";
+            public const string DBName = "PositionOfAdditionalScrewsY";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "ay";
+        }
+
         public struct NumberOfAdditionalScrewsS
         {
             public const string Name = "Number of additional screws";

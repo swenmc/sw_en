@@ -25,6 +25,8 @@ namespace BaseClasses
 
         // Corner screws
         private bool m_bUseAdditionalCornerScrews; // Pocet skrutiek v rohoch - celkovo 4 skrutky * 4 rohy * 2 kruhy
+        private float m_fPositionOfCornerSequence_x;
+        private float m_fPositionOfCornerSequence_y;
         private int m_iAdditionalConnectorNumberInRow_xDirection;
         private int m_iAdditionalConnectorNumberInColumn_yDirection;
         private int m_iAdditionalConnectorNumber;
@@ -142,6 +144,30 @@ namespace BaseClasses
                 m_bUseAdditionalCornerScrews = value;
             }
         }
+        public float FPositionOfCornerSequence_x
+        {
+            get
+            {
+                return m_fPositionOfCornerSequence_x;
+            }
+
+            set
+            {
+                m_fPositionOfCornerSequence_x = value;
+            }
+        }
+        public float FPositionOfCornerSequence_y
+        {
+            get
+            {
+                return m_fPositionOfCornerSequence_y;
+            }
+
+            set
+            {
+                m_fPositionOfCornerSequence_y = value;
+            }
+        }
         public int IAdditionalConnectorNumberInRow_xDirection
         {
             get
@@ -243,6 +269,8 @@ namespace BaseClasses
             int iNumberOfCirclesInGroup,
             List<CScrewSequenceGroup> screwSequenceGroup,
             bool bUseAdditionalCornerScrews,
+            float fPositionOfCornerSequence_x,
+            float fPositionOfCornerSequence_y,
             int iAdditionalConnectorInCornerNumber,
             float fAdditionalScrewsDistance_x,
             float fAdditionalScrewsDistance_y)
@@ -257,6 +285,8 @@ namespace BaseClasses
 
             // Corner screws parameters
             BUseAdditionalCornerScrews = bUseAdditionalCornerScrews;
+            FPositionOfCornerSequence_x = fPositionOfCornerSequence_x;
+            FPositionOfCornerSequence_y = fPositionOfCornerSequence_y;
             IAdditionalConnectorInCornerNumber = iAdditionalConnectorInCornerNumber; // Spolu v jednom rohu
             FAdditionalScrewsDistance_x = fAdditionalScrewsDistance_x;
             FAdditionalScrewsDistance_y = fAdditionalScrewsDistance_y;
@@ -478,9 +508,12 @@ namespace BaseClasses
             // Add additional point the sequences
             if (BUseAdditionalCornerScrews && group.NumberOfRectangularSequences > 0)
             {
+                bool bSetAdditionalCornerScrewsByRadius_SQ1 = false; // TODO - Ondrej, moze sa pridat do GUI, uzivatel moze riadit polohu podla hodnoty radiusu prvej kruhovej sekvencie ale ju zadavat nezavisle
+
                 CScrewSequence seq = group.ListScrewSequence.FirstOrDefault(s => s is CScrewHalfCircleSequence);
-                float FRadius_SQ1 = 0;
-                if (seq != null) FRadius_SQ1 = ((CScrewHalfCircleSequence)seq).Radius;
+
+                if (bSetAdditionalCornerScrewsByRadius_SQ1 && seq != null) FPositionOfCornerSequence_x = ((CScrewHalfCircleSequence)seq).Radius;
+                if (bSetAdditionalCornerScrewsByRadius_SQ1 && seq != null) FPositionOfCornerSequence_y = ((CScrewHalfCircleSequence)seq).Radius;
 
                 // For square
                 if (IAdditionalConnectorNumberInRow_xDirection == 0 && IAdditionalConnectorNumberInColumn_yDirection == 0)
@@ -491,9 +524,9 @@ namespace BaseClasses
 
                 // Additional corner connectors
                 // Top part of group
-                Point[] cornerConnectorsInGroupTopLeft = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FRadius_SQ1, FRadius_SQ1 - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
-                float fDistanceBetweenLeftAndRightReferencePoint = 2 * FRadius_SQ1 - (IAdditionalConnectorNumberInRow_xDirection - 1) * FAdditionalScrewsDistance_x;
-                Point[] cornerConnectorsInGroupTopRight = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FRadius_SQ1 + fDistanceBetweenLeftAndRightReferencePoint, FRadius_SQ1 - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+                Point[] cornerConnectorsInGroupTopLeft = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FPositionOfCornerSequence_x, FPositionOfCornerSequence_y - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
+                float fDistanceBetweenLeftAndRightReferencePoint = 2 * FPositionOfCornerSequence_x - (IAdditionalConnectorNumberInRow_xDirection - 1) * FAdditionalScrewsDistance_x;
+                Point[] cornerConnectorsInGroupTopRight = GetAdditionaConnectorsCoordinatesInOneSequence(new Point(-FPositionOfCornerSequence_x + fDistanceBetweenLeftAndRightReferencePoint, FPositionOfCornerSequence_y - (IAdditionalConnectorNumberInColumn_yDirection - 1) * FAdditionalScrewsDistance_y), IAdditionalConnectorNumberInRow_xDirection, IAdditionalConnectorNumberInColumn_yDirection, FAdditionalScrewsDistance_x, FAdditionalScrewsDistance_y);
 
                 // Bottom part of group
                 Point[] cornerConnectorsInGroupBottomLeft = new Point[cornerConnectorsInGroupTopLeft.Length];
