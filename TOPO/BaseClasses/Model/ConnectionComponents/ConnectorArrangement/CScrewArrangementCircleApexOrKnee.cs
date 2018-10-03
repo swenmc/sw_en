@@ -294,14 +294,17 @@ namespace BaseClasses
             }
             else if (newNumberOfCirclesInGroup > INumberOfCirclesInGroup)
             {
+                const float fDistancePerHalfCircle = 0.04f; // Auxialiary value of distance between screws in arc
+
                 int numToAdd = newNumberOfCirclesInGroup - INumberOfCirclesInGroup;
                 for (int i = 0; i < numToAdd; i++)
                 {
                     foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
                     {
                         // Add one circle - two half-circle sequences
-                        int lastHalfCircleNumberOfScrews = 16;
                         float lastHalfCircleRadius = 0.25f;
+                        float lastHalfCircleLength = (0.5f * 2 * MathF.fPI * lastHalfCircleRadius);
+                        int lastHalfCircleNumberOfScrews = (int)(lastHalfCircleLength / fDistancePerHalfCircle) + 1;
 
                         CScrewSequence lastCircleScrewSequence = g.ListScrewSequence.LastOrDefault(p => p is CScrewHalfCircleSequence); 
                         if (lastCircleScrewSequence != null)
@@ -312,15 +315,17 @@ namespace BaseClasses
 
                         // Add first half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence1 = new CScrewHalfCircleSequence();
-                        screwHalfCircleSequence1.INumberOfScrews = lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
-                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 50 mm mensi priemer
+                        screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 30 mm mensi polomer
+                        screwHalfCircleSequence1.INumberOfScrews = (int)((0.5f * 2 * MathF.fPI * screwHalfCircleSequence1.Radius) / fDistancePerHalfCircle) + 1; // lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
+
                         g.ListScrewSequence.Add(screwHalfCircleSequence1);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
 
                         // Add second half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence2 = new CScrewHalfCircleSequence();
-                        screwHalfCircleSequence2.INumberOfScrews = lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
-                        screwHalfCircleSequence2.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 50 mm mensi priemer
+                        screwHalfCircleSequence2.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 30 mm mensi polomer
+                        screwHalfCircleSequence2.INumberOfScrews = (int)((0.5f * 2 * MathF.fPI * screwHalfCircleSequence2.Radius) / fDistancePerHalfCircle) + 1; // lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
+
                         g.ListScrewSequence.Add(screwHalfCircleSequence2);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
                     }
@@ -379,7 +384,7 @@ namespace BaseClasses
                             {
                                 int index = group.ListScrewSequence.IndexOf(seq);
                                 if (index != -1) group.ListScrewSequence[index] = seq_Corner;
-                            }                                
+                            }
                         }
                     }
                 }
