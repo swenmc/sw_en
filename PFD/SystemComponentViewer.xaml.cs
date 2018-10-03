@@ -1037,6 +1037,7 @@ namespace PFD
                 BtnShowCNCDrillingFile.IsEnabled = true;
                 // Update plate data and display
                 UpdateAndDisplayPlate();
+                vm.SetComponentProperties(plate);
             }
         }
 
