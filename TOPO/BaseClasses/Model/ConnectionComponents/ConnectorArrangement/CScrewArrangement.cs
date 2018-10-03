@@ -182,6 +182,10 @@ namespace BaseClasses
                 foreach (CScrewSequence seq in group.ListScrewSequence)
                     IHolesNumber += seq.INumberOfScrews;
             }
+
+            // Validation
+            if (IHolesNumber < 0)
+                IHolesNumber = 0;
         }
     }
 }
