@@ -84,7 +84,7 @@ namespace BaseClasses
         public CScrew()
         { }
 
-        public CScrew(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_thread_temp, float fHeadDiameter_temp, float fWasherDiameter_temp, float fWasherThickness_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CScrew(string sName_temp, CPoint controlpoint, int iGauge_temp, float fDiameter_thread_temp, float fHeadDiameter_temp, float fWasherDiameter_temp, float fWasherThickness_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             m_Mat = new CMat_03_00(); // Todo - material ako parameter
             m_Mat.Name = "Class 3 / 4 / B8"; // TODO - pripravit databazu materialov pre skrutky
@@ -100,7 +100,7 @@ namespace BaseClasses
             T_w_washerthickness = fWasherThickness_temp;
 
             Length = fLength_temp;
-            Weight = fWeight_temp;
+            Mass = fMass_temp;
             BIsDisplayed = bIsDisplayed;
 
             m_fRotationX_deg = fRotation_x_deg;
@@ -189,10 +189,10 @@ namespace BaseClasses
 
             // Default
             Length = 0.009f; // m
-            Weight = 0.015f; // kg
+            Mass = 0.015f; // kg
         }
 
-        //float fScrewWeight = 0.012f;
+        //float fScrewMass = 0.012f;
 
         /*
         protected override void loadIndices()

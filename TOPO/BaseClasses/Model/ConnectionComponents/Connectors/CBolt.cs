@@ -10,13 +10,13 @@ namespace BaseClasses
         public CBolt()
         { }
 
-        public CBolt(CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fWeight_temp, bool bIsDisplayed)
+        public CBolt(CPoint controlpoint, int iGauge_temp, float fDiameter_temp, float fLength_temp, float fMass_temp, bool bIsDisplayed)
         {
             m_pControlPoint = controlpoint;
             BIsDisplayed = bIsDisplayed;
             Length = fLength_temp;
             Diameter_thread = fDiameter_temp;
-            Weight = fWeight_temp;
+            Mass = fMass_temp;
 
             m_DiffuseMat = new DiffuseMaterial(Brushes.Azure);
             m_cylinder = new Cylinder(0.5f * Diameter_thread, Length, m_DiffuseMat);

@@ -12,6 +12,11 @@ namespace PFD
         // UNITS
         public const string sUnit_CrscLength = "[mm]";
         public const string sUnit_PlateLength = "[mm]";
+
+        public const string sUnit_PlateSurface = "[mm²]";
+        public const string sUnit_PlateVolume = "[mm³]";
+        public const string sUnit_PlateMass = "[kg]";
+
         public const string sUnit_CountIntNumber = "[-]";
         public const string sUnit_None = "";
 
@@ -91,6 +96,54 @@ namespace PFD
             public const string DBName = "PlateHLip";
             public const string Unit = sUnit_PlateLength;
             public const string Symbol = "c lip";
+        }
+
+        public struct PlatePerimeterS
+        {
+            public const string Name = "Perimeter - Cutting route distance";
+            public const string DBName = "PlatePerimeterCuttingRouteDistance";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "Lcr";
+        }
+
+        public struct PlateSurfaceS
+        {
+            public const string Name = "Surface";
+            public const string DBName = "PlateSurface";
+            public const string Unit = sUnit_PlateSurface;
+            public const string Symbol = "S";
+        }
+
+        public struct PlateAreaS
+        {
+            public const string Name = "Area";
+            public const string DBName = "PlateArea";
+            public const string Unit = sUnit_PlateSurface;
+            public const string Symbol = "A";
+        }
+
+        public struct PlateVolumeS
+        {
+            public const string Name = "Volume";
+            public const string DBName = "PlateVolume";
+            public const string Unit = sUnit_PlateVolume;
+            public const string Symbol = "V";
+        }
+
+        public struct PlateMassS
+        {
+            public const string Name = "Mass";
+            public const string DBName = "PlateMass";
+            public const string Unit = sUnit_PlateMass;
+            public const string Symbol = "m";
+        }
+
+        public struct PlateDrillingRouteDistanceS
+        {
+            public const string Name = "Drilling route distance";
+            public const string DBName = "DrillingRouteDistance";
+            public const string Unit = sUnit_PlateLength;
+            public const string Symbol = "Ldr";
         }
 
         // MEMBER / CROSS-SECTION PROPERTIES

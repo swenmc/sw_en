@@ -173,7 +173,7 @@ namespace BaseClasses
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
-            fWeight = GetWeightIgnoringHoles();
+            fMass = GetMassIgnoringHoles();
 
             // Priblizne predpoklad ze 2 * mflZ = m_fbXR
             fA_g = Get_A_channel(Math.Min(2f * m_flZ, m_fbXR), 2 * Ft, Ft, m_fbX1);

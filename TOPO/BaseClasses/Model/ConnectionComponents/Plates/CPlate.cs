@@ -42,7 +42,7 @@ namespace BaseClasses
         public float fCuttingRouteDistance;
         public float fSurface;
         public float fVolume;
-        public float fWeight;
+        public float fMass;
 
         public GeometryModel3D Visual_Plate;
         public CScrewArrangement ScrewArrangement;
@@ -589,7 +589,7 @@ namespace BaseClasses
             return Ft * PolygonArea();
         }
 
-        public float GetWeightIgnoringHoles()
+        public float GetMassIgnoringHoles()
         {
             return m_Mat.m_fRho * GetVolumeIgnoringHoles();
         }

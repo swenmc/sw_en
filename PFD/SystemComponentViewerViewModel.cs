@@ -60,7 +60,7 @@ namespace PFD
         int iNumberOfDecimalPlaces_Length = 1;
         int iNumberOfDecimalPlaces_Area = 1;
         int iNumberOfDecimalPlaces_Volume = 1;
-        int iNumberOfDecimalPlaces_Weight = 1;
+        int iNumberOfDecimalPlaces_Mass = 1;
 
         List<Point> MDrillingRoutePoints;
         //-------------------------------------------------------------------------------------------------------------
@@ -789,11 +789,11 @@ namespace PFD
             ComponentGeometry = geometry;
 
             List<CComponentParamsView> details = new List<CComponentParamsView>();
-            details.Add(new CComponentParamsViewString("Perimeter - Cutting route distance", "Lcr", (Math.Round(plate.fCuttingRouteDistance * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(new CComponentParamsViewString("Surface", "S", (Math.Round(plate.fSurface * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
-            details.Add(new CComponentParamsViewString("Area", "A", (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), "[mm^2]"));
-            details.Add(new CComponentParamsViewString("Volume", "V", (Math.Round(plate.fVolume * fUnitFactor_Volume, iNumberOfDecimalPlaces_Volume)).ToString(nfi), "[mm^3]"));
-            details.Add(new CComponentParamsViewString("Weight", "w", Math.Round(plate.fWeight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
+            details.Add(new CComponentParamsViewString(CParamsResources.PlatePerimeterS.Name, CParamsResources.PlatePerimeterS.Symbol, (Math.Round(plate.fCuttingRouteDistance * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlatePerimeterS.Unit));
+            details.Add(new CComponentParamsViewString(CParamsResources.PlateSurfaceS.Name, CParamsResources.PlateSurfaceS.Symbol, (Math.Round(plate.fSurface * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), CParamsResources.PlateSurfaceS.Unit));
+            details.Add(new CComponentParamsViewString(CParamsResources.PlateAreaS.Name, CParamsResources.PlateAreaS.Symbol, (Math.Round(plate.fArea * fUnitFactor_Area, iNumberOfDecimalPlaces_Area)).ToString(nfi), CParamsResources.PlateAreaS.Unit));
+            details.Add(new CComponentParamsViewString(CParamsResources.PlateVolumeS.Name, CParamsResources.PlateVolumeS.Symbol, (Math.Round(plate.fVolume * fUnitFactor_Volume, iNumberOfDecimalPlaces_Volume)).ToString(nfi), CParamsResources.PlateVolumeS.Unit));
+            details.Add(new CComponentParamsViewString(CParamsResources.PlateMassS.Name, CParamsResources.PlateMassS.Symbol, Math.Round(plate.fMass, iNumberOfDecimalPlaces_Mass).ToString(nfi),  CParamsResources.PlateMassS.Unit));
             CCNCPathFinder c = new CCNCPathFinder();
             c.RoutePoints = plate.DrillingRoutePoints;
             double dist = c.GetRouteDistance();
@@ -847,7 +847,7 @@ namespace PFD
             details.Add(new CComponentParamsViewString("Head diameter", "dh", (Math.Round(screw.D_h_headdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Washer diameter", "dw", (Math.Round(screw.D_w_washerdiameter * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
             details.Add(new CComponentParamsViewString("Washer thickness", "tw", (Math.Round(screw.T_w_washerthickness * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
-            details.Add(new CComponentParamsViewString("Weight", "w", Math.Round(screw.Weight, iNumberOfDecimalPlaces_Weight).ToString(nfi), "[kg]"));
+            details.Add(new CComponentParamsViewString("Mass", "m", Math.Round(screw.Mass, iNumberOfDecimalPlaces_Mass).ToString(nfi), "[kg]"));
 
             ComponentDetails = details;
         }
@@ -1204,7 +1204,7 @@ namespace PFD
         //    int iGauge;
         //    float fHoleDiameter;
         //    float fConnectorLength = 0.02f;
-        //    float fConnectorWeight = 0.012f;
+        //    float fConnectorMass = 0.012f;
         //    CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
 
         //    databaseComponents = new CDatabaseComponents();
@@ -1218,7 +1218,7 @@ namespace PFD
         //        iGauge = (int)databaseComponents.arr_Screws_TEK_Dimensions[i, 0];
         //        fHoleDiameter = databaseComponents.arr_Screws_TEK_Dimensions[i, 1] / 1000f;
 
-        //        screwsInSerie.Add(new CScrew(databaseComponents.arr_Serie_TEK_Names[i], controlpoint, iGauge, fHoleDiameter,0,0,0, fConnectorLength, fConnectorWeight,0,0,0, true));
+        //        screwsInSerie.Add(new CScrew(databaseComponents.arr_Serie_TEK_Names[i], controlpoint, iGauge, fHoleDiameter,0,0,0, fConnectorLength, fConnectorMass,0,0,0, true));
         //    }
         //    screws.Add("Hex Head Tek", screwsInSerie);
         //}

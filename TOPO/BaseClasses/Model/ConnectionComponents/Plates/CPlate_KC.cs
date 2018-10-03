@@ -168,7 +168,7 @@ namespace BaseClasses
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
-            fWeight = GetWeightIgnoringHoles();
+            fMass = GetMassIgnoringHoles();
 
             fA_g = Get_A_channel(m_flZ, Ft, Ft, m_fbX1);
             int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek

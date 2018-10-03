@@ -166,7 +166,7 @@ namespace BaseClasses
             fCuttingRouteDistance = GetCuttingRouteDistance();
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
-            fWeight = GetWeightIgnoringHoles();
+            fMass = GetMassIgnoringHoles();
 
             // Konzervativne, vynechana pasnica
             fA_g = Get_A_rect(Ft, m_fbX1);

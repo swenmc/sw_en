@@ -51,17 +51,17 @@ namespace BaseClasses
             }
         }
 
-        private float m_fWeight;
-        public float Weight
+        private float m_fMass;
+        public float Mass
         {
             get
             {
-                return m_fWeight;
+                return m_fMass;
             }
 
             set
             {
-                m_fWeight = value;
+                m_fMass = value;
             }
         }
 
@@ -88,7 +88,7 @@ namespace BaseClasses
             m_cylinder = new Cylinder();
         }
 
-        public CConnector(string sName_temp, CPoint controlpoint, float fDiameter_thread_temp, float fLength_temp, float fWeight_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
+        public CConnector(string sName_temp, CPoint controlpoint, float fDiameter_thread_temp, float fLength_temp, float fMass_temp, float fRotation_x_deg, float fRotation_y_deg, float fRotation_z_deg, bool bIsDisplayed)
         {
             Name = sName_temp;
             m_Mat = new CMat_03_00(); // Todo - material ako parameter
@@ -97,7 +97,7 @@ namespace BaseClasses
             BIsDisplayed = bIsDisplayed;
             Length = fLength_temp;
             Diameter_thread = fDiameter_thread_temp;
-            Weight = fWeight_temp;
+            Mass = fMass_temp;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;

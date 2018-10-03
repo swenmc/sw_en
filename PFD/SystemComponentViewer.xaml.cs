@@ -1243,7 +1243,7 @@ namespace PFD
 
         private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
         {
-            float radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);            
+            float radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
             // Change each group
             foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
