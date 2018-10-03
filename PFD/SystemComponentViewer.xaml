@@ -10,6 +10,9 @@
     <Window.Resources>
         <SolidColorBrush x:Key="colorReadOnlyCell" Color="WhiteSmoke" /> <!-- Light gray color of readonly cell background -->
         <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />  <!-- Black color of readonly cell text -->
+        <SolidColorBrush x:Key="colorCellError" Color="Red" />
+        
+        
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>

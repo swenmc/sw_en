@@ -1245,6 +1245,7 @@ namespace PFD
         private void UpdateCircleSequencesRadius(int iCircleNumberInGroup, float fLengthUnitFactor, CComponentParamsViewString itemNewValueString, ref CScrewArrangementCircleApexOrKnee arrangementTemp)
         {
             float radius = (float.Parse(itemNewValueString.Value) / fLengthUnitFactor);
+            if (!IsValidCircleRadius(radius, arrangementTemp)) throw new Exception("Radius is not valid.");  //if radius is not valid => return
             // Change each group
             foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
@@ -1255,6 +1256,12 @@ namespace PFD
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
                 if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
             }
+        }
+
+        private bool IsValidCircleRadius(float radius, CScrewArrangementCircleApexOrKnee arrangementTemp)
+        {
+            if (radius > 0.5 * arrangementTemp.FStiffenerSize /*+ additionalMargin*/) return true;
+            else return false;
         }
 
         private void DataGridGeometry_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1437,6 +1444,8 @@ namespace PFD
                 panelOptions3D.Visibility = Visibility.Hidden;
             }
         }
+
+        
 
         //private void RedrawComponentIn2D()
         //{
