@@ -158,11 +158,10 @@ namespace PFD
                 if (e.PropertyName == "ScrewArrangementIndex")
                 {
                     SetUIElementsVisibilityForScrewArrangement(vm);
-
-                    // TODO - Ondrej, pri zmene vyberu screw arrangement v comboboxe by sa mala zmazat drilling route, neviem ci je to tu na spravnom mieste, prosim o pripadny presun
                     vm.DrillingRoutePoints = null;
-                    UpdateAll();
-                    //UpdateAndDisplayPlate(); // TODO - Ondrej ak sa ma v ramci update plate aj vygenerovat prislusne screwarrangement podla vyberu v comboboxe treba to pridat do funckie, teraz to len prepocita hodnoty pre screw arrangement ktore uz bolo plechu priradene
+
+                    ScrewArrangementChanged();
+                    UpdateAndDisplayPlate();                    
                 }
             }
             else if (sender is CComponentParamsViewBool)
@@ -186,6 +185,123 @@ namespace PFD
                 CComponentParamsViewList cpw = sender as CComponentParamsViewList;
                 DataGridScrewArrangement_ValueChanged(cpw);
             }
+        }
+
+        private void ScrewArrangementChanged()
+        {
+            CScrew referenceScrew = new CScrew("TEK", "14");
+            CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+            CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
+            CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+            CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+
+            bool bUseAdditionalConnectors = true;
+            int iNumberOfAdditionalConnectorsInCorner = 4;
+            int iConnectorNumberInCircleSequence = 20;
+            float fConnectorRadiusInCircleSequence = 0.25f;
+
+            List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
+            CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
+            gr1.NumberOfHalfCircleSequences = 2;
+            gr1.NumberOfRectangularSequences = 4;
+            gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr1);
+            CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
+            gr2.NumberOfHalfCircleSequences = 2;
+            gr2.NumberOfRectangularSequences = 4;
+            gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr2);
+
+            CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleApex = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 0.05f, 0.05f, 0.07f, 0.05f, 10, 2, 0.15f, 0.55f, 0.07f, 0.05f);
+            CScrewArrangementRectApexOrKnee screwArrangementRectangleKnee = new CScrewArrangementRectApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 10, 2, 10, 2);
+
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            switch ((ESerieTypePlate)vm.ComponentSerieIndex)
+            {                
+                case ESerieTypePlate.eSerie_J:
+                    {
+                        if (vm.ComponentIndex == 0) // JA
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular                                
+                                plate.ScrewArrangement = screwArrangementRectangleApex;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else //if (vm.ComponentIndex == 1) // JB
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleApex;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+
+                        break;
+                    }
+                case ESerieTypePlate.eSerie_K:
+                    {
+                        if (vm.ComponentIndex == 0) // KA
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else if (vm.ComponentIndex == 1) // KB
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+
+                        }
+                        else if (vm.ComponentIndex == 2) // KC
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else if (vm.ComponentIndex == 3) // KD
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;
+                        }
+                        else // KE - TODO - screws are not implemented !!!
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate.ScrewArrangement = screwArrangementRectangleKnee;
+                            else//(vm.ScrewArrangementIndex == 2) // Circle
+                                plate.ScrewArrangement = screwArrangementCircle;                            
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        // Not implemented
+                        break;
+                    }
+            }
+            vm.SetComponentProperties(plate);
+            if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
         }
 
         private void SetUIElementsVisibility(SystemComponentViewerViewModel vm)
