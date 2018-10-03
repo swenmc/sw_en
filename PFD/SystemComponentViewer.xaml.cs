@@ -1260,7 +1260,8 @@ namespace PFD
 
         private bool IsValidCircleRadius(float radius, CScrewArrangementCircleApexOrKnee arrangementTemp)
         {
-            if (radius > 0.5 * arrangementTemp.FStiffenerSize /*+ additionalMargin*/) return true;
+            float fAdditionalMargin = 0.02f; // TODO - napojit na GUI, napojit na generovanie screw arrangement - vid Circle Arrangement Get_ScrewGroup_IncludingAdditionalScrews
+            if (radius > 0.5 * arrangementTemp.FStiffenerSize + fAdditionalMargin) return true;
             else return false;
         }
 
