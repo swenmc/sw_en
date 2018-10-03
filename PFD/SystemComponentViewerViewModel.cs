@@ -403,7 +403,7 @@ namespace PFD
             }
         }
 
-        CDatabaseComponents databaseComponents;        
+        CDatabaseComponents databaseComponents;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -412,14 +412,14 @@ namespace PFD
             databaseComponents = dcomponents;
             MComponentTypes = new List<string>() { "Cross-section", "Plate", "Screw" };
             MComponentSeries = dcomponents.arr_SeriesNames;
-            MComponents = dcomponents.arr_Serie_L_Names;
-            MScrewArrangements = dcomponents.arr_Serie_L_ScrewArrangement_Names;
+            MComponents = dcomponents.arr_Serie_J_Names;
+            MScrewArrangements = dcomponents.arr_Serie_J_ScrewArrangement_Names;
 
             // Set default
             ComponentTypeIndex = 1;
-            ComponentSerieIndex = 1;
+            ComponentSerieIndex = 9;
             ComponentIndex = 1;
-            ScrewArrangementIndex = 0;
+            ScrewArrangementIndex = 2;
 
             DrawPoints2D = true;
             DrawOutLine2D= true;
@@ -797,7 +797,7 @@ namespace PFD
             CCNCPathFinder c = new CCNCPathFinder();
             c.RoutePoints = plate.DrillingRoutePoints;
             double dist = c.GetRouteDistance();
-            details.Add(new CComponentParamsViewString("Drilling route distance", "Ldr", (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), "[mm]"));
+            details.Add(new CComponentParamsViewString(CParamsResources.PlateDrillingRouteDistanceS.Name, CParamsResources.PlateDrillingRouteDistanceS.Symbol, (Math.Round(dist * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateDrillingRouteDistanceS.Unit));
 
             ComponentDetails = details;
         }
