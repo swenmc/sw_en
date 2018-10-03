@@ -696,41 +696,47 @@ namespace BaseClasses
 
         public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
         {
-            Ellipse circle = new Ellipse();
-            circle.Height = diameter;
-            circle.Width = diameter;
-            circle.StrokeThickness = thickness;
-            circle.Stroke = color;
+            if (!Double.IsNaN(center.X)) // Check that value is not "NaN" - TODO - Ondrej Bug No. 109
+            {
+                Ellipse circle = new Ellipse();
+                circle.Height = diameter;
+                circle.Width = diameter;
+                circle.StrokeThickness = thickness;
+                circle.Stroke = color;
 
-            double left = center.X - (diameter / 2);
-            double top = center.Y - (diameter / 2);
-            Canvas.SetLeft(circle, left);
-            Canvas.SetTop(circle, top);
-            imageCanvas.Children.Add(circle);
+                double left = center.X - (diameter / 2);
+                double top = center.Y - (diameter / 2);
+                Canvas.SetLeft(circle, left);
+                Canvas.SetTop(circle, top);
+                imageCanvas.Children.Add(circle);
+            }
         }
 
         public static void DrawSymbol_Cross(Point center, double size, SolidColorBrush color, double thickness, Canvas imageCanvas)
         {
-            Line l = new Line();
+            if (!Double.IsNaN(center.X)) // Check that value is not "NaN" - TODO - Ondrej Bug No. 109
+            {
+                Line l = new Line();
 
-            double fSideLength = 0.5f * size;
+                double fSideLength = 0.5f * size;
 
-            // Horizontal
-            l.X1 = center.X - fSideLength;
-            l.Y1 = center.Y;
+                // Horizontal
+                l.X1 = center.X - fSideLength;
+                l.Y1 = center.Y;
 
-            l.X2 = center.X + fSideLength;
-            l.Y2 = center.Y;
+                l.X2 = center.X + fSideLength;
+                l.Y2 = center.Y;
 
-            DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
 
-            l.X1 = center.X;
-            l.Y1 = center.Y - fSideLength;
+                l.X1 = center.X;
+                l.Y1 = center.Y - fSideLength;
 
-            l.X2 = center.X;
-            l.Y2 = center.Y + fSideLength;
+                l.X2 = center.X;
+                l.Y2 = center.Y + fSideLength;
 
-            DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+            }
         }
 
         public static void CalculateModelLimits(float[,] Points_temp, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
