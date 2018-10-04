@@ -115,15 +115,29 @@ namespace PFD
                 float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
                 Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 0.1, pModelGeomCentre.Z + 1);
+                //Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 0.1, pModelGeomCentre.Z + 1);
+                Point3D cameraPosition = new Point3D(0,0, Math.Max(fModel_Length_X, fModel_Length_Y) * 2);
 
+                _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);                
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                _trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+                //_trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
+                _trackport.PerspectiveCamera.LookDirection = new Vector3D(0,0,-1);
 
                 if (sDisplayOptions.bDisplaySolidModel)
                 {
-                    if(sDisplayOptions.bDisplayConnectors) _trackport.Model = (Model3D)model.CreateGeomModel3DWithConnectors(brushDefault, null);
-                    else _trackport.Model = (Model3D) model.CreateGeomModel3D(brushDefault);
+                    Model3DGroup gr = null;
+                    if (sDisplayOptions.bDisplayConnectors) gr = model.CreateGeomModel3DWithConnectors(brushDefault, null);
+                    else { gr = new Model3DGroup(); gr.Children.Add(model.CreateGeomModel3D(brushDefault)); }
+
+                    //translate transform to model center
+                    ((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
+
+                    //sDisplayOptions.bUseLightAmbient = false;
+                    //Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
+                    sDisplayOptions.bDisplayGlobalAxis = true;
+                    if(sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, null);
+                    
+                    _trackport.Model = (Model3D)gr;
                 }
                 
                 // Component - Wire Frame
@@ -132,6 +146,8 @@ namespace PFD
                     // Create WireFrime in LCS
                     ScreenSpaceLines3D wireFrame = model.CreateWireFrameModel();
 
+                    //translate transform to model center
+                    wireFrame.Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
                     // Add Wireframe Lines to the trackport
                     _trackport.ViewPort.Children.Add(wireFrame);
                 }

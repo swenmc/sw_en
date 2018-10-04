@@ -187,6 +187,11 @@ namespace _3DTools
                     Translate(currentPosition);
                 }
             }
+
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Track(currentPosition);                
+            }
             //else if (e.RightButton == MouseButtonState.Pressed)
             //{
             //    Zoom(currentPosition);

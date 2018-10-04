@@ -688,10 +688,13 @@ namespace BaseClasses
             sAxisZ_3D.Thickness = flineThickness;
             sAxisZ_3D.Name = "AxisZ";
 
-            model.AxisX = sAxisX_3D;
-            model.AxisY = sAxisY_3D;
-            model.AxisZ = sAxisZ_3D;
-
+            if (model != null)
+            {
+                model.AxisX = sAxisX_3D;
+                model.AxisY = sAxisY_3D;
+                model.AxisZ = sAxisZ_3D;
+            }
+            
             //temp skuska
             WireLine wX = new WireLine();
             wX.Point1 = pGCS_centre;
