@@ -516,7 +516,7 @@ namespace BaseClasses
                     plateConnectorsModelGroup.Children.Add(plateConnectorgeom);
                 }
                 plateConnectorsModelGroup.Transform = model.Transform;
-                gr.Children.Add(plateConnectorsModelGroup);                
+                gr.Children.Add(plateConnectorsModelGroup);
             }
             
             return gr;
@@ -581,7 +581,7 @@ namespace BaseClasses
 
         public float GetSurfaceIgnoringHoles()
         {
-            return Ft * GetCuttingRouteDistance();
+            return 2 * PolygonArea() + Ft * GetCuttingRouteDistance(); // front side, back side, lateral area
         }
 
         public float GetVolumeIgnoringHoles()
