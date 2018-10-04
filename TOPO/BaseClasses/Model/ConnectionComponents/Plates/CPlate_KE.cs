@@ -330,10 +330,10 @@ namespace BaseClasses
 
             // Front Side / BackSide
             AddPenthagonIndices_CCW_12345(TriangleIndices, 17, 20, 21, 22,16);
-            AddPenthagonIndices_CCW_12345(TriangleIndices, 25, 24, 23, 29, 28);
+            AddPenthagonIndices_CCW_12345(TriangleIndices, 28,29,23,24,25);
 
-            AddRectangleIndices_CW_1234(TriangleIndices, 0, 7, 6, 1);
-            AddRectangleIndices_CW_1234(TriangleIndices, 1, 6, 5, 2);
+            AddRectangleIndices_CW_1234(TriangleIndices, 0, 1, 6, 7);
+            AddRectangleIndices_CW_1234(TriangleIndices, 1, 2, 5, 6);
 
             AddRectangleIndices_CW_1234(TriangleIndices, 8, 9, 14, 15);
             AddRectangleIndices_CW_1234(TriangleIndices, 9, 10, 13, 14);
