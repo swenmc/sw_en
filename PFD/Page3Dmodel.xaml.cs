@@ -118,7 +118,7 @@ namespace PFD
                 //Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 0.1, pModelGeomCentre.Z + 1);
                 Point3D cameraPosition = new Point3D(0,0, Math.Max(fModel_Length_X, fModel_Length_Y) * 2);
 
-                _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);                
+                _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
                 _trackport.PerspectiveCamera.Position = cameraPosition;
                 //_trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(0,0,-1);
@@ -132,9 +132,7 @@ namespace PFD
                     //translate transform to model center
                     ((Model3D)gr).Transform = new TranslateTransform3D(-fModel_Length_X / 2.0f, -fModel_Length_Y / 2.0f, -fModel_Length_Z / 2.0f);
 
-                    //sDisplayOptions.bUseLightAmbient = false;
-                    //Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
-                    sDisplayOptions.bDisplayGlobalAxis = true;
+                    Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
                     if(sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, null);
                     
                     _trackport.Model = (Model3D)gr;

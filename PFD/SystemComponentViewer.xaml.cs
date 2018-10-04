@@ -755,6 +755,9 @@ namespace PFD
             Frame2D.Content = page2D;
 
             // Create 3D window
+            sDisplayOptions.bDisplayGlobalAxis = false;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bDisplayConnectors = vm.DrawScrews3D;
             page3D = new Page3Dmodel(plate, sDisplayOptions);
 
