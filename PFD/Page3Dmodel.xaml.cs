@@ -115,12 +115,10 @@ namespace PFD
                 float fModel_Length_Z = fTempMax_Z - fTempMin_Z;
 
                 Point3D pModelGeomCentre = new Point3D(fModel_Length_X / 2.0f, fModel_Length_Y / 2.0f, fModel_Length_Z / 2.0f);
-                //Point3D cameraPosition = new Point3D(pModelGeomCentre.X, pModelGeomCentre.Y + 0.1, pModelGeomCentre.Z + 1);
                 Point3D cameraPosition = new Point3D(0,0, Math.Max(fModel_Length_X, fModel_Length_Y) * 2);
 
                 _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                //_trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
                 _trackport.PerspectiveCamera.LookDirection = new Vector3D(0,0,-1);
 
                 if (sDisplayOptions.bDisplaySolidModel)
@@ -178,7 +176,6 @@ namespace PFD
                 Point3D cameraPosition = Drawing3D.GetModelCameraPosition(pModelGeomCentre, -0.2f, 0.005f, 0.05f);
 
                 _trackport.PerspectiveCamera.Position = cameraPosition;
-                //_trackport.PerspectiveCamera.LookDirection = new Vector3D(-(cameraPosition.X - pModelGeomCentre.X), -(cameraPosition.Y - pModelGeomCentre.Y), -(cameraPosition.Z - pModelGeomCentre.Z));
                 _trackport.PerspectiveCamera.LookDirection = Drawing3D.GetLookDirection(cameraPosition, pModelGeomCentre);
 
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers)

@@ -4,12 +4,12 @@
                   <MaterialGroup>
                     <DiffuseMaterial>
                       <DiffuseMaterial.Brush>
-                        <SolidColorBrush Color="#FAFAFA" />
+                        <SolidColorBrush Color="DarkGray"/>
                       </DiffuseMaterial.Brush>
                     </DiffuseMaterial>
                     <EmissiveMaterial>
                       <EmissiveMaterial.Brush>
-                        <SolidColorBrush Color="#000000" />
+                        <SolidColorBrush Color="Black"/>
                       </EmissiveMaterial.Brush>
                     </EmissiveMaterial>
                   </MaterialGroup>
