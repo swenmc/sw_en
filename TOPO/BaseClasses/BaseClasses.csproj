@@ -127,6 +127,7 @@
     <Compile Include="Model\ConnectionComponents\Connectors\CScrew.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KC.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KD.cs" />
+    <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_CT01.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TB01.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_TA01.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_JB.cs" />

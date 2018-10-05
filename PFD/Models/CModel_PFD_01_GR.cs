@@ -590,23 +590,33 @@ namespace PFD
                 }
             }
 
-            // Front Columns Foundation Joints
+            // Front Columns Foundation Joints / Top Joint to the rafter
             if (bGenerateFrontColumns)
             {
                 for (int i = 0; i < iFrontColumnNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + i];
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
+
+                    if (i < (int)(iFrontColumnNoInOneFrame / 2))
+                        m_arrConnectionJoints.Add(new CConnectionJoint_CT01(current_member.NodeEnd, m_arrMembers[1], current_member, true)); // Front Left Main Rafter (0 to 0.5*W)
+                    else
+                        m_arrConnectionJoints.Add(new CConnectionJoint_CT01(current_member.NodeEnd, m_arrMembers[2], current_member, true)); // Front Right Main Rafter(0.5*W to W)
                 }
             }
 
-            // Back Columns Foundation Joints
+            // Back Columns Foundation Joints / Top Joint to the rafter
             if (bGenerateBackColumns)
             {
                 for (int i = 0; i < iBackColumnNoInOneFrame; i++)
                 {
                     CMember current_member = m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame + i];
                     m_arrConnectionJoints.Add(new CConnectionJoint_TB01(current_member.NodeStart, current_member, true));
+
+                    if (i < (int)(iFrontColumnNoInOneFrame / 2))
+                        m_arrConnectionJoints.Add(new CConnectionJoint_CT01(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 1], current_member, true)); // Back Left Main Rafter (0 to 0.5*W)
+                    else
+                        m_arrConnectionJoints.Add(new CConnectionJoint_CT01(current_member.NodeEnd, m_arrMembers[(iFrameNo - 1) * 6 + 2], current_member, true)); // Back Right Main Rafter(0.5*W to W)
                 }
             }
 
