@@ -13,7 +13,7 @@ namespace BaseClasses
     public static class Drawing2D
     {
         public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage, 
-            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers)
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawDimensions)
         {
                 double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
                 double dPointInOutDistance_x_real = 0;
@@ -83,6 +83,7 @@ namespace BaseClasses
                     false,
                     false,
                     false,
+                    bDrawDimensions,
                     crsc.CrScPointsOut,
                     crsc.CrScPointsIn,
                     null,
@@ -99,7 +100,7 @@ namespace BaseClasses
         }
 
         public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
-            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawHoleCentreSymbols, bool bDrawDrillingRoute)
+            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawHoleCentreSymbols, bool bDrawDrillingRoute, bool bDrawDimensions)
         {
             float fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
@@ -184,6 +185,7 @@ namespace BaseClasses
                     bDrawHoles,
                     bDrawHoleCentreSymbols,
                     bDrawDrillingRoute,
+                    bDrawDimensions,
                     platePointsOut2D,
                     null,
                     pHolesCentersPoints2D,
@@ -259,6 +261,7 @@ namespace BaseClasses
             bool bDrawHoles,
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
+            bool bDrawDimensions,
             List<Point> PointsOut,
             List<Point> PointsIn,
             Point[] PointsHoles,
@@ -289,6 +292,9 @@ namespace BaseClasses
 
                 DrawDrillingRoute(bDrawDrillingRoute, PointsDrillingRoute, fReal_Model_Zoom_Factor, fmodelMarginLeft_x, fmodelMarginBottom_y, canvasForImage);
             }
+
+            // Dimensions
+            DrawDimensions(bDrawDimensions, PointsOut, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
         }
 
         public static void CalculateBasicValue(
@@ -611,6 +617,17 @@ namespace BaseClasses
                 DrawPolyLine(false, PointsDrillingRoute, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         }
 
+        public static void DrawDimensions(bool bDrawPoints, List<Point> PointsOut, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
+        {
+            for (int i = 0; i < PointsOut.Count; i++)
+            {
+                if (i < PointsOut.Count - 1)
+                    DrawSimpleLinearDimension(PointsOut[i], PointsOut[i + 1], 0, true, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
+                else // Last
+                    DrawSimpleLinearDimension(PointsOut[i], PointsOut[0], 0, true, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
+            }
+        }
+
         public static void DrawPoint(Point point, SolidColorBrush strokeColor, SolidColorBrush fillColor, double thickness, Canvas imageCanvas)
         {
             DrawRectangle(strokeColor, fillColor, thickness, imageCanvas, new Point(point.X - 0.5 * thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness));
@@ -739,6 +756,49 @@ namespace BaseClasses
             }
         }
 
+        public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas imageCanvas)
+        {
+            int iNumberOfDecimalPlaces = 0;
+            string sText = (Math.Round(MathF.Sqrt(MathF.Pow2(pEnd.X - pStart.X) + MathF.Pow2(pEnd.Y - pStart.Y)), iNumberOfDecimalPlaces)).ToString();
+
+            double dPrimaryLineThickness = 1;
+            Line lPrimaryLine = new Line();
+            lPrimaryLine.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * pStart.X;
+            lPrimaryLine.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * pStart.Y;
+            lPrimaryLine.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * pEnd.X;
+            lPrimaryLine.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * pEnd.Y;
+
+            // Draw dimension line
+            DrawLine(lPrimaryLine, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
+
+            // Extension lines
+            double dExtensionLineThickness = 1;
+            double dExtensionLineLength = 20;
+
+            Line lExtensionLine1 = new Line();
+            lExtensionLine1.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * pStart.X;
+            lExtensionLine1.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * pStart.Y;
+            lExtensionLine1.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * pStart.X;
+            lExtensionLine1.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * pStart.Y + dExtensionLineLength; // ???
+
+            // Draw extension line - start
+            DrawLine(lExtensionLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+
+            Line lExtensionLine2 = new Line();
+            lExtensionLine2.X1 = modelMarginLeft_x + fReal_Model_Zoom_Factor * pEnd.X;
+            lExtensionLine2.Y1 = modelMarginBottom_y - fReal_Model_Zoom_Factor * pEnd.Y;
+            lExtensionLine2.X2 = modelMarginLeft_x + fReal_Model_Zoom_Factor * pEnd.X;
+            lExtensionLine2.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * pEnd.Y + dExtensionLineLength; // ???
+
+            // Draw extension line - start
+            DrawLine(lExtensionLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+
+            double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1); // TODO - osetrit znamienka
+            double fTextPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
+
+            DrawText(sText, fTextPositionx, fTextPositiony, 14, Brushes.DarkBlue, imageCanvas);
+        }
+
         public static void CalculateModelLimits(float[,] Points_temp, out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
         {
             fTempMax_X = float.MinValue;
@@ -797,7 +857,6 @@ namespace BaseClasses
                 }
             }
         }
-
         public static void CalculateModelLimits(Point[] Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
         {
             fTempMax_X = double.MinValue;

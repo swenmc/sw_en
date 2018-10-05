@@ -749,7 +749,7 @@ namespace PFD
             if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
             Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D);
+               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D, vm.DrawDimensions2D);
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
@@ -784,7 +784,7 @@ namespace PFD
             }
 
             Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawDimensions2D);
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;
@@ -1399,7 +1399,7 @@ namespace PFD
             if (vm.ComponentTypeIndex == 0)
             {
                 Drawing2D.DrawCrscToCanvas(crsc, Frame2DWidth, Frame2DHeight, ref page2D,
-                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D);
+                    vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawDimensions2D);
             }
             else if (vm.ComponentTypeIndex == 1)
             {

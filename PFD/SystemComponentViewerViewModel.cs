@@ -46,6 +46,7 @@ namespace PFD
         bool bDrawHoles;
         bool bDrawHoleCentreSymbol;
         bool bDrawDrillingRoute;
+        bool bDrawDimensions;
 
         bool bMirrorY;
         bool bMirrorX;
@@ -321,6 +322,20 @@ namespace PFD
             {
                 bDrawDrillingRoute = value;
                 NotifyPropertyChanged("DrawDrillingRoute2D");
+            }
+        }
+
+        public bool DrawDimensions2D
+        {
+            get
+            {
+                return bDrawDimensions;
+            }
+
+            set
+            {
+                bDrawDimensions = value;
+                NotifyPropertyChanged("DrawDimensions2D");
             }
         }
 
