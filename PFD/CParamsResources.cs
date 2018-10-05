@@ -17,12 +17,24 @@ namespace PFD
         public const string sUnit_PlateVolume = "[mm³]";
         public const string sUnit_PlateMass = "[kg]";
 
+        public const string sUnit_Rotation = "[deg]";
+
         public const string sUnit_CountIntNumber = "[-]";
         public const string sUnit_None = "";
 
         // AUXILIARY
         public const string sSymbol_None = "";
         public const string sDBName_None = "";
+
+        // BUILDING PROPERTIES
+
+        public struct RoofSlopeS
+        {
+            public const string Name = "Slope";
+            public const string DBName = "RoofSlope";
+            public const string Unit = sUnit_Rotation;
+            public const string Symbol = "α";
+        }
 
         // PLATE PROPERTIES
 

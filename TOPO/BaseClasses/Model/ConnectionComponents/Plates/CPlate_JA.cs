@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using MATH;
 
 namespace BaseClasses
 {
@@ -55,6 +56,19 @@ namespace BaseClasses
 
         float m_fSlope_rad;
 
+        public float FSlope_rad
+        {
+            get
+            {
+                return m_fSlope_rad;
+            }
+
+            set
+            {
+                m_fSlope_rad = value;
+            }
+        }
+
         public CConCom_Plate_JA()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -97,7 +111,10 @@ namespace BaseClasses
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
         {
-            m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+            if (MathF.d_equal(m_fSlope_rad, 0))
+                m_fSlope_rad = (float)Math.Atan((Fh_Y2 - Fh_Y1) / (0.5 * Fb_X));
+            else
+                Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * (0.5f * Fb_X));
 
             // Create Array - allocate memory
             PointsOut2D = new float[ITotNoPointsin2D, 2];
