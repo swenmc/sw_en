@@ -13,14 +13,12 @@ namespace BaseClasses
 {
     public class CScrewArrangementCircleApexOrKnee : CScrewArrangement
     {
-        private int m_iHolesInCirclesNumber; // Pocet skrutiek v dvoch kruhoch
         private float m_fCrscRafterDepth;
         private float m_fCrscWebStraightDepth;
         private float m_fStiffenerSize; // Middle cross-section stiffener dimension (without screws)
         private int m_iNumberOfGroupsInJoint = 2; // Pocet kruhov na jednom plechu
         private int m_iNumberOfCirclesInGroup = 1; // pocet kruhov v jednej skupine (group)
         private int m_iNumberOfCircleSequencesInGroup = 2; // pocet polkruhov v "kruhu" na jednom plechu (sekvencia - sequence)
-        private float[] m_HolesCenterRadii; // Array of screw radii in one group related to the screw arrangement centroid
         private int iNumberOfCircleScrewsSequencesInOneGroup = 2;
 
         // Corner screws
@@ -36,18 +34,6 @@ namespace BaseClasses
 
         #region properties
 
-        public int IHolesInCirclesNumber
-        {
-            get
-            {
-                return m_iHolesInCirclesNumber;
-            }
-
-            set
-            {
-                m_iHolesInCirclesNumber = value;
-            }
-        }
         public float FCrscRafterDepth
         {
             get
@@ -83,7 +69,7 @@ namespace BaseClasses
             {
                 m_fStiffenerSize = value;
             }
-        }        
+        }
         public int INumberOfGroupsInJoint
         {
             get
@@ -120,18 +106,7 @@ namespace BaseClasses
                 m_iNumberOfCircleSequencesInGroup = value;
             }
         }
-        public float[] HolesCenterRadii
-        {
-            get
-            {
-                return m_HolesCenterRadii;
-            }
 
-            set
-            {
-                m_HolesCenterRadii = value;
-            }
-        }
         public bool BUseAdditionalCornerScrews
         {
             get
@@ -464,6 +439,8 @@ namespace BaseClasses
 
             // Additional Corner Screws
             UpdateAdditionalCornerScrews();
+
+            
         }
 
         public void Get_ScrewGroup_IncludingAdditionalScrews(float fx_c,
@@ -548,8 +525,8 @@ namespace BaseClasses
                 if (rectSequences.ElementAtOrDefault(3) != null) rectSequences.ElementAtOrDefault(3).HolesCentersPoints = cornerConnectorsInGroupBottomRight;
             }
 
-            // Set radii of connectors / screws in the connection
-            group.Get_RadiiOfScrewsInGroup();
+            // Set radii of connectors / screws in the group
+            group.ScrewHolesRadii = group.Get_RadiiOfScrewsInGroup();
 
             group.TransformGroup(new Point(fx_c, fy_c), fAngle_seq_rotation_deg);
         }

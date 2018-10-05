@@ -84,6 +84,9 @@ namespace CRSC
             fz_stif = 0.13f;
             fy_stif = 0.04f;
 
+            b_in = b - 2 * fy_stif - 2 * m_ft_w;
+            h_in = h - 2 * m_fc_lip2 - 2 * m_ft_f; // TODO - skontrolovat
+
             // Create Array - allocate memory
             //CrScPointsOut = new float[ITotNoPoints, 2];
             CrScPointsOut = new List<Point>(ITotNoPoints);

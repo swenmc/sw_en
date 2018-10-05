@@ -140,7 +140,6 @@ namespace BaseClasses
             m_arrGOStrWindows = new CStructure_Window[iWindNum];
         }
 
-
         //Funkcia vytvori Dictionary z rovnakych Members - kriterium je tu (FLength, CrScStart.GetType().Name, CrScEnd.GetType().Name)
         public void GroupModelMembers()
         {

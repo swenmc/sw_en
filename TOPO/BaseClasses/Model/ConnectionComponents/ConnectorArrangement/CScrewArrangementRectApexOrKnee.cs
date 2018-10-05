@@ -58,21 +58,6 @@ namespace BaseClasses
             }
         }
 
-        private float[] m_HolesCenterRadii; // Array of screw radii in one group related to the screw arrangement centroid
-
-        public float[] HolesCenterRadii
-        {
-            get
-            {
-                return m_HolesCenterRadii;
-            }
-
-            set
-            {
-                m_HolesCenterRadii = value;
-            }
-        }
-
         // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
 
         // Bottom (knee plate) or left (apex plate) group
@@ -304,6 +289,8 @@ namespace BaseClasses
             // Left side
             ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
             ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            // Set radii of connectors / screws in the group
+            ListOfSequenceGroups[0].ScrewHolesRadii = ListOfSequenceGroups[0].Get_RadiiOfScrewsInGroup();
 
             // Rotate screws by roof slope
             // Rotate about [0,0]
@@ -338,6 +325,7 @@ namespace BaseClasses
                 ListOfSequenceGroups[1].ListScrewSequence[1] = seq4;
                 ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
             }
+            ListOfSequenceGroups[1].ScrewHolesRadii = ListOfSequenceGroups[1].Get_RadiiOfScrewsInGroup();
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
@@ -359,6 +347,8 @@ namespace BaseClasses
             // Bottom group - column
             ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
             ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            // Set radii of connectors / screws in the group
+            ListOfSequenceGroups[0].ScrewHolesRadii = ListOfSequenceGroups[0].Get_RadiiOfScrewsInGroup();
 
             // Rotate screws by colum slope (bottom group only)
             // Rotate about [0,0] 90 deg
@@ -368,6 +358,8 @@ namespace BaseClasses
             // Upper group - rafter
             ListOfSequenceGroups[1].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
             ListOfSequenceGroups[1].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
+            // Set radii of connectors / screws in the group
+            ListOfSequenceGroups[1].ScrewHolesRadii = ListOfSequenceGroups[1].Get_RadiiOfScrewsInGroup();
 
             // Rotate screws by roof slope (upper group only)
             // Rotate about [0,0]

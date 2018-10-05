@@ -39,10 +39,6 @@ namespace BaseClasses
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * m_fb_2;
             m_ft = ft;
 
-            // TODO nacitavat parametre z prierezu
-            float fCrscWebStraightDepth = 0.63f - 2 * 0.025f - 2 * 0.002f; // BOX 63020 web straight depth
-            float fStiffenerSize = 0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
-
             float ftemp_a = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
             float ftemp_b = 0.5f * (float)m_SecondaryMembers[0].CrScStart.h / (float)Math.Cos(m_fSlope_rad);
 
@@ -93,20 +89,32 @@ namespace BaseClasses
             CPoint ControlPoint_P1 = new CPoint(0, fControlPointXCoord, fControlPointYCoord1, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
             CPoint ControlPoint_P2 = new CPoint(1, fControlPointXCoord, fControlPointYCoord2, pUpperLeftPointOfPlate.Y - m_fh_1, 0);
 
+            // Screw arrangement parameters
+            // TODO nacitavat parametre z prierezu
+            float fCrscWebStraightDepth = (float)m_SecondaryMembers[0].CrScStart.h - 2 * 0.025f - 2 * (float)m_SecondaryMembers[0].CrScStart.t_min; // BOX 63020 web straight depth
+            float fStiffenerSize = 0.18f; // BOX 63020, distance without applied screws in the middle of cross-section
             bool bUseAdditionalCornerScrews = true;
-            int iAdditionalConnectorInCornerNumber = 4; // 4 skrutky v kazom rohu
-            int iConnectorInCircleSegmentNumber = 20;
-            float fConnectorInCircleSequenceRadius = 0.2f;
+            int iAdditionalConnectorInCornerNumber = 4; // 4 screws in each corner
             float fAdditionalConnectorDistance = 0.03f;
-
-            CScrew referenceScrew = new CScrew("TEK", "12");
+            int iConnectorNumberInCircleSequence = 20;
+            float fConnectorRadiusInCircleSequence = 0.25f;
+            CScrew referenceScrew = new CScrew("TEK", "14");
 
             List<CScrewSequenceGroup> screwSeqGroups = new List<CScrewSequenceGroup>();
-            CScrewSequenceGroup gr = new CScrewSequenceGroup();
-            gr.NumberOfHalfCircleSequences = 2;
-            gr.NumberOfRectangularSequences = 0;
-            gr.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorInCircleSequenceRadius, iConnectorInCircleSegmentNumber));
-            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_SecondaryMembers[0].CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorInCircleSequenceRadius, fConnectorInCircleSequenceRadius, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
+            CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
+            gr1.NumberOfHalfCircleSequences = 2;
+            gr1.NumberOfRectangularSequences = 4;
+            gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr1);
+            CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
+            gr2.NumberOfHalfCircleSequences = 2;
+            gr2.NumberOfRectangularSequences = 4;
+            gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            screwSeqGroups.Add(gr2);
+
+            CScrewArrangementCircleApexOrKnee screwArrangement = new CScrewArrangementCircleApexOrKnee(referenceScrew, (float)m_MainMember.CrScStart.h, fCrscWebStraightDepth, fStiffenerSize, 1, screwSeqGroups, bUseAdditionalCornerScrews, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iAdditionalConnectorInCornerNumber, fAdditionalConnectorDistance, fAdditionalConnectorDistance);
 
             m_arrPlates = new CPlate[2];
             m_arrPlates[0] = new CConCom_Plate_KA("KA", ControlPoint_P1, m_fb_1, m_fh_1, m_fb_2, m_fh_2, m_ft, 90, 0, fRotatePlatesInJointAngle, screwArrangement, BIsDisplayed); // Rotation angle in degrees

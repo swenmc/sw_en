@@ -174,7 +174,6 @@ namespace PFD
                 }
             }
 
-            
             // Tu je nesktocne vela roboty, kym to bude nejako normalne vyzerat
             // Model Geometry
             vm = new CPFDViewModel(1, DoorBlocksToInsertProperties, WindowBlocksToInsertProperties, DoorBlocksProperties, WindowBlocksProperties);
@@ -182,20 +181,18 @@ namespace PFD
             this.DataContext = vm;
             vm.PFDMainWindow = this;
 
-
-            Combobox_RoofCladding.SelectedIndex = 1;  //toto len kvoli nasledujucej metode,ktora sa inak zrube
+            Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
 
             // Calculate loading values as an input to draw loads in 3D
             CalculateLoadingValues();
-            
+
             vm.GeneralLoad = generalLoad;
             vm.Wind = wind;
             vm.Snow = snow;
             vm.Eq = eq;
             vm.Loadinput = loadinput;
             vm.CreateModel();
-            
 
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
@@ -212,8 +209,6 @@ namespace PFD
             //sGeometryInputData.fL = vm.Length;
             //sGeometryInputData.fRoofPitch_deg = vm.RoofPitch_deg;
 
-            
-
             // Create Model
             // Kitset Steel Gable Enclosed Buildings
 
@@ -222,8 +217,6 @@ namespace PFD
             // polozky z vm by asi bolo lepsie predavat ako nejaku strukturu zakladnej geometrie
             // vid public BuildingGeometryDataInput sGeometryInputData;
 
-            
-                        
             // Load cases
             // Fill combobox items
             foreach (CLoadCase loadcase in vm.Model.m_arrLoadCases)
@@ -293,8 +286,7 @@ namespace PFD
             UpdateAll();
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
-            
-            
+
             //waiting = false;
             //Thread.Sleep(2000);
             //bckWrk.Dispose();
@@ -396,7 +388,7 @@ namespace PFD
             sBuildingInputData.fR_SLS = loadinput.R_SLS;
 
             // Load Generation
-            // General loading            
+            // General loading
             //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", vm.RoofCladdingThicknessIndex);
             float fMass_Wall = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_WallCladding.SelectedItem, "mass_kg_m2", vm.WallCladdingThicknessIndex);
@@ -501,7 +493,7 @@ namespace PFD
             System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
             vm.Run();
-            
+
             //// Temporary solution
             //// Purlin
 

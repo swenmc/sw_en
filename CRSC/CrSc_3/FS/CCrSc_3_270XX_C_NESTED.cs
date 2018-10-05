@@ -82,6 +82,9 @@ namespace CRSC
 
             fz_23stif = 0.060f; // Straight part
 
+            b_in = b - 2 * fy_1stif1 - 2 * m_ft_w;
+            h_in = h - 2 * fz_2stif1 - 2 * m_ft_f; // Temp - urcit podla rozmerov
+
             // Create Array - allocate memory
             //CrScPointsOut = new float[INoPointsOut, 2];
             //CrScPointsIn = new float[INoPointsIn, 2];

@@ -169,61 +169,39 @@ namespace M_AS4600
 
             // TEMPORARY
             // fHolesCentersRadii - Moze sa lisit podla rozneho usporiadania skrutiek a vzdialenosti skrutiek od ich fiktivneho taziska (mali by byt symetricky)
-            // TODO - Ondrej potrebujeme sa dostat k property konkretneho objektu, ktory vstupil do funkcie (potomok CPlate), asi by to mohlo vyzerat krajsie
 
-            float[] fHolesCentersRadii;
-            int iNumberOfScrewGroupsInPlate;
+            float[] fHolesCentersRadiiInOneGroup = null;
+            int iNumberOfScrewGroupsInPlate = 0;
+            float fr_max = 0;
 
-            if (plate is CConCom_Plate_JA)
+            if (plate.ScrewArrangement != null) // Screw arrangement exist
             {
-                CConCom_Plate_JA a = (CConCom_Plate_JA)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else if (plate is CConCom_Plate_JB)
-            {
-                CConCom_Plate_JB a = (CConCom_Plate_JB)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else if (plate is CConCom_Plate_KA)
-            {
-                CConCom_Plate_KA a = (CConCom_Plate_KA)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else if (plate is CConCom_Plate_KB)
-            {
-                CConCom_Plate_KB a = (CConCom_Plate_KB)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else if (plate is CConCom_Plate_KC)
-            {
-                CConCom_Plate_KC a = (CConCom_Plate_KC)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else if (plate is CConCom_Plate_KD)
-            {
-                CConCom_Plate_KD a = (CConCom_Plate_KD)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else if (plate is CConCom_Plate_KE)
-            {
-                CConCom_Plate_KE a = (CConCom_Plate_KE)plate;
-                SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(a.ScrewArrangement, out fHolesCentersRadii, out iNumberOfScrewGroupsInPlate);
-            }
-            else
-            {
-                throw new ArgumentException("Unknow type of plate object.");
-            }
+                if (plate.ScrewArrangement.ListOfSequenceGroups != null && plate.ScrewArrangement.ListOfSequenceGroups.Count > 0) // Screw arrangement groups are defined
+                {
+                    fHolesCentersRadiiInOneGroup = plate.ScrewArrangement.ListOfSequenceGroups[0].ScrewHolesRadii; // Use first group data (symmetry is expected
+                    iNumberOfScrewGroupsInPlate = plate.ScrewArrangement.ListOfSequenceGroups.Count;
+                }
+                else
+                {
+                    throw new ArgumentException("Groups of screws are not defined. Check screw arrangement data.");
+                }
 
-            float fr_max = MathF.Max(fHolesCentersRadii);
+                if (fHolesCentersRadiiInOneGroup != null)
+                    fr_max = MathF.Max(fHolesCentersRadiiInOneGroup);
+                else
+                {
+                    throw new ArgumentException("Radii of screws are not defined. Check screw arrangement data.");
+                }
+            }
 
             // 5.4.2.4 Tilting and hole bearing
             // Bending - Calculate shear strength of plate connection - main member
-            for (int i = 0; i < fHolesCentersRadii.Length / iNumberOfScrewGroupsInPlate; i++)
+            for (int i = 0; i < fHolesCentersRadiiInOneGroup.Length; i++)
             {
-                fMb_MainMember_oneside_plastic += fHolesCentersRadii[i] * fVb_MainMember;
-                fMb_SecondaryMember_oneside_plastic += fHolesCentersRadii[/*a.IHolesNumber / 2 +*/ i] * fVb_SecondaryMember;
+                fMb_MainMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * fVb_MainMember;
+                fMb_SecondaryMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * fVb_SecondaryMember;
 
-                fSumri2tormax += MathF.Pow2(fHolesCentersRadii[i]) / fr_max;
+                fSumri2tormax += MathF.Pow2(fHolesCentersRadiiInOneGroup[i]) / fr_max;
             }
 
             // Plastic resistance (Design Ratio)
@@ -234,8 +212,8 @@ namespace M_AS4600
 
             // Elastic resistance
             float fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
-            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / (fHolesCentersRadii.Length / iNumberOfScrewGroupsInPlate);
-            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / (fHolesCentersRadii.Length / iNumberOfScrewGroupsInPlate);
+            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / fHolesCentersRadiiInOneGroup.Length;
+            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / fHolesCentersRadiiInOneGroup.Length;
 
             float fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
 
@@ -417,28 +395,6 @@ namespace M_AS4600
         {
             // Not implemented
             fEta_max = 0;
-        }
-
-        private void SetHolesCenterRadiiAndNumberOfScrewGroupsInPlate(CScrewArrangement arrangement, out float[] fHolesCentersRadii, out int iNumberOfScrewGroupsInPlate)
-        {
-            fHolesCentersRadii = null;
-            iNumberOfScrewGroupsInPlate = 0;
-
-            if (arrangement != null)
-            {
-                if (arrangement is CScrewArrangementCircleApexOrKnee)
-                {
-                    CScrewArrangementCircleApexOrKnee b = (CScrewArrangementCircleApexOrKnee)arrangement;
-                    fHolesCentersRadii = b.HolesCenterRadii;
-                }
-                else if (arrangement is CScrewArrangementCircleApexOrKnee)
-                {
-                    CScrewArrangementRectApexOrKnee b = (CScrewArrangementRectApexOrKnee)arrangement;
-                    fHolesCentersRadii = b.HolesCenterRadii;
-                }
-
-                iNumberOfScrewGroupsInPlate = arrangement.ListOfSequenceGroups.Count();
-            }
         }
     }
 }

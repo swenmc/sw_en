@@ -56,6 +56,21 @@ namespace BaseClasses
             }
         }
 
+        private float [] m_fScrewHolesRadii;
+
+        public float [] ScrewHolesRadii
+        {
+            get
+            {
+                return m_fScrewHolesRadii;
+            }
+
+            set
+            {
+                m_fScrewHolesRadii = value;
+            }
+        }
+
         public CScrewSequenceGroup()
         {
             ListScrewSequence = new List<CScrewSequence>();
