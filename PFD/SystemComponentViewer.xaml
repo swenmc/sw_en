@@ -22,6 +22,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+            
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0">
@@ -42,7 +44,6 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
-                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
@@ -247,23 +248,6 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Name="BtnsPanel" Orientation="Horizontal" >
-                <Button Name="BtnExportDXF" Content="Export to DXF" Margin="5 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
-                <Button Name="BtnExportDXF_3D" Content="Export 3D to DXF" Margin="5 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_3D_Click" />
-                <Button Name="BtnFindCNCPath" Content="Find CNC Path" Margin="15 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnFindCNCPath_Click"/>
-                <Button Name="BtnExportCNC" Content="Export to CNC" Margin="5 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportCNC_Click"/>
-
-                <Button Name="BtnShowCNCSetupFile" Content="Show CNC Setup File" Margin="5 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCSetupFile_Click"/>
-                <Button Name="BtnShowCNCDrillingFile" Content="Show CNC Drilling File" Margin="5 0 5 0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCDrillingFile_Click"/>
-
-            </StackPanel>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -272,7 +256,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
-                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <TabControl Name="MainTabControl" Grid.Row="0" Grid.Column="0" SelectionChanged="MainTabControl_SelectionChanged">
                 <TabItem Name="tabItem2D" Header="View 2D">
@@ -291,5 +274,25 @@
                 </TabItem>
             </TabControl>
         </Grid>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Name="BtnsPanel" Orientation="Horizontal" VerticalAlignment="Center" >
+            <Button Name="BtnExportDXF" Content="Export to DXF" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_Click" />
+            <Button Name="BtnExportDXF_3D" Content="Export 3D to DXF" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportDXF_3D_Click" />
+            <Button Name="BtnFindCNCPath" Content="Find CNC Path" Margin="15 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnFindCNCPath_Click"/>
+            <Button Name="BtnExportCNC" Content="Export to CNC" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportCNC_Click"/>
+
+            <Button Name="BtnShowCNCSetupFile" Content="Show CNC Setup File" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCSetupFile_Click"/>
+            <Button Name="BtnShowCNCDrillingFile" Content="Show CNC Drilling File" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnShowCNCDrillingFile_Click"/>
+
+            <Button Name="BtnExportToPDF" Content="Export to PDF" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDF_Click"/>
+
+        </StackPanel>
     </Grid>
 </Window>

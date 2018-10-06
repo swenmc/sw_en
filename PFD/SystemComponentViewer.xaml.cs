@@ -1629,7 +1629,12 @@ namespace PFD
             }
         }
 
-        
+        private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
+        {
+            CExportToPDF.CreatePDFFile();
+        }
+
+
 
         //private void RedrawComponentIn2D()
         //{
