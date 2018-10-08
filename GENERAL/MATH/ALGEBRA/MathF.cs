@@ -19,83 +19,39 @@ namespace MATH
         public static int Min(List<int> data)
         {
             return data.Min();
-            //int min;
-            //min = data[0];
-            //foreach (int num in data)
-            //    if (num < min) min = num;
-            //return min;
         }
         public static int Max(List<int> data)
         {
             return data.Max();
-            //int max;
-            //max = data[0];
-            //foreach (int num in data)
-            //    if (num > max) max = num;
-            //return max;
         }
 
         // float
         public static float Min(params float[] data)
         {
             return data.Min();
-
-            //Mato - existuje na to funkcia, tak naco pisat vlastny kod?
-                        
-            //float min;
-            //min = data[0];
-            //foreach (float num in data)
-            //    if (num < min) min = num;
-            //return min;
         }
         public static float Max(params float[] data)
         {
             return data.Max();
-
-            //Mato - existuje na to funkcia, tak naco pisat vlastny kod?
-            //float max;
-            //max = data[0];
-            //foreach (float num in data)
-            //    if (num > max) max = num;
-            //return max;
         }
 
         // double
         public static double Min(params double[] data)
         {
             return data.Min();
-            //double min;
-            //min = data[0];
-            //foreach (double num in data)
-            //    if (num < min) min = num;
-            //return min;
         }
         public static double Max(params double[] data)
         {
             return data.Max();
-            //double max;
-            //max = data[0];
-            //foreach (double num in data)
-            //    if (num > max) max = num;
-            //return max;
         }
         public static double Min(List<double> data)
         {
             return data.Min();
-            //double min;
-            //min = data[0];
-            //foreach (double num in data)
-            //    if (num < min) min = num;
-            //return min;
+
         }
         public static double Max(List<double> data)
         {
             return data.Max();
-            //double max;
-            //max = data[0];
-            //foreach (double num in data)
-            //    if (num > max) max = num;
-            //return max;
         }
                #endregion
         //----------------------------------------------------------------------------------------------------------------------------
@@ -213,8 +169,8 @@ namespace MATH
         public static float Pow8(float fx) { float ftemp = fx * fx * fx * fx; return ftemp * ftemp; }
         public static float Pow9(float fx) { float ftemp = fx * fx * fx * fx; return ftemp * ftemp * fx; }
 
-        public static double Pow2(double x) { return Math.Pow(x, 2); /* return x * x; */}
-        public static double Pow3(double x) { return Math.Pow(x, 3); /*return x * x * x;*/ }
+        public static double Pow2(double x) { return Math.Pow(x, 2); }
+        public static double Pow3(double x) { return Math.Pow(x, 3); }
         public static double Pow4(double x) { return Math.Pow(x, 4); }
         public static double Pow5(double x) { return Math.Pow(x, 5); }
         public static double Pow6(double x) { return Math.Pow(x, 6); }
@@ -241,17 +197,6 @@ namespace MATH
         public static double PowN(double x, short iexp)
         {
             return Math.Pow(x, iexp);
-            //double pow = x;
-            //if (iexp > 1)
-            //{
-            //    for (int i = 0; i < iexp; i++)
-            //        pow *= x;
-            //    return pow;
-            //}
-            //else if (iexp == 1)
-            //    return x;
-            //else
-            //    return 1;
         }
 
         public static float Pow_1_3(float fx) { return (float)Math.Pow(fx, 1f / 3f); }
@@ -279,145 +224,10 @@ namespace MATH
         // Root / Odmocnina / Square Root / Druha odmocnina
         //----------------------------------------------------------------------------------------------------------------------------
         #region Root / Square Root
-        /*
-        public static short isqrt(short num)
-        {
-            short op = num;
-            short res = 0;
-            short one = 1 << 14; // The second-to-top bit is set: 1L<<30 for long
-
-            // "one" starts at the highest power of four <= the argument.
-            while (one > op)
-                one >>= 2;
-
-            while (one != 0)
-            {
-                if (op >= res + one)
-                {
-                    op -= res + one;
-                    res = (res >> 1) + one;
-                }
-                else
-                    res >>= 1;
-                one >>= 2;
-            }
-            return res;
-        }
-        */
-
-
-        /*
-        public static float fastsqrt(float z)  
-        {
-
-        union
-        {
-                int tmp;
-                float f;
-        } u;
-        u.f = z;
-        u.tmp -= 1<<23; // Remove last bit so 1.0 gives 1.0
-        // tmp is now an approximation to logbase2(z) 
-        u.tmp >>= 1; // divide by 2
-        u.tmp += 1<<29; // add 64 to exponent: (e+127)/2 =(e/2)+63,
-        // that represents (e/2)-64 but want e/2
-        return u.f;
-        }
-        */
-
-        /*
-        // Reciprocal of the square root
-        public static float invSqrt(float x)
-        {
-        float xhalf = 0.5f*x;
-        union
-        {
-                float x;
-                int i;
-        } u;
-        u.x = x;
-        u.i = 0x5f3759df - (u.i >> 1);
-        x = u.x * (1.5f - xhalf * u.x * u.x);
-        return x;
-         }
-        */
-
-
-
-        /*
-        public unsigned short sqrt(unsigned long a){
-unsigned long rem = 0;
-unsigned long root = 0;
-for (int i = 0; i < 16; i++){
-	root <<= 1;
-	rem = ((rem << 2) + (a >> 30);
-	a <<= 2;
-	root ++;
-	if(root <= rem){
-		rem -= root;
-		root ++;
-	}
-	else
-		root --;
-}
-return (unsigned short)(root >> 1);
-}
-*/
-
-
         public static double Sqrt(double value)
-{
+        {
             return Math.Sqrt(value);
-
-            //Mato - ja vobec nerozumiem o co sa snazis tam nizsie, ale kniznica Math ma svoju Sqrt funkciu, tak ju treba vyuzit
-    // //assert(value >= 1);
-
-    //if (value > 0)
-    //{
-    //    double lo = 1.0;
-    //    double hi = value;
-
-    //    while (hi - lo > 0.00001)
-    //    {
-    //        double mid = lo + (hi - lo) / 2;
-    //        //std::cout << lo << "," << hi << "," << mid << std::endl;
-    //        if (mid * mid - value > 0.00001)    //this is the predictors we are using 
-    //        {
-    //            hi = mid;
-    //        }
-    //        else
-    //        {
-    //            lo = mid;
-    //        }
-
-    //    }
-
-    //    return lo;
-    //}
-    //else
-    //    return 1;
- }
-
-        /*
- public static float Sqrt(float m)
- {
-     float i = 0;
-     float x1, x2;
-     while ((i * i) <= m)
-         i += 0.1;
-     x1 = i;
-     for (int j = 0; j < 10; j++)
-     {
-         x2 = m;
-         x2 /= x1;
-         x2 += x1;
-         x2 /= 2;
-         x1 = x2;
-     }
-     return x2;
- }
-*/
-
+        }
         public static float Sqrt(float num)
         {
             if (num >= 0)
@@ -434,36 +244,6 @@ return (unsigned short)(root >> 1);
                 return 1f; // Exception
         }
 
-
-        /*
-        public static float Sqrt(float value)
-        {
-            if (value > 0f)
-            {
-                float lo = 1.0f;
-                float hi = value;
-
-                while (hi - lo > 0.00001f)
-                {
-                    float mid = lo + (hi - lo) / 2;
-                    if (mid * mid - value > 0.00001f)    //this is the predictors we are using 
-                    {
-                        hi = mid;
-                    }
-                    else
-                    {
-                        lo = mid;
-                    }
-
-                }
-
-                return lo;
-            }
-            else
-                return 1f;
-        }
-
-        */
         #endregion
         //----------------------------------------------------------------------------------------------------------------------------
         // Constants / Konstatny 
