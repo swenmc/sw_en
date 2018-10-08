@@ -7,6 +7,7 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using MATH;
 using CRSC;
+using System.Globalization;
 
 namespace BaseClasses
 {
@@ -161,10 +162,11 @@ namespace BaseClasses
             if(plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
                 fDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
-            if (plate.GetType() == typeof(CConCom_Plate_BB_BG)) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
+            if (plate is CConCom_Plate_BB_BG) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
             {
                 // TODO - Ondrej - asi by sa to dalo osetrit nejako krajsie
                 // TODO - prepracovat na Anchor Arrangement
+                // To Mato: nerozumiem, ze co krajsie by sa malo dat
 
                 // Ak je plech typu B - zakladova patka, vykreslit priemer z anchor
                 CConCom_Plate_BB_BG temp_plate = plate as CConCom_Plate_BB_BG;
@@ -771,7 +773,7 @@ namespace BaseClasses
 
         public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, bool bIsTextAboveControlPoint, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas imageCanvas)
         {
-            bool bRunTest = false;
+            bool bRunTest = true;
             double da1 = MathF.Pow2(pEnd.X - pStart.X);
             double db1 = MathF.Pow2(pEnd.Y - pStart.Y);
             double dc1 = MathF.Sqrt(da1 + db1);
@@ -891,7 +893,7 @@ namespace BaseClasses
             lSlopeLine2.RenderTransform = group;
             //Text.RenderTransform = group;
             */
-
+            
             RotateAndTranslateDimension(pStart, pEnd, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
@@ -915,9 +917,9 @@ namespace BaseClasses
         public static void RotateAndTranslateDimension(Point pStart, Point pEnd, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
         {
             //double dRotation_rad = Math.Atan((pEnd.Y - pStart.Y) / (pEnd.X - pStart.X));
-            float fOffset_x = modelMarginLeft_x + fReal_Model_Zoom_Factor * (float)Math.Min(pStart.X, pEnd.X);
-            float fOffset_y = modelMarginBottom_y - fReal_Model_Zoom_Factor * (float)(pStart.Y < pEnd.Y ? pStart.Y : pEnd.Y);
-
+            float fOffset_x = (float)(modelMarginLeft_x + fReal_Model_Zoom_Factor * Math.Min(pStart.X, pEnd.X));
+            float fOffset_y = (float)(modelMarginBottom_y - fReal_Model_Zoom_Factor * Math.Min(pStart.Y, pEnd.Y));
+            
             RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lPrimaryLine);
             RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lExtensionLine1);
             RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lExtensionLine2);
@@ -1146,22 +1148,70 @@ namespace BaseClasses
             TextBlock textBlock = new TextBlock();
             textBlock.Text = text;
             textBlock.Foreground = color;
+            //textBlock.Background = new SolidColorBrush(Colors.Red);
+            textBlock.FontSize = fontSize;
             Canvas.SetLeft(textBlock, posx);
+
+            bIsTextAboveControlPoint = false;
+            Size txtSize = MeasureString(textBlock, text);
 
             if (bIsTextAboveControlPoint) // Text nad liniou koty
             {
-                Canvas.SetTop(textBlock, posy - fontSize - 2);
+                Canvas.SetTop(textBlock, posy - txtSize.Height);
+                if (Math.Abs(rotationAngle_CW_deg) / 90 < 0.2)
+                {
+                    Canvas.SetTop(textBlock, posy - txtSize.Height);
+                }
+                else if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.80)
+                {
+                    if(rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width / 2);
+                    else Canvas.SetTop(textBlock, posy - txtSize.Width / 2);
+                }
+                else
+                {
+                    if (rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width);
+                    else Canvas.SetTop(textBlock, posy - txtSize.Width);
+                }
+                
                 textBlock.Margin = new Thickness(2, 0, 0, 0);
             }
             else // text pod liniou koty
             {
-                Canvas.SetTop(textBlock, posy);
+                if (Math.Abs(rotationAngle_CW_deg) / 90 < 0.2)
+                {
+                    Canvas.SetTop(textBlock, posy);
+                }
+                else if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.80)
+                {
+                    if (rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width / 2);
+                    else Canvas.SetTop(textBlock, posy - txtSize.Width / 2);
+                }
+                else
+                {
+                    if (rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width);
+                    else Canvas.SetTop(textBlock, posy - txtSize.Width);
+                }
+                
                 textBlock.Margin = new Thickness(2, 2, 0, 0);
             }
-
-            textBlock.FontSize = fontSize;
+            
             textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
             canvas.Children.Add(textBlock);
+            
+        }
+
+        private static Size MeasureString(TextBlock textBlock, string text)
+        {
+            var formattedText = new FormattedText(
+                text,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(textBlock.FontFamily, textBlock.FontStyle, textBlock.FontWeight, textBlock.FontStretch), textBlock.FontSize,
+                Brushes.Black,
+                new NumberSubstitution(),
+                TextFormattingMode.Display);
+
+            return new Size(formattedText.Width, formattedText.Height);
         }
 
         public static void DrawTexts(string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight, 

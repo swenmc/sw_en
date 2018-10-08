@@ -18,71 +18,84 @@ namespace MATH
         // metody sluzia pre najdenie minimalneho(maximalneho prvku v zozname Int)
         public static int Min(List<int> data)
         {
-            int min;
-            min = data[0];
-            foreach (int num in data)
-                if (num < min) min = num;
-            return min;
+            return data.Min();
+            //int min;
+            //min = data[0];
+            //foreach (int num in data)
+            //    if (num < min) min = num;
+            //return min;
         }
         public static int Max(List<int> data)
         {
-            int max;
-            max = data[0];
-            foreach (int num in data)
-                if (num > max) max = num;
-            return max;
+            return data.Max();
+            //int max;
+            //max = data[0];
+            //foreach (int num in data)
+            //    if (num > max) max = num;
+            //return max;
         }
 
         // float
         public static float Min(params float[] data)
         {
-            float min;
-            min = data[0];
-            foreach (float num in data)
-                if (num < min) min = num;
-            return min;
+            return data.Min();
+
+            //Mato - existuje na to funkcia, tak naco pisat vlastny kod?
+                        
+            //float min;
+            //min = data[0];
+            //foreach (float num in data)
+            //    if (num < min) min = num;
+            //return min;
         }
         public static float Max(params float[] data)
         {
-            float max;
-            max = data[0];
-            foreach (float num in data)
-                if (num > max) max = num;
-            return max;
+            return data.Max();
+
+            //Mato - existuje na to funkcia, tak naco pisat vlastny kod?
+            //float max;
+            //max = data[0];
+            //foreach (float num in data)
+            //    if (num > max) max = num;
+            //return max;
         }
 
         // double
         public static double Min(params double[] data)
         {
-            double min;
-            min = data[0];
-            foreach (double num in data)
-                if (num < min) min = num;
-            return min;
+            return data.Min();
+            //double min;
+            //min = data[0];
+            //foreach (double num in data)
+            //    if (num < min) min = num;
+            //return min;
         }
         public static double Max(params double[] data)
         {
-            double max;
-            max = data[0];
-            foreach (double num in data)
-                if (num > max) max = num;
-            return max;
+            return data.Max();
+            //double max;
+            //max = data[0];
+            //foreach (double num in data)
+            //    if (num > max) max = num;
+            //return max;
         }
         public static double Min(List<double> data)
         {
-            double min;
-            min = data[0];
-            foreach (double num in data)
-                if (num < min) min = num;
-            return min;
+            return data.Min();
+            //double min;
+            //min = data[0];
+            //foreach (double num in data)
+            //    if (num < min) min = num;
+            //return min;
         }
         public static double Max(List<double> data)
         {
-            double max;
-            max = data[0];
-            foreach (double num in data)
-                if (num > max) max = num;
-            return max;
+            return data.Max();
+            //double max;
+            //max = data[0];
+            //foreach (double num in data)
+            //    if (num > max) max = num;
+            //return max;
         }
                #endregion
         //----------------------------------------------------------------------------------------------------------------------------
@@ -200,14 +213,14 @@ namespace MATH
         public static float Pow8(float fx) { float ftemp = fx * fx * fx * fx; return ftemp * ftemp; }
         public static float Pow9(float fx) { float ftemp = fx * fx * fx * fx; return ftemp * ftemp * fx; }
 
-        public static double Pow2(double x) { return x * x; }
-        public static double Pow3(double x) { return x * x * x; }
-        public static double Pow4(double x) { double temp = x * x; return temp * temp; }
-        public static double Pow5(double x) { double temp = x * x; return temp * temp * x; }
-        public static double Pow6(double x) { double temp = x * x * x; return temp * temp; }
-        public static double Pow7(double x) { double temp = x * x * x; return temp * temp * x; }
-        public static double Pow8(double x) { double temp = x * x * x * x; return temp * temp; }
-        public static double Pow9(double x) { double temp = x * x * x * x; return temp * temp * x; }
+        public static double Pow2(double x) { return Math.Pow(x, 2); /* return x * x; */}
+        public static double Pow3(double x) { return Math.Pow(x, 3); /*return x * x * x;*/ }
+        public static double Pow4(double x) { return Math.Pow(x, 4); }
+        public static double Pow5(double x) { return Math.Pow(x, 5); }
+        public static double Pow6(double x) { return Math.Pow(x, 6); }
+        public static double Pow7(double x) { return Math.Pow(x, 7); }
+        public static double Pow8(double x) { return Math.Pow(x, 8); }
+        public static double Pow9(double x) { return Math.Pow(x, 9); }
 
         // Prirodzeny mocnitel / kladny int
         public static float PowN(float fx, short iexp)
@@ -227,38 +240,39 @@ namespace MATH
 
         public static double PowN(double x, short iexp)
         {
-            double pow = x;
-            if (iexp > 1)
-            {
-                for (int i = 0; i < iexp; i++)
-                    pow *= x;
-                return pow;
-            }
-            else if (iexp == 1)
-                return x;
-            else
-                return 1;
+            return Math.Pow(x, iexp);
+            //double pow = x;
+            //if (iexp > 1)
+            //{
+            //    for (int i = 0; i < iexp; i++)
+            //        pow *= x;
+            //    return pow;
+            //}
+            //else if (iexp == 1)
+            //    return x;
+            //else
+            //    return 1;
         }
 
-        public static float Pow_1_3(float fx) { return (float)Math.Pow(fx, 1 / 3f); }
+        public static float Pow_1_3(float fx) { return (float)Math.Pow(fx, 1f / 3f); }
         public static float Pow_1_4(float fx) { return (float)Math.Pow(fx, 0.25f); }
-        public static float Pow_1_5(float fx) { return (float)Math.Pow(fx, 1 / 5f); }
-        public static float Pow_1_6(float fx) { return (float)Math.Pow(fx, 1 / 6f); }
+        public static float Pow_1_5(float fx) { return (float)Math.Pow(fx, 1f / 5f); }
+        public static float Pow_1_6(float fx) { return (float)Math.Pow(fx, 1f / 6f); }
 
-        public static float Pow_2_3(float fx) { return (float)Math.Pow(fx, 2 / 3f); }
-        public static float Pow_2_5(float fx) { return (float)Math.Pow(fx, 2 / 5f); }
+        public static float Pow_2_3(float fx) { return (float)Math.Pow(fx, 2f / 3f); }
+        public static float Pow_2_5(float fx) { return (float)Math.Pow(fx, 2f / 5f); }
         public static float Pow_3_2(float fx) { return (float)Math.Pow(fx, 1.5f); }
-        public static float Pow_5_2(float fx) { return (float)Math.Pow(fx, 5 / 2f); }
+        public static float Pow_5_2(float fx) { return (float)Math.Pow(fx, 5f / 2f); }
 
-        public static double Pow_1_3(double x) { return (double)Math.Pow(x, 1 / 3f); }
+        public static double Pow_1_3(double x) { return (double)Math.Pow(x, 1f / 3f); }
         public static double Pow_1_4(double x) { return (double)Math.Pow(x, 0.25f); }
-        public static double Pow_1_5(double x) { return (double)Math.Pow(x, 1 / 5f); }
-        public static double Pow_1_6(double x) { return (double)Math.Pow(x, 1 / 6f); }
+        public static double Pow_1_5(double x) { return (double)Math.Pow(x, 1f / 5f); }
+        public static double Pow_1_6(double x) { return (double)Math.Pow(x, 1f / 6f); }
 
-        public static double Pow_2_3(double x) { return (double)Math.Pow(x, 2 / 3f); }
-        public static double Pow_2_5(double x) { return (double)Math.Pow(x, 2 / 5f); }
+        public static double Pow_2_3(double x) { return (double)Math.Pow(x, 2f / 3f); }
+        public static double Pow_2_5(double x) { return (double)Math.Pow(x, 2f / 5f); }
         public static double Pow_3_2(double x) { return (double)Math.Pow(x, 1.5f); }
-        public static double Pow_5_2(double x) { return (double)Math.Pow(x, 5 / 2f); }
+        public static double Pow_5_2(double x) { return (double)Math.Pow(x, 5f / 2f); }
 
         #endregion
         //----------------------------------------------------------------------------------------------------------------------------
@@ -353,32 +367,35 @@ return (unsigned short)(root >> 1);
 
         public static double Sqrt(double value)
 {
-     //assert(value >= 1);
+            return Math.Sqrt(value);
 
-    if (value > 0)
-    {
-        double lo = 1.0;
-        double hi = value;
+            //Mato - ja vobec nerozumiem o co sa snazis tam nizsie, ale kniznica Math ma svoju Sqrt funkciu, tak ju treba vyuzit
+    // //assert(value >= 1);
 
-        while (hi - lo > 0.00001)
-        {
-            double mid = lo + (hi - lo) / 2;
-            //std::cout << lo << "," << hi << "," << mid << std::endl;
-            if (mid * mid - value > 0.00001)    //this is the predictors we are using 
-            {
-                hi = mid;
-            }
-            else
-            {
-                lo = mid;
-            }
+    //if (value > 0)
+    //{
+    //    double lo = 1.0;
+    //    double hi = value;
 
-        }
+    //    while (hi - lo > 0.00001)
+    //    {
+    //        double mid = lo + (hi - lo) / 2;
+    //        //std::cout << lo << "," << hi << "," << mid << std::endl;
+    //        if (mid * mid - value > 0.00001)    //this is the predictors we are using 
+    //        {
+    //            hi = mid;
+    //        }
+    //        else
+    //        {
+    //            lo = mid;
+    //        }
 
-        return lo;
-    }
-    else
-        return 1;
+    //    }
+
+    //    return lo;
+    //}
+    //else
+    //    return 1;
  }
 
         /*
