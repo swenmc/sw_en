@@ -995,6 +995,15 @@ namespace BaseClasses
             l2.Y2 = modelMarginBottom_y - pEnd.Y * fReal_Model_Zoom_Factor;
 
             DrawLine(l2, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
+
+            // Draw text
+            // Draw text in the middle of the arc
+            float fFactorTextPosition = 0.5f;
+            float fTextPositionx = Geom2D.GetPositionX_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // y
+            float fTextPositiony = Geom2D.GetPositionY_CCW_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // z
+            string sText = Math.Round(slope / MathF.fPI * 180, 1).ToString() + " °";
+
+            DrawText(sText, modelMarginLeft_x + pCenter.X * fReal_Model_Zoom_Factor +  fTextPositionx, modelMarginBottom_y - (pCenter.Y * fReal_Model_Zoom_Factor + fTextPositiony), 0, 12, false, Brushes.Black, imageCanvas);
         }
 
         public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
