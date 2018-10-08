@@ -47,13 +47,12 @@ namespace MATH
         public static double Min(List<double> data)
         {
             return data.Min();
-
         }
         public static double Max(List<double> data)
         {
             return data.Max();
         }
-               #endregion
+        #endregion
         //----------------------------------------------------------------------------------------------------------------------------
         // Equality of real numbers / Rovnost realnych cisel (float a double)
         //----------------------------------------------------------------------------------------------------------------------------

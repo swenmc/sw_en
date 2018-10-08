@@ -364,7 +364,6 @@ namespace BaseClasses
             {
                 for (int i = 0; i < PointsHoles.Length; i++)
                 {
-                    //kedze je to pole, je mozne priamo menit property objektov
                     PointsHoles[i].X -= fTempMin_X;
                     PointsHoles[i].Y -= fTempMin_Y;
                 }
@@ -460,8 +459,19 @@ namespace BaseClasses
                     // Outer outline lines
                     if (PointsOut != null) // If is array of points not empty
                     {
+                        // TODO - Ondrej - bug No. 113, ked sa pouzije zakomentovany kod line 469 a 470, + odkomentuje sa to co je na 473, tak sa to v niektorych pripadoch upravi, ale nie je to dokonale, napr. pre KE plate
+                        // Bolo by super aby si si nasiel cas a to vykreslovanie nejako prerobil, aby to bolo univerzalnejsie bez ohladu na to ci su suradnice v bodov plechu len kladne alebo aj zaporne a podobne
+                        // Pripadne vyrobit kopiu poli bodov, ktore sa pouziju pre vykreslovanie, vsetko posunut tak, aby minimum bolo [0,0]
+                        // Ten chaos vznikol tak ze som chcel mat povodne lavy spodny roh plechu v [0,0] ale neuvedomil som si ze to moze mat potom aj zaporne suradnice a teda ze [0,0] nebude minimum a odvtedy sa v tom vykreslovani trosku patlam :)
+                        // a lepim blbe na blbsie :)
+
+                        /*
+                        double fTempMax_X, fTempMin_X, fTempMax_Y, fTempMin_Y;
+                        CalculateModelLimits(PointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+                        */
                         double fCanvasTop = modelMarginBottom_y - fModel_Length_y_page;
-                        double fCanvasLeft = modelMarginLeft_x;
+                        double fCanvasLeft = modelMarginLeft_x /*+ fTempMin_X * fReal_Model_Zoom_Factor*/;
+
                         DrawPolyLine(true, PointsOut, fCanvasTop, fCanvasLeft, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
                     }
 
