@@ -123,8 +123,6 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             UpdatePlateData(screwArrangement);
-
-            Set_DimensionPoints2D();
         }
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
@@ -156,6 +154,8 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -228,12 +228,14 @@ namespace BaseClasses
         void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 4;
-            Dimensions = new CDimensionLinear[iNumberOfDimensions];
+            Dimensions = new CDimension[iNumberOfDimensions+1];
 
             Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1], true);
             Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2], true);
             Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3], true);
             Dimensions[3] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[3], false);
+
+            Dimensions[4] = new CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[3].Y), PointsOut2D[2], PointsOut2D[3]);
         }
 
         protected override void loadIndices()

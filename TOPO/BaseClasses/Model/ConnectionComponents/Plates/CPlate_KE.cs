@@ -181,6 +181,8 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -340,6 +342,21 @@ namespace BaseClasses
                 arrPoints3D[ITotNoPointsin3D - i - 1].Y = arrPoints3D[INoPoints2Dfor3D + i].Y;
                 arrPoints3D[ITotNoPointsin3D - i - 1].Z = -arrPoints3D[INoPoints2Dfor3D + i].Z; // Change sign - Negative coordinates "z"
             }
+        }
+
+        void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 6;
+            Dimensions = new GraphObj.CDimension[iNumberOfDimensions + 1];
+
+            Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
+            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[3] = new GraphObj.CDimensionLinear(PointsOut2D[4], PointsOut2D[5]);
+            Dimensions[4] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[5]);
+            Dimensions[5] = new GraphObj.CDimensionLinear(PointsOut2D[11], PointsOut2D[0]);
+
+            Dimensions[6] = new GraphObj.CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
         }
 
         protected override void loadIndices()

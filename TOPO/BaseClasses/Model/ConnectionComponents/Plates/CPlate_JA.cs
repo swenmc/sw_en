@@ -213,11 +213,13 @@ namespace BaseClasses
         void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 3;
-            Dimensions = new GraphObj.CDimensionLinear[iNumberOfDimensions];
+            Dimensions = new GraphObj.CDimension[iNumberOfDimensions+1];
 
             Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
             Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
             Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[3], PointsOut2D[2]);
+
+            Dimensions[3] = new GraphObj.CDimensionArc(PointsOut2D[2], PointsOut2D[3], PointsOut2D[4]);
         }
 
         protected override void loadIndices()
