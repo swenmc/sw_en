@@ -162,11 +162,9 @@ namespace BaseClasses
             if(plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
                 fDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
-            if (plate is CConCom_Plate_BB_BG) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (scres som zatial nezadefinoval)
+            if (plate is CConCom_Plate_BB_BG) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (screws som zatial nezadefinoval)
             {
-                // TODO - Ondrej - asi by sa to dalo osetrit nejako krajsie
                 // TODO - prepracovat na Anchor Arrangement
-                // To Mato: nerozumiem, ze co krajsie by sa malo dat
 
                 // Ak je plech typu B - zakladova patka, vykreslit priemer z anchor
                 CConCom_Plate_BB_BG temp_plate = plate as CConCom_Plate_BB_BG;
@@ -773,30 +771,9 @@ namespace BaseClasses
 
         public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, bool bIsTextAboveControlPoint, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas imageCanvas)
         {
-            bool bRunTest = true;
-            double da1 = MathF.Pow2(pEnd.X - pStart.X);
-            double db1 = MathF.Pow2(pEnd.Y - pStart.Y);
-            double dc1 = MathF.Sqrt(da1 + db1);
-
-            double da2 = Math.Pow(pEnd.X - pStart.X, 2);
-            double db2 = Math.Pow(pEnd.Y - pStart.Y, 2);
-            double dc2 = Math.Sqrt(da2 + db2);
-
-            if (bRunTest) // TODO - Ondrej, ked porovnavam vysledky tychto operaci, tak to vobec nesedi
-            {
-                if (!MathF.d_equal(da1, da2))
-                    throw new Exception("Error in numerical operation!");
-
-                if (!MathF.d_equal(db1, db2))
-                    throw new Exception("Error in numerical operation!");
-
-                if (!MathF.d_equal(dc1, dc2))
-                    throw new Exception("Error in numerical operation!");
-            }
-
             bool bBasicDimensionIsDefinedInPlusY = true;
 
-            // kladna osa y smeruje dole
+            // kontrolne body su v y = 0, kota je v smere +x, kladna osa y smeruje dole
             // TRUE
             //
             //   |                                |
@@ -874,7 +851,7 @@ namespace BaseClasses
             // TranslateTransform
             // DropShadowBitmapEffect
 
-            /* // TODO - tieto transformacie mi velmi nefunguju
+            /* // TODO - tieto transformacie mi akosi nefunguju
 
             // Rotate dimension
             RotateTransform r1 = new RotateTransform(45);
