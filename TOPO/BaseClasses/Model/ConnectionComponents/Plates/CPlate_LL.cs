@@ -110,7 +110,7 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
             arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
 
@@ -147,41 +147,41 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         void Calc_Coord2D()
         {
-            PointsOut2D[0, 0] = 0;
-            PointsOut2D[0, 1] = 0;
+            PointsOut2D[0].X = 0;
+            PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1, 0] = 0;
-            PointsOut2D[1, 1] = m_fbX1;
+            PointsOut2D[1].X = 0;
+            PointsOut2D[1].Y = m_fbX1;
 
-            PointsOut2D[2, 0] = PointsOut2D[1, 0] + m_fbX2;
-            PointsOut2D[2, 1] = PointsOut2D[1, 1];
+            PointsOut2D[2].X = PointsOut2D[1].X + m_fbX2;
+            PointsOut2D[2].Y = PointsOut2D[1].Y;
 
-            PointsOut2D[3, 0] = PointsOut2D[2, 0];
-            PointsOut2D[3, 1] = PointsOut2D[0, 1];
+            PointsOut2D[3].X = PointsOut2D[2].X;
+            PointsOut2D[3].Y = PointsOut2D[0].Y;
 
-            PointsOut2D[4, 0] = PointsOut2D[3, 0] + m_fhY - Ft;
-            PointsOut2D[4, 1] = PointsOut2D[3, 1];
+            PointsOut2D[4].X = PointsOut2D[3].X + m_fhY - Ft;
+            PointsOut2D[4].Y = PointsOut2D[3].Y;
 
-            PointsOut2D[5, 0] = PointsOut2D[4, 0];
-            PointsOut2D[5, 1] = PointsOut2D[2, 1];
+            PointsOut2D[5].X = PointsOut2D[4].X;
+            PointsOut2D[5].Y = PointsOut2D[2].Y;
 
-            PointsOut2D[6, 0] = PointsOut2D[5, 0];
-            PointsOut2D[6, 1] = PointsOut2D[5, 1] + m_flZ;
+            PointsOut2D[6].X = PointsOut2D[5].X;
+            PointsOut2D[6].Y = PointsOut2D[5].Y + m_flZ;
 
-            PointsOut2D[7, 0] = PointsOut2D[2, 0];
-            PointsOut2D[7, 1] = PointsOut2D[6, 1];
+            PointsOut2D[7].X = PointsOut2D[2].X;
+            PointsOut2D[7].Y = PointsOut2D[6].Y;
 
-            PointsOut2D[8, 0] = PointsOut2D[0, 0];
-            PointsOut2D[8, 1] = PointsOut2D[7, 1];
+            PointsOut2D[8].X = PointsOut2D[0].X;
+            PointsOut2D[8].Y = PointsOut2D[7].Y;
 
-            PointsOut2D[9, 0] = PointsOut2D[0, 0] - (m_fhY - Ft);
-            PointsOut2D[9, 1] = PointsOut2D[6, 1];
+            PointsOut2D[9].X = PointsOut2D[0].X - (m_fhY - Ft);
+            PointsOut2D[9].Y = PointsOut2D[6].Y;
 
-            PointsOut2D[10, 0] = PointsOut2D[9, 0];
-            PointsOut2D[10, 1] = PointsOut2D[1, 1];
+            PointsOut2D[10].X = PointsOut2D[9].X;
+            PointsOut2D[10].Y = PointsOut2D[1].Y;
 
-            PointsOut2D[11, 0] = PointsOut2D[10, 0];
-            PointsOut2D[11, 1] = PointsOut2D[0, 1];
+            PointsOut2D[11].X = PointsOut2D[10].X;
+            PointsOut2D[11].Y = PointsOut2D[0].Y;
         }
 
         void Calc_Coord3D()
@@ -296,83 +296,6 @@ namespace BaseClasses
             arrPoints3D[25].Y = arrPoints3D[16].Y;
             arrPoints3D[25].Z = m_flZ;
         }
-
-        //void Calc_HolesCentersCoord2D(CScrewArrangement screwArrangement)
-        //{
-        //    float fx_edge = 0.010f;  // y-direction
-        //    float fy_edge1 = 0.010f; // x-direction
-        //    float fy_edge2 = 0.030f; // x-direction
-        //    float fy_edge3 = 0.120f; // x-direction
-
-        //    // TODO nahradit enumom a switchom
-
-        //    // TODO OPRAVIT SURADNICE
-
-        //    if (screwArrangement.IHolesNumber == 32) // LLH, LLK
-        //    {
-        //        HolesCentersPoints2D[0, 0] = - m_fhY + Ft + fy_edge1;
-        //        HolesCentersPoints2D[0, 1] = fx_edge;
-
-        //        HolesCentersPoints2D[1, 0] = HolesCentersPoints2D[0, 0];
-        //        HolesCentersPoints2D[1, 1] = m_fbX1 - fx_edge;
-
-        //        HolesCentersPoints2D[2, 0] = -m_fhY + Ft + fy_edge2;
-        //        HolesCentersPoints2D[2, 1] = 0.5f * m_fbX1;
-
-        //        HolesCentersPoints2D[3, 0] = -m_fhY + Ft + fy_edge3;
-        //        HolesCentersPoints2D[3, 1] = HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[4, 0] = -fy_edge3;
-        //        HolesCentersPoints2D[4, 1] = HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[5, 0] = -fy_edge2;
-        //        HolesCentersPoints2D[5, 1] = HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[6, 0] = -fy_edge1;
-        //        HolesCentersPoints2D[6, 1] = HolesCentersPoints2D[0, 1];
-
-        //        HolesCentersPoints2D[7, 0] = HolesCentersPoints2D[6, 0];
-        //        HolesCentersPoints2D[7, 1] = HolesCentersPoints2D[1, 1];
-
-        //        float fTemp = (0.5f * m_fbX1 + 0.5f * m_flZ);
-
-        //        HolesCentersPoints2D[8, 0] = HolesCentersPoints2D[7, 0];
-        //        HolesCentersPoints2D[8, 1] = fTemp + HolesCentersPoints2D[7, 1];
-
-        //        HolesCentersPoints2D[9, 0] = HolesCentersPoints2D[6, 0];
-        //        HolesCentersPoints2D[9, 1] = fTemp + HolesCentersPoints2D[6, 1];
-
-        //        HolesCentersPoints2D[10, 0] = HolesCentersPoints2D[5, 0];
-        //        HolesCentersPoints2D[10, 1] = fTemp + HolesCentersPoints2D[5, 1];
-
-        //        HolesCentersPoints2D[11, 0] = HolesCentersPoints2D[4, 0];
-        //        HolesCentersPoints2D[11, 1] = fTemp + HolesCentersPoints2D[4, 1];
-
-        //        HolesCentersPoints2D[12, 0] = HolesCentersPoints2D[3, 0];
-        //        HolesCentersPoints2D[12, 1] = fTemp + HolesCentersPoints2D[3, 1];
-
-        //        HolesCentersPoints2D[13, 0] = HolesCentersPoints2D[2, 0];
-        //        HolesCentersPoints2D[13, 1] = fTemp + HolesCentersPoints2D[2, 1];
-
-        //        HolesCentersPoints2D[14, 0] = HolesCentersPoints2D[0, 0];
-        //        HolesCentersPoints2D[14, 1] = fTemp + HolesCentersPoints2D[1, 1];
-
-        //        HolesCentersPoints2D[15, 0] = HolesCentersPoints2D[1, 0];
-        //        HolesCentersPoints2D[15, 1] = fTemp + HolesCentersPoints2D[0, 1];
-
-        //        for (int i = 0; i < screwArrangement.IHolesNumber / 2; i++)
-        //        {
-        //            HolesCentersPoints2D[screwArrangement.IHolesNumber / 2 + i, 0] = m_fbX2 -HolesCentersPoints2D[(screwArrangement.IHolesNumber / 2 - i - 1), 0];
-        //            HolesCentersPoints2D[screwArrangement.IHolesNumber / 2 + i, 1] = HolesCentersPoints2D[(screwArrangement.IHolesNumber / 2 - i - 1), 1];
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Not defined expected number of holes for LL plate
-        //    }
-        //}
-
-
 
         void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)
         {

@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using System;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
@@ -150,7 +151,7 @@ namespace BaseClasses
                 Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * Fb_X2);
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             if (screwArrangement != null)
@@ -172,6 +173,8 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -219,23 +222,23 @@ namespace BaseClasses
             float fx_temp = m_flZ * (float)Math.Cos(fBeta);
             float fy_temp = m_flZ * (float)Math.Sin(fBeta);
 
-            PointsOut2D[0, 0] = 0;
-            PointsOut2D[0, 1] = 0;
+            PointsOut2D[0].X = 0;
+            PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1, 0] = m_fbX1;
-            PointsOut2D[1, 1] = 0;
+            PointsOut2D[1].X = m_fbX1;
+            PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2, 0] = m_fbX1 + fx_temp;
-            PointsOut2D[2, 1] = - fy_temp;
+            PointsOut2D[2].X = m_fbX1 + fx_temp;
+            PointsOut2D[2].Y = - fy_temp;
 
-            PointsOut2D[3, 0] = m_fbX2 + fx_temp;
-            PointsOut2D[3, 1] = m_fhY2 - fy_temp;
+            PointsOut2D[3].X = m_fbX2 + fx_temp;
+            PointsOut2D[3].Y = m_fhY2 - fy_temp;
 
-            PointsOut2D[4, 0] = m_fbX2;
-            PointsOut2D[4, 1] = m_fhY2;
+            PointsOut2D[4].X = m_fbX2;
+            PointsOut2D[4].Y = m_fhY2;
 
-            PointsOut2D[5, 0] = 0;
-            PointsOut2D[5, 1] = m_fhY1;
+            PointsOut2D[5].X = 0;
+            PointsOut2D[5].Y = m_fhY1;
         }
 
         void Calc_Coord3D()
@@ -301,6 +304,18 @@ namespace BaseClasses
             arrPoints3D[INoPoints2Dfor3D + 5].X = arrPoints3D[INoPoints2Dfor3D + 0].X;
             arrPoints3D[INoPoints2Dfor3D + 5].Y = m_fhY1;
             arrPoints3D[INoPoints2Dfor3D + 5].Z = arrPoints3D[INoPoints2Dfor3D + 0].Z;
+        }
+
+        void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 5;
+            Dimensions = new GraphObj.CDimensionLinear[iNumberOfDimensions];
+
+            Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
+            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[3] = new GraphObj.CDimensionLinear(PointsOut2D[4], PointsOut2D[5]);
+            Dimensions[4] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[5]);
         }
 
         protected override void loadIndices()

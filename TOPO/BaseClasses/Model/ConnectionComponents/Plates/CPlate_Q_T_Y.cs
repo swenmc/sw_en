@@ -1,4 +1,5 @@
 ﻿using _3DTools;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
@@ -92,7 +93,7 @@ namespace BaseClasses
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             // Calculate point positions
@@ -129,7 +130,7 @@ namespace BaseClasses
             m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             // Calculate point positions
@@ -151,29 +152,29 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         void Calc_Coord2D()
         {
-            PointsOut2D[0, 0] = 0;
-            PointsOut2D[0, 1] = 0;
+            PointsOut2D[0].X = 0;
+            PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1, 0] = m_flZ1;
-            PointsOut2D[1, 1] = 0;
+            PointsOut2D[1].X = m_flZ1;
+            PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2, 0] = PointsOut2D[1, 0] + m_fbX;
-            PointsOut2D[2, 1] = 0;
+            PointsOut2D[2].X = PointsOut2D[1].X + m_fbX;
+            PointsOut2D[2].Y = 0;
 
-            PointsOut2D[3, 0] = PointsOut2D[2, 0] + m_flZ2;
-            PointsOut2D[3, 1] = 0;
+            PointsOut2D[3].X = PointsOut2D[2].X + m_flZ2;
+            PointsOut2D[3].Y = 0;
 
-            PointsOut2D[4, 0] = PointsOut2D[3, 0];
-            PointsOut2D[4, 1] = m_fhY;
+            PointsOut2D[4].X = PointsOut2D[3].X;
+            PointsOut2D[4].Y = m_fhY;
 
-            PointsOut2D[5, 0] = PointsOut2D[2, 0];
-            PointsOut2D[5, 1] = m_fhY;
+            PointsOut2D[5].X = PointsOut2D[2].X;
+            PointsOut2D[5].Y = m_fhY;
 
-            PointsOut2D[6, 0] = PointsOut2D[1, 0];
-            PointsOut2D[6, 1] = m_fhY;
+            PointsOut2D[6].X = PointsOut2D[1].X;
+            PointsOut2D[6].Y = m_fhY;
 
-            PointsOut2D[7, 0] = PointsOut2D[0, 0];
-            PointsOut2D[7, 1] = m_fhY;
+            PointsOut2D[7].X = PointsOut2D[0].X;
+            PointsOut2D[7].Y = m_fhY;
         }
 
         void Calc_Coord3D()

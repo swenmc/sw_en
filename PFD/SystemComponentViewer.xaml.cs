@@ -107,6 +107,7 @@ namespace PFD
                     e.PropertyName == "DrawHoles2D" ||
                     e.PropertyName == "DrawHoleCentreSymbol2D" ||
                     e.PropertyName == "DrawDrillingRoute2D" ||
+                    e.PropertyName == "DrawDimensions2D" ||
                     e.PropertyName == "DrawScrews3D")
                 {
                     DisplayComponent(vm);
@@ -161,7 +162,7 @@ namespace PFD
                     vm.DrillingRoutePoints = null;
 
                     ScrewArrangementChanged();
-                    UpdateAndDisplayPlate();                    
+                    UpdateAndDisplayPlate();
                 }
             }
             else if (sender is CComponentParamsViewBool)
@@ -343,6 +344,7 @@ namespace PFD
                 chbDrawHoles2D.IsEnabled = false;
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
+                chbDrawDimensions2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
@@ -385,6 +387,7 @@ namespace PFD
                 chbDrawHoles2D.IsEnabled = true;
                 chbDrawHoleCentreSymbol2D.IsEnabled = true;
                 chbDrawDrillingRoute2D.IsEnabled = true;
+                chbDrawDimensions2D.IsEnabled = true;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
@@ -420,6 +423,7 @@ namespace PFD
                 chbDrawHoles2D.IsEnabled = false;
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
+                chbDrawDimensions2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
 
@@ -1084,7 +1088,7 @@ namespace PFD
                     CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
 
                 // Export setup file
-                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToPointCoord(plate.PointsOut2D), fUnitFactor);
+                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToList(plate.PointsOut2D), fUnitFactor);
             }
             else
             {
@@ -1167,7 +1171,7 @@ namespace PFD
             {
                 tabItemDoc.Visibility = Visibility.Visible;
 
-                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToPointCoord(plate.PointsOut2D), fUnitFactor);
+                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToList(plate.PointsOut2D), fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");

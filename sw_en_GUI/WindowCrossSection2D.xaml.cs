@@ -87,7 +87,7 @@ namespace sw_en_GUI
                 PointsOut = new List<Point>();
                 for (int i = 0; i < plate.PointsOut2D.GetLength(0); i++)
                 {
-                    PointsOut.Add(new Point(plate.PointsOut2D[i, 0], plate.PointsOut2D[i, 1]));
+                    PointsOut.Add(plate.PointsOut2D[i]);
                 }
 
                 Drawing2D.CalculateModelLimits(PointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);

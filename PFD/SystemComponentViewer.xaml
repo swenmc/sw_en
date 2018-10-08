@@ -8,11 +8,13 @@
         WindowStartupLocation="CenterScreen"
         Title="FormSteel System Component Viewer"  Height="800" Width="1300">
     <Window.Resources>
-        <SolidColorBrush x:Key="colorReadOnlyCell" Color="WhiteSmoke" /> <!-- Light gray color of readonly cell background -->
-        <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />  <!-- Black color of readonly cell text -->
+        <SolidColorBrush x:Key="colorReadOnlyCell" Color="WhiteSmoke" />
+        <!-- Light gray color of readonly cell background -->
+        <SolidColorBrush x:Key="colorReadOnlyCellText" Color="Black" />
+        <!-- Black color of readonly cell text -->
         <SolidColorBrush x:Key="colorCellError" Color="Red" />
-        
-        
+
+
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -23,7 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
-            
+
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0">
@@ -68,8 +70,8 @@
             <TextBlock Grid.Row="3" Grid.Column="0" Name="TxtCombScrewArrangment" Text="Screw Arrangement:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 0 0 0"/>
             <ComboBox Grid.Row="3" Grid.Column="1" Name ="Combobox_ScrewArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ScrewArrangements}" SelectedIndex="{Binding Path=ScrewArrangementIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
-            
-            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" Margin="10,5,0,10">
+
+            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="5" Grid.Column="2" Margin="10,5,0,0">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
                 <CheckBox Name="chbDrawPoints2D" IsChecked="{Binding Path=DrawPoints2D}" Content="Draw Points" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawOutLine2D" IsChecked="{Binding Path=DrawOutLine2D}" Content="Draw Outline" Margin="0 5 0 0"/>
@@ -77,6 +79,7 @@
                 <CheckBox Name="chbDrawHoles2D" IsChecked="{Binding Path=DrawHoles2D}" Content="Draw Holes" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawHoleCentreSymbol2D" IsChecked="{Binding Path=DrawHoleCentreSymbol2D}" Content="Draw Hole Centre Symbol" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Content="Draw Dimensions" Margin="0 5 0 0"/>
             </StackPanel>
             <StackPanel Name="panelOptions3D" Visibility="Hidden" Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" Margin="10,5,0,10">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
@@ -85,10 +88,14 @@
 
             <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,10,0,0">
                 <TextBlock Text="Transformation Options" HorizontalAlignment="Left"/>
-                <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" /> <!--Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"-->
-                <CheckBox x:Name="CheckBox_MirrorX" IsChecked="{Binding Path=MirrorX}" Content="Mirror about horizontal axis x-x" Margin="0 5 0 0" /> <!--Checked="CheckBox_MirrorX_Checked" Unchecked="CheckBox_MirrorX_Unchecked"-->
-                <CheckBox x:Name="CheckBox_Rotate_CW" IsChecked="{Binding Path=Rotate90CW}" Content="Rotate 90 deg clockwise" Margin="0 5 0 0" /> <!--Checked="CheckBox_Rotate_CW_Checked" Unchecked="CheckBox_Rotate_CW_Unchecked"-->
-                <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" /> <!--Checked ="CheckBox_Rotate_CCW_Checked"  Unchecked="CheckBox_Rotate_CCW_Unchecked"-->
+                <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" />
+                <!--Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"-->
+                <CheckBox x:Name="CheckBox_MirrorX" IsChecked="{Binding Path=MirrorX}" Content="Mirror about horizontal axis x-x" Margin="0 5 0 0" />
+                <!--Checked="CheckBox_MirrorX_Checked" Unchecked="CheckBox_MirrorX_Unchecked"-->
+                <CheckBox x:Name="CheckBox_Rotate_CW" IsChecked="{Binding Path=Rotate90CW}" Content="Rotate 90 deg clockwise" Margin="0 5 0 0" />
+                <!--Checked="CheckBox_Rotate_CW_Checked" Unchecked="CheckBox_Rotate_CW_Unchecked"-->
+                <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" />
+                <!--Checked ="CheckBox_Rotate_CCW_Checked"  Unchecked="CheckBox_Rotate_CCW_Unchecked"-->
             </StackPanel>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
@@ -107,9 +114,9 @@
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="It2" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}">
                         <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                             <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
@@ -164,7 +171,7 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            
+
             <TextBlock Grid.Row="6" Grid.Column="0" Name="TxtGeometry" Text="Geometry" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridGeometry" Margin="10 0 0 0"
                       ItemsSource="{Binding Path=ComponentGeometry}" 
@@ -172,20 +179,20 @@
                       SelectionMode="Single" SelectionUnit="Cell" CellEditEnding="DataGridGeometry_CellEditEnding" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="It1" Width="*" IsReadOnly="True" Binding="{Binding Name}" >
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                            <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="It2" Width="40" IsReadOnly="True" Binding="{Binding ShortCut}" >
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                            <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="It3" Width="60" IsReadOnly="False" Binding="{Binding Value, Mode=TwoWay}" >
                         <DataGridTextColumn.ElementStyle>
@@ -195,12 +202,12 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="It4" Width="50" IsReadOnly="True" Binding="{Binding Unit}" >
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
-                            <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="{StaticResource colorReadOnlyCell}" />
+                                <Setter Property="Foreground" Value= "{StaticResource colorReadOnlyCellText}"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>

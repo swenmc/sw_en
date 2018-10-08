@@ -350,6 +350,7 @@ return (unsigned short)(root >> 1);
 }
 */
 
+
         public static double Sqrt(double value)
 {
      //assert(value >= 1);
@@ -379,6 +380,7 @@ return (unsigned short)(root >> 1);
     else
         return 1;
  }
+
         /*
  public static float Sqrt(float m)
  {

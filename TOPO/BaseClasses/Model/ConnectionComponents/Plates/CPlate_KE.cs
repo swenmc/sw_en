@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using System;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
@@ -169,7 +170,7 @@ namespace BaseClasses
                 Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * Fb_X2);
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             // Calculate point positions
@@ -230,29 +231,29 @@ namespace BaseClasses
             float fx_temp = m_flZ * (float)Math.Cos(fBeta);
             float fy_temp = m_flZ * (float)Math.Sin(fBeta);
 
-            PointsOut2D[0, 0] = 0.5f * m_fbXR;
-            PointsOut2D[0, 1] = 0;
+            PointsOut2D[0].X = 0.5f * m_fbXR;
+            PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1, 0] = 0.5f * m_fbXR + m_fbX1;
-            PointsOut2D[1, 1] = 0;
+            PointsOut2D[1].X = 0.5f * m_fbXR + m_fbX1;
+            PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2, 0] = 0.5f * m_fbXR + m_fbX1 + fx_temp;
-            PointsOut2D[2, 1] = - fy_temp;
+            PointsOut2D[2].X = 0.5f * m_fbXR + m_fbX1 + fx_temp;
+            PointsOut2D[2].Y = - fy_temp;
 
-            PointsOut2D[3, 0] = 0.5f * m_fbXR + m_fbX2 + fx_temp;
-            PointsOut2D[3, 1] = m_fhY2 - fy_temp;
+            PointsOut2D[3].X = 0.5f * m_fbXR + m_fbX2 + fx_temp;
+            PointsOut2D[3].Y = m_fhY2 - fy_temp;
 
-            PointsOut2D[4, 0] = 0.5f * m_fbXR + m_fbX2;
-            PointsOut2D[4, 1] = m_fhY2;
+            PointsOut2D[4].X = 0.5f * m_fbXR + m_fbX2;
+            PointsOut2D[4].Y = m_fhY2;
 
-            PointsOut2D[5, 0] = 0.5f * m_fbXR;
-            PointsOut2D[5, 1] = m_fhY1;
+            PointsOut2D[5].X = 0.5f * m_fbXR;
+            PointsOut2D[5].Y = m_fhY1;
 
             // Copy - symmetry about y-axis
             for(int i = 0; i < ITotNoPointsin2D / 2; i++)
             {
-                PointsOut2D[ITotNoPointsin2D - i - 1, 0] = -PointsOut2D[i, 0];  // Change sign - Negative coordinates "x"
-                PointsOut2D[ITotNoPointsin2D - i - 1, 1] = PointsOut2D[i, 1];
+                PointsOut2D[ITotNoPointsin2D - i - 1].X = -PointsOut2D[i].X;  // Change sign - Negative coordinates "x"
+                PointsOut2D[ITotNoPointsin2D - i - 1].Y = PointsOut2D[i].Y;
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using _3DTools;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATERIAL;
@@ -15,6 +16,16 @@ namespace BaseClasses
             set { m_TriangleIndices = value; }
         }
 
+        public Point[] PointsOut2D;
+        /*
+        public Point[] m_arrPoints2D;
+        public Point[] PointsOut2D
+        {
+            get { return m_arrPoints2D; }
+            set { m_arrPoints2D = value; }
+        }
+        */
+
         private Point3D[] m_arrPoints3D;
         public Point3D[] arrPoints3D
         {
@@ -23,10 +34,6 @@ namespace BaseClasses
         }
 
         public new CMat_03_00 m_Mat;
-
-        public float[,] PointsOut2D;
-        
-        //public Point3D[] arrPoints3D;
 
         public EConnectionComponentType eConnComponentType;
 

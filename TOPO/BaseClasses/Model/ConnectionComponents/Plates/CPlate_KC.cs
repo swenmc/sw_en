@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using _3DTools;
@@ -141,6 +142,8 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             UpdatePlateData(screwArrangement);
+
+            Set_DimensionPoints2D();
         }
 
         public override void UpdatePlateData(CScrewArrangement screwArrangement)
@@ -151,7 +154,7 @@ namespace BaseClasses
                 Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * Fb_X2);
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             if (screwArrangement != null)
@@ -219,29 +222,29 @@ namespace BaseClasses
             float fx_temp = m_flZ * (float)Math.Cos(fBeta);
             float fy_temp = m_flZ * (float)Math.Sin(fBeta);
 
-            PointsOut2D[0, 0] = 0;
-            PointsOut2D[0, 1] = 0;
+            PointsOut2D[0].X = 0;
+            PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1, 0] = m_flZ;
-            PointsOut2D[1, 1] = 0;
+            PointsOut2D[1].X = m_flZ;
+            PointsOut2D[1].Y = 0;
 
-            PointsOut2D[2, 0] = m_flZ + m_fbX1;
-            PointsOut2D[2, 1] = 0;
+            PointsOut2D[2].X = m_flZ + m_fbX1;
+            PointsOut2D[2].Y = 0;
 
-            PointsOut2D[3, 0] = m_flZ + m_fbX1 + fx_temp;
-            PointsOut2D[3, 1] = - fy_temp;
+            PointsOut2D[3].X = m_flZ + m_fbX1 + fx_temp;
+            PointsOut2D[3].Y = - fy_temp;
 
-            PointsOut2D[4, 0] = m_flZ + m_fbX2 + fx_temp;
-            PointsOut2D[4, 1] = m_fhY2 - fy_temp;
+            PointsOut2D[4].X = m_flZ + m_fbX2 + fx_temp;
+            PointsOut2D[4].Y = m_fhY2 - fy_temp;
 
-            PointsOut2D[5, 0] = m_flZ + m_fbX2;
-            PointsOut2D[5, 1] = m_fhY2;
+            PointsOut2D[5].X = m_flZ + m_fbX2;
+            PointsOut2D[5].Y = m_fhY2;
 
-            PointsOut2D[6, 0] = m_flZ;
-            PointsOut2D[6, 1] = m_fhY1;
+            PointsOut2D[6].X = m_flZ;
+            PointsOut2D[6].Y = m_fhY1;
 
-            PointsOut2D[7, 0] = 0;
-            PointsOut2D[7, 1] = m_fhY1;
+            PointsOut2D[7].X = 0;
+            PointsOut2D[7].Y = m_fhY1;
         }
 
         void Calc_Coord3D()
@@ -328,6 +331,18 @@ namespace BaseClasses
             arrPoints3D[INoPoints2Dfor3D + 9].X = arrPoints3D[11].X;
             arrPoints3D[INoPoints2Dfor3D + 9].Y = arrPoints3D[8].Y;
             arrPoints3D[INoPoints2Dfor3D + 9].Z = arrPoints3D[9].Z;
+        }
+
+        void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 5;
+            Dimensions = new CDimensionLinear[iNumberOfDimensions];
+
+            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
+            Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[3] = new CDimensionLinear(PointsOut2D[3], PointsOut2D[4]);
+            Dimensions[4] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[7]);
         }
 
         protected override void loadIndices()

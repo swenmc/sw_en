@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using BaseClasses.GraphObj;
@@ -134,7 +135,7 @@ namespace BaseClasses
                 Fh_Y2 = Fh_Y1 + ((float)Math.Tan(m_fSlope_rad) * (0.5f * Fb_X));
 
             // Create Array - allocate memory
-            PointsOut2D = new float[ITotNoPointsin2D, 2];
+            PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
             if (screwArrangement != null)
@@ -155,6 +156,8 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            Set_DimensionPoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -200,41 +203,41 @@ namespace BaseClasses
             float fy_temp = m_flZ * (float)Math.Cos(m_fSlope_rad);
             float fx_temp2 = Ft * (float)Math.Sin(m_fSlope_rad);
 
-            PointsOut2D[0, 0] = 0;
-            PointsOut2D[0, 1] = 0;
+            PointsOut2D[0].X = 0;
+            PointsOut2D[0].Y = 0;
 
-            PointsOut2D[1, 0] = m_fbX;
-            PointsOut2D[1, 1] = PointsOut2D[0, 1];
+            PointsOut2D[1].X = m_fbX;
+            PointsOut2D[1].Y = PointsOut2D[0].Y;
 
-            PointsOut2D[2, 0] = PointsOut2D[1, 0];
-            PointsOut2D[2, 1] = m_flZ;
+            PointsOut2D[2].X = PointsOut2D[1].X;
+            PointsOut2D[2].Y = m_flZ;
 
-            PointsOut2D[3, 0] = PointsOut2D[1, 0];
-            PointsOut2D[3, 1] = PointsOut2D[2, 1] + m_fhY1;
+            PointsOut2D[3].X = PointsOut2D[1].X;
+            PointsOut2D[3].Y = PointsOut2D[2].Y + m_fhY1;
 
-            PointsOut2D[4, 0] = PointsOut2D[3, 0] + fx_temp;
-            PointsOut2D[4, 1] = PointsOut2D[3, 1] + fy_temp;
+            PointsOut2D[4].X = PointsOut2D[3].X + fx_temp;
+            PointsOut2D[4].Y = PointsOut2D[3].Y + fy_temp;
 
-            PointsOut2D[5, 0] = 0.5f * m_fbX + fx_temp2 + fx_temp;
-            PointsOut2D[5, 1] = m_flZ + m_fhY2 + fy_temp;
+            PointsOut2D[5].X = 0.5f * m_fbX + fx_temp2 + fx_temp;
+            PointsOut2D[5].Y = m_flZ + m_fhY2 + fy_temp;
 
-            PointsOut2D[6, 0] = 0.5f * m_fbX + fx_temp2;
-            PointsOut2D[6, 1] = m_flZ + m_fhY2;
+            PointsOut2D[6].X = 0.5f * m_fbX + fx_temp2;
+            PointsOut2D[6].Y = m_flZ + m_fhY2;
 
-            PointsOut2D[7, 0] = 0.5f * m_fbX - fx_temp2;
-            PointsOut2D[7, 1] = PointsOut2D[6, 1];
+            PointsOut2D[7].X = 0.5f * m_fbX - fx_temp2;
+            PointsOut2D[7].Y = PointsOut2D[6].Y;
 
-            PointsOut2D[8, 0] = PointsOut2D[7, 0] - fx_temp2 - fx_temp;
-            PointsOut2D[8, 1] = PointsOut2D[5, 1];
+            PointsOut2D[8].X = PointsOut2D[7].X - fx_temp2 - fx_temp;
+            PointsOut2D[8].Y = PointsOut2D[5].Y;
 
-            PointsOut2D[9, 0] = PointsOut2D[0, 0] - fx_temp;
-            PointsOut2D[9, 1] = PointsOut2D[4, 1];
+            PointsOut2D[9].X = PointsOut2D[0].X - fx_temp;
+            PointsOut2D[9].Y = PointsOut2D[4].Y;
 
-            PointsOut2D[10, 0] = PointsOut2D[0, 0];
-            PointsOut2D[10, 1] = PointsOut2D[3, 1];
+            PointsOut2D[10].X = PointsOut2D[0].X;
+            PointsOut2D[10].Y = PointsOut2D[3].Y;
 
-            PointsOut2D[11, 0] = PointsOut2D[0, 0];
-            PointsOut2D[11, 1] = PointsOut2D[2, 1];
+            PointsOut2D[11].X = PointsOut2D[0].X;
+            PointsOut2D[11].Y = PointsOut2D[2].Y;
         }
 
         void Calc_Coord3D()
@@ -350,6 +353,18 @@ namespace BaseClasses
             arrPoints3D[i_temp + 11].X = arrPoints3D[14].X;
             arrPoints3D[i_temp + 11].Y = arrPoints3D[14].Y;
             arrPoints3D[i_temp + 11].Z = arrPoints3D[16].Z;
+        }
+
+        void Set_DimensionPoints2D()
+        {
+            int iNumberOfDimensions = 5;
+            Dimensions = new CDimensionLinear[iNumberOfDimensions];
+
+            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
+            Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[3] = new CDimensionLinear(PointsOut2D[3], PointsOut2D[4]);
+            Dimensions[4] = new CDimensionLinear(PointsOut2D[4], PointsOut2D[5]);
         }
 
         protected override void loadIndices()

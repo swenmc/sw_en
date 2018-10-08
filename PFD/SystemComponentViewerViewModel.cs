@@ -446,6 +446,7 @@ namespace PFD
             DrawHoles2D = true;
             DrawHoleCentreSymbol2D = true;
             DrawDrillingRoute2D = true;
+            DrawDimensions2D = true;
             
             MirrorY = false;
             MirrorX = false;

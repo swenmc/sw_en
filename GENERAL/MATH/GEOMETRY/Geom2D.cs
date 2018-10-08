@@ -207,23 +207,25 @@ namespace MATH
             x = px;
             y = py;
         }
-        public static Point TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, Point p)
+        public static Point GetTransformedPoint_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, Point p)
         {
-            double px;
-            double py;
+            float px = (float)p.X;
+            float py = (float)p.Y;
 
-            if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
-            {
-                px = (Math.Cos(theta_rad) * (p.X - x_centerOfRotation) + Math.Sin(theta_rad) * (p.Y - y_centerOfRotation) + x_centerOfRotation);
-                py = (-Math.Sin(theta_rad) * (p.X - x_centerOfRotation) + Math.Cos(theta_rad) * (p.Y - y_centerOfRotation) + y_centerOfRotation);
-            }
-            else  // Only translate
-            {
-                px = p.X + x_centerOfRotation;
-                py = p.Y + y_centerOfRotation;
-            }
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref px, ref py);
 
             return new Point(px, py);
+        }
+
+        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref Point p)
+        {
+            float px = (float)p.X;
+            float py = (float)p.Y;
+
+            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref px, ref py);
+
+            p.X = px;
+            p.Y = py;
         }
 
         // Transform array
@@ -258,8 +260,8 @@ namespace MATH
             {
                 for (int i = 0; i < points.Count; i++)
                 {
-                    points[i] = TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
-                }                    
+                    points[i] = GetTransformedPoint_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
+                }
             }
         }
         public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref Point[] points)
@@ -268,7 +270,7 @@ namespace MATH
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    points[i] = TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
+                    points[i] = GetTransformedPoint_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
                 }
             }
         }
@@ -312,7 +314,7 @@ namespace MATH
                     Point p = points[i];
                     p.X *= -1;
                     points[i] = p;
-                }   
+                }
             }
         }
         public static void MirrorAboutY_ChangeXCoordinates(ref Point[] points)
@@ -378,6 +380,21 @@ namespace MATH
             for (int i = 0; i < array_input.Length / 2; i++)
             {
                 listPoints.Add(new Point(array_input[i, 0], array_input[i, 1]));
+            }
+
+            return listPoints;
+        }
+
+        public static List<Point> TransformArrayToList(Point[] array_input)
+        {
+            if (array_input == null)
+                throw new ArgumentNullException("Not inicialized array of point coordinates!");
+
+            List<Point> listPoints = new List<Point>(array_input.Length);
+
+            for (int i = 0; i < array_input.Length; i++)
+            {
+                listPoints.Add(array_input[i]);
             }
 
             return listPoints;

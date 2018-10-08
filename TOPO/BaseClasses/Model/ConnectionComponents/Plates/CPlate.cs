@@ -65,6 +65,20 @@ namespace BaseClasses
             }
         }
 
+        private CDimensionLinear[] m_dimensions; // Pole kot pre Plate
+        public CDimensionLinear[] Dimensions
+        {
+            get
+            {
+                return m_dimensions;
+            }
+
+            set
+            {
+                m_dimensions = value;
+            }
+        }
+
         public const int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
         public Point3D[] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
 
@@ -568,11 +582,11 @@ namespace BaseClasses
             {
                 if (i < PointsOut2D.Length / 2 - 1)
                 {
-                    fDistance += MathF.Sqrt(MathF.Pow2(PointsOut2D[i + 1, 0] - PointsOut2D[i, 0]) + MathF.Pow2(PointsOut2D[i + 1, 1] - PointsOut2D[i, 1]));
+                    fDistance += (float)Math.Sqrt(MathF.Pow2(PointsOut2D[i + 1].X - PointsOut2D[i].X) + MathF.Pow2(PointsOut2D[i + 1].Y - PointsOut2D[i].Y));
                 }
                 else // Last segment
                 {
-                    fDistance += MathF.Sqrt(MathF.Pow2(PointsOut2D[0, 0] - PointsOut2D[i, 0]) + MathF.Pow2(PointsOut2D[0, 1] - PointsOut2D[i, 1]));
+                    fDistance += (float)Math.Sqrt(MathF.Pow2(PointsOut2D[0].X - PointsOut2D[i].X) + MathF.Pow2(PointsOut2D[0].Y - PointsOut2D[i].Y));
                 }
             }
 
@@ -606,12 +620,12 @@ namespace BaseClasses
 
             for (int i = 0; i < num_points; i++)
             {
-                pts[i].X = PointsOut2D[i, 0];
-                pts[i].Y = PointsOut2D[i, 1];
+                pts[i].X = PointsOut2D[i].X;
+                pts[i].Y = PointsOut2D[i].Y;
             }
 
-            pts[num_points].X = PointsOut2D[0, 0];
-            pts[num_points].Y = PointsOut2D[0, 1];
+            pts[num_points].X = PointsOut2D[0].X;
+            pts[num_points].Y = PointsOut2D[0].Y;
 
             // Get the areas.
             float area = 0;
@@ -670,7 +684,7 @@ namespace BaseClasses
         // Mirror plate about x
         public void MirrorPlateAboutX()
         {
-            Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref PointsOut2D);
+            Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsOut2D);
             //Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
 
             // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
@@ -681,7 +695,7 @@ namespace BaseClasses
                 Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref pArrayTemp);
                 ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
-            }            
+            }
 
             //Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrConnectorControlPoints3D);
 
@@ -694,7 +708,7 @@ namespace BaseClasses
         // Mirror plate about y
         public void MirrorPlateAboutY()
         {
-            Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref PointsOut2D);
+            Geom2D.MirrorAboutY_ChangeXCoordinates(ref PointsOut2D);
             //Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
 
             // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
@@ -728,7 +742,7 @@ namespace BaseClasses
                 Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref pArrayTemp);
                 ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
-            }            
+            }
 
             //Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrConnectorControlPoints3D);
             
@@ -737,7 +751,6 @@ namespace BaseClasses
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);
             }
         }
-
 
         public virtual void UpdatePlateData(CScrewArrangement screwArrangement)
         {
