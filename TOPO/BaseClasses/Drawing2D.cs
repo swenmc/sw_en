@@ -501,7 +501,7 @@ namespace BaseClasses
                                 l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[0].Y;
                             }
 
-                            DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+                            DrawLine(l, Brushes.Black, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
                         }
                     }
 
@@ -526,7 +526,7 @@ namespace BaseClasses
                                 l.Y2 = modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[0].Y;
                             }
 
-                            DrawLine(l, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
+                            DrawLine(l, Brushes.Black, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, 2, canvasForImage);
                         }
                     }
                 }
@@ -625,6 +625,15 @@ namespace BaseClasses
                         GraphObj.CDimensionLinear dim = (GraphObj.CDimensionLinear)Dimensions[i];
                         DrawSimpleLinearDimension(dim.ControlPointStart, dim.ControlPointEnd, 30, true, dim.IsTextAboveLineBetweenExtensionLines, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
                     }
+                    else if(Dimensions[i] is GraphObj.CDimensionArc)
+                    {
+                        GraphObj.CDimensionArc dim = (GraphObj.CDimensionArc)Dimensions[i];
+                        DrawArcDimension(dim.ControlPointStart, dim.ControlPointEnd, dim.ControlPointCenter, modelMarginLeft_x, modelMarginBottom_y, fReal_Model_Zoom_Factor, canvasForImage);
+                    }
+                    else
+                    {
+                        // Not defined drawing function
+                    }
                 }
             }
         }
@@ -634,7 +643,7 @@ namespace BaseClasses
             DrawRectangle(strokeColor, fillColor, thickness, imageCanvas, new Point(point.X - 0.5 * thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness));
         }
 
-        public static void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public static void DrawLine(Line line, SolidColorBrush color, DashStyle dashStyle, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             Random r = new Random();
             Color randomcolor = Color.FromArgb((byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256));
@@ -650,6 +659,9 @@ namespace BaseClasses
             myLine.StrokeThickness = thickness;
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
+
+            myLine.StrokeDashArray =  dashStyle.Dashes;
+
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
             Canvas.SetTop(myLine, Math.Min(line.Y1, line.Y2));
@@ -745,7 +757,7 @@ namespace BaseClasses
                 l.X2 = center.X + fSideLength;
                 l.Y2 = center.Y;
 
-                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+                DrawLine(l, color, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
 
                 l.X1 = center.X;
                 l.Y1 = center.Y - fSideLength;
@@ -753,7 +765,7 @@ namespace BaseClasses
                 l.X2 = center.X;
                 l.Y2 = center.Y + fSideLength;
 
-                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+                DrawLine(l, color, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
             }
         }
 
@@ -887,15 +899,15 @@ namespace BaseClasses
             double fTextPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
 
             // Draw dimension line
-            DrawLine(lPrimaryLine, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
+            DrawLine(lPrimaryLine, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
             // Draw extension line - start
-            DrawLine(lExtensionLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+            DrawLine(lExtensionLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
             // Draw extension line - end
-            DrawLine(lExtensionLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+            DrawLine(lExtensionLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
             // Draw slope line - start
-            DrawLine(lSlopeLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
+            DrawLine(lSlopeLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw slope line - end
-            DrawLine(lSlopeLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
+            DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw text
             DrawText(sText, fTextPositionx, fTextPositiony, -dRotation_deg, 12, bIsTextAboveControlPoint, Brushes.DarkGreen, imageCanvas);
         }
@@ -929,6 +941,60 @@ namespace BaseClasses
 
             l.X2 = pLineEnd.X;
             l.Y2 = pLineEnd.Y;
+        }
+
+        public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas imageCanvas)
+        {
+            float fPositionOfArcFactor = 0.45f;
+
+            double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
+            double radius = fPositionOfArcFactor * (pStart.X * fReal_Model_Zoom_Factor);
+
+            Point p2 = new Point(); // 2nd point of arc
+            p2.X = Geom2D.GetPositionX_deg((float)radius, (float)slope / MathF.fPI * 180f);  // y
+            p2.Y = Geom2D.GetPositionY_CCW_deg((float)radius, (float)slope / MathF.fPI * 180f);  // z
+
+            Size size = new Size(radius, radius);
+
+            ArcSegment arc = new ArcSegment(
+            new Point(modelMarginLeft_x + pCenter.X * fReal_Model_Zoom_Factor + p2.X, modelMarginBottom_y - (pCenter.Y * fReal_Model_Zoom_Factor + p2.Y)),
+            size,
+            slope / MathF.fPI * 180,
+            false,
+            SweepDirection.Counterclockwise,
+            true
+            );
+
+            PathGeometry pathGeometry = new PathGeometry();
+            PathFigure figure = new PathFigure();
+            figure.StartPoint = new Point(modelMarginLeft_x + fPositionOfArcFactor * (pStart.X * fReal_Model_Zoom_Factor), modelMarginBottom_y - pStart.Y * fReal_Model_Zoom_Factor);
+            figure.Segments.Add(arc);
+
+            pathGeometry.Figures.Add(figure);
+            Path path = new Path();
+            path.Data = pathGeometry;
+            //path.Fill = Brushes.Gray;
+            path.Stroke = Brushes.Black;
+            imageCanvas.Children.Add(path);
+
+            // Lines
+            Line l1 = new Line();
+            l1.X1 = modelMarginLeft_x + pCenter.X * fReal_Model_Zoom_Factor;
+            l1.Y1 = modelMarginBottom_y - pCenter.Y * fReal_Model_Zoom_Factor;
+
+            l1.X2 = modelMarginLeft_x + pStart.X * fReal_Model_Zoom_Factor;
+            l1.Y2 = modelMarginBottom_y - pStart.Y * fReal_Model_Zoom_Factor;
+
+            DrawLine(l1, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
+
+            Line l2 = new Line();
+            l2.X1 = modelMarginLeft_x + pCenter.X * fReal_Model_Zoom_Factor;
+            l2.Y1 = modelMarginBottom_y - pCenter.Y * fReal_Model_Zoom_Factor;
+
+            l2.X2 = modelMarginLeft_x + pEnd.X * fReal_Model_Zoom_Factor;
+            l2.Y2 = modelMarginBottom_y - pEnd.Y * fReal_Model_Zoom_Factor;
+
+            DrawLine(l2, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
         }
 
         public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)

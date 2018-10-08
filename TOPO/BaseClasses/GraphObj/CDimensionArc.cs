@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BaseClasses.GraphObj
 {
-    public class CDimensionLinear : CDimension
+    public class CDimensionArc : CDimension
     {
         private Point m_controlPointStart;
 
@@ -39,6 +39,21 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        private Point m_controlPointCenter;
+
+        public Point ControlPointCenter
+        {
+            get
+            {
+                return m_controlPointCenter;
+            }
+
+            set
+            {
+                m_controlPointCenter = value;
+            }
+        }
+
         public bool m_bIsTextAboveLineBetweenExtensionLines;
 
         public bool IsTextAboveLineBetweenExtensionLines
@@ -54,28 +69,26 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public CDimensionLinear(Point pstart_temp, Point pend_temp) : base()
+        public CDimensionArc(Point pstart_temp, Point pend_temp) : base()
         {
             DisplayedText = "";
             ControlPointStart = pstart_temp;
             ControlPointEnd = pend_temp;
-            IsTextAboveLineBetweenExtensionLines = true;
         }
 
-        public CDimensionLinear(Point pstart_temp, Point pend_temp, bool bIsTextAboveLineBetweenExtensionLines_temp) : base()
+        public CDimensionArc(Point pstart_temp, Point pend_temp, Point pcenter_temp) : base()
         {
             DisplayedText = "";
             ControlPointStart = pstart_temp;
             ControlPointEnd = pend_temp;
-            IsTextAboveLineBetweenExtensionLines = bIsTextAboveLineBetweenExtensionLines_temp;
+            ControlPointCenter = pcenter_temp;
         }
 
-        public CDimensionLinear(string text_temp, Point pstart_temp, Point pend_temp, bool bIsTextAboveLineBetweenExtensionLines_temp) : base(text_temp)
+        public CDimensionArc(string text_temp, Point pstart_temp, Point pend_temp) : base(text_temp)
         {
             DisplayedText = text_temp;
             ControlPointStart = pstart_temp;
             ControlPointEnd = pend_temp;
-            IsTextAboveLineBetweenExtensionLines = bIsTextAboveLineBetweenExtensionLines_temp;
         }
     }
 }

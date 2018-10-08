@@ -92,6 +92,7 @@
     <Compile Include="FractionConverter.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="GraphObj\CDimension.cs" />
+    <Compile Include="GraphObj\CDimensionArc.cs" />
     <Compile Include="GraphObj\CDimensionLinear.cs" />
     <Compile Include="GraphObj\PointF.cs" />
     <Compile Include="Loading\Loads\CMemberLoadCombinationRatio_SLS.cs" />

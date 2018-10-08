@@ -597,7 +597,23 @@ namespace MATH
 
             return m_ListPointsCoord2D;
         }
-
+        /*
+         * Calculates the angle (in radians) between two vectors pointing outward from one center
+         *
+         * @param p0 first point
+         * @param p1 second point
+         * @param c center point
+         */
+        public static double GetAngle_rad(Point p0, Point p1, Point c)
+        {
+            var p0c = Math.Sqrt(Math.Pow(c.X - p0.X, 2) +
+                                Math.Pow(c.Y - p0.Y, 2)); // p0->c (b)
+            var p1c = Math.Sqrt(Math.Pow(c.X - p1.X, 2) +
+                                Math.Pow(c.Y - p1.Y, 2)); // p1->c (a)
+            var p0p1 = Math.Sqrt(Math.Pow(p1.X - p0.X, 2) +
+                                 Math.Pow(p1.Y - p0.Y, 2)); // p0->p1 (c)
+            return Math.Acos((p1c * p1c + p0c * p0c - p0p1 * p0p1) / (2 * p1c * p0c));
+        }
         #endregion
         #region Ellipse
         // Ellipse

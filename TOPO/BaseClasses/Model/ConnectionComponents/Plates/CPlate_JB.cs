@@ -358,13 +358,15 @@ namespace BaseClasses
         void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 5;
-            Dimensions = new CDimensionLinear[iNumberOfDimensions];
+            Dimensions = new CDimension[iNumberOfDimensions + 1];
 
             Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
             Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
             Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
             Dimensions[3] = new CDimensionLinear(PointsOut2D[3], PointsOut2D[4]);
             Dimensions[4] = new CDimensionLinear(PointsOut2D[4], PointsOut2D[5]);
+
+            Dimensions[5] = new CDimensionArc(PointsOut2D[3], PointsOut2D[7], PointsOut2D[10]);
         }
 
         protected override void loadIndices()

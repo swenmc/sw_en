@@ -65,8 +65,8 @@ namespace BaseClasses
             }
         }
 
-        private CDimensionLinear[] m_dimensions; // Pole kot pre Plate
-        public CDimensionLinear[] Dimensions
+        private CDimension[] m_dimensions; // Pole kot pre Plate
+        public CDimension[] Dimensions
         {
             get
             {
