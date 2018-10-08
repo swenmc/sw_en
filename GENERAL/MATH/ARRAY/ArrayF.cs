@@ -177,6 +177,7 @@ namespace MATH.ARRAY
 
             return (float)GetLinearInterpolationValuePositive(x_val, xd_val, yd_val); // Return result as double
         }
+
         public static double GetLinearInterpolationValuePositive(double x, double[] xd, double[] yd)
         {
             if (xd.Length != yd.Length)
@@ -214,7 +215,5 @@ namespace MATH.ARRAY
                 return 0; // Error
             }
         }
-
-
     }
 }

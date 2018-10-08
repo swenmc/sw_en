@@ -22,8 +22,7 @@ namespace MATH
             // Check number of input elements
             if ((((decimal)Math.Sqrt(fArray1D.Length)) % 2) != 0)
             { 
-            // Exception   
-                
+            // Exception
             };
 
             float[,] fArray2D = new float[(int)Math.Sqrt(fArray1D.Length), (int)Math.Sqrt(fArray1D.Length)];
@@ -36,8 +35,6 @@ namespace MATH
 
             return fArray2D;
         }
-
-
 
         // Transformation of 2D square array/matrix to 1D 
         public float[] ArrTranf2Dto1D(float[,] fArray2D)
@@ -67,10 +64,6 @@ namespace MATH
             return fArray1D;
         }
 
-
-
-
-
         // Type Conversion
         public double[] ArrConverFloatToDouble1D(float[] fArrayFloat)
         {
@@ -95,7 +88,6 @@ namespace MATH
 
             return fArrayFloat;
         }
-
 
         // MatrixF64 fo float Array 1D
         public float[] ArrConverMatrixF64ToFloat1D(MatrixF64 M)

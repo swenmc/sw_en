@@ -708,7 +708,6 @@ namespace MATH
         }
         #endregion
 
-
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         public static float GetRadiusfromSideLength(float fa, short iNumEdges)
