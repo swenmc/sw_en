@@ -426,28 +426,60 @@ namespace BaseClasses
             fmodelMarginBottom_y = (float)(fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page));
         }
 
+        //public static void DrawPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
+        //{
+        //    if (bDrawPoints)
+        //    {
+        //        // Outer outline points
+        //        if (PointsOut != null) // If is array of points not empty
+        //        {
+        //            for (int i = 0; i < PointsOut.Count; i++)
+        //            {
+        //                DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
+        //            }
+        //        }
+
+        //        // Internal outline points
+        //        if (PointsIn != null) // If is array of points not empty
+        //        {
+        //            for (int i = 0; i < PointsIn.Count; i++)
+        //            {
+        //                DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
+        //            }
+        //        }
+        //    }
+        //}
+
+
+        //refaktoring metody hore, spravi sa kopia poli, suradnice sa upravia na kladne
         public static void DrawPoints(bool bDrawPoints, List<Point> PointsOut, List<Point> PointsIn, float modelMarginLeft_x, float modelMarginBottom_y, float fReal_Model_Zoom_Factor, Canvas canvasForImage)
         {
             if (bDrawPoints)
             {
-                // Outer outline points
-                if (PointsOut != null) // If is array of points not empty
-                {
-                    for (int i = 0; i < PointsOut.Count; i++)
-                    {
-                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsOut[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsOut[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
-                    }
-                }
+                List<Point> points = new List<Point>();                
+                if (PointsOut != null) points.AddRange(PointsOut);
+                if (PointsIn != null) points.AddRange(PointsIn);
 
-                // Internal outline points
-                if (PointsIn != null) // If is array of points not empty
+                double minX = points.Min(p => p.X);
+                double minY = points.Min(p => p.Y);
+                foreach (Point p in points)
                 {
-                    for (int i = 0; i < PointsIn.Count; i++)
-                    {
-                        DrawPoint(new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * PointsIn[i].X, modelMarginBottom_y - fReal_Model_Zoom_Factor * PointsIn[i].Y), Brushes.Red, Brushes.Red, 4, canvasForImage);
-                    }
+                    Point point = new Point(modelMarginLeft_x + fReal_Model_Zoom_Factor * (p.X - minX), modelMarginBottom_y - fReal_Model_Zoom_Factor * (p.Y - minY));
+                    DrawPoint(point, Brushes.Red, Brushes.Red, 4, canvasForImage);
                 }
             }
+        }
+
+        private static List<Point> UpdatePointsToPositiveValues(List<Point> points)
+        {
+            double minX = points.Min(p => p.X);
+            double minY = points.Min(p => p.Y);
+            List<Point> list_points = new List<Point>(points.Count);
+            foreach (Point p in points)
+            {
+                list_points.Add(new Point(p.X - minX, p.Y - minY));
+            }
+            return list_points;
         }
 
         public static void DrawOutlines(bool bDrawOutLine, bool bUsePolylineforDrawing, List<Point> PointsOut, List<Point> PointsIn, float fReal_Model_Zoom_Factor, float modelMarginBottom_y, float modelMarginLeft_x, double fModel_Length_y_page, double dPointInOutDistance_y_page, double dPointInOutDistance_x_page, Canvas canvasForImage)
