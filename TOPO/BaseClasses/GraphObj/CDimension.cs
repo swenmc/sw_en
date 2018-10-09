@@ -29,5 +29,8 @@ namespace BaseClasses.GraphObj
         {
             DisplayedText = text_temp;
         }
+
+        public virtual void MirrorYCoordinates() { }
+        public virtual void UpdatePoints(double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor) { }
     }
 }

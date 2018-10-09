@@ -366,6 +366,9 @@ namespace MATH
             }
             return mirroredPoints;
         }
+        
+        
+
         public static void MirrorAboutX_ChangeYCoordinates(ref Point[] points)
         {
             if (points != null)

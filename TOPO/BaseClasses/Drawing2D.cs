@@ -262,7 +262,7 @@ namespace BaseClasses
             List<Point> PointsIn,
             Point[] PointsHoles,
             List<Point> PointsDrillingRoute,
-            CDimension[] Dimensions,            
+            CDimension[] Dimensions,
             double dHolesDiameter,
             float fmodelMarginLeft_x,
             float fmodelMarginTop_y,
@@ -277,6 +277,7 @@ namespace BaseClasses
             List<Point> canvasPointsIn = null;
             List<Point> canvasPointsHoles = null;
             List<Point> canvasPointsDrillingRoute = null;
+            List<CDimension> canvasDimensions = null;
 
             if (bPointsHaveYinUpDirection)
             {
@@ -284,6 +285,7 @@ namespace BaseClasses
                 canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn);
                 canvasPointsHoles = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHoles);
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
+                canvasDimensions = MirrorYCoordinates(Dimensions);
             }
             else
             {
@@ -291,6 +293,8 @@ namespace BaseClasses
                 canvasPointsIn = new List<Point>(PointsIn);
                 canvasPointsHoles = new List<Point>(PointsHoles);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
+                canvasDimensions = new List<CDimension>(Dimensions);
+
             }
             double minX = canvasPointsOut.Min(p => p.X);
             double minY = canvasPointsOut.Min(p => p.Y);
@@ -299,6 +303,7 @@ namespace BaseClasses
             canvasPointsIn = ConvertRealPointsToCanvasDrawingPoints(canvasPointsIn, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsHoles = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHoles, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
             // Definition Points
             //DrawPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor, canvasForImage);
@@ -318,9 +323,20 @@ namespace BaseClasses
             }
 
             // Dimensions
-            DrawDimensions(bDrawDimensions, Dimensions, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor, canvasForImage);
+            DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
         }
-        
+
+
+        private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
+        {            
+            if(Dimensions == null) return new List<CDimension>();
+            List<CDimension> listDimensions = new List<CDimension>(Dimensions);
+            foreach (CDimension d in listDimensions)
+            {
+                d.MirrorYCoordinates();
+            }
+            return listDimensions;
+        }
         
 
         private static List<Point> ConvertRealPointsToCanvasDrawingPoints(List<Point> points, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
@@ -334,6 +350,17 @@ namespace BaseClasses
                 updatedPoints.Add(point);
             }
             return updatedPoints;
+        }
+        private static List<CDimension> ConvertRealPointsToCanvasDrawingPoints(List<CDimension> dimensions, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+            if (dimensions == null) return new List<CDimension>();
+
+            List<CDimension> updatedDimensions = new List<CDimension>(dimensions);
+            foreach (CDimension d in updatedDimensions)
+            {
+                d.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            }
+            return updatedDimensions;
         }
 
         public static void CalculateBasicValue(
@@ -762,21 +789,45 @@ namespace BaseClasses
             DrawPolyLine(false, PointsDrillingRoute, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         }
 
-        public static void DrawDimensions(bool bDrawDimensions, CDimension[] Dimensions, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas canvasForImage)
+        //public static void DrawDimensions(bool bDrawDimensions, CDimension[] Dimensions, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas canvasForImage)
+        //{
+        //    if (bDrawDimensions && Dimensions != null && Dimensions.Length > 0)
+        //    {
+        //        for (int i = 0; i < Dimensions.Length; i++) // Pole kot
+        //        {
+        //            if (Dimensions[i] is CDimensionLinear)
+        //            {
+        //                CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
+        //                DrawSimpleLinearDimension(dim.ControlPointStart, dim.ControlPointEnd, 30, true, dim.IsTextAboveLineBetweenExtensionLines, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, canvasForImage);
+        //            }
+        //            else if(Dimensions[i] is CDimensionArc)
+        //            {
+        //                CDimensionArc dim = (CDimensionArc)Dimensions[i];
+        //                DrawArcDimension(dim.ControlPointStart, dim.ControlPointEnd, dim.ControlPointCenter, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, canvasForImage);
+        //            }
+        //            else
+        //            {
+        //                // Not defined drawing function
+        //            }
+        //        }
+        //    }
+        //}
+
+        public static void DrawDimensions(bool bDrawDimensions, List<CDimension> Dimensions, Canvas canvasForImage)
         {
-            if (bDrawDimensions && Dimensions != null && Dimensions.Length > 0)
+            if (bDrawDimensions && Dimensions != null && Dimensions.Count > 0)
             {
-                for (int i = 0; i < Dimensions.Length; i++) // Pole kot
+                for (int i = 0; i < Dimensions.Count; i++) // Pole kot
                 {
                     if (Dimensions[i] is CDimensionLinear)
                     {
                         CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
-                        DrawSimpleLinearDimension(dim.ControlPointStart, dim.ControlPointEnd, 30, true, dim.IsTextAboveLineBetweenExtensionLines, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, canvasForImage);
+                        DrawSimpleLinearDimension(dim.ControlPointStart, dim.ControlPointEnd, 30, true, dim.IsTextAboveLineBetweenExtensionLines, canvasForImage);
                     }
-                    else if(Dimensions[i] is CDimensionArc)
+                    else if (Dimensions[i] is CDimensionArc)
                     {
                         CDimensionArc dim = (CDimensionArc)Dimensions[i];
-                        DrawArcDimension(dim.ControlPointStart, dim.ControlPointEnd, dim.ControlPointCenter, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, canvasForImage);
+                        DrawArcDimension(dim.ControlPointStart, dim.ControlPointEnd, dim.ControlPointCenter, canvasForImage);
                     }
                     else
                     {
@@ -941,7 +992,142 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, bool bIsTextAboveControlPoint, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas imageCanvas)
+        //public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, bool bIsTextAboveControlPoint, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas imageCanvas)
+        //{
+        //    bool bBasicDimensionIsDefinedInPlusY = true;
+
+        //    // kontrolne body su v y = 0, kota je v smere +x, kladna osa y smeruje dole
+        //    // TRUE
+        //    //
+        //    //   |                                |
+        //    //   |              Text              |
+        //    //   /--------------------------------/
+
+        //    // FALSE
+        //    //
+        //    //                  Text
+        //    //   /--------------------------------/
+        //    //   |                                |
+        //    //   |                                |
+
+        //    float fDirectionFactor = bBasicDimensionIsDefinedInPlusY ? 1f : -1f;
+
+        //    double dRotation_rad = Math.Atan((pEnd.Y - pStart.Y) / (pEnd.X - pStart.X));
+        //    double dRotation_deg = dRotation_rad / MathF.fPI * 180;
+
+        //    double fBasicLength_m = Math.Sqrt(MathF.Pow2(pEnd.X - pStart.X) + MathF.Pow2(pEnd.Y - pStart.Y)); // Real length between points
+        //    float fUnitFactor_mTomm = 1000;
+        //    int iNumberOfDecimalPlaces = 0;
+        //    string sText = (Math.Round(fBasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
+
+        //    double fBasicLength_DisplayUnits = dReal_Model_Zoom_Factor * fBasicLength_m; // Length of displayed primary line
+
+        //    double dLengtOfExtensionLineStartToPrimary = 0.8 * fOffsetFromOrigin;
+        //    double dLengtOfExtensionLinePrimaryToEnd = 5; // Points
+        //    double dOffsetOfExtensionLineFromPoint = 0.2 * fOffsetFromOrigin;
+
+        //    double dLengtOfExtensionLineTotal = dLengtOfExtensionLineStartToPrimary + dLengtOfExtensionLinePrimaryToEnd;
+
+        //    double dPrimaryLineThickness = 1;
+        //    Line lPrimaryLine = new Line();
+        //    lPrimaryLine.X1 = 0;
+        //    lPrimaryLine.Y1 = fOffsetFromOrigin * fDirectionFactor;
+        //    lPrimaryLine.X2 = fBasicLength_DisplayUnits;
+        //    lPrimaryLine.Y2 = fOffsetFromOrigin * fDirectionFactor;
+
+        //    // Extension lines
+        //    double dExtensionLineThickness = 1;
+
+        //    Line lExtensionLine1 = new Line();
+        //    lExtensionLine1.X1 = 0;
+        //    lExtensionLine1.Y1 = dOffsetOfExtensionLineFromPoint * fDirectionFactor;
+        //    lExtensionLine1.X2 = 0;
+        //    lExtensionLine1.Y2 = (dOffsetOfExtensionLineFromPoint + dLengtOfExtensionLineTotal) * fDirectionFactor;
+
+        //    Line lExtensionLine2 = new Line();
+        //    lExtensionLine2.X1 = fBasicLength_DisplayUnits;
+        //    lExtensionLine2.Y1 = dOffsetOfExtensionLineFromPoint * fDirectionFactor;
+        //    lExtensionLine2.X2 = fBasicLength_DisplayUnits;
+        //    lExtensionLine2.Y2 = (dOffsetOfExtensionLineFromPoint + dLengtOfExtensionLineTotal) * fDirectionFactor;
+
+        //    // Slope Symbol Lines
+        //    double dSlopeLineLength = 10;
+        //    double dSlopeLineThickness = 1;
+
+        //    double coord = 0.5 * dSlopeLineLength / Math.Sqrt(2);
+
+        //    Line lSlopeLine1 = new Line();
+        //    lSlopeLine1.X1 = -coord;
+        //    lSlopeLine1.Y1 = (fOffsetFromOrigin + coord) * fDirectionFactor;
+        //    lSlopeLine1.X2 = coord;
+        //    lSlopeLine1.Y2 = (fOffsetFromOrigin - coord) * fDirectionFactor;
+
+        //    Line lSlopeLine2 = new Line();
+        //    lSlopeLine2.X1 = fBasicLength_DisplayUnits - coord;
+        //    lSlopeLine2.Y1 = (fOffsetFromOrigin + coord) * fDirectionFactor;
+        //    lSlopeLine2.X2 = fBasicLength_DisplayUnits + coord;
+        //    lSlopeLine2.Y2 = (fOffsetFromOrigin - coord) * fDirectionFactor;
+
+        //    // Text transformation
+        //    // ScaleTransform
+        //    // SkewTransform
+        //    // TranslateTransform
+        //    // DropShadowBitmapEffect
+
+        //    /* // TODO - tieto transformacie mi akosi nefunguju
+
+        //    // Rotate dimension
+        //    RotateTransform r1 = new RotateTransform(45);
+        //    // Translate dimension
+        //    TranslateTransform t1 = new TranslateTransform(pStart.X * fReal_Model_Zoom_Factor, pStart.Y * fReal_Model_Zoom_Factor);
+
+        //    TransformGroup group = new TransformGroup();
+        //    group.Children.Add(r1);
+        //    group.Children.Add(t1);
+
+        //    // Transform each part of dimension
+        //    lPrimaryLine.RenderTransform = group;
+        //    lExtensionLine1.RenderTransform = group;
+        //    lExtensionLine2.RenderTransform = group;
+        //    lSlopeLine1.RenderTransform = group;
+        //    lSlopeLine2.RenderTransform = group;
+        //    //Text.RenderTransform = group;
+        //    */
+
+        //    RotateAndTranslateDimension(pStart, pEnd, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
+
+        //    // Urcuje sa z uz transformovanych suradnice lPrimaryLine
+        //    double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1); // TODO - osetrit znamienka
+        //    double fTextPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
+
+        //    // Draw dimension line
+        //    DrawLine(lPrimaryLine, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
+        //    // Draw extension line - start
+        //    DrawLine(lExtensionLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+        //    // Draw extension line - end
+        //    DrawLine(lExtensionLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+        //    // Draw slope line - start
+        //    DrawLine(lSlopeLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
+        //    // Draw slope line - end
+        //    DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
+        //    // Draw text
+        //    DrawText(sText, fTextPositionx, fTextPositiony, -dRotation_deg, 12, bIsTextAboveControlPoint, Brushes.DarkGreen, imageCanvas);
+        //}
+
+        //public static void RotateAndTranslateDimension(Point pStart, Point pEnd, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
+        //{
+        //    //double dRotation_rad = Math.Atan((pEnd.Y - pStart.Y) / (pEnd.X - pStart.X));
+        //    float fOffset_x = (float)(modelMarginLeft_x + dReal_Model_Zoom_Factor * Math.Min(pStart.X, pEnd.X));
+        //    float fOffset_y = (float)(modelMarginBottom_y - dReal_Model_Zoom_Factor * Math.Min(pStart.Y, pEnd.Y));
+
+        //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lPrimaryLine);
+        //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lExtensionLine1);
+        //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lExtensionLine2);
+        //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine1);
+        //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
+        //}
+
+        public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, bool bIsTextAboveControlPoint, Canvas imageCanvas)
         {
             bool bBasicDimensionIsDefinedInPlusY = true;
 
@@ -969,7 +1155,7 @@ namespace BaseClasses
             int iNumberOfDecimalPlaces = 0;
             string sText = (Math.Round(fBasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
 
-            double fBasicLength_DisplayUnits = dReal_Model_Zoom_Factor * fBasicLength_m; // Length of displayed primary line
+            double fBasicLength_DisplayUnits = fBasicLength_m; // Length of displayed primary line
 
             double dLengtOfExtensionLineStartToPrimary = 0.8 * fOffsetFromOrigin;
             double dLengtOfExtensionLinePrimaryToEnd = 5; // Points
@@ -1042,8 +1228,8 @@ namespace BaseClasses
             lSlopeLine2.RenderTransform = group;
             //Text.RenderTransform = group;
             */
-            
-            RotateAndTranslateDimension(pStart, pEnd, modelMarginLeft_x, modelMarginBottom_y, dReal_Model_Zoom_Factor, dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
+
+            RotateAndTranslateDimension(pStart, pEnd, dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
             double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1); // TODO - osetrit znamienka
@@ -1063,30 +1249,22 @@ namespace BaseClasses
             DrawText(sText, fTextPositionx, fTextPositiony, -dRotation_deg, 12, bIsTextAboveControlPoint, Brushes.DarkGreen, imageCanvas);
         }
 
-        public static void RotateAndTranslateDimension(Point pStart, Point pEnd, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
+        public static void RotateAndTranslateDimension(Point pStart, Point pEnd, double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
         {
-            //double dRotation_rad = Math.Atan((pEnd.Y - pStart.Y) / (pEnd.X - pStart.X));
-            float fOffset_x = (float)(modelMarginLeft_x + dReal_Model_Zoom_Factor * Math.Min(pStart.X, pEnd.X));
-            float fOffset_y = (float)(modelMarginBottom_y - dReal_Model_Zoom_Factor * Math.Min(pStart.Y, pEnd.Y));
-            
-            RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lPrimaryLine);
-            RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lExtensionLine1);
-            RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lExtensionLine2);
-            RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine1);
-            RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
+            RotateLine_CW(dRotation_rad, ref lPrimaryLine);
+            RotateLine_CW(dRotation_rad, ref lExtensionLine1);
+            RotateLine_CW(dRotation_rad, ref lExtensionLine2);
+            RotateLine_CW(dRotation_rad, ref lSlopeLine1);
+            RotateLine_CW(dRotation_rad, ref lSlopeLine2);
         }
-
-        public static void RotateAndTranslateLine_CW(float fOffset_x, float fOffset_y, double dRotation_rad, ref Line l)
+        public static void RotateLine_CW(double dRotation_rad, ref Line l)
         {
             Point pLineStart = new Point(l.X1, l.Y1);
             Point pLineEnd = new Point(l.X2, l.Y2);
 
             Geom2D.TransformPositions_CW_rad(0, 0, dRotation_rad, ref pLineStart);
             Geom2D.TransformPositions_CW_rad(0, 0, dRotation_rad, ref pLineEnd);
-
-            Geom2D.TransformPositions_CW_rad(fOffset_x, fOffset_y, 0, ref pLineStart);
-            Geom2D.TransformPositions_CW_rad(fOffset_x, fOffset_y, 0, ref pLineEnd);
-
+            
             l.X1 = pLineStart.X;
             l.Y1 = pLineStart.Y;
 
@@ -1094,12 +1272,93 @@ namespace BaseClasses
             l.Y2 = pLineEnd.Y;
         }
 
-        public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas imageCanvas)
+        //public static void RotateAndTranslateLine_CW(float fOffset_x, float fOffset_y, double dRotation_rad, ref Line l)
+        //{
+        //    Point pLineStart = new Point(l.X1, l.Y1);
+        //    Point pLineEnd = new Point(l.X2, l.Y2);
+
+        //    Geom2D.TransformPositions_CW_rad(0, 0, dRotation_rad, ref pLineStart);
+        //    Geom2D.TransformPositions_CW_rad(0, 0, dRotation_rad, ref pLineEnd);
+
+        //    Geom2D.TransformPositions_CW_rad(fOffset_x, fOffset_y, 0, ref pLineStart);
+        //    Geom2D.TransformPositions_CW_rad(fOffset_x, fOffset_y, 0, ref pLineEnd);
+
+        //    l.X1 = pLineStart.X;
+        //    l.Y1 = pLineStart.Y;
+
+        //    l.X2 = pLineEnd.X;
+        //    l.Y2 = pLineEnd.Y;
+        //}
+
+        //public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, Canvas imageCanvas)
+        //{
+        //    float fPositionOfArcFactor = 0.45f;
+
+        //    double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
+        //    double radius = fPositionOfArcFactor * (pStart.X * dReal_Model_Zoom_Factor);
+
+        //    Point p2 = new Point(); // 2nd point of arc
+        //    p2.X = Geom2D.GetPositionX_deg((float)radius, (float)slope / MathF.fPI * 180f);  // y
+        //    p2.Y = Geom2D.GetPositionY_CCW_deg((float)radius, (float)slope / MathF.fPI * 180f);  // z
+
+        //    Size size = new Size(radius, radius);
+
+        //    ArcSegment arc = new ArcSegment(
+        //    new Point(modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor + p2.X, modelMarginBottom_y - (pCenter.Y * dReal_Model_Zoom_Factor + p2.Y)),
+        //    size,
+        //    slope / MathF.fPI * 180,
+        //    false,
+        //    SweepDirection.Counterclockwise,
+        //    true
+        //    );
+
+        //    PathGeometry pathGeometry = new PathGeometry();
+        //    PathFigure figure = new PathFigure();
+        //    figure.StartPoint = new Point(modelMarginLeft_x + fPositionOfArcFactor * (pStart.X * dReal_Model_Zoom_Factor), modelMarginBottom_y - pStart.Y * dReal_Model_Zoom_Factor);
+        //    figure.Segments.Add(arc);
+
+        //    pathGeometry.Figures.Add(figure);
+        //    Path path = new Path();
+        //    path.Data = pathGeometry;
+        //    //path.Fill = Brushes.Gray;
+        //    path.Stroke = Brushes.Black;
+        //    imageCanvas.Children.Add(path);
+
+        //    // Lines
+        //    Line l1 = new Line();
+        //    l1.X1 = modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor;
+        //    l1.Y1 = modelMarginBottom_y - pCenter.Y * dReal_Model_Zoom_Factor;
+
+        //    l1.X2 = modelMarginLeft_x + pStart.X * dReal_Model_Zoom_Factor;
+        //    l1.Y2 = modelMarginBottom_y - pStart.Y * dReal_Model_Zoom_Factor;
+
+        //    DrawLine(l1, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
+
+        //    Line l2 = new Line();
+        //    l2.X1 = modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor;
+        //    l2.Y1 = modelMarginBottom_y - pCenter.Y * dReal_Model_Zoom_Factor;
+
+        //    l2.X2 = modelMarginLeft_x + pEnd.X * dReal_Model_Zoom_Factor;
+        //    l2.Y2 = modelMarginBottom_y - pEnd.Y * dReal_Model_Zoom_Factor;
+
+        //    DrawLine(l2, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
+
+        //    // Draw text
+        //    // Draw text in the middle of the arc
+        //    float fFactorTextPosition = 0.5f;
+        //    float fTextPositionx = Geom2D.GetPositionX_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // y
+        //    float fTextPositiony = Geom2D.GetPositionY_CCW_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // z
+        //    string sText = Math.Round(slope / MathF.fPI * 180, 1).ToString() + " °";
+
+        //    DrawText(sText, modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor +  fTextPositionx, modelMarginBottom_y - (pCenter.Y * dReal_Model_Zoom_Factor + fTextPositiony), 0, 12, false, Brushes.Black, imageCanvas);
+        //}
+
+        public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, Canvas imageCanvas)
         {
             float fPositionOfArcFactor = 0.45f;
 
             double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
-            double radius = fPositionOfArcFactor * (pStart.X * dReal_Model_Zoom_Factor);
+            double radius = fPositionOfArcFactor * (pStart.X);
 
             Point p2 = new Point(); // 2nd point of arc
             p2.X = Geom2D.GetPositionX_deg((float)radius, (float)slope / MathF.fPI * 180f);  // y
@@ -1107,8 +1366,7 @@ namespace BaseClasses
 
             Size size = new Size(radius, radius);
 
-            ArcSegment arc = new ArcSegment(
-            new Point(modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor + p2.X, modelMarginBottom_y - (pCenter.Y * dReal_Model_Zoom_Factor + p2.Y)),
+            ArcSegment arc = new ArcSegment(new Point(pCenter.X + p2.X, pCenter.Y * + p2.Y),
             size,
             slope / MathF.fPI * 180,
             false,
@@ -1118,7 +1376,7 @@ namespace BaseClasses
 
             PathGeometry pathGeometry = new PathGeometry();
             PathFigure figure = new PathFigure();
-            figure.StartPoint = new Point(modelMarginLeft_x + fPositionOfArcFactor * (pStart.X * dReal_Model_Zoom_Factor), modelMarginBottom_y - pStart.Y * dReal_Model_Zoom_Factor);
+            figure.StartPoint = new Point(pStart.X, pStart.Y);
             figure.Segments.Add(arc);
 
             pathGeometry.Figures.Add(figure);
@@ -1130,21 +1388,17 @@ namespace BaseClasses
 
             // Lines
             Line l1 = new Line();
-            l1.X1 = modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor;
-            l1.Y1 = modelMarginBottom_y - pCenter.Y * dReal_Model_Zoom_Factor;
-
-            l1.X2 = modelMarginLeft_x + pStart.X * dReal_Model_Zoom_Factor;
-            l1.Y2 = modelMarginBottom_y - pStart.Y * dReal_Model_Zoom_Factor;
-
+            l1.X1 = pCenter.X;
+            l1.Y1 = pCenter.Y;
+            l1.X2 = pStart.X;
+            l1.Y2 = pStart.Y;
             DrawLine(l1, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
 
             Line l2 = new Line();
-            l2.X1 = modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor;
-            l2.Y1 = modelMarginBottom_y - pCenter.Y * dReal_Model_Zoom_Factor;
-
-            l2.X2 = modelMarginLeft_x + pEnd.X * dReal_Model_Zoom_Factor;
-            l2.Y2 = modelMarginBottom_y - pEnd.Y * dReal_Model_Zoom_Factor;
-
+            l2.X1 = pCenter.X;
+            l2.Y1 = pCenter.Y;
+            l2.X2 = pEnd.X;
+            l2.Y2 = pEnd.Y;
             DrawLine(l2, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
 
             // Draw text
@@ -1154,7 +1408,7 @@ namespace BaseClasses
             float fTextPositiony = Geom2D.GetPositionY_CCW_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // z
             string sText = Math.Round(slope / MathF.fPI * 180, 1).ToString() + " °";
 
-            DrawText(sText, modelMarginLeft_x + pCenter.X * dReal_Model_Zoom_Factor +  fTextPositionx, modelMarginBottom_y - (pCenter.Y * dReal_Model_Zoom_Factor + fTextPositiony), 0, 12, false, Brushes.Black, imageCanvas);
+            DrawText(sText, pCenter.X + fTextPositionx, pCenter.Y + fTextPositiony, 0, 12, false, Brushes.Black, imageCanvas);
         }
 
         public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)

@@ -90,5 +90,19 @@ namespace BaseClasses.GraphObj
             ControlPointStart = pstart_temp;
             ControlPointEnd = pend_temp;
         }
+
+        public override void MirrorYCoordinates()
+        {
+            this.m_controlPointStart.Y *= -1;
+            this.m_controlPointEnd.Y *= -1;
+            this.m_controlPointCenter.Y *= -1;
+        }
+
+        public override void UpdatePoints(double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+            m_controlPointStart = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (m_controlPointStart.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (m_controlPointStart.Y - minY));
+            m_controlPointEnd = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (m_controlPointEnd.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (m_controlPointEnd.Y - minY));
+            m_controlPointCenter = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (m_controlPointCenter.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (m_controlPointCenter.Y - minY));
+        }
     }
 }
