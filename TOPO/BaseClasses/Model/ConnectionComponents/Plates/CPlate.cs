@@ -578,9 +578,9 @@ namespace BaseClasses
         {
             float fDistance = 0;
 
-            for (int i = 0; i < PointsOut2D.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length; i++)
             {
-                if (i < PointsOut2D.Length / 2 - 1)
+                if (i < PointsOut2D.Length - 1)
                 {
                     fDistance += (float)Math.Sqrt(MathF.Pow2(PointsOut2D[i + 1].X - PointsOut2D[i].X) + MathF.Pow2(PointsOut2D[i + 1].Y - PointsOut2D[i].Y));
                 }
@@ -615,7 +615,7 @@ namespace BaseClasses
         private float SignedPolygonArea()
         {
             // Add the first point to the end.
-            int num_points = PointsOut2D.Length / 2;
+            int num_points = PointsOut2D.Length;
             Point[] pts = new Point[num_points + 1];
 
             for (int i = 0; i < num_points; i++)

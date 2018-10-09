@@ -605,6 +605,12 @@ namespace PFD
                             ScrewArrangements = databaseComponents.arr_Serie_K_ScrewArrangement_Names;
                             break;
                         }
+                    case ESerieTypePlate.eSerie_N:
+                        {
+                            Components = databaseComponents.arr_Serie_N_Names;
+                            ScrewArrangements = new string[] { "Undefined" };
+                            break;
+                        }
                     default:
                         {
                             // Not implemented

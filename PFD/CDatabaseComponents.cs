@@ -122,7 +122,7 @@ namespace PFD
             }
         }
 
-        public string[] arr_SeriesNames = new string[11]
+        public string[] arr_SeriesNames = new string[12]
             {"Serie B",
              "Serie L",
              "Serie LL",
@@ -133,7 +133,8 @@ namespace PFD
              "Serie X",
              "Serie Y",
              "Serie J",
-             "Serie K"};
+             "Serie K",
+             "Serie N",};
 
         public string[] arr_Serie_B_Names = new string[10]
             {"BA",
@@ -227,6 +228,9 @@ namespace PFD
          "Rectangular",
          "Circle"};
 
+        public string[] arr_Serie_N_Names = new string[1]
+        {"N"};
+
         public float[,] arr_Serie_B_Dimension = new float[10, 5]
             {
                 {140, 270, 180, 3, 4},
@@ -316,6 +320,12 @@ namespace PFD
                 {0, 630, 1200, 800, 1400, 50, 3, 20, 4},  // KC
                 {0, 630, 1200, 800, 1400, 50, 3, 20, 4},  // KD
                 {200, 630, 1200, 800, 1400, 50, 3, 20, 4}
+        };
+
+        public float[,] arr_Serie_N_Dimension = new float[1, 6]
+        {
+                // b1, b3, h, z, t, iHoles
+                {100, 100, 100, 300, 20, 0}
         };
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze

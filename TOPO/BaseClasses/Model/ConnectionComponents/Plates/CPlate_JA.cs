@@ -248,9 +248,9 @@ namespace BaseClasses
             Point3D pj = new Point3D();
 
             // Front Side
-            for (int i = 0; i < PointsOut2D.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length; i++)
             {
-                if (i < (PointsOut2D.Length / 2) - 1)
+                if (i < (PointsOut2D.Length) - 1)
                 {
                     pi = arrPoints3D[i];
                     pj = arrPoints3D[i+1];
@@ -267,9 +267,9 @@ namespace BaseClasses
             }
 
             // BackSide
-            for (int i = 0; i < PointsOut2D.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length; i++)
             {
-                if (i < (PointsOut2D.Length / 2) - 1)
+                if (i < (PointsOut2D.Length) - 1)
                 {
                     pi = arrPoints3D[ITotNoPointsin2D + i];
                     pj = arrPoints3D[ITotNoPointsin2D + i + 1];
@@ -286,7 +286,7 @@ namespace BaseClasses
             }
 
             // Lateral
-            for (int i = 0; i < PointsOut2D.Length / 2; i++)
+            for (int i = 0; i < PointsOut2D.Length; i++)
             {
                 pi = arrPoints3D[i];
                 pj = arrPoints3D[ITotNoPointsin2D + i];

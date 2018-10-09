@@ -632,6 +632,16 @@ namespace PFD
                             iNumberofHoles = (int)dcomponents.arr_Serie_K_Dimension[vm.ComponentIndex, 7];
                             break;
                         }
+                    case ESerieTypePlate.eSerie_N:
+                        {
+                            fb = dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fb2 = dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            fh = dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            fl = dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 3] / 1000f;
+                            ft = dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 4] / 1000f;
+                            iNumberofHoles = (int)dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 5];
+                            break;
+                        }
                     default:
                         {
                             // Not implemented
@@ -1037,6 +1047,11 @@ namespace PFD
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_KE(dcomponents.arr_Serie_K_Names[4], controlpoint, fb_R, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
                             }
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_N:
+                        {
+                            plate = new CConCom_Plate_N(dcomponents.arr_Serie_N_Names[0], controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // N
                             break;
                         }
                     default:
