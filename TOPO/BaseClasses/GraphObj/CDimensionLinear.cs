@@ -39,7 +39,7 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public bool m_bIsTextAboveLineBetweenExtensionLines;
+        private bool m_bIsTextAboveLineBetweenExtensionLines;
 
         public bool IsTextAboveLineBetweenExtensionLines
         {
@@ -54,28 +54,34 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public CDimensionLinear(Point pstart_temp, Point pend_temp) : base()
+        public double BasicLength_m
         {
-            DisplayedText = "";
-            ControlPointStart = pstart_temp;
-            ControlPointEnd = pend_temp;
-            IsTextAboveLineBetweenExtensionLines = true;
+            get
+            {
+                return dBasicLength_m;
+            }
+
+            set
+            {
+                dBasicLength_m = value;
+            }
         }
 
-        public CDimensionLinear(Point pstart_temp, Point pend_temp, bool bIsTextAboveLineBetweenExtensionLines_temp) : base()
-        {
-            DisplayedText = "";
-            ControlPointStart = pstart_temp;
-            ControlPointEnd = pend_temp;
-            IsTextAboveLineBetweenExtensionLines = bIsTextAboveLineBetweenExtensionLines_temp;
-        }
+        private double dBasicLength_m;
 
-        public CDimensionLinear(string text_temp, Point pstart_temp, Point pend_temp, bool bIsTextAboveLineBetweenExtensionLines_temp) : base(text_temp)
+
+        public CDimensionLinear(Point pStart, Point pEnd) : this(pStart, pEnd, true)
+        {}
+
+        public CDimensionLinear(Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines) : this("", pStart, pEnd, isTextAboveLineBetweenExtensionLines)
+        {}
+
+        public CDimensionLinear(string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines) : base(text)
         {
-            DisplayedText = text_temp;
-            ControlPointStart = pstart_temp;
-            ControlPointEnd = pend_temp;
-            IsTextAboveLineBetweenExtensionLines = bIsTextAboveLineBetweenExtensionLines_temp;
+            ControlPointStart = pStart;
+            ControlPointEnd = pEnd;
+            IsTextAboveLineBetweenExtensionLines = isTextAboveLineBetweenExtensionLines;
+            dBasicLength_m = Math.Sqrt(Math.Pow(pEnd.X - pStart.X, 2) + Math.Pow(pEnd.Y - pStart.Y, 2));
         }
 
         public override void MirrorYCoordinates()

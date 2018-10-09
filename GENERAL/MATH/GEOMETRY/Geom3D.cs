@@ -16,8 +16,8 @@ namespace MATH
             {
                 for (int i = 0; i < array.Length; i++)
                 {
-                    float fX = (float)array[i].X;
-                    float fY = (float)array[i].Y;
+                    double fX = array[i].X;
+                    double fY = array[i].Y;
                     Geom2D.TransformPositions_CW_deg((float)centerOfRotation.X, (float)centerOfRotation.Y, theta_deg / 180f * Math.PI, ref fX, ref fY);
 
                     // Set new coordinates

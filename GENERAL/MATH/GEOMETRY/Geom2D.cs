@@ -153,7 +153,7 @@ namespace MATH
             TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref y);
         }
 
-        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref double x, ref double y)
+        public static void TransformPositions_CCW_rad(double x_centerOfRotation, double y_centerOfRotation, double theta_rad, ref double x, ref double y)
         {
             double px;
             double py;
@@ -173,30 +173,30 @@ namespace MATH
             y = py;
         }
 
-        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref Point p)
+        public static void TransformPositions_CW_deg(double x_centerOfRotation, double y_centerOfRotation, double theta_deg, ref Point p)
         {
-            float x = (float)p.X;
-            float y = (float)p.Y;
+            double x = p.X;
+            double y = p.Y;
 
             TransformPositions_CW_deg(x_centerOfRotation, y_centerOfRotation, theta_deg, ref x, ref y);
 
             p.X = x;
             p.Y = y;
         }
-            public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float x, ref float y)
+        public static void TransformPositions_CW_deg(double x_centerOfRotation, double y_centerOfRotation, double theta_deg, ref double x, ref double y)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref y);
         }
 
-        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float x, ref float y)
+        public static void TransformPositions_CW_rad(double x_centerOfRotation, double y_centerOfRotation, double theta_rad, ref double x, ref double y)
         {
-            float px;
-            float py;
+            double px;
+            double py;
 
             if (!MathF.d_equal(theta_rad, 0)) // Translate and rotate
             {
-                px = (float)(Math.Cos(theta_rad) * (x - x_centerOfRotation) + Math.Sin(theta_rad) * (y - y_centerOfRotation) + x_centerOfRotation);
-                py = (float)(-Math.Sin(theta_rad) * (x - x_centerOfRotation) + Math.Cos(theta_rad) * (y - y_centerOfRotation) + y_centerOfRotation);
+                px = (Math.Cos(theta_rad) * (x - x_centerOfRotation) + Math.Sin(theta_rad) * (y - y_centerOfRotation) + x_centerOfRotation);
+                py = (-Math.Sin(theta_rad) * (x - x_centerOfRotation) + Math.Cos(theta_rad) * (y - y_centerOfRotation) + y_centerOfRotation);
             }
             else  // Only translate
             {
@@ -207,20 +207,20 @@ namespace MATH
             x = px;
             y = py;
         }
-        public static Point GetTransformedPoint_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, Point p)
+        public static Point GetTransformedPoint_CW_rad(double x_centerOfRotation, double y_centerOfRotation, double theta_rad, Point p)
         {
-            float px = (float)p.X;
-            float py = (float)p.Y;
+            double px = p.X;
+            double py = p.Y;
 
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref px, ref py);
 
             return new Point(px, py);
         }
 
-        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref Point p)
+        public static void TransformPositions_CW_rad(double x_centerOfRotation, double y_centerOfRotation, double theta_rad, ref Point p)
         {
-            float px = (float)p.X;
-            float py = (float)p.Y;
+            double px = p.X;
+            double py = p.Y;
 
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref px, ref py);
 
@@ -229,14 +229,14 @@ namespace MATH
         }
 
         // Transform array
-        public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
-        {
-            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
-        }
-        public static void TransformPositions_CW_deg(Point centerOfRotation, double theta_deg, ref List<Point> points)
-        {
-            TransformPositions_CW_deg((float)centerOfRotation.X, (float)centerOfRotation.Y, theta_deg, ref points);
-        }
+        //public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
+        //{
+        //    TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
+        //}
+        //public static void TransformPositions_CW_deg(Point centerOfRotation, double theta_deg, ref List<Point> points)
+        //{
+        //    TransformPositions_CW_deg((float)centerOfRotation.X, (float)centerOfRotation.Y, theta_deg, ref points);
+        //}
         public static void TransformPositions_CW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref List<Point> points)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref points);
@@ -246,14 +246,14 @@ namespace MATH
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref points);
         }
 
-        public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float [,] array)
-        {
-            if (array != null)
-            {
-                for (int i = 0; i < array.Length / 2; i++)
-                    TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
-            }
-        }
+        //public static void TransformPositions_CW_rad(double x_centerOfRotation, double y_centerOfRotation, double theta_rad, ref float [,] array)
+        //{
+        //    if (array != null)
+        //    {
+        //        for (int i = 0; i < array.Length / 2; i++)
+        //            TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
+        //    }
+        //}
         public static void TransformPositions_CW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref List<Point> points)
         {
             if (points != null)
@@ -273,37 +273,26 @@ namespace MATH
                     points[i] = GetTransformedPoint_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, points[i]);
                 }
             }
-        }
-
-        public static void TransformPositions_CCW_deg(float x_centerOfRotation, float y_centerOfRotation, double theta_deg, ref float[,] array)
-        {
-            TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref array);
-        }
-
-        public static void TransformPositions_CCW_rad(float x_centerOfRotation, float y_centerOfRotation, double theta_rad, ref float[,] array)
-        {
-            for (int i = 0; i < array.Length / 2; i++)
-                TransformPositions_CCW_rad(x_centerOfRotation, y_centerOfRotation, theta_rad, ref array[i, 0], ref array[i, 1]);
-        }
+        }        
 
         // Mirror
-        public static void MirrorAboutY_ChangeXCoordinatesArray(ref float[,] array)
-        {
-            if (array != null)
-            {
-                for (int i = 0; i < array.Length / 2; i++)
-                    array[i, 0] *= -1;
-            }
-        }
+        //public static void MirrorAboutY_ChangeXCoordinatesArray(ref float[,] array)
+        //{
+        //    if (array != null)
+        //    {
+        //        for (int i = 0; i < array.Length / 2; i++)
+        //            array[i, 0] *= -1;
+        //    }
+        //}
 
-        public static void MirrorAboutX_ChangeYCoordinatesArray(ref float[,] array)
-        {
-            if (array != null)
-            {
-                for (int i = 0; i < array.Length / 2; i++)
-                    array[i, 1] *= -1;
-            }
-        }
+        //public static void MirrorAboutX_ChangeYCoordinatesArray(ref float[,] array)
+        //{
+        //    if (array != null)
+        //    {
+        //        for (int i = 0; i < array.Length / 2; i++)
+        //            array[i, 1] *= -1;
+        //    }
+        //}
 
         public static void MirrorAboutY_ChangeXCoordinates(ref List<Point> points)
         {
@@ -399,20 +388,20 @@ namespace MATH
             return array;
         }
 
-        public static List<Point> TransformArrayToPointCoord(float [,] array_input)
-        {
-            if (array_input == null)
-                throw new ArgumentNullException("Not inicialized array of point coordinates!");
+        //public static List<Point> TransformArrayToPointCoord(float [,] array_input)
+        //{
+        //    if (array_input == null)
+        //        throw new ArgumentNullException("Not inicialized array of point coordinates!");
 
-            List <Point> listPoints = new List<Point>(array_input.Length / 2);
+        //    List <Point> listPoints = new List<Point>(array_input.Length / 2);
 
-            for (int i = 0; i < array_input.Length / 2; i++)
-            {
-                listPoints.Add(new Point(array_input[i, 0], array_input[i, 1]));
-            }
+        //    for (int i = 0; i < array_input.Length / 2; i++)
+        //    {
+        //        listPoints.Add(new Point(array_input[i, 0], array_input[i, 1]));
+        //    }
 
-            return listPoints;
-        }
+        //    return listPoints;
+        //}
 
         public static List<Point> TransformArrayToList(Point[] array_input)
         {

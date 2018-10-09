@@ -25,9 +25,9 @@ namespace BaseClasses.GraphObj
 
         public CDimension() { }
 
-        public CDimension(string text_temp)
+        public CDimension(string text)
         {
-            DisplayedText = text_temp;
+            DisplayedText = text;
         }
 
         public virtual void MirrorYCoordinates() { }

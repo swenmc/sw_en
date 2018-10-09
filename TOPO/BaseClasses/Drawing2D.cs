@@ -822,7 +822,7 @@ namespace BaseClasses
                     if (Dimensions[i] is CDimensionLinear)
                     {
                         CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
-                        DrawSimpleLinearDimension(dim.ControlPointStart, dim.ControlPointEnd, 30, true, dim.IsTextAboveLineBetweenExtensionLines, canvasForImage);
+                        DrawSimpleLinearDimension(dim, 30, true, canvasForImage);
                     }
                     else if (Dimensions[i] is CDimensionArc)
                     {
@@ -844,9 +844,9 @@ namespace BaseClasses
 
         public static void DrawLine(Line line, SolidColorBrush color, DashStyle dashStyle, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
-            Random r = new Random();
-            Color randomcolor = Color.FromArgb((byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256));
-            SolidColorBrush b = new SolidColorBrush(randomcolor);
+            //Random r = new Random();
+            //Color randomcolor = Color.FromArgb((byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256));
+            //SolidColorBrush b = new SolidColorBrush(randomcolor);
 
             Line myLine = new Line();
             myLine.Stretch = Stretch.Fill;
@@ -1127,7 +1127,7 @@ namespace BaseClasses
         //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
         //}
 
-        public static void DrawSimpleLinearDimension(Point pStart, Point pEnd, float fOffsetFromOrigin, bool bDrawExtensionLines, bool bIsTextAboveControlPoint, Canvas imageCanvas)
+        public static void DrawSimpleLinearDimension(CDimensionLinear dim, float fOffsetFromOrigin, bool bDrawExtensionLines, Canvas imageCanvas)
         {
             bool bBasicDimensionIsDefinedInPlusY = true;
 
@@ -1147,16 +1147,12 @@ namespace BaseClasses
 
             float fDirectionFactor = bBasicDimensionIsDefinedInPlusY ? 1f : -1f;
 
-            double dRotation_rad = Math.Atan((pEnd.Y - pStart.Y) / (pEnd.X - pStart.X));
-            double dRotation_deg = dRotation_rad / MathF.fPI * 180;
-
-            double fBasicLength_m = Math.Sqrt(MathF.Pow2(pEnd.X - pStart.X) + MathF.Pow2(pEnd.Y - pStart.Y)); // Real length between points
+            double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
+            double dRotation_deg = dRotation_rad / MathF.fPI * 180;            
             float fUnitFactor_mTomm = 1000;
             int iNumberOfDecimalPlaces = 0;
-            string sText = (Math.Round(fBasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
-
-            double fBasicLength_DisplayUnits = fBasicLength_m; // Length of displayed primary line
-
+            string sText = (Math.Round(dim.BasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
+            
             double dLengtOfExtensionLineStartToPrimary = 0.8 * fOffsetFromOrigin;
             double dLengtOfExtensionLinePrimaryToEnd = 5; // Points
             double dOffsetOfExtensionLineFromPoint = 0.2 * fOffsetFromOrigin;
@@ -1164,26 +1160,27 @@ namespace BaseClasses
             double dLengtOfExtensionLineTotal = dLengtOfExtensionLineStartToPrimary + dLengtOfExtensionLinePrimaryToEnd;
 
             double dPrimaryLineThickness = 1;
+            double lPrimaryLinelength = Math.Sqrt(Math.Pow(dim.ControlPointEnd.X - dim.ControlPointStart.X, 2) + Math.Pow(dim.ControlPointEnd.Y - dim.ControlPointStart.Y, 2));
             Line lPrimaryLine = new Line();
-            lPrimaryLine.X1 = 0;
-            lPrimaryLine.Y1 = fOffsetFromOrigin * fDirectionFactor;
-            lPrimaryLine.X2 = fBasicLength_DisplayUnits;
-            lPrimaryLine.Y2 = fOffsetFromOrigin * fDirectionFactor;
+            lPrimaryLine.X1 = dim.ControlPointStart.X;
+            lPrimaryLine.Y1 = dim.ControlPointStart.Y + fOffsetFromOrigin;
+            lPrimaryLine.X2 = dim.ControlPointStart.X + lPrimaryLinelength;
+            lPrimaryLine.Y2 = lPrimaryLine.Y1;
 
             // Extension lines
             double dExtensionLineThickness = 1;
 
             Line lExtensionLine1 = new Line();
-            lExtensionLine1.X1 = 0;
-            lExtensionLine1.Y1 = dOffsetOfExtensionLineFromPoint * fDirectionFactor;
-            lExtensionLine1.X2 = 0;
-            lExtensionLine1.Y2 = (dOffsetOfExtensionLineFromPoint + dLengtOfExtensionLineTotal) * fDirectionFactor;
+            lExtensionLine1.X1 = lPrimaryLine.X1;
+            lExtensionLine1.Y1 = lPrimaryLine.Y1 - fOffsetFromOrigin + dOffsetOfExtensionLineFromPoint;
+            lExtensionLine1.X2 = lPrimaryLine.X1;
+            lExtensionLine1.Y2 = lPrimaryLine.Y1;
 
             Line lExtensionLine2 = new Line();
-            lExtensionLine2.X1 = fBasicLength_DisplayUnits;
-            lExtensionLine2.Y1 = dOffsetOfExtensionLineFromPoint * fDirectionFactor;
-            lExtensionLine2.X2 = fBasicLength_DisplayUnits;
-            lExtensionLine2.Y2 = (dOffsetOfExtensionLineFromPoint + dLengtOfExtensionLineTotal) * fDirectionFactor;
+            lExtensionLine2.X1 = lPrimaryLine.X2;
+            lExtensionLine2.Y1 = lPrimaryLine.Y2 - fOffsetFromOrigin + dOffsetOfExtensionLineFromPoint;
+            lExtensionLine2.X2 = lPrimaryLine.X2;
+            lExtensionLine2.Y2 = lPrimaryLine.Y2;
 
             // Slope Symbol Lines
             double dSlopeLineLength = 10;
@@ -1192,44 +1189,19 @@ namespace BaseClasses
             double coord = 0.5 * dSlopeLineLength / Math.Sqrt(2);
 
             Line lSlopeLine1 = new Line();
-            lSlopeLine1.X1 = -coord;
-            lSlopeLine1.Y1 = (fOffsetFromOrigin + coord) * fDirectionFactor;
-            lSlopeLine1.X2 = coord;
-            lSlopeLine1.Y2 = (fOffsetFromOrigin - coord) * fDirectionFactor;
+            lSlopeLine1.X1 = lPrimaryLine.X1 - coord;
+            lSlopeLine1.Y1 = lPrimaryLine.Y1 + coord;
+            lSlopeLine1.X2 = lPrimaryLine.X1 + coord;
+            lSlopeLine1.Y2 = lPrimaryLine.Y1 - coord;
 
             Line lSlopeLine2 = new Line();
-            lSlopeLine2.X1 = fBasicLength_DisplayUnits - coord;
-            lSlopeLine2.Y1 = (fOffsetFromOrigin + coord) * fDirectionFactor;
-            lSlopeLine2.X2 = fBasicLength_DisplayUnits + coord;
-            lSlopeLine2.Y2 = (fOffsetFromOrigin - coord) * fDirectionFactor;
+            lSlopeLine2.X1 = lPrimaryLine.X2 - coord;
+            lSlopeLine2.Y1 = lPrimaryLine.Y2 + coord;
+            lSlopeLine2.X2 = lPrimaryLine.X2 + coord;
+            lSlopeLine2.Y2 = lPrimaryLine.Y2 - coord;
 
-            // Text transformation
-            // ScaleTransform
-            // SkewTransform
-            // TranslateTransform
-            // DropShadowBitmapEffect
-
-            /* // TODO - tieto transformacie mi akosi nefunguju
-
-            // Rotate dimension
-            RotateTransform r1 = new RotateTransform(45);
-            // Translate dimension
-            TranslateTransform t1 = new TranslateTransform(pStart.X * fReal_Model_Zoom_Factor, pStart.Y * fReal_Model_Zoom_Factor);
-
-            TransformGroup group = new TransformGroup();
-            group.Children.Add(r1);
-            group.Children.Add(t1);
-
-            // Transform each part of dimension
-            lPrimaryLine.RenderTransform = group;
-            lExtensionLine1.RenderTransform = group;
-            lExtensionLine2.RenderTransform = group;
-            lSlopeLine1.RenderTransform = group;
-            lSlopeLine2.RenderTransform = group;
-            //Text.RenderTransform = group;
-            */
-
-            RotateAndTranslateDimension(pStart, pEnd, dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
+            
+            RotateDimension(dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
             double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1); // TODO - osetrit znamienka
@@ -1246,10 +1218,10 @@ namespace BaseClasses
             // Draw slope line - end
             DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw text
-            DrawText(sText, fTextPositionx, fTextPositiony, -dRotation_deg, 12, bIsTextAboveControlPoint, Brushes.DarkGreen, imageCanvas);
+            DrawText(sText, fTextPositionx, fTextPositiony, -dRotation_deg, 12, dim.IsTextAboveLineBetweenExtensionLines, Brushes.DarkGreen, imageCanvas);
         }
 
-        public static void RotateAndTranslateDimension(Point pStart, Point pEnd, double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
+        public static void RotateDimension(double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
         {
             RotateLine_CW(dRotation_rad, ref lPrimaryLine);
             RotateLine_CW(dRotation_rad, ref lExtensionLine1);
@@ -1355,6 +1327,8 @@ namespace BaseClasses
 
         public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, Canvas imageCanvas)
         {
+            return;
+
             float fPositionOfArcFactor = 0.45f;
 
             double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
