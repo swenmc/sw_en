@@ -340,6 +340,32 @@ namespace MATH
                 }
             }
         }
+        public static List<Point> MirrorAboutX_ChangeYCoordinates(List<Point> points)
+        {
+            List<Point> mirroredPoints = new List<Point>();
+
+            if (points != null)
+            {
+                foreach (Point p in points)
+                {   
+                    mirroredPoints.Add(new Point(p.X, p.Y * -1));
+                }
+            }
+            return mirroredPoints;
+        }
+        public static List<Point> MirrorAboutX_ChangeYCoordinates(Point[] points)
+        {
+            List<Point> mirroredPoints = new List<Point>();
+
+            if (points != null)
+            {
+                foreach (Point p in points)
+                {
+                    mirroredPoints.Add(new Point(p.X, p.Y * -1));
+                }
+            }
+            return mirroredPoints;
+        }
         public static void MirrorAboutX_ChangeYCoordinates(ref Point[] points)
         {
             if (points != null)
