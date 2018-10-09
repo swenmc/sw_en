@@ -872,7 +872,7 @@ namespace BaseClasses
                 Color wireFrameColor = Color.FromRgb(60, 60, 60);
                 double thickness = 1.0;
                 ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
-                List<Point3D> wireFramePoints = new List<Point3D>();                
+                List<Point3D> wireFramePoints = new List<Point3D>();
 
                 for (int i = 0; i < model.m_arrMembers.Length; i++) // Per each member
                 {
@@ -886,7 +886,7 @@ namespace BaseClasses
                     }
                 }
 
-                // Add Wireframe Lines to the trackport                
+                // Add Wireframe Lines to the trackport
                 //wireFrameAllMembers.Name = "WireFrame_Members";
                 //wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
                 //model.WireFrameMembers = wireFrameAllMembers;
@@ -896,7 +896,6 @@ namespace BaseClasses
                 wl.Lines = new Point3DCollection(wireFramePoints);
                 wl.Color = Colors.White;
                 viewPort.Children.Add(wl);
-
             }
         }
         // Draw Model Connection Joints Wire Frame

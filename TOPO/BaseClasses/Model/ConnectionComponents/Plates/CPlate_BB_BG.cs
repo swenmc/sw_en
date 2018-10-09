@@ -521,9 +521,6 @@ namespace BaseClasses
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
 
-            wireFrame.Color = Colors.Yellow;
-            wireFrame.Thickness = 1;
-
             // y = 0
             wireFrame.Points.Add(arrPoints3D[0]);
             wireFrame.Points.Add(arrPoints3D[1]);

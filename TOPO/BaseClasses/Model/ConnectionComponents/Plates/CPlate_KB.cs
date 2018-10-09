@@ -350,9 +350,6 @@ namespace BaseClasses
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
 
-            wireFrame.Color = Color.FromRgb(250, 250, 60);
-            wireFrame.Thickness = 1.0;
-
             Point3D pi = new Point3D();
             Point3D pj = new Point3D();
 
