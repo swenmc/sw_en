@@ -44,13 +44,9 @@ namespace Examples
             // Nodes List - Nodes Array
 
             // Nodes
-            //m_arrNodes[00] = new CNode(01, 1.5f, 0.5f, 0000.0f, 0);
-            //m_arrNodes[01] = new CNode(02, 2.5f, 0.5f, 0001.0f, 0);
-            //m_arrNodes[00] = new CNode(01, 0, 0, 0000.0f, 0);
-            //m_arrNodes[01] = new CNode(02, 1, 0, 0000.0f, 0);
+
             m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
             m_arrNodes[01] = new CNode(02, 2f, 1f, 0000.0f, 0);
-            m_arrNodes[02] = new CNode(02, 3f, 1f, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
@@ -61,12 +57,15 @@ namespace Examples
             // Members Automatic Generation
             // Members List - Members Array
 
+            // Member Groups
+            listOfModelMemberGroups = new List<CMemberGroup>(1);
+            listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", m_arrCrSc[0], 0));
+
             // Members
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eG, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
-            m_arrMembers[001] = new CMember(002, m_arrNodes[01], m_arrNodes[02], m_arrCrSc[0], EMemberType_FormSteel.eG, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());
@@ -95,17 +94,7 @@ namespace Examples
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
             // Joints
-            //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeStart, m_arrMembers[0], true));
-            //m_arrConnectionJoints.Add(new CConnectionJoint_TA01(m_arrMembers[000].NodeEnd, m_arrMembers[0], true));
-            //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
-            //m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", m_arrMembers[000].NodeEnd, m_arrMembers[000], m_arrMembers[000], 0, EPlateNumberAndPositionInJoint.eTwoPlates, false, true));
-            //m_arrConnectionJoints.Add(new CConnectionJoint_T002(m_arrMembers[000].NodeStart, m_arrMembers[000], m_arrMembers[000], 0.003f, true));
-
-            /* // Test cylinder
-            m_arrGOVolumes = new CVolume[1];
-            CVolume a = new CVolume(1, EVolumeShapeType.eShape3D_Cylinder, new CPoint(1,0,0,0,0), 1f, new System.Windows.Media.Media3D.DiffuseMaterial(Brushes.Coral),true, 0);
-            m_arrGOVolumes[0] = a;
-            */
+            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true, true));
         }
     }
 }

@@ -89,11 +89,11 @@ namespace DATABASE
         private static Dictionary<int, CComponentPrefixes> DictComponentPrefixes;
         private static void LoadModelComponents()
         {
-            DictComponentPrefixes = new Dictionary<int, CComponentPrefixes>();             
+            DictComponentPrefixes = new Dictionary<int, CComponentPrefixes>();
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["ModelsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
-                SQLiteCommand command = new SQLiteCommand("Select * from componentPrefixes", conn);                
+                SQLiteCommand command = new SQLiteCommand("Select * from componentPrefixes", conn);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
@@ -117,9 +117,5 @@ namespace DATABASE
             DictComponentPrefixes.TryGetValue(ID, out component);
             return component;
         }
-
-
-
-
     }
 }
