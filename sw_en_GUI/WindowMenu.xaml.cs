@@ -1,25 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Reflection;
-using System.Data.SQLite;
+
 using System.Data;
 
 namespace sw_en_GUI
 {
-	/// <summary>
-	/// Interaction logic for WindowMenu.xaml
-	/// </summary>
-	public partial class WindowMenu : Window
+    /// <summary>
+    /// Interaction logic for WindowMenu.xaml
+    /// </summary>
+    public partial class WindowMenu : Window
 	{
         private bool m_bDebugging = false; // Console Output
 
@@ -52,39 +42,40 @@ namespace sw_en_GUI
 
         private void Button02_Click(object sender, RoutedEventArgs e)
         {
-			//string path = AppDomain.CurrentDomain.BaseDirectory;
-			//path = path.Substring(0, path.LastIndexOf("\\"));
-			//path = path.Substring(0, path.LastIndexOf("\\"));
-			//path = path.Substring(0, path.LastIndexOf("\\"));
-			//MessageBox.Show(path);
-			//path +="\\Resources\\test.db";
-			string connString = String.Format("Data Source={0};New=True;Version=3", "test.db");
-				
+            //string path = AppDomain.CurrentDomain.BaseDirectory;
+            //path = path.Substring(0, path.LastIndexOf("\\"));
+            //path = path.Substring(0, path.LastIndexOf("\\"));
+            //path = path.Substring(0, path.LastIndexOf("\\"));
+            //MessageBox.Show(path);
+            //path +="\\Resources\\test.db";
 
-			SQLiteConnection sqlconn = new SQLiteConnection(connString);
-			
-			sqlconn.Open();
+            //TODO Mato - presunut do projektu DATABASE vsetky nacitavania z databazy
+            //presunut do 
+   //         string connString = String.Format("Data Source={0};New=True;Version=3", "test.db");				
 
-			SQLiteCommand cmd = sqlconn.CreateCommand();
-			string CommandText = "SELECT * FROM CONCRETE";
-			cmd.CommandText = CommandText;
+			//SQLiteConnection sqlconn = new SQLiteConnection(connString);			
+			//sqlconn.Open();
 
-			//SQLiteDataReader reader = cmd.ExecuteReader();
-			//List<string> list = new List<string>();
-			//while (reader.Read()) 
-			//{
-			//    list.Add(reader["mat_name"].ToString());
-			//}
+			//SQLiteCommand cmd = sqlconn.CreateCommand();
+			//string CommandText = "SELECT * FROM CONCRETE";
+			//cmd.CommandText = CommandText;
 
-			//dataGrid1.ItemsSource = list;
+			////SQLiteDataReader reader = cmd.ExecuteReader();
+			////List<string> list = new List<string>();
+			////while (reader.Read()) 
+			////{
+			////    list.Add(reader["mat_name"].ToString());
+			////}
 
-			SQLiteDataAdapter DB = new SQLiteDataAdapter(CommandText, sqlconn);
-			DataSet DS = new DataSet();
-			DS.Reset();
-			DB.Fill(DS);
-			DataTable DT = DS.Tables[0];
-			dataGrid1.ItemsSource = DT.DefaultView; 
-			sqlconn.Close();
+			////dataGrid1.ItemsSource = list;
+
+			//SQLiteDataAdapter DB = new SQLiteDataAdapter(CommandText, sqlconn);
+			//DataSet DS = new DataSet();
+			//DS.Reset();
+			//DB.Fill(DS);
+			//DataTable DT = DS.Tables[0];
+			//dataGrid1.ItemsSource = DT.DefaultView; 
+			//sqlconn.Close();
         }
 
         private void Button03_Click(object sender, RoutedEventArgs e)

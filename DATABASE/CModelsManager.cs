@@ -1,7 +1,6 @@
 ﻿using DATABASE.DTO;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Common;
 using System.Data.SQLite;
 
 namespace DATABASE
