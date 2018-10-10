@@ -110,6 +110,9 @@ namespace BaseClasses
             m_fhY = fhY_temp;
             m_fZ = f_Z_temp;
             Ft = ft_platethickness;
+            m_fRotationX_deg = fRotation_x_deg;
+            m_fRotationY_deg = fRotation_y_deg;
+            m_fRotationZ_deg = fRotation_z_deg;
 
             alpha2_rad = MathF.fPI / 8f; // 22.5 deg
             alpha1_rad = MathF.fPI / 2f - alpha2_rad; // 67.5 deg

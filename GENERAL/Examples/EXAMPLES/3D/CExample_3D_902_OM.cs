@@ -35,8 +35,8 @@ namespace Examples
             //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_63020_BOX(0, 0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
-            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.01f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0, 0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -46,7 +46,7 @@ namespace Examples
             // Nodes
 
             m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 2f, 1f, 0000.0f, 0);
+            m_arrNodes[01] = new CNode(02, 5f, 1f, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
@@ -94,7 +94,8 @@ namespace Examples
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
             // Joints
-            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[0], true));
         }
     }
 }
