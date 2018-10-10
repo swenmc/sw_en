@@ -218,7 +218,7 @@ namespace BaseClasses
             arrPoints3D[11].Z = 0;
 
             // Second layer
-            float fangle_aux_rad = (MathF.fPI + alpha2_rad) / 2f; // Polovica uhla ktory zvieraju strana bx1 a bx2 (celna a sikma)
+            float fangle_aux_rad = (MathF.fPI / 2f + alpha2_rad) / 2f; // Polovica uhla ktory zvieraju strana bx1 a bx2 (celna a sikma)
             float fx_aux = Ft / (float)Math.Tan(fangle_aux_rad);
 
             arrPoints3D[12].X = arrPoints3D[0].X;
@@ -322,6 +322,18 @@ namespace BaseClasses
                 wireFrame.Points.Add(pj);
             }
 
+            wireFrame.Points.Add(arrPoints3D[13]);
+            wireFrame.Points.Add(arrPoints3D[22]);
+
+            wireFrame.Points.Add(arrPoints3D[14]);
+            wireFrame.Points.Add(arrPoints3D[21]);
+
+            wireFrame.Points.Add(arrPoints3D[15]);
+            wireFrame.Points.Add(arrPoints3D[20]);
+
+            wireFrame.Points.Add(arrPoints3D[16]);
+            wireFrame.Points.Add(arrPoints3D[19]);
+
             // BackSide
             for (int i = 0; i < PointsOut2D.Length; i++)
             {
@@ -341,16 +353,30 @@ namespace BaseClasses
                 wireFrame.Points.Add(pj);
             }
 
-            // Lateral
-            for (int i = 0; i < PointsOut2D.Length; i++)
-            {
-                pi = arrPoints3D[i];
-                pj = arrPoints3D[ITotNoPointsin2D + i];
+            wireFrame.Points.Add(arrPoints3D[1]);
+            wireFrame.Points.Add(arrPoints3D[10]);
 
-                // Add points
-                wireFrame.Points.Add(pi);
-                wireFrame.Points.Add(pj);
-            }
+            wireFrame.Points.Add(arrPoints3D[2]);
+            wireFrame.Points.Add(arrPoints3D[9]);
+
+            wireFrame.Points.Add(arrPoints3D[3]);
+            wireFrame.Points.Add(arrPoints3D[8]);
+
+            wireFrame.Points.Add(arrPoints3D[4]);
+            wireFrame.Points.Add(arrPoints3D[7]);
+
+            // Lateral
+            wireFrame.Points.Add(arrPoints3D[0]);
+            wireFrame.Points.Add(arrPoints3D[12]);
+
+            wireFrame.Points.Add(arrPoints3D[5]);
+            wireFrame.Points.Add(arrPoints3D[17]);
+
+            wireFrame.Points.Add(arrPoints3D[6]);
+            wireFrame.Points.Add(arrPoints3D[18]);
+
+            wireFrame.Points.Add(arrPoints3D[11]);
+            wireFrame.Points.Add(arrPoints3D[23]);
 
             return wireFrame;
         }
