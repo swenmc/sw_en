@@ -24,10 +24,11 @@ namespace BaseClasses
 
             // Plate properties
             // Todo - set correct dimensions of plate acc. to column cross-section size
-            float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
-            float fb_plate = (float)(MainFrameColumn_temp.CrScStart.b_in - 2 * fTolerance);
-            float fh_plate = (float)(MainFrameColumn_temp.CrScStart.h_in - 2 * fTolerance);
             m_ft = 0.003f;
+            float fTolerance = 0.001f; // Gap between cross-section surface and plate surface
+            float fb_plate = (float)(MainFrameColumn_temp.CrScStart.b + 2 * fTolerance + 2 * m_ft);
+            float fh_plate = (float)(MainFrameColumn_temp.CrScStart.h);
+
             m_iHoleNo = 2;
             m_fd_hole = 0.02f;
             m_flip = 0.18f;
