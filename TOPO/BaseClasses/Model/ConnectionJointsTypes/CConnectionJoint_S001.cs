@@ -59,7 +59,6 @@ namespace BaseClasses
                 ControlPoint_P1 = new CPoint(0, m_SecondaryMembers[0].FLength - fAlignment_x, (float)(m_SecondaryMembers[0].CrScStart.y_max + flocaleccentricity_y), -0.5f * m_SecondaryMembers[0].CrScStart.h + flocaleccentricity_z, 0);
 
                 pPlate = new CConCom_Plate_N("N", ControlPoint_P1, 0.1f, (float)m_SecondaryMembers[0].CrScStart.b, 0.1f, (float)m_SecondaryMembers[0].CrScStart.h, m_ft, 90, 0, 180 + 0, screwArrangement, BIsDisplayed); // Rotation angle in degrees
-
             }
 
             /*
