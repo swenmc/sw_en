@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -83,7 +84,18 @@ namespace BaseClasses
             BIsDisplayed = true;
         }
 
-        public CConCom_Plate_N(string sName_temp, GraphObj.CPoint controlpoint, float fbX1_temp, float fbX3_temp, float fhY_temp, float f_Z_temp, float ft_platethickness, int iHolesNumber, bool bIsDisplayed)
+        public CConCom_Plate_N(string sName_temp,
+            CPoint controlpoint,
+            float fbX1_temp,
+            float fbX3_temp,
+            float fhY_temp,
+            float f_Z_temp,
+            float ft_platethickness,
+            float fRotation_x_deg,
+            float fRotation_y_deg,
+            float fRotation_z_deg,
+            CScrewArrangement_N screwArrangement_temp,
+            bool bIsDisplayed)
         {
             Name = sName_temp;
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -104,8 +116,6 @@ namespace BaseClasses
             x_a = (float)Math.Tan(alpha2_rad) * m_fZ;
             m_fbX2 = m_fZ / (float)Math.Sin(alpha1_rad);
 
-            m_iHolesNumber = iHolesNumber = 0; // Zatial nepodporujeme otvory
-
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
@@ -113,6 +123,14 @@ namespace BaseClasses
             // Calculate point positions
             Calc_Coord2D();
             Calc_Coord3D();
+
+            if (screwArrangement_temp != null)
+            {
+                screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X1, m_fbX2, Fb_X3, Fh_Y);
+                arrConnectorControlPoints3D = new Point3D[screwArrangement_temp.IHolesNumber];
+                Calc_HolesControlPointsCoord3D(screwArrangement_temp);
+                GenerateConnectors(screwArrangement_temp);
+            }
 
             // Fill list of indices for drawing of surface
             loadIndices();
@@ -124,6 +142,8 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            ScrewArrangement = screwArrangement_temp;
         }
 
         //----------------------------------------------------------------------------
@@ -270,6 +290,79 @@ namespace BaseClasses
             arrPoints3D[23].Z = arrPoints3D[11].Z + Ft;
         }
 
+        void Calc_HolesControlPointsCoord3D(CScrewArrangement screwArrangement)
+        {
+            // 3 x 4 screws = 12 screws in the plate (square arrangement 4 screws in group)
+
+            float fx_edge = 0.020f;
+            float fy_edge = 0.020f;
+
+            // Left back
+            arrConnectorControlPoints3D[0].X = fx_edge;
+            arrConnectorControlPoints3D[0].Y = fy_edge;
+            arrConnectorControlPoints3D[0].Z = -Ft; // TODO Position depends on screw length
+
+            arrConnectorControlPoints3D[1].X = m_fbX1 - fx_edge;
+            arrConnectorControlPoints3D[1].Y = arrConnectorControlPoints3D[0].Y;
+            arrConnectorControlPoints3D[1].Z = arrConnectorControlPoints3D[0].Z;
+
+            arrConnectorControlPoints3D[2].X = arrConnectorControlPoints3D[0].X;
+            arrConnectorControlPoints3D[2].Y = m_fhY - fy_edge;
+            arrConnectorControlPoints3D[2].Z = arrConnectorControlPoints3D[0].Z;
+
+            arrConnectorControlPoints3D[3].X = arrConnectorControlPoints3D[1].X;
+            arrConnectorControlPoints3D[3].Y = arrConnectorControlPoints3D[2].Y;
+            arrConnectorControlPoints3D[3].Z = arrConnectorControlPoints3D[0].Z;
+
+            // Right back
+            arrConnectorControlPoints3D[4].X = m_fbX1 + 2 * x_a + m_fbX3 + fx_edge;
+            arrConnectorControlPoints3D[4].Y = arrConnectorControlPoints3D[0].Y;
+            arrConnectorControlPoints3D[4].Z = arrConnectorControlPoints3D[0].Z;
+
+            arrConnectorControlPoints3D[5].X = 2 * m_fbX1 + 2 * x_a + m_fbX3 - fx_edge;
+            arrConnectorControlPoints3D[5].Y = arrConnectorControlPoints3D[4].Y;
+            arrConnectorControlPoints3D[5].Z = arrConnectorControlPoints3D[0].Z;
+
+            arrConnectorControlPoints3D[6].X = arrConnectorControlPoints3D[4].X;
+            arrConnectorControlPoints3D[6].Y = arrConnectorControlPoints3D[2].Y;
+            arrConnectorControlPoints3D[6].Z = arrConnectorControlPoints3D[0].Z;
+
+            arrConnectorControlPoints3D[7].X = arrConnectorControlPoints3D[5].X;
+            arrConnectorControlPoints3D[7].Y = arrConnectorControlPoints3D[2].Y;
+            arrConnectorControlPoints3D[7].Z = arrConnectorControlPoints3D[0].Z;
+
+            // Middle front
+            arrConnectorControlPoints3D[8].X = m_fbX1 + x_a + fx_edge;
+            arrConnectorControlPoints3D[8].Y = arrConnectorControlPoints3D[0].Y;
+            arrConnectorControlPoints3D[8].Z = m_fZ - Ft;
+
+            arrConnectorControlPoints3D[9].X = m_fbX1 + x_a + m_fbX3 - fx_edge;
+            arrConnectorControlPoints3D[9].Y = arrConnectorControlPoints3D[0].Y;
+            arrConnectorControlPoints3D[9].Z = arrConnectorControlPoints3D[8].Z;
+
+            arrConnectorControlPoints3D[10].X = arrConnectorControlPoints3D[8].X;
+            arrConnectorControlPoints3D[10].Y = arrConnectorControlPoints3D[2].Y;
+            arrConnectorControlPoints3D[10].Z = arrConnectorControlPoints3D[8].Z;
+
+            arrConnectorControlPoints3D[11].X = arrConnectorControlPoints3D[9].X;
+            arrConnectorControlPoints3D[11].Y = arrConnectorControlPoints3D[2].Y;
+            arrConnectorControlPoints3D[11].Z = arrConnectorControlPoints3D[8].Z;
+        }
+
+        void GenerateConnectors(CScrewArrangement screwArrangement)
+        {
+            if (screwArrangement.IHolesNumber > 0)
+            {
+                screwArrangement.Screws = new CScrew[screwArrangement.IHolesNumber];
+
+                for (int i = 0; i < screwArrangement.IHolesNumber; i++)
+                {
+                        CPoint controlpoint = new CPoint(0, arrConnectorControlPoints3D[i].X, arrConnectorControlPoints3D[i].Y, arrConnectorControlPoints3D[i].Z, 0);
+                        screwArrangement.Screws[i] = new CScrew("TEK", controlpoint, screwArrangement.referenceScrew.Gauge, screwArrangement.referenceScrew.Diameter_thread, screwArrangement.referenceScrew.D_h_headdiameter, screwArrangement.referenceScrew.D_w_washerdiameter, screwArrangement.referenceScrew.T_w_washerthickness, screwArrangement.referenceScrew.Length, screwArrangement.referenceScrew.Mass, 0, -90, 0, true);
+                }
+            }
+        }
+
         protected override void loadIndices()
         {
             int secNum = 12;
@@ -296,9 +389,6 @@ namespace BaseClasses
          public override ScreenSpaceLines3D CreateWireFrameModel()
         {
             ScreenSpaceLines3D wireFrame = new ScreenSpaceLines3D();
-
-            wireFrame.Color = Colors.Red; //Color.FromRgb(250, 250, 60);
-            wireFrame.Thickness = 2.0;
 
             Point3D pi = new Point3D();
             Point3D pj = new Point3D();

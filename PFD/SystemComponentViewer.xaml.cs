@@ -914,6 +914,7 @@ namespace PFD
                 CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
                 CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+                CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
 
                 bool bUseAdditionalConnectors = true;
                 int iNumberOfAdditionalConnectorsInCorner = 4;
@@ -1051,7 +1052,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_N:
                         {
-                            plate = new CConCom_Plate_N(dcomponents.arr_Serie_N_Names[0], controlpoint, fb, fb2, fh, fl, ft, iNumberofHoles, true); // N
+                            plate = new CConCom_Plate_N(dcomponents.arr_Serie_N_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0,0,0, screwArrangement_N, true); // N
                             break;
                         }
                     default:

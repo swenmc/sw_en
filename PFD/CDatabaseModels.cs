@@ -52,10 +52,8 @@ namespace PFD
             fdist_girt_bottom = 0.3f; // Distance from concrete foundation to the centerline
             fRakeAngleFrontFrame_deg = 0.0f; // Angle between first frame and global X-axis
             fRakeAngleBackFrame_deg = 0.0f; // Angle between last frame and global X-axis
-
-            
         }
-     }
+    }
 }
 
 
