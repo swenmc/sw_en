@@ -296,9 +296,9 @@ namespace PFD
             float fGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eMainColumn].b - fCutOffOneSide;            // Just in case that cross-section of main column is symmetric about z-z
             float fPurlinStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].b - fCutOffOneSide;            // Just in case that cross-section of rafter is symmetric about z-z
             float fPurlinEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].b - fCutOffOneSide;              // Just in case that cross-section of rafter is symmetric about z-z
-            float fFrontColumnStart = 0f;
+            float fFrontColumnStart = 0.0f;
             float fFrontColumnEnd = 0.08f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h - fCutOffOneSide;         // TODO - Calculate according to h of rafter and roof pitch
-            float fBackColumnStart = 0f;
+            float fBackColumnStart = 0.0f;
             float fBackColumnEnd = 0.08f * (float)m_arrCrSc[(int)EMemberGroupNames.eRafter].h - fCutOffOneSide;          // TODO - Calculate according to h of rafter and roof pitch
             float fFrontGirtStart = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].b - fCutOffOneSide;    // Just in case that cross-section of column is symmetric about z-z
             float fFrontGirtEnd = -0.5f * (float)m_arrCrSc[(int)EMemberGroupNames.eFrontColumn].b - fCutOffOneSide;      // Just in case that cross-section of column is symmetric about z-z
