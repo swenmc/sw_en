@@ -221,7 +221,7 @@ namespace PFD
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             switch ((ESerieTypePlate)vm.ComponentSerieIndex)
-            {                
+            {
                 case ESerieTypePlate.eSerie_J:
                     {
                         if (vm.ComponentIndex == 0) // JA

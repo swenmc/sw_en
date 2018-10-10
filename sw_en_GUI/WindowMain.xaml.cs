@@ -1030,6 +1030,7 @@ namespace sw_en_GUI
             model = new CExample_3D_902_OM();
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bUseDiffuseMaterial = true;
 
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayWireFrameModel = true;

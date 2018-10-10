@@ -14,8 +14,8 @@ namespace Examples
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new CNode[3];
-            m_arrMembers = new CMember[2];
+            m_arrNodes = new CNode[2];
+            m_arrMembers = new CMember[1];
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[1];
             m_arrNSupports = new CNSupport[2];
