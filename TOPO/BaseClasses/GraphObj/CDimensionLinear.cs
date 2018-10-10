@@ -39,18 +39,33 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private bool m_bIsTextAboveLineBetweenExtensionLines;
+        private bool m_bIsTextAboveLine;
 
-        public bool IsTextAboveLineBetweenExtensionLines
+        public bool IsTextAboveLine
         {
             get
             {
-                return m_bIsTextAboveLineBetweenExtensionLines;
+                return m_bIsTextAboveLine;
             }
 
             set
             {
-                m_bIsTextAboveLineBetweenExtensionLines = value;
+                m_bIsTextAboveLine = value;
+            }
+        }
+
+        private bool m_bIsDimensionUnderLine;
+
+        public bool IsDimensionUnderLine
+        {
+            get
+            {
+                return m_bIsDimensionUnderLine;
+            }
+
+            set
+            {
+                m_bIsDimensionUnderLine = value;
             }
         }
 
@@ -70,17 +85,18 @@ namespace BaseClasses.GraphObj
         private double dBasicLength_m;
 
 
-        public CDimensionLinear(Point pStart, Point pEnd) : this(pStart, pEnd, true)
+        public CDimensionLinear(Point pStart, Point pEnd) : this(pStart, pEnd, true, true)
         {}
 
-        public CDimensionLinear(Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines) : this("", pStart, pEnd, isTextAboveLineBetweenExtensionLines)
+        public CDimensionLinear(Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine) : this("", pStart, pEnd, isTextAboveLineBetweenExtensionLines, isDimensionUnderLine)
         {}
 
-        public CDimensionLinear(string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines) : base(text)
+        public CDimensionLinear(string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine) : base(text)
         {
             ControlPointStart = pStart;
             ControlPointEnd = pEnd;
-            IsTextAboveLineBetweenExtensionLines = isTextAboveLineBetweenExtensionLines;
+            IsTextAboveLine = isTextAboveLineBetweenExtensionLines;
+            IsDimensionUnderLine = isDimensionUnderLine;
             dBasicLength_m = Math.Sqrt(Math.Pow(pEnd.X - pStart.X, 2) + Math.Pow(pEnd.Y - pStart.Y, 2));
         }
 

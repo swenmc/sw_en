@@ -1129,9 +1129,7 @@ namespace BaseClasses
 
         public static void DrawSimpleLinearDimension(CDimensionLinear dim, float fOffsetFromOrigin, bool bDrawExtensionLines, Canvas imageCanvas)
         {
-            bool bBasicDimensionIsDefinedInPlusY = true;
-
-            // kontrolne body su v y = 0, kota je v smere +x, kladna osa y smeruje dole
+            // dim.IsDimensionUnderLine
             // TRUE
             //
             //   |                                |
@@ -1144,11 +1142,11 @@ namespace BaseClasses
             //   /--------------------------------/
             //   |                                |
             //   |                                |
-
-            float fDirectionFactor = bBasicDimensionIsDefinedInPlusY ? 1f : -1f;
+            if (!dim.IsDimensionUnderLine) fOffsetFromOrigin *= -1; 
+            
 
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
-            double dRotation_deg = dRotation_rad / MathF.fPI * 180;            
+            double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
             float fUnitFactor_mTomm = 1000;
             int iNumberOfDecimalPlaces = 0;
             string sText = (Math.Round(dim.BasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
@@ -1199,9 +1197,8 @@ namespace BaseClasses
             lSlopeLine2.Y1 = lPrimaryLine.Y2 + coord;
             lSlopeLine2.X2 = lPrimaryLine.X2 + coord;
             lSlopeLine2.Y2 = lPrimaryLine.Y2 - coord;
-
-            
-            RotateDimension(dRotation_rad, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
+                        
+            RotateDimension(dim.ControlPointStart, dRotation_deg, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
             double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1); // TODO - osetrit znamienka
@@ -1218,25 +1215,29 @@ namespace BaseClasses
             // Draw slope line - end
             DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw text
-            DrawText(sText, fTextPositionx, fTextPositiony, -dRotation_deg, 12, dim.IsTextAboveLineBetweenExtensionLines, Brushes.DarkGreen, imageCanvas);
+            DrawText(sText, fTextPositionx, fTextPositiony, dRotation_deg, 12, dim.IsTextAboveLine, Brushes.DarkGreen, imageCanvas);
+
+            
         }
 
-        public static void RotateDimension(double dRotation_rad, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
+        public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
         {
-            RotateLine_CW(dRotation_rad, ref lPrimaryLine);
-            RotateLine_CW(dRotation_rad, ref lExtensionLine1);
-            RotateLine_CW(dRotation_rad, ref lExtensionLine2);
-            RotateLine_CW(dRotation_rad, ref lSlopeLine1);
-            RotateLine_CW(dRotation_rad, ref lSlopeLine2);
+            RotateLine_CW(centerRotation, dRotationDegrees, ref lPrimaryLine);
+            RotateLine_CW(centerRotation, dRotationDegrees, ref lExtensionLine1);
+            RotateLine_CW(centerRotation, dRotationDegrees, ref lExtensionLine2);
+            RotateLine_CW(centerRotation, dRotationDegrees, ref lSlopeLine1);
+            RotateLine_CW(centerRotation, dRotationDegrees, ref lSlopeLine2);
         }
-        public static void RotateLine_CW(double dRotation_rad, ref Line l)
+        public static void RotateLine_CW(Point rotationCenter, double dRotationDegrees, ref Line l)
         {
             Point pLineStart = new Point(l.X1, l.Y1);
             Point pLineEnd = new Point(l.X2, l.Y2);
 
-            Geom2D.TransformPositions_CW_rad(0, 0, dRotation_rad, ref pLineStart);
-            Geom2D.TransformPositions_CW_rad(0, 0, dRotation_rad, ref pLineEnd);
-            
+            pLineStart = Geom2D.RotatePoint(pLineStart, rotationCenter, dRotationDegrees);
+            pLineEnd = Geom2D.RotatePoint(pLineEnd, rotationCenter, dRotationDegrees);
+            //    TransformPositions_CW_rad(l.X1, l.Y1, dRotation_rad, ref pLineStart);
+            //Geom2D.TransformPositions_CW_rad(l.X1, l.Y1, dRotation_rad, ref pLineEnd);
+
             l.X1 = pLineStart.X;
             l.Y1 = pLineStart.Y;
 
@@ -1528,10 +1529,8 @@ namespace BaseClasses
             //textBlock.Background = new SolidColorBrush(Colors.Red);
             textBlock.FontSize = fontSize;
             Canvas.SetLeft(textBlock, posx);
-
-            bIsTextAboveControlPoint = false;
+                        
             Size txtSize = MeasureString(textBlock, text);
-
             if (bIsTextAboveControlPoint) // Text nad liniou koty
             {
                 Canvas.SetTop(textBlock, posy - txtSize.Height);
@@ -1543,14 +1542,18 @@ namespace BaseClasses
                 {
                     if(rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width / 2);
                     else Canvas.SetTop(textBlock, posy - txtSize.Width / 2);
+
+                    Canvas.SetLeft(textBlock, posx - txtSize.Height);
                 }
                 else
                 {
                     if (rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width);
                     else Canvas.SetTop(textBlock, posy - txtSize.Width);
+
+                    Canvas.SetLeft(textBlock, posx - txtSize.Width);
                 }
                 
-                textBlock.Margin = new Thickness(2, 0, 0, 0);
+                //textBlock.Margin = new Thickness(2, 0, 0, 0);
             }
             else // text pod liniou koty
             {
@@ -1569,7 +1572,7 @@ namespace BaseClasses
                     else Canvas.SetTop(textBlock, posy - txtSize.Width);
                 }
                 
-                textBlock.Margin = new Thickness(2, 2, 0, 0);
+                //textBlock.Margin = new Thickness(2, 2, 0, 0);
             }
             
             textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);

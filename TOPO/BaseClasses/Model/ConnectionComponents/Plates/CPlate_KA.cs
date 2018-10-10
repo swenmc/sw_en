@@ -230,10 +230,10 @@ namespace BaseClasses
             int iNumberOfDimensions = 4;
             Dimensions = new CDimension[iNumberOfDimensions+1];
 
-            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1], true);
-            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2], true);
-            Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3], true);
-            Dimensions[3] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[3], false);
+            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
+            Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[3] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[3], false, false);
 
             Dimensions[4] = new CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[3].Y), PointsOut2D[2], PointsOut2D[3]);
         }
