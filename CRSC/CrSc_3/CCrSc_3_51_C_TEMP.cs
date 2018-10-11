@@ -141,13 +141,14 @@ namespace CRSC
             TriangleIndicesShell = new Int32Collection();
 
             // CCW
-            TriangleIndicesShell = new Int32Collection() { 1,9,8, 1,8,0,
+            TriangleIndicesShell = new Int32Collection() { 0,9,1, 0,8,9,
                                                            1,9,10, 1,10,2,
-                                                           2,11,3, 3,10,11,
+                                                           2,10,11, 2,11,3,
                                                            3,12,4, 3,11,12,
                                                            4,12,13, 4,13,5,
                                                            5,13,14, 5,14,6,
-                                                           6,15,14, 6,7,15};
+                                                           6,14,15, 6,15,7,
+                                                           7,8,0, 7,15,8};
         }
     }
 }
