@@ -202,9 +202,6 @@ namespace BaseClasses
                 {
                     arrPoints3D[i].X *= -1;
                 }
-
-                // Change indices
-                ChangeIndices(TriangleIndices); // Todo - takto to nefunguje :-)
             }
 
             fWidth_bx = m_fbX1 + m_fbX2;
