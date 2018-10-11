@@ -785,10 +785,13 @@ namespace BaseClasses
                     }
                 }
 
-                WireLines wl = new WireLines();
-                wl.Lines = new Point3DCollection(wireFramePoints);
-                wl.Color = Colors.White;
-                viewPort.Children.Add(wl);
+                //WireLines wl = new WireLines();
+                //wl.Lines = new Point3DCollection(wireFramePoints);
+                //wl.Color = Colors.White;
+                //viewPort.Children.Add(wl);
+
+                wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
+                viewPort.Children.Add(wireFrameAllMembers);
             }
         }
 
