@@ -62,6 +62,14 @@ namespace CRSC
             set { m_WireFrameIndicesLateral = value; }
         }
 
+        private Int32Collection m_WireFrameIndices; // Whole member
+
+        public Int32Collection WireFrameIndices
+        {
+            get { return m_WireFrameIndices; }
+            set { m_WireFrameIndices = value; }
+        }
+
         // New
         private Int32Collection m_TriangleIndicesFrontSide;
 
@@ -1103,36 +1111,39 @@ namespace CRSC
             }
         }
 
+        public void loadCrScWireFrameIndices()
+        {
+            int capacity = WireFrameIndicesFrontSideOut.Count + WireFrameIndicesFrontSideIn.Count +
+                           WireFrameIndicesBackSideOut.Count + WireFrameIndicesBackSideIn.Count +
+                           + WireFrameIndicesLateral.Count;
+            List<int> list = new List<int>(capacity);
 
-        //public void CalculateCrScLimits(out float fTempMax_X, out float fTempMin_X, out float fTempMax_Y, out float fTempMin_Y)
-        //{
-        //    fTempMax_X = float.MinValue;
-        //    fTempMin_X = float.MaxValue;
-        //    fTempMax_Y = float.MinValue;
-        //    fTempMin_Y = float.MaxValue;
+            // Postup pridavania bodov (positions) do kolekcie
+            // Front side - outside
+            // Front side - inside
 
-        //    if (CrScPointsOut != null) // Some points exist
-        //    {
-        //        for (int i = 0; i < CrScPointsOut.Length / 2; i++)
-        //        {
-        //            // Maximum X - coordinate
-        //            if (CrScPointsOut[i, 0] > fTempMax_X)
-        //                fTempMax_X = CrScPointsOut[i, 0];
+            // Back side - outside
+            // Back side - inside
 
-        //            // Minimum X - coordinate
-        //            if (CrScPointsOut[i, 0] < fTempMin_X)
-        //                fTempMin_X = CrScPointsOut[i, 0];
+            // Postup pridavania indices (indexov bodov) do kolekcie
+            // Front side
+            // Back side
 
-        //            // Maximum Y - coordinate
-        //            if (CrScPointsOut[i, 1] > fTempMax_Y)
-        //                fTempMax_Y = CrScPointsOut[i, 1];
+            // Shell - outside
+            // Shell - inside
 
-        //            // Minimum Y - coordinate
-        //            if (CrScPointsOut[i, 1] < fTempMin_Y)
-        //                fTempMin_Y = CrScPointsOut[i, 1];
-        //        }
-        //    }
-        //}
+            // TODO Martin - bude potrebne skontrolovat ako to funguje pre auxiliary points ak je pocet vacsi nez nula (body v ploche prierezu, ktore nelezia na outline)
+
+            list.AddRange(WireFrameIndicesFrontSideOut);
+            list.AddRange(WireFrameIndicesFrontSideIn);
+
+            list.AddRange(WireFrameIndicesBackSideOut);
+            list.AddRange(WireFrameIndicesBackSideIn);
+
+            list.AddRange(WireFrameIndicesLateral);
+
+            WireFrameIndices = new Int32Collection(list);
+        }
 
         public void CalculateCrScLimits(out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
         {
@@ -1174,25 +1185,9 @@ namespace CRSC
             y = (0.5f * (fTempMax_Y - fTempMin_Y));
         }
 
-        //public float[,] GetCoordinatesInGeometryRelatedToGeometryCenterPoint(float[,] array_in)
-        //{
-        //    float[,] array_out = array_in;
-        //    float x, y;
-
-        //    GetGeometryCenterPointCoordinates(out x, out y);
-
-        //    for (int i = 0; i < array_out.Length / 2; i++)
-        //    {
-        //        array_out[i, 0] -= x;
-        //        array_out[i, 1] -= y;
-        //    }
-
-        //    return array_out;
-        //}
-
         public List<Point> GetCoordinatesInGeometryRelatedToGeometryCenterPoint(List<Point> pointsIn)
         {
-            List<Point> pointsOut = new List<Point>(pointsIn);            
+            List<Point> pointsOut = new List<Point>(pointsIn);
 
             double x, y;
             GetGeometryCenterPointCoordinates(out x, out y);
@@ -1211,11 +1206,6 @@ namespace CRSC
 
         // Modification
         // Mirror cross-section about x
-        //public void MirrorPlateAboutX()
-        //{
-        //    Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsOut);
-        //    Geom2D.MirrorAboutX_ChangeYCoordinatesArray(ref m_CrScPointsIn);
-        //}
         public void MirrorCRSCAboutX()
         {
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsOut);
@@ -1224,11 +1214,6 @@ namespace CRSC
 
 
         // Mirror cross-section about y
-        //public void MirrorPlateAboutY()
-        //{
-        //    Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsOut);
-        //    Geom2D.MirrorAboutY_ChangeXCoordinatesArray(ref m_CrScPointsIn);
-        //}
         public void MirrorCRSCAboutY()
         {
             Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_CrScPointsOut);
@@ -1236,11 +1221,6 @@ namespace CRSC
         }
 
         // Rotate cross-section
-        //public void RotateCrsc_CW(float fTheta_deg)
-        //{
-        //    Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsOut);
-        //    Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsIn);
-        //}
         public void RotateCrsc_CW(float fTheta_deg)
         {
             Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_CrScPointsOut);

@@ -88,7 +88,7 @@ namespace CRSC
         //    // Outside Points Coordinates
         //    CrScPointsOut = Geom2D.GetArcPointCoordArray_CW_deg(m_fr_out, 180, 360, ITotNoPoints);
 
-        //    // Centroid            
+        //    // Centroid
         //    CrScPointsOut[ITotNoPoints - 1, 0] = 0f;
         //    CrScPointsOut[ITotNoPoints - 1, 1] = 0f;
         //}
@@ -99,8 +99,8 @@ namespace CRSC
             // Outside Points Coordinates
             CrScPointsOut = Geom2D.GetArcPointCoord_CW_deg(m_fr_out, 180, 360, ITotNoPoints);
 
-            // Centroid            
-            CrScPointsOut.Add(new Point(0, 0));            
+            // Centroid
+            CrScPointsOut.Add(new Point(0, 0));
         }
 
         protected override void loadCrScIndices()

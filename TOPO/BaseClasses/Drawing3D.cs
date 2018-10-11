@@ -297,6 +297,7 @@ namespace BaseClasses
                 else //between 1/4 and 3/4 is Shell
                 {
                     //zase raz je to standardne spravene takze raz su body pre Shell pridavane tak a raz tak - nutne je to zjednotit
+                    // To Ondrej - Malo by to byt tak ze prva je predna strana, potom zadna strana a potom shell, kde je to tak ze shell je uprostred?
 
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + shift]);

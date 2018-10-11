@@ -105,13 +105,13 @@ namespace CRSC
             CrScPointsOut.Add(new Point(0, 0));
             //Point p = CrScPointsOut[ITotNoPoints - 1];
             //p.X = 0.0;
-            //p.Y = 0.0;            
+            //p.Y = 0.0;
         }
 
         protected override void loadCrScIndices()
 		{
             CCrSc_0_00 oTemp = new CCrSc_0_00();
-            oTemp.loadCrScIndices_00_01(ITotNoPoints);            
+            oTemp.loadCrScIndices_00_01(ITotNoPoints);
             TriangleIndices = oTemp.TriangleIndices;
 		}
 

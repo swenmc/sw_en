@@ -32,11 +32,11 @@ namespace Examples
             //m_arrCrSc[0] = new CCrSc_3_51_C_LIP2_FS50020(1f, 0.3f, 0.01f, 0.05f, 0.005f);
             //m_arrCrSc[0] = new CCrSc_3_51_BOX_TEMP(1f, 0.3f, 0.003f);
 
-            //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0.27f, 0.10f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0, 0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -45,15 +45,19 @@ namespace Examples
 
             // Nodes
 
-            m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
-            m_arrNodes[01] = new CNode(02, 5f, 1f, 0000.0f, 0);
+            //m_arrNodes[00] = new CNode(01, 1f, 1f, 0000.0f, 0);
+            //m_arrNodes[01] = new CNode(02, 5f, 1f, 0000.0f, 0);
+
+            m_arrNodes[00] = new CNode(01, 0f, 0f, 0000.0f, 0);
+            m_arrNodes[01] = new CNode(02, 1f, 0f, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
 
             // Member eccentricity
 
-            CMemberEccentricity eccmember = new CMemberEccentricity(-0.2f, -0.3f);
+            //CMemberEccentricity eccmember = new CMemberEccentricity(-0.2f, -0.3f);
+            CMemberEccentricity eccmember = new CMemberEccentricity(0f, 0f);
             // Members Automatic Generation
             // Members List - Members Array
 
@@ -65,7 +69,8 @@ namespace Examples
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
+            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());
@@ -92,10 +97,10 @@ namespace Examples
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
 
             // Connection Joints
-            m_arrConnectionJoints = new List<CConnectionJointTypes>();
+            //m_arrConnectionJoints = new List<CConnectionJointTypes>();
             // Joints
-            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true, true));
-            m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[0], false, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true, true));
+            //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[0], false, true));
         }
     }
 }

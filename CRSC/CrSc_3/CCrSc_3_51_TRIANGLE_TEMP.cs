@@ -32,9 +32,6 @@ namespace CRSC
             m_ft = ft;
 
             // Create Array - allocate memory
-            //CrScPointsOut = new float[INoPointsOut, 2];
-            //CrScPointsIn = new float[INoPointsIn, 2];
-
             CrScPointsOut = new List<Point>(INoPointsOut);
             CrScPointsIn = new List<Point>(INoPointsIn);
 
@@ -48,13 +45,16 @@ namespace CRSC
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
 
-            // Complex indices - one color or member
+            // Complex indices - one color of member
             loadCrScIndices();
 
             // Wireframe Indices
             loadCrScWireFrameIndicesFrontSide();
             loadCrScWireFrameIndicesBackSide();
             loadCrScWireFrameIndicesLaterals();
+
+            // Complex indices
+            loadCrScWireFrameIndices();
         }
 
         public CCrSc_3_51_TRIANGLE_TEMP(float fh, float fb, float ft, Color color_temp)
@@ -71,8 +71,8 @@ namespace CRSC
             m_ft = ft;
 
             // Create Array - allocate memory
-            //CrScPointsOut = new float[INoPointsOut, 2];
-            //CrScPointsIn = new float[INoPointsIn, 2];
+            CrScPointsOut = new List<Point>(INoPointsOut);
+            CrScPointsIn = new List<Point>(INoPointsIn);
 
             // Fill Array Data
             CalcCrSc_Coord();
@@ -84,13 +84,16 @@ namespace CRSC
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
 
-            // Complex indices - one color or member
+            // Complex indices - one color of member
             loadCrScIndices();
 
             // Wireframe Indices
             loadCrScWireFrameIndicesFrontSide();
             loadCrScWireFrameIndicesBackSide();
             loadCrScWireFrameIndicesLaterals();
+
+            // Complex indices
+            loadCrScWireFrameIndices();
         }
 
         //public void CalcCrSc_Coord()
@@ -131,10 +134,8 @@ namespace CRSC
 
             // Point No. 1
             CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
-
             // Point No. 2
             CrScPointsOut.Add(new Point(b / 2.0, -h * (1.0 / 3.0)));
-
             // Point No. 3
             CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
 
@@ -144,8 +145,6 @@ namespace CRSC
 
             // Point No. 1
             CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
-
-
             // Point No. 2
             CrScPointsIn.Add(new Point(CrScPointsOut[1].X - m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
             // Point No. 3
