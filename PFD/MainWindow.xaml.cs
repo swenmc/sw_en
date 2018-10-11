@@ -1320,7 +1320,7 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                // TODO Ondrej - odstranit zavislost na solid model
+                // TODO Ondrej - odstranit zavislost na solid model, tak aby bolo mozne zobrazit samostany wireframe
                 if (chbDisplaySolidModel.IsChecked == false)
                     chbDisplaySolidModel.SetCurrentValue(CheckBox.IsCheckedProperty, true);
 
@@ -1448,6 +1448,7 @@ namespace PFD
 
                     index++;
                 }
+                // TODO - Ondrej - tu to spadne pre zmene nastavenia checkboxu pre zobrazenie globalnych os
                 ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
                 ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
                 ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
@@ -1497,7 +1498,7 @@ namespace PFD
         {
             Dispatcher.Invoke(() =>
             {
-                MessageBox.Show(text);                
+                MessageBox.Show(text);
             });
         }
     }

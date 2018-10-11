@@ -70,8 +70,7 @@ namespace BaseClasses
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
                     if(membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
-                    //Drawing3D.DrawModelMembersinOneWireFrame(model, _trackport.ViewPort);
-                    Drawing3D.DrawModelMembersWireFrame_OP(model, _trackport.ViewPort);
+                    Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
                 } 
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -152,16 +151,11 @@ namespace BaseClasses
 
         public static Model3DGroup CreateModel3DGroup(CModel model, DisplayOptions sDisplayOptions, EGCS egcs = EGCS.eGCSLeftHanded)
         {
-            // TODO - Ondrej - pridat do nastaveni, default = (emissive???)
-
-            bool bUseDiffuseMaterial = true;
-            bool bUseEmissiveMaterial = true;
-
             Model3DGroup gr = new Model3DGroup();
             if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, bUseDiffuseMaterial, bUseEmissiveMaterial, null, null, null, egcs);
+                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel,sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, null, null, null, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -206,7 +200,7 @@ namespace BaseClasses
             {
                 // Model Group of Members
                 // Prepare member model
-                for (int i = 0; i < model.m_arrMembers.Length; i++) // !!! BUG pocet prvkov sa nacitava z xls aj z prazdnych riadkov pokial su nejako formatovane / nie default
+                for (int i = 0; i < model.m_arrMembers.Length; i++) // !!! Import z xls - BUG pocet prvkov sa nacitava z xls aj z prazdnych riadkov pokial su nejako formatovane / nie default
                 {
                     if (model.m_arrMembers[i] != null &&
                         model.m_arrMembers[i].NodeStart != null &&
@@ -297,7 +291,7 @@ namespace BaseClasses
                 else //between 1/4 and 3/4 is Shell
                 {
                     //zase raz je to standardne spravene takze raz su body pre Shell pridavane tak a raz tak - nutne je to zjednotit
-                    // To Ondrej - Malo by to byt tak ze prva je predna strana, potom zadna strana a potom shell, kde je to tak ze shell je uprostred?
+                    // To Ondrej - Mozem to skusit zjednotit, ako to je to lepsie front, back, shell alebo front, shell, back?
 
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + shift]);
@@ -681,6 +675,7 @@ namespace BaseClasses
             //viewPort.Children.Add(sAxisY_3D);
             //viewPort.Children.Add(sAxisZ_3D);
         }
+
         // Draw Members Centerlines
         public static void DrawModelMembersCenterLines(CModel model, Viewport3D viewPort)
         {
@@ -709,6 +704,8 @@ namespace BaseClasses
                 viewPort.Children.Add(lines);
             }
         }
+
+        // TODO Ondrej - z tychto troch metod staci asi ponechat uz len jednu ??? pripadne popisat naco sa ktora este moze hodit aby to bolo hned zrejme
         // Draw Members Wire Frame
         public static void DrawModelMembersWireFrame_temp(CModel model, Viewport3D viewPort)
         {
@@ -737,7 +734,7 @@ namespace BaseClasses
             }
         }
         // Draw Members Wire Frame - test for better performance
-        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort)
+        public static void DrawModelMembersWireFrame_test(CModel model, Viewport3D viewPort)
         {
             // Members - Wire Frame
             if (model.m_arrMembers != null)
@@ -769,60 +766,7 @@ namespace BaseClasses
             }
         }
         // Add all members in one wireframe collection of ScreenSpaceLines3D
-        public static void DrawModelMembersinOneWireFrame(CModel model, Viewport3D viewPort)
-        {
-            // Members - Wire Frame
-            if (model.m_arrMembers != null)
-            {
-                Color wireFrameColor = Color.FromRgb(60, 60, 60);
-                double thickness = 1.0;
-                ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
-                Int32Collection wireFrameMemberPointNo = new Int32Collection();
-
-                for (int i = 0; i < model.m_arrMembers.Length; i++) // Per each member
-                {
-                    if (model.m_arrMembers[i] != null &&
-                        model.m_arrMembers[i].NodeStart != null &&
-                        model.m_arrMembers[i].NodeEnd != null &&
-                        model.m_arrMembers[i].CrScStart != null &&
-                        model.m_arrMembers[i].BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
-                    {
-                        for (int j = 0; j < 3; j++) // Per front, back side and laterals
-                        {
-                            if (j == 0) // Front Side
-                                wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameFrontIndices();
-                            else if (j == 1) // Laterals
-                                wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameLateralIndices();
-                            else //if (j == 2) // Back Side
-                                wireFrameMemberPointNo = model.m_arrMembers[i].GetMemberWireFrameBackIndices();
-
-                            foreach (Int32 no in wireFrameMemberPointNo) // Assign Point3D of surface model to the each number in the wireframe collection 
-                            {
-                                // TODO Ondrej - performance - Toto bude potrebne odstranit
-                                // Mali by sa pouzit data zo surface modelu pruta, takto sa to vytvara 2 krat raz pre surface model a druhy krat pre wireframe
-                                // Vyriesit co sa stane, ak budeme chciet zobrazit len samostatny wireframe a surface model teda nebude k dispozicii (vygeneruje sa, ale nepouzije sa pri vykresleni?)
-
-                                Model3DGroup model3D = new Model3DGroup();
-                                model3D = model.m_arrMembers[i].getM_3D_G_Member(EGCS.eGCSLeftHanded, Brushes.AliceBlue, Brushes.AliceBlue, Brushes.AliceBlue, true, true);
-
-                                // Potrebujeme sa nejako dostat k bodom siete, asi sa to da urobit aj elegantnejsie :-/
-                                GeometryModel3D m = new GeometryModel3D();
-                                m = (GeometryModel3D)model3D.Children[j];
-                                MeshGeometry3D geom = (MeshGeometry3D)m.Geometry;
-                                wireFrameAllMembers.Points.Add(geom.Positions[no]); // Add Point3D to the collection
-                            }
-                        }
-                    }
-                }
-
-                // Add Wireframe Lines to the trackport
-                wireFrameAllMembers.Name = "WireFrame_Members";
-                model.WireFrameMembers = wireFrameAllMembers;
-                viewPort.Children.Add(wireFrameAllMembers);
-            }
-        }
-        // Add all members in one wireframe collection of ScreenSpaceLines3D
-        public static void DrawModelMembersWireFrame_OP(CModel model, Viewport3D viewPort)
+        public static void DrawModelMembersWireFrame(CModel model, Viewport3D viewPort)
         {
             // Members - Wire Frame
             if (model.m_arrMembers != null)
@@ -850,6 +794,7 @@ namespace BaseClasses
                 viewPort.Children.Add(wl);
             }
         }
+
         // Draw Model Connection Joints Wire Frame
         public static void DrawModelConnectionJointsWireFrame(CModel model, Viewport3D viewPort, bool drawConnectors = true)
         {
@@ -954,6 +899,7 @@ namespace BaseClasses
             viewPort.Children.Add(wireFrame_BackSide);
             viewPort.Children.Add(wireFrame_Lateral);
         }
+
         //  Lights
         public static void AddLightsToModel3D(Model3DGroup gr, DisplayOptions sDisplayOptions)
         {

@@ -1170,44 +1170,9 @@ namespace BaseClasses
             meshBackSide.Positions = meshBackSidePositions;
 
             // Mesh Triangles - various cross-sections shapes defined
-            //mesh.TriangleIndices = obj_CrScA.TriangleIndices;
             meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;
             meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
-
-            // Change mesh triangle indices
-            // Change orientation of normals
-            /*
-            bool bIndicesCW = true; // Clockwise or counter-clockwise system
-            if(bIndicesCW)
-            {
-                ChangeIndices(meshFrontSide.TriangleIndices);
-                ChangeIndices(meshShell.TriangleIndices);
-                ChangeIndices(meshBackSide.TriangleIndices);
-            }
-            */
-        }
-
-        private void ChangeIndices(Int32Collection TriangleIndices)
-        {
-            if (TriangleIndices != null && TriangleIndices.Count > 0)
-            {
-                int iSecond = 1;
-                int iThird = 2;
-
-                int iTIcount = TriangleIndices.Count;
-                for (int i = 0; i < iTIcount / 3; i++)
-                {
-                    int iTI_2 = TriangleIndices[iSecond];
-                    int iTI_3 = TriangleIndices[iThird];
-
-                    TriangleIndices[iThird] = iTI_2;
-                    TriangleIndices[iSecond] = iTI_3;
-
-                    iSecond += 3;
-                    iThird += 3;
-                }
-            }
         }
 
         public Point3DCollection TransformMember_LCStoGCS(EGCS eGCS, Point3D pA, double dDeltaX, double dDeltaY, double dDeltaZ, double dTheta_x, Point3DCollection pointsCollection)
@@ -1453,8 +1418,6 @@ namespace BaseClasses
                     dGammaZ_aux = dGammaZ - Math.PI;
             }
         }
-
-
 
         //refaktoring
         public ScreenSpaceLines3D CreateWireFrame(float x, EGCS eGCS = EGCS.eGCSLeftHanded, Color? color = null, double thickness = 1.0)
@@ -1960,15 +1923,4 @@ namespace BaseClasses
         }
 
     } // End of Class CMember
-
-    /*
-    public class CCompare_MemberID : IComparer
-    {
-        // x<y - zaporne cislo; x=y - nula; x>y - kladne cislo
-        public int Compare(object x, object y)
-        {
-            return ((CMember)x).ID - ((CMember)y).ID;
-        }
-    }
-    */
 }

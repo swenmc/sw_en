@@ -162,23 +162,6 @@ namespace CRSC
         }
 
         //// Use for Inside surface of hollow sections
-        //private float[,] m_CrScPointsIn;
-
-        //public float[,] CrScPointsIn
-        //{
-        //    get { return m_CrScPointsIn; }
-        //    set { m_CrScPointsIn = value; }
-        //}
-
-        //// Use for Outside surface of hollow sections and surface of solid sections
-        //private float[,] m_CrScPointsOut;
-
-        //public float[,] CrScPointsOut
-        //{
-        //    get { return m_CrScPointsOut; }
-        //    set { m_CrScPointsOut = value; }
-        //}
-        //// Use for Inside surface of hollow sections
         private List<Point> m_CrScPointsIn;
 
         public List<Point> CrScPointsIn
