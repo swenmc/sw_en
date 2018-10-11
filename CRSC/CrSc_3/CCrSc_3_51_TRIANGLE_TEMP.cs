@@ -18,6 +18,8 @@ namespace CRSC
             set { m_ft = value; }
         }
 
+        bool bIsDefinedCCW = false; // Pomocny bool
+
         public CCrSc_3_51_TRIANGLE_TEMP(float fh = 0.866025f * 0.5f, float fb = 0.5f, float ft = 0.002f)
         {
             CSColor = Colors.DarkGreen;
@@ -96,60 +98,88 @@ namespace CRSC
             loadCrScWireFrameIndices();
         }
 
-        //public void CalcCrSc_Coord()
-        //{
-        //    // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-
-        //    // Point No. 1
-        //    CrScPointsOut[0, 0] = 0;                                    // y
-        //    CrScPointsOut[0, 1] = (float)h * (2f / 3f);                 // z
-
-        //    // Point No. 2
-        //    CrScPointsOut[1, 0] = (float)b / 2f;                        // y
-        //    CrScPointsOut[1, 1] = -(float)h * (1f / 3f);                // z
-
-        //    // Point No. 3
-        //    CrScPointsOut[2, 0] = -CrScPointsOut[1, 0];                 // y
-        //    CrScPointsOut[2, 1] = CrScPointsOut[1, 1];                  // z
-
-        //    float fAlphaDeg = 30f;
-
-        //    // Internal
-
-        //    // Point No. 1
-        //    CrScPointsIn[0, 0] = CrScPointsOut[0, 0];   // y
-        //    CrScPointsIn[0, 1] = CrScPointsOut[0, 1] - m_ft / (float)Math.Sin(fAlphaDeg * MathF.fPI / 180f);   // z
-
-        //    // Point No. 2
-        //    CrScPointsIn[1, 0] = CrScPointsOut[1, 0] - m_ft / (float)Math.Tan(fAlphaDeg * MathF.fPI / 180f);   // y
-        //    CrScPointsIn[1, 1] = CrScPointsOut[1, 1] + m_ft;   // z
-
-        //    // Point No. 3
-        //    CrScPointsIn[2, 0] = -CrScPointsIn[1, 0];  // y
-        //    CrScPointsIn[2, 1] = CrScPointsIn[1, 1];   // z
-        //}
         public void CalcCrSc_Coord()
         {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
-            // Point No. 1
-            CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
-            // Point No. 2
-            CrScPointsOut.Add(new Point(b / 2.0, -h * (1.0 / 3.0)));
-            // Point No. 3
-            CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
+            if (bIsDefinedCCW)
+            {
+                // Defined Counter-clockwise
 
-            float fAlphaDeg = 30f;
+                // Point No. 1
+                CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
+                // Point No. 2
+                CrScPointsOut.Add(new Point(-b / 2.0, -h * (1.0 / 3.0)));
+                // Point No. 3
+                CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
 
-            // Internal
+                float fAlphaDeg = 30f;
 
-            // Point No. 1
-            CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
-            // Point No. 2
-            CrScPointsIn.Add(new Point(CrScPointsOut[1].X - m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
-            // Point No. 3
-            CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+                // Internal
+
+                // Point No. 1
+                CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
+                // Point No. 2
+                CrScPointsIn.Add(new Point(CrScPointsOut[1].X + m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
+                // Point No. 3
+                CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+            }
+            else
+            {
+                // Point No. 1
+                CrScPointsOut.Add(new Point(0, h * (2.0 / 3.0)));
+                // Point No. 2
+                CrScPointsOut.Add(new Point(b / 2.0, -h * (1.0 / 3.0)));
+                // Point No. 3
+                CrScPointsOut.Add(new Point(-CrScPointsOut[1].X, CrScPointsOut[1].Y));
+
+                float fAlphaDeg = 30f;
+
+                // Internal
+
+                // Point No. 1
+                CrScPointsIn.Add(new Point(CrScPointsOut[0].X, CrScPointsOut[0].Y - m_ft / Math.Sin(fAlphaDeg * MathF.fPI / 180f)));
+                // Point No. 2
+                CrScPointsIn.Add(new Point(CrScPointsOut[1].X - m_ft / Math.Tan(fAlphaDeg * MathF.fPI / 180f), CrScPointsOut[1].Y + m_ft));
+                // Point No. 3
+                CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
+            }
         }
 
+        protected override void loadCrScIndicesFrontSide()
+        {
+            TriangleIndicesFrontSide = new Int32Collection(3 * 6);
+
+            if (bIsDefinedCCW)
+            {
+                AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, 0, 1, 4, 3);
+                AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, 1, 2, 5, 4);
+                AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, 2, 0, 3, 5);
+            }
+            else
+            {
+                AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 4, 3);
+                AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 1, 2, 5, 4);
+                AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 2, 0, 3, 5);
+            }
+        }
+
+        protected override void loadCrScIndicesBackSide()
+        {
+            TriangleIndicesBackSide = new Int32Collection(3 * 6);
+
+            if (bIsDefinedCCW)
+            {
+                AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 4, ITotNoPoints + 3);
+                AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 5, ITotNoPoints + 4);
+                AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 2, ITotNoPoints + 0, ITotNoPoints + 3, ITotNoPoints + 5);
+            }
+            else
+            {
+                AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 4, ITotNoPoints + 3);
+                AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 5, ITotNoPoints + 4);
+                AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 2, ITotNoPoints + 0, ITotNoPoints + 3, ITotNoPoints + 5);
+            }
+        }
     }
 }
