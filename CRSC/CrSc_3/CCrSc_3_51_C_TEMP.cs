@@ -111,20 +111,35 @@ namespace CRSC
 
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection(3 * 6);
+            //TriangleIndicesFrontSide = new Int32Collection(3 * 6);
 
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 6, 7);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 1, 2, 5, 6);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 2, 3, 4, 5);
+            TriangleIndicesFrontSide = new Int32Collection() { 0, 1, 6, 0, 6, 7, 1, 2, 6, 6, 2, 5, 5, 2, 4, 2, 3, 4 };
+
+            //AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 6, 7);
+            //AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 1, 2, 5, 6);
+            //AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 2, 3, 4, 5);
         }
 
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection(3 * 6);
+            TriangleIndicesBackSide = new Int32Collection();
 
-            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 6, ITotNoPoints + 7);
-            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 5, ITotNoPoints + 6);
-            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 2, ITotNoPoints + 3, ITotNoPoints + 4, ITotNoPoints + 5);
+            TriangleIndicesBackSide = new Int32Collection() { 0, 1, 6, 0, 6, 7, 1, 2, 6, 6, 2, 5, 5, 2, 4, 2, 3, 4 };
+
+            //AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 6, ITotNoPoints + 7);
+            //AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 5, ITotNoPoints + 6);
+            //AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 2, ITotNoPoints + 3, ITotNoPoints + 4, ITotNoPoints + 5);
+        }
+
+        protected override void loadCrScIndicesShell()
+        {
+            TriangleIndicesShell = new Int32Collection();
+
+            TriangleIndicesShell = new Int32Collection() { 1,8,9, 1,0,8, 0,9,8, 1,9,10, 1,10,2, 2,11,10, 2,3,11, 3,11,12, 3,12,4, 4,12,13, 4,13,5, 5,13,14, 5,14,6, 15,14,6, 6,7,15, 7,15,8, 7,8,0 };
+
+            //AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 6, ITotNoPoints + 7);
+            //AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 5, ITotNoPoints + 6);
+            //AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 2, ITotNoPoints + 3, ITotNoPoints + 4, ITotNoPoints + 5);
         }
     }
 }

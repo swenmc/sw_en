@@ -1149,12 +1149,12 @@ namespace BaseClasses
             meshFrontSidePositions.Freeze();
             meshBackSidePositions.Freeze();
             meshShellPositions.Freeze();
-            meshFrontSide.Positions = meshFrontSidePositions;
+            meshFrontSide.Positions = meshFrontSidePositions;            
             meshBackSide.Positions = meshBackSidePositions;
             meshShell.Positions = meshShellPositions;
 
             // Mesh Triangles - various cross-sections shapes defined
-            meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;
+            meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;            
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
             meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
         }
