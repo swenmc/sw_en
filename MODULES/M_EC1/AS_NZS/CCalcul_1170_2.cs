@@ -955,7 +955,7 @@ namespace M_EC1.AS_NZS
                 reader.Close();
             }
 
-            // Copy first item for Beta = 0 deg (Notrth) to the last item for Beta = 360 deg
+            // Copy first item for Beta = 0 deg (North) to the last item for Beta = 360 deg
             fM_D_array_values_9[8] = fM_D_array_values_9[0];
             sWindDirections_9[8] = sWindDirections_9[0];
         }
