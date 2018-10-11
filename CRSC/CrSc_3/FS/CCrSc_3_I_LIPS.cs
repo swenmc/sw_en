@@ -74,9 +74,7 @@ namespace CRSC
             loadCrScIndices();
 
             // Wireframe Indices
-            loadCrScWireFrameIndicesFrontSide();
-            loadCrScWireFrameIndicesBackSide();
-            loadCrScWireFrameIndicesLaterals();
+            loadCrScWireFrameIndices();
         }
 
         //public void CalcCrSc_Coord()

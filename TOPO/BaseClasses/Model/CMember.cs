@@ -462,8 +462,8 @@ namespace BaseClasses
             getG_M_3D_Member(eGCS, brushFrontSide, brushShell, brushBackSide, bUseDiffuseMaterial, bUseEmissiveMaterial, out modelFrontSide, out  modelShell, out modelBackSide);
 
             MObject3DModel.Children.Add((Model3D)modelFrontSide);
-            MObject3DModel.Children.Add((Model3D)modelShell);
             MObject3DModel.Children.Add((Model3D)modelBackSide);
+            MObject3DModel.Children.Add((Model3D)modelShell);
 
             return MObject3DModel;
         }
@@ -501,41 +501,41 @@ namespace BaseClasses
             out GeometryModel3D modelFrontSide, out GeometryModel3D modelShell, out GeometryModel3D modelBackSide)
         {
             modelFrontSide = new GeometryModel3D();
-            modelShell = new GeometryModel3D();
             modelBackSide = new GeometryModel3D();
+            modelShell = new GeometryModel3D();
 
             MeshGeometry3D meshFrontSide = new MeshGeometry3D();
-            MeshGeometry3D meshShell= new MeshGeometry3D();
             MeshGeometry3D meshBackSide = new MeshGeometry3D();
+            MeshGeometry3D meshShell = new MeshGeometry3D();
 
             getMeshMemberGeometry3DFromCrSc_Three(eGCS, CrScStart, CrScEnd, DTheta_x, out meshFrontSide, out meshShell, out meshBackSide);
 
             modelFrontSide.Geometry = meshFrontSide;
-            modelShell.Geometry = meshShell;
             modelBackSide.Geometry = meshBackSide;
+            modelShell.Geometry = meshShell;
 
             modelFrontSide.Material = new EmissiveMaterial(brushFrontSide);
-            modelShell.Material = new EmissiveMaterial(brushShell);
             modelBackSide.Material = new EmissiveMaterial(brushBackSide);
+            modelShell.Material = new EmissiveMaterial(brushShell);
 
             MaterialGroup materialGroupFrontSide = new MaterialGroup();
-            MaterialGroup materialGroupShell = new MaterialGroup();
             MaterialGroup materialGroupBackSide = new MaterialGroup();
+            MaterialGroup materialGroupShell = new MaterialGroup();
 
             if (bUseDiffuseMaterial || bUseEmissiveMaterial)
             {
                 if (bUseDiffuseMaterial)
                 {
                     materialGroupFrontSide.Children.Add(new DiffuseMaterial(brushFrontSide));
-                    materialGroupShell.Children.Add(new DiffuseMaterial(brushShell));
                     materialGroupBackSide.Children.Add(new DiffuseMaterial(brushBackSide));
+                    materialGroupShell.Children.Add(new DiffuseMaterial(brushShell));
                 }
 
                 if (bUseEmissiveMaterial)
                 {
                     materialGroupFrontSide.Children.Add(new EmissiveMaterial(brushFrontSide));
-                    materialGroupShell.Children.Add(new EmissiveMaterial(brushShell));
                     materialGroupBackSide.Children.Add(new EmissiveMaterial(brushBackSide));
+                    materialGroupShell.Children.Add(new EmissiveMaterial(brushShell));
                 }
             }
             else
@@ -544,8 +544,8 @@ namespace BaseClasses
             }
 
             modelFrontSide.Material = materialGroupFrontSide;
-            modelShell.Material = materialGroupShell;
             modelBackSide.Material = materialGroupBackSide;
+            modelShell.Material = materialGroupShell;
         }
 
         // TODO Ondrej - 25/07/2018 refaktorovat a optimalizovat metody
@@ -864,33 +864,18 @@ namespace BaseClasses
                 }
                 System.Console.Write(sOutput); // Write in console window
             }
-
-            // Change mesh triangle indices
-            // Change orientation of normals
-
-            //if (eGCS == EGCS.eGCSLeftHanded)
-            //{
-            /*
-            bool bIndicesCW = true; // Clockwise or counter-clockwise system
-
-            if(bIndicesCW)
-              ChangeIndices(mesh.TriangleIndices);
-            */
-            //}
         }
 
         private void getMeshMemberGeometry3DFromCrSc_Three(EGCS eGCS, CCrSc obj_CrScA, CCrSc obj_CrScB, double dTheta_x, out MeshGeometry3D meshFrontSide, out MeshGeometry3D meshShell, out MeshGeometry3D meshBackSide)
         {
             // Separate mesh for front, back and shell surfaces of member
             meshFrontSide = new MeshGeometry3D();
-            meshShell = new MeshGeometry3D();
             meshBackSide = new MeshGeometry3D();
-            
-            //24.7.2018
-            //Mato - pre optimalizaciu je potrebne inicializovat velkost kolekcie
+            meshShell = new MeshGeometry3D();
+
             Point3DCollection meshFrontSidePositions = new Point3DCollection();
-            Point3DCollection meshShellPositions = new Point3DCollection();
             Point3DCollection meshBackSidePositions = new Point3DCollection();
+            Point3DCollection meshShellPositions = new Point3DCollection();
 
             // Number of Points per section
             int iNoCrScPoints2D;
@@ -1158,21 +1143,20 @@ namespace BaseClasses
 
             // Transform coordinates
             TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y,NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshFrontSidePositions); // Posun voci povodnemu definicnemu uzlu pruta
-            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshShellPositions);
             TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshBackSidePositions);
-
+            TransformMember_LCStoGCS(eGCS, new Point3D(NodeStart.X, NodeStart.Y, NodeStart.Z), dDelta_X, dDelta_Y, dDelta_Z, dTheta_x, meshShellPositions);
 
             meshFrontSidePositions.Freeze();
-            meshShellPositions.Freeze();
             meshBackSidePositions.Freeze();
+            meshShellPositions.Freeze();
             meshFrontSide.Positions = meshFrontSidePositions;
-            meshShell.Positions = meshShellPositions;
             meshBackSide.Positions = meshBackSidePositions;
+            meshShell.Positions = meshShellPositions;
 
             // Mesh Triangles - various cross-sections shapes defined
             meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;
-            meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
+            meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
         }
 
         public Point3DCollection TransformMember_LCStoGCS(EGCS eGCS, Point3D pA, double dDeltaX, double dDeltaY, double dDeltaZ, double dTheta_x, Point3DCollection pointsCollection)
@@ -1600,78 +1584,6 @@ namespace BaseClasses
             TransformMember_LCStoGCS(eGCS, p_temp, Delta_X, Delta_Y, Delta_Z, m_dTheta_x, wireFrame.Points);
 
             return wireFrame;
-        }
-
-        // TODO
-        // Nove funkcie - To Ondrej: upravit podla potreby ako chceme mat rozdelene jednotlive body, jeden balik pre cely prut alebo predna strana, zadna strana, plast
-        // V surface modeli pruta su obe moznosti (rozdelene to bolo v minulosti preto, aby mohli mat cela pruta inu farbu), ale pre rychle vykreslovanie by sme mohli ponechat aj Model3D, v ktorom su vsetky positions a indices
-        // v jednom balicku pre cely prut a vykresluje sa to len jednou farbou, mohlo by to byt ovela rychlejsie ak uzivatela celne steny nezaujimaju,
-        // navyse tie hrubky u prierezov, pre ktore to teraz robime priecinok "FS" v projekte CRSC - CrSc_3, su tak tenke ze to ani nie je vidno
-
-        public Int32Collection GetMemberWireFrameFrontIndices()
-        {
-            // Returns collection of point indices for front side of wireframe
-            Int32Collection memberWireframeIndices = new Int32Collection();
-
-            foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideOut)
-                memberWireframeIndices.Add(pointNo);
-
-            if (CrScStart.WireFrameIndicesFrontSideIn != null && CrScStart.WireFrameIndicesFrontSideIn.Count > 0)
-            {
-                foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideIn)
-                    memberWireframeIndices.Add(pointNo);
-            }
-
-            return memberWireframeIndices;
-        }
-
-        public Int32Collection GetMemberWireFrameBackIndices()
-        {
-            // Returns collection of point indices for back side of wireframe
-            Int32Collection memberWireframeIndices = new Int32Collection();
-
-            foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideOut)
-                memberWireframeIndices.Add(pointNo);
-
-            if (CrScStart.WireFrameIndicesBackSideIn != null && CrScStart.WireFrameIndicesBackSideIn.Count > 0)
-            {
-                foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideIn)
-                    memberWireframeIndices.Add(pointNo);
-            }
-
-            return memberWireframeIndices;
-        }
-
-        public Int32Collection GetMemberWireFrameLateralIndices()
-        {
-            // Returns collection of point indices for lateral wireframe
-            return CrScStart.WireFrameIndicesLateral;
-        }
-
-        public Int32Collection GetMemberWireFrameIndices()
-        {
-            // Returns collection of point indices for whole member wireframe
-            Int32Collection memberWireframeIndices = new Int32Collection();
-
-            foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideOut)
-                memberWireframeIndices.Add(pointNo);
-
-            if (CrScStart.WireFrameIndicesFrontSideIn != null && CrScStart.WireFrameIndicesFrontSideIn.Count > 0)
-            {
-                foreach (Int32 pointNo in CrScStart.WireFrameIndicesFrontSideIn)
-                    memberWireframeIndices.Add(pointNo);
-            }
-
-            foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideOut)
-                memberWireframeIndices.Add(pointNo);
-
-            if (CrScStart.WireFrameIndicesBackSideIn != null && CrScStart.WireFrameIndicesBackSideIn.Count > 0)
-            {
-                foreach (Int32 pointNo in CrScStart.WireFrameIndicesBackSideIn)
-                    memberWireframeIndices.Add(pointNo);
-            }
-
-            return memberWireframeIndices;
         }
 
         public void CalculateMemberLimits(out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y, out double fTempMax_Z, out double fTempMin_Z)

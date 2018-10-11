@@ -121,9 +121,7 @@ namespace CRSC
             loadCrScIndices();
 
             // Wireframe Indices
-            loadCrScWireFrameIndicesFrontSide();
-            loadCrScWireFrameIndicesBackSide();
-            loadCrScWireFrameIndicesLaterals();
+            loadCrScWireFrameIndices();
 
             FillCrScPropertiesByTableData();
         }

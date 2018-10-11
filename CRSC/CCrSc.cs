@@ -21,47 +21,6 @@ namespace CRSC
             set { m_TriangleIndices = value; }
         }
 
-        // Kolekcia bodov definujuca linie obrysu vonkajsej alebo vnutornej outline
-        private Int32Collection m_WireFrameIndicesFrontSideOut;
-
-        public Int32Collection WireFrameIndicesFrontSideOut
-        {
-            get { return m_WireFrameIndicesFrontSideOut; }
-            set { m_WireFrameIndicesFrontSideOut = value; }
-        }
-
-        private Int32Collection m_WireFrameIndicesFrontSideIn;
-
-        public Int32Collection WireFrameIndicesFrontSideIn
-        {
-            get { return m_WireFrameIndicesFrontSideIn; }
-            set { m_WireFrameIndicesFrontSideIn = value; }
-        }
-
-        private Int32Collection m_WireFrameIndicesBackSideOut;
-
-        public Int32Collection WireFrameIndicesBackSideOut
-        {
-            get { return m_WireFrameIndicesBackSideOut; }
-            set { m_WireFrameIndicesBackSideOut = value; }
-        }
-
-        private Int32Collection m_WireFrameIndicesBackSideIn;
-
-        public Int32Collection WireFrameIndicesBackSideIn
-        {
-            get { return m_WireFrameIndicesBackSideIn; }
-            set { m_WireFrameIndicesBackSideIn = value; }
-        }
-
-        private Int32Collection m_WireFrameIndicesLateral;
-
-        public Int32Collection WireFrameIndicesLateral
-        {
-            get { return m_WireFrameIndicesLateral; }
-            set { m_WireFrameIndicesLateral = value; }
-        }
-
         private Int32Collection m_WireFrameIndices; // Whole member
 
         public Int32Collection WireFrameIndices
@@ -854,279 +813,157 @@ namespace CRSC
             }
         }
 
-        protected abstract void loadCrScIndices();
-
-        // New
         protected abstract void loadCrScIndicesFrontSide();
         protected abstract void loadCrScIndicesShell();
         protected abstract void loadCrScIndicesBackSide();
+
+        protected abstract void loadCrScIndices();
+
+        public virtual void loadCrScWireFrameIndices()
+        {
+            List<int> indices = new List<int>();
+
+            if (m_bIsShapeSolid) // I, U, L, T, ...
+            {
+                // Postup pridavania bodov (positions) do kolekcie
+                // Front side
+                // Back side
+                // Shell
+
+                // Front Side
+                for (int i = 0; i < ITotNoPoints; i++)
+                {
+                    if (i < ITotNoPoints - 1)
+                    {
+                        indices.Add(i);
+                        indices.Add(i + 1);
+                    }
+                    else // Last line
+                    {
+                        indices.Add(i);
+                        indices.Add(0);
+                    }
+                }
+
+                // Back Side
+                for (int i = 0; i < ITotNoPoints; i++)
+                {
+                    if (i < ITotNoPoints - 1)
+                    {
+                        indices.Add(ITotNoPoints + i);
+                        indices.Add(ITotNoPoints + i + 1);
+                    }
+                    else // Last line
+                    {
+                        indices.Add(ITotNoPoints + i);
+                        indices.Add(ITotNoPoints + 0);
+                    }
+                }
+
+                // Lateral
+                for (int i = 0; i < ITotNoPoints; i++)
+                {
+                    indices.Add(i);
+                    indices.Add(ITotNoPoints + i);
+                }
+            }
+            else // Cross-section with opening(s) // TUBE, BOX, ...
+            {
+                // Postup pridavania bodov (positions) do kolekcie
+                // Front side - outside
+                // Front side - inside
+
+                // Back side - outside
+                // Back side - inside
+
+                // Shell - outside
+                // Shell - inside
+
+                // TODO Martin - bude potrebne skontrolovat ako to funguje pre auxiliary points ak je pocet vacsi nez nula (body v ploche prierezu, ktore nelezia na outline)
+
+                // Front Side - outside
+                for (int i = 0; i < INoPointsOut; i++)
+                {
+                    if (i < INoPointsOut - 1)
+                    {
+                        indices.Add(i);
+                        indices.Add(i + 1);
+                    }
+                    else // Last line
+                    {
+                        indices.Add(i);
+                        indices.Add(0);
+                    }
+                }
+
+                // Front Side - inside
+                for (int i = 0; i < INoPointsIn; i++)
+                {
+                    if (i < INoPointsIn - 1)
+                    {
+                        indices.Add(INoPointsOut + i);
+                        indices.Add(INoPointsOut + i + 1);
+                    }
+                    else // Last line
+                    {
+                        indices.Add(INoPointsOut + i);
+                        indices.Add(INoPointsOut + 0);
+                    }
+                }
+
+                // Back Side - outside
+                for (int i = 0; i < INoPointsOut; i++)
+                {
+                    if (i < INoPointsOut - 1)
+                    {
+                        indices.Add(ITotNoPoints + i);
+                        indices.Add(ITotNoPoints + i + 1);
+                    }
+                    else // Last line
+                    {
+                        indices.Add(ITotNoPoints + i);
+                        indices.Add(ITotNoPoints + 0);
+                    }
+                }
+
+                // Back Side - inside
+                for (int i = 0; i < INoPointsIn; i++)
+                {
+                    if (i < INoPointsIn - 1)
+                    {
+                        indices.Add(ITotNoPoints + INoPointsOut + i);
+                        indices.Add(ITotNoPoints + INoPointsOut + i + 1);
+                    }
+                    else // Last line
+                    {
+                        indices.Add(ITotNoPoints + INoPointsOut + i);
+                        indices.Add(ITotNoPoints + INoPointsOut + 0);
+                    }
+                }
+
+                // Lateral - outside
+                for (int i = 0; i < INoPointsOut; i++)
+                {
+                    indices.Add(i);
+                    indices.Add(ITotNoPoints + i);
+                }
+
+                // Lateral - inside
+                for (int i = 0; i < INoPointsIn; i++)
+                {
+                    indices.Add(INoPointsOut + i);
+                    indices.Add(INoPointsOut + ITotNoPoints + i);
+                }
+            }
+
+            // Set wireframe indices - whole member
+            WireFrameIndices = new Int32Collection(indices);
+        }
 
         // Calculate cross-section properties
         // CCRSC_TW -thin-walled cross-section (defined by thickness and centerline points, could be combined with outline definition)
         // CCRSC_SO (solid or massive cross-section (defined by outline)
         public abstract void CalculateSectionProperties();
-
-        // TODO - ONDREJ PROSIM REFAKTOROVAT
-        // PREDNA A ZADNA STRANA BY MOHLI MAT SPOLOCNY KOD
-        // VNUTORNY A VONKAJSI OBRYS BY MOHLI MAT SPOLOCNY KOD
-
-        //public void loadCrScWireFrameIndicesFrontSide()
-        //{
-        //    // Outside outline
-        //    if (CrScPointsOut != null && CrScPointsOut.Length > 0)
-        //    {
-        //        WireFrameIndicesFrontSideOut = new Int32Collection();
-
-        //        for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
-        //        {
-        //            if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
-        //            {
-        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
-        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i +1);
-        //            }
-        //            else // Last line
-        //            {
-        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
-        //                WireFrameIndicesFrontSideOut.Add(INoAuxPoints + 0);
-        //            }
-        //        }
-        //    }
-
-        //    // Inside outline
-        //    if (CrScPointsIn != null && CrScPointsIn.Length > 0)
-        //    {
-        //        WireFrameIndicesFrontSideIn = new Int32Collection();
-
-        //        for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
-        //        {
-        //            if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
-        //            {
-        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
-        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i + 1);
-        //            }
-        //            else // Last line
-        //            {
-        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
-        //                WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + 0);
-        //            }
-        //        }
-        //    }
-        //}
-
-        public void loadCrScWireFrameIndicesFrontSide()
-        {
-            // Outside outline
-            if (CrScPointsOut != null && CrScPointsOut.Count > 0)
-            {
-                WireFrameIndicesFrontSideOut = new Int32Collection();
-
-                for (int i = 0; i < CrScPointsOut.Count - INoAuxPoints; i++)
-                {
-                    if (i < CrScPointsOut.Count - INoAuxPoints - 1)
-                    {
-                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
-                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i + 1);
-                    }
-                    else // Last line
-                    {
-                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + i);
-                        WireFrameIndicesFrontSideOut.Add(INoAuxPoints + 0);
-                    }
-                }
-            }
-
-            // Inside outline
-            if (CrScPointsIn != null && CrScPointsIn.Count > 0)
-            {
-                WireFrameIndicesFrontSideIn = new Int32Collection();
-
-                for (int i = 0; i < CrScPointsIn.Count - INoAuxPoints; i++)
-                {
-                    if (i < CrScPointsIn.Count - INoAuxPoints - 1)
-                    {
-                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
-                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i + 1);
-                    }
-                    else // Last line
-                    {
-                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + i);
-                        WireFrameIndicesFrontSideIn.Add(INoPointsOut + INoAuxPoints + 0);
-                    }
-                }
-            }
-        }
-
-        //public void loadCrScWireFrameIndicesBackSide()
-        //{
-        //    // Outside outline
-        //    if (CrScPointsOut != null && CrScPointsOut.Length > 0)
-        //    {
-        //        WireFrameIndicesBackSideOut = new Int32Collection();
-
-        //        for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
-        //        {
-        //            // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
-
-        //            if (i < CrScPointsOut.Length / 2 - INoAuxPoints - 1)
-        //            {
-        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
-        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i + 1);
-        //            }
-        //            else // Last line
-        //            {
-        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
-        //                WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + 0);
-        //            }
-        //        }
-        //    }
-
-        //    // Inside outline
-        //    if (CrScPointsIn != null && CrScPointsIn.Length > 0)
-        //    {
-        //        WireFrameIndicesBackSideIn = new Int32Collection();
-
-        //        for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
-        //        {
-        //            // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
-
-        //            if (i < CrScPointsIn.Length / 2 - INoAuxPoints - 1)
-        //            {
-        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
-        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i + 1);
-        //            }
-        //            else // Last line
-        //            {
-        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + i);
-        //                WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ + INoPointsOut + INoAuxPoints + 0);
-        //            }
-        //        }
-        //    }
-        //}
-        public void loadCrScWireFrameIndicesBackSide()
-        {
-            // Outside outline
-            if (CrScPointsOut != null && CrScPointsOut.Count > 0)
-            {
-                WireFrameIndicesBackSideOut = new Int32Collection();
-
-                for (int i = 0; i < CrScPointsOut.Count - INoAuxPoints; i++)
-                {
-                    // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
-
-                    if (i < CrScPointsOut.Count - INoAuxPoints - 1)
-                    {
-                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
-                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i + 1);
-                    }
-                    else // Last line
-                    {
-                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + i);
-                        WireFrameIndicesBackSideOut.Add(/*ITotNoPoints +*/ INoAuxPoints + 0);
-                    }
-                }
-            }
-
-            // Inside outline
-            if (CrScPointsIn != null && CrScPointsIn.Count > 0)
-            {
-                WireFrameIndicesBackSideIn = new Int32Collection();
-
-                for (int i = 0; i < CrScPointsIn.Count - INoAuxPoints; i++)
-                {
-                    // Do not add "ITotNoPoints" because indices in the back side are separated from the front side
-
-                    if (i < CrScPointsIn.Count - INoAuxPoints - 1)
-                    {
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + i);
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + i + 1);
-                    }
-                    else // Last line
-                    {
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + i);
-                        WireFrameIndicesBackSideIn.Add(/*ITotNoPoints +*/ +INoPointsOut + INoAuxPoints + 0);
-                    }
-                }
-            }
-        }
-
-        //public void loadCrScWireFrameIndicesLaterals()
-        //{
-        //    if (CrScPointsOut != null && CrScPointsOut.Length > 0)
-        //    {
-        //        WireFrameIndicesLateral = new Int32Collection();
-
-        //        for (int i = 0; i < CrScPointsOut.Length / 2 - INoAuxPoints; i++)
-        //        {
-        //            WireFrameIndicesLateral.Add(INoAuxPoints + i);
-        //            WireFrameIndicesLateral.Add(ITotNoPoints + INoAuxPoints + i);
-        //        }
-        //    }
-
-        //    if (CrScPointsIn != null && CrScPointsIn.Length > 0)
-        //    {
-        //        for (int i = 0; i < CrScPointsIn.Length / 2 - INoAuxPoints; i++)
-        //        {
-        //            WireFrameIndicesLateral.Add(INoPointsOut + INoAuxPoints + i);
-        //            WireFrameIndicesLateral.Add(ITotNoPoints + INoPointsOut + INoAuxPoints + i);
-        //        }
-        //    }
-        //}
-        public void loadCrScWireFrameIndicesLaterals()
-        {
-            if (CrScPointsOut != null && CrScPointsOut.Count > 0)
-            {
-                WireFrameIndicesLateral = new Int32Collection();
-
-                for (int i = 0; i < CrScPointsOut.Count - INoAuxPoints; i++)
-                {
-                    WireFrameIndicesLateral.Add(INoAuxPoints + i);
-                    WireFrameIndicesLateral.Add(ITotNoPoints + INoAuxPoints + i);
-                }
-            }
-
-            if (CrScPointsIn != null && CrScPointsIn.Count > 0)
-            {
-                for (int i = 0; i < CrScPointsIn.Count - INoAuxPoints; i++)
-                {
-                    WireFrameIndicesLateral.Add(INoPointsOut + INoAuxPoints + i);
-                    WireFrameIndicesLateral.Add(ITotNoPoints + INoPointsOut + INoAuxPoints + i);
-                }
-            }
-        }
-
-        public virtual void loadCrScWireFrameIndices()
-        {
-            int capacity = WireFrameIndicesFrontSideOut.Count + WireFrameIndicesFrontSideIn.Count +
-                           WireFrameIndicesBackSideOut.Count + WireFrameIndicesBackSideIn.Count +
-                           + WireFrameIndicesLateral.Count;
-            List<int> list = new List<int>(capacity);
-
-            // Postup pridavania bodov (positions) do kolekcie
-            // Front side - outside
-            // Front side - inside
-
-            // Back side - outside
-            // Back side - inside
-
-            // Postup pridavania indices (indexov bodov) do kolekcie
-            // Front side
-            // Back side
-
-            // Shell - outside
-            // Shell - inside
-
-            // TODO Martin - bude potrebne skontrolovat ako to funguje pre auxiliary points ak je pocet vacsi nez nula (body v ploche prierezu, ktore nelezia na outline)
-
-            list.AddRange(WireFrameIndicesFrontSideOut);
-            list.AddRange(WireFrameIndicesFrontSideIn);
-
-            list.AddRange(WireFrameIndicesBackSideOut);
-            list.AddRange(WireFrameIndicesBackSideIn);
-
-            list.AddRange(WireFrameIndicesLateral);
-
-            WireFrameIndices = new Int32Collection(list);
-        }
 
         public void CalculateCrScLimits(out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
         {
@@ -1194,7 +1031,6 @@ namespace CRSC
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsOut);
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_CrScPointsIn);
         }
-
 
         // Mirror cross-section about y
         public void MirrorCRSCAboutY()

@@ -46,14 +46,13 @@ namespace sw_en_GUI
             list_trackports = new List<Trackport3D>();
 
             /*
-			Container.Children.CollectionChanged += (o, e) => Menu_RefreshWindows();
-			Window2 win = new Window2();
-			list_trackports = new List<Trackport3D>();
-			list_trackports.Add(win._trackport);
+            Container.Children.CollectionChanged += (o, e) => Menu_RefreshWindows();
+            Window2 win = new Window2();
+            list_trackports = new List<Trackport3D>();
+            list_trackports.Add(win._trackport);
 
-			Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Window " + (Container.Children.Count + 1) });
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Window " + (Container.Children.Count + 1) });
             */
-
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace sw_en_GUI
             list_trackports.Add(win._trackport);
 
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Window " + (Container.Children.Count + 1) });
-            win.Close();            
+            win.Close();
         }
 
         private void menuItemSave_Click(object sender, RoutedEventArgs e)
@@ -368,7 +367,6 @@ namespace sw_en_GUI
             {
                 try
                 {
-
                     //crsc = new CCrSc_3_00(0, 8, 300, 125, 16.2f, 10.8f, 10.8f, 6.5f, 241.6f); // I 300 section
                     crsc = new CCrSc_0_05(0.1f, 0.05f);
 
@@ -1041,7 +1039,7 @@ namespace sw_en_GUI
 
             sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplayMembersCenterLines = true;
-            sDisplayOptions.bDistinguishedColor = true;
+            sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);

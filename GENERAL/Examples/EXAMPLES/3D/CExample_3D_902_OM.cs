@@ -14,10 +14,10 @@ namespace Examples
             m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
-            m_arrNodes = new CNode[2];
-            m_arrMembers = new CMember[1];
+            m_arrNodes = new CNode[4];
+            m_arrMembers = new CMember[2];
             m_arrMat = new CMat[1];
-            m_arrCrSc = new CCrSc[1];
+            m_arrCrSc = new CCrSc[2];
             m_arrNSupports = new CNSupport[2];
             //m_arrNLoads = new BaseClasses.CNLoad[35];
 
@@ -38,8 +38,8 @@ namespace Examples
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
 
             // Pokusy
-            //m_arrCrSc[0] = new CCrSc_3_51_C_TEMP(0,0.27f, 0.1f, 0.02f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_51_C_TEMP(0,0.27f, 0.1f, 0.02f, Colors.Orange);
+            m_arrCrSc[1] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.Orange);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 
@@ -53,6 +53,9 @@ namespace Examples
 
             m_arrNodes[00] = new CNode(01, 0f, 0f, 0000.0f, 0);
             m_arrNodes[01] = new CNode(02, 1f, 0f, 0000.0f, 0);
+
+            m_arrNodes[02] = new CNode(03, 0f, 2f, 0000.0f, 0);
+            m_arrNodes[03] = new CNode(04, 1f, 2f, 0000.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrNodes, new CCompare_NodeID());
@@ -72,8 +75,9 @@ namespace Examples
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0.74f, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], -0.2f, -0.2f, 0, 0);
             //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], 0, 0, 0f, 0);
-            //m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.7f, 0);
+
             m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
+            m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[1], EMemberType_FormSteel.eC, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
 
             // Setridit pole podle ID
             //Array.Sort(m_arrMembers, new CCompare_LineID());

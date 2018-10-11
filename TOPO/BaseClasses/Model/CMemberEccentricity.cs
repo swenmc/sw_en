@@ -23,7 +23,7 @@
 
         }
 
-            public CMemberEccentricity(float fy_local, float fz_local)
+        public CMemberEccentricity(float fy_local, float fz_local)
         {
             MFy_local = fy_local;
             MFz_local = fz_local;

@@ -185,8 +185,8 @@ namespace BaseClasses
             EGCS egcs = EGCS.eGCSLeftHanded)
         {
             if (front == null) front = new SolidColorBrush(Colors.OrangeRed); // Material color - Front Side
-            if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
             if (back == null) back = new SolidColorBrush(Colors.OrangeRed); // Material color - Back Side
+            if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
 
             if (bTranspartentModel)
             {
@@ -235,8 +235,8 @@ namespace BaseClasses
                                 if (model3D == null) model3D = new Model3DGroup();
                                 Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
                                 model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[0]).Geometry).Positions);
-                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
-                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions));
+                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
+                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions));
                                 model3D.Children.Add(mgr);
                             }
                         }
@@ -278,21 +278,18 @@ namespace BaseClasses
 
             for (int i = 0; i < positions.Count - 1; i++)
             {
-                if (i < positions.Count / 4)  //1/4 front
+                if (i < positions.Count / 4)  // Front side
                 {
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + 1]);
                 }
-                else if (i >= positions.Count / 4 * 3) // 3/4 Back side
+                else if (i >= positions.Count * 3 / 4) // Back side
                 {
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + 1]);
                 }
-                else //between 1/4 and 3/4 is Shell
+                else // Shell
                 {
-                    //zase raz je to standardne spravene takze raz su body pre Shell pridavane tak a raz tak - nutne je to zjednotit
-                    // To Ondrej - Mozem to skusit zjednotit, ako to je to lepsie front, back, shell alebo front, shell, back?
-
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + shift]);
                 }
