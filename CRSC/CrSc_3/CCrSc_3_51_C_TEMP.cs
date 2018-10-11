@@ -155,14 +155,20 @@ namespace CRSC
                                                            7,8,0, 7,15,8};
 
             // zadavane v CCW - obdlzniky
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 8, 9, 1);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 1, 9, 10, 2);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 2, 10, 11, 3);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 3, 11, 12, 4);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 4, 12, 13, 5);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 5, 13, 14, 6);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 6, 14, 15, 7);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 7, 15, 8, 0);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 0, 8, 9, 1);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 1, 9, 10, 2);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 2, 10, 11, 3);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 3, 11, 12, 4);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 4, 12, 13, 5);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 5, 13, 14, 6);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 6, 14, 15, 7);
+            AddRectangleIndices_CCW_1234(TriangleIndicesShell, 7, 15, 8, 0);
+        }
+
+        public override void loadCrScWireFrameIndices()
+        { WireFrameIndices = new Int32Collection() { 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 0,
+            8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 8,
+            0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15 };
         }
     }
 }
