@@ -145,36 +145,6 @@ namespace AAC
             meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;
             meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
-
-            // Change mesh triangle indices
-            // Change orientation of normals
-            bool bIndicesCW = true; // Clockwise or counter-clockwise system
-
-            if (bIndicesCW)
-            {
-                ChangeIndices(meshFrontSide.TriangleIndices);
-                ChangeIndices(meshShell.TriangleIndices);
-                ChangeIndices(meshBackSide.TriangleIndices);
-            }
-        }
-
-        private void ChangeIndices(Int32Collection TriangleIndices)
-        {
-            int iSecond = 1;
-            int iThird = 2;
-
-            int iTIcount = TriangleIndices.Count;
-            for (int i = 0; i < iTIcount / 3; i++)
-            {
-                int iTI_2 = TriangleIndices[iSecond];
-                int iTI_3 = TriangleIndices[iThird];
-
-                TriangleIndices[iThird] = iTI_2;
-                TriangleIndices[iSecond] = iTI_3;
-
-                iSecond += 3;
-                iThird += 3;
-            }
         }
 
         public Point3DCollection TransformMember_LCStoGCS(EGCS eGCS, Point3D pA, Point3D pB, double dDeltaX, double dDeltaY, double dDeltaZ, double dTheta_x, Point3DCollection pointsCollection)

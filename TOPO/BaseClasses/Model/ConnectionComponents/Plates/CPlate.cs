@@ -552,28 +552,6 @@ namespace BaseClasses
             return pMeshPositions;
         }
 
-        public void ChangeIndices(Int32Collection TriangleIndices)
-        {
-            if (TriangleIndices != null && TriangleIndices.Count > 0)
-            {
-                int iSecond = 1;
-                int iThird = 2;
-
-                int iTIcount = TriangleIndices.Count;
-                for (int i = 0; i < iTIcount / 3; i++)
-                {
-                    int iTI_2 = TriangleIndices[iSecond];
-                    int iTI_3 = TriangleIndices[iThird];
-
-                    TriangleIndices[iThird] = iTI_2;
-                    TriangleIndices[iSecond] = iTI_3;
-
-                    iSecond += 3;
-                    iThird += 3;
-                }
-            }
-        }
-
         public float GetCuttingRouteDistance()
         {
             float fDistance = 0;
