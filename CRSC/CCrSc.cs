@@ -1094,7 +1094,7 @@ namespace CRSC
             }
         }
 
-        public void loadCrScWireFrameIndices()
+        public virtual void loadCrScWireFrameIndices()
         {
             int capacity = WireFrameIndicesFrontSideOut.Count + WireFrameIndicesFrontSideIn.Count +
                            WireFrameIndicesBackSideOut.Count + WireFrameIndicesBackSideIn.Count +

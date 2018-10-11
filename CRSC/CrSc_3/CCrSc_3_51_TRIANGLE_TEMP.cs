@@ -90,12 +90,38 @@ namespace CRSC
             loadCrScIndices();
 
             // Wireframe Indices
+            //Mato - ja by som vsetky 3 metody zrusil
             loadCrScWireFrameIndicesFrontSide();
             loadCrScWireFrameIndicesBackSide();
             loadCrScWireFrameIndicesLaterals();
 
             // Complex indices
             loadCrScWireFrameIndices();
+        }
+
+        //Mato komenty vid CCrSx_3_51_C_TEMP
+        //ak je CRSC s dierou, tak ja by som urobil wireframe len z vonkajsieho obrysu, tu sa rozhodne oplati override, lebo pokial chceme robit celkovy wirefram a teda Out aj In Points tak to musi 
+        // pretazit nejaku zakladnu metodu v predkovi
+        public override void loadCrScWireFrameIndices()
+        {
+            //kvoli prerformance by som pouzil takto, resp. zadefinovat pre list pocet prvkov, naplnit a nakoniec vytvorit z Listu Int32Collection
+            //ak komplet wireframe - co je podla mna pre velky model zbytocne a zatazuje to grafiku
+            List<int> indices = new List<int>() { 0, 1, 1, 2, 2, 0, 3, 4, 4, 5, 5, 3, 6, 7, 7, 8, 8, 6, 9, 10, 10, 11, 11, 9, 0, 6, 1, 7, 2, 8, 3, 9, 4, 10, 5, 11, };
+
+            //ak iba OutPoints tak:
+            //List<int> indices = new List<int>() { 0,1,1,2,2,0,6,7,7,8,8,6,0,6,1,7,2,8,};
+
+            WireFrameIndices = new Int32Collection(indices);
+
+            //FULL
+            //WireframeIndices;     0,1,1,2,2,0, 3,4,4,5,5,3, - front
+            //                      6,7,7,8,8,6, 9,10,10,11,11,9, - back
+            //                      0,6,1,7,2,8, 3,9,4,10,5,11, - shell
+
+            //OUT
+            //WireframeIndices;     0,1,1,2,2,0,  - front
+            //                      6,7,7,8,8,6,  - back
+            //                      0,6,1,7,2,8,  - shell
         }
 
         public void CalcCrSc_Coord()

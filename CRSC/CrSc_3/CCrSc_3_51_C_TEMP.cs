@@ -28,7 +28,8 @@ namespace CRSC
             set { m_fd = value; }
         }
 
-        bool bIsDefinedCCW = false; // Pomocny bool
+        //Mato - tento bool by som rozhodne vyhodil prec
+        bool bIsDefinedCCW = true; // Pomocny bool  
 
         public CCrSc_3_51_C_TEMP(int iID_temp, float fh, float fb, float ft, Color color_temp)
         {
@@ -57,19 +58,48 @@ namespace CRSC
 
             // Fill list of indices for drawing of surface - triangles edges
 
+            //SOLID MODEL
             // Particular indices - distinguished colors of member surfaces
+            //Mato - indexy tvorit tak aby normala smerovala vonku, na CW, CCW prepinac sa treba vykaslat
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
 
-            // Complex indices - one color or member
-            loadCrScIndices();
+            // Complex indices - one color or member            
+            // Mato - tato metoda nebude robit nic ine iba vytvori novu kolekciu ktora bude tvorena:
+            //list.AddRange(TriangleIndicesFrontSide); list.AddRange(TriangleIndicesBackSide); list.AddRange(TriangleIndicesShell);
+            loadCrScIndices(); 
 
             // Wireframe Indices
+            // Mato - Naco potrebujeme wireframe pre Front, Back a Laterals?
+            // Ja by som spravil jednu metodu a tieto 3 by som uplne vyhodil
             loadCrScWireFrameIndicesFrontSide();
             loadCrScWireFrameIndicesBackSide();
             loadCrScWireFrameIndicesLaterals();
         }
+
+        //tato metoda by mohla byt pretazena "override" ak je to nutne a ak nie tak metoda v predkovi by na zaklade poctu bodov vytvorila presne tu kolekciu co som rucne tu napisal
+        public override void loadCrScWireFrameIndices()
+        {
+            //kvoli prerformance by som pouzil takto, resp. zadefinovat pre list pocet prvkov, naplnit a nakoniec vytvorit z Listu Int32Collection
+            List<int> indices = new List<int>() { 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 0, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 8, 0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15 };
+            WireFrameIndices = new Int32Collection(indices);
+            
+            //WireframeIndices;     0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,0 - front
+            //                      8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,8 - back
+            //                      0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15 - shell
+        }
+
+
+
+        //TODO Mato:
+        //Pozicie by som vzdy robil tak ze pre 3_51_C by to boli suradnice bodov 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+        //TriangleIndices - I don't care, hocijak aby to dobre vykreslilo.
+
+        //WireframeIndices;     0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,0 - front
+        //                      8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,8 - back
+        //                      0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15 - shell
+
 
         public void CalcCrSc_Coord()
         {
