@@ -301,9 +301,6 @@ namespace BaseClasses
 
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + shift]);
-
-                    //wireframePoints.Add(positions[i]);
-                    //wireframePoints.Add(positions[positions.Count - 1 - i]);
                 }
             }
             return wireframePoints;
@@ -404,22 +401,6 @@ namespace BaseClasses
 
                     if (!cmodel.m_arrConnectionJoints[i].bIsJointDefinedinGCS)
                     {
-                        // TODO Ondrej 15/07/2018
-                        // na riadku 181 sme pridali do spoja postupne plechy a na riakdu 190 vsetky skrutky v jednotlivych plechoch
-                        // mame teda spoj so suradnicami v LCS pruta (na zaciatku alebo na konci)
-
-                        // Update 3
-                        // Cely spoj na prute (vsetky plechy aj skrutky v spoji) tu pootocime o uhol theta okolo LCS osi x pruta
-                        // Po tomto pootoceni by sa mali suradnice plechov a skrutiek v spoji prepocitat o pootocenie theta ulozit
-
-                        // TODO prepracovat tento blok a podmienky tak, aby v nebol prazdny else a odstranit duplicitu
-
-                        // Rotate model about local x-axis (LCS - local coordinate system of member)
-
-
-                        // O.P. 16.7.2018 - zakomentoval som a nevidim aby to nieco robilo =  neviem,ci to treba
-                        // M.C. 18.7.2018 - je to potrebne, ak je spoj definovany v LCS pruta, tak sa musi pootocit spolu s prutom o uhol theta (pripadne sa mu musi nastavit este aj excentricita ktora je nastavena prutu), ak je definovany v GCS tak sa neotaca
-
                         // Joint is defined in LCS of first secondary member
                         if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
                         cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
@@ -440,36 +421,14 @@ namespace BaseClasses
                             // There is no rotation
                         }
 
-                        // TODO Ondrej 15/07/2018
-                        // ak sme vsetky prvky v spoji pootocili o theta mame pripraveny spoj na transformaciu z LCS do GCS
-
-                        // Update 4
-                        // Cely spoj na prute (vsetky plechy aj skrutky v spoji) tu pootocime a presunieme na poziciu kde sa ma nachazat na prute v GCS
-                        // Ma sa pouzit rovnaka transformacia akou sa presuva samotny prut z LCS do GCS
-                        // Po tomto presune a pootoceni by sa mali suradnice plechov a skrutiek v spoji prepocitat z LCS GCS a ulozit, to je finalny stav
-
-                        // Rotate and translate model in GCS (global coordinate system of whole structure / building)
-                        // Create new model group
-
-                        //Model3DGroup JointModelGroup_temp = new Model3DGroup();
-                        //JointModelGroup_temp.Children.Add(JointModelGroup);
-
                         // Joint is defined in LCS of first secondary member
                         if (cmodel.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
                         cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
                         {
-                            // Transform model group
-                            //JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-
-                            //temp
                             cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
                         }
                         else // Joint is defined in LCS of main member
                         {
-                            // Transform model group
-                            //JointModelGroup = cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS(JointModelGroup_temp, cmodel.m_arrConnectionJoints[i].m_MainMember);
-
-                            //temp
                             cmodel.m_arrConnectionJoints[i].Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal(JointModelGroup, cmodel.m_arrConnectionJoints[i].m_MainMember);
                         }
                     }
@@ -535,8 +494,6 @@ namespace BaseClasses
                         {
                             Model3DGroup model_gr = new Model3DGroup();
                             model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load();
-                            // Transform modelgroup from LCS to GCS
-                            //model_gr = selectedLoadCase.SurfaceLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member);
 
                             model3D_group.Children.Add(model_gr); // Add Release to model group
 
@@ -887,12 +844,6 @@ namespace BaseClasses
                     }
                 }
 
-                // Add Wireframe Lines to the trackport
-                //wireFrameAllMembers.Name = "WireFrame_Members";
-                //wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
-                //model.WireFrameMembers = wireFrameAllMembers;
-                //viewPort.Children.Add(wireFrameAllMembers);
-
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(wireFramePoints);
                 wl.Color = Colors.White;
@@ -942,26 +893,6 @@ namespace BaseClasses
                             }
                         }
 
-                        // Joint is defined in LCS of first secondary member
-                        //if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null &&
-                        //model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null &&
-                        //!MathF.d_equal(model.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x, 0))
-                        //{
-                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), model.m_arrConnectionJoints[i].m_SecondaryMembers[0].DTheta_x / MathF.fPI * 180);
-                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                        //    jointPoints = jointPoints.Select(p => rotate.Transform(p)).ToList();
-                        //}
-                        //else if (!MathF.d_equal(model.m_arrConnectionJoints[i].m_MainMember.DTheta_x, 0)) // Joint is defined in LCS of main member and rotation degree is not zero
-                        //{
-                        //    AxisAngleRotation3D Rotation_LCS_x = new AxisAngleRotation3D(new Vector3D(1, 0, 0), model.m_arrConnectionJoints[i].m_MainMember.DTheta_x / MathF.fPI * 180);
-                        //    RotateTransform3D rotate = new RotateTransform3D(Rotation_LCS_x);
-                        //    jointPoints = jointPoints.Select(p => rotate.Transform(p)).ToList();
-                        //}
-                        //else
-                        //{
-                        //    // There is no rotation
-                        //}
-
                         // Connectors
                         bool bUseAdditionalConnectors = false; // Spojovacie prvky mimo tychto ktore su viazane na plechy (plates) napr spoj priamo medzi nosnikmi bez plechu
 
@@ -991,38 +922,10 @@ namespace BaseClasses
                                 jointPoints.AddRange(wireFrame.Points);
                             }
                         }
-
-                        //if (!model.m_arrConnectionJoints[i].bIsJointDefinedinGCS) // Joint is defined in LCS
-                        //{
-                        //    Transform3DGroup tr;
-
-                        //    if (model.m_arrConnectionJoints[i].m_SecondaryMembers != null && model.m_arrConnectionJoints[i].m_SecondaryMembers[0] != null)
-                        //    {
-                        //        // Create Transformation Matrix
-                        //        tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_SecondaryMembers[0]);
-                        //    }
-                        //    else
-                        //    {
-                        //        // Create Transformation Matrix
-                        //        tr = model.m_arrConnectionJoints[i].CreateTransformCoordGroup(model.m_arrConnectionJoints[i].m_MainMember);
-                        //    }
-                        //    jointPoints = jointPoints.Select(p => tr.Transform(p)).ToList();
-                        //}
-
-                        //23.7.2018
-                        //Mato - otestuj,ci vsetko funguje ako ma
-                        //prerobil som Transform3D_OnMemberEntity_fromLCStoGCS metodu na Transform3D_OnMemberEntity_fromLCStoGCS_ChangeOriginal a jednym riadkom to funguje...takze chyba bola tam
-                        //vsetko prerobene do jedneho riadku kodu - narocky som nechal zakomentovane riadky,aby bolo vidno ktore riadky to nahradza
                         var transPoints = jointPoints.Select(p => model.m_arrConnectionJoints[i].Visual_ConnectionJoint.Transform.Transform(p));
                         jointsWireFramePoints.AddRange(transPoints);
                     }
                 }
-
-                //ScreenSpaceLines3D jointsWireFrameTotal = new ScreenSpaceLines3D();
-                //jointsWireFrameTotal.Points = new Point3DCollection(jointsWireFramePoints);
-                //jointsWireFrameTotal.Name = "WireFrame_Joints";
-                //model.WireFrameJoints = jointsWireFrameTotal;
-                //viewPort.Children.Add(jointsWireFrameTotal);
 
                 WireLines wl = new WireLines();
                 wl.Lines = new Point3DCollection(jointsWireFramePoints);
@@ -1043,16 +946,6 @@ namespace BaseClasses
         // Draw Members Wire Frame
         public static void DrawMemberWireFrame(CMember member, Viewport3D viewPort, float memberLength)
         {
-            // TODO
-            //tu je otazne,ci by to nemohlo byt na urovni CMember, ktora by vratila jeden wireframe pre cely member
-            //ScreenSpaceLines3D wireFrame = member.CreateMemberWireFrame();
-            //viewPort.Children.Add(wireFrame);
-
-            // To Ondrej: 
-            // Kazdy topologicky objekt (prut, plech, skrutka (pripadne cely spoj) moze mat svoje funkcie, ktore vratia jeho surface model alebo wireframe model, pripadne objekty
-            // Model3DGroup surfaceModel a ScreenSpaceLines3D wireFrame ako public v triede
-            // Podla toho co je rychlejsie, mat velky objekt v triede alebo len volat funkciu ktora ho na poziadanie vygeneruje
-
             ScreenSpaceLines3D wireFrame_FrontSide = member.CreateWireFrame(0f);
             ScreenSpaceLines3D wireFrame_BackSide = member.CreateWireFrame(memberLength);
             ScreenSpaceLines3D wireFrame_Lateral = member.CreateWireFrameLateral();
@@ -1358,8 +1251,6 @@ namespace BaseClasses
             }
         }
 
-
-
         //    Public Function GetPointOnPlaneZ(p1 As point3d, p2 As point3d, p3 As point3d, x As Single, y As Single)
         //    'call with 3 points p1, p2, p3 that form plane and another point (x,y)
         //    'returns point (x,y) on plane from 3 points
@@ -1394,7 +1285,7 @@ namespace BaseClasses
             return resultPoint;
         }
 
-        //Distance of Point p from Plane defined by 3 points
+        // Distance of Point p from Plane defined by 3 points
         public static double GetDistanceFromPointToPlane(Point3D p1, Point3D p2, Point3D p3, Point3D p)
         {
             Vector3D v1 = new Vector3D();
@@ -1404,23 +1295,15 @@ namespace BaseClasses
             Vector3D abc = Vector3D.CrossProduct(v1, v2); // Normal vector
             //    'find d in the equation a * X0 + b * Y0 + c * Z0 + d = 0
             // d = − a * X0 − b * Y0 − c * Z0 (point on the plane R [X0, Y0, Z0], we use point p3
-            //double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z; // Tu je asi chyba vid internetovy odkaz (po presunuti na pravu stranu sa ma zmenit znamienko)
             double d = -abc.X * p3.X - abc.Y * p3.Y - abc.Z * p3.Z;
-
             double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z); // alternative 1
-            //double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Vector3D.DotProduct(abc, abc); // // alternative 2 - vyskusat,ci je to to iste
 
-            // TODO No. 49
             // https://mathinsight.org/distance_point_plane
-            // To Ondrej, nie je to to iste, alternative 1 vracia asi spravne hodnoty vzdialností v metroch (kladne alebo zaporne), alternative 2 vracia radovo mensie cislo , napr -8 vs. - 0.222
-            // Niekde je vsak chyba pretoze pre niektore zatazovacie roviny sa zoznamy prutov naplnia, pre ine nie vid CExample_3D_901_PF
-            // Zistil som napriklad ze ak girts na pravej strane budovy maju suradnicu X = 8, tak to vrati vzdialenost dist = -16 a nie dist = 0
-            // podla uvedenej stranky malo byt pre d zmenene znamienko 
 
             return dist; // Returns negative or positive value ???!!!
         }
 
-        //Get Closest point on plane defined by 3 points(p1,p2,p3) from point p
+        // Get Closest point on plane defined by 3 points(p1,p2,p3) from point p
         public static Point3D GetClosestPointOnPlane(Point3D p1, Point3D p2, Point3D p3, Point3D p)
         {
             Vector3D v1 = new Vector3D();
@@ -1432,13 +1315,11 @@ namespace BaseClasses
             double d = abc.X * p3.X + abc.Y * p3.Y + abc.Z * p3.Z;
 
             double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Math.Sqrt(abc.X * abc.X + abc.Y * abc.Y + abc.Z * abc.Z);
-            //double dist = (abc.X * p.X + abc.Y * p.Y + abc.Z * p.Z + d) / Vector3D.DotProduct(abc, abc); vyskusat,ci je to to iste
 
             Point3D closestPoint = p - dist * abc;
             return closestPoint;
         }
 
-        // TODO No. 49 - in work, funckie vratia true alebo false pre poziciu bodu, uzla alebo celeho pruta v rovine definovanej troma bodmi v priestore, zadana tolerancia
         public static bool PointLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, Point3D p, double dLimit = 0.000001)
         {
             double distance = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, p));
