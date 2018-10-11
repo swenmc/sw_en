@@ -188,7 +188,23 @@ namespace BaseClasses
             set { m_sBDef_x = value; }
         }
 
-        public List<Point3D> WireFramePoints;
+        private List<Point3D> MWireFramePoints;
+        public List<Point3D> WireFramePoints
+        {
+            get
+            {
+                if (MWireFramePoints == null) MWireFramePoints = new List<Point3D>();
+                return MWireFramePoints;
+            }
+
+            set
+            {
+                MWireFramePoints = value;
+            }
+        }
+
+        
+        //public List<Point3D> WireFramePoints;
 
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
@@ -842,6 +858,11 @@ namespace BaseClasses
             // Mesh Triangles - various cross-sections shapes defined
             mesh.TriangleIndices = obj_CrScA.TriangleIndices;
 
+            foreach (int n in obj_CrScA.WireFrameIndices)
+            {
+                WireFramePoints.Add(meshPositions[n]);
+            }
+
             if (BIsDebugging)
             {
                 // Dislay data in the output window
@@ -1152,11 +1173,16 @@ namespace BaseClasses
             meshFrontSide.Positions = meshFrontSidePositions;            
             meshBackSide.Positions = meshBackSidePositions;
             meshShell.Positions = meshShellPositions;
-
+            
             // Mesh Triangles - various cross-sections shapes defined
             meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;            
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
             meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
+
+            foreach (int n in obj_CrScA.WireFrameIndices)
+            {
+                WireFramePoints.Add(meshShellPositions[n]);
+            }
         }
 
         public Point3DCollection TransformMember_LCStoGCS(EGCS eGCS, Point3D pA, double dDeltaX, double dDeltaY, double dDeltaZ, double dTheta_x, Point3DCollection pointsCollection)

@@ -226,7 +226,7 @@ namespace BaseClasses
                                 // Create Member model - one geometry model
                                 if (model3D == null) model3D = new Model3DGroup();
                                 GeometryModel3D geom3D = model.m_arrMembers[i].getG_M_3D_Member(egcs, shell, bUseDiffuseMaterial, bUseEmissiveMaterial);
-                                model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromMemberGeometryPositions(((MeshGeometry3D)geom3D.Geometry).Positions);
+                                //model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromMemberGeometryPositions(((MeshGeometry3D)geom3D.Geometry).Positions);
                                 model3D.Children.Add(geom3D); // Use shell color for whole member
                             }
                             else
@@ -234,9 +234,9 @@ namespace BaseClasses
                                 // Create Member model - consist of 3 geometry models (member is one model group)
                                 if (model3D == null) model3D = new Model3DGroup();
                                 Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
-                                model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[0]).Geometry).Positions);
-                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
-                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions)); // ??? Tu ma byt shell
+                                //model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[0]).Geometry).Positions);
+                                //model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
+                                //model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions)); // ??? Tu ma byt shell
                                 model3D.Children.Add(mgr);
                             }
                         }
