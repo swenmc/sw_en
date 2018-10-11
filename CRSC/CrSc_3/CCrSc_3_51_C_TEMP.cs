@@ -35,18 +35,36 @@ namespace CRSC
             Name = "C " + (fh * 1000).ToString() + (ft * 1000).ToString();
             NameDatabase = (fh * 1000).ToString() + (ft * 1000).ToString();
 
+            h = fh;
+            b = fb;
+            m_ft_f = ft;
+            m_ft_w = ft;
             CSColor = color_temp;  // Set cross-section color
 
-            IsShapeSolid = true;
-            ITotNoPoints = INoPointsOut = 8; // Total number of points per section
+            Fill_Basic();
+        }
+
+        public CCrSc_3_51_C_TEMP(int iID_temp, float fh, float fb, float ft)
+        {
+            ID = iID_temp;
+
+            Name = "C " + (fh * 1000).ToString() + (ft * 1000).ToString();
+            NameDatabase = (fh * 1000).ToString() + (ft * 1000).ToString();
 
             h = fh;
             b = fb;
             m_ft_f = ft;
             m_ft_w = ft;
 
-            CSColor = color_temp;
-            m_fd = fh - 2 * ft;
+            Fill_Basic();
+        }
+
+        private void Fill_Basic()
+        {
+            IsShapeSolid = true;
+            ITotNoPoints = INoPointsOut = 8; // Total number of points per section
+
+            m_fd = (float)(h - 2 * m_ft_f);
 
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(ITotNoPoints);

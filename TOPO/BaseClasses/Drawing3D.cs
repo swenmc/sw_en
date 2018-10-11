@@ -185,7 +185,7 @@ namespace BaseClasses
             EGCS egcs = EGCS.eGCSLeftHanded)
         {
             if (front == null) front = new SolidColorBrush(Colors.OrangeRed); // Material color - Front Side
-            if (back == null) back = new SolidColorBrush(Colors.OrangeRed); // Material color - Back Side
+            if (back == null) back = new SolidColorBrush(Colors.Coral); // Material color - Back Side
             if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
 
             if (bTranspartentModel)
@@ -236,7 +236,7 @@ namespace BaseClasses
                                 Model3DGroup mgr = model.m_arrMembers[i].getM_3D_G_Member(egcs, front, shell, back, bUseDiffuseMaterial, bUseEmissiveMaterial);
                                 model.m_arrMembers[i].WireFramePoints = GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[0]).Geometry).Positions);
                                 model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[1]).Geometry).Positions));
-                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions));
+                                model.m_arrMembers[i].WireFramePoints.AddRange(GetWireFramePointsFromGeometryShellPositions(((MeshGeometry3D)((GeometryModel3D)mgr.Children[2]).Geometry).Positions)); // ??? Tu ma byt shell
                                 model3D.Children.Add(mgr);
                             }
                         }
@@ -288,7 +288,7 @@ namespace BaseClasses
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + 1]);
                 }
-                else // Shell
+                else // Shell - tu ma byt shell??
                 {
                     wireframePoints.Add(positions[i]);
                     wireframePoints.Add(positions[i + shift]);

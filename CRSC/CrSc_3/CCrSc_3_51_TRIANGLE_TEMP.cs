@@ -20,51 +20,29 @@ namespace CRSC
 
         public CCrSc_3_51_TRIANGLE_TEMP(float fh = 0.866025f * 0.5f, float fb = 0.5f, float ft = 0.002f)
         {
-            CSColor = Colors.DarkGreen;
-
-            //ITotNoPoints = 3;
-            IsShapeSolid = false;
-            INoPointsIn = INoPointsOut = 3; // vykreslujeme ako n-uholnik, pocet bodov n
-            ITotNoPoints = INoPointsIn + INoPointsOut;
-
             h = fh;
             b = fb;
             m_ft = ft;
 
-            // Create Array - allocate memory
-            CrScPointsOut = new List<Point>(INoPointsOut);
-            CrScPointsIn = new List<Point>(INoPointsIn);
-
-            // Fill Array Data
-            CalcCrSc_Coord();
-
-            // SOLID MODEL
-            // Fill list of indices for drawing of surface - triangles edges
-            // Particular indices - distinguished colors of member surfaces
-            loadCrScIndicesFrontSide();
-            loadCrScIndicesShell();
-            loadCrScIndicesBackSide();
-
-            // Complex indices - one color of member
-            loadCrScIndices();
-
-            // WIREFRAME MODEL
-            // Complex indices
-            loadCrScWireFrameIndices();
+            Fill_Basic();
         }
 
         public CCrSc_3_51_TRIANGLE_TEMP(float fh, float fb, float ft, Color color_temp)
         {
+            h = fh;
+            b = fb;
+            m_ft = ft;
             CSColor = color_temp;
 
+            Fill_Basic();
+        }
+
+        private void Fill_Basic()
+        {
             //ITotNoPoints = 3;
             IsShapeSolid = false;
             INoPointsIn = INoPointsOut = 3; // vykreslujeme ako n-uholnik, pocet bodov n
             ITotNoPoints = INoPointsIn + INoPointsOut;
-
-            h = fh;
-            b = fb;
-            m_ft = ft;
 
             // Create Array - allocate memory
             CrScPointsOut = new List<Point>(INoPointsOut);
