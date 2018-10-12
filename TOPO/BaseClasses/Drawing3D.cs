@@ -193,7 +193,7 @@ namespace BaseClasses
                 front.Opacity = back.Opacity = 0.8;
                 shell.Opacity = 0.4;
             }
-            else front.Opacity = shell.Opacity = back.Opacity = 0;
+            else front.Opacity = shell.Opacity = back.Opacity = 1;
 
             Model3DGroup model3D = null;
             if (model.m_arrMembers != null) // Some members exist
