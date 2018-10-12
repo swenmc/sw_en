@@ -1527,9 +1527,9 @@ namespace BaseClasses
             Size txtSize = MeasureString(textBlock, text);
 
             // TODO Ondrej - upravit - Umiestnenie textu uprostred hlavnej kotovacej ciary (ak je kota velmi kratka,
-            // tak by to malo by presne v strede a ak to nevojde medzi extension lines,
+            // tak by to malo byt presne v strede a ak to nevojde medzi extension lines,
             // tak sa to robi tak ze sa text posunie uplne vedla koty nalavo / vpravo / alebo pod kotu (na opacnu stranu hlavnej kotovacej ciary)
-            // My by sme si mali vystacit s tym ze to bude presne v strede, tie "uzke pasiky" nebyvaju sirsie ako 100 mm, takze tam budu len 2 cislice
+            // My by sme si mali vystacit s tym, ze to bude presne v strede, tie "uzke pasiky" nebyvaju sirsie ako 100 mm, takze tam budu len 2 cislice
 
             Canvas.SetLeft(textBlock, posx);
 
