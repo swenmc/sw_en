@@ -184,16 +184,16 @@ namespace BaseClasses
             SolidColorBrush back = null,
             EGCS egcs = EGCS.eGCSLeftHanded)
         {
-            if (front == null) front = new SolidColorBrush(Colors.OrangeRed); // Material color - Front Side
-            if (back == null) back = new SolidColorBrush(Colors.Coral); // Material color - Back Side
+            if (front == null) front = new SolidColorBrush(Colors.Red); // Material color - Front Side
+            if (back == null) back = new SolidColorBrush(Colors.Red); // Material color - Back Side
             if (shell == null) shell = new SolidColorBrush(Colors.SlateBlue); // Material color - Shell
 
             if (bTranspartentModel)
             {
-                front.Opacity = back.Opacity = 0.8;
-                shell.Opacity = 0.4;
+                front.Opacity = back.Opacity = 0.6;
+                shell.Opacity = 0.2;
             }
-            else front.Opacity = shell.Opacity = back.Opacity = 1;
+            else front.Opacity = shell.Opacity = back.Opacity = 0.8f;
 
             Model3DGroup model3D = null;
             if (model.m_arrMembers != null) // Some members exist
