@@ -1148,7 +1148,7 @@ namespace BaseClasses
             float fUnitFactor_mTomm = 1000;
             int iNumberOfDecimalPlaces = 0;
             string sText = (Math.Round(dim.BasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
-            
+
             double dLengtOfExtensionLineStartToPrimary = 0.8 * fOffsetFromOrigin;
             double dLengtOfExtensionLinePrimaryToEnd = 5; // Points
             double dOffsetOfExtensionLineFromPoint = 0.2 * fOffsetFromOrigin;
@@ -1195,7 +1195,7 @@ namespace BaseClasses
             lSlopeLine2.Y1 = lPrimaryLine.Y2 + coord;
             lSlopeLine2.X2 = lPrimaryLine.X2 + coord;
             lSlopeLine2.Y2 = lPrimaryLine.Y2 - coord;
-                        
+
             RotateDimension(dim.ControlPointStart, dRotation_deg, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
@@ -1214,8 +1214,6 @@ namespace BaseClasses
             DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw text
             DrawText(sText, fTextPositionx, fTextPositiony, dRotation_deg, 12, dim.IsTextAboveLine, Brushes.DarkGreen, imageCanvas);
-
-            
         }
 
         public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
@@ -1526,9 +1524,15 @@ namespace BaseClasses
             textBlock.Foreground = color;
             //textBlock.Background = new SolidColorBrush(Colors.Red);
             textBlock.FontSize = fontSize;
-            Canvas.SetLeft(textBlock, posx);
-                        
             Size txtSize = MeasureString(textBlock, text);
+
+            // TODO Ondrej - upravit - Umiestnenie textu uprostred hlavnej kotovacej ciary (ak je kota velmi kratka,
+            // tak by to malo by presne v strede a ak to nevojde medzi extension lines,
+            // tak sa to robi tak ze sa text posunie uplne vedla koty nalavo / vpravo / alebo pod kotu (na opacnu stranu hlavnej kotovacej ciary)
+            // My by sme si mali vystacit s tym ze to bude presne v strede, tie "uzke pasiky" nebyvaju sirsie ako 100 mm, takze tam budu len 2 cislice
+
+            Canvas.SetLeft(textBlock, posx);
+
             if (bIsTextAboveControlPoint) // Text nad liniou koty
             {
                 Canvas.SetTop(textBlock, posy - txtSize.Height);
@@ -1550,7 +1554,7 @@ namespace BaseClasses
 
                     Canvas.SetLeft(textBlock, posx - txtSize.Width);
                 }
-                
+
                 //textBlock.Margin = new Thickness(2, 0, 0, 0);
             }
             else // text pod liniou koty
@@ -1569,13 +1573,12 @@ namespace BaseClasses
                     if (rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width);
                     else Canvas.SetTop(textBlock, posy - txtSize.Width);
                 }
-                
+
                 //textBlock.Margin = new Thickness(2, 2, 0, 0);
             }
-            
+
             textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
             canvas.Children.Add(textBlock);
-            
         }
 
         private static Size MeasureString(TextBlock textBlock, string text)
