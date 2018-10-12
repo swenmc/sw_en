@@ -1029,8 +1029,6 @@ namespace sw_en_GUI
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bUseDiffuseMaterial = true;
-
-            sDisplayOptions.bUseDiffuseMaterial = true;
             sDisplayOptions.bUseEmissiveMaterial = true;
 
             sDisplayOptions.bDisplaySolidModel = true;
