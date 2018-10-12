@@ -1179,14 +1179,20 @@ namespace BaseClasses
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
             meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
 
-            // Pre back side odpocitat zo vsetkych indices celkovy pocet bodov na prednej strane
-            for (int i = 0; i < meshBackSide.TriangleIndices.Count; i++)
-                meshBackSide.TriangleIndices[i] -= obj_CrScA.ITotNoPoints;
-
             // Maximum index of position (point) used in collection
             int iFrontSideMaxIndex = MathF.Max(meshFrontSide.TriangleIndices);
             int iBackSideMaxIndex = MathF.Max(meshBackSide.TriangleIndices);
             int iShellMaxIndex = MathF.Max(meshShell.TriangleIndices);
+
+            // Pre back side odpocitat zo vsetkych indices celkovy pocet bodov na prednej strane, odpocitat pre prierez len raz
+            if (iBackSideMaxIndex > iFrontSideMaxIndex)
+            {
+                for (int i = 0; i < meshBackSide.TriangleIndices.Count; i++)
+                    meshBackSide.TriangleIndices[i] -= obj_CrScA.ITotNoPoints;
+
+                // Nastavit novu hodnotu
+                iBackSideMaxIndex = MathF.Max(meshBackSide.TriangleIndices);
+            }
 
             // Validation
             // Number of points in front and back side must be equal
