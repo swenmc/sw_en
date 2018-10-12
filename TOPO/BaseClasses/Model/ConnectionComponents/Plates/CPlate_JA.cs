@@ -216,8 +216,8 @@ namespace BaseClasses
             Dimensions = new GraphObj.CDimension[iNumberOfDimensions+1];
 
             Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
-            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[3], PointsOut2D[2]);
+            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[3], PointsOut2D[2], true, false);
 
             Dimensions[3] = new GraphObj.CDimensionArc(PointsOut2D[2], PointsOut2D[3], PointsOut2D[4]);
         }

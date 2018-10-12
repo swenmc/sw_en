@@ -763,12 +763,8 @@ namespace BaseClasses
         {
             // Members - Wire Frame
             if (model.m_arrMembers != null)
-            {
-                Color wireFrameColor = Color.FromRgb(60, 60, 60);
-                double thickness = 1.0;
-                ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
+            {                
                 List<Point3D> wireFramePoints = new List<Point3D>();
-
                 for (int i = 0; i < model.m_arrMembers.Length; i++) // Per each member
                 {
                     if (model.m_arrMembers[i] != null &&
@@ -781,13 +777,17 @@ namespace BaseClasses
                     }
                 }
 
-                //WireLines wl = new WireLines();
-                //wl.Lines = new Point3DCollection(wireFramePoints);
-                //wl.Color = Colors.White;
-                //viewPort.Children.Add(wl);
+                WireLines wl = new WireLines();
+                wl.Lines = new Point3DCollection(wireFramePoints);
+                wl.Color = Colors.White;
+                viewPort.Children.Add(wl);
 
-                wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
-                viewPort.Children.Add(wireFrameAllMembers);
+                //ScreenSpaceLines are much slower = performance issue
+                //Color wireFrameColor = Color.FromRgb(60, 60, 60);
+                //double thickness = 1.0;
+                //ScreenSpaceLines3D wireFrameAllMembers = new ScreenSpaceLines3D(wireFrameColor, thickness); // Just one collection for all members
+                //wireFrameAllMembers.Points = new Point3DCollection(wireFramePoints);
+                //viewPort.Children.Add(wireFrameAllMembers);
             }
         }
 
