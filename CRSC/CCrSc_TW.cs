@@ -296,7 +296,7 @@ namespace CRSC
             {
                 TriangleIndicesFrontSide = new Int32Collection(((ITotNoPoints - 2) / 2) * 6);
                 for (int i = 0; i < (ITotNoPoints - 2) / 2; i++)
-                    AddRectangleIndices_CW_1234(TriangleIndicesFrontSide, i, i + 1, ITotNoPoints - i - 2, ITotNoPoints - i - 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, i, i + 1, ITotNoPoints - i - 2, ITotNoPoints - i - 1);
             }
             else
             {
@@ -334,9 +334,9 @@ namespace CRSC
                 for (int i = 0; i < ITotNoPoints; i++)
                 {
                     if (i < ITotNoPoints - 1)
-                        AddRectangleIndices_CW_1234(TriangleIndicesShell, i, ITotNoPoints + i, ITotNoPoints + i + 1, i + 1);
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, i, ITotNoPoints + i, ITotNoPoints + i + 1, i + 1);
                     else
-                        AddRectangleIndices_CW_1234(TriangleIndicesShell, i, ITotNoPoints + i, ITotNoPoints, 0); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, i, ITotNoPoints + i, ITotNoPoints, 0); // Last Element
                 }
             }
             else
@@ -388,7 +388,7 @@ namespace CRSC
             {
                 TriangleIndicesBackSide = new Int32Collection((ITotNoPoints - 2) / 2 * 6);
                 for (int i = 0; i < (ITotNoPoints - 2) / 2; i++)
-                    AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + i, ITotNoPoints + i + 1, ITotNoPoints + ITotNoPoints - i - 2, ITotNoPoints + ITotNoPoints - i - 1);
+                    AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + i, ITotNoPoints + i + 1, ITotNoPoints + ITotNoPoints - i - 2, ITotNoPoints + ITotNoPoints - i - 1);
             }
             else
             {

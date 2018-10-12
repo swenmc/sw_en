@@ -1042,7 +1042,7 @@ namespace sw_en_GUI
 
             sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplayMembersCenterLines = true;
-            sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
+            sDisplayOptions.bDistinguishedColor = false; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);

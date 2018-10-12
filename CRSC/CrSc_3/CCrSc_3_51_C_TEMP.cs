@@ -109,6 +109,7 @@ namespace CRSC
             CrScPointsOut.Add(new Point(CrScPointsOut[4].X, -CrScPointsOut[4].Y));
         }
 
+        /*
         protected override void loadCrScIndicesFrontSide()
         {
             TriangleIndicesFrontSide = new Int32Collection(3 * 6);
@@ -127,7 +128,8 @@ namespace CRSC
             //TriangleIndicesBackSide = new Int32Collection(3 * 6);
 
             // zadavane v CCW - jednotlive trojuholniky
-            TriangleIndicesBackSide = new Int32Collection() { ITotNoPoints + 0, ITotNoPoints + 6, ITotNoPoints + 1,
+            TriangleIndicesBackSide = new Int32Collection() {
+                ITotNoPoints + 0, ITotNoPoints + 6, ITotNoPoints + 1,
                 ITotNoPoints + 0, ITotNoPoints + 7, ITotNoPoints + 6,
                 ITotNoPoints + 1, ITotNoPoints + 6, ITotNoPoints + 2,
                 ITotNoPoints + 6, ITotNoPoints + 5, ITotNoPoints + 2,
@@ -145,6 +147,7 @@ namespace CRSC
             //TriangleIndicesShell = new Int32Collection();
 
             // zadavane v CCW - jednotlive trojuholniky
+
             TriangleIndicesShell = new Int32Collection() { 0,9,1, 0,8,9,
                                                            1,9,10, 1,10,2,
                                                            2,10,11, 2,11,3,
@@ -164,6 +167,7 @@ namespace CRSC
             //AddRectangleIndices_CCW_1234(TriangleIndicesShell, 6, 14, 15, 7);
             //AddRectangleIndices_CCW_1234(TriangleIndicesShell, 7, 15, 8, 0);
         }
+        */
 
         public override void loadCrScWireFrameIndices()
         {
