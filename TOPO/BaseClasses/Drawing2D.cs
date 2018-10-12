@@ -820,7 +820,7 @@ namespace BaseClasses
                     if (Dimensions[i] is CDimensionLinear)
                     {
                         CDimensionLinear dim = (CDimensionLinear)Dimensions[i];
-                        DrawSimpleLinearDimension(dim, 30, true, canvasForImage);
+                        DrawSimpleLinearDimension(dim, true, canvasForImage);
                     }
                     else if (Dimensions[i] is CDimensionArc)
                     {
@@ -1125,7 +1125,7 @@ namespace BaseClasses
         //    RotateAndTranslateLine_CW(fOffset_x, fOffset_y, dRotation_rad, ref lSlopeLine2);
         //}
 
-        public static void DrawSimpleLinearDimension(CDimensionLinear dim, float fOffsetFromOrigin, bool bDrawExtensionLines, Canvas imageCanvas)
+        public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas)
         {
             // dim.IsDimensionUnderLine
             // TRUE
@@ -1140,7 +1140,7 @@ namespace BaseClasses
             //   /--------------------------------/
             //   |                                |
             //   |                                |
-            if (!dim.IsDimensionUnderLine) fOffsetFromOrigin *= -1; 
+            if (!dim.IsDimensionUnderLine) dim.OffsetFromOrigin_pxs *= -1; 
             
 
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
@@ -1149,9 +1149,9 @@ namespace BaseClasses
             int iNumberOfDecimalPlaces = 0;
             string sText = (Math.Round(dim.BasicLength_m * fUnitFactor_mTomm, iNumberOfDecimalPlaces)).ToString();
 
-            double dLengtOfExtensionLineStartToPrimary = 0.8 * fOffsetFromOrigin;
+            double dLengtOfExtensionLineStartToPrimary = 0.8 * dim.OffsetFromOrigin_pxs;
             double dLengtOfExtensionLinePrimaryToEnd = 5; // Points
-            double dOffsetOfExtensionLineFromPoint = 0.2 * fOffsetFromOrigin;
+            double dOffsetOfExtensionLineFromPoint = 0.2 * dim.OffsetFromOrigin_pxs;
 
             double dLengtOfExtensionLineTotal = dLengtOfExtensionLineStartToPrimary + dLengtOfExtensionLinePrimaryToEnd;
 
@@ -1159,7 +1159,7 @@ namespace BaseClasses
             double lPrimaryLinelength = Math.Sqrt(Math.Pow(dim.ControlPointEnd.X - dim.ControlPointStart.X, 2) + Math.Pow(dim.ControlPointEnd.Y - dim.ControlPointStart.Y, 2));
             Line lPrimaryLine = new Line();
             lPrimaryLine.X1 = dim.ControlPointStart.X;
-            lPrimaryLine.Y1 = dim.ControlPointStart.Y + fOffsetFromOrigin;
+            lPrimaryLine.Y1 = dim.ControlPointStart.Y + dim.OffsetFromOrigin_pxs;
             lPrimaryLine.X2 = dim.ControlPointStart.X + lPrimaryLinelength;
             lPrimaryLine.Y2 = lPrimaryLine.Y1;
 
@@ -1168,13 +1168,13 @@ namespace BaseClasses
 
             Line lExtensionLine1 = new Line();
             lExtensionLine1.X1 = lPrimaryLine.X1;
-            lExtensionLine1.Y1 = lPrimaryLine.Y1 - fOffsetFromOrigin + dOffsetOfExtensionLineFromPoint;
+            lExtensionLine1.Y1 = lPrimaryLine.Y1 - dim.OffsetFromOrigin_pxs + dOffsetOfExtensionLineFromPoint;
             lExtensionLine1.X2 = lPrimaryLine.X1;
             lExtensionLine1.Y2 = lPrimaryLine.Y1;
 
             Line lExtensionLine2 = new Line();
             lExtensionLine2.X1 = lPrimaryLine.X2;
-            lExtensionLine2.Y1 = lPrimaryLine.Y2 - fOffsetFromOrigin + dOffsetOfExtensionLineFromPoint;
+            lExtensionLine2.Y1 = lPrimaryLine.Y2 - dim.OffsetFromOrigin_pxs + dOffsetOfExtensionLineFromPoint;
             lExtensionLine2.X2 = lPrimaryLine.X2;
             lExtensionLine2.Y2 = lPrimaryLine.Y2;
 

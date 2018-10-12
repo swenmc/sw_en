@@ -69,6 +69,8 @@ namespace BaseClasses.GraphObj
             }
         }
 
+        private double dBasicLength_m;
+
         public double BasicLength_m
         {
             get
@@ -82,21 +84,35 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private double dBasicLength_m;
+        private double m_dOffsetFromOrigin_pxs;
+
+        public double OffsetFromOrigin_pxs
+        {
+            get
+            {
+                return m_dOffsetFromOrigin_pxs;
+            }
+
+            set
+            {
+                m_dOffsetFromOrigin_pxs = value;
+            }
+        }
 
 
         public CDimensionLinear(Point pStart, Point pEnd) : this(pStart, pEnd, true, true)
         {}
 
-        public CDimensionLinear(Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine) : this("", pStart, pEnd, isTextAboveLineBetweenExtensionLines, isDimensionUnderLine)
+        public CDimensionLinear(Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine, double dOffsetFromOrigin_pxs = 30) : this("", pStart, pEnd, isTextAboveLineBetweenExtensionLines, isDimensionUnderLine, dOffsetFromOrigin_pxs)
         {}
 
-        public CDimensionLinear(string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine) : base(text)
+        public CDimensionLinear(string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine, double dOffsetFromOrigin_pxs = 30) : base(text)
         {
             ControlPointStart = pStart;
             ControlPointEnd = pEnd;
             IsTextAboveLine = isTextAboveLineBetweenExtensionLines;
             IsDimensionUnderLine = isDimensionUnderLine;
+            OffsetFromOrigin_pxs = dOffsetFromOrigin_pxs;
             dBasicLength_m = Math.Sqrt(Math.Pow(pEnd.X - pStart.X, 2) + Math.Pow(pEnd.Y - pStart.Y, 2));
         }
 
