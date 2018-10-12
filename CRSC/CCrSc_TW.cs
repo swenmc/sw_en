@@ -256,9 +256,14 @@ namespace CRSC
         // CSC - closed thin-walled cross-section
         //protected override void CalculateSectionProperties();
 
+        // THIN-WALLED CROSS-SECTIONS
+        // Default functions generating indices
+        // Cross-section points are defined clockwise, indices are added counter-clockwise
+        // Auxiliary points are not used
+
         protected override void loadCrScIndices()
         {
-            int capacity = TriangleIndicesFrontSide.Count + TriangleIndicesShell.Count + TriangleIndicesBackSide.Count;
+            int capacity = TriangleIndicesFrontSide.Count + TriangleIndicesBackSide.Count + TriangleIndicesShell.Count;
             List<int> list = new List<int>(capacity);
 
             // Postup pridavania bodov (positions) do kolekcie
@@ -283,6 +288,7 @@ namespace CRSC
             TriangleIndices = new Int32Collection(list);
         }
 
+        // Cross-section points are defined clockwise, indices are added counter-clockwise
         protected override void loadCrScIndicesFrontSide()
         {
             // Front Side / Forehead
@@ -299,19 +305,26 @@ namespace CRSC
                 // INoPointsOut - number of real points in inside/outside collection of points
                 // INoAuxPoints + INoPointsOut - total number of points in inside/outside collection of section
 
-                INoAuxPoints = 0;
                 // Front Side / Forehead
 
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, INoAuxPoints + i, INoAuxPoints + i + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut) + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut));
+                        AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide,
+                            INoAuxPoints + i, INoAuxPoints + i + 1,
+                            INoAuxPoints + i + (INoAuxPoints + INoPointsOut) + 1,
+                            INoAuxPoints + i + (INoAuxPoints + INoPointsOut));
                     else
-                        AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, INoAuxPoints + i, INoAuxPoints + 0, INoAuxPoints + i + INoAuxPoints + 1, INoAuxPoints + i + (INoAuxPoints + INoPointsOut)); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide,
+                            INoAuxPoints + i,
+                            INoAuxPoints + 0,
+                            INoAuxPoints + i + INoAuxPoints + 1,
+                            INoAuxPoints + i + (INoAuxPoints + INoPointsOut)); // Last Element
                 }
             }
         }
 
+        // Cross-section points are defined clockwise, indices are added counter-clockwise
         protected override void loadCrScIndicesShell()
         {
             // Shell Surface OutSide
@@ -337,22 +350,37 @@ namespace CRSC
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1, INoAuxPoints + i + 1);
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell,
+                            INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i,
+                            2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1,
+                            INoAuxPoints + i + 1);
                     else
-                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints, INoAuxPoints + 0); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell,
+                            INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i,
+                            2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints,
+                            INoAuxPoints + 0); // Last Element
                 }
 
                 // Shell Surface Inside
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, INoAuxPoints + INoPointsOut + INoAuxPoints + i, INoAuxPoints + INoPointsOut + INoAuxPoints + i + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut);
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell,
+                            INoAuxPoints + INoPointsOut + INoAuxPoints + i,
+                            INoAuxPoints + INoPointsOut + INoAuxPoints + i + 1,
+                            2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1,
+                            2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut);
                     else
-                        AddRectangleIndices_CCW_1234(TriangleIndicesShell, 2 * (INoAuxPoints + INoPointsOut) + 2 * INoAuxPoints + i + 1, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, INoAuxPoints + INoPointsOut + INoAuxPoints + i, 2 * INoAuxPoints + INoPointsOut); // Last Element
+                        AddRectangleIndices_CCW_1234(TriangleIndicesShell,
+                            2 * (INoAuxPoints + INoPointsOut) + 2 * INoAuxPoints + i + 1,
+                            2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut,
+                            INoAuxPoints + INoPointsOut + INoAuxPoints + i,
+                            2 * INoAuxPoints + INoPointsOut); // Last Element
                 }
             }
         }
 
+        // Cross-section points are defined clockwise, indices are added counter-clockwise
         protected override void loadCrScIndicesBackSide()
         {
             // Back Side
@@ -373,9 +401,19 @@ namespace CRSC
                 for (int i = 0; i < INoPointsOut; i++)
                 {
                     if (i < INoPointsOut - 1)
-                        AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1);
+                        AddRectangleIndices_CW_1234(TriangleIndicesBackSide,
+                             2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i,
+                             2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i + 1,
+                             2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut + 1,
+                             2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut );
                     else
-                        AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut, 2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + 1, 2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + 0); // Last Element
+                        AddRectangleIndices_CW_1234(TriangleIndicesBackSide,
+                            2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + i,
+                            2 * (INoAuxPoints + INoPointsOut) + INoAuxPoints + 0,
+                            2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + 1,
+                            2 * (INoAuxPoints + INoPointsOut) + i + 2 * INoAuxPoints + INoPointsOut
+                            
+                            ); // Last Element
                 }
             }
         }

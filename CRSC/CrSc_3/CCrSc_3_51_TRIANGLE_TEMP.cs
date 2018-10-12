@@ -89,23 +89,5 @@ namespace CRSC
             // Point No. 3
             CrScPointsIn.Add(new Point(-CrScPointsIn[1].X, CrScPointsIn[1].Y));
         }
-
-        protected override void loadCrScIndicesFrontSide()
-        {
-            TriangleIndicesFrontSide = new Int32Collection(3 * 6);
-
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 4, 3);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 1, 2, 5, 4);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 2, 0, 3, 5);
-        }
-
-        protected override void loadCrScIndicesBackSide()
-        {
-            TriangleIndicesBackSide = new Int32Collection(3 * 6);
-
-            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 4, ITotNoPoints + 3);
-            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 5, ITotNoPoints + 4);
-            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 2, ITotNoPoints + 0, ITotNoPoints + 3, ITotNoPoints + 5);
-        }
     }
 }

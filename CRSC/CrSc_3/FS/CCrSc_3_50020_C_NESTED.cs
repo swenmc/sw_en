@@ -62,9 +62,9 @@ namespace CRSC
 
             CSColor = color_temp;  // Set cross-section color
 
-            //ITotNoPoints = 34;
+            //ITotNoPoints = 28;
             IsShapeSolid = false;
-            ITotNoPoints = INoPointsOut = 34;
+            INoPointsIn = INoPointsOut = 14;
             ITotNoPoints = INoPointsIn + INoPointsOut;
 
             h = fh;
@@ -75,8 +75,8 @@ namespace CRSC
             CSColor = color_temp;
 
             m_fd = fh - 2 * ft;
-            m_fc_lip1 = 0.012f; // Horizontal
-            m_fc_lip2 = 0.034f; // Vertical
+            //m_fc_lip1 = 0.012f; // Horizontal
+            //m_fc_lip2 = 0.034f; // Vertical
 
             fr_1_in = 0.006f;
             fr_1_out = fr_1_in + m_ft_f;
@@ -116,96 +116,75 @@ namespace CRSC
         public void CalcCrSc_Coord()
         {
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
-            float[,] CrScPointsOutArr = new float[ITotNoPoints, 2];
+            Point[] CrScPointsOutArr = new Point[INoPointsOut];
+            Point[] CrScPointsInArr = new Point[INoPointsIn];
+
+            // Outside
             // Point No. 1
-            CrScPointsOutArr[0, 0] = (float)b - m_fc_lip1 - fr_1_out;                  // y
-            CrScPointsOutArr[0, 1] = (float)h / 2f - m_fc_lip2 - fr_1_out - fr_1_in;   // z
+            CrScPointsOutArr[0] = new Point(b / 2f - fr_1_out, h / 2f);
 
             // Point No. 2
-            CrScPointsOutArr[1, 0] = CrScPointsOutArr[0, 0] + m_fc_lip1;                  // y
-            CrScPointsOutArr[1, 1] = CrScPointsOutArr[0, 1];                              // z
+            CrScPointsOutArr[1] = new Point(b / 2f, CrScPointsOutArr[0].Y - fr_1_out);
 
             // Point No. 3
-            CrScPointsOutArr[2, 0] = (float)b - m_ft_f;                                // y
-            CrScPointsOutArr[2, 1] = (float)h / 2f - fr_1_out - m_fc_lip2;             // z
+            CrScPointsOutArr[2] = new Point(CrScPointsOutArr[1].X, fz_stif / 2f);
 
             // Point No. 4
-            CrScPointsOutArr[3, 0] = CrScPointsOutArr[2, 0];                              // y
-            CrScPointsOutArr[3, 1] = CrScPointsOutArr[2, 1] + m_fc_lip2;                  // z
+            CrScPointsOutArr[3] = new Point(CrScPointsOutArr[1].X - fy_stif, 0);
 
             // Point No. 5
-            CrScPointsOutArr[4, 0] = (float)b - fr_1_out;                              // y
-            CrScPointsOutArr[4, 1] = (float)h / 2f - m_ft_f;                           // z
+            CrScPointsOutArr[4] = new Point(CrScPointsOutArr[2].X, -CrScPointsOutArr[2].Y);
 
             // Point No. 6
-            CrScPointsOutArr[5, 0] = fr_1_out;                                        // y
-            CrScPointsOutArr[5, 1] = CrScPointsOutArr[4, 1];                             // z
+            CrScPointsOutArr[5] = new Point(CrScPointsOutArr[1].X, -CrScPointsOutArr[1].Y);
 
             // Point No. 7
-            CrScPointsOutArr[6, 0] = m_ft_w;                                          // y
-            CrScPointsOutArr[6, 1] = CrScPointsOutArr[5, 1] - fr_1_out;                  // z
-
-            // Point No. 8
-            CrScPointsOutArr[7, 0] = CrScPointsOutArr[6, 0];                             // y
-            CrScPointsOutArr[7, 1] = fz_stif / 2f;                                    // z
-
-            // Point No. 9
-            CrScPointsOutArr[8, 0] = CrScPointsOutArr[7, 0] + fy_stif;                   // y
-            CrScPointsOutArr[8, 1] = 0;                                               // z
-
-
-            // Point No. 34
-            CrScPointsOutArr[33, 0] = (float)b - m_fc_lip1 - fr_1_out;                // y
-            CrScPointsOutArr[33, 1] = (float)h / 2f - m_fc_lip2 - 2 * fr_1_out;       // z
-
-            // Point No. 33
-            CrScPointsOutArr[32, 0] = CrScPointsOutArr[33, 0] + m_fc_lip1;               // y
-            CrScPointsOutArr[32, 1] = CrScPointsOutArr[33, 1];                           // z
-
-            // Point No. 32
-            CrScPointsOutArr[31, 0] = (float)b;                                       // y
-            CrScPointsOutArr[31, 1] = CrScPointsOutArr[2, 1];                            // z
-
-            // Point No. 31
-            CrScPointsOutArr[30, 0] = CrScPointsOutArr[31, 0];                           // y
-            CrScPointsOutArr[30, 1] = CrScPointsOutArr[3, 1];                            // z
-
-            // Point No. 30
-            CrScPointsOutArr[29, 0] = CrScPointsOutArr[4, 0];                            // y
-            CrScPointsOutArr[29, 1] = (float)h / 2f;                                  // z
-
-            // Point No. 29
-            CrScPointsOutArr[28, 0] = CrScPointsOutArr[5, 0];                            // y
-            CrScPointsOutArr[28, 1] = CrScPointsOutArr[29, 1];                           // z
-
-            // Point No. 28
-            CrScPointsOutArr[27, 0] = 0;                                              // y
-            CrScPointsOutArr[27, 1] = CrScPointsOutArr[6, 1];                            // z
-
-            // Point No. 27
-            CrScPointsOutArr[26, 0] = CrScPointsOutArr[27, 0];                           // y
-            CrScPointsOutArr[26, 1] = fz_stif / 2f;                                   // z
-
-            // Point No. 26
-            CrScPointsOutArr[25, 0] = fy_stif;                                        // y
-            CrScPointsOutArr[25, 1] = 0f;                                             // z
+            CrScPointsOutArr[6] = new Point(CrScPointsOutArr[0].X, -CrScPointsOutArr[0].Y);
 
             // Mirror about y-y
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < INoPointsOut; i++)
             {
-                CrScPointsOutArr[ITotNoPoints / 2 - i - 1, 0] = CrScPointsOutArr[i, 0];
-                CrScPointsOutArr[ITotNoPoints / 2 - i - 1, 1] = -CrScPointsOutArr[i, 1];
+                CrScPointsOutArr[INoPointsOut - i - 1].X = -CrScPointsOutArr[i].X;
+                CrScPointsOutArr[INoPointsOut - i - 1].Y = CrScPointsOutArr[i].Y;
             }
 
-            for (int i = 0; i < 8; i++)
+            // Inside
+            // Point No. 1
+            CrScPointsInArr[0] = new Point(b / 2f - fr_1_out, h / 2f - m_ft_f);
+
+            // Point No. 2
+            CrScPointsInArr[1] = new Point(b / 2f - m_ft_w, CrScPointsOutArr[0].Y - fr_1_out);
+
+            // Point No. 3
+            CrScPointsInArr[2] = new Point(CrScPointsInArr[1].X, fz_stif / 2f);
+
+            // Point No. 4
+            CrScPointsInArr[3] = new Point(CrScPointsInArr[1].X - fy_stif, 0);
+
+            // Point No. 5
+            CrScPointsInArr[4] = new Point(CrScPointsInArr[2].X, -CrScPointsInArr[2].Y);
+
+            // Point No. 6
+            CrScPointsInArr[5] = new Point(CrScPointsInArr[1].X, -CrScPointsInArr[1].Y);
+
+            // Point No. 7
+            CrScPointsInArr[6] = new Point(CrScPointsInArr[0].X, -CrScPointsInArr[0].Y);
+
+            // Mirror about y-y
+            for (int i = 0; i < INoPointsIn; i++)
             {
-                CrScPointsOutArr[ITotNoPoints / 2 + i, 0] = CrScPointsOutArr[ITotNoPoints - i - 1, 0];
-                CrScPointsOutArr[ITotNoPoints / 2 + i, 1] = -CrScPointsOutArr[ITotNoPoints - i - 1, 1];
+                CrScPointsInArr[INoPointsIn - i - 1].X = -CrScPointsInArr[i].X;
+                CrScPointsInArr[INoPointsIn - i - 1].Y = CrScPointsInArr[i].Y;
             }
 
-            for (int i = 0; i < CrScPointsOutArr.GetLength(0); i++)
+            for (int i = 0; i < CrScPointsOutArr.Length; i++)
             {
-                CrScPointsOut.Add(new Point(CrScPointsOutArr[i, 0], CrScPointsOutArr[i, 1]));
+                CrScPointsOut.Add(CrScPointsOutArr[i]);
+            }
+
+            for (int i = 0; i < CrScPointsInArr.Length; i++)
+            {
+                CrScPointsIn.Add(CrScPointsInArr[i]);
             }
         }
 
@@ -213,7 +192,7 @@ namespace CRSC
         {
             // Temporary - odstranit po implementacii vypoctu
 
-            D_y_gc = -0.02923; // Temporary - TODO
+            D_y_gc = 0; // Temporary - TODO
             y_min = D_y_gc;
             y_max = b + y_min;
 
