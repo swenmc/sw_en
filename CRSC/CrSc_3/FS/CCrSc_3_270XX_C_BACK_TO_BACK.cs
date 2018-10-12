@@ -30,23 +30,23 @@ namespace CRSC
             Fd = (float)h - 2 * ft;
 
             // Create Array - allocate memory
-            //CrScPointsOut = new float[ITotNoPoints, 2];
             CrScPointsOut = new List<Point>(ITotNoPoints);
 
             // Fill Array Data
             CalcCrSc_Coord();
 
+            // SOLID MODEL
             // Fill list of indices for drawing of surface - triangles edges
-
             // Particular indices - distinguished colors of member surfaces
             loadCrScIndicesFrontSide();
             loadCrScIndicesShell();
             loadCrScIndicesBackSide();
 
-            // Complex indices - one color or member
+            // Complex indices - one color of member
             loadCrScIndices();
 
-            // Wireframe Indices
+            // WIREFRAME MODEL
+            // Complex indices
             loadCrScWireFrameIndices();
 
             FillCrScPropertiesByTableData();

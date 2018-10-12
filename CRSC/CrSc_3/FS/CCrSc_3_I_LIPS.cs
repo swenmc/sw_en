@@ -80,7 +80,7 @@ namespace CRSC
             // Fill Point Array Data in LCS (Local Coordinate System of Cross-Section, horizontal y, vertical - z)
 
             // Point No. 1
-            CrScPointsOut.Add(new Point(b / 2.0, h / 2.0));
+            CrScPointsOut.Add(new Point(-b / 2.0, h / 2.0));
             // Point No. 2
             CrScPointsOut.Add(new Point(-CrScPointsOut[0].X, CrScPointsOut[0].Y));
             // Point No. 3
@@ -94,9 +94,9 @@ namespace CRSC
             // Point No. 7
             CrScPointsOut.Add(new Point(CrScPointsOut[5].X, -CrScPointsOut[5].Y));
             // Point No. 8
-            CrScPointsOut.Add(new Point(-CrScPointsOut[4].X, -CrScPointsOut[4].Y));
+            CrScPointsOut.Add(new Point(CrScPointsOut[4].X, -CrScPointsOut[4].Y));
             // Point No. 9
-            CrScPointsOut.Add(new Point(-CrScPointsOut[3].X, -CrScPointsOut[3].Y));
+            CrScPointsOut.Add(new Point(CrScPointsOut[3].X, -CrScPointsOut[3].Y));
             // Point No. 10
             CrScPointsOut.Add(new Point(CrScPointsOut[2].X, -CrScPointsOut[2].Y));
             // Point No. 11
@@ -121,36 +121,34 @@ namespace CRSC
             CrScPointsOut.Add(new Point(-CrScPointsOut[2].X, CrScPointsOut[2].Y));
         }
 
+        // Cross-section points are defined clockwise, indices are added counter-clockwise
         protected override void loadCrScIndicesFrontSide()
         {
-            TriangleIndicesFrontSide = new Int32Collection(7*6);
-
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 4, 17);
+            TriangleIndicesFrontSide = new Int32Collection(7 * 6);
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 17, 18, 19);
+            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 0, 1, 4, 17);
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 1, 2, 3, 4);
 
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 5, 6, 15, 16);
 
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 7, 8, 9, 10);
-            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 11, 12, 13, 14);
             AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 7, 10, 11, 14);
+            AddRectangleIndices_CCW_1234(TriangleIndicesFrontSide, 11, 12, 13, 14);
         }
 
+        // Cross-section points are defined clockwise, indices are added counter-clockwise
         protected override void loadCrScIndicesBackSide()
         {
-            TriangleIndicesBackSide = new Int32Collection(7*6);
+            TriangleIndicesBackSide = new Int32Collection(7 * 6);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 17, ITotNoPoints + 18, ITotNoPoints + 19);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 4, ITotNoPoints + 17);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 3, ITotNoPoints + 4);
 
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 1, ITotNoPoints + 4, ITotNoPoints + 17);
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 0, ITotNoPoints + 17, ITotNoPoints + 18, ITotNoPoints + 19);
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 1, ITotNoPoints + 2, ITotNoPoints + 3, ITotNoPoints + 4);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 5, ITotNoPoints + 6, ITotNoPoints + 15, ITotNoPoints + 16);
 
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 5, ITotNoPoints + 6, ITotNoPoints + 15, ITotNoPoints + 16);
-
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 7, ITotNoPoints + 8, ITotNoPoints + 9, ITotNoPoints + 10);
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 11, ITotNoPoints + 12, ITotNoPoints + 13, ITotNoPoints + 14);
-            AddRectangleIndices_CCW_1234(TriangleIndicesBackSide, ITotNoPoints + 7, ITotNoPoints + 10, ITotNoPoints + 11, ITotNoPoints + 14);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 7, ITotNoPoints + 8, ITotNoPoints + 9, ITotNoPoints + 10);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 7, ITotNoPoints + 10, ITotNoPoints + 11, ITotNoPoints + 14);
+            AddRectangleIndices_CW_1234(TriangleIndicesBackSide, ITotNoPoints + 11, ITotNoPoints + 12, ITotNoPoints + 13, ITotNoPoints + 14);
         }
     }
 }
-
-
