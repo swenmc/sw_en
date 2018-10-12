@@ -1201,7 +1201,7 @@ namespace BaseClasses
                 iBackSideMaxIndex != (meshBackSide.Positions.Count - 1) ||
                 iShellMaxIndex != (meshShell.Positions.Count - 1))
             {
-               // throw new Exception("Invalid number of positions or incides!");
+               throw new Exception("Invalid number of positions or incides!");
             }
 
             // To Ondrej - urcite to tu potrebujeme nastavovat ???
