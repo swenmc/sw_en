@@ -326,9 +326,8 @@ namespace BaseClasses
             DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
         }
 
-
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
-        {            
+        {
             if(Dimensions == null) return new List<CDimension>();
             List<CDimension> listDimensions = new List<CDimension>(Dimensions);
             foreach (CDimension d in listDimensions)
@@ -337,7 +336,6 @@ namespace BaseClasses
             }
             return listDimensions;
         }
-        
 
         private static List<Point> ConvertRealPointsToCanvasDrawingPoints(List<Point> points, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {

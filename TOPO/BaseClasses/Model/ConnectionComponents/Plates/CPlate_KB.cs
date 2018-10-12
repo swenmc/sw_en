@@ -312,10 +312,10 @@ namespace BaseClasses
             Dimensions = new GraphObj.CDimension[iNumberOfDimensions+1];
 
             Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
-            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
-            Dimensions[3] = new GraphObj.CDimensionLinear(PointsOut2D[4], PointsOut2D[5]);
-            Dimensions[4] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[5]);
+            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[2], PointsOut2D[3], true, true);
+            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[4], PointsOut2D[3], true, false);
+            Dimensions[3] = new GraphObj.CDimensionLinear(PointsOut2D[5], PointsOut2D[4], true, false);
+            Dimensions[4] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[5], true, false);
 
             Dimensions[5] = new GraphObj.CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
         }
