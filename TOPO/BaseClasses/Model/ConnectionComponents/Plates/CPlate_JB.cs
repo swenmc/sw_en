@@ -360,9 +360,9 @@ namespace BaseClasses
             int iNumberOfDimensions = 5;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
 
-            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1], false, true);
-            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2], false, true);
-            Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3], false, true);
+            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2], true, true);
+            Dimensions[2] = new CDimensionLinear(PointsOut2D[2], PointsOut2D[3], true, true);
             Dimensions[3] = new CDimensionLinear(PointsOut2D[3], PointsOut2D[4], false, true);
             Dimensions[4] = new CDimensionLinear(PointsOut2D[5], PointsOut2D[4], true, false);
 
