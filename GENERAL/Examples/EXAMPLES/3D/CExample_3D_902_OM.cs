@@ -33,10 +33,12 @@ namespace Examples
             //m_arrCrSc[0] = new CCrSc_3_51_BOX_TEMP(1f, 0.3f, 0.003f);
 
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.008f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_270XX_C_BACK_TO_BACK(0, 0.27f, 0.10f, 0.05f, 0.008f, Colors.Orange);
-            //m_arrCrSc[0] = new CCrSc_3_50020_C(0.5f, 0.20f, 0.001f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_270XX_C_BACK_TO_BACK(0, 0.27f, 0.10f, 0.05f, 0.008f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_50020_C(0, 0.5f, 0.20f, 0.008f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_50020_C_NESTED(0, 0.5f, 0.20f, 0.008f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0, 0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
+            m_arrCrSc[0] = new CCrSc_3_Z(0, 0.5f, 0.2f, 0.05f, 0.02f, Colors.DarkCyan);
 
             // Pokusy
             //m_arrCrSc[0] = new CCrSc_3_51_C_TEMP(0,0.27f, 0.1f, 0.02f, Colors.DarkGreen);

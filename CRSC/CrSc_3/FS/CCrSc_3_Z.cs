@@ -118,6 +118,14 @@ namespace CRSC
 
             // Point No. 12
             CrScPointsOut.Add(new Point(CrScPointsOut[10].X, CrScPointsOut[0].Y));
+
+            // Suradnice su definovane CCW, ale ma to byt CW, bolo by dobre prepracovat suradnice P1-12
+            List<Point>CrScPointsOutCorrect = new List<Point>(ITotNoPoints);
+
+            for (int i = 0; i < CrScPointsOut.Count; i++)
+                CrScPointsOutCorrect.Add(CrScPointsOut[CrScPointsOut.Count - 1 - i]);
+
+            CrScPointsOut = CrScPointsOutCorrect; // Nastavit upravene hodnoty do povodneho zoznamu (zadanie bodov je teda CW ako u ostatnych prierezov)
         }
     }
 }
