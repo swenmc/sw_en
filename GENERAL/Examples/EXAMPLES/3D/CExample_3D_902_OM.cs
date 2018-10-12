@@ -39,7 +39,7 @@ namespace Examples
 
             // Pokusy
             m_arrCrSc[0] = new CCrSc_3_51_C_TEMP(0,0.27f, 0.1f, 0.02f, Colors.DarkGreen);
-            //m_arrCrSc[1] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.DarkGreen);
+            //m_arrCrSc[0] = new CCrSc_3_51_TRIANGLE_TEMP(0.866025f * 0.3f, 0.3f, 0.05f, Colors.DarkGreen);
 
             //m_arrCrSc[0].CSColor = Colors.Orange;
 

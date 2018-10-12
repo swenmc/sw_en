@@ -1030,6 +1030,9 @@ namespace sw_en_GUI
             sDisplayOptions.bUseLightAmbient = true;
             sDisplayOptions.bUseDiffuseMaterial = true;
 
+            sDisplayOptions.bUseDiffuseMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+
             sDisplayOptions.bDisplaySolidModel = true;
             sDisplayOptions.bDisplayWireFrameModel = true;
             sDisplayOptions.bDisplayMembers = true;
@@ -1039,7 +1042,7 @@ namespace sw_en_GUI
 
             sDisplayOptions.bDisplayGlobalAxis = true;
             sDisplayOptions.bDisplayMembersCenterLines = true;
-            sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
+            sDisplayOptions.bDistinguishedColor = false; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
             list_trackports.Add(win._trackport);

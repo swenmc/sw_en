@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MATH
 {
@@ -21,6 +20,14 @@ namespace MATH
             return data.Min();
         }
         public static int Max(List<int> data)
+        {
+            return data.Max();
+        }
+        public static int Min(ICollection<int> data)
+        {
+            return data.Min();
+        }
+        public static int Max(ICollection<int> data)
         {
             return data.Max();
         }

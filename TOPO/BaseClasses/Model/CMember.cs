@@ -477,9 +477,9 @@ namespace BaseClasses
 
             getG_M_3D_Member(eGCS, brushFrontSide, brushShell, brushBackSide, bUseDiffuseMaterial, bUseEmissiveMaterial, out modelFrontSide, out  modelShell, out modelBackSide);
 
-            MObject3DModel.Children.Add((Model3D)modelFrontSide);
-            MObject3DModel.Children.Add((Model3D)modelBackSide);
-            MObject3DModel.Children.Add((Model3D)modelShell);
+            MObject3DModel.Children.Add(modelFrontSide);
+            MObject3DModel.Children.Add(modelBackSide);
+            MObject3DModel.Children.Add(modelShell);
 
             return MObject3DModel;
         }
@@ -1170,15 +1170,39 @@ namespace BaseClasses
             meshFrontSidePositions.Freeze();
             meshBackSidePositions.Freeze();
             meshShellPositions.Freeze();
-            meshFrontSide.Positions = meshFrontSidePositions;            
+            meshFrontSide.Positions = meshFrontSidePositions;
             meshBackSide.Positions = meshBackSidePositions;
             meshShell.Positions = meshShellPositions;
-            
+
             // Mesh Triangles - various cross-sections shapes defined
-            meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;            
+            meshFrontSide.TriangleIndices = obj_CrScA.TriangleIndicesFrontSide;
             meshBackSide.TriangleIndices = obj_CrScA.TriangleIndicesBackSide;
             meshShell.TriangleIndices = obj_CrScA.TriangleIndicesShell;
 
+            // Pre back side odpocitat zo vsetkych indices celkovy pocet bodov na prednej strane
+            for (int i = 0; i < meshBackSide.TriangleIndices.Count; i++)
+                meshBackSide.TriangleIndices[i] -= obj_CrScA.ITotNoPoints;
+
+            // Maximum index of position (point) used in collection
+            int iFrontSideMaxIndex = MathF.Max(meshFrontSide.TriangleIndices);
+            int iBackSideMaxIndex = MathF.Max(meshBackSide.TriangleIndices);
+            int iShellMaxIndex = MathF.Max(meshShell.TriangleIndices);
+
+            // Validation
+            // Number of points in front and back side must be equal
+            // Number of indices in front and back side must be equal
+            // Number of points in shell must be front + back side
+            // Number of indices in shell must be front and back
+            if (meshFrontSide.Positions.Count != meshBackSide.Positions.Count ||
+                meshFrontSide.TriangleIndices.Count != meshBackSide.TriangleIndices.Count ||
+                meshShell.Positions.Count != (meshFrontSide.Positions.Count + meshBackSide.Positions.Count) ||
+                meshShell.TriangleIndices.Count != (meshShell.Positions.Count * 3) ||
+                iFrontSideMaxIndex != (meshFrontSide.Positions.Count - 1) ||
+                iBackSideMaxIndex != (meshBackSide.Positions.Count - 1) ||
+                iShellMaxIndex != (meshShell.Positions.Count - 1))
+                throw new Exception("Invalid number of positions or incides!");
+
+            // To Ondrej - urcite to tu potrebujeme nastavovat ???
             foreach (int n in obj_CrScA.WireFrameIndices)
             {
                 WireFramePoints.Add(meshShellPositions[n]);
