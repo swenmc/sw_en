@@ -773,6 +773,7 @@ namespace BaseClasses
                         CDimensionLinear dl = d as CDimensionLinear;
                         dl.ControlPointStart = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, dl.ControlPointStart);
                         dl.ControlPointEnd = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, dl.ControlPointEnd);
+                        dl.ControlPointRef = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, dl.ControlPointRef);
                     }
                     if (d is CDimensionArc)
                     {
@@ -780,6 +781,7 @@ namespace BaseClasses
                         da.ControlPointStart = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointStart);
                         da.ControlPointEnd = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointEnd);
                         da.ControlPointCenter = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointCenter);
+                        da.ControlPointRef = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointRef);
                     }
                 }
             }
