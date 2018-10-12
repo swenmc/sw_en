@@ -48,8 +48,14 @@ namespace BaseClasses.GraphObj
 
         }
 
-        public virtual void MirrorYCoordinates() { }
-        public virtual void MirrorXCoordinates() { }
+        public virtual void MirrorYCoordinates()
+        {
+            this.m_controlPointRef.Y *= -1;
+        }
+        public virtual void MirrorXCoordinates()
+        {
+            this.m_controlPointRef.X *= -1;
+        }
         public virtual void UpdatePoints(double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor) { }
     }
 }

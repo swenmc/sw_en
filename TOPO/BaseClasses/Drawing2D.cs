@@ -1127,12 +1127,23 @@ namespace BaseClasses
 
         public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas)
         {
-            if (!dim.IsDimensionOutSide) dim.OffsetFromOrigin_pxs *= -1; 
+            if (dim.IsDimensionOutSide)
+            {
+                if(dim.ControlPointRef.Y > dim.ControlPointStart.Y) //over center point
+                {
+                    dim.OffsetFromOrigin_pxs *= -1;
+                }
+            }
+            else
+            {
+                if (dim.ControlPointRef.Y < dim.ControlPointStart.Y) //under center point
+                {
+                    dim.OffsetFromOrigin_pxs *= -1;
+                }
+            }            
             
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
             double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
-
-
 
             float fUnitFactor_mTomm = 1000;
             int iNumberOfDecimalPlaces = 0;
@@ -1146,6 +1157,9 @@ namespace BaseClasses
 
             double dPrimaryLineThickness = 1;
             double lPrimaryLinelength = Math.Sqrt(Math.Pow(dim.ControlPointEnd.X - dim.ControlPointStart.X, 2) + Math.Pow(dim.ControlPointEnd.Y - dim.ControlPointStart.Y, 2));
+
+            if (dim.ControlPointStart.X > dim.ControlPointEnd.X) lPrimaryLinelength *= -1; //opposite direction
+
             Line lPrimaryLine = new Line();
             lPrimaryLine.X1 = dim.ControlPointStart.X;
             lPrimaryLine.Y1 = dim.ControlPointStart.Y + dim.OffsetFromOrigin_pxs;
