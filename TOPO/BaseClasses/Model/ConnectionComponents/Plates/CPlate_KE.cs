@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -349,14 +350,16 @@ namespace BaseClasses
             int iNumberOfDimensions = 6;
             Dimensions = new GraphObj.CDimension[iNumberOfDimensions + 1];
 
-            Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[2], PointsOut2D[3]);
-            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[4], PointsOut2D[3], true, false);
-            Dimensions[3] = new GraphObj.CDimensionLinear(PointsOut2D[5], PointsOut2D[4], true, false);
-            Dimensions[4] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[5], true, true, 100);
-            Dimensions[5] = new GraphObj.CDimensionLinear(PointsOut2D[11], PointsOut2D[0]);
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
-            Dimensions[6] = new GraphObj.CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[3], true, false);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[5], PointsOut2D[4], true, false);
+            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true, 100);
+            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[11], PointsOut2D[0]);
+
+            Dimensions[6] = new CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
         }
 
         protected override void loadIndices()

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATH;
+using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
@@ -213,13 +214,15 @@ namespace BaseClasses
         void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 3;
-            Dimensions = new GraphObj.CDimension[iNumberOfDimensions+1];
+            Dimensions = new CDimension[iNumberOfDimensions+1];
 
-            Dimensions[0] = new GraphObj.CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new GraphObj.CDimensionLinear(PointsOut2D[1], PointsOut2D[2], true, true);
-            Dimensions[2] = new GraphObj.CDimensionLinear(PointsOut2D[3], PointsOut2D[2], true, false);
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
-            Dimensions[3] = new GraphObj.CDimensionArc(PointsOut2D[2], PointsOut2D[3], PointsOut2D[4]);
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], true, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[2], true, false);
+
+            Dimensions[3] = new CDimensionArc(PointsOut2D[2], PointsOut2D[3], PointsOut2D[4]);
         }
 
         protected override void loadIndices()

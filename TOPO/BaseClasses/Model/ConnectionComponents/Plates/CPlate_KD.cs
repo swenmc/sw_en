@@ -337,13 +337,14 @@ namespace BaseClasses
         {
             int iNumberOfDimensions = 6;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
+            Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
-            Dimensions[0] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new CDimensionLinear(PointsOut2D[1], PointsOut2D[2]);
-            Dimensions[2] = new CDimensionLinear(PointsOut2D[3], PointsOut2D[4], true, true);
-            Dimensions[3] = new CDimensionLinear(PointsOut2D[5], PointsOut2D[4], true, false);
-            Dimensions[4] = new CDimensionLinear(PointsOut2D[6], PointsOut2D[5], true, false);
-            Dimensions[5] = new CDimensionLinear(PointsOut2D[0], PointsOut2D[7], true, false);
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2]);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], true, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[5], PointsOut2D[4], true, false);
+            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[6], PointsOut2D[5], true, false);
+            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, false);
 
             Dimensions[6] = new CDimensionArc(new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
         }

@@ -69,26 +69,19 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        public CDimensionArc(Point pstart_temp, Point pend_temp) : base()
+        public CDimensionArc(Point pRef, Point pstart, Point pend) : base(pRef)
         {
             DisplayedText = "";
-            ControlPointStart = pstart_temp;
-            ControlPointEnd = pend_temp;
+            ControlPointStart = pstart;
+            ControlPointEnd = pend;
         }
 
-        public CDimensionArc(Point pstart_temp, Point pend_temp, Point pcenter_temp) : base()
+        public CDimensionArc(Point pRef, Point pstart, Point pend, Point pcenter) : base(pRef)
         {
             DisplayedText = "";
-            ControlPointStart = pstart_temp;
-            ControlPointEnd = pend_temp;
-            ControlPointCenter = pcenter_temp;
-        }
-
-        public CDimensionArc(string text_temp, Point pstart_temp, Point pend_temp) : base(text_temp)
-        {
-            DisplayedText = text_temp;
-            ControlPointStart = pstart_temp;
-            ControlPointEnd = pend_temp;
+            ControlPointStart = pstart;
+            ControlPointEnd = pend;
+            ControlPointCenter = pcenter;
         }
 
         public override void MirrorYCoordinates()
@@ -96,6 +89,12 @@ namespace BaseClasses.GraphObj
             this.m_controlPointStart.Y *= -1;
             this.m_controlPointEnd.Y *= -1;
             this.m_controlPointCenter.Y *= -1;
+        }
+        public override void MirrorXCoordinates()
+        {
+            this.m_controlPointStart.X *= -1;
+            this.m_controlPointEnd.X *= -1;
+            this.m_controlPointCenter.X *= -1;
         }
 
         public override void UpdatePoints(double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)

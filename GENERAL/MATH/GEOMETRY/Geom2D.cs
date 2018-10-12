@@ -183,6 +183,14 @@ namespace MATH
             p.X = x;
             p.Y = y;
         }
+        public static Point TransformPositions_CW_deg(double x_centerOfRotation, double y_centerOfRotation, double theta_deg, Point p)
+        {
+            double x = p.X;
+            double y = p.Y;
+
+            TransformPositions_CW_deg(x_centerOfRotation, y_centerOfRotation, theta_deg, ref x, ref y);
+            return new Point(x, y);
+        }
         public static void TransformPositions_CW_deg(double x_centerOfRotation, double y_centerOfRotation, double theta_deg, ref double x, ref double y)
         {
             TransformPositions_CW_rad(x_centerOfRotation, y_centerOfRotation, theta_deg / 180f * Math.PI, ref x, ref y);

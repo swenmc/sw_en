@@ -54,18 +54,18 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private bool m_bIsDimensionUnderLine;
+        private bool m_bIsDimensionOutSide;
 
-        public bool IsDimensionUnderLine
+        public bool IsDimensionOutSide
         {
             get
             {
-                return m_bIsDimensionUnderLine;
+                return m_bIsDimensionOutSide;
             }
 
             set
             {
-                m_bIsDimensionUnderLine = value;
+                m_bIsDimensionOutSide = value;
             }
         }
 
@@ -100,18 +100,19 @@ namespace BaseClasses.GraphObj
         }
 
 
-        public CDimensionLinear(Point pStart, Point pEnd) : this(pStart, pEnd, true, true)
+        public CDimensionLinear(Point pRef, Point pStart, Point pEnd) : this(pRef, pStart, pEnd, true, true)
         {}
 
-        public CDimensionLinear(Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine, double dOffsetFromOrigin_pxs = 30) : this("", pStart, pEnd, isTextAboveLineBetweenExtensionLines, isDimensionUnderLine, dOffsetFromOrigin_pxs)
+        public CDimensionLinear(Point pRef, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionOutSide, double dOffsetFromOrigin_pxs = 30) 
+            : this(pRef, "", pStart, pEnd, isTextAboveLineBetweenExtensionLines, isDimensionOutSide, dOffsetFromOrigin_pxs)
         {}
 
-        public CDimensionLinear(string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionUnderLine, double dOffsetFromOrigin_pxs = 30) : base(text)
+        public CDimensionLinear(Point pRef, string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionOutSide, double dOffsetFromOrigin_pxs = 30) : base(pRef, text)
         {
             ControlPointStart = pStart;
             ControlPointEnd = pEnd;
             IsTextAboveLine = isTextAboveLineBetweenExtensionLines;
-            IsDimensionUnderLine = isDimensionUnderLine;
+            IsDimensionOutSide = isDimensionOutSide;
             OffsetFromOrigin_pxs = dOffsetFromOrigin_pxs;
             dBasicLength_m = Math.Sqrt(Math.Pow(pEnd.X - pStart.X, 2) + Math.Pow(pEnd.Y - pStart.Y, 2));
         }
@@ -120,6 +121,11 @@ namespace BaseClasses.GraphObj
         {
             this.m_controlPointStart.Y *= -1;
             this.m_controlPointEnd.Y *= -1;
+        }
+        public override void MirrorXCoordinates()
+        {
+            this.m_controlPointStart.X *= -1;
+            this.m_controlPointEnd.X *= -1;
         }
 
         public override void UpdatePoints(double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)

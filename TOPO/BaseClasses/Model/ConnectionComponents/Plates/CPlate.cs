@@ -681,6 +681,20 @@ namespace BaseClasses
             {
                 Geom2D.MirrorAboutX_ChangeYCoordinates(ref m_drillingRoutePoints);
             }
+
+            //Dimensions
+            MirrorAboutX_ChangeYDimensionsCoordinates();
+        }
+
+        private void MirrorAboutX_ChangeYDimensionsCoordinates()
+        {
+            if (Dimensions != null)
+            {
+                foreach (CDimension d in Dimensions)
+                {
+                    d.MirrorYCoordinates();
+                }
+            }
         }
 
         // Mirror plate about y
@@ -705,6 +719,20 @@ namespace BaseClasses
             {
                 Geom2D.MirrorAboutY_ChangeXCoordinates(ref m_drillingRoutePoints);
             }
+
+            //Dimensions
+            MirrorAboutY_ChangeXDimensionsCoordinates();
+        }
+
+        private void MirrorAboutY_ChangeXDimensionsCoordinates()
+        {
+            if (Dimensions != null)
+            {
+                foreach (CDimension d in Dimensions)
+                {
+                    d.MirrorXCoordinates();
+                }
+            }
         }
 
         // Rotate plate
@@ -715,6 +743,7 @@ namespace BaseClasses
 
             // TODO ??? ScrewArrangement.HolesCentersPoints2D sa neda predat refenciou
             // BUG No. 72 - pri opakovanom volani sa nepouziji nastavene suradnice ale podovne, resp uplne ineProblem je vo vsetkych funkciach pre mirror, rotate of plate
+            // TO Mato - je ten koment vyssie aktualny?
             if (ScrewArrangement != null)
             {
                 Point[] pArrayTemp = ScrewArrangement.HolesCentersPoints2D;
@@ -727,6 +756,32 @@ namespace BaseClasses
             if (DrillingRoutePoints != null)
             {
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);
+            }
+
+            //DIMENSIONS
+            TransformPlateDimensions_CW_deg(fTheta_deg);
+        }
+
+        private void TransformPlateDimensions_CW_deg(double theta_deg)
+        {
+            if (Dimensions != null)
+            {
+                foreach (CDimension d in Dimensions)
+                {
+                    if (d is CDimensionLinear)
+                    {
+                        CDimensionLinear dl = d as CDimensionLinear;
+                        dl.ControlPointStart = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, dl.ControlPointStart);
+                        dl.ControlPointEnd = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, dl.ControlPointEnd);
+                    }
+                    if (d is CDimensionArc)
+                    {
+                        CDimensionArc da = d as CDimensionArc;
+                        da.ControlPointStart = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointStart);
+                        da.ControlPointEnd = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointEnd);
+                        da.ControlPointCenter = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointCenter);
+                    }
+                }
             }
         }
 
