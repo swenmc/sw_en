@@ -90,7 +90,7 @@ namespace BaseClasses
                     crsc.CrScPointsIn,
                     null,
                     null,
-                    null, // TODO - dodefinovat i pre prierezy                    
+                    null, // TODO - dodefinovat i pre prierezy
                     0,
                     fmodelMarginLeft_x,
                     fmodelMarginTop_y,
@@ -158,18 +158,19 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
-            float fDiameter = 0;
+            float fDiameter_screw = 0;
+            float fDiameter_anchor = 0;
 
             if(plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
-                fDiameter = plate.ScrewArrangement.referenceScrew.Diameter_thread;
+                fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
-            if (plate is CConCom_Plate_BB_BG) // Ak je plech totoho typu mozu sa vykreslovat objekty typu anchors alebo screws (screws som zatial nezadefinoval)
+            if (plate is CConCom_Plate_BB_BG) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {
                 // TODO - prepracovat na Anchor Arrangement
 
                 // Ak je plech typu B - zakladova patka, vykreslit priemer z anchor
                 CConCom_Plate_BB_BG temp_plate = plate as CConCom_Plate_BB_BG;
-                fDiameter = temp_plate.referenceAnchor.Diameter_thread;
+                fDiameter_anchor = temp_plate.AnchorArrangement.referenceAnchor.Diameter_thread;
             }
 
             canvasForImage.Children.Clear();
@@ -187,7 +188,7 @@ namespace BaseClasses
                     pHolesCentersPoints2D,
                     plate.DrillingRoutePoints,
                     plate.Dimensions,
-                    fDiameter * scale_unit,
+                    fDiameter_screw * scale_unit,
                     fmodelMarginLeft_x,
                     fmodelMarginBottom_y,
                     dReal_Model_Zoom_Factor,

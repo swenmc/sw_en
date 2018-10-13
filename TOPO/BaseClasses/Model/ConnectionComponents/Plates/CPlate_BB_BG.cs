@@ -53,41 +53,7 @@ namespace BaseClasses
             }
         }
 
-        float m_fDistanceBetweenHoles;
-
-        public float Fd_betweenHoles
-        {
-            get
-            {
-                return m_fDistanceBetweenHoles;
-            }
-
-            set
-            {
-                m_fDistanceBetweenHoles = value;
-            }
-        }
-
-        // Temporary - pokial sa nevyriesi samostana definicia anchor, screws atd
-        public int m_iHolesNumber;   // Number of holes
-
-        public int IHolesNumber
-        {
-            get
-            {
-                return m_iHolesNumber;
-            }
-
-            set
-            {
-                m_iHolesNumber = value;
-            }
-        }
-
-        public CScrew referenceScrew;
-        public CAnchor referenceAnchor;
-
-        int iNoPoints2Dfor3D;
+        int iNoPoints2Dfor3D; // Pomocny bod
 
         public CConCom_Plate_BB_BG()
         {
@@ -102,12 +68,10 @@ namespace BaseClasses
             float fhY_temp,
             float fl_Z_temp,
             float ft_platethickness,
-            int iHolesNumber_temp,
-            CScrew referenceScrew_temp,
-            CAnchor referenceAnchor_temp,
             float fRotation_x_deg,
             float fRotation_y_deg,
             float fRotation_z_deg,
+            CAnchorArrangement_BB_BG anchorArrangement_temp,
             CScrewArrangement_BB_BG screwArrangement_temp,
             bool bIsDisplayed)
         {
@@ -122,32 +86,56 @@ namespace BaseClasses
             Fh_Y = fhY_temp;
             Fl_Z = fl_Z_temp;
             Ft = ft_platethickness;
-            IHolesNumber = iHolesNumber_temp = 2;
-            referenceScrew = referenceScrew_temp;
-            referenceAnchor = referenceAnchor_temp;
 
-            m_fDistanceBetweenHoles = 0.5f * m_fhY;
             ITotNoPointsin2D = 8;
 
-            iNoPoints2Dfor3D = ITotNoPointsin2D + IHolesNumber * 4 + IHolesNumber * INumberOfPointsOfHole;
+            iNoPoints2Dfor3D = ITotNoPointsin2D + anchorArrangement_temp.IHolesNumber * 4 + anchorArrangement_temp.IHolesNumber * INumberOfPointsOfHole;
             ITotNoPointsin3D = 2 * iNoPoints2Dfor3D;
 
             m_fRotationX_deg = fRotation_x_deg;
             m_fRotationY_deg = fRotation_y_deg;
             m_fRotationZ_deg = fRotation_z_deg;
 
+            UpdatePlateData(anchorArrangement_temp, screwArrangement_temp);
+        }
+
+        public void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement, CScrewArrangement_BB_BG screwArrangement)
+        {
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
             arrPoints3D = new Point3D[ITotNoPointsin3D];
 
+            if (screwArrangement != null)
+            {
+                arrConnectorControlPoints3D = new Point3D[screwArrangement.IHolesNumber];
+            }
+
             // Calculate point positions
             Calc_Coord2D();
+
+            // Calculate parameters of arrangement depending on plate geometry
+            if (anchorArrangement != null)
+            {
+                anchorArrangement.Calc_HolesCentersCoord2D(Fb_X, Fh_Y, Fl_Z);
+                anchorArrangement.Calc_HolesCentersCoord3D(Fb_X, Fh_Y, Fl_Z);
+            }
+
+            AnchorArrangement = anchorArrangement;
             Calc_Coord3D();
-            screwArrangement_temp.Calc_HolesCentersCoord2D(Fb_X, Fh_Y, Fl_Z);
+
+            if (screwArrangement != null)
+            {
+                screwArrangement.Calc_BasePlateData(m_fbX, m_flZ, m_fhY, Ft);
+            }
 
             // Fill list of indices for drawing of surface
             loadIndices();
 
+            UpdatePlateData_Basic(screwArrangement);
+        }
+
+        public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
+        {
             fWidth_bx = m_fbX;
             fHeight_hy = m_fhY;
             fArea = PolygonArea();
@@ -158,13 +146,29 @@ namespace BaseClasses
 
             fA_g = Get_A_rect(2 * Ft, m_fhY);
             int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+
+            fA_n = fA_g;
+
+            if (screwArrangement != null)
+            {
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread;
+            }
+
             fA_v_zv = Get_A_rect(2 * Ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+
+            fA_vn_zv = fA_v_zv;
+
+            if (screwArrangement != null)
+            {
+                fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread;
+            }
+
             fI_yu = 2 * Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
-            ScrewArrangement = screwArrangement_temp;
+            ScrewArrangement = screwArrangement;
+
+            DrillingRoutePoints = null;
         }
 
         //----------------------------------------------------------------------------
@@ -197,18 +201,6 @@ namespace BaseClasses
 
         void Calc_Coord3D()
         {
-            // Anchors
-            float[,] holesCentersPointsfor3D = new float[IHolesNumber, 2];
-
-            holesCentersPointsfor3D[0, 0] = 0.5f * m_fbX;
-            holesCentersPointsfor3D[0, 1] = 0.5f * m_fhY - 0.5f * m_fDistanceBetweenHoles;
-
-            holesCentersPointsfor3D[1, 0] = 0.5f * m_fbX;
-            holesCentersPointsfor3D[1, 1] = 0.5f * m_fhY + 0.5f * m_fDistanceBetweenHoles;
-
-            float fradius = 0.5f * referenceAnchor.Diameter_thread; // Anchor
-            int iRadiusAngle = 360; // Angle
-
             // First layer
 
             arrPoints3D[0].X = 0;
@@ -245,52 +237,52 @@ namespace BaseClasses
 
             // Points in holes square edges
 
-            arrPoints3D[8].X = holesCentersPointsfor3D[0, 0] - fradius;
-            arrPoints3D[8].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[8].X = AnchorArrangement.holesCentersPointsfor3D[0].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[8].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y + AnchorArrangement.HoleRadius;;
             arrPoints3D[8].Z = 0;
 
-            arrPoints3D[9].X = holesCentersPointsfor3D[0, 0] - fradius;
-            arrPoints3D[9].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[9].X = AnchorArrangement.holesCentersPointsfor3D[0].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[9].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[9].Z = 0;
 
-            arrPoints3D[10].X = holesCentersPointsfor3D[0, 0] + fradius;
-            arrPoints3D[10].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[10].X = AnchorArrangement.holesCentersPointsfor3D[0].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[10].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[10].Z = 0;
 
-            arrPoints3D[11].X = holesCentersPointsfor3D[0, 0] + fradius;
-            arrPoints3D[11].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[11].X = AnchorArrangement.holesCentersPointsfor3D[0].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[11].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[11].Z = 0;
 
-            arrPoints3D[12].X = holesCentersPointsfor3D[1, 0] - fradius;
-            arrPoints3D[12].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[12].X = AnchorArrangement.holesCentersPointsfor3D[1].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[12].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[12].Z = 0;
 
-            arrPoints3D[13].X = holesCentersPointsfor3D[1, 0] - fradius;
-            arrPoints3D[13].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[13].X = AnchorArrangement.holesCentersPointsfor3D[1].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[13].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[13].Z = 0;
 
-            arrPoints3D[14].X = holesCentersPointsfor3D[1, 0] + fradius;
-            arrPoints3D[14].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[14].X = AnchorArrangement.holesCentersPointsfor3D[1].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[14].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[14].Z = 0;
 
-            arrPoints3D[15].X = holesCentersPointsfor3D[1, 0] + fradius;
-            arrPoints3D[15].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[15].X = AnchorArrangement.holesCentersPointsfor3D[1].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[15].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[15].Z = 0;
 
             // Hole 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i].Z = 0;
+                arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i].X = AnchorArrangement.holesCentersPointsfor3D[0].X + Geom2D.GetPositionX_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y + Geom2D.GetPositionY_CCW_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i].Z = 0;
             }
 
             // Hole 2 - upper
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
+                arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i].X = AnchorArrangement.holesCentersPointsfor3D[1].X + Geom2D.GetPositionX_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y + Geom2D.GetPositionY_CCW_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = 0;
             }
 
             // Second layer
@@ -329,52 +321,52 @@ namespace BaseClasses
 
             // Points in holes square edges
 
-            arrPoints3D[iNoPoints2Dfor3D + 8].X = holesCentersPointsfor3D[0, 0] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 8].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 8].X = AnchorArrangement.holesCentersPointsfor3D[0].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 8].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 8].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 9].X = holesCentersPointsfor3D[0, 0] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 9].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 9].X = AnchorArrangement.holesCentersPointsfor3D[0].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 9].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 9].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 10].X = holesCentersPointsfor3D[0, 0] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 10].Y = holesCentersPointsfor3D[0, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 10].X = AnchorArrangement.holesCentersPointsfor3D[0].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 10].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 10].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 11].X = holesCentersPointsfor3D[0, 0] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 11].Y = holesCentersPointsfor3D[0, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 11].X = AnchorArrangement.holesCentersPointsfor3D[0].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 11].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 11].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 12].X = holesCentersPointsfor3D[1, 0] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 12].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 12].X = AnchorArrangement.holesCentersPointsfor3D[1].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 12].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 12].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 13].X = holesCentersPointsfor3D[1, 0] - fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 13].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 13].X = AnchorArrangement.holesCentersPointsfor3D[1].X - AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 13].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 13].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 14].X = holesCentersPointsfor3D[1, 0] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 14].Y = holesCentersPointsfor3D[1, 1] - fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 14].X = AnchorArrangement.holesCentersPointsfor3D[1].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 14].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y - AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 14].Z = Ft;
 
-            arrPoints3D[iNoPoints2Dfor3D + 15].X = holesCentersPointsfor3D[1, 0] + fradius;
-            arrPoints3D[iNoPoints2Dfor3D + 15].Y = holesCentersPointsfor3D[1, 1] + fradius;
+            arrPoints3D[iNoPoints2Dfor3D + 15].X = AnchorArrangement.holesCentersPointsfor3D[1].X + AnchorArrangement.HoleRadius;
+            arrPoints3D[iNoPoints2Dfor3D + 15].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y + AnchorArrangement.HoleRadius;
             arrPoints3D[iNoPoints2Dfor3D + 15].Z = Ft;
 
             // Holes 1 - bottom
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].X = holesCentersPointsfor3D[0, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Y = holesCentersPointsfor3D[0, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i].Z = Ft;
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i].X = AnchorArrangement.holesCentersPointsfor3D[0].X + Geom2D.GetPositionX_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i].Y = AnchorArrangement.holesCentersPointsfor3D[0].Y + Geom2D.GetPositionY_CCW_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i].Z = Ft;
             }
 
             // Hole 2 - upper
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].X = holesCentersPointsfor3D[1, 0] + Geom2D.GetPositionX_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole);     // y
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = holesCentersPointsfor3D[1, 1] + Geom2D.GetPositionY_CCW_deg(fradius, 90 + i * iRadiusAngle / INumberOfPointsOfHole); // z
-                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = Ft;
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i].X = AnchorArrangement.holesCentersPointsfor3D[1].X + Geom2D.GetPositionX_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole);     // y
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i].Y = AnchorArrangement.holesCentersPointsfor3D[1].Y + Geom2D.GetPositionY_CCW_deg(AnchorArrangement.HoleRadius, 90 + i * AnchorArrangement.RadiusAngle / INumberOfPointsOfHole); // z
+                arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i].Z = Ft;
             }
         }
 
@@ -405,11 +397,11 @@ namespace BaseClasses
                 {
                     if (((i + 1) * (j + 1)) < iNumber_of_hole_points)
                     {
-                        AddTriangleIndices_CCW_123(TriangleIndices, i + ITotNoPointsin2D, ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                        AddTriangleIndices_CCW_123(TriangleIndices, i + ITotNoPointsin2D, ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
                     }
                     else // Last triangle
                     {
-                        AddTriangleIndices_CCW_123(TriangleIndices, i + ITotNoPointsin2D, ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, ITotNoPointsin2D + IHolesNumber * 4);
+                        AddTriangleIndices_CCW_123(TriangleIndices, i + ITotNoPointsin2D, ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4);
                     }
                 }
             }
@@ -421,11 +413,11 @@ namespace BaseClasses
                 {
                     if (((i+1) * (j+1)) < iNumber_of_hole_points)
                     {
-                        AddTriangleIndices_CCW_123(TriangleIndices, 4 + i + ITotNoPointsin2D, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                        AddTriangleIndices_CCW_123(TriangleIndices, 4 + i + ITotNoPointsin2D, INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
                     }
                     else // Last triangle
                     {
-                        AddTriangleIndices_CCW_123(TriangleIndices, 4 + i + ITotNoPointsin2D, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4);
+                        AddTriangleIndices_CCW_123(TriangleIndices, 4 + i + ITotNoPointsin2D, INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4);
                     }
                 }
             }
@@ -449,11 +441,11 @@ namespace BaseClasses
                 {
                     if (((i + 1) * (j + 1)) < iNumber_of_hole_points)
                     {
-                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + i + ITotNoPointsin2D, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + i + ITotNoPointsin2D, iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
                     }
                     else // Last triangle
                     {
-                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + i + ITotNoPointsin2D, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4);
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + i + ITotNoPointsin2D, iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4);
                     }
                 }
             }
@@ -465,11 +457,11 @@ namespace BaseClasses
                 {
                     if (((i + 1) * (j + 1)) < iNumber_of_hole_points)
                     {
-                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + 4 + i + ITotNoPointsin2D, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + 4 + i + ITotNoPointsin2D, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j + 1);
                     }
                     else // Last triangle
                     {
-                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + 4 + i + ITotNoPointsin2D, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + IHolesNumber * 4);
+                        AddTriangleIndices_CW_123(TriangleIndices, iNoPoints2Dfor3D + 4 + i + ITotNoPointsin2D, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i * iNoTrianglesInquater + j, iNoPoints2Dfor3D + INumberOfPointsOfHole + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4);
                     }
                 }
             }
@@ -484,11 +476,11 @@ namespace BaseClasses
             {
                 if (i < (INumberOfPointsOfHole-1))
                 {
-                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + i +1, ITotNoPointsin2D + 4 * IHolesNumber + i + 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + i +1, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + i + 1);
                 }
                 else // Last rectangle
                 {
-                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber, ITotNoPointsin2D + 4 * IHolesNumber);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber);
                 }
             }
 
@@ -499,11 +491,11 @@ namespace BaseClasses
             {
                 if (i < (INumberOfPointsOfHole - 1))
                 {
-                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i +1, ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i + 1);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole + i +1, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole + i + 1);
                 }
                 else // Last rectangle
                 {
-                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * IHolesNumber +  INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole, ITotNoPointsin2D + 4 * IHolesNumber + INumberOfPointsOfHole);
+                    AddRectangleIndices_CCW_1234(TriangleIndices, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber +  INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole + i, iNoPoints2Dfor3D + ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole, ITotNoPointsin2D + 4 * AnchorArrangement.IHolesNumber + INumberOfPointsOfHole);
                 }
             }
 
@@ -603,13 +595,13 @@ namespace BaseClasses
             {
                 if (i < INumberOfPointsOfHole - 1)
                 {
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i]);
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i + 1]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i + 1]);
                 }
                 else
                 {
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i]);
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4]);
                 }
             }
 
@@ -618,13 +610,13 @@ namespace BaseClasses
             {
                 if (i < INumberOfPointsOfHole - 1)
                 {
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i + 1]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i + 1]);
                 }
                 else
                 {
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
-                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole]);
                 }
             }
 
@@ -633,13 +625,13 @@ namespace BaseClasses
             {
                 if (i < INumberOfPointsOfHole - 1)
                 {
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i]);
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i+1]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i+1]);
                 }
                 else
                 {
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i]);
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4]);
                 }
             }
 
@@ -648,13 +640,13 @@ namespace BaseClasses
             {
                 if (i < INumberOfPointsOfHole - 1)
                 {
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i+1]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i+1]);
                 }
                 else
                 {
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
-                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                    wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole]);
                 }
             }
 
@@ -662,15 +654,15 @@ namespace BaseClasses
 
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
-                wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + i]);
-                wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + i]);
+                wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i]);
+                wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + i]);
             }
 
             for (short i = 0; i < INumberOfPointsOfHole; i++)
             {
 
-                wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
-                wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                wireFrame.Points.Add(arrPoints3D[ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i]);
+                wireFrame.Points.Add(arrPoints3D[iNoPoints2Dfor3D + ITotNoPointsin2D + AnchorArrangement.IHolesNumber * 4 + INumberOfPointsOfHole + i]);
 
             }
 

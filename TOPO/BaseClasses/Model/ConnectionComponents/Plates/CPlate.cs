@@ -45,6 +45,7 @@ namespace BaseClasses
         public float fMass;
 
         public GeometryModel3D Visual_Plate;
+        public CAnchorArrangement AnchorArrangement;
         public CScrewArrangement ScrewArrangement;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;

@@ -7,8 +7,8 @@ using System.Windows;
 
 namespace BaseClasses
 {
-    public class CScrewSequence : CConnectorSequence
+    public class CAnchorSequence: CConnectorSequence
     {
-        public CScrewSequence() { }
+         public CAnchorSequence() { }
     }
 }

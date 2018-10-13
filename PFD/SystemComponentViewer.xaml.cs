@@ -190,9 +190,11 @@ namespace PFD
 
         private void ScrewArrangementChanged()
         {
-            CScrew referenceScrew = new CScrew("TEK", "14");
             CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
-            CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
+            CScrew referenceScrew = new CScrew("TEK", "14");
+
+            CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
+            CScrewArrangement_BB_BG screwArrangement = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.5f, 0.18f, 2, 2, 0.0f, 0.0f, 0.1f, 0.1f, 2, 2, 0.0f, 0.4f, 0.1f, 0.1f);
             CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
@@ -205,14 +207,14 @@ namespace PFD
             CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
             gr1.NumberOfHalfCircleSequences = 2;
             gr1.NumberOfRectangularSequences = 4;
-            gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-            gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr1);
             CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
             gr2.NumberOfHalfCircleSequences = 2;
             gr2.NumberOfRectangularSequences = 4;
-            gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-            gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+            gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
             screwSeqGroups.Add(gr2);
 
             CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
@@ -909,9 +911,11 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                CScrew referenceScrew = new CScrew("TEK", "14");
                 CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
-                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(2, referenceScrew, referenceAnchor);
+                CScrew referenceScrew = new CScrew("TEK", "14");
+
+                CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
+                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.5f, 0.18f, 2, 2, 0.0f, 0.0f, 0.1f, 0.1f, 2, 2, 0.0f, 0.4f, 0.1f, 0.1f);
                 CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
@@ -925,14 +929,14 @@ namespace PFD
                 CScrewSequenceGroup gr1 = new CScrewSequenceGroup();
                 gr1.NumberOfHalfCircleSequences = 2;
                 gr1.NumberOfRectangularSequences = 4;
-                gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-                gr1.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+                gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+                gr1.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
                 screwSeqGroups.Add(gr1);
                 CScrewSequenceGroup gr2 = new CScrewSequenceGroup();
                 gr2.NumberOfHalfCircleSequences = 2;
                 gr2.NumberOfRectangularSequences = 4;
-                gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
-                gr2.ListScrewSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+                gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
+                gr2.ListSequence.Add(new CScrewHalfCircleSequence(fConnectorRadiusInCircleSequence, iConnectorNumberInCircleSequence));
                 screwSeqGroups.Add(gr2);
 
                 CScrewArrangementCircleApexOrKnee screwArrangementCircle = new CScrewArrangementCircleApexOrKnee(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 1, screwSeqGroups, bUseAdditionalConnectors, fConnectorRadiusInCircleSequence, fConnectorRadiusInCircleSequence, iNumberOfAdditionalConnectorsInCorner, 0.03f, 0.03f);
@@ -944,7 +948,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_B:
                         {
                             // Vynimka, je potrebne prepracovat na screwArrangement a anchorArrangement
-                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, iNumberofHoles, referenceScrew, referenceAnchor, 0, 0, 0, screwArrangement_BB_BG, true); // B
+                            plate = new CConCom_Plate_BB_BG(dcomponents.arr_Serie_B_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, anchorArrangement_BB_BG, screwArrangement_BB_BG, true); // B
                             break;
                         }
                     case ESerieTypePlate.eSerie_L:
@@ -1370,12 +1374,12 @@ namespace PFD
             // Change each group
             foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
-                IEnumerable<CScrewSequence> halfCircleSequences = gr.ListScrewSequence.Where(s => s is CScrewHalfCircleSequence);
+                IEnumerable<CScrewSequence> halfCircleSequences = (IEnumerable<CScrewSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
                 CScrewSequence seq = null;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
-                if (seq != null) seq.INumberOfScrews = numberOfScrews;
+                if (seq != null) seq.INumberOfConnectors = numberOfScrews;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
-                if (seq != null) seq.INumberOfScrews = numberOfScrews;
+                if (seq != null) seq.INumberOfConnectors = numberOfScrews;
             }
             // Recalculate total number of screws in the arrangement
             arrangementTemp.RecalculateTotalNumberOfScrews();
@@ -1388,7 +1392,7 @@ namespace PFD
             // Change each group
             foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
-                IEnumerable<CScrewSequence> halfCircleSequences = gr.ListScrewSequence.Where(s => s is CScrewHalfCircleSequence);
+                IEnumerable<CScrewSequence> halfCircleSequences = (IEnumerable <CScrewSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
                 CScrewSequence seq = null;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
                 if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;

@@ -76,8 +76,8 @@ namespace BaseClasses
         {
             NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_temp;
             NumberOfScrewsInColumn_yDirection = iNumberOfScrewsInColumn_yDirection_temp;
-            INumberOfScrews = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
-            HolesCentersPoints = new Point[INumberOfScrews];
+            INumberOfConnectors = NumberOfScrewsInRow_xDirection * NumberOfScrewsInColumn_yDirection;
+            HolesCentersPoints = new Point[INumberOfConnectors];
         }
     }
 }

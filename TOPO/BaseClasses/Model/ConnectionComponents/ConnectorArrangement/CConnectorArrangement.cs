@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using MATH;
 
-
 namespace BaseClasses
 {
-    public class CConnectorArrangement
+    public abstract class CConnectorArrangement
     {
         private int m_iHolesNumber;
 

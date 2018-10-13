@@ -279,21 +279,21 @@ namespace BaseClasses
             {
                 foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
                 {
-                    g.ListScrewSequence.RemoveAll(s => s is CScrewHalfCircleSequence);
+                    g.ListSequence.RemoveAll(s => s is CScrewHalfCircleSequence);
                 }
             }
             else if (newNumberOfCirclesInGroup < INumberOfCirclesInGroup)
             {
                 CScrewSequenceGroup gr = ListOfSequenceGroups.FirstOrDefault();
                 if (gr == null) return;
-                //int actualNumOfCircles = gr.ListScrewSequence.Where(s => s is CScrewHalfCircleSequence).Count() / 2;
+                //int actualNumOfCircles = gr.ListSequence.Where(s => s is CScrewHalfCircleSequence).Count() / 2;
 
                 foreach (CScrewSequenceGroup g in ListOfSequenceGroups)
                 {
                     for (var i = INumberOfCirclesInGroup; i > newNumberOfCirclesInGroup; i--)
                     {
-                        g.ListScrewSequence.Remove(g.ListScrewSequence.LastOrDefault(s => s is CScrewHalfCircleSequence)); //last circle 1.half
-                        g.ListScrewSequence.Remove(g.ListScrewSequence.LastOrDefault(s => s is CScrewHalfCircleSequence)); //last circle 1.half
+                        g.ListSequence.Remove(g.ListSequence.LastOrDefault(s => s is CScrewHalfCircleSequence)); //last circle 1.half
+                        g.ListSequence.Remove(g.ListSequence.LastOrDefault(s => s is CScrewHalfCircleSequence)); //last circle 1.half
                     }
                 }
             }
@@ -311,27 +311,27 @@ namespace BaseClasses
                         float lastHalfCircleLength = (0.5f * 2 * MathF.fPI * lastHalfCircleRadius);
                         int lastHalfCircleNumberOfScrews = (int)(lastHalfCircleLength / fDistancePerHalfCircle) + 1;
 
-                        CScrewSequence lastCircleScrewSequence = g.ListScrewSequence.LastOrDefault(p => p is CScrewHalfCircleSequence); 
+                        CScrewSequence lastCircleScrewSequence = (CScrewSequence)g.ListSequence.LastOrDefault(p => p is CScrewHalfCircleSequence); 
                         if (lastCircleScrewSequence != null)
                         {
-                            lastHalfCircleNumberOfScrews = lastCircleScrewSequence.INumberOfScrews;
+                            lastHalfCircleNumberOfScrews = lastCircleScrewSequence.INumberOfConnectors;
                             lastHalfCircleRadius = ((CScrewHalfCircleSequence)lastCircleScrewSequence).Radius;
                         }
 
                         // Add first half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence1 = new CScrewHalfCircleSequence();
                         screwHalfCircleSequence1.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 30 mm mensi polomer
-                        screwHalfCircleSequence1.INumberOfScrews = (int)((0.5f * 2 * MathF.fPI * screwHalfCircleSequence1.Radius) / fDistancePerHalfCircle) + 1; // lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
+                        screwHalfCircleSequence1.INumberOfConnectors = (int)((0.5f * 2 * MathF.fPI * screwHalfCircleSequence1.Radius) / fDistancePerHalfCircle) + 1; // lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
 
-                        g.ListScrewSequence.Add(screwHalfCircleSequence1);
+                        g.ListSequence.Add(screwHalfCircleSequence1);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
 
                         // Add second half-circle sequence
                         CScrewHalfCircleSequence screwHalfCircleSequence2 = new CScrewHalfCircleSequence();
                         screwHalfCircleSequence2.Radius = lastHalfCircleRadius - 0.03f; // Kazdy novy kruh o 30 mm mensi polomer
-                        screwHalfCircleSequence2.INumberOfScrews = (int)((0.5f * 2 * MathF.fPI * screwHalfCircleSequence2.Radius) / fDistancePerHalfCircle) + 1; // lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
+                        screwHalfCircleSequence2.INumberOfConnectors = (int)((0.5f * 2 * MathF.fPI * screwHalfCircleSequence2.Radius) / fDistancePerHalfCircle) + 1; // lastHalfCircleNumberOfScrews - 2; // Kazdy novy kruh o 2 skrutky menej
 
-                        g.ListScrewSequence.Add(screwHalfCircleSequence2);
+                        g.ListSequence.Add(screwHalfCircleSequence2);
                         g.NumberOfHalfCircleSequences += 1; // Add 1 sequence
                     }
                 }
@@ -380,15 +380,15 @@ namespace BaseClasses
                         seq_Corner.DistanceOfPointsY = FAdditionalScrewsDistance_y;
 
                         if (bAddNewSequences)
-                            group.ListScrewSequence.Add(seq_Corner); // Add new sequence
+                            group.ListSequence.Add(seq_Corner); // Add new sequence
                         else
                         {
-                            CScrewSequence seq = group.ListScrewSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
-                            if (seq == null) group.ListScrewSequence.Add(seq_Corner);
+                            CScrewSequence seq = (CScrewSequence)group.ListSequence.Where(s => s is CScrewRectSequence).ElementAtOrDefault(i);
+                            if (seq == null) group.ListSequence.Add(seq_Corner);
                             else
                             {
-                                int index = group.ListScrewSequence.IndexOf(seq);
-                                if (index != -1) group.ListScrewSequence[index] = seq_Corner;
+                                int index = group.ListSequence.IndexOf(seq);
+                                if (index != -1) group.ListSequence[index] = seq_Corner;
                             }
                         }
                     }
@@ -399,7 +399,7 @@ namespace BaseClasses
                 // Remove all rectangular sequences
                 foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
                 {
-                    group.ListScrewSequence.RemoveAll(s => s is CScrewRectSequence);
+                    group.ListSequence.RemoveAll(s => s is CScrewRectSequence);
                     // Set current number of rectangular sequences (it should be "0" in case that corner screw sequences are not used, all other sequences are half-circle)
                     group.NumberOfRectangularSequences = 0;
                 }
@@ -458,7 +458,7 @@ namespace BaseClasses
             if (group.NumberOfHalfCircleSequences > 0)
             {
                 int count = 0;
-                foreach (CScrewSequence screwSequence in group.ListScrewSequence)
+                foreach (CScrewSequence screwSequence in group.ListSequence)
                 {
                     if (!(screwSequence is CScrewHalfCircleSequence)) continue;
                     CScrewHalfCircleSequence circSeq = screwSequence as CScrewHalfCircleSequence;
@@ -470,12 +470,12 @@ namespace BaseClasses
                     if (count % 2 == 0)
                     {
                         // Half circle sequence
-                        List<Point> fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(circSeq.Radius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, circSeq.INumberOfScrews, false);
+                        List<Point> fSequenceTop = Geom2D.GetArcPointCoord_CCW_deg(circSeq.Radius, fAngle_seq_rotation_init_point_deg, fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, circSeq.INumberOfConnectors, false);
                         screwSequence.HolesCentersPoints = fSequenceTop.ToArray();
                     }
                     else
                     {
-                        List<Point> fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(circSeq.Radius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, circSeq.INumberOfScrews, false);
+                        List<Point> fSequenceBottom = Geom2D.GetArcPointCoord_CCW_deg(circSeq.Radius, 180 + fAngle_seq_rotation_init_point_deg, 180 + fAngle_seq_rotation_init_point_deg + fAngle_interval_deg, circSeq.INumberOfConnectors, false);
                         screwSequence.HolesCentersPoints = fSequenceBottom.ToArray();
                     }
                     count++;
@@ -487,7 +487,7 @@ namespace BaseClasses
             {
                 bool bSetAdditionalCornerScrewsByRadius_SQ1 = false; // TODO - Ondrej, moze sa pridat do GUI, uzivatel moze riadit polohu podla hodnoty radiusu prvej kruhovej sekvencie ale ju zadavat nezavisle
 
-                CScrewSequence seq = group.ListScrewSequence.FirstOrDefault(s => s is CScrewHalfCircleSequence);
+                CScrewSequence seq = (CScrewSequence)group.ListSequence.FirstOrDefault(s => s is CScrewHalfCircleSequence);
 
                 if (bSetAdditionalCornerScrewsByRadius_SQ1 && seq != null) FPositionOfCornerSequence_x = ((CScrewHalfCircleSequence)seq).Radius;
                 if (bSetAdditionalCornerScrewsByRadius_SQ1 && seq != null) FPositionOfCornerSequence_y = ((CScrewHalfCircleSequence)seq).Radius;
@@ -518,7 +518,7 @@ namespace BaseClasses
                 Geom2D.TransformPositions_CCW_deg(0, 0, 180, ref cornerConnectorsInGroupBottomRight);
 
                 // Set group parameters
-                IEnumerable<CScrewSequence> rectSequences = group.ListScrewSequence.Where(s => s is CScrewRectSequence);
+                IEnumerable<CConnectorSequence> rectSequences = group.ListSequence.Where(s => s is CScrewRectSequence);
                 if (rectSequences.ElementAtOrDefault(0) != null) rectSequences.ElementAtOrDefault(0).HolesCentersPoints = cornerConnectorsInGroupTopLeft;
                 if (rectSequences.ElementAtOrDefault(1) != null) rectSequences.ElementAtOrDefault(1).HolesCentersPoints = cornerConnectorsInGroupTopRight;
                 if (rectSequences.ElementAtOrDefault(2) != null) rectSequences.ElementAtOrDefault(2).HolesCentersPoints = cornerConnectorsInGroupBottomLeft;
@@ -526,7 +526,7 @@ namespace BaseClasses
             }
 
             // Set radii of connectors / screws in the group
-            group.ScrewHolesRadii = group.Get_RadiiOfScrewsInGroup();
+            group.HolesRadii = group.Get_RadiiOfConnectorsInGroup();
 
             group.TransformGroup(new Point(fx_c, fy_c), fAngle_seq_rotation_deg);
         }
@@ -635,18 +635,18 @@ namespace BaseClasses
         {
             CScrewSequenceGroup groupOut = new CScrewSequenceGroup();
 
-            for(int i = 0; i < group.ListScrewSequence.Count; i++)
+            for(int i = 0; i < group.ListSequence.Count; i++)
             {
                 CScrewSequence seqTemp = new CScrewSequence();
-                seqTemp.HolesCentersPoints = new Point[group.ListScrewSequence[i].HolesCentersPoints.Length];
+                seqTemp.HolesCentersPoints = new Point[group.ListSequence[i].HolesCentersPoints.Length];
 
-                for (int j = 0; j < group.ListScrewSequence[i].HolesCentersPoints.Length; j++)
+                for (int j = 0; j < group.ListSequence[i].HolesCentersPoints.Length; j++)
                 {
-                    seqTemp.HolesCentersPoints[j].X = group.ListScrewSequence[i].HolesCentersPoints[j].X * -1; // Change X coordinate (mirror about Y)
-                    seqTemp.HolesCentersPoints[j].Y = group.ListScrewSequence[i].HolesCentersPoints[j].Y;
+                    seqTemp.HolesCentersPoints[j].X = group.ListSequence[i].HolesCentersPoints[j].X * -1; // Change X coordinate (mirror about Y)
+                    seqTemp.HolesCentersPoints[j].Y = group.ListSequence[i].HolesCentersPoints[j].Y;
                 }
 
-                groupOut.ListScrewSequence.Add(seqTemp);
+                groupOut.ListSequence.Add(seqTemp);
             }
 
             return groupOut;

@@ -103,17 +103,17 @@ namespace BaseClasses
             int iPointIndex = 0;
             for (int i = 0; i < ListOfSequenceGroups.Count; i++) // Add each group
             {
-                for (int j = 0; j < ListOfSequenceGroups[i].ListScrewSequence.Count; j++) // Add each sequence in group
+                for (int j = 0; j < ListOfSequenceGroups[i].ListSequence.Count; j++) // Add each sequence in group
                 {
-                    if (ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints == null) continue;
+                    if (ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints == null) continue;
 
-                    for (int k = 0; k < ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
+                    for (int k = 0; k < ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length; k++) // Add each point in the sequence
                     {
-                        HolesCentersPoints2D[iPointIndex + k].X = ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints[k].X;
-                        HolesCentersPoints2D[iPointIndex + k].Y = ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints[k].Y;
+                        HolesCentersPoints2D[iPointIndex + k].X = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].X;
+                        HolesCentersPoints2D[iPointIndex + k].Y = ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints[k].Y;
                     }
 
-                    iPointIndex += ListOfSequenceGroups[i].ListScrewSequence[j].HolesCentersPoints.Length;
+                    iPointIndex += ListOfSequenceGroups[i].ListSequence[j].HolesCentersPoints.Length;
                 }
             }
         }
@@ -179,8 +179,8 @@ namespace BaseClasses
 
             foreach (CScrewSequenceGroup group in ListOfSequenceGroups)
             {
-                foreach (CScrewSequence seq in group.ListScrewSequence)
-                    IHolesNumber += seq.INumberOfScrews;
+                foreach (CScrewSequence seq in group.ListSequence)
+                    IHolesNumber += seq.INumberOfConnectors;
             }
 
             // Validation

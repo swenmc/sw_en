@@ -30,7 +30,7 @@ namespace BaseClasses
         public CScrewHalfCircleSequence(float radius, int numOfScrews)
         {
             m_fRadius = radius;
-            INumberOfScrews = numOfScrews;
+            INumberOfConnectors = numOfScrews;
         }
     }
 }

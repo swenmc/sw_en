@@ -8,9 +8,9 @@ using MATH;
 
 namespace BaseClasses
 {
-    public class CScrewSequenceGroup : CConnectorSequenceGroup
+    public class CAnchorSequenceGroup : CConnectorSequenceGroup
     {
-        public CScrewSequenceGroup()
+        public CAnchorSequenceGroup()
         {
             ListSequence = new List<CConnectorSequence>();
         }

@@ -129,7 +129,7 @@ namespace BaseClasses
             fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
             fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
 
-            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
+            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two groups, each for the connection of one member in joint
 
             UpdateArrangmentData();
         }
@@ -209,9 +209,9 @@ namespace BaseClasses
             seq1.ReferencePoint = new Point(fx_c_SQ1, fy_c_SQ1);
             seq1.DistanceOfPointsX = fDistanceOfPointsX_SQ1;
             seq1.DistanceOfPointsY = fDistanceOfPointsY_SQ1;
-            seq1.INumberOfScrews = seq1.NumberOfScrewsInRow_xDirection * seq1.NumberOfScrewsInColumn_yDirection;
-            seq1.HolesCentersPoints = new Point[seq1.INumberOfScrews];
-            ListOfSequenceGroups[0].ListScrewSequence.Add(seq1);
+            seq1.INumberOfConnectors = seq1.NumberOfScrewsInRow_xDirection * seq1.NumberOfScrewsInColumn_yDirection;
+            seq1.HolesCentersPoints = new Point[seq1.INumberOfConnectors];
+            ListOfSequenceGroups[0].ListSequence.Add(seq1);
 
             CScrewRectSequence seq2 = new CScrewRectSequence();
             seq2.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ2;
@@ -219,9 +219,9 @@ namespace BaseClasses
             seq2.ReferencePoint = new Point(fx_c_SQ2, fy_c_SQ2);
             seq2.DistanceOfPointsX = fDistanceOfPointsX_SQ2;
             seq2.DistanceOfPointsY = fDistanceOfPointsY_SQ2;
-            seq2.INumberOfScrews = seq2.NumberOfScrewsInRow_xDirection * seq2.NumberOfScrewsInColumn_yDirection;
-            seq2.HolesCentersPoints = new Point[seq2.INumberOfScrews];
-            ListOfSequenceGroups[0].ListScrewSequence.Add(seq2);
+            seq2.INumberOfConnectors = seq2.NumberOfScrewsInRow_xDirection * seq2.NumberOfScrewsInColumn_yDirection;
+            seq2.HolesCentersPoints = new Point[seq2.INumberOfConnectors];
+            ListOfSequenceGroups[0].ListSequence.Add(seq2);
 
             ListOfSequenceGroups[0].NumberOfHalfCircleSequences = 0;
             ListOfSequenceGroups[0].NumberOfRectangularSequences = 2;
@@ -237,9 +237,9 @@ namespace BaseClasses
                 seq3.ReferencePoint = new Point(fx_c_SQ3, fy_c_SQ3);
                 seq3.DistanceOfPointsX = fDistanceOfPointsX_SQ3;
                 seq3.DistanceOfPointsY = fDistanceOfPointsY_SQ3;
-                seq3.INumberOfScrews = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
-                seq3.HolesCentersPoints = new Point[seq3.INumberOfScrews];
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
+                seq3.INumberOfConnectors = seq3.NumberOfScrewsInRow_xDirection * seq3.NumberOfScrewsInColumn_yDirection;
+                seq3.HolesCentersPoints = new Point[seq3.INumberOfConnectors];
+                ListOfSequenceGroups[1].ListSequence.Add(seq3);
 
                 CScrewRectSequence seq4 = new CScrewRectSequence();
                 seq4.NumberOfScrewsInRow_xDirection = iNumberOfScrewsInRow_xDirection_SQ4;
@@ -247,9 +247,9 @@ namespace BaseClasses
                 seq4.ReferencePoint = new Point(fx_c_SQ4, fy_c_SQ4);
                 seq4.DistanceOfPointsX = fDistanceOfPointsX_SQ4;
                 seq4.DistanceOfPointsY = fDistanceOfPointsY_SQ4;
-                seq4.INumberOfScrews = seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
-                seq4.HolesCentersPoints = new Point[seq4.INumberOfScrews];
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
+                seq4.INumberOfConnectors = seq4.NumberOfScrewsInRow_xDirection * seq4.NumberOfScrewsInColumn_yDirection;
+                seq4.HolesCentersPoints = new Point[seq4.INumberOfConnectors];
+                ListOfSequenceGroups[1].ListSequence.Add(seq4);
 
                 ListOfSequenceGroups[1].NumberOfHalfCircleSequences = 0;
                 ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
@@ -287,27 +287,27 @@ namespace BaseClasses
             float fy_c = flZ + 0.00f;
 
             // Left side
-            ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
-            ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
             // Set radii of connectors / screws in the group
-            ListOfSequenceGroups[0].ScrewHolesRadii = ListOfSequenceGroups[0].Get_RadiiOfScrewsInGroup();
+            ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
             // Rotate screws by roof slope
             // Rotate about [0,0]
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
             // Translate from [0,0] on plate to the final position
-            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
-            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            TranslateSequence(fx_c, fy_c, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
             // Right side
             CScrewRectSequence seq3 = new CScrewRectSequence();
-            seq3.HolesCentersPoints = ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints;
+            seq3.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints;
             seq3.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq3);
 
             CScrewRectSequence seq4 = new CScrewRectSequence();
-            seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints;
+            seq4.HolesCentersPoints = ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints;
             seq4.HolesCentersPoints = GetMirroredSequenceAboutY(0.5f * fbX, seq4);
 
             // Add mirrored sequences into the list
@@ -315,17 +315,17 @@ namespace BaseClasses
             {
                 ListOfSequenceGroups.Add(new CScrewSequenceGroup()); // Right Side Group
 
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq3);
-                ListOfSequenceGroups[1].ListScrewSequence.Add(seq4);
+                ListOfSequenceGroups[1].ListSequence.Add(seq3);
+                ListOfSequenceGroups[1].ListSequence.Add(seq4);
                 ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
             }
             else // In case that group already exists set current sequences
             {
-                ListOfSequenceGroups[1].ListScrewSequence[0] = seq3;
-                ListOfSequenceGroups[1].ListScrewSequence[1] = seq4;
+                ListOfSequenceGroups[1].ListSequence[0] = seq3;
+                ListOfSequenceGroups[1].ListSequence[1] = seq4;
                 ListOfSequenceGroups[1].NumberOfRectangularSequences = 2;
             }
-            ListOfSequenceGroups[1].ScrewHolesRadii = ListOfSequenceGroups[1].Get_RadiiOfScrewsInGroup();
+            ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
@@ -345,35 +345,35 @@ namespace BaseClasses
             float fy_cUG = fhY_1 - FCrscRafterDepth * (float)Math.Cos(fSlope_rad);
 
             // Bottom group - column
-            ListOfSequenceGroups[0].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
-            ListOfSequenceGroups[0].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            ListOfSequenceGroups[0].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            ListOfSequenceGroups[0].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
             // Set radii of connectors / screws in the group
-            ListOfSequenceGroups[0].ScrewHolesRadii = ListOfSequenceGroups[0].Get_RadiiOfScrewsInGroup();
+            ListOfSequenceGroups[0].HolesRadii = ListOfSequenceGroups[0].Get_RadiiOfConnectorsInGroup();
 
             // Rotate screws by colum slope (bottom group only)
             // Rotate about [0,0] 90 deg
-            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
-            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            RotateSequence_CCW_rad(0, 0, 0.5f * (float)Math.PI, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
             // Upper group - rafter
-            ListOfSequenceGroups[1].ListScrewSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
-            ListOfSequenceGroups[1].ListScrewSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
+            ListOfSequenceGroups[1].ListSequence[0].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+            ListOfSequenceGroups[1].ListSequence[1].HolesCentersPoints = Get_ScrewSequencePointCoordinates((CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
             // Set radii of connectors / screws in the group
-            ListOfSequenceGroups[1].ScrewHolesRadii = ListOfSequenceGroups[1].Get_RadiiOfScrewsInGroup();
+            ListOfSequenceGroups[1].HolesRadii = ListOfSequenceGroups[1].Get_RadiiOfConnectorsInGroup();
 
             // Rotate screws by roof slope (upper group only)
             // Rotate about [0,0]
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
-            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+            RotateSequence_CCW_rad(0, 0, fSlope_rad, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
 
             // Translate from [0,0] on plate to the final position
             // Bottom Group
-            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[0]);
-            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListScrewSequence[1]);
+            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[0]);
+            TranslateSequence(fx_cBG, fy_cBG, (CScrewRectSequence)ListOfSequenceGroups[0].ListSequence[1]);
 
             // Upper Group
-            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[0]);
-            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListScrewSequence[1]);
+            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[0]);
+            TranslateSequence(fx_cUG, fy_cUG, (CScrewRectSequence)ListOfSequenceGroups[1].ListSequence[1]);
 
             FillArrayOfHolesCentersInWholeArrangement();
         }
