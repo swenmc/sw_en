@@ -363,9 +363,9 @@ namespace BaseClasses
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
             Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], true, true);
-            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true, 40);
             Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
-            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], false, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], false, true, 40);
             Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
 
             Dimensions[5] = new CDimensionArc(PointsOut2D[3], PointsOut2D[7], PointsOut2D[10]);

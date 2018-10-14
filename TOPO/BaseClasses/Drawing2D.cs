@@ -1127,9 +1127,7 @@ namespace BaseClasses
         //}
 
         public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas)
-        {
-                       
-            
+        {   
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
             double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
 
@@ -1154,46 +1152,51 @@ namespace BaseClasses
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dRotation_deg < 45) dim.OffsetFromOrigin_pxs *= -1;
-                        //if (dim.ControlPointStart.X <= dim.ControlPointEnd.X) dim.OffsetFromOrigin_pxs *= -1;
+                        if (dRotation_deg < 45) dim.OffsetFromOrigin_pxs *= -1;                        
                     }
                     else //on the right
                     {
-                        if(dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;
-                        //if (dim.ControlPointStart.X > dim.ControlPointEnd.X) dim.OffsetFromOrigin_pxs *= -1;
+                        if(dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;                        
                     }
                 }
                 else //under center point
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;
-                        //if (dim.ControlPointStart.X >= dim.ControlPointEnd.X) dim.OffsetFromOrigin_pxs *= -1;
+                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;                        
                     }
                     else //on the right
                     {
                         if (dRotation_deg > 45) dim.OffsetFromOrigin_pxs *= -1;
-                        //4,5 rotate CW -lPrimaryLinelength need + offset
-
                     }
                 }
             }
-            else  //TODO - toto treba dorobit a inspirovat sa podla kodu vyssie
+            else  
             {
-                if (dim.ControlPointRef.Y < dim.ControlPointStart.Y) //under center point
+                if (dim.ControlPointRef.Y > dim.ControlPointStart.Y) //over center point
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dim.ControlPointStart.X > dim.ControlPointEnd.X) dim.OffsetFromOrigin_pxs *= -1;
+                        if (dRotation_deg > 45) dim.OffsetFromOrigin_pxs *= -1;                        
                     }
                     else //on the right
                     {
-                        if (dim.ControlPointStart.X > dim.ControlPointEnd.X) dim.OffsetFromOrigin_pxs *= -1;
-                    }                    
+                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;                        
+                    }
+                }
+                else //under center point
+                {
+                    if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
+                    {
+                        if (dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;                        
+                    }
+                    else //on the right
+                    {
+                        if (dRotation_deg < 45) dim.OffsetFromOrigin_pxs *= -1;
+                    }
                 }
             }
-
-
+            
             Line lPrimaryLine = new Line();
             lPrimaryLine.X1 = dim.ControlPointStart.X;
             lPrimaryLine.Y1 = dim.ControlPointStart.Y + dim.OffsetFromOrigin_pxs;
