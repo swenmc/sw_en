@@ -59,9 +59,7 @@ namespace BaseClasses
                     scale_unit,
                     width,
                     height,
-                    crsc.CrScPointsOut,
                     crsc.CrScPointsIn,
-                    null,
                     dPointInOutDistance_x_real,
                     dPointInOutDistance_y_real,
                     out fModel_Length_x_real,
@@ -90,7 +88,9 @@ namespace BaseClasses
                     crsc.CrScPointsIn,
                     null,
                     null,
-                    null, // TODO - dodefinovat i pre prierezy
+                    null,
+                    null, // TODO - dodefinovat koty i pre prierezy
+                    0,
                     0,
                     fmodelMarginLeft_x,
                     fmodelMarginTop_y,
@@ -127,12 +127,6 @@ namespace BaseClasses
             double dPointInOutDistance_x_page;
             double dPointInOutDistance_y_page;
 
-            Point[] pHolesCentersPoints2D = null;
-
-            // Check that object of screw arrangement is not null and set array items to the temporary array
-            if (plate.ScrewArrangement != null && plate.ScrewArrangement.HolesCentersPoints2D != null)
-                pHolesCentersPoints2D = plate.ScrewArrangement.HolesCentersPoints2D;
-
             CalculateBasicValue(
                     fTempMax_X,
                     fTempMin_X,
@@ -141,9 +135,7 @@ namespace BaseClasses
                     scale_unit,
                     width,
                     height,
-                    Geom2D.TransformArrayToList(plate.PointsOut2D),
                     null,
-                    pHolesCentersPoints2D,
                     0,
                     0,
                     out fModel_Length_x_real,
@@ -158,19 +150,30 @@ namespace BaseClasses
                     out dPointInOutDistance_x_page,
                     out dPointInOutDistance_y_page);
 
+            // Holes center points
+            Point[] pHolesCentersPointsScrews2D = null;
+
+            // Check that object of screw arrangement is not null and set array items to the temporary array
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement.HolesCentersPoints2D != null)
+                pHolesCentersPointsScrews2D = plate.ScrewArrangement.HolesCentersPoints2D;
+
+            Point[] pHolesCentersPointsAnchors2D = null;
+
+            // Check that object of screw arrangement is not null and set array items to the temporary array
+            if (plate.AnchorArrangement != null && plate.AnchorArrangement.HolesCentersPoints2D != null)
+                pHolesCentersPointsAnchors2D = plate.AnchorArrangement.HolesCentersPoints2D;
+
             float fDiameter_screw = 0;
             float fDiameter_anchor = 0;
 
+            // Holes diameters
             if(plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
                 fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
             if (plate is CConCom_Plate_BB_BG) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
             {
-                // TODO - prepracovat na Anchor Arrangement
-
-                // Ak je plech typu B - zakladova patka, vykreslit priemer z anchor
-                CConCom_Plate_BB_BG temp_plate = plate as CConCom_Plate_BB_BG;
-                fDiameter_anchor = temp_plate.AnchorArrangement.referenceAnchor.Diameter_thread;
+                if (plate.AnchorArrangement != null && plate.AnchorArrangement.referenceAnchor != null)
+                    fDiameter_anchor = plate.AnchorArrangement.referenceAnchor.Diameter_thread;
             }
 
             canvasForImage.Children.Clear();
@@ -185,10 +188,12 @@ namespace BaseClasses
                     bDrawDimensions,
                     Geom2D.TransformArrayToList(plate.PointsOut2D),
                     null,
-                    pHolesCentersPoints2D,
+                    pHolesCentersPointsScrews2D,
+                    pHolesCentersPointsAnchors2D,
                     plate.DrillingRoutePoints,
                     plate.Dimensions,
                     fDiameter_screw * scale_unit,
+                    fDiameter_anchor * scale_unit,
                     fmodelMarginLeft_x,
                     fmodelMarginBottom_y,
                     dReal_Model_Zoom_Factor,
@@ -261,10 +266,12 @@ namespace BaseClasses
             bool bDrawDimensions,
             List<Point> PointsOut,
             List<Point> PointsIn,
-            Point[] PointsHoles,
+            Point[] PointsHolesScrews,
+            Point[] PointsHolesAnchors,
             List<Point> PointsDrillingRoute,
             CDimension[] Dimensions,
-            double dHolesDiameter,
+            double dHolesDiameterScrews,
+            double dHolesDiameterAnchors,
             float fmodelMarginLeft_x,
             float fmodelMarginTop_y,
             double dReal_Model_Zoom_Factor,
@@ -276,7 +283,8 @@ namespace BaseClasses
         {
             List<Point> canvasPointsOut = null;
             List<Point> canvasPointsIn = null;
-            List<Point> canvasPointsHoles = null;
+            List<Point> canvasPointsHolesScrews = null;
+            List<Point> canvasPointsHolesAnchors = null;
             List<Point> canvasPointsDrillingRoute = null;
             List<CDimension> canvasDimensions = null;
 
@@ -284,7 +292,8 @@ namespace BaseClasses
             {
                 canvasPointsOut = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsOut);
                 canvasPointsIn = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsIn);
-                canvasPointsHoles = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHoles);
+                canvasPointsHolesScrews = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesScrews);
+                canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors);
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
                 canvasDimensions = MirrorYCoordinates(Dimensions);
             }
@@ -292,7 +301,8 @@ namespace BaseClasses
             {
                 canvasPointsOut = new List<Point>(PointsOut);
                 canvasPointsIn = new List<Point>(PointsIn);
-                canvasPointsHoles = new List<Point>(PointsHoles);
+                canvasPointsHolesScrews = new List<Point>(PointsHolesScrews);
+                canvasPointsHolesAnchors = new List<Point>(PointsHolesAnchors);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
                 canvasDimensions = new List<CDimension>(Dimensions);
 
@@ -302,12 +312,12 @@ namespace BaseClasses
 
             canvasPointsOut = ConvertRealPointsToCanvasDrawingPoints(canvasPointsOut, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsIn = ConvertRealPointsToCanvasDrawingPoints(canvasPointsIn, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
-            canvasPointsHoles = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHoles, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasPointsHolesScrews = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesScrews, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasPointsHolesAnchors = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesAnchors, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
             // Definition Points
-            //DrawPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor, canvasForImage);
             DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
 
             // Outlines
@@ -317,10 +327,15 @@ namespace BaseClasses
             DrawPointNumbers(bDrawPointNumbers, canvasPointsOut, canvasPointsIn, canvasForImage);
 
             // Holes
-            if (PointsHoles != null)
+            if (PointsHolesScrews != null)
             {
-                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHoles, dHolesDiameter, canvasForImage);
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesScrews, dHolesDiameterScrews, canvasForImage);
                 DrawDrillingRoute(bDrawDrillingRoute, canvasPointsDrillingRoute, canvasForImage);
+            }
+
+            if (PointsHolesAnchors != null)
+            {
+                DrawHoles(bDrawHoles, bDrawHoleCentreSymbols, canvasPointsHolesAnchors, dHolesDiameterAnchors, canvasForImage);
             }
 
             // Dimensions
@@ -370,9 +385,7 @@ namespace BaseClasses
             int scale_unit,
             double dPageWidth,
             double dPageHeight,
-            List<Point> PointsOut,
             List<Point> PointsIn,
-            Point[] PointsHoles,
             double dPointInOutDistance_x_real,
             double dPointInOutDistance_y_real,
             out double dModel_Length_x_real,
@@ -398,44 +411,6 @@ namespace BaseClasses
             // Original ratio
             dFactor_x = dModel_Length_x_page / dPageWidth;
             dFactor_y = dModel_Length_y_page / dPageHeight;
-
-            // Recalculate model coordinates and set minimum point coordinates to [0,0]
-
-            //if (PointsOut != null && PointsOut.Count > 0) // It should exist
-            //{
-            //    for (int i = 0; i < PointsOut.Count; i++)
-            //    {
-            //        Point p = PointsOut[i];
-            //        p.X -= fTempMin_X;
-            //        p.Y -= fTempMin_Y;
-            //        PointsOut[i] = p;
-            //    }
-            //}
-            //else
-            //{
-            //    // Error - Invalid data
-            //    MessageBox.Show("Invalid component outline");
-            //}
-
-            //if (PointsIn != null && PointsIn.Count > 0)
-            //{
-            //    for (int i = 0; i < PointsIn.Count; i++)
-            //    {
-            //        Point p = PointsIn[i];
-            //        p.X -= fTempMin_X;
-            //        p.Y -= fTempMin_Y;
-            //        PointsIn[i] = p;
-            //    }
-            //}
-
-            //if (PointsHoles != null && PointsHoles.Length > 0)
-            //{
-            //    for (int i = 0; i < PointsHoles.Length; i++)
-            //    {
-            //        PointsHoles[i].X -= fTempMin_X;
-            //        PointsHoles[i].Y -= fTempMin_Y;
-            //    }
-            //}
 
             // Calculate new model dimensions (zoom of model size is 80%)
             dReal_Model_Zoom_Factor = 0.8 / Math.Max(dFactor_x, dFactor_y) * scale_unit;
