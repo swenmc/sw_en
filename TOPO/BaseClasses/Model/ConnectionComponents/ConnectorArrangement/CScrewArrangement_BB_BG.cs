@@ -220,7 +220,7 @@ namespace BaseClasses
             return GetRegularArrayOfPointsInCartesianCoordinates(srectSeq.ReferencePoint, srectSeq.NumberOfScrewsInRow_xDirection, srectSeq.NumberOfScrewsInColumn_yDirection, srectSeq.DistanceOfPointsX, srectSeq.DistanceOfPointsY);
         }
 
-        void Calc_HolesCentersCoord2DBasePlate(
+        public override void Calc_HolesCentersCoord2DBasePlate(
             float fbX,
             float flZ,
             float fhY)
