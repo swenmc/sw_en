@@ -32,6 +32,7 @@ namespace BaseClasses
             IHolesNumber = 2; // 2 Otvory
             referenceAnchor = referenceAnchor_temp;
             HoleRadius = 0.5f * referenceAnchor.Diameter_thread; // Anchor diameter
+            RadiusAngle = 360; // Circle total angle to generate holes
         }
 
         public CAnchorArrangement_BB_BG(float fDistanceBetweenHoles_temp, CAnchor referenceAnchor_temp)
@@ -40,6 +41,7 @@ namespace BaseClasses
             DistanceBetweenHoles = fDistanceBetweenHoles_temp;
             referenceAnchor = referenceAnchor_temp;
             HoleRadius = 0.5f * referenceAnchor.Diameter_thread; // Anchor diameter
+            RadiusAngle = 360; // Circle total angle to generate holes
         }
 
         public void Calc_HolesCentersCoord2D(float fbX, float fhY, float flZ)

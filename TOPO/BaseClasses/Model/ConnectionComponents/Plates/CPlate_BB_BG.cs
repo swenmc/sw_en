@@ -145,7 +145,7 @@ namespace BaseClasses
             fMass = GetMassIgnoringHoles();
 
             fA_g = Get_A_rect(2 * Ft, m_fhY);
-            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            int iNumberOfScrewsInSection = 20; // TODO, temporary - zavisi na rozmiestneni skrutiek
 
             fA_n = fA_g;
 

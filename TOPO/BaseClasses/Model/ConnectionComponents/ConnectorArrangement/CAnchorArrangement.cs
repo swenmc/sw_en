@@ -10,7 +10,7 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
-    public class CAnchorArrangement : CConnectorArrangement
+    public abstract class CAnchorArrangement : CConnectorArrangement
     {
         private List<CAnchorSequenceGroup> m_listOfSequenceGroups;
         public List<CAnchorSequenceGroup> ListOfSequenceGroups

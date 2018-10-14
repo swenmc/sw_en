@@ -194,7 +194,7 @@ namespace PFD
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BB_BG screwArrangement = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.5f, 0.18f, 2, 2, 0.0f, 0.0f, 0.1f, 0.1f, 2, 2, 0.0f, 0.4f, 0.1f, 0.1f);
+            CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
             CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
 
@@ -224,6 +224,53 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             switch ((ESerieTypePlate)vm.ComponentSerieIndex)
             {
+                case ESerieTypePlate.eSerie_B:
+                    {
+                        // "BA" - 0
+                        // "BB" - 1
+                        // "BC" - 2
+                        // "BD" - 3
+                        // "BE" - 4
+                        // "BF" - 5
+                        // "BG" - 6
+                        // "BH" - 7
+                        // "BI" - 8
+                        // "BJ" - 9
+
+                        if (vm.ComponentIndex == 0) // BA
+                        {
+                            // TODO - doplnit arrangements pre BA
+
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else
+                                plate.ScrewArrangement = screwArrangement_BB_BG;
+                        }
+                        else if (vm.ComponentIndex == 1) // BB
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else
+                                plate.ScrewArrangement = screwArrangement_BB_BG;
+                        }
+                        else if (vm.ComponentIndex == 6) // BG
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else
+                                plate.ScrewArrangement = screwArrangement_BB_BG;
+                        }
+                        else
+                        {
+                            // TODO - doplnit vsetky typy base plates a arrangements
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate.ScrewArrangement = null;
+                            else
+                                plate.ScrewArrangement = screwArrangement_BB_BG;
+                        }
+
+                        break;
+                    }
                 case ESerieTypePlate.eSerie_J:
                     {
                         if (vm.ComponentIndex == 0) // JA
@@ -915,7 +962,7 @@ namespace PFD
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
                 CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
-                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.5f, 0.18f, 2, 2, 0.0f, 0.0f, 0.1f, 0.1f, 2, 2, 0.0f, 0.4f, 0.1f, 0.1f);
+                CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
                 CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
