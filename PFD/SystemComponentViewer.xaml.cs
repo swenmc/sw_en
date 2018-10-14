@@ -713,7 +713,10 @@ namespace PFD
                 if (plate.ScrewArrangement != null)
                     plate.ScrewArrangement.UpdateArrangmentData();
 
-                plate.UpdatePlateData(plate.ScrewArrangement);
+                if (plate is CConCom_Plate_BB_BG) // Base plates
+                    plate.UpdatePlateData((CAnchorArrangement_BB_BG)plate.AnchorArrangement, plate.ScrewArrangement);
+                else // other plates (without anchors)
+                    plate.UpdatePlateData(plate.ScrewArrangement);
 
                 DisplayPlate(true);
             }

@@ -99,7 +99,7 @@ namespace BaseClasses
             UpdatePlateData(anchorArrangement_temp, screwArrangement_temp);
         }
 
-        public void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement, CScrewArrangement_BB_BG screwArrangement)
+        public override void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement, CScrewArrangement screwArrangement)
         {
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];

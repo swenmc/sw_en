@@ -172,6 +172,20 @@ namespace BaseClasses
             }
         }
 
+        // BASE PLATE
+        public virtual void Calc_BasePlateData(
+            float fbX,
+            float flZ,
+            float fhY,
+            float ft)
+        { }
+
+        public virtual void Calc_HolesCentersCoord2DBasePlate(
+            float fbX,
+            float flZ,
+            float fhY)
+        { }
+
         public virtual void RecalculateTotalNumberOfScrews()
         {
             // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny

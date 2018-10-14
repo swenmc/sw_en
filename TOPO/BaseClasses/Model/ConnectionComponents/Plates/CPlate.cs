@@ -533,7 +533,7 @@ namespace BaseClasses
                 plateConnectorsModelGroup.Transform = model.Transform;
                 gr.Children.Add(plateConnectorsModelGroup);
             }
-            
+
             return gr;
         }
 
@@ -713,7 +713,7 @@ namespace BaseClasses
                 Geom2D.MirrorAboutY_ChangeXCoordinates(ref pArrayTemp);
                 ScrewArrangement.HolesCentersPoints2D = pArrayTemp;
             }
-            
+
             Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrConnectorControlPoints3D);
 
             if (DrillingRoutePoints != null)
@@ -753,7 +753,7 @@ namespace BaseClasses
             }
 
             //Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrConnectorControlPoints3D);
-            
+
             if (DrillingRoutePoints != null)
             {
                 Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref m_drillingRoutePoints);
@@ -791,6 +791,11 @@ namespace BaseClasses
         public virtual void UpdatePlateData(CScrewArrangement screwArrangement)
         {
             //to override
+        }
+
+        public virtual void UpdatePlateData(CAnchorArrangement_BB_BG anchorArrangement, CScrewArrangement screwArrangement)
+        {
+            //to overiride
         }
     }
 }
