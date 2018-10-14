@@ -1153,12 +1153,15 @@ namespace PFD
 
                 float fUnitFactor = 1000; // defined in m, exported in mm
 
-                // Export drilling file
-                if (plate.DrillingRoutePoints != null)
-                    CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
+                //Export Plate to NC = create Setup and Holes NC files
+                MessageBox.Show(CExportToNC.ExportPlateToNC(plate, fUnitFactor));
 
-                // Export setup file
-                CExportToNC.ExportSetupToNC(Geom2D.TransformArrayToList(plate.PointsOut2D), fUnitFactor);
+                //// Export drilling file
+                //if (plate.DrillingRoutePoints != null)
+                //    CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
+
+                //// Export setup file
+                //CExportToNC.ExportSetupToNC(plate.PointsOut2D, fUnitFactor);
             }
             else
             {
@@ -1241,7 +1244,7 @@ namespace PFD
             {
                 tabItemDoc.Visibility = Visibility.Visible;
 
-                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(Geom2D.TransformArrayToList(plate.PointsOut2D), fUnitFactor);
+                StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(plate.PointsOut2D, fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
                 paragraph.FontFamily = new FontFamily("Consolas");

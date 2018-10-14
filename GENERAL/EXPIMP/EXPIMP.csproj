@@ -151,6 +151,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
+      <Name>BaseClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\netDxf\netDxf.csproj">
       <Project>{785380e0-ceb9-4c34-82e5-60d0e33e848e}</Project>
       <Name>netDxf</Name>

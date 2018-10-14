@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,6 +12,53 @@ namespace EXPIMP
 	{
         //--------------------------------------------------------------------------------------------------
         //--------------------------------------------------------------------------------------------------
+        public static string ExportPlateToNC(CPlate plate, float fUnitFactor)
+        {
+            //[name]_[width]x[height]_[type]_[number] example APEX_1400x720_HOLES_001 APEX_1400x720_SETUP_001 KNEE_850x1410_HOLES_001 KNEE_850x1410_SETUP_001 , 
+            //vytvorit novy s dalsim vyssim cislom, generovat tak ze dvojica ma vzdy rovnaky suffix
+            //APEX je name pre J plates a KNEE je name pre K plates
+            string result = string.Empty;
+            try
+            {
+                int count = 0;
+                string fileNameHoles = null;
+                string fileNameSetup = null;
+                bool namesOK = false;
+                while (!namesOK)
+                {
+                    count++;
+                    fileNameHoles = string.Format("{0}_{1}x{2}_HOLES_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
+                    fileNameSetup = string.Format("{0}_{1}x{2}_SETUP_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
+
+                    if (!File.Exists(fileNameHoles) && !File.Exists(fileNameSetup)) namesOK = true;
+                }
+
+                if (plate.DrillingRoutePoints != null)
+                {
+                    StringBuilder sbHoles = GetCNCFileContentForHoles(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
+                    File.WriteAllText(fileNameHoles, sbHoles.ToString());
+                    result += string.Format("File {0} has been created.\n", fileNameHoles);
+                }
+
+                StringBuilder sbSetup = GetCNCFileContentForSetup(plate.PointsOut2D, fUnitFactor);
+                File.WriteAllText(fileNameSetup, sbSetup.ToString());
+                result += string.Format("File {0} has been created.\n", fileNameSetup);
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+            }
+            return result;
+        }
+
+        private static string GetPlateSerieName(CPlate plate)
+        {
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) return "APEX";
+            else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) return "KNEE";
+            else return "PLATE";
+        }
+
+
         public static void ExportHolesToNC(List<Point> points, float fPlateThickness, float fUnitFactor)
         {
             DateTime d = DateTime.Now;
@@ -42,7 +90,7 @@ namespace EXPIMP
             sb.AppendLine("M02(end of prog)");
             return sb;
         }
-        public static void ExportSetupToNC(List<Point> points, float fUnitFactor)
+        public static void ExportSetupToNC(Point[] points, float fUnitFactor)
         {
             DateTime d = DateTime.Now;
             string fileName = string.Format("ExportSETUP_{0}{1}{2}T{3}{4}{5}.NC",
@@ -51,7 +99,7 @@ namespace EXPIMP
             StringBuilder sb = GetCNCFileContentForSetup(points, fUnitFactor);
             File.WriteAllText(fileName, sb.ToString());
         }
-        public static StringBuilder GetCNCFileContentForSetup(List<Point> points, float fUnitFactor)
+        public static StringBuilder GetCNCFileContentForSetup(Point[] points, float fUnitFactor)
         {
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
@@ -61,7 +109,7 @@ namespace EXPIMP
             sb.AppendLine("(SETUP PROGRAM)");
             sb.AppendLine("(Touch Z to top of touch plate)");
             sb.AppendLine("G21 G90 G64 G40 G17");
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 if (i == 0) sb.AppendFormat(nfi, "G81 X{0:F3} Y{1:F3} {2} R40.0 F500.0{3}", Math.Round(points[i].X * fUnitFactor, 3), Math.Round(points[i].Y * fUnitFactor, 3), str_Z, Environment.NewLine);
                 else sb.AppendFormat(nfi, "G81 X{0:F3} Y{1:F3} {2}{3}", Math.Round(points[i].X * fUnitFactor, 3), Math.Round(points[i].Y * fUnitFactor, 3), str_Z, Environment.NewLine);
