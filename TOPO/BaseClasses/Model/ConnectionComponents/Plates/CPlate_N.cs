@@ -72,7 +72,21 @@ namespace BaseClasses
             }
         }
 
-        private float alpha1_rad;
+        private float m_alpha1_rad;
+
+        public float Alpha1_rad
+        {
+            get
+            {
+                return m_alpha1_rad;
+            }
+
+            set
+            {
+                m_alpha1_rad = value;
+            }
+        }
+
         private float alpha2_rad;
         private float x_a;
 
@@ -115,9 +129,9 @@ namespace BaseClasses
             m_fRotationZ_deg = fRotation_z_deg;
 
             alpha2_rad = MathF.fPI / 8f; // 22.5 deg
-            alpha1_rad = MathF.fPI / 2f - alpha2_rad; // 67.5 deg
+            m_alpha1_rad = MathF.fPI / 2f - alpha2_rad; // 67.5 deg
             x_a = (float)Math.Tan(alpha2_rad) * m_fZ;
-            m_fbX2 = m_fZ / (float)Math.Sin(alpha1_rad);
+            m_fbX2 = m_fZ / (float)Math.Sin(m_alpha1_rad);
 
             // Create Array - allocate memory
             PointsOut2D = new Point[ITotNoPointsin2D];
@@ -145,6 +159,28 @@ namespace BaseClasses
             fSurface = GetSurfaceIgnoringHoles();
             fVolume = GetVolumeIgnoringHoles();
             fMass = GetMassIgnoringHoles();
+
+            fA_g = Get_A_rect(Ft, m_fhY);
+            int iNumberOfScrewsInSection = 2; // TODO, temporary - zavisi na rozmiestneni skrutiek
+
+            fA_n = fA_g;
+
+            if (screwArrangement_temp != null)
+            {
+                fA_n -= iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+            }
+
+            fA_v_zv = Get_A_rect(Ft, m_fhY);
+
+            fA_vn_zv = fA_v_zv;
+
+            if (screwArrangement_temp != null)
+            {
+                fA_v_zv -= iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
+            }
+
+            fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
+            fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
             ScrewArrangement = screwArrangement_temp;
         }
