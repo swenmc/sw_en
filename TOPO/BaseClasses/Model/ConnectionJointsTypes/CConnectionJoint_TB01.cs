@@ -29,7 +29,7 @@ namespace BaseClasses
             float fb_plate = (float)(Column_temp.CrScStart.b + 2 * fTolerance + 2 * m_ft);
             float fh_plate = (float)(Column_temp.CrScStart.h);
             m_iHoleNo = 2;
-            m_flip = 0.18f;
+            m_flip = 0.11f;
 
             float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
 
@@ -38,7 +38,7 @@ namespace BaseClasses
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(referenceAnchor);
-            CScrewArrangement_BB_BG screwArrangement = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.5f, 0.18f, 2, 2, 0.0f, 0.0f, 0.1f, 0.1f, 2, 2, 0.0f, 0.4f, 0.1f, 0.1f);
+            CScrewArrangement_BB_BG screwArrangement = new CScrewArrangement_BB_BG(referenceScrew, fh_plate, fh_plate - 2 * 0.010f - 2 * 0.002f, 0.17f, 3, 3, 0.023f, 0.023f, 0.032f, 0.032f, 3, 3, 0.023f, 0.203f, 0.032f, 0.032f);
 
             m_arrPlates = new CPlate[1];
             m_arrPlates[0] = new CConCom_Plate_BB_BG("BG", ControlPoint_P1, fb_plate, fh_plate, m_flip, m_ft, 90, 0, 90, anchorArrangement, screwArrangement, bIsDisplayed_temp); // Rotation angle in degrees
