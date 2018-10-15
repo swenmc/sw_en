@@ -354,10 +354,10 @@ namespace BaseClasses
 
             Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
             Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3]);
-            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[3], true, false);
-            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[5], PointsOut2D[4], true, false);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], true, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
             Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true, 100);
-            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[11], PointsOut2D[0]);
+            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[11]);
 
             Dimensions[6] = new CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
         }
