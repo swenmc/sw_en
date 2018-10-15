@@ -1,6 +1,10 @@
-﻿using PdfSharp.Drawing;
+﻿using MigraDoc.DocumentObjectModel;
+using MigraDoc.DocumentObjectModel.Tables;
+using MigraDoc.Rendering;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,12 +14,12 @@ namespace EXPIMP
 {
     public static class CExportToPDF
     {
-        public static void ExportCanvasToPDF(Canvas canvas)
+        public static void ExportCanvasToPDF(Canvas canvas, List<string[]> tableParams)
         {
-            CreatePDFFile(canvas);
+            CreatePDFFile(canvas, tableParams);
         }
 
-        public static void CreatePDFFile(Canvas canvas)
+        public static void CreatePDFFile(Canvas canvas, List<string[]> tableParams)
         {
             // Create a temporary file
             DateTime d = DateTime.Now;
@@ -30,7 +34,7 @@ namespace EXPIMP
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
             PdfPage page = s_document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            DrawCanvasImage(gfx, canvas);
+            double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
 
             // Create demonstration pages
@@ -40,27 +44,31 @@ namespace EXPIMP
             //new Text().DrawPage(s_document.AddPage());
             //new Images().DrawPage(s_document.AddPage());
 
+            AddTableToDocument(gfx, height, tableParams);
+
             // Save the s_document...
             s_document.Save(filename);
             // ...and start a viewer
             Process.Start(filename);
         }
 
-        private static void DrawCanvasImage(XGraphics gfx, Canvas canvas)
+        private static double DrawCanvasImage(XGraphics gfx, Canvas canvas)
         {
             try
             {
                 XImage image = XImage.FromBitmapSource(GetBitmapSourceFromCanvas(canvas));
                 double scaleFactor = gfx.PageSize.Width / image.PointWidth;
                 double scaledImageWidth = gfx.PageSize.Width;
-                double scaledImageHeight = image.PointHeight * scaleFactor;
+                double scaledImageHeight = image.PointHeight * scaleFactor;                
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+                return scaledImageHeight;
             }
             catch (Exception ex)
             {
 
             }
+            return 0;
         }
 
         private static BitmapSource GetBitmapSourceFromCanvas(Canvas canvas)
@@ -101,6 +109,112 @@ namespace EXPIMP
             {
 
             }
+        }
+
+        private static void AddTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
+        {
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+                        
+
+            Table t = GetSimpleTable(doc, tableParams);
+            //Image image = sec.AddImage()
+
+            //Section sec = doc.AddSection();
+            // Add a single paragraph with some text and format information.
+            //Paragraph para = sec.AddParagraph();
+            //para.Format.Alignment = ParagraphAlignment.Justify;
+            //para.Format.Font.Name = "Times New Roman";
+            //para.Format.Font.Size = 12;
+            //para.Format.Font.Color = MigraDoc.DocumentObjectModel.Colors.DarkGray;
+            //para.Format.Font.Color = MigraDoc.DocumentObjectModel.Colors.DarkGray;
+            //para.AddText("Duisism odigna acipsum delesenisl ");
+            //para.AddFormattedText("ullum in velenit", TextFormat.Bold);
+            //para.AddText(" ipit iurero dolum zzriliquisis nit wis dolore vel et nonsequipit, velendigna " +
+            //  "auguercilit lor se dipisl duismod tatem zzrit at laore magna feummod oloborting ea con vel " +
+            //  "essit augiati onsequat luptat nos diatum vel ullum illummy nonsent nit ipis et nonsequis " +
+            //  "niation utpat. Odolobor augait et non etueril landre min ut ulla feugiam commodo lortie ex " +
+            //  "essent augait el ing eumsan hendre feugait prat augiatem amconul laoreet. ≤≥≈≠");
+            //para.Format.Borders.Distance = "5pt";
+            //para.Format.Borders.Color = Colors.Gold;
+
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
+            
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
+        }
+
+        public static Table DemonstrateSimpleTable(Document document)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.Borders.Width = 0.75;
+
+            Column column = table.AddColumn(Unit.FromCentimeter(2));
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            table.AddColumn(Unit.FromCentimeter(5));
+
+            Row row = table.AddRow();
+            row.Shading.Color = Colors.PaleGoldenrod;
+            Cell cell = row.Cells[0];
+            cell.AddParagraph("Itemus");
+            cell = row.Cells[1];
+            cell.AddParagraph("Descriptum");
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("1");
+            cell = row.Cells[1];
+            cell.AddParagraph("ffassdasda");
+
+            row = table.AddRow();
+            cell = row.Cells[0];
+            cell.AddParagraph("2");
+            cell = row.Cells[1];
+            cell.AddParagraph("dsadkja asklk daj a");
+
+            table.SetEdge(0, 0, 2, 3, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
+            sec.Add(table);
+            return table;
+        }
+
+        public static Table GetSimpleTable(Document document, List<string[]> tableParams)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.Borders.Width = 0.75;
+
+            Column column1 = table.AddColumn(Unit.FromCentimeter(7));
+            column1.Format.Alignment = ParagraphAlignment.Left;
+            Column column2 = table.AddColumn(Unit.FromCentimeter(1.2));
+            column2.Format.Alignment = ParagraphAlignment.Left;
+            Column column3 = table.AddColumn(Unit.FromCentimeter(4));
+            column3.Format.Alignment = ParagraphAlignment.Right;
+            Column column4 = table.AddColumn(Unit.FromCentimeter(2));
+            column4.Format.Alignment = ParagraphAlignment.Left;
+
+            foreach (string[] strParams in tableParams)
+            {
+                Row row = table.AddRow();
+                //row.Shading.Color = Colors.PaleGoldenrod;
+                Cell cell = row.Cells[0];
+                cell.Shading.Color = Colors.PaleGoldenrod;
+                cell.AddParagraph(strParams[0]);
+                cell = row.Cells[1];
+                cell.AddParagraph(strParams[1]);
+                cell = row.Cells[2];
+                cell.AddParagraph(strParams[2]);
+                cell = row.Cells[3];
+                cell.AddParagraph(strParams[3]);
+            }
+
+            table.SetEdge(0, 0, 4, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
+            sec.Add(table);
+            return table;
         }
 
         //private static void BeginBox(XGraphics gfx, int number, string title)

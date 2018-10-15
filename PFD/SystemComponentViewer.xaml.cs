@@ -13,6 +13,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Documents;
 using System.Text;
 using System.Linq;
+using System.Data;
 
 namespace PFD
 {
@@ -1778,7 +1779,19 @@ namespace PFD
 
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas);
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+
+            List<string[]> list = new List<string[]>();
+            foreach (CComponentParamsView o in vm.ComponentDetails)
+            {
+                if (o is CComponentParamsViewString)
+                {
+                    CComponentParamsViewString oStr = o as CComponentParamsViewString;
+                    list.Add(new string[] { o.Name, o.ShortCut, oStr.Value, o.Unit });
+                }
+            }
+
+            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
         }
 
