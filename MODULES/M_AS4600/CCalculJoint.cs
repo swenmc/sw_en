@@ -87,7 +87,7 @@ namespace M_AS4600
             ff_yk_2_MainMember = crsc_mainMember.m_Mat.Get_f_yk_by_thickness(ft_2_crscmainMember);
             ff_uk_2_MainMember = crsc_mainMember.m_Mat.Get_f_uk_by_thickness(ft_2_crscmainMember);
 
-            if (joint_temp.m_SecondaryMembers != null || joint_temp.m_SecondaryMembers.Length > 0) // Some secondary member exists (otherwise it is base plate connection)
+            if (joint_temp.m_SecondaryMembers != null && joint_temp.m_SecondaryMembers.Length > 0) // Some secondary member exists (otherwise it is base plate connection)
             {
                 crsc_secMember = (CCrSc_TW)joint_temp.m_SecondaryMembers[0].CrScStart;
                 ft_2_crscsecMember = (float)crsc_secMember.t_min;
@@ -112,14 +112,27 @@ namespace M_AS4600
             // Main Columns - CConnectionJoint_TA01, plates serie B
             // Other Columns  CConnectionJoint_TB01, plates serie B
 
-            Type t = joint_temp.GetType();
-
-            if (t == typeof(CConnectionJoint_A001) || t == typeof(CConnectionJoint_B001))
+            if (joint_temp is CConnectionJoint_A001 || joint_temp is CConnectionJoint_B001)
                 CalculateDesignRatioApexOrKneeJoint(joint_temp, sDIF_temp); // Apex or Knee Joint
             else if (joint_temp.m_SecondaryMembers != null)
-                CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp); // purlin, girt
+            {
+                if(joint_temp is CConnectionJoint_T001 || joint_temp is CConnectionJoint_T002)
+                CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp); // purlin, girt or eave purlin
+                else if(joint_temp is CConnectionJoint_S001) // Front / back column connection to the main rafter
+                    CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_temp);
+                else
+                {
+                    // Exception - not defined type
+                    throw new Exception("Joint type design is not implemented!");
+                }
+            }
+            else if(joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01)
+                CalculateDesignRatioBaseJoint(joint_temp, sDIF_temp); // Base plates (main column or front/back column connection to the foundation)
             else
-                CalculateDesignRatioBaseJoint(joint_temp, sDIF_temp); // base plate
+            {
+                // Exception - not defined type
+                throw new Exception("Joint type design is not implemented!");
+            }
         }
 
         public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
@@ -389,6 +402,12 @@ namespace M_AS4600
             float fV_fv_SecondaryMember = eq.Eq_5425_2__(ft_2_crscsecMember, fe_SecondaryMember, ff_uk_2_SecondaryMember);
             float fEta_V_fv_5425_SecondaryMember = eq.Eq_5425_1__(fV_asterix_fv_SecondaryMember, fV_fv_SecondaryMember, ff_uk_2_SecondaryMember, ff_yk_2_SecondaryMember);
             fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425_SecondaryMember);
+        }
+
+        public void CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        {
+            // Not implemented
+            fEta_max = 0;
         }
 
         public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
