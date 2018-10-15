@@ -190,7 +190,7 @@ namespace EXPIMP
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(7));
             column1.Format.Alignment = ParagraphAlignment.Left;
-            Column column2 = table.AddColumn(Unit.FromCentimeter(1.2));
+            Column column2 = table.AddColumn(Unit.FromCentimeter(2));
             column2.Format.Alignment = ParagraphAlignment.Left;
             Column column3 = table.AddColumn(Unit.FromCentimeter(4));
             column3.Format.Alignment = ParagraphAlignment.Right;

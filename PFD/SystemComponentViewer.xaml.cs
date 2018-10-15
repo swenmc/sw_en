@@ -1782,6 +1782,14 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
 
             List<string[]> list = new List<string[]>();
+            foreach (CComponentParamsView o in vm.ComponentGeometry)
+            {
+                if (o is CComponentParamsViewString)
+                {
+                    CComponentParamsViewString oStr = o as CComponentParamsViewString;
+                    list.Add(new string[] { o.Name, o.ShortCut, oStr.Value, o.Unit });
+                }
+            }
             foreach (CComponentParamsView o in vm.ComponentDetails)
             {
                 if (o is CComponentParamsViewString)
