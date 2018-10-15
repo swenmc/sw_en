@@ -2,28 +2,36 @@
 using PdfSharp.Pdf;
 using System;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace EXPIMP
 {
     public static class CExportToPDF
     {
-        public static void ExportCanvasToPDF()
+        public static void ExportCanvasToPDF(Canvas canvas)
         {
-            CreatePDFFile();
+            CreatePDFFile(canvas);
         }
 
-        public static void CreatePDFFile()
+        public static void CreatePDFFile(Canvas canvas)
         {
             // Create a temporary file
-            string filename = String.Format("{0}_tempfile.pdf", Guid.NewGuid().ToString("D").ToUpper());
+            DateTime d = DateTime.Now;
+            string filename = string.Format("ExportPDF_{0}{1}{2}T{3}{4}{5}.pdf",
+                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+
+            //string filename = String.Format("{0}_tempfile.pdf", Guid.NewGuid().ToString("D").ToUpper());
             PdfDocument s_document = new PdfDocument();
-            //s_document.Info.Title = "Export ";
+            s_document.Info.Title = "Export from FormSteel software";
             //s_document.Info.Author = "";
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
             PdfPage page = s_document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            DrawImage(gfx);
+            DrawCanvasImage(gfx, canvas);
+            //DrawImage(gfx);
 
             // Create demonstration pages
             //new LinesAndCurves().DrawPage(s_document.AddPage());
@@ -38,7 +46,46 @@ namespace EXPIMP
             Process.Start(filename);
         }
 
-        
+        private static void DrawCanvasImage(XGraphics gfx, Canvas canvas)
+        {
+            try
+            {
+                XImage image = XImage.FromBitmapSource(GetBitmapSourceFromCanvas(canvas));
+                double scaleFactor = gfx.PageSize.Width / image.PointWidth;
+                double scaledImageWidth = gfx.PageSize.Width;
+                double scaledImageHeight = image.PointHeight * scaleFactor;
+
+                gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private static BitmapSource GetBitmapSourceFromCanvas(Canvas canvas)
+        {
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width, (int)canvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render(canvas);
+            return rtb;
+        }
+
+        private static void SaveImageFromCanvas(Canvas canvas)
+        {
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width, (int)canvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render(canvas);
+
+            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+            using (var fs = System.IO.File.OpenWrite("ImageFromCanvas.png"))
+            {
+                pngEncoder.Save(fs);
+            }
+        }
+
 
         private static void DrawImage(XGraphics gfx)
         {

@@ -1778,7 +1778,8 @@ namespace PFD
 
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            CExportToPDF.CreatePDFFile();
+            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas);
+            else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
         }
 
         //private void RedrawComponentIn2D()
