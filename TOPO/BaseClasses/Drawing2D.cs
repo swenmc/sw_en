@@ -14,28 +14,28 @@ namespace BaseClasses
 {
     public static class Drawing2D
     {
-        public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage, 
+        public static void DrawCrscToCanvas(CCrSc crsc, double width, double height, ref Canvas canvasForImage,
             bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawDimensions)
         {
-                double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
-                double dPointInOutDistance_x_real = 0;
-                double dPointInOutDistance_y_real = 0;
+            double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
+            double dPointInOutDistance_x_real = 0;
+            double dPointInOutDistance_y_real = 0;
 
-                // Fill arrays of points
-                if (crsc.CrScPointsOut != null && crsc.CrScPointsOut.Count > 1)
-                {
-                    CalculateModelLimits(crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
-                }
+            // Fill arrays of points
+            if (crsc.CrScPointsOut != null && crsc.CrScPointsOut.Count > 1)
+            {
+                CalculateModelLimits(crsc.CrScPointsOut, out fTempMax_X, out fTempMin_X, out fTempMax_Y, out fTempMin_Y);
+            }
 
-                if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Count > 1)
-                {
-                    double fTempMax_X_IN = 0, fTempMin_X_IN = 0, fTempMax_Y_IN = 0, fTempMin_Y_IN = 0;
+            if (crsc.CrScPointsIn != null && crsc.CrScPointsIn.Count > 1)
+            {
+                double fTempMax_X_IN = 0, fTempMin_X_IN = 0, fTempMax_Y_IN = 0, fTempMin_Y_IN = 0;
 
-                    CalculateModelLimits(crsc.CrScPointsIn, out fTempMax_X_IN, out fTempMin_X_IN, out fTempMax_Y_IN, out fTempMin_Y_IN);
+                CalculateModelLimits(crsc.CrScPointsIn, out fTempMax_X_IN, out fTempMin_X_IN, out fTempMax_Y_IN, out fTempMin_Y_IN);
 
-                    dPointInOutDistance_x_real = fTempMax_X - fTempMax_X_IN;
-                    dPointInOutDistance_y_real = fTempMax_Y - fTempMax_Y_IN;
-                }
+                dPointInOutDistance_x_real = fTempMax_X - fTempMax_X_IN;
+                dPointInOutDistance_y_real = fTempMax_Y - fTempMax_Y_IN;
+            }
 
             int scale_unit = 1000; // mm
 
@@ -75,31 +75,31 @@ namespace BaseClasses
                     out dPointInOutDistance_y_page);
 
             canvasForImage.Children.Clear();
-                if (crsc != null)
-                    DrawComponent(
-                    bDrawPoints,
-                    bDrawOutLine,
-                    bDrawPointNumbers,
-                    false,
-                    false,
-                    false,
-                    bDrawDimensions,
-                    crsc.CrScPointsOut,
-                    crsc.CrScPointsIn,
-                    null,
-                    null,
-                    null,
-                    null, // TODO - dodefinovat koty i pre prierezy
-                    0,
-                    0,
-                    fmodelMarginLeft_x,
-                    fmodelMarginTop_y,
-                    dReal_Model_Zoom_Factor,
-                    fModel_Length_y_page,
-                    dPointInOutDistance_y_page,
-                    dPointInOutDistance_x_page,
-                    true,
-                    canvasForImage);
+            if (crsc != null)
+                DrawComponent(
+                     bDrawPoints,
+                     bDrawOutLine,
+                     bDrawPointNumbers,
+                     false,
+                     false,
+                     false,
+                     bDrawDimensions,
+                     crsc.CrScPointsOut,
+                     crsc.CrScPointsIn,
+                     null,
+                     null,
+                     null,
+                     null, // TODO - dodefinovat koty i pre prierezy
+                     0,
+                     0,
+                     fmodelMarginLeft_x,
+                     fmodelMarginTop_y,
+                     dReal_Model_Zoom_Factor,
+                     fModel_Length_y_page,
+                     dPointInOutDistance_y_page,
+                     dPointInOutDistance_x_page,
+                     true,
+                     canvasForImage);
         }
 
         public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
@@ -167,7 +167,7 @@ namespace BaseClasses
             float fDiameter_anchor = 0;
 
             // Holes diameters
-            if(plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
+            if (plate.ScrewArrangement != null && plate.ScrewArrangement.referenceScrew != null)
                 fDiameter_screw = plate.ScrewArrangement.referenceScrew.Diameter_thread;
 
             if (plate is CConCom_Plate_BB_BG) // Ak je plech typu base plate "B" mozu sa vykreslovat objekty typu anchors alebo screws
@@ -246,7 +246,7 @@ namespace BaseClasses
             float fInsideDiameterFactor = 0.5f / (float)Math.Tan(30f / 180f * Math.PI); // Radius of inside circle of hexagon
 
             double dCanvasTop = (height - (fReal_Model_Zoom_Factor * screw.D_h_headdiameter)) / 2;
-            double dCanvasLeft = (width - (fReal_Model_Zoom_Factor * 2* a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
+            double dCanvasLeft = (width - (fReal_Model_Zoom_Factor * 2 * a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
             DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             // Washer Circle
@@ -344,7 +344,7 @@ namespace BaseClasses
 
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
         {
-            if(Dimensions == null) return new List<CDimension>();
+            if (Dimensions == null) return new List<CDimension>();
             List<CDimension> listDimensions = new List<CDimension>(Dimensions);
             foreach (CDimension d in listDimensions)
             {
@@ -525,7 +525,7 @@ namespace BaseClasses
             {
                 DrawPoint(p, Brushes.Red, Brushes.Red, 4, canvasForImage);
             }
-            
+
         }
 
 
@@ -728,7 +728,7 @@ namespace BaseClasses
         //    double fy_min = double.MaxValue;
         //    double fx_max = double.MinValue;
         //    double fy_max = double.MinValue;
-            
+
         //    for (int i = 0; i < PointsDrillingRoute.Count; i++)
         //    {
         //        if (PointsDrillingRoute[i].X < fx_min)
@@ -759,7 +759,7 @@ namespace BaseClasses
         public static void DrawDrillingRoute(bool bDrawDrillingRoute, List<Point> PointsDrillingRoute, Canvas canvasForImage)
         {
             if (!bDrawDrillingRoute || PointsDrillingRoute == null) return;
-            
+
             DrawPolyLine(false, PointsDrillingRoute, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         }
 
@@ -833,7 +833,7 @@ namespace BaseClasses
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
 
-            myLine.StrokeDashArray =  dashStyle.Dashes;
+            myLine.StrokeDashArray = dashStyle.Dashes;
 
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
@@ -912,7 +912,7 @@ namespace BaseClasses
             Polyline myLine = new Polyline();
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
-            myLine.Points = points;            
+            myLine.Points = points;
             myLine.StrokeThickness = thickness;
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
@@ -1102,7 +1102,7 @@ namespace BaseClasses
         //}
 
         public static void DrawSimpleLinearDimension(CDimensionLinear dim, bool bDrawExtensionLines, Canvas imageCanvas)
-        {   
+        {
             double dRotation_rad = Math.Atan((dim.ControlPointEnd.Y - dim.ControlPointStart.Y) / (dim.ControlPointEnd.X - dim.ControlPointStart.X));
             double dRotation_deg = Geom2D.RadiansToDegrees(dRotation_rad);
 
@@ -1127,18 +1127,18 @@ namespace BaseClasses
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dRotation_deg < 45) dim.OffsetFromOrigin_pxs *= -1;                        
+                        if (dRotation_deg < 45) dim.OffsetFromOrigin_pxs *= -1;
                     }
                     else //on the right
                     {
-                        if(dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;                        
+                        if (dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;
                     }
                 }
                 else //under center point
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;                        
+                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;
                     }
                     else //on the right
                     {
@@ -1146,24 +1146,24 @@ namespace BaseClasses
                     }
                 }
             }
-            else  
+            else
             {
                 if (dim.ControlPointRef.Y > dim.ControlPointStart.Y) //over center point
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dRotation_deg > 45) dim.OffsetFromOrigin_pxs *= -1;                        
+                        if (dRotation_deg > 45) dim.OffsetFromOrigin_pxs *= -1;
                     }
                     else //on the right
                     {
-                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;                        
+                        if (dRotation_deg < -45) dim.OffsetFromOrigin_pxs *= -1;
                     }
                 }
                 else //under center point
                 {
                     if (dim.ControlPointRef.X > dim.ControlPointStart.X) //on the left
                     {
-                        if (dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;                        
+                        if (dRotation_deg > -45) dim.OffsetFromOrigin_pxs *= -1;
                     }
                     else //on the right
                     {
@@ -1171,7 +1171,7 @@ namespace BaseClasses
                     }
                 }
             }
-            
+
             Line lPrimaryLine = new Line();
             lPrimaryLine.X1 = dim.ControlPointStart.X;
             lPrimaryLine.Y1 = dim.ControlPointStart.Y + dim.OffsetFromOrigin_pxs;
@@ -1210,13 +1210,13 @@ namespace BaseClasses
             lSlopeLine2.Y1 = lPrimaryLine.Y2 + coord;
             lSlopeLine2.X2 = lPrimaryLine.X2 + coord;
             lSlopeLine2.Y2 = lPrimaryLine.Y2 - coord;
-
+            
             RotateDimension(dim.ControlPointStart, dRotation_deg, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
-            double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1); // TODO - osetrit znamienka
+            double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1);
             double fTextPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
-
+            
             // Draw dimension line
             DrawLine(lPrimaryLine, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
             // Draw extension line - start
@@ -1229,6 +1229,7 @@ namespace BaseClasses
             DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw text
             DrawText(sText, fTextPositionx, fTextPositiony, dRotation_deg, 12, dim.IsTextAboveLine, Brushes.DarkGreen, imageCanvas);
+            //DrawText(sText, fTextPositionx, fTextPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextAboveLine, dim.OffsetFromOrigin_pxs, Brushes.DarkGreen, imageCanvas);
         }
 
         public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
@@ -1352,7 +1353,7 @@ namespace BaseClasses
 
             Size size = new Size(radius, radius);
 
-            ArcSegment arc = new ArcSegment(new Point(pCenter.X + p2.X, pCenter.Y * + p2.Y),
+            ArcSegment arc = new ArcSegment(new Point(pCenter.X + p2.X, pCenter.Y * +p2.Y),
             size,
             slope / MathF.fPI * 180,
             false,
@@ -1470,7 +1471,7 @@ namespace BaseClasses
         // POVODNE FUNKCIE
 
         //LINES
-        public static  void DrawLine(CMember member, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvas, 
+        public static void DrawLine(CMember member, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvas,
             HorizontalAlignment alignHorizontal = HorizontalAlignment.Left, VerticalAlignment alignVertical = VerticalAlignment.Top)
         {
             Line myLine = new Line();
@@ -1568,7 +1569,7 @@ namespace BaseClasses
                 }
                 else if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.80)
                 {
-                    if(rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width / 2);
+                    if (rotationAngle_CW_deg < 0) Canvas.SetTop(textBlock, posy + txtSize.Width / 2);
                     else Canvas.SetTop(textBlock, posy - txtSize.Width / 2);
 
                     Canvas.SetLeft(textBlock, posx - txtSize.Height);
@@ -1607,6 +1608,82 @@ namespace BaseClasses
             canvas.Children.Add(textBlock);
         }
 
+        //temp working
+        //public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, Point refPoint, bool bIsTextOutSide, double offset, SolidColorBrush color, Canvas canvas)
+        //{
+        //    TextBlock textBlock = new TextBlock();
+        //    textBlock.Text = text;
+        //    textBlock.Foreground = color;
+        //    //textBlock.Background = new SolidColorBrush(Colors.Red);
+        //    textBlock.FontSize = fontSize;
+        //    Size txtSize = MeasureString(textBlock, text);
+            
+            
+        //    if (bIsTextOutSide)
+        //    {
+        //        if (refPoint.X < posx && refPoint.Y > posy) //right top
+        //        {
+        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
+        //            {
+        //                Canvas.SetLeft(textBlock, posx + txtSize.Width);
+        //                Canvas.SetTop(textBlock, posy);
+        //            }
+        //            else
+        //            {
+        //                Canvas.SetLeft(textBlock, posx);
+        //                Canvas.SetTop(textBlock, posy - txtSize.Height);
+        //            }
+                    
+        //        }
+        //        else if (refPoint.X < posx && refPoint.Y < posy) //right bottom
+        //        {
+        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
+        //            {
+        //                Canvas.SetLeft(textBlock, posx + txtSize.Width);
+        //                Canvas.SetTop(textBlock, posy);
+        //            }
+        //            else
+        //            {
+        //                Canvas.SetLeft(textBlock, posx);                        
+        //                Canvas.SetTop(textBlock, posy);
+        //            }
+        //        }
+        //        else if (refPoint.X > posx && refPoint.Y > posy) //left top
+        //        {
+        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
+        //            {
+        //                Canvas.SetLeft(textBlock, posx - txtSize.Width);
+        //                Canvas.SetTop(textBlock, posy);
+        //            }
+        //            else
+        //            {
+        //                Canvas.SetLeft(textBlock, posx);
+        //                Canvas.SetTop(textBlock, posy - txtSize.Height);
+        //            }
+                    
+        //        }
+        //        else //left bottom
+        //        {
+        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
+        //            {
+        //                Canvas.SetLeft(textBlock, posx - txtSize.Width);
+        //            }
+        //            else
+        //            {
+        //                Canvas.SetLeft(textBlock, posx);
+        //            }
+        //            Canvas.SetTop(textBlock, posy);
+        //        }
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //    textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
+        //    canvas.Children.Add(textBlock);
+        //}
+
+
         private static Size MeasureString(TextBlock textBlock, string text)
         {
             var formattedText = new FormattedText(
@@ -1621,7 +1698,7 @@ namespace BaseClasses
             return new Size(formattedText.Width, formattedText.Height);
         }
 
-        public static void DrawTexts(string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight, 
+        public static void DrawTexts(string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, SolidColorBrush color, Canvas canvas)
         {
             float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
@@ -1632,7 +1709,7 @@ namespace BaseClasses
 
             for (int i = 0; i < array_text.Length; i++)
             {
-                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i],0, 12, false, color, canvas);
+                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 0, 12, false, color, canvas);
             }
         }
         public static float CalculateZoomFactor(float[] arrPointsCoord, float fCanvasDimension, float fMarginValue1, float fMarginValue2, out float fValueMin, out float fValueMax, out float fRangeOfValues, out float fAxisLength)
@@ -1658,7 +1735,7 @@ namespace BaseClasses
 
         // TODO No 44 Ondrej
         // Temporary - TODO Ondrej zjednotit metody pre vykreslovanie v 2D do nejakej zakladnej triedy (mozno uz nejaka aj existuje v inom projekte "SW_EN\GRAPHICS\PAINT" alebo swen_GUI\WindowPaint)
-        public static void DrawAxisInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight, 
+        public static void DrawAxisInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, Canvas canvas)
         {
             float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
@@ -1668,32 +1745,32 @@ namespace BaseClasses
             float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
 
             float fPositionOfXaxisToTheEndOfYAxis = 0;
-            
+
             if (bYOrientationIsUp) // Up (Forces N, Vx, Vy)
             {
                 // x-axis (middle)
                 fPositionOfXaxisToTheEndOfYAxis = yValueMax < 0 ? 0 : yValueMax;
-                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x, 
+                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
                 // y-axis (oriented upwards)
-                Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x, 
+                Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
             else // Down (Torsion and bending moments T, Mx, My)
             {
                 fPositionOfXaxisToTheEndOfYAxis = yValueMin < 0 ? Math.Abs(yValueMin) : 0;
                 // x-axis (middle)
-                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x, 
+                Drawing2D.DrawPolyLine(new float[2] { 0, 1.02f * xValueMax }, new float[2] { 0, 0 }, modelMarginTop_y + fFactorY * fPositionOfXaxisToTheEndOfYAxis, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
 
                 // y-axis (oriented downwards)
-                Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x, 
+                Drawing2D.DrawPolyLine(new float[2] { 0, 0 }, new float[2] { yValueMin < 0 ? yValueMin : 0, yValueMax < 0 ? 0 : yValueMin + yRangeOfValues }, modelMarginTop_y, modelMarginLeft_x,
                     fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Black, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
         }
 
-        public static void DrawYValuesCurveInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight, 
+        public static void DrawYValuesCurveInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, Canvas canvas)
         {
             float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
