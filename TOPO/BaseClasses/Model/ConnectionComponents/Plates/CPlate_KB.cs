@@ -318,7 +318,7 @@ namespace BaseClasses
             Dimensions[3] = new GraphObj.CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
             Dimensions[4] = new GraphObj.CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
 
-            Dimensions[5] = new GraphObj.CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
+            Dimensions[5] = new GraphObj.CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
         }
 
         protected override void loadIndices()

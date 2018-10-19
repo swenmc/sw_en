@@ -236,7 +236,7 @@ namespace BaseClasses
             Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[2], true, true);
             Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true);
 
-            Dimensions[4] = new CDimensionArc(new Point(PointsOut2D[1].X, PointsOut2D[3].Y), PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[4] = new CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[3].Y), PointsOut2D[2], PointsOut2D[3]);
         }
 
         protected override void loadIndices()

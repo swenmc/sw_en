@@ -1343,7 +1343,7 @@ namespace BaseClasses
             float fPositionOfArcFactor = 0.45f;
 
             double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
-            double radius = fPositionOfArcFactor * (pStart.X);
+            double radius = fPositionOfArcFactor * pStart.X;
 
             Point p2 = new Point(); // 2nd point of arc
             p2.X = Geom2D.GetPositionX_deg((float)radius, (float)slope / MathF.fPI * 180f);  // y
@@ -1351,7 +1351,7 @@ namespace BaseClasses
 
             Size size = new Size(radius, radius);
 
-            ArcSegment arc = new ArcSegment(new Point(pCenter.X + p2.X, pCenter.Y * +p2.Y),
+            ArcSegment arc = new ArcSegment(new Point(pCenter.X + p2.X, pCenter.Y + p2.Y),
             size,
             slope / MathF.fPI * 180,
             false,
