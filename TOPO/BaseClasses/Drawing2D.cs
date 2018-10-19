@@ -1214,8 +1214,8 @@ namespace BaseClasses
             RotateDimension(dim.ControlPointStart, dRotation_deg, ref lPrimaryLine, ref lExtensionLine1, ref lExtensionLine2, ref lSlopeLine1, ref lSlopeLine2);
 
             // Urcuje sa z uz transformovanych suradnice lPrimaryLine
-            double fTextPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1);
-            double fTextPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
+            double textPositionx = lPrimaryLine.X1 + 0.5 * (lPrimaryLine.X2 - lPrimaryLine.X1);
+            double textPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
             
             // Draw dimension line
             DrawLine(lPrimaryLine, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
@@ -1227,9 +1227,8 @@ namespace BaseClasses
             DrawLine(lSlopeLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
             // Draw slope line - end
             DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
-            // Draw text
-            DrawText(sText, fTextPositionx, fTextPositiony, dRotation_deg, 12, dim.IsTextAboveLine, Brushes.DarkGreen, imageCanvas);
-            //DrawText(sText, fTextPositionx, fTextPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextAboveLine, dim.OffsetFromOrigin_pxs, Brushes.DarkGreen, imageCanvas);
+            // Draw text            
+            DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, Brushes.DarkGreen, imageCanvas);
         }
 
         public static void RotateDimension(Point centerRotation, double dRotationDegrees, ref Line lPrimaryLine, ref Line lExtensionLine1, ref Line lExtensionLine2, ref Line lSlopeLine1, ref Line lSlopeLine2)
@@ -1341,7 +1340,6 @@ namespace BaseClasses
         public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, Canvas imageCanvas)
         {
             return;
-
             float fPositionOfArcFactor = 0.45f;
 
             double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
@@ -1557,6 +1555,7 @@ namespace BaseClasses
             // tak by to malo byt presne v strede a ak to nevojde medzi extension lines,
             // tak sa to robi tak ze sa text posunie uplne vedla koty nalavo / vpravo / alebo pod kotu (na opacnu stranu hlavnej kotovacej ciary)
             // My by sme si mali vystacit s tym, ze to bude presne v strede, tie "uzke pasiky" nebyvaju sirsie ako 100 mm, takze tam budu len 2 cislice
+            // upravene v metode dole - tuto nechavam pre pouzitie pre textAboveControlPoint
 
             Canvas.SetLeft(textBlock, posx);
 
@@ -1607,81 +1606,96 @@ namespace BaseClasses
             textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
             canvas.Children.Add(textBlock);
         }
-
-        //temp working
-        //public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, Point refPoint, bool bIsTextOutSide, double offset, SolidColorBrush color, Canvas canvas)
-        //{
-        //    TextBlock textBlock = new TextBlock();
-        //    textBlock.Text = text;
-        //    textBlock.Foreground = color;
-        //    //textBlock.Background = new SolidColorBrush(Colors.Red);
-        //    textBlock.FontSize = fontSize;
-        //    Size txtSize = MeasureString(textBlock, text);
+                
+        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, Point refPoint, bool bIsTextOutSide, SolidColorBrush color, Canvas canvas)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Foreground = color;
+            //textBlock.Background = new SolidColorBrush(Colors.Red);
+            textBlock.FontSize = fontSize;            
+            Size txtSize = MeasureString(textBlock, text);
             
-            
-        //    if (bIsTextOutSide)
-        //    {
-        //        if (refPoint.X < posx && refPoint.Y > posy) //right top
-        //        {
-        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
-        //            {
-        //                Canvas.SetLeft(textBlock, posx + txtSize.Width);
-        //                Canvas.SetTop(textBlock, posy);
-        //            }
-        //            else
-        //            {
-        //                Canvas.SetLeft(textBlock, posx);
-        //                Canvas.SetTop(textBlock, posy - txtSize.Height);
-        //            }
-                    
-        //        }
-        //        else if (refPoint.X < posx && refPoint.Y < posy) //right bottom
-        //        {
-        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
-        //            {
-        //                Canvas.SetLeft(textBlock, posx + txtSize.Width);
-        //                Canvas.SetTop(textBlock, posy);
-        //            }
-        //            else
-        //            {
-        //                Canvas.SetLeft(textBlock, posx);                        
-        //                Canvas.SetTop(textBlock, posy);
-        //            }
-        //        }
-        //        else if (refPoint.X > posx && refPoint.Y > posy) //left top
-        //        {
-        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
-        //            {
-        //                Canvas.SetLeft(textBlock, posx - txtSize.Width);
-        //                Canvas.SetTop(textBlock, posy);
-        //            }
-        //            else
-        //            {
-        //                Canvas.SetLeft(textBlock, posx);
-        //                Canvas.SetTop(textBlock, posy - txtSize.Height);
-        //            }
-                    
-        //        }
-        //        else //left bottom
-        //        {
-        //            if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.8)
-        //            {
-        //                Canvas.SetLeft(textBlock, posx - txtSize.Width);
-        //            }
-        //            else
-        //            {
-        //                Canvas.SetLeft(textBlock, posx);
-        //            }
-        //            Canvas.SetTop(textBlock, posy);
-        //        }
-        //    }
-        //    else
-        //    {
+            if (bIsTextOutSide)
+            {
+                if (refPoint.Y > posy) //top
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+                    }
+                    else Canvas.SetTop(textBlock, posy - txtSize.Height);
+                }
+                else //bottom
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+                    }
+                    else Canvas.SetTop(textBlock, posy);
+                }
 
-        //    }
-        //    textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
-        //    canvas.Children.Add(textBlock);
-        //}
+                if (refPoint.X > posx) //left
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetLeft(textBlock, posx - txtSize.Width);
+                    }
+                    else Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
+                }
+                else //right
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetLeft(textBlock, posx);
+                    }
+                    else Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
+                }
+            }
+            else //INSIDE
+            {
+                if (refPoint.Y > posy) //top
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+                    }
+                    else Canvas.SetTop(textBlock, posy);
+                }
+                else //bottom
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+                    }
+                    else Canvas.SetTop(textBlock, posy - txtSize.Height);
+                }
+
+                if (refPoint.X > posx) //left
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetLeft(textBlock, posx);
+                    }
+                    else Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
+                }
+                else //right
+                {
+                    if (Math.Abs(rotationAngle_CW_deg) / 90 > 0.5)
+                    {
+                        Canvas.SetLeft(textBlock, posx - txtSize.Width);
+                    }
+                    else Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
+                }
+            }
+
+            //center of the dimension should be
+            //Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
+            //Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+
+            textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg, txtSize.Width / 2, txtSize.Height / 2);
+            canvas.Children.Add(textBlock);
+        }
 
 
         private static Size MeasureString(TextBlock textBlock, string text)

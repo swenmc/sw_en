@@ -39,18 +39,18 @@ namespace BaseClasses.GraphObj
             }
         }
 
-        private bool m_bIsTextAboveLine;
+        private bool m_bIsTextOutSide;
 
-        public bool IsTextAboveLine
+        public bool IsTextOutSide
         {
             get
             {
-                return m_bIsTextAboveLine;
+                return m_bIsTextOutSide;
             }
 
             set
             {
-                m_bIsTextAboveLine = value;
+                m_bIsTextOutSide = value;
             }
         }
 
@@ -103,15 +103,15 @@ namespace BaseClasses.GraphObj
         public CDimensionLinear(Point pRef, Point pStart, Point pEnd) : this(pRef, pStart, pEnd, true, true)
         {}
 
-        public CDimensionLinear(Point pRef, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionOutSide, double dOffsetFromOrigin_pxs = 30) 
-            : this(pRef, "", pStart, pEnd, isTextAboveLineBetweenExtensionLines, isDimensionOutSide, dOffsetFromOrigin_pxs)
+        public CDimensionLinear(Point pRef, Point pStart, Point pEnd, bool isTextOutSide, bool isDimensionOutSide, double dOffsetFromOrigin_pxs = 30) 
+            : this(pRef, "", pStart, pEnd, isTextOutSide, isDimensionOutSide, dOffsetFromOrigin_pxs)
         {}
 
-        public CDimensionLinear(Point pRef, string text, Point pStart, Point pEnd, bool isTextAboveLineBetweenExtensionLines, bool isDimensionOutSide, double dOffsetFromOrigin_pxs = 30) : base(pRef, text)
+        public CDimensionLinear(Point pRef, string text, Point pStart, Point pEnd, bool isTextOutSide, bool isDimensionOutSide, double dOffsetFromOrigin_pxs = 30) : base(pRef, text)
         {
             ControlPointStart = pStart;
             ControlPointEnd = pEnd;
-            IsTextAboveLine = isTextAboveLineBetweenExtensionLines;
+            IsTextOutSide = isTextOutSide;
             IsDimensionOutSide = isDimensionOutSide;
             OffsetFromOrigin_pxs = dOffsetFromOrigin_pxs;
             dBasicLength_m = Math.Sqrt(Math.Pow(pEnd.X - pStart.X, 2) + Math.Pow(pEnd.Y - pStart.Y, 2));
