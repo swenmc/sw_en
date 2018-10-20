@@ -1339,29 +1339,49 @@ namespace BaseClasses
 
         public static void DrawArcDimension(Point pStart, Point pEnd, Point pCenter, Canvas imageCanvas)
         {
-            return;
-            float fPositionOfArcFactor = 0.45f;
+            float fPositionOfArcFactor = 0.3f;
 
             double slope = Geom2D.GetAngle_rad(pStart, pEnd, pCenter);
-            double radius = fPositionOfArcFactor * pStart.X;
-
-            Point p2 = new Point(); // 2nd point of arc
-            p2.X = Geom2D.GetPositionX_deg((float)radius, (float)slope / MathF.fPI * 180f);  // y
-            p2.Y = Geom2D.GetPositionY_CCW_deg((float)radius, (float)slope / MathF.fPI * 180f);  // z
-
+            double slopeDeg = Geom2D.RadiansToDegrees(slope);
+            double radius = Math.Abs(pCenter.X - pStart.X) * fPositionOfArcFactor;            
             Size size = new Size(radius, radius);
 
-            ArcSegment arc = new ArcSegment(new Point(pCenter.X + p2.X, pCenter.Y + p2.Y),
-            size,
-            slope / MathF.fPI * 180,
-            false,
-            SweepDirection.Counterclockwise,
-            true
-            );
 
+            SweepDirection direction = SweepDirection.Clockwise;
+
+            if (pCenter.X < pStart.X && pCenter.X < pEnd.X) //center on left
+            {
+                if (pStart.Y < pEnd.Y) direction = SweepDirection.Clockwise;
+                else direction = SweepDirection.Counterclockwise;
+            }
+            else if (pCenter.X > pStart.X && pCenter.X > pEnd.X) //center on right
+            {
+                if (pStart.Y < pEnd.Y) direction = SweepDirection.Counterclockwise;
+                else direction = SweepDirection.Clockwise;
+            }
+            else //start and center equal
+            {
+                if (pCenter.Y > pStart.Y && pCenter.Y > pEnd.Y) //center on the bottom
+                {
+                    if(pStart.X > pEnd.X) direction = SweepDirection.Counterclockwise;
+                    else direction = SweepDirection.Clockwise;
+                }
+                else
+                {
+                    if (pStart.X > pEnd.X) direction = SweepDirection.Clockwise;
+                    else direction = SweepDirection.Counterclockwise;
+                }
+            }
+            
+
+            Point pathStartPoint = new Point(pCenter.X + (pStart.X - pCenter.X) * fPositionOfArcFactor, pCenter.Y + (pStart.Y - pCenter.Y) * fPositionOfArcFactor);
+            Point pathTowardsPoint = Geom2D.RotatePoint(pathStartPoint, pCenter, direction == SweepDirection.Counterclockwise ? -slopeDeg : slopeDeg);
+
+            ArcSegment arc = new ArcSegment(pathTowardsPoint, size, slopeDeg, false, direction, true );
+            
             PathGeometry pathGeometry = new PathGeometry();
             PathFigure figure = new PathFigure();
-            figure.StartPoint = new Point(pStart.X, pStart.Y);
+            figure.StartPoint = pathStartPoint;
             figure.Segments.Add(arc);
 
             pathGeometry.Figures.Add(figure);
@@ -1388,12 +1408,15 @@ namespace BaseClasses
 
             // Draw text
             // Draw text in the middle of the arc
-            float fFactorTextPosition = 0.5f;
-            float fTextPositionx = Geom2D.GetPositionX_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // y
-            float fTextPositiony = Geom2D.GetPositionY_CCW_deg((float)radius, fFactorTextPosition * (float)slope / MathF.fPI * 180f);  // z
-            string sText = Math.Round(slope / MathF.fPI * 180, 1).ToString() + " °";
+            //double fTextPositionx = pathStartPoint.X + (pathTowardsPoint.X - pathStartPoint.X) / 2;
+            //double fTextPositiony = pathStartPoint.Y + (pathTowardsPoint.Y - pathStartPoint.Y) / 2;
+            //double fTextPositionx = (pathStartPoint.X + pathTowardsPoint.X + pCenter.X) / 3;
+            //double fTextPositiony = (pathStartPoint.Y + pathTowardsPoint.Y + pCenter.Y) / 3;
+            double fTextPositionx = (pathStartPoint.X * 3 + pathTowardsPoint.X * 3 + pCenter.X) / 7;
+            double fTextPositiony = (pathStartPoint.Y * 3 + pathTowardsPoint.Y * 3 + pCenter.Y) / 7;
+            string sText = Math.Round(slopeDeg, 1).ToString() + " °";
 
-            DrawText(sText, pCenter.X + fTextPositionx, pCenter.Y + fTextPositiony, 0, 12, false, Brushes.Black, imageCanvas);
+            DrawText(sText, fTextPositionx, fTextPositiony, 0, 12, Brushes.Black, imageCanvas);
         }
 
         public static void CalculateModelLimits(List<Point> Points_temp, out double fTempMax_X, out double fTempMin_X, out double fTempMax_Y, out double fTempMin_Y)
@@ -1606,7 +1629,23 @@ namespace BaseClasses
             textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
             canvas.Children.Add(textBlock);
         }
-                
+
+        public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, SolidColorBrush color, Canvas canvas)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Foreground = color;
+            //textBlock.Background = new SolidColorBrush(Colors.Red);
+            textBlock.FontSize = fontSize;
+            Size txtSize = MeasureString(textBlock, text);
+
+            Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
+            Canvas.SetTop(textBlock, posy - txtSize.Height / 2);
+
+            textBlock.RenderTransform = new RotateTransform(rotationAngle_CW_deg);
+            canvas.Children.Add(textBlock);
+        }
+
         public static void DrawText(string text, double posx, double posy, double rotationAngle_CW_deg, double fontSize, Point refPoint, bool bIsTextOutSide, SolidColorBrush color, Canvas canvas)
         {
             TextBlock textBlock = new TextBlock();
