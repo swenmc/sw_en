@@ -1489,8 +1489,8 @@ namespace PFD
             // Change each group
             foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
-                IEnumerable<CScrewSequence> halfCircleSequences = (IEnumerable<CScrewSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
-                CScrewSequence seq = null;
+                IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence);
+                CConnectorSequence seq = null;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
                 if (seq != null) seq.INumberOfConnectors = numberOfScrews;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
@@ -1829,8 +1829,52 @@ namespace PFD
 
         private void BtnLoadPlate_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Data Files (*.dat)|*.dat";
+            ofd.DefaultExt = "dat";
+            ofd.AddExtension = true;
 
+            CPlate deserializedPlate = null;
+            if(ofd.ShowDialog() == true)
+            {
+                using (Stream stream = File.Open(ofd.FileName, FileMode.Open))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+                    deserializedPlate = (CPlate)binaryFormatter.Deserialize(stream);
+                }
+            }
+
+            if (deserializedPlate != null)
+            {
+                SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+                vm.ComponentTypeIndex = 1;
+                vm.ComponentSerieIndex = (int)deserializedPlate.m_ePlateSerieType_FS;
+                vm.ComponentIndex = GetPlateIndex(deserializedPlate);
+                
+                //TODO Mato: tu by trebalo ponastavovat vsetky dolezite premenne,ktore chceme preniest, lebo ked to preniesiem tak ako je na riadku dole, tak to potom neskor pada
+                // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
+                plate = deserializedPlate;
+                
+                if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
+                else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
+                else vm.ScrewArrangementIndex = 0;
+                                
+                vm.SetComponentProperties(plate);
+                if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);                
+            }
         }
+
+
+        private int GetPlateIndex(CPlate plate)
+        {
+            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_KB) return 1;
+            else if (plate is CConCom_Plate_KC) return 2;
+            else if (plate is CConCom_Plate_KD) return 3;
+            else if (plate is CConCom_Plate_KE) return 4;
+            else return 0;
+        }
+        
 
         //private void RedrawComponentIn2D()
         //{

@@ -587,6 +587,8 @@ namespace BaseClasses
 
         public float GetMassIgnoringHoles()
         {
+            if (m_Mat == null) return -1;
+
             return m_Mat.m_fRho * GetVolumeIgnoringHoles();
         }
 
