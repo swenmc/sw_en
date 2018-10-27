@@ -8,6 +8,7 @@ using MATH;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CScrewSequenceGroup : CConnectorSequenceGroup
     {
         public CScrewSequenceGroup()

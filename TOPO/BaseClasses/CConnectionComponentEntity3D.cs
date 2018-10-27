@@ -3,19 +3,22 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using MATERIAL;
+using System;
 
 namespace BaseClasses
 {
+    [Serializable]
     public abstract class CConnectionComponentEntity3D : CEntity3D
     {
+        [NonSerialized]
         private Int32Collection m_TriangleIndices;
-
+                
         public Int32Collection TriangleIndices
         {
             get { return m_TriangleIndices; }
             set { m_TriangleIndices = value; }
         }
-
+        [NonSerialized]
         public Point[] PointsOut2D;
         /*
         public Point[] m_arrPoints2D;
@@ -25,16 +28,18 @@ namespace BaseClasses
             set { m_arrPoints2D = value; }
         }
         */
-
+        [NonSerialized]
         private Point3D[] m_arrPoints3D;
+        
         public Point3D[] arrPoints3D
         {
             get { return m_arrPoints3D; }
             set { m_arrPoints3D = value; }
         }
 
+        [NonSerialized]
         public new CMat_03_00 m_Mat;
-
+        [NonSerialized]
         public EConnectionComponentType eConnComponentType;
 
         public CConnectionComponentEntity3D() { }

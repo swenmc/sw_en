@@ -8,6 +8,7 @@ using MATH;
 
 namespace BaseClasses
 {
+    [Serializable]
     public abstract class CConnectorSequenceGroup
     {
         private int m_iNumberOfHalfCircleSequences;

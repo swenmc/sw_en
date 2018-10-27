@@ -8,6 +8,7 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConCom_Plate_KA : CPlate
     {
         private float m_fbX1;

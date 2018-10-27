@@ -299,6 +299,10 @@
 
             <Button Name="BtnExportToPDF" Content="Export to PDF" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDF_Click"/>
+            <Button Name="BtnSavePlate" Content="Save Plate" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnSavePlate_Click"/>
+            <Button Name="BtnLoadPlate" Content="Load Plate" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnLoadPlate_Click"/>
 
         </StackPanel>
     </Grid>

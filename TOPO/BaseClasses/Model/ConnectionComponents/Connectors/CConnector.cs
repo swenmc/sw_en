@@ -2,11 +2,13 @@
 using BaseClasses.GraphObj;
 using BaseClasses.GraphObj.Objects_3D;
 using MATERIAL;
+using System;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConnector : CConnectionComponentEntity3D
     {
         private float m_fDiameter_shank;
@@ -66,8 +68,11 @@ namespace BaseClasses
         }
 
         public float m_iNumberOfThreads;
+        [NonSerialized]
         public DiffuseMaterial m_DiffuseMat;
+        [NonSerialized]
         public Cylinder m_cylinder;
+        [NonSerialized]
         public GeometryModel3D Visual_Connector;
 
         public float m_fRotationX_deg, m_fRotationY_deg, m_fRotationZ_deg;

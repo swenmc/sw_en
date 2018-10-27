@@ -14,6 +14,9 @@ using System.Windows.Documents;
 using System.Text;
 using System.Linq;
 using System.Data;
+using Microsoft.Win32;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PFD
 {
@@ -1801,6 +1804,32 @@ namespace PFD
 
             if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
+        }
+
+        private void BtnSavePlate_Click(object sender, RoutedEventArgs e)
+        {
+            if (plate == null) { MessageBox.Show("No plate to serialize."); return; }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Data Files (*.dat)|*.dat";
+            sfd.DefaultExt = "dat";
+            sfd.AddExtension = true;
+            sfd.FileName = "Plate_" + plate.Name;            
+
+            if (sfd.ShowDialog() == true)
+            {
+                using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(stream, plate);
+                    stream.Close();
+                }
+            }
+        }
+
+        private void BtnLoadPlate_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         //private void RedrawComponentIn2D()

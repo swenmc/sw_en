@@ -1,10 +1,12 @@
 ﻿using _3DTools;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConCom_Plate_Q_T_Y : CPlate
     {
         private float m_fbX;

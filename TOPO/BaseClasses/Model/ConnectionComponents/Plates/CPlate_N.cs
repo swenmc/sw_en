@@ -8,6 +8,7 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConCom_Plate_N : CPlate
     {
         private float m_fbX1; // Width of flat part connected to rafter

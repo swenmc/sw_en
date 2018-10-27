@@ -10,6 +10,7 @@ using MATH;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CAnchorArrangement_BB_BG: CAnchorArrangement
     {
         private float m_fDistanceBetweenHoles;

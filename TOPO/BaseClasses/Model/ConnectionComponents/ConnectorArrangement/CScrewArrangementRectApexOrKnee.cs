@@ -11,6 +11,7 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CScrewArrangementRectApexOrKnee : CScrewArrangement
     {
         private float m_fCrscRafterDepth;

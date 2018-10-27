@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace BaseClasses
 {
+    [Serializable]
     public abstract class CPlate : CConnectionComponentEntity3D
     {
         public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FormSteel
@@ -44,7 +45,9 @@ namespace BaseClasses
         public float fVolume;
         public float fMass;
 
+        [NonSerialized]
         public GeometryModel3D Visual_Plate;
+        [NonSerialized]
         public CAnchorArrangement AnchorArrangement;
         public CScrewArrangement ScrewArrangement;
 
@@ -65,7 +68,7 @@ namespace BaseClasses
                 m_drillingRoutePoints = value;
             }
         }
-
+        [NonSerialized]
         private CDimension[] m_dimensions; // Pole kot pre Plate
         public CDimension[] Dimensions
         {

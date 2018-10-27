@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PFD
 {
+    [Serializable]
     public class CComponentParamsView : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

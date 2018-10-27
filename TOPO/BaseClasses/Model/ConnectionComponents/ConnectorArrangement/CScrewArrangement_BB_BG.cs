@@ -11,6 +11,7 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CScrewArrangement_BB_BG:CScrewArrangement
     {
         private float m_fCrscColumnDepth;

@@ -8,6 +8,7 @@ using MATH;
 
 namespace BaseClasses
 {
+    [Serializable]
     public abstract class CConnectorArrangement
     {
         private int m_iHolesNumber;

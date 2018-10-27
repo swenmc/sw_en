@@ -1,5 +1,8 @@
-﻿namespace BaseClasses
+﻿using System;
+
+namespace BaseClasses
 {
+    [Serializable]
     abstract public class CObject
     {
         int m_ID; // Unique object ID

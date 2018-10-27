@@ -8,6 +8,7 @@ using MATH;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConCom_Plate_JB : CPlate
     {
         private float m_fbX;

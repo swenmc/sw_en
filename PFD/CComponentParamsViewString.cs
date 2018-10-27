@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PFD
 {
+    [Serializable]
     public class CComponentParamsViewString : CComponentParamsView
     {
         //-------------------------------------------------------------------------------------------------------------

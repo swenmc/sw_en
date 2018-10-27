@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConCom_Plate_LL : CPlate
     {
         private float m_fbX1; // Long vertical part in connection (member z-direction)

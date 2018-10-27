@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
-    //[Serializable]
+    [Serializable]
     // Base class of all topological model entities
     abstract public class CEntity3D : CEntity
     {
@@ -20,10 +20,13 @@ namespace BaseClasses
             set { mObject3DModel = value; }
         }
         */
-
+        [NonSerialized]
         public CPoint m_pControlPoint = new CPoint();
+        [NonSerialized]
         public CMat m_Mat;
+        [NonSerialized]
         public DiffuseMaterial m_Material3DGraphics;
+        [NonSerialized]
         public string m_Shape;
 
         //----------------------------------------------------------------------------------------------------------------

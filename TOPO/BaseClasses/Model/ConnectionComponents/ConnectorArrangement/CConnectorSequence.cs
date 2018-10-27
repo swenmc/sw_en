@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
+    [Serializable]
     public abstract class CConnectorSequence
     {
         private int m_iNumberOfConnectors;

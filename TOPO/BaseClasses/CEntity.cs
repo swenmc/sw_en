@@ -1,6 +1,8 @@
-﻿namespace BaseClasses
+﻿using System;
+
+namespace BaseClasses
 {
-    //[Serializable]
+    [Serializable]
     // Base class of all topological model entities
     abstract public class CEntity: CObject
     {

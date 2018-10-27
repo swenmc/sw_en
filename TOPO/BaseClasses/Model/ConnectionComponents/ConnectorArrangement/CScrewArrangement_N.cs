@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CScrewArrangement_N : CScrewArrangement
     {
         public CScrewArrangement_N() { }

@@ -10,6 +10,7 @@ using BaseClasses.GraphObj;
 
 namespace BaseClasses
 {
+    [Serializable]
     public abstract class CScrewArrangement : CConnectorArrangement
     {
         private List<CScrewSequenceGroup> m_listOfSequenceGroups;
@@ -25,7 +26,7 @@ namespace BaseClasses
                 m_listOfSequenceGroups = value;
             }
         }
-
+        
         private CScrew m_referenceScrew;
 
         public CScrew referenceScrew

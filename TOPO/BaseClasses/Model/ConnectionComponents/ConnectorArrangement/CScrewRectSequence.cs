@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CScrewRectSequence : CScrewSequence
     {
         private int m_iNumberOfScrewsInRow_xDirection;

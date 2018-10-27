@@ -6,9 +6,11 @@ using System.Globalization;
 using MATERIAL;
 using DATABASE;
 using DATABASE.DTO;
+using System;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CScrew : CConnector
     {
         private EScrewTypes m_eType;

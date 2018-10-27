@@ -1,11 +1,13 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CConCom_Plate_F_or_L : CPlate
     {
         private float m_fbX1;
