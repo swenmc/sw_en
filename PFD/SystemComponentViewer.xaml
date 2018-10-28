@@ -149,7 +149,7 @@
                                                     <Setter Property="ContentTemplate">
                                                         <Setter.Value>
                                                             <DataTemplate>
-                                                                <TextBox TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                <TextBox TextAlignment="Right" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                                                             </DataTemplate>
                                                         </Setter.Value>
                                                     </Setter>

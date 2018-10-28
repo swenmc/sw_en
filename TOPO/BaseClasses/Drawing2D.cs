@@ -931,6 +931,7 @@ namespace BaseClasses
                 circle.StrokeThickness = thickness;
                 circle.Stroke = color;
 
+
                 double left = center.X - (diameter / 2);
                 double top = center.Y - (diameter / 2);
                 Canvas.SetLeft(circle, left);
