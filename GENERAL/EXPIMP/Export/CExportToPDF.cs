@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace EXPIMP
 {
@@ -34,7 +36,8 @@ namespace EXPIMP
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
             PdfPage page = s_document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            double height = DrawCanvasImage(gfx, canvas);
+            DrawCanvas_PDF(canvas, gfx);
+            //double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
 
             // Create demonstration pages
@@ -44,12 +47,92 @@ namespace EXPIMP
             //new Text().DrawPage(s_document.AddPage());
             //new Images().DrawPage(s_document.AddPage());
 
-            AddTableToDocument(gfx, height, tableParams);
+            gfx.Dispose();
+            PdfPage page2 = s_document.AddPage();
+            XGraphics gfx2 = XGraphics.FromPdfPage(page2);            
+            AddTableToDocument(gfx2, 50, tableParams);
 
             // Save the s_document...
             s_document.Save(filename);
             // ...and start a viewer
             Process.Start(filename);
+        }
+
+
+        public static void DrawCanvas_PDF(Canvas canvas, XGraphics gfx)
+        {
+            double scaleFactor = gfx.PageSize.Width / canvas.RenderSize.Width;
+
+            foreach (object o in canvas.Children)
+            {
+                System.Diagnostics.Trace.WriteLine(o.GetType());
+
+                if (o is Rectangle)
+                {
+                    Rectangle winRect = o as Rectangle;
+                    double x = Canvas.GetLeft(winRect);
+                    double y = Canvas.GetTop(winRect);
+
+                    System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
+                    XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
+                    gfx.DrawRectangle(solidBrush, x * scaleFactor, y * scaleFactor, winRect.Width * scaleFactor, winRect.Height * scaleFactor);
+                }
+                else if (o is Polyline)
+                {
+                    Polyline winPol = o as Polyline;
+                                        
+                    System.Windows.Media.Color c = ((SolidColorBrush)winPol.Stroke).Color;
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness * scaleFactor);
+                    
+                    List<XPoint> points = new List<XPoint>();
+                    foreach (Point p in winPol.Points)
+                    {
+                        points.Add(new XPoint(p.X * scaleFactor, p.Y * scaleFactor));                        
+                    }
+                    gfx.DrawLines(pen, points.ToArray());
+                }
+                else if (o is Ellipse)
+                {
+                    Ellipse winElipse = o as Ellipse;
+                    //double majorAxis = winElipse.Width;
+                    //double minorAxis = winElipse.Height;
+
+                    System.Windows.Media.Color c = ((SolidColorBrush)winElipse.Stroke).Color;
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winElipse.StrokeThickness);
+
+                    double x = Canvas.GetLeft(winElipse) - winElipse.StrokeThickness / 2;
+                    double y = Canvas.GetTop(winElipse) - winElipse.StrokeThickness / 2;
+
+                    gfx.DrawEllipse(pen, x * scaleFactor, y * scaleFactor, winElipse.Width * scaleFactor, winElipse.Height * scaleFactor);
+                }
+                else if (o is Line)
+                {
+                    Line winLine = o as Line;
+                    
+                    System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color;                    
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness * scaleFactor);
+
+                    if(winLine.StrokeDashArray.Count > 0) pen.DashStyle = XDashStyle.Dash;
+
+                    gfx.DrawLine(pen, winLine.X1 * scaleFactor, winLine.Y1 * scaleFactor, winLine.X2 * scaleFactor, winLine.Y2 * scaleFactor);
+                }
+                else if (o is TextBlock)
+                {
+                    TextBlock winText = o as TextBlock;
+
+                    double x = Canvas.GetLeft(winText);
+                    //x += winText.ActualWidth / 2;
+                    double y = Canvas.GetTop(winText);                    
+                    y += winText.FontSize;
+                                        
+                    System.Windows.Media.Color c = ((SolidColorBrush)winText.Foreground).Color;
+                    XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
+
+                    XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
+                    
+                    gfx.DrawString(winText.Text, f, solidBrush, new XPoint(x * scaleFactor, y * scaleFactor));
+                }
+            }
         }
 
         private static double DrawCanvasImage(XGraphics gfx, Canvas canvas)
@@ -159,7 +242,7 @@ namespace EXPIMP
             table.AddColumn(Unit.FromCentimeter(5));
 
             Row row = table.AddRow();
-            row.Shading.Color = Colors.PaleGoldenrod;
+            row.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
             Cell cell = row.Cells[0];
             cell.AddParagraph("Itemus");
             cell = row.Cells[1];
@@ -177,7 +260,7 @@ namespace EXPIMP
             cell = row.Cells[1];
             cell.AddParagraph("dsadkja asklk daj a");
 
-            table.SetEdge(0, 0, 2, 3, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
+            table.SetEdge(0, 0, 2, 3, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }
@@ -202,7 +285,7 @@ namespace EXPIMP
                 Row row = table.AddRow();
                 //row.Shading.Color = Colors.PaleGoldenrod;
                 Cell cell = row.Cells[0];
-                cell.Shading.Color = Colors.PaleGoldenrod;
+                cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
                 cell.AddParagraph(strParams[0]);
                 cell = row.Cells[1];
                 cell.AddParagraph(strParams[1]);
@@ -212,7 +295,7 @@ namespace EXPIMP
                 cell.AddParagraph(strParams[3]);
             }
 
-            table.SetEdge(0, 0, 4, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
+            table.SetEdge(0, 0, 4, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }
