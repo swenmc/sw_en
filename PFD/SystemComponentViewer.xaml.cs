@@ -111,6 +111,7 @@ namespace PFD
                     e.PropertyName == "DrawHoleCentreSymbol2D" ||
                     e.PropertyName == "DrawDrillingRoute2D" ||
                     e.PropertyName == "DrawDimensions2D" ||
+                    e.PropertyName == "DrawMemberOutline2D" ||
                     e.PropertyName == "DrawScrews3D")
                 {
                     DisplayComponent(vm);
