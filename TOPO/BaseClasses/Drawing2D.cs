@@ -923,16 +923,16 @@ namespace BaseClasses
 
         public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
         {
-            if (!Double.IsNaN(center.X)) // Check that value is not "NaN" - TODO - Ondrej Bug No. 109
+            if (!Double.IsNaN(center.X))
             {
                 Ellipse circle = new Ellipse();
                 circle.Height = diameter;
                 circle.Width = diameter;
                 circle.StrokeThickness = thickness;
                 circle.Stroke = color;
-
-                double left = center.X - (diameter / 2);
-                double top = center.Y - (diameter / 2);
+                
+                double left = center.X - (diameter / 2) + thickness / 2;
+                double top = center.Y - (diameter / 2) + thickness / 2;
                 Canvas.SetLeft(circle, left);
                 Canvas.SetTop(circle, top);
                 imageCanvas.Children.Add(circle);
