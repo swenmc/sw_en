@@ -379,11 +379,28 @@ namespace BaseClasses
             int iNumberOfLines = 2;
             MemberOutlines = new CLine2D[iNumberOfLines];
 
-            //MemberOutlines[0] = new CLine2D(PointsOut2D[2], PointsOut2D[11]);
-            //MemberOutlines[1] = new CLine2D(PointsOut2D[3], PointsOut2D[6]);
+            // Skratenie pruta v smere pruta (5 mm)
+            float fcut = 0.005f;
+            // Dlzka prepony trojuholnika vratane skratenia (od bodu 0 az po stred plechu)
+            float fb1 = 0.5f * Fb_X;
+            float fc1 = fb1 / (float)Math.Cos(FSlope_rad);
+            // Skratenie prepony c1 o fcut
+            float fc1_cut = fc1 - fcut;
+            // Urcenie suradnic koncoveho bodu prepony
+            float fx1 = fc1_cut * (float)Math.Cos(FSlope_rad);
+            float fy1 = fc1_cut * (float)Math.Sin(FSlope_rad);
 
-            MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[2].X, PointsOut2D[2].Y), new Point(PointsOut2D[11].X, PointsOut2D[11].Y)); // Docasne - in work
-            MemberOutlines[1] = new CLine2D(new Point(PointsOut2D[3].X, PointsOut2D[3].Y), new Point(PointsOut2D[6].X, PointsOut2D[6].Y)); // Docasne - in work
+            // Urcenie suradnic bodu na hornej hrane plechu
+            float fdepth = Fh_Y1 * (float)Math.Cos(FSlope_rad);
+
+            float fx2 = fx1 - fdepth * (float)Math.Sin(FSlope_rad);
+            float fy2 = fy1 + fdepth * (float)Math.Cos(FSlope_rad);
+
+            // Body su nezavisle na bodoch outline aj ked maju rovnake suradnice
+            MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[11].X, PointsOut2D[11].Y), new Point(fx1, fy1));
+            MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
+
+            MemberOutlines = AddMirroredLinesAboutY(0.5f * Fb_X, MemberOutlines);
         }
 
         protected override void loadIndices()

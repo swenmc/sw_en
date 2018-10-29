@@ -679,6 +679,25 @@ namespace BaseClasses
             return 2f * fI_yu_rect / fh; // Elastic section modulus
         }
 
+        // Member Outline - add mirrored lines (plates J)
+        public CLine2D[] AddMirroredLinesAboutY(float fXDistanceOfMirrorAxis, CLine2D[] MemberOutlines_temp)
+        {
+            if (MemberOutlines_temp != null && MemberOutlines_temp.Length > 0)
+            {
+                // Resize array
+                Array.Resize(ref MemberOutlines_temp, MemberOutlines_temp.Length * 2);
+
+                for (int i = 0; i < MemberOutlines_temp.Length / 2; i++)
+                {
+                    // Start Point
+                    MemberOutlines_temp[MemberOutlines_temp.Length / 2 + i] = new CLine2D(new Point(2 * fXDistanceOfMirrorAxis + MemberOutlines_temp[i].X1 * (-1f), MemberOutlines_temp[i].Y1),
+                                                                                          new Point(2 * fXDistanceOfMirrorAxis + MemberOutlines_temp[i].X2 * (-1f), MemberOutlines_temp[i].Y2));
+                }
+            }
+
+            return MemberOutlines_temp;
+        }
+
         // Modification
         // Mirror plate about x
         public void MirrorPlateAboutX()

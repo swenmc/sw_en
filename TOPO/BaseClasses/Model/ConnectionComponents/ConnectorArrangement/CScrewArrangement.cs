@@ -14,6 +14,7 @@ namespace BaseClasses
     public abstract class CScrewArrangement : CConnectorArrangement
     {
         private List<CScrewSequenceGroup> m_listOfSequenceGroups;
+
         public List<CScrewSequenceGroup> ListOfSequenceGroups
         {
             get
@@ -26,7 +27,7 @@ namespace BaseClasses
                 m_listOfSequenceGroups = value;
             }
         }
-        
+
         private CScrew m_referenceScrew;
 
         public CScrew referenceScrew
@@ -189,16 +190,16 @@ namespace BaseClasses
 
         // FACE PLATE "O"- KNEE JOINT
         public virtual void Calc_FacePlateData(
-        float fbX1,
-        float fbX2,
-        float fhY1,
-        float ft)
+            float fbX1,
+            float fbX2,
+            float fhY1,
+            float ft)
         { }
 
         public virtual void Calc_HolesCentersCoord2DFacePlate(
-        float fbX1,
-        float fbX2,
-        float fhY1)
+            float fbX1,
+            float fbX2,
+            float fhY1)
         { }
 
         public virtual void RecalculateTotalNumberOfScrews()
