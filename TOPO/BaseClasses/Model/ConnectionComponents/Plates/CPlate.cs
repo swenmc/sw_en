@@ -83,6 +83,21 @@ namespace BaseClasses
             }
         }
 
+        private CLine2D [] m_MemberOutlines; // Pole linii pre vykreslenie outline pruta v plechu
+
+        public CLine2D[] MemberOutlines
+        {
+            get
+            {
+                return m_MemberOutlines;
+            }
+
+            set
+            {
+                m_MemberOutlines = value;
+            }
+        }
+
         public const int INumberOfPointsOfHole = 12; // Have to be Even - Todo funguje pre 12 bodov, napr. pre 24 je tam chyba, je potrebne "doladit"
         public Point3D[] arrConnectorControlPoints3D; // Array of control points for inserting connectors (bolts, screws, anchors, ...)
 

@@ -410,6 +410,7 @@ namespace PFD
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
                 chbDrawDimensions2D.IsEnabled = false;
+                chbDrawMemberOutline2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
@@ -453,6 +454,7 @@ namespace PFD
                 chbDrawHoleCentreSymbol2D.IsEnabled = true;
                 chbDrawDrillingRoute2D.IsEnabled = true;
                 chbDrawDimensions2D.IsEnabled = true;
+                chbDrawMemberOutline2D.IsEnabled = true;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
@@ -489,6 +491,7 @@ namespace PFD
                 chbDrawHoleCentreSymbol2D.IsEnabled = false;
                 chbDrawDrillingRoute2D.IsEnabled = false;
                 chbDrawDimensions2D.IsEnabled = false;
+                chbDrawMemberOutline2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
 
@@ -840,8 +843,18 @@ namespace PFD
             }
             if (vm.DrillingRoutePoints != null) plate.DrillingRoutePoints = vm.DrillingRoutePoints;
 
-            Drawing2D.DrawPlateToCanvas(plate, Frame2DWidth, Frame2DHeight, ref page2D,
-               vm.DrawPoints2D, vm.DrawOutLine2D, vm.DrawPointNumbers2D, vm.DrawHoles2D, vm.DrawHoleCentreSymbol2D, vm.DrawDrillingRoute2D, vm.DrawDimensions2D);
+            Drawing2D.DrawPlateToCanvas(plate,
+               Frame2DWidth,
+               Frame2DHeight,
+               ref page2D,
+               vm.DrawPoints2D,
+               vm.DrawOutLine2D,
+               vm.DrawPointNumbers2D,
+               vm.DrawHoles2D,
+               vm.DrawHoleCentreSymbol2D,
+               vm.DrawDrillingRoute2D,
+               vm.DrawDimensions2D,
+               vm.DrawMemberOutline2D);
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;

@@ -43,7 +43,7 @@ namespace BaseClasses
                 MP2 = value;
             }
         }
-                
+
         public double X1
         {
             get
@@ -183,6 +183,27 @@ namespace BaseClasses
             return Math.Pow(X1 - X2, 2) + Math.Pow(Y1 - Y2, 2);
         }
 
+        public void MirrorYCoordinates()
+        {
+            this.MY1 *= -1;
+            this.MY2 *= -1;
+        }
+        public void MirrorXCoordinates()
+        {
+            this.MX1 *= -1;
+            this.MX2 *= -1;
+        }
 
+        public void UpdatePoints(double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+          P1 = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (P1.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (P1.Y - minY));
+          P2 = new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * (P2.X - minX), fmodelMarginTop_y + dReal_Model_Zoom_Factor * (P2.Y - minY));
+
+          MX1 = P1.X;
+          MY1 = P1.Y;
+
+          MX2 = P2.X;
+          MY2 = P2.Y;
+        }
     }
 }

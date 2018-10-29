@@ -47,6 +47,7 @@ namespace PFD
         bool bDrawHoleCentreSymbol;
         bool bDrawDrillingRoute;
         bool bDrawDimensions;
+        bool bDrawMemberOutline;
 
         bool bMirrorY;
         bool bMirrorX;
@@ -339,6 +340,20 @@ namespace PFD
             }
         }
 
+        public bool DrawMemberOutline2D
+        {
+            get
+            {
+                return bDrawMemberOutline;
+            }
+
+            set
+            {
+                bDrawMemberOutline = value;
+                NotifyPropertyChanged("DrawMemberOutline2D");
+            }
+        }
+
         public bool MirrorY
         {
             get
@@ -447,7 +462,8 @@ namespace PFD
             DrawHoleCentreSymbol2D = true;
             DrawDrillingRoute2D = true;
             DrawDimensions2D = true;
-            
+            bDrawMemberOutline = true;
+
             MirrorY = false;
             MirrorX = false;
             Rotate90CW = false;

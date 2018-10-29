@@ -84,12 +84,14 @@ namespace BaseClasses
                      false,
                      false,
                      bDrawDimensions,
+                     false,
                      crsc.CrScPointsOut,
                      crsc.CrScPointsIn,
                      null,
                      null,
                      null,
                      null, // TODO - dodefinovat koty i pre prierezy
+                     null,
                      0,
                      0,
                      fmodelMarginLeft_x,
@@ -102,8 +104,18 @@ namespace BaseClasses
                      canvasForImage);
         }
 
-        public static void DrawPlateToCanvas(CPlate plate, double width, double height, ref Canvas canvasForImage,
-            bool bDrawPoints, bool bDrawOutLine, bool bDrawPointNumbers, bool bDrawHoles, bool bDrawHoleCentreSymbols, bool bDrawDrillingRoute, bool bDrawDimensions)
+        public static void DrawPlateToCanvas(CPlate plate,
+            double width,
+            double height,
+            ref Canvas canvasForImage,
+            bool bDrawPoints,
+            bool bDrawOutLine,
+            bool bDrawPointNumbers,
+            bool bDrawHoles,
+            bool bDrawHoleCentreSymbols,
+            bool bDrawDrillingRoute,
+            bool bDrawDimensions,
+            bool bDrawMemberOutline)
         {
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
@@ -186,12 +198,14 @@ namespace BaseClasses
                     bDrawHoleCentreSymbols,
                     bDrawDrillingRoute,
                     bDrawDimensions,
+                    bDrawMemberOutline,
                     Geom2D.TransformArrayToList(plate.PointsOut2D),
                     null,
                     pHolesCentersPointsScrews2D,
                     pHolesCentersPointsAnchors2D,
                     plate.DrillingRoutePoints,
                     plate.Dimensions,
+                    plate.MemberOutlines,
                     fDiameter_screw * scale_unit,
                     fDiameter_anchor * scale_unit,
                     fmodelMarginLeft_x,
@@ -264,12 +278,14 @@ namespace BaseClasses
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
             bool bDrawDimensions,
+            bool bDrawMemberOutline,
             List<Point> PointsOut,
             List<Point> PointsIn,
             Point[] PointsHolesScrews,
             Point[] PointsHolesAnchors,
             List<Point> PointsDrillingRoute,
             CDimension[] Dimensions,
+            CLine2D[] MemberOutline,
             double dHolesDiameterScrews,
             double dHolesDiameterAnchors,
             float fmodelMarginLeft_x,
@@ -287,6 +303,7 @@ namespace BaseClasses
             List<Point> canvasPointsHolesAnchors = null;
             List<Point> canvasPointsDrillingRoute = null;
             List<CDimension> canvasDimensions = null;
+            List<CLine2D> canvasMemberOutline = null;
 
             if (bPointsHaveYinUpDirection)
             {
@@ -296,6 +313,7 @@ namespace BaseClasses
                 canvasPointsHolesAnchors = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsHolesAnchors);
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
                 canvasDimensions = MirrorYCoordinates(Dimensions);
+                canvasMemberOutline = MirrorYCoordinates(MemberOutline);
             }
             else
             {
@@ -305,6 +323,7 @@ namespace BaseClasses
                 canvasPointsHolesAnchors = new List<Point>(PointsHolesAnchors);
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
                 canvasDimensions = new List<CDimension>(Dimensions);
+                canvasMemberOutline = new List<CLine2D>(MemberOutline);
 
             }
             double minX = canvasPointsOut.Min(p => p.X);
@@ -316,6 +335,7 @@ namespace BaseClasses
             canvasPointsHolesAnchors = ConvertRealPointsToCanvasDrawingPoints(canvasPointsHolesAnchors, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
             // Definition Points
             DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
@@ -340,6 +360,9 @@ namespace BaseClasses
 
             // Dimensions
             DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
+
+            // Member Outline
+            DrawMemberOutline(bDrawMemberOutline, canvasMemberOutline, canvasForImage);
         }
 
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
@@ -351,6 +374,17 @@ namespace BaseClasses
                 d.MirrorYCoordinates();
             }
             return listDimensions;
+        }
+
+        private static List<CLine2D> MirrorYCoordinates(CLine2D[] lines)
+        {
+            if (lines == null) return new List<CLine2D>();
+            List<CLine2D> listLines = new List<CLine2D>(lines);
+            foreach (CLine2D l in listLines)
+            {
+                l.MirrorYCoordinates();
+            }
+            return listLines;
         }
 
         private static List<Point> ConvertRealPointsToCanvasDrawingPoints(List<Point> points, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
@@ -376,6 +410,18 @@ namespace BaseClasses
             }
             return updatedDimensions;
         }
+        private static List<CLine2D> ConvertRealPointsToCanvasDrawingPoints(List<CLine2D> lines, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+            if (lines == null) return new List<CLine2D>();
+
+            List<CLine2D> updatedLines = new List<CLine2D>(lines);
+            foreach (CLine2D l in updatedLines)
+            {
+                l.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            }
+            return updatedLines;
+        }
+
 
         public static void CalculateBasicValue(
             double fTempMax_X,
@@ -807,6 +853,25 @@ namespace BaseClasses
                     {
                         // Not defined drawing function
                     }
+                }
+            }
+        }
+
+        public static void DrawMemberOutline(bool bDrawMemberOutline, List<CLine2D> lines, Canvas canvasForImage)
+        {
+            if (bDrawMemberOutline && lines != null && lines.Count > 0)
+            {
+                for (int i = 0; i < lines.Count; i++) // Pole ciar obrysu prutov
+                {
+                    Line l = new Line();
+
+                    l.X1 = lines[i].X1;
+                    l.Y1 = lines[i].Y1;
+
+                    l.X2 = lines[i].X2;
+                    l.Y2 = lines[i].Y2;
+
+                    DrawLine(l, Brushes.Blue, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
                 }
             }
         }

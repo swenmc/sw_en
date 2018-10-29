@@ -80,6 +80,7 @@
                 <CheckBox Name="chbDrawHoleCentreSymbol2D" IsChecked="{Binding Path=DrawHoleCentreSymbol2D}" Content="Draw Hole Centre Symbol" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Content="Draw Dimensions" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Content="Draw Member Outline" Margin="0 5 0 0"/>
             </StackPanel>
             <StackPanel Name="panelOptions3D" Visibility="Hidden" Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" Margin="10,5,0,10">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>

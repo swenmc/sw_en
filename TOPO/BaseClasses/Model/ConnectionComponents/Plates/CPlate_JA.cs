@@ -142,6 +142,8 @@ namespace BaseClasses
             UpdatePlateData_Basic(screwArrangement);
 
             Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -224,6 +226,18 @@ namespace BaseClasses
             Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], true, true);
 
             Dimensions[3] = new CDimensionArc(plateCenter, PointsOut2D[2], PointsOut2D[3], PointsOut2D[4]);
+        }
+
+        void Set_MemberOutlinePoints2D()
+        {
+            int iNumberOfLines = 2;
+            MemberOutlines = new CLine2D[iNumberOfLines];
+
+            //MemberOutlines[0] = new CLine2D(PointsOut2D[2], PointsOut2D[11]);
+            //MemberOutlines[1] = new CLine2D(PointsOut2D[3], PointsOut2D[6]);
+
+            MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[0].X, PointsOut2D[0].Y), new Point(PointsOut2D[2].X, PointsOut2D[2].Y)); // Docasne - in work
+            MemberOutlines[1] = new CLine2D(new Point(PointsOut2D[1].X, PointsOut2D[1].Y), new Point(PointsOut2D[4].X, PointsOut2D[4].Y)); // Docasne - in work
         }
 
         protected override void loadIndices()
