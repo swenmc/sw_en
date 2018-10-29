@@ -187,6 +187,20 @@ namespace BaseClasses
             float fhY)
         { }
 
+        // FACE PLATE "O"- KNEE JOINT
+        public virtual void Calc_FacePlateData(
+        float fbX1,
+        float fbX2,
+        float fhY1,
+        float ft)
+        { }
+
+        public virtual void Calc_HolesCentersCoord2DFacePlate(
+        float fbX1,
+        float fbX2,
+        float fhY1)
+        { }
+
         public virtual void RecalculateTotalNumberOfScrews()
         {
             // Celkovy pocet skrutiek, pocet moze byt v kazdej sekvencii rozny

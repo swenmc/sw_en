@@ -48,8 +48,7 @@ namespace PFD
         float ft_f;
         float fb_fl; // Flange - Z-section
         float fc_lip1; // LIP - Z-section
-        float fPitch_rad = 11f / 180f * (float)Math.PI; // Roof Pitch - default value (11 deg)
-        int iNumberofHoles;
+        int iNumberofHoles = 0;
 
         string sGauge_Screw;
 
@@ -201,6 +200,7 @@ namespace PFD
             CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
             CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
+            CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
             bool bUseAdditionalConnectors = true;
             int iNumberOfAdditionalConnectorsInCorner = 4;
@@ -351,7 +351,16 @@ namespace PFD
                         }
                         break;
                     }
-                default:
+                case ESerieTypePlate.eSerie_O:
+                    {
+                        if (vm.ScrewArrangementIndex == 0) // Undefined
+                            plate.ScrewArrangement = null;
+                        else if (vm.ScrewArrangementIndex == 1) // Rectangular - Plate O
+                            plate.ScrewArrangement = screwArrangement_O;
+
+                        break;
+                    }
+               default:
                     {
                         // Not implemented
                         break;
@@ -698,6 +707,16 @@ namespace PFD
                             iNumberofHoles = (int)dcomponents.arr_Serie_N_Dimension[vm.ComponentIndex, 5];
                             break;
                         }
+                    case ESerieTypePlate.eSerie_O:
+                        {
+                            fb = dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fb2 = dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            fh = dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            fh2 = dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 3] / 1000f;
+                            ft = dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 4] / 1000f;
+                            iNumberofHoles = (int)dcomponents.arr_Serie_O_Dimension[vm.ComponentIndex, 5];
+                            break;
+                        }
                     default:
                         {
                             // Not implemented
@@ -976,6 +995,7 @@ namespace PFD
                 CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
+                CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
                 bool bUseAdditionalConnectors = true;
                 int iNumberOfAdditionalConnectorsInCorner = 4;
@@ -1080,7 +1100,6 @@ namespace PFD
                                     plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
                                 else//(vm.ScrewArrangementIndex == 2) // Circle
                                     plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
-
                             }
                             else if (vm.ComponentIndex == 2) // KC
                             {
@@ -1114,6 +1133,14 @@ namespace PFD
                     case ESerieTypePlate.eSerie_N:
                         {
                             plate = new CConCom_Plate_N(dcomponents.arr_Serie_N_Names[0], controlpoint, fb, fb2, fh, fl, ft, 0,0,0, screwArrangement_N, true); // N
+                            break;
+                        }
+                    case ESerieTypePlate.eSerie_O:
+                        {
+                            if (vm.ScrewArrangementIndex == 0) // Undefined
+                                plate = new CConCom_Plate_O(dcomponents.arr_Serie_O_Names[0], controlpoint, fb, fb2, fh, fh2, ft, 11f * MathF.fPI / 180f, 0, 0, 0, null, true);
+                            else //if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                plate = new CConCom_Plate_O(dcomponents.arr_Serie_O_Names[0], controlpoint, fb, fb2, fh, fh2, ft, 11f * MathF.fPI / 180f, 0, 0, 0, screwArrangement_O, true); // O
                             break;
                         }
                     default:
@@ -1469,6 +1496,38 @@ namespace PFD
                     arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
                     plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
                 }
+                else if (plate.ScrewArrangement != null && plate.ScrewArrangement is CScrewArrangement_O)
+                {
+                    CScrewArrangement_O arrangementTemp = (CScrewArrangement_O)plate.ScrewArrangement;
+
+                    if (item is CComponentParamsViewString)
+                    {
+                        CComponentParamsViewString itemStr = item as CComponentParamsViewString;
+                        if (string.IsNullOrEmpty(itemStr.Value)) return;
+
+                        if (item.Name == "Number of screws in row SQ1") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ1 = int.Parse(itemStr.Value);
+                        if (item.Name == "Number of screws in column SQ1") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ1 = int.Parse(itemStr.Value);
+                        if (item.Name == "Inserting point coordinate x SQ1") arrangementTemp.fx_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Inserting point coordinate y SQ1") arrangementTemp.fy_c_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws x SQ1") arrangementTemp.fDistanceOfPointsX_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws y SQ1") arrangementTemp.fDistanceOfPointsY_SQ1 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+
+                        if (item.Name == "Number of screws in row SQ2") arrangementTemp.iNumberOfScrewsInRow_xDirection_SQ2 = int.Parse(itemStr.Value);
+                        if (item.Name == "Number of screws in column SQ2") arrangementTemp.iNumberOfScrewsInColumn_yDirection_SQ2 = int.Parse(itemStr.Value);
+                        if (item.Name == "Inserting point coordinate x SQ2") arrangementTemp.fx_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Inserting point coordinate y SQ2") arrangementTemp.fy_c_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws x SQ2") arrangementTemp.fDistanceOfPointsX_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                        if (item.Name == "Distance between screws y SQ2") arrangementTemp.fDistanceOfPointsY_SQ2 = float.Parse(itemStr.Value) / fLengthUnitFactor;
+                    }
+                    else if (item is CComponentParamsViewList)
+                    {
+                        CComponentParamsViewList itemList = item as CComponentParamsViewList;
+                        if (item.Name.Equals(CParamsResources.ScrewGaugeS.Name)) arrangementTemp.referenceScrew.Gauge = int.Parse(itemList.Value);
+                    }
+
+                    arrangementTemp.UpdateArrangmentData();        // Update data of screw arrangement
+                    plate.ScrewArrangement = arrangementTemp;      // Set current screw arrangement to the plate
+                }
                 else
                 {
                     // Screw arrangement is not implemented
@@ -1719,6 +1778,22 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
+                else if (plate is CConCom_Plate_O)
+                {
+                    CConCom_Plate_O plateTemp = (CConCom_Plate_O)plate;
+
+                    if (item.Name.Equals(CParamsResources.PlateThicknessS.Name)) plateTemp.Ft = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateWidth1S.Name)) plateTemp.Fb_X1 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.RafterWidthS.Name)) plateTemp.Fb_X2 = float.Parse(changedText) / fLengthUnitFactor; // Oznacene ako BR ale premenna je bX2
+                    if (item.Name.Equals(CParamsResources.PlateHeight1S.Name)) plateTemp.Fh_Y1 = float.Parse(changedText) / fLengthUnitFactor;
+                    if (item.Name.Equals(CParamsResources.PlateHeight2S.Name)) plateTemp.Fh_Y2 = float.Parse(changedText) / fLengthUnitFactor;
+
+                    if (item.Name.Equals(CParamsResources.RoofSlopeS.Name)) plateTemp.FSlope_rad = float.Parse(changedText) / fDegToRadianFactor;
+
+                    // Update plate data
+                    plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
+                    plate = plateTemp;
+                }
                 else
                 {
                     // Plate is not implemented
@@ -1814,7 +1889,7 @@ namespace PFD
             sfd.Filter = "Data Files (*.dat)|*.dat";
             sfd.DefaultExt = "dat";
             sfd.AddExtension = true;
-            sfd.FileName = "Plate_" + plate.Name;            
+            sfd.FileName = "Plate_" + plate.Name;
 
             if (sfd.ShowDialog() == true)
             {
@@ -1861,7 +1936,7 @@ namespace PFD
                 else vm.ScrewArrangementIndex = 0;
                                 
                 vm.SetComponentProperties(plate);
-                if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);                
+                if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
             }
         }
 
@@ -1874,7 +1949,6 @@ namespace PFD
             else if (plate is CConCom_Plate_KE) return 4;
             else return 0;
         }
-        
 
         //private void RedrawComponentIn2D()
         //{

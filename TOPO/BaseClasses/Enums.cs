@@ -333,7 +333,8 @@
         eSerie_Y,
         eSerie_J,
         eSerie_K,
-        eSerie_N
+        eSerie_N,
+        eSerie_O
     };
 
     public enum ESerieTypeCrSc_FormSteel

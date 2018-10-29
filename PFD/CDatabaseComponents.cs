@@ -114,6 +114,17 @@ namespace PFD
 
                         break;
                     }
+                case ESerieTypePlate.eSerie_O:
+                    {
+                        fbX_mm = arr_Serie_O_Dimension[iComponentIndex, 0];
+                        fbX2_mm = arr_Serie_O_Dimension[iComponentIndex, 1];
+                        fhY_mm = arr_Serie_O_Dimension[iComponentIndex, 2];
+                        fhY2_mm = arr_Serie_O_Dimension[iComponentIndex, 3];
+                        ft_mm = arr_Serie_O_Dimension[iComponentIndex, 4];
+                        iHolesNoumber = (int)arr_Serie_O_Dimension[iComponentIndex, 5];
+
+                        break;
+                    }
                 default:
                     {
                         // Not implemented
@@ -122,7 +133,7 @@ namespace PFD
             }
         }
 
-        public string[] arr_SeriesNames = new string[12]
+        public string[] arr_SeriesNames = new string[13]
             {"Serie B",
              "Serie L",
              "Serie LL",
@@ -134,7 +145,8 @@ namespace PFD
              "Serie Y",
              "Serie J",
              "Serie K",
-             "Serie N",};
+             "Serie N",
+             "Serie O"};
 
         public string[] arr_Serie_B_Names = new string[10]
             {"BA",
@@ -231,6 +243,13 @@ namespace PFD
         public string[] arr_Serie_N_Names = new string[1]
         {"N"};
 
+        public string[] arr_Serie_O_Names = new string[1]
+        {"O"};
+
+        public string[] arr_Serie_O_ScrewArrangement_Names = new string[2]
+        {"Undefined",
+         "Rectangular"};
+
         public float[,] arr_Serie_B_Dimension = new float[10, 5]
             {
                 {140, 270, 180, 3, 4},
@@ -326,6 +345,12 @@ namespace PFD
         {
                 // b1, b3, h, z, t, iHoles
                 {100, 100, 100, 300, 2, 12}
+        };
+
+        public float[,] arr_Serie_O_Dimension = new float[1, 6]
+        {
+                // b1, b2, h1, h2, t, iHoles
+                {200, 100, 500, 800, 3, 20}
         };
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze

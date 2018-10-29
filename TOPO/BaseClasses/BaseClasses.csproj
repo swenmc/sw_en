@@ -117,6 +117,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement_BB_BG.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BB_BG.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F_or_L.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_O.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_N.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_LL.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewHalfCircleSequence.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Model\ConnectionComponents\Connectors\CScrew.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KC.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KD.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_O.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_N.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_CT01.cs" />
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_S001.cs" />
