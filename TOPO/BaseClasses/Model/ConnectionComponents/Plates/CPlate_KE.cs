@@ -185,6 +185,8 @@ namespace BaseClasses
             UpdatePlateData_Basic(screwArrangement);
 
             Set_DimensionPoints2D();
+
+            Set_BendLinesPoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -361,6 +363,17 @@ namespace BaseClasses
             Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[11]);
 
             Dimensions[6] = new CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
+        }
+
+        void Set_BendLinesPoints2D()
+        {
+            int iNumberOfLines = 4;
+            BendLines = new CLine2D[iNumberOfLines];
+
+            BendLines[0] = new CLine2D(PointsOut2D[0], PointsOut2D[5]);
+            BendLines[1] = new CLine2D(PointsOut2D[1], PointsOut2D[4]);
+            BendLines[2] = new CLine2D(PointsOut2D[6], PointsOut2D[11]);
+            BendLines[3] = new CLine2D(PointsOut2D[7], PointsOut2D[10]);
         }
 
         protected override void loadIndices()

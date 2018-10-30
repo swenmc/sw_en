@@ -85,12 +85,14 @@ namespace BaseClasses
                      false,
                      bDrawDimensions,
                      false,
+                     false,
                      crsc.CrScPointsOut,
                      crsc.CrScPointsIn,
                      null,
                      null,
                      null,
                      null, // TODO - dodefinovat koty i pre prierezy
+                     null,
                      null,
                      0,
                      0,
@@ -115,7 +117,8 @@ namespace BaseClasses
             bool bDrawHoleCentreSymbols,
             bool bDrawDrillingRoute,
             bool bDrawDimensions,
-            bool bDrawMemberOutline)
+            bool bDrawMemberOutline,
+            bool bDrawBendLines)
         {
             double fTempMax_X = 0, fTempMin_X = 0, fTempMax_Y = 0, fTempMin_Y = 0;
 
@@ -199,6 +202,7 @@ namespace BaseClasses
                     bDrawDrillingRoute,
                     bDrawDimensions,
                     bDrawMemberOutline,
+                    bDrawBendLines,
                     Geom2D.TransformArrayToList(plate.PointsOut2D),
                     null,
                     pHolesCentersPointsScrews2D,
@@ -206,6 +210,7 @@ namespace BaseClasses
                     plate.DrillingRoutePoints,
                     plate.Dimensions,
                     plate.MemberOutlines,
+                    plate.BendLines,
                     fDiameter_screw * scale_unit,
                     fDiameter_anchor * scale_unit,
                     fmodelMarginLeft_x,
@@ -252,7 +257,7 @@ namespace BaseClasses
             // Head Inside Circle
             DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_h_headdiameter, Brushes.Black, 1, canvasForImage);
 
-            // Head Hexagon            
+            // Head Hexagon
             float a = (0.5f * screw.D_h_headdiameter) / (float)Math.Cos(30f / 180f * Math.PI);
             List<Point> headpoints = Geom2D.GetHexagonPointCoord(a); // Diameter of outside circle
 
@@ -279,6 +284,7 @@ namespace BaseClasses
             bool bDrawDrillingRoute,
             bool bDrawDimensions,
             bool bDrawMemberOutline,
+            bool bDrawBendLines,
             List<Point> PointsOut,
             List<Point> PointsIn,
             Point[] PointsHolesScrews,
@@ -286,6 +292,7 @@ namespace BaseClasses
             List<Point> PointsDrillingRoute,
             CDimension[] Dimensions,
             CLine2D[] MemberOutline,
+            CLine2D[] BendLines,
             double dHolesDiameterScrews,
             double dHolesDiameterAnchors,
             float fmodelMarginLeft_x,
@@ -304,6 +311,7 @@ namespace BaseClasses
             List<Point> canvasPointsDrillingRoute = null;
             List<CDimension> canvasDimensions = null;
             List<CLine2D> canvasMemberOutline = null;
+            List<CLine2D> canvasBendLines = null;
 
             if (bPointsHaveYinUpDirection)
             {
@@ -314,6 +322,7 @@ namespace BaseClasses
                 canvasPointsDrillingRoute = Geom2D.MirrorAboutX_ChangeYCoordinates(PointsDrillingRoute);
                 canvasDimensions = MirrorYCoordinates(Dimensions);
                 canvasMemberOutline = MirrorYCoordinates(MemberOutline);
+                canvasBendLines = MirrorYCoordinates(BendLines);
             }
             else
             {
@@ -324,8 +333,10 @@ namespace BaseClasses
                 canvasPointsDrillingRoute = new List<Point>(PointsDrillingRoute);
                 canvasDimensions = new List<CDimension>(Dimensions);
                 canvasMemberOutline = new List<CLine2D>(MemberOutline);
+                canvasBendLines = new List<CLine2D>(BendLines);
 
             }
+
             double minX = canvasPointsOut.Min(p => p.X);
             double minY = canvasPointsOut.Min(p => p.Y);
 
@@ -336,6 +347,7 @@ namespace BaseClasses
             canvasPointsDrillingRoute = ConvertRealPointsToCanvasDrawingPoints(canvasPointsDrillingRoute, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasBendLines = ConvertRealPointsToCanvasDrawingPoints(canvasBendLines, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
             // Definition Points
             DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
@@ -362,7 +374,10 @@ namespace BaseClasses
             DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
 
             // Member Outline
-            DrawMemberOutline(bDrawMemberOutline, canvasMemberOutline, canvasForImage);
+            DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+
+            // Bend Lines
+            DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         }
 
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
@@ -857,11 +872,11 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawMemberOutline(bool bDrawMemberOutline, List<CLine2D> lines, Canvas canvasForImage)
+        public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, DashStyle dashStyle, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
         {
-            if (bDrawMemberOutline && lines != null && lines.Count > 0)
+            if (bDrawLines && lines != null && lines.Count > 0)
             {
-                for (int i = 0; i < lines.Count; i++) // Pole ciar obrysu prutov
+                for (int i = 0; i < lines.Count; i++) // Pole ciar
                 {
                     if (!Double.IsNaN(lines[i].X1) && !Double.IsNaN(lines[i].Y1) && !Double.IsNaN(lines[i].X2) && !Double.IsNaN(lines[i].Y2))
                     {
@@ -873,7 +888,7 @@ namespace BaseClasses
                         l.X2 = lines[i].X2;
                         l.Y2 = lines[i].Y2;
 
-                        DrawLine(l, Brushes.Blue, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+                        DrawLine(l, color, dashStyle, startCap, endCap, thickness, canvasForImage);
                     }
                 }
             }

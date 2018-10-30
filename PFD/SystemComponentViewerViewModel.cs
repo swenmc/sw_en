@@ -48,6 +48,7 @@ namespace PFD
         bool bDrawDrillingRoute;
         bool bDrawDimensions;
         bool bDrawMemberOutline;
+        bool bDrawBendLines;
 
         bool bMirrorY;
         bool bMirrorX;
@@ -354,6 +355,20 @@ namespace PFD
             }
         }
 
+        public bool DrawBendLines2D
+        {
+            get
+            {
+                return bDrawBendLines;
+            }
+
+            set
+            {
+                bDrawBendLines = value;
+                NotifyPropertyChanged("DrawBendLines2D");
+            }
+        }
+
         public bool MirrorY
         {
             get
@@ -463,6 +478,7 @@ namespace PFD
             DrawDrillingRoute2D = true;
             DrawDimensions2D = true;
             bDrawMemberOutline = true;
+            bDrawBendLines = true;
 
             MirrorY = false;
             MirrorX = false;

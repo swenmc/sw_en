@@ -71,7 +71,7 @@
             <ComboBox Grid.Row="3" Grid.Column="1" Name ="Combobox_ScrewArrangement" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" 
                       ItemsSource="{Binding Path=ScrewArrangements}" SelectedIndex="{Binding Path=ScrewArrangementIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
 
-            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="5" Grid.Column="2" Margin="10,5,0,0">
+            <StackPanel Name="panelOptions2D" Grid.Row="0" Grid.RowSpan="6" Grid.Column="2" Margin="10,5,0,120">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
                 <CheckBox Name="chbDrawPoints2D" IsChecked="{Binding Path=DrawPoints2D}" Content="Draw Points" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawOutLine2D" IsChecked="{Binding Path=DrawOutLine2D}" Content="Draw Outline" Margin="0 5 0 0"/>
@@ -81,13 +81,14 @@
                 <CheckBox Name="chbDrawDrillingRoute2D" IsChecked="{Binding Path=DrawDrillingRoute2D}" Content="Draw Drilling Route" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawDimensions2D" IsChecked="{Binding Path=DrawDimensions2D}" Content="Draw Dimensions" Margin="0 5 0 0"/>
                 <CheckBox Name="chbDrawMemberOutline2D" IsChecked="{Binding Path=DrawMemberOutline2D}" Content="Draw Member Outline" Margin="0 5 0 0"/>
+                <CheckBox Name="chbDrawBendLines2D" IsChecked="{Binding Path=DrawBendLines2D}" Content="Draw Bend Lines" Margin="0 5 0 0"/>
             </StackPanel>
             <StackPanel Name="panelOptions3D" Visibility="Hidden" Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" Margin="10,5,0,10">
                 <TextBlock Text="Display Options" HorizontalAlignment="Left"/>
                 <CheckBox Name="chbDrawScrews3D" IsChecked="{Binding Path=DrawScrews3D}" Content="Draw Screws" Margin="0 5 0 0"/>
             </StackPanel>
 
-            <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,10,0,0">
+            <StackPanel Name="panelOptionsTransform2D" Grid.Row="5" Grid.Column="2" Margin="10,35,0,0" Grid.RowSpan="2">
                 <TextBlock Text="Transformation Options" HorizontalAlignment="Left"/>
                 <CheckBox x:Name="CheckBox_MirrorY" IsChecked="{Binding Path=MirrorY}" Content="Mirror about vertical axis y-y" Margin="0 5 0 0" />
                 <!--Checked="CheckBox_MirrorY_Checked" Unchecked="CheckBox_MirrorY_Unchecked"-->

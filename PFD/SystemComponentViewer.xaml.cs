@@ -112,6 +112,7 @@ namespace PFD
                     e.PropertyName == "DrawDrillingRoute2D" ||
                     e.PropertyName == "DrawDimensions2D" ||
                     e.PropertyName == "DrawMemberOutline2D" ||
+                    e.PropertyName == "DrawBendLines2D" ||
                     e.PropertyName == "DrawScrews3D")
                 {
                     DisplayComponent(vm);
@@ -412,6 +413,7 @@ namespace PFD
                 chbDrawDrillingRoute2D.IsEnabled = false;
                 chbDrawDimensions2D.IsEnabled = false;
                 chbDrawMemberOutline2D.IsEnabled = false;
+                chbDrawBendLines2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
@@ -456,6 +458,7 @@ namespace PFD
                 chbDrawDrillingRoute2D.IsEnabled = true;
                 chbDrawDimensions2D.IsEnabled = true;
                 chbDrawMemberOutline2D.IsEnabled = true;
+                chbDrawBendLines2D.IsEnabled = true;
 
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
@@ -493,6 +496,7 @@ namespace PFD
                 chbDrawDrillingRoute2D.IsEnabled = false;
                 chbDrawDimensions2D.IsEnabled = false;
                 chbDrawMemberOutline2D.IsEnabled = false;
+                chbDrawBendLines2D.IsEnabled = false;
 
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
 
@@ -855,7 +859,8 @@ namespace PFD
                vm.DrawHoleCentreSymbol2D,
                vm.DrawDrillingRoute2D,
                vm.DrawDimensions2D,
-               vm.DrawMemberOutline2D);
+               vm.DrawMemberOutline2D,
+               vm.DrawBendLines2D);
 
             // Display plate in 2D preview frame
             Frame2D.Content = page2D;

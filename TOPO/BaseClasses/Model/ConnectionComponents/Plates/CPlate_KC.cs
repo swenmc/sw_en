@@ -179,6 +179,8 @@ namespace BaseClasses
             Set_DimensionPoints2D();
 
             Set_MemberOutlinePoints2D();
+
+            Set_BendLinesPoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -402,6 +404,15 @@ namespace BaseClasses
             MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
             MemberOutlines[2] = new CLine2D(new Point(fx3, fy3), new Point(fx4, fy4));
             MemberOutlines[3] = new CLine2D(new Point(fx4, fy4), new Point(fx5, fy5));
+        }
+
+        void Set_BendLinesPoints2D()
+        {
+            int iNumberOfLines = 2;
+            BendLines = new CLine2D[iNumberOfLines];
+
+            BendLines[0] = new CLine2D(PointsOut2D[1], PointsOut2D[6]);
+            BendLines[1] = new CLine2D(PointsOut2D[2], PointsOut2D[5]);
         }
 
         protected override void loadIndices()
