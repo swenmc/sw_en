@@ -233,6 +233,8 @@ namespace BaseClasses
             int iNumberOfLines = 2;
             MemberOutlines = new CLine2D[iNumberOfLines];
 
+            // TODO - refaktorovat pre plechy JA a JB
+
             // Skratenie pruta v smere pruta (5 mm)
             float fcut = 0.005f;
             // Dlzka prepony trojuholnika vratane skratenia (od bodu 0 az po stred plechu)

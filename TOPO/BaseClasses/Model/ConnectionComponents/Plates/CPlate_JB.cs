@@ -376,8 +376,10 @@ namespace BaseClasses
 
         void Set_MemberOutlinePoints2D()
         {
-            int iNumberOfLines = 2;
+            int iNumberOfLines = 3;
             MemberOutlines = new CLine2D[iNumberOfLines];
+
+            // TODO - refaktorovat pre plechy JA a JB
 
             // Skratenie pruta v smere pruta (5 mm)
             float fcut = 0.005f;
@@ -388,7 +390,7 @@ namespace BaseClasses
             float fc1_cut = fc1 - fcut;
             // Urcenie suradnic koncoveho bodu prepony
             float fx1 = fc1_cut * (float)Math.Cos(FSlope_rad);
-            float fy1 = fc1_cut * (float)Math.Sin(FSlope_rad);
+            float fy1 = Fl_Z + fc1_cut * (float)Math.Sin(FSlope_rad);
 
             // Urcenie suradnic bodu na hornej hrane plechu
             float fdepth = Fh_Y1 * (float)Math.Cos(FSlope_rad);
@@ -399,6 +401,7 @@ namespace BaseClasses
             // Body su nezavisle na bodoch outline aj ked maju rovnake suradnice
             MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[11].X, PointsOut2D[11].Y), new Point(fx1, fy1));
             MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
+            MemberOutlines[2] = new CLine2D(new Point(fx2, fy2), new Point(PointsOut2D[10].X, PointsOut2D[10].Y));
 
             MemberOutlines = AddMirroredLinesAboutY(0.5f * Fb_X, MemberOutlines);
         }

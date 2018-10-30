@@ -83,6 +83,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="app.config" />
     <Compile Include="VECTOR\CVector.cs" />
+    <Compile Include="VECTOR\Vector2D.cs" />
     <Compile Include="VECTOR\VectorF.cs" />
     <Compile Include="VECTOR\VectorF64.cs" />
   </ItemGroup>
