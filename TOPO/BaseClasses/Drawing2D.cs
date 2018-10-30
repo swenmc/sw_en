@@ -863,15 +863,18 @@ namespace BaseClasses
             {
                 for (int i = 0; i < lines.Count; i++) // Pole ciar obrysu prutov
                 {
-                    Line l = new Line();
+                    if (!Double.IsNaN(lines[i].X1) && !Double.IsNaN(lines[i].Y1) && !Double.IsNaN(lines[i].X2) && !Double.IsNaN(lines[i].Y2))
+                    {
+                        Line l = new Line();
 
-                    l.X1 = lines[i].X1;
-                    l.Y1 = lines[i].Y1;
+                        l.X1 = lines[i].X1;
+                        l.Y1 = lines[i].Y1;
 
-                    l.X2 = lines[i].X2;
-                    l.Y2 = lines[i].Y2;
+                        l.X2 = lines[i].X2;
+                        l.Y2 = lines[i].Y2;
 
-                    DrawLine(l, Brushes.Blue, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+                        DrawLine(l, Brushes.Blue, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+                    }
                 }
             }
         }

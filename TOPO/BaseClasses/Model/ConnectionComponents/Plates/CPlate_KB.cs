@@ -176,6 +176,8 @@ namespace BaseClasses
             UpdatePlateData_Basic(screwArrangement);
 
             Set_DimensionPoints2D();
+
+            Set_MemberOutlinePoints2D();
         }
 
         public void UpdatePlateData_Basic(CScrewArrangement screwArrangement)
@@ -320,6 +322,58 @@ namespace BaseClasses
             Dimensions[4] = new GraphObj.CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
 
             Dimensions[5] = new GraphObj.CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
+        }
+
+        void Set_MemberOutlinePoints2D()
+        {
+            int iNumberOfLines = 4;
+            MemberOutlines = new CLine2D[iNumberOfLines];
+
+            // TODO - refaktorovat pre plechy KA az KE
+
+            // Skratenie pruta v smere pruta (5 mm)
+            float fcut = 0.005f;
+
+            float fdepth = Fb_X1; // ???
+
+            float fx1 = fdepth;
+            float fy1 = fdepth - fcut;
+
+            float fx2 = 0;
+            float fy2 = fy1;
+
+            float fb1_y = (float)PointsOut2D[5].Y - fdepth * (float)Math.Cos(FSlope_rad); // Teoreticky bod, kde sa stretne rafter a column ak neuvazujeme skratenie prutov
+            float fb1_x = fdepth * (float)Math.Sin(FSlope_rad);
+
+            float faux_x = fcut * (float)Math.Cos(FSlope_rad);
+            float faux_y = fcut * (float)Math.Sin(FSlope_rad);
+
+            float fx3 = (float)PointsOut2D[5].X + faux_x; // Vlavo hore
+            float fy3 = (float)PointsOut2D[5].Y + faux_y;
+
+            float fx4 = fx3 + fdepth * (float)Math.Sin(FSlope_rad);
+            float fy4 = fy3 - fdepth * (float)Math.Cos(FSlope_rad);
+
+            bool considerCollinearOverlapAsIntersect = true;
+
+            Vector2D intersection;
+
+            Geom2D.LineSegementsIntersect(
+                  new Vector2D(fb1_x, fb1_y),
+                  new Vector2D(10, fb1_y + 10 * Math.Tan(FSlope_rad)),
+                  new Vector2D(PointsOut2D[1].X, PointsOut2D[1].Y),
+                  new Vector2D(PointsOut2D[4].X, PointsOut2D[4].Y),
+                  out intersection,
+                  considerCollinearOverlapAsIntersect);
+
+            float fx5 = (float)intersection.X;
+            float fy5 = (float)intersection.Y;
+
+            // Body su nezavisle na bodoch outline aj ked maju rovnake suradnice
+            MemberOutlines[0] = new CLine2D(new Point(PointsOut2D[1].X, PointsOut2D[1].Y), new Point(fx1, fy1));
+            MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
+            MemberOutlines[2] = new CLine2D(new Point(fx3, fy3), new Point(fx4, fy4));
+            MemberOutlines[3] = new CLine2D(new Point(fx4, fy4), new Point(fx5, fy5));
         }
 
         protected override void loadIndices()
