@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace BaseClasses
 {
+    [Serializable]
     public class CLine2D : IComparable
     {
         //-------------------------------------------------------------------------
