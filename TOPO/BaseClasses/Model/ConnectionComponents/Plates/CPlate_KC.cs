@@ -503,9 +503,6 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[8]);
             wireFrame.Points.Add(arrPoints3D[16]);
 
-            wireFrame.Points.Add(arrPoints3D[0]);
-            wireFrame.Points.Add(arrPoints3D[10]);
-
             wireFrame.Points.Add(arrPoints3D[4]);
             wireFrame.Points.Add(arrPoints3D[13]);
 

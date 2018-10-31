@@ -934,7 +934,7 @@ namespace PFD
 
                 geometry.Add(new CComponentParamsViewString(CParamsResources.PlateLipS.Name, CParamsResources.PlateLipS.Symbol, (Math.Round(plateTemp.Fl_Z * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateLipS.Unit));
             }
-            else if (plate is CConCom_Plate_KC)
+            else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
             {
                 CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
 

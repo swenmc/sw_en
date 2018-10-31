@@ -217,7 +217,7 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
-            int iNumberOfDimensions = 8;
+            int iNumberOfDimensions = 9;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
 
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
@@ -238,8 +238,9 @@ namespace BaseClasses
             Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[8], true, true);
             Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], new Point(PointsOut2D[0].X, pTip.Y), true, true, 50);
             Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[8], pTip, true, true);
+            Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[8].X, PointsOut2D[7].Y), PointsOut2D[7], true, true, 40);
 
-            Dimensions[8] = new CDimensionArc(plateCenter, PointsOut2D[3], PointsOut2D[6], PointsOut2D[9]);
+            Dimensions[9] = new CDimensionArc(plateCenter, PointsOut2D[3], PointsOut2D[6], PointsOut2D[9]);
         }
 
         public override void Set_MemberOutlinePoints2D()

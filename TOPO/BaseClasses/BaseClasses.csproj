@@ -133,6 +133,7 @@
     <Compile Include="Model\ConnectionComponents\Connectors\CRivet.cs" />
     <Compile Include="Model\ConnectionComponents\Connectors\CScrew.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_JBS.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_KCS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KC.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KD.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_O.cs" />
