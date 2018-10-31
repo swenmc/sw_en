@@ -455,7 +455,7 @@ namespace BaseClasses
             // BackSide
             for (int i = 0; i < INoPoints2Dfor3D + 1; i++)
             {
-                if (i < 9)
+                if (i < INoPoints2Dfor3D)
                 {
                     pi = arrPoints3D[i];
                     pj = arrPoints3D[i + 1];

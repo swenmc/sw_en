@@ -135,6 +135,7 @@
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_JBS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KCS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KC.cs" />
+    <Compile Include="Model\ConnectionComponents\Plates\CPlate_KDS.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_KD.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_O.cs" />
     <Compile Include="Model\ConnectionComponents\Plates\CPlate_N.cs" />

@@ -1157,12 +1157,24 @@ namespace PFD
                             }
                             else if (vm.ComponentIndex == 3) // KD
                             {
-                                if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
-                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
-                                else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                if (bUseSimpleShapeOfPlates)
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate = new CConCom_Plate_KDS(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
+                                    else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                        plate = new CConCom_Plate_KDS(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                    else//(vm.ScrewArrangementIndex == 2) // Circle
+                                        plate = new CConCom_Plate_KDS(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                }
+                                else
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
+                                    else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                        plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                    else//(vm.ScrewArrangementIndex == 2) // Circle
+                                        plate = new CConCom_Plate_KD(dcomponents.arr_Serie_K_Names[3], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                }
                             }
                             else // KE - TODO - screws are not implemented !!!
                             {
@@ -1749,7 +1761,7 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
-                else if (plate is CConCom_Plate_KC)
+                else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS)
                 {
                     CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
 
@@ -1773,7 +1785,7 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
-                else if (plate is CConCom_Plate_KD)
+                else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS)
                 {
                     CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
 
@@ -1989,7 +2001,7 @@ namespace PFD
         {
             if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS || plate is CConCom_Plate_KB) return 1;
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
-            else if (plate is CConCom_Plate_KD) return 3;
+            else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
             else if (plate is CConCom_Plate_KE) return 4;
             else return 0;
         }
