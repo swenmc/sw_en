@@ -384,6 +384,35 @@ namespace BaseClasses
             float fx4 = fx3 + fdepth * (float)Math.Sin(FSlope_rad);
             float fy4 = fy3 - fdepth * (float)Math.Cos(FSlope_rad);
 
+            if (FSlope_rad < 0) // Falling knee
+            {
+                float fxb3_temp = fdepth * (float)Math.Sin(-FSlope_rad);
+                float fyb3_temp = fxb3_temp * (float)Math.Tan(-FSlope_rad);
+
+                float faux = fxb3_temp / (float)Math.Cos(-FSlope_rad); // Dlzka odrezanej hrany vlavo hore
+
+                faux_x = fcut * (float)Math.Cos(-FSlope_rad);
+                faux_y = fcut * (float)Math.Sin(-FSlope_rad);
+
+                fx3 = (float)PointsOut2D[6].X + fxb3_temp + faux_x; // Hore
+                fy3 = (float)PointsOut2D[6].Y - fyb3_temp - faux_y;
+
+                fx4 = fx3 - fdepth * (float)Math.Sin(-FSlope_rad); // Vlavo
+                fy4 = fy3 - fdepth * (float)Math.Cos(-FSlope_rad);
+
+                float fb4_x = (float)PointsOut2D[6].X;
+                float fb4_y = (float)PointsOut2D[6].Y - fyb3_temp - fdepth * (float)Math.Cos(-FSlope_rad);
+
+                fb1_x = (float)PointsOut2D[6].X + fdepth;
+                fb1_y = fb4_y - fdepth * (float)Math.Tan(-FSlope_rad);
+
+                fx1 = (float)PointsOut2D[6].X + fdepth;
+                fy1 = fb1_y - fcut;
+
+                fx2 = (float)PointsOut2D[6].X;
+                fy2 = fy1;
+            }
+
             bool considerCollinearOverlapAsIntersect = true;
 
             Vector2D intersection;

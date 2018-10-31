@@ -67,6 +67,10 @@ namespace BaseClasses
 
             float fx_temp3 = Fl_Z / (float)Math.Cos(fBeta);
 
+            // Falling knee
+            float fx_temp4 = Fl_Z * (float)Math.Cos(-FSlope_rad);
+            float fy_temp4 = Fl_Z * (float)Math.Sin(-FSlope_rad);
+
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
 
@@ -79,8 +83,8 @@ namespace BaseClasses
             PointsOut2D[3].X = Fl_Z + Fb_X1 + fx_temp3;
             PointsOut2D[3].Y = 0;
 
-            PointsOut2D[4].X = Fl_Z + Fb_X2 + fx_temp;
-            PointsOut2D[4].Y = Fh_Y2 - fy_temp;
+            PointsOut2D[4].X = Fl_Z + Fb_X2 + (FSlope_rad > 0 ? fx_temp : fx_temp4);
+            PointsOut2D[4].Y = Fh_Y2 - (FSlope_rad > 0 ? fy_temp : fy_temp4);
 
             PointsOut2D[5].X = Fl_Z + Fb_X2;
             PointsOut2D[5].Y = Fh_Y2;
@@ -89,7 +93,7 @@ namespace BaseClasses
             PointsOut2D[6].Y = Fh_Y1;
 
             PointsOut2D[7].X = 0;
-            PointsOut2D[7].Y = Fh_Y1 - fy_temp2;
+            PointsOut2D[7].Y = Fh_Y1 - (FSlope_rad > 0 ? fy_temp2 : 0);
         }
 
         public override void Calc_Coord3D()
@@ -196,21 +200,40 @@ namespace BaseClasses
             Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
             Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true, 50);
             Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[7], PointsOut2D[5], true, true, 50);
-            Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 90);
-            Dimensions[9] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true, 50);
 
             // Tip before cutting off
-            float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
+            float pTipX;
+            float pTipY;
 
-            float fc = Fl_Z / (float)Math.Cos(fBeta + FSlope_rad);
-            float fa = Fl_Z * (float)Math.Tan(fBeta + FSlope_rad);
+            if (FSlope_rad > 0)
+            {
+                float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
 
-            float pTipX = (float)PointsOut2D[5].X + fc * (float)Math.Cos(FSlope_rad);
-            float pTipY = (float)PointsOut2D[5].Y + fc * (float)Math.Sin(FSlope_rad);
+                float fc = Fl_Z / (float)Math.Cos(fBeta + FSlope_rad);
+                float fa = Fl_Z * (float)Math.Tan(fBeta + FSlope_rad);
+
+                pTipX = (float)PointsOut2D[5].X + fc * (float)Math.Cos(FSlope_rad);
+                pTipY = (float)PointsOut2D[5].Y + fc * (float)Math.Sin(FSlope_rad);
+            }
+            else
+            {
+                pTipX = (float)PointsOut2D[7].X;
+                pTipY = (float)PointsOut2D[7].Y + Fl_Z * (float)Math.Tan(-FSlope_rad);
+            }
 
             Point pTip = new Point(pTipX, pTipY);
 
-            Dimensions[10] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, true, true, 70);
+            if (FSlope_rad > 0)
+                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 70);
+            else
+                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 60);
+
+            Dimensions[9] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true, 50);
+
+            if (FSlope_rad > 0)
+                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, true, true, 70);
+            else
+                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], true, true, 70);
 
             Dimensions[11] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
         }
