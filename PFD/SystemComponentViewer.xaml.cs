@@ -1006,6 +1006,8 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
+                bool bUseSimpleShapeOfPlates = true; // Zjednoduseny alebo presny tvar plechu
+
                 CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
@@ -1090,12 +1092,24 @@ namespace PFD
                             }
                             else //if (vm.ComponentIndex == 1) // JB
                             {
-                                if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, null, true);
-                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
-                                else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                if (bUseSimpleShapeOfPlates)
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate = new CConCom_Plate_JBS(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, null, true);
+                                    else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                        plate = new CConCom_Plate_JBS(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                    else//(vm.ScrewArrangementIndex == 2) // Circle
+                                        plate = new CConCom_Plate_JBS(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                }
+                                else
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, null, true);
+                                    else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                        plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleApex, true);
+                                    else//(vm.ScrewArrangementIndex == 2) // Circle
+                                        plate = new CConCom_Plate_JB(dcomponents.arr_Serie_J_Names[1], controlpoint, fb, fh, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                }
                             }
 
                             break;
@@ -1654,7 +1668,7 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
-                else if (plate is CConCom_Plate_JB)
+                else if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)
                 {
                     CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
 
@@ -1962,7 +1976,7 @@ namespace PFD
 
         private int GetPlateIndex(CPlate plate)
         {
-            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_KB) return 1;
+            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS || plate is CConCom_Plate_KB) return 1;
             else if (plate is CConCom_Plate_KC) return 2;
             else if (plate is CConCom_Plate_KD) return 3;
             else if (plate is CConCom_Plate_KE) return 4;

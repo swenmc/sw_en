@@ -202,7 +202,7 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord2D()
+        public override void Calc_Coord2D()
         {
             float fx_temp = m_flZ * (float)Math.Sin(m_fSlope_rad);
             float fy_temp = m_flZ * (float)Math.Cos(m_fSlope_rad);
@@ -245,7 +245,7 @@ namespace BaseClasses
             PointsOut2D[11].Y = PointsOut2D[2].Y;
         }
 
-        void Calc_Coord3D()
+        public override void Calc_Coord3D()
         {
             float fx_temp = m_flZ * (float)Math.Sin(m_fSlope_rad);
             float fy_temp = m_flZ * (float)Math.Cos(m_fSlope_rad);
@@ -360,7 +360,7 @@ namespace BaseClasses
             arrPoints3D[i_temp + 11].Z = arrPoints3D[16].Z;
         }
 
-        void Set_DimensionPoints2D()
+        public override void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 5;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
@@ -376,7 +376,7 @@ namespace BaseClasses
             Dimensions[5] = new CDimensionArc(plateCenter, PointsOut2D[3], PointsOut2D[7], PointsOut2D[10]);
         }
 
-        void Set_MemberOutlinePoints2D()
+        public override void Set_MemberOutlinePoints2D()
         {
             int iNumberOfLines = 3;
             MemberOutlines = new CLine2D[iNumberOfLines];
@@ -408,7 +408,7 @@ namespace BaseClasses
             MemberOutlines = AddMirroredLinesAboutY(0.5f * Fb_X, MemberOutlines);
         }
 
-        void Set_BendLinesPoints2D()
+        public override void Set_BendLinesPoints2D()
         {
             int iNumberOfLines = 3;
             BendLines = new CLine2D[iNumberOfLines];

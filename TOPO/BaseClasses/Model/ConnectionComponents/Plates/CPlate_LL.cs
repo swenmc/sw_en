@@ -163,7 +163,7 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord2D()
+        public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
@@ -202,7 +202,7 @@ namespace BaseClasses
             PointsOut2D[11].Y = PointsOut2D[0].Y;
         }
 
-        void Calc_Coord3D()
+        public override void Calc_Coord3D()
         {
             // First layer
 

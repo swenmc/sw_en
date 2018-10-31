@@ -842,6 +842,31 @@ namespace BaseClasses
             }
         }
 
+        public virtual void Calc_Coord2D()
+        {
+            //to override
+        }
+
+        public virtual void Calc_Coord3D()
+        {
+            //to override
+        }
+
+        public virtual void Set_DimensionPoints2D()
+        {
+            //to override
+        }
+
+        public virtual void Set_MemberOutlinePoints2D()
+        {
+            //to override
+        }
+
+        public virtual void Set_BendLinesPoints2D()
+        {
+            //to override
+        }
+
         public virtual void UpdatePlateData(CScrewArrangement screwArrangement)
         {
             //to override

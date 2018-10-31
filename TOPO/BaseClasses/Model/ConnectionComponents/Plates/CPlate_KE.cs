@@ -231,7 +231,7 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord2D()
+        public override void Calc_Coord2D()
         {
             float fBeta = (float)Math.Atan((m_fbX2 - m_fbX1) / m_fhY2);
             float fx_temp = m_flZ * (float)Math.Cos(fBeta);
@@ -263,7 +263,7 @@ namespace BaseClasses
             }
         }
 
-        void Calc_Coord3D()
+        public override void Calc_Coord3D()
         {
             float fBeta = (float)Math.Atan((m_fbX2 - m_fbX1) / m_fhY2);
             float fx_temp2 = Ft * (float)Math.Cos(fBeta);
@@ -348,7 +348,7 @@ namespace BaseClasses
             }
         }
 
-        void Set_DimensionPoints2D()
+        public override void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 6;
             Dimensions = new GraphObj.CDimension[iNumberOfDimensions + 1];
@@ -365,7 +365,7 @@ namespace BaseClasses
             Dimensions[6] = new CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);
         }
 
-        void Set_BendLinesPoints2D()
+        public override void Set_BendLinesPoints2D()
         {
             int iNumberOfLines = 4;
             BendLines = new CLine2D[iNumberOfLines];

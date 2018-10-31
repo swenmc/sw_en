@@ -221,7 +221,7 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord2D()
+        public override void Calc_Coord2D()
         {
             float fBeta = (float)Math.Atan((m_fbX2 - m_fbX1) / m_fhY2);
             float fx_temp = m_flZ * (float)Math.Cos(fBeta);
@@ -252,7 +252,7 @@ namespace BaseClasses
             PointsOut2D[7].Y = m_fhY1;
         }
 
-        void Calc_Coord3D()
+        public override void Calc_Coord3D()
         {
             float fBeta = (float)Math.Atan((m_fbX2 - m_fbX1) / m_fhY2);
             float fx_temp2 = Ft * (float)Math.Cos(fBeta);
@@ -338,7 +338,7 @@ namespace BaseClasses
             arrPoints3D[INoPoints2Dfor3D + 8].Z = arrPoints3D[11].Z;
         }
 
-        void Set_DimensionPoints2D()
+        public override void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 6;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
@@ -354,7 +354,7 @@ namespace BaseClasses
             Dimensions[6] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
         }
 
-        void Set_BendLinesPoints2D()
+        public override void Set_BendLinesPoints2D()
         {
             int iNumberOfLines = 2;
             BendLines = new CLine2D[iNumberOfLines];
@@ -363,7 +363,7 @@ namespace BaseClasses
             BendLines[1] = new CLine2D(PointsOut2D[2], PointsOut2D[5]);
         }
 
-        void Set_MemberOutlinePoints2D()
+        public override void Set_MemberOutlinePoints2D()
         {
             int iNumberOfLines = 4;
             MemberOutlines = new CLine2D[iNumberOfLines];

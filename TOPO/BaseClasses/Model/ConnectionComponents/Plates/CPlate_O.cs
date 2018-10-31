@@ -213,7 +213,7 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord2D()
+        public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
@@ -234,7 +234,7 @@ namespace BaseClasses
             PointsOut2D[5].Y = m_fhY1;
         }
 
-        void Calc_Coord3D()
+        public override void Calc_Coord3D()
         {
             float y_a = (float)Math.Tan(m_fSlope_rad) * Ft;
             float y_c = (m_fhY2 - m_fhY1) * (float)Math.Sin(m_fSlope_rad);
@@ -304,7 +304,7 @@ namespace BaseClasses
             arrPoints3D[13].Z = arrPoints3D[10].Z;
         }
 
-        void Set_DimensionPoints2D()
+        public override void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 4;
             Dimensions = new CDimension[iNumberOfDimensions + 1];

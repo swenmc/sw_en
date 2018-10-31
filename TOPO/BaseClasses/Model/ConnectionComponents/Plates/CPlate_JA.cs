@@ -182,7 +182,7 @@ namespace BaseClasses
         }
 
         //----------------------------------------------------------------------------
-        void Calc_Coord2D()
+        public override void Calc_Coord2D()
         {
             PointsOut2D[0].X = 0;
             PointsOut2D[0].Y = 0;
@@ -200,7 +200,7 @@ namespace BaseClasses
             PointsOut2D[4].Y = PointsOut2D[2].Y;
         }
 
-        void Calc_Coord3D()
+        public override void Calc_Coord3D()
         {
             for (int i = 0; i < 2; i++) // 2 cycles - front and back surface
             {
@@ -214,7 +214,7 @@ namespace BaseClasses
             }
         }
 
-        void Set_DimensionPoints2D()
+        public override void Set_DimensionPoints2D()
         {
             int iNumberOfDimensions = 3;
             Dimensions = new CDimension[iNumberOfDimensions+1];
@@ -228,7 +228,7 @@ namespace BaseClasses
             Dimensions[3] = new CDimensionArc(plateCenter, PointsOut2D[2], PointsOut2D[3], PointsOut2D[4]);
         }
 
-        void Set_MemberOutlinePoints2D()
+        public override void Set_MemberOutlinePoints2D()
         {
             int iNumberOfLines = 2;
             MemberOutlines = new CLine2D[iNumberOfLines];
