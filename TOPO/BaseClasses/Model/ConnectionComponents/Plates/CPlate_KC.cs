@@ -100,6 +100,8 @@ namespace BaseClasses
             }
         }
 
+        public Point pTip;
+
         public CConCom_Plate_KC()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -175,6 +177,28 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            // Tip before cutting off
+            float pTipX;
+            float pTipY;
+
+            if (FSlope_rad > 0)
+            {
+                float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
+
+                float fc = Fl_Z / (float)Math.Cos(fBeta + FSlope_rad);
+                float fa = Fl_Z * (float)Math.Tan(fBeta + FSlope_rad);
+
+                pTipX = (float)PointsOut2D[5].X + fc * (float)Math.Cos(FSlope_rad);
+                pTipY = (float)PointsOut2D[5].Y + fc * (float)Math.Sin(FSlope_rad);
+            }
+            else
+            {
+                pTipX = (float)PointsOut2D[7].X;
+                pTipY = (float)PointsOut2D[7].Y + Fl_Z * (float)Math.Tan(-FSlope_rad);
+            }
+
+            pTip = new Point(pTipX, pTipY);
 
             Set_DimensionPoints2D();
 
@@ -356,7 +380,7 @@ namespace BaseClasses
 
         public override void Set_MemberOutlinePoints2D()
         {
-            int iNumberOfLines = 4;
+            int iNumberOfLines = 4+2;
             MemberOutlines = new CLine2D[iNumberOfLines];
 
             // TODO - refaktorovat pre plechy KA az KE
@@ -383,6 +407,13 @@ namespace BaseClasses
 
             float fx4 = fx3 + fdepth * (float)Math.Sin(FSlope_rad);
             float fy4 = fy3 - fdepth * (float)Math.Cos(FSlope_rad);
+
+            // Theoretical tip point - 2 lines
+            float fx6 = (float)PointsOut2D[4].X;
+            float fy6 = (float)PointsOut2D[4].Y;
+
+            float fx7 = (float)PointsOut2D[5].X;
+            float fy7 = (float)PointsOut2D[5].Y;
 
             if (FSlope_rad < 0) // Falling knee
             {
@@ -411,6 +442,13 @@ namespace BaseClasses
 
                 fx2 = (float)PointsOut2D[6].X;
                 fy2 = fy1;
+
+                // Theoretical tip point - 2 lines
+                fx6 = (float)PointsOut2D[6].X;
+                fy6 = (float)PointsOut2D[6].Y;
+
+                fx7 = (float)PointsOut2D[7].X;
+                fy7 = (float)PointsOut2D[7].Y;
             }
 
             bool considerCollinearOverlapAsIntersect = true;
@@ -433,6 +471,10 @@ namespace BaseClasses
             MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
             MemberOutlines[2] = new CLine2D(new Point(fx3, fy3), new Point(fx4, fy4));
             MemberOutlines[3] = new CLine2D(new Point(fx4, fy4), new Point(fx5, fy5));
+
+            // Theoretical tip point - 2 lines
+            MemberOutlines[4] = new CLine2D(new Point(fx6, fy6), new Point(pTip.X, pTip.Y));
+            MemberOutlines[5] = new CLine2D(new Point(fx7, fy7), new Point(pTip.X, pTip.Y));
         }
 
         public override void Set_BendLinesPoints2D()

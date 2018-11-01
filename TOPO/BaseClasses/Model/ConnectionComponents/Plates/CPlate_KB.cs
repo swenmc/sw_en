@@ -99,6 +99,8 @@ namespace BaseClasses
             }
         }
 
+        public Point pTip;
+
         public CConCom_Plate_KB()
         {
             eConnComponentType = EConnectionComponentType.ePlate;
@@ -174,6 +176,20 @@ namespace BaseClasses
             loadIndices();
 
             UpdatePlateData_Basic(screwArrangement);
+
+            // Tip before cutting off - only on the right side (no theroretical tip point for falling knee)
+            if (FSlope_rad > 0)
+            {
+                float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
+
+                float fc = Fl_Z / (float)Math.Cos(fBeta + FSlope_rad);
+                float fa = Fl_Z * (float)Math.Tan(fBeta + FSlope_rad);
+
+                float pTipX = (float)PointsOut2D[4].X + fc * (float)Math.Cos(FSlope_rad);
+                float pTipY = (float)PointsOut2D[4].Y + fc * (float)Math.Sin(FSlope_rad);
+
+                pTip = new Point(pTipX, pTipY);
+            }
 
             Set_DimensionPoints2D();
 
@@ -328,7 +344,7 @@ namespace BaseClasses
 
         public override void Set_MemberOutlinePoints2D()
         {
-            int iNumberOfLines = 4;
+            int iNumberOfLines = 4 + (FSlope_rad > 0 ? 2 :0);
             MemberOutlines = new CLine2D[iNumberOfLines];
 
             // TODO - refaktorovat pre plechy KA az KE
@@ -356,7 +372,14 @@ namespace BaseClasses
             float fx4 = fx3 + fdepth * (float)Math.Sin(FSlope_rad);
             float fy4 = fy3 - fdepth * (float)Math.Cos(FSlope_rad);
 
-            if(FSlope_rad < 0) // Falling knee
+            // Theoretical tip point - 2 lines
+            float fx6 = (float)PointsOut2D[3].X;
+            float fy6 = (float)PointsOut2D[3].Y;
+
+            float fx7 = (float)PointsOut2D[4].X;
+            float fy7 = (float)PointsOut2D[4].Y;
+
+            if (FSlope_rad < 0) // Falling knee
             {
                 float fxb3_temp = fdepth * (float)Math.Sin(-FSlope_rad);
                 float fyb3_temp = fxb3_temp * (float)Math.Tan(-FSlope_rad);
@@ -405,6 +428,13 @@ namespace BaseClasses
             MemberOutlines[1] = new CLine2D(new Point(fx1, fy1), new Point(fx2, fy2));
             MemberOutlines[2] = new CLine2D(new Point(fx3, fy3), new Point(fx4, fy4));
             MemberOutlines[3] = new CLine2D(new Point(fx4, fy4), new Point(fx5, fy5));
+
+            // Theoretical tip point - 2 lines
+            if (FSlope_rad > 0)
+            {
+                MemberOutlines[4] = new CLine2D(new Point(fx6, fy6), new Point(pTip.X, pTip.Y));
+                MemberOutlines[5] = new CLine2D(new Point(fx7, fy7), new Point(pTip.X, pTip.Y));
+            }
         }
 
         public override void Set_BendLinesPoints2D()

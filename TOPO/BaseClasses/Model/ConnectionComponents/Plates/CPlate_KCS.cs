@@ -201,28 +201,6 @@ namespace BaseClasses
             Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true, 50);
             Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[7], PointsOut2D[5], true, true, 50);
 
-            // Tip before cutting off
-            float pTipX;
-            float pTipY;
-
-            if (FSlope_rad > 0)
-            {
-                float fBeta = (float)Math.Atan((Fb_X2 - Fb_X1) / Fh_Y2);
-
-                float fc = Fl_Z / (float)Math.Cos(fBeta + FSlope_rad);
-                float fa = Fl_Z * (float)Math.Tan(fBeta + FSlope_rad);
-
-                pTipX = (float)PointsOut2D[5].X + fc * (float)Math.Cos(FSlope_rad);
-                pTipY = (float)PointsOut2D[5].Y + fc * (float)Math.Sin(FSlope_rad);
-            }
-            else
-            {
-                pTipX = (float)PointsOut2D[7].X;
-                pTipY = (float)PointsOut2D[7].Y + Fl_Z * (float)Math.Tan(-FSlope_rad);
-            }
-
-            Point pTip = new Point(pTipX, pTipY);
-
             if (FSlope_rad>0)
                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 80);
             else

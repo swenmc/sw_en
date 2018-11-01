@@ -217,7 +217,7 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
-            int iNumberOfDimensions = 9;
+            int iNumberOfDimensions = 8;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
 
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
@@ -225,6 +225,11 @@ namespace BaseClasses
             Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], true, true);
             Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], true, true);
             Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], true, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], true, true);
+            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[8], true, true);
+            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[8], new Point(PointsOut2D[8].X, PointsOut2D[7].Y), true, true);
+            Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], new Point(PointsOut2D[0].X, PointsOut2D[7].Y), true, true, 50);
+            Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
 
             float fx_temp = Fl_Z * (float)Math.Sin(FSlope_rad); // nahradny bod 4
             float fy_temp = Fl_Z * (float)Math.Cos(FSlope_rad);
@@ -233,14 +238,13 @@ namespace BaseClasses
             // Tip
             Point pTip = new Point(0.5f * Fb_X, PointsOut2D[0].Y + Fh_Y2 + Fl_Z + fy_temp);
 
-            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[3], p4, true, true, 40);
-            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
-            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[8], true, true);
-            Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], new Point(PointsOut2D[0].X, pTip.Y), true, true, 50);
-            Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[8], pTip, true, true);
-            Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[8].X, PointsOut2D[7].Y), PointsOut2D[7], true, true, 40);
+            //Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[3], p4, true, true, 40);
+            //Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
+            //Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], new Point(PointsOut2D[0].X, pTip.Y), true, true, 50);
+            //Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[8], pTip, true, true);
+            //Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[8].X, PointsOut2D[7].Y), PointsOut2D[7], true, true, 40);
 
-            Dimensions[9] = new CDimensionArc(plateCenter, PointsOut2D[3], PointsOut2D[6], PointsOut2D[9]);
+            Dimensions[8] = new CDimensionArc(plateCenter, PointsOut2D[3], PointsOut2D[6], PointsOut2D[9]);
         }
 
         public override void Set_MemberOutlinePoints2D()
