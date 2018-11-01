@@ -188,7 +188,7 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
-            int iNumberOfDimensions = 13;
+            int iNumberOfDimensions = 14;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
@@ -223,6 +223,8 @@ namespace BaseClasses
                 Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true);
                 Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[4], new Point(PointsOut2D[4].X, pTip.Y), true, true);
                 Dimensions[12] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, true, true, 55);
+
+                Dimensions[13] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 95);
             }
             else
             {
@@ -232,9 +234,11 @@ namespace BaseClasses
                 Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
                 Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[7], pTip, true, true);
                 Dimensions[12] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 55);
+
+                Dimensions[13] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true); // Kopia kvoli rovnakemu poctu kot, prerobit na iny pocet kot pre falling knee
             }
 
-            Dimensions[13] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
+            Dimensions[14] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
         }
 
         protected override void loadIndices()
