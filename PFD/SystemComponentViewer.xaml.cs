@@ -1635,8 +1635,8 @@ namespace PFD
             // Change each group
             foreach (CScrewSequenceGroup gr in arrangementTemp.ListOfSequenceGroups)
             {
-                IEnumerable<CScrewSequence> halfCircleSequences = (IEnumerable <CScrewSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence); // Bug - To Ondrej tu je nejaka chyba v pretypovani, ja som to kedysi menil, aby mi to slo prelozit ale ... :)
-                CScrewSequence seq = null;
+                IEnumerable<CConnectorSequence> halfCircleSequences = (IEnumerable<CConnectorSequence>)gr.ListSequence.Where(s => s is CScrewHalfCircleSequence); // Bug - To Ondrej tu je nejaka chyba v pretypovani, ja som to kedysi menil, aby mi to slo prelozit ale ... :)
+                CConnectorSequence seq = null;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2); //1.half of circle
                 if (seq != null) ((CScrewHalfCircleSequence)seq).Radius = radius;
                 seq = halfCircleSequences.ElementAtOrDefault((iCircleNumberInGroup - 1) * 2 + 1); //2.half of circle
