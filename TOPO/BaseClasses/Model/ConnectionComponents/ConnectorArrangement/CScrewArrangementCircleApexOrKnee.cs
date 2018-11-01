@@ -582,13 +582,16 @@ namespace BaseClasses
             // Bottom Circle (Main Column)
             float fDistanceOfCenterFromLeftEdge = flZ + fbX_1 / 2f;
             float fx_c1 = fDistanceOfCenterFromLeftEdge;
-            float fy_c1 = fhY_1 / 4f;
+            float fy_c1 = fbX_1 / 2f; //fhY_1 / 4f;
 
             // Top Circle (Main Rafter)
-            float fxInTopMemberAxis = 0.2f * (fbX_2 - fbX_1); // TODO - hodnota je v smere lokalnej osi x prievkalu, je urcena priblizne z vodorovnych rozmerov plechu, do buducna bo bolo dobre pohrat sa s jej urcenim na zaklade sklonu prievkalu a dalsich rozmerov, tak aby spoj nekolidoval s eave purlin a skrutky nevysli mimo plech
+            // Riadiaci bod je vlavo hore [0, fhY_1]
+            float fcut = 0.005f;
 
-            float fx_c2 = fxInTopMemberAxis * (float)Math.Cos(fSlope_rad) + fDistanceOfCenterFromLeftEdge;
-            float fy_c2 = fxInTopMemberAxis * (float)Math.Sin(fSlope_rad) + ((fhY_1 + (fbX_1 / 2f) * (float)Math.Atan(fSlope_rad)) - (0.5f * FCrscRafterDepth / (float)Math.Cos(fSlope_rad))); // TODO Dopracovat podla sklonu rafteru
+            float fAdditional_x = fSlope_rad > 0 ? 0 : FCrscRafterDepth * (float)Math.Tan(-fSlope_rad); // Falling knee (distance in x direction for 0 deg
+
+            float fx_c2 = Geom2D.GetRotatedPosition_x_CCW_rad(flZ + fAdditional_x + 0.5f * FCrscRafterDepth + fcut, -0.5f * FCrscRafterDepth, fSlope_rad);
+            float fy_c2 = fhY_1 + Geom2D.GetRotatedPosition_y_CCW_rad(flZ + fAdditional_x + 0.5f * FCrscRafterDepth + fcut, -0.5f * FCrscRafterDepth, fSlope_rad);
 
             if (ListOfSequenceGroups != null && ListOfSequenceGroups.Count == 2)
             {
