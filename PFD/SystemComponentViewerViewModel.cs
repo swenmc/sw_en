@@ -915,7 +915,7 @@ namespace PFD
                     geometry.Add(new CComponentParamsViewString(CParamsResources.PlateHeight2S.Name, CParamsResources.PlateHeight2S.Symbol, (Math.Round(plateTemp.Fh_Y2 * fUnitFactor_Length, iNumberOfDecimalPlaces_Length)).ToString(nfi), CParamsResources.PlateHeight2S.Unit));
                 }
             }
-            else if (plate is CConCom_Plate_KB)
+            else if (plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS)
             {
                 CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
 

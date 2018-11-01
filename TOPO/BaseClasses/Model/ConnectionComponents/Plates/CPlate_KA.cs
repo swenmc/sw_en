@@ -230,7 +230,7 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
-            int iNumberOfDimensions = 4;
+            int iNumberOfDimensions = 6;
             Dimensions = new CDimension[iNumberOfDimensions+1];
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
@@ -239,7 +239,10 @@ namespace BaseClasses
             Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[2], true, true);
             Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true);
 
-            Dimensions[4] = new CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[3].Y), PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[4] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[1].Y), PointsOut2D[2], true, true, 50);
+            Dimensions[5] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, Math.Max(PointsOut2D[3].Y, PointsOut2D[2].Y)), new Point(PointsOut2D[2].X, Math.Max(PointsOut2D[3].Y, PointsOut2D[2].Y)), true, true, 50);
+
+            Dimensions[6] = new CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[3].Y), PointsOut2D[2], PointsOut2D[3]);
         }
 
         public override void Set_MemberOutlinePoints2D()
@@ -271,6 +274,35 @@ namespace BaseClasses
 
             float fx4 = fx3 + fdepth * (float)Math.Sin(FSlope_rad);
             float fy4 = fy3 - fdepth * (float)Math.Cos(FSlope_rad);
+
+            if (FSlope_rad < 0) // Falling knee
+            {
+                float fxb3_temp = fdepth * (float)Math.Sin(-FSlope_rad);
+                float fyb3_temp = fxb3_temp * (float)Math.Tan(-FSlope_rad);
+
+                float faux = fxb3_temp / (float)Math.Cos(-FSlope_rad); // Dlzka odrezanej hrany vlavo hore
+
+                faux_x = fcut * (float)Math.Cos(-FSlope_rad);
+                faux_y = fcut * (float)Math.Sin(-FSlope_rad);
+
+                fx3 = (float)PointsOut2D[3].X + fxb3_temp + faux_x; // Hore
+                fy3 = (float)PointsOut2D[3].Y - fyb3_temp - faux_y;
+
+                fx4 = fx3 - fdepth * (float)Math.Sin(-FSlope_rad); // Vlavo
+                fy4 = fy3 - fdepth * (float)Math.Cos(-FSlope_rad);
+
+                float fb4_x = (float)PointsOut2D[3].X;
+                float fb4_y = (float)PointsOut2D[3].Y - fyb3_temp - fdepth * (float)Math.Cos(-FSlope_rad);
+
+                fb1_x = (float)PointsOut2D[3].X + fdepth;
+                fb1_y = fb4_y - fdepth * (float)Math.Tan(-FSlope_rad);
+
+                fx1 = (float)PointsOut2D[3].X + fdepth;
+                fy1 = fb1_y - fcut;
+
+                fx2 = (float)PointsOut2D[3].X;
+                fy2 = fy1;
+            }
 
             bool considerCollinearOverlapAsIntersect = true;
 

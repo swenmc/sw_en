@@ -1127,12 +1127,24 @@ namespace PFD
                             }
                             else if (vm.ComponentIndex == 1) // KB
                             {
-                                if (vm.ScrewArrangementIndex == 0) // Undefined
-                                    plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
-                                else if (vm.ScrewArrangementIndex == 1) // Rectangular
-                                    plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
-                                else//(vm.ScrewArrangementIndex == 2) // Circle
-                                    plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                if (bUseSimpleShapeOfPlates)
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate = new CConCom_Plate_KBS(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
+                                    else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                        plate = new CConCom_Plate_KBS(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                    else//(vm.ScrewArrangementIndex == 2) // Circle
+                                        plate = new CConCom_Plate_KBS(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                }
+                                else
+                                {
+                                    if (vm.ScrewArrangementIndex == 0) // Undefined
+                                        plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, null, true);
+                                    else if (vm.ScrewArrangementIndex == 1) // Rectangular
+                                        plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementRectangleKnee, true);
+                                    else//(vm.ScrewArrangementIndex == 2) // Circle
+                                        plate = new CConCom_Plate_KB(dcomponents.arr_Serie_K_Names[1], controlpoint, fb, fh, fb2, fh2, fl, ft, 0, 0, 0, screwArrangementCircle, true);
+                                }
                             }
                             else if (vm.ComponentIndex == 2) // KC
                             {
@@ -1737,7 +1749,7 @@ namespace PFD
                     plateTemp.UpdatePlateData(plateTemp.ScrewArrangement);
                     plate = plateTemp;
                 }
-                else if (plate is CConCom_Plate_KB)
+                else if (plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS)
                 {
                     CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
 
@@ -1999,7 +2011,7 @@ namespace PFD
 
         private int GetPlateIndex(CPlate plate)
         {
-            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS || plate is CConCom_Plate_KB) return 1;
+            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS || plate is CConCom_Plate_KB || plate is CConCom_Plate_KBS) return 1;
             else if (plate is CConCom_Plate_KC || plate is CConCom_Plate_KCS) return 2;
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
             else if (plate is CConCom_Plate_KE) return 4;
