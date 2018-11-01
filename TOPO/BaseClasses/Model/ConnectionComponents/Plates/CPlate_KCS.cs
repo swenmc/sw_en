@@ -124,7 +124,7 @@ namespace BaseClasses
             arrPoints3D[3].Z = Fl_Z;
 
             arrPoints3D[4].X = Fb_X2 + fx_temp2;
-            arrPoints3D[4].Y = Fh_Y2 - fy_temp2;
+            arrPoints3D[4].Y = Fh_Y2 - fy_temp2; // TODO tato suradnica by mala byt mensia v pripade, ze sa jedna o falling knee, ale chyba tam definicia jedneho bodu na hrane, je nutne pridat bod a cele to prerobit :)
             arrPoints3D[4].Z = arrPoints3D[3].Z;
 
             arrPoints3D[5].X = arrPoints3D[4].X;
@@ -140,7 +140,7 @@ namespace BaseClasses
             arrPoints3D[7].Z = arrPoints3D[1].Z;
 
             arrPoints3D[8].X = arrPoints3D[1].X;
-            arrPoints3D[8].Y = arrPoints3D[7].Y - fy_temp4;
+            arrPoints3D[8].Y = arrPoints3D[7].Y - (FSlope_rad > 0 ? fy_temp4 : 0); ;
             arrPoints3D[8].Z = arrPoints3D[0].Z;
 
             // Second layer
@@ -224,7 +224,7 @@ namespace BaseClasses
             Point pTip = new Point(pTipX, pTipY);
 
             if (FSlope_rad>0)
-               Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 70);
+               Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 80);
             else
                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 60);
 
@@ -320,8 +320,11 @@ namespace BaseClasses
             wireFrame.Points.Add(arrPoints3D[7]);
             wireFrame.Points.Add(arrPoints3D[15]);
 
-            wireFrame.Points.Add(arrPoints3D[7]);
-            wireFrame.Points.Add(arrPoints3D[17]);
+            if (FSlope_rad > 0)
+            {
+                wireFrame.Points.Add(arrPoints3D[7]);
+                wireFrame.Points.Add(arrPoints3D[17]);
+            }
 
             wireFrame.Points.Add(arrPoints3D[3]);
             wireFrame.Points.Add(arrPoints3D[12]);
