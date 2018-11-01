@@ -99,6 +99,27 @@
                 <CheckBox x:Name="CheckBox_Rotate_CCW" IsChecked="{Binding Path=Rotate90CCW}" Content="Rotate 90 deg counter-clockwise" Margin="0 5 0 0" />
                 <!--Checked ="CheckBox_Rotate_CCW_Checked"  Unchecked="CheckBox_Rotate_CCW_Unchecked"-->
             </StackPanel>
+            <StackPanel Name="panelProductionInfo" Grid.Row="6" Grid.Column="2" Margin="10,10,0,0" Grid.RowSpan="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Production Info: " HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
+                    <Label Name="LabelCustomer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1">Customer: </Label>
+                    <TextBox Name="TextBoxCustomer" Grid.Column="1" Grid.Row="1" Text="{Binding Path=Customer}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
+                    <Label Name="LabelAmount" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2">Amount: </Label>
+                    <TextBox Name="TextBoxAmount" Grid.Column="1" Grid.Row="2" Text="{Binding Path=Amount}" MinWidth="70" Height="20" HorizontalAlignment="Left"></TextBox>                    
+                </Grid>
+                
+                
+                
+            </StackPanel>
 
             <TextBlock Grid.Row="4" Grid.Column="0" Name="TxtScrewArrangment" Text="Screw Arrangement" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="10 0 0 5"/>
             <DataGrid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Name="DataGridScrewArrangement" Margin="10 0 0 0"

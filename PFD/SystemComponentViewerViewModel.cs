@@ -70,6 +70,10 @@ namespace PFD
         int iNumberOfDecimalPlaces_Rotation = 1;
 
         List<Point> MDrillingRoutePoints;
+
+        private string MCustomer;
+        private int MAmount;
+
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
         {
@@ -449,6 +453,29 @@ namespace PFD
             set
             {
                 MDrillingRoutePoints = value;
+            }
+        }
+
+        public string Customer
+        {
+            get { return MCustomer; }
+
+            set
+            {
+                MCustomer = value;
+            }
+        }
+
+        public int Amount
+        {
+            get
+            {
+                return MAmount;
+            }
+
+            set
+            {
+                MAmount = value;
             }
         }
 

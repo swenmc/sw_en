@@ -1945,8 +1945,11 @@ namespace PFD
                     list.Add(new string[] { o.Name, o.ShortCut, oStr.Value, o.Unit });
                 }
             }
-
-            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list);
+            //TODO Mato- nechce sa mi hldat tie premmenne a neviem ich najst, inicializuj spravne nasledovne premenne
+            string plateName = plate.Name;
+            int plateThickness = 3; // plate.Thickness;
+            int platePitch = 4; //plate Geom2D.RadiansToDegrees(plate.FSlope_rad);
+            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list, vm.Customer, vm.Amount, plateName, plateThickness, platePitch);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
         }
 
