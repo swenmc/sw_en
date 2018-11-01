@@ -188,32 +188,53 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
-            int iNumberOfDimensions = 11;
+            int iNumberOfDimensions = 13;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
+            // Bottom
             Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
             Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2]);
-            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[3], PointsOut2D[4], true, true);
-            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[4], PointsOut2D[5], true, true);
-            Dimensions[4] = new CDimensionLinear(plateCenter, PointsOut2D[5], PointsOut2D[6], true, true);
-            Dimensions[5] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
-            Dimensions[6] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true, 50);
-            Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[7], PointsOut2D[5], true, true, 50);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3]);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true, 53);
 
-            if (FSlope_rad>0)
-               Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 80);
-            else
-               Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 60);
-
-            Dimensions[9] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true, 50);
+            // Top
+            Dimensions[4] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[5].X, pTip.Y), new Point(PointsOut2D[6].X, pTip.Y));
 
             if (FSlope_rad > 0)
-                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, true, true, 70);
+            {
+                Dimensions[5] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[6].X, pTip.Y), new Point(PointsOut2D[7].X, pTip.Y));
+                Dimensions[6] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[5].X, pTip.Y), pTip);
+                Dimensions[7] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[7].X, pTip.Y), pTip, true, true, 53);
+            }
             else
-                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], true, true, 70);
+            {
+                Dimensions[5] = new CDimensionLinear(plateCenter, pTip, new Point(PointsOut2D[6].X, pTip.Y));
+                Dimensions[6] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[5].X, pTip.Y), new Point(PointsOut2D[4].X, pTip.Y));
+                Dimensions[7] = new CDimensionLinear(plateCenter, pTip, new Point(PointsOut2D[4].X, pTip.Y), true, true, 53);
+            }
 
-            Dimensions[11] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
+            // Vertical
+            if (FSlope_rad > 0)
+            {
+                Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
+                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[7], new Point(PointsOut2D[7].X, pTip.Y), true, true);
+
+                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true);
+                Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[4], new Point(PointsOut2D[4].X, pTip.Y), true, true);
+                Dimensions[12] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, true, true, 55);
+            }
+            else
+            {
+                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true);
+                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[4], new Point(PointsOut2D[4].X, pTip.Y), true, true);
+
+                Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
+                Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[7], pTip, true, true);
+                Dimensions[12] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 55);
+            }
+
+            Dimensions[13] = new CDimensionArc(plateCenter, new Point(PointsOut2D[2].X, PointsOut2D[6].Y), PointsOut2D[5], PointsOut2D[6]);
         }
 
         protected override void loadIndices()
