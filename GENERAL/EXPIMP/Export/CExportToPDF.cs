@@ -193,7 +193,7 @@ namespace EXPIMP
         {
             XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
 
-            string sNote1 = "Pre Drill to Ø = 5.7 mm";
+            string sNote1 = "Screw Holes - Pre Drill to Ø = 5.7 mm";
             gfx.DrawString(sNote1, font, XBrushes.Black, 200, 700);
         }
 
