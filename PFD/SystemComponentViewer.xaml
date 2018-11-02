@@ -109,12 +109,15 @@
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Production Info: " HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
-                    <Label Name="LabelCustomer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1">Customer: </Label>
-                    <TextBox Name="TextBoxCustomer" Grid.Column="1" Grid.Row="1" Text="{Binding Path=Customer}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
-                    <Label Name="LabelAmount" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2">Amount: </Label>
-                    <TextBox Name="TextBoxAmount" Grid.Column="1" Grid.Row="2" Text="{Binding Path=Amount}" MinWidth="70" Height="20" HorizontalAlignment="Left"></TextBox>                    
+                    <Label Name="LabelJobNumber" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1">Job Number:</Label>
+                    <TextBox Name="TextBoxJobNumber" Grid.Column="1" Grid.Row="1" Text="{Binding Path=JobNumber}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
+                    <Label Name="LabelCustomer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2">Customer: </Label>
+                    <TextBox Name="TextBoxCustomer" Grid.Column="1" Grid.Row="2" Text="{Binding Path=Customer}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
+                    <Label Name="LabelAmount" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3">Amount: </Label>
+                    <TextBox Name="TextBoxAmount" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Amount}" MinWidth="70" Height="20" HorizontalAlignment="Left"></TextBox>
                 </Grid>
                 
                 

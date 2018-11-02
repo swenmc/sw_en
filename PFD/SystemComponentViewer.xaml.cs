@@ -1945,11 +1945,120 @@ namespace PFD
                     list.Add(new string[] { o.Name, o.ShortCut, oStr.Value, o.Unit });
                 }
             }
-            //TODO Mato- nechce sa mi hldat tie premmenne a neviem ich najst, inicializuj spravne nasledovne premenne
-            string plateName = plate.Name;
-            int plateThickness = 3; // plate.Thickness;
-            int platePitch = 4; //plate Geom2D.RadiansToDegrees(plate.FSlope_rad);
-            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list, vm.Customer, vm.Amount, plateName, plateThickness, platePitch);
+
+            string plateNamePrefix = plate.Name;
+            string plateName = "";
+            decimal plateThickness = (decimal)plate.Ft * 1000; // Convert to mm
+            float platePitch_rad = 0;
+
+            if (plate is CConCom_Plate_JA)
+            {
+                CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_JB)
+            {
+                CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_JBS)
+            {
+                CConCom_Plate_JBS plateTemp = (CConCom_Plate_JBS)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KBS plateTemp = (CConCom_Plate_KBS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KCS plateTemp = (CConCom_Plate_KCS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KDS plateTemp = (CConCom_Plate_KDS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KE)
+            {
+                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else
+            {
+                // Not defined
+                platePitch_rad = 0;
+                plateName = "";
+            }
+
+            decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(platePitch_rad), 1);
+
+            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list, vm.JobNumber,  vm.Customer, vm.Amount, plateNamePrefix, plateName, plateThickness, platePitch);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
         }
 

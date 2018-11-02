@@ -71,6 +71,7 @@ namespace PFD
 
         List<Point> MDrillingRoutePoints;
 
+        private string MJobNumber;
         private string MCustomer;
         private int MAmount;
 
@@ -456,9 +457,25 @@ namespace PFD
             }
         }
 
+        public string JobNumber
+        {
+            get
+            {
+                return MJobNumber;
+            }
+
+            set
+            {
+                MJobNumber = value;
+            }
+        }
+
         public string Customer
         {
-            get { return MCustomer; }
+            get
+            {
+                return MCustomer;
+            }
 
             set
             {
@@ -511,6 +528,10 @@ namespace PFD
             MirrorX = false;
             Rotate90CW = false;
             Rotate90CCW = false;
+
+            JobNumber = "B0000";
+            Customer = "write name";
+            Amount = 1;
 
             DrawScrews3D = true;
 

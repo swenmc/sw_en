@@ -23,7 +23,7 @@ namespace EXPIMP
         //    CreatePDFFile(canvas, tableParams);
         //}
 
-        public static void CreatePDFFile(Canvas canvas, List<string[]> tableParams, string customer, int amount, string plateName, int thickness, int pitch)
+        public static void CreatePDFFile(Canvas canvas, List<string[]> tableParams, string jobNumber, string customer, int amount, string plateNamePrefix, string plateName, decimal thickness, decimal pitch)
         {
             // Create a temporary file
             DateTime d = DateTime.Now;
@@ -42,8 +42,8 @@ namespace EXPIMP
             DrawCanvas_PDF(canvas, gfx);
 
             DrawLogo(gfx);
-            DrawProductionInfo(gfx, customer, amount);
-            DrawPlateInfo(gfx, plateName, thickness, pitch);
+            DrawProductionInfo(gfx, jobNumber, customer, amount);
+            DrawPlateInfo(gfx, plateNamePrefix, plateName, thickness, pitch);
 
             //double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
@@ -57,7 +57,7 @@ namespace EXPIMP
 
             gfx.Dispose();
             PdfPage page2 = s_document.AddPage();
-            XGraphics gfx2 = XGraphics.FromPdfPage(page2);            
+            XGraphics gfx2 = XGraphics.FromPdfPage(page2);
             AddTableToDocument(gfx2, 50, tableParams);
 
             // Save the s_document...
@@ -71,7 +71,7 @@ namespace EXPIMP
         {
             double scaleFactor = gfx.PageSize.Width / canvas.RenderSize.Width * 0.9; //90%
             double marginLeft = gfx.PageSize.Width * 0.1 / 2.0;
-
+            double marginTop = gfx.PageSize.Height * 0.3 / 2.97;
 
             foreach (object o in canvas.Children)
             {
@@ -85,19 +85,19 @@ namespace EXPIMP
 
                     System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
                     XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
-                    gfx.DrawRectangle(solidBrush, x * scaleFactor + marginLeft, y * scaleFactor, winRect.Width * scaleFactor, winRect.Height * scaleFactor);
+                    gfx.DrawRectangle(solidBrush, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winRect.Width * scaleFactor, winRect.Height * scaleFactor);
                 }
                 else if (o is Polyline)
                 {
                     Polyline winPol = o as Polyline;
-                                        
+
                     System.Windows.Media.Color c = ((SolidColorBrush)winPol.Stroke).Color;
                     XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness * scaleFactor);
-                    
+
                     List<XPoint> points = new List<XPoint>();
                     foreach (Point p in winPol.Points)
                     {
-                        points.Add(new XPoint(p.X * scaleFactor + marginLeft, p.Y * scaleFactor));                        
+                        points.Add(new XPoint(p.X * scaleFactor + marginLeft, p.Y * scaleFactor + marginTop));
                     }
                     gfx.DrawLines(pen, points.ToArray());
                 }
@@ -113,18 +113,18 @@ namespace EXPIMP
                     double x = Canvas.GetLeft(winElipse) - winElipse.StrokeThickness / 2;
                     double y = Canvas.GetTop(winElipse) - winElipse.StrokeThickness / 2;
 
-                    gfx.DrawEllipse(pen, x * scaleFactor + marginLeft, y * scaleFactor, winElipse.Width * scaleFactor, winElipse.Height * scaleFactor);
+                    gfx.DrawEllipse(pen, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winElipse.Width * scaleFactor, winElipse.Height * scaleFactor);
                 }
                 else if (o is Line)
                 {
                     Line winLine = o as Line;
                     
-                    System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color;                    
+                    System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color; 
                     XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness * scaleFactor);
 
                     if(winLine.StrokeDashArray.Count > 0) pen.DashStyle = XDashStyle.Dash;
 
-                    gfx.DrawLine(pen, winLine.X1 * scaleFactor + marginLeft, winLine.Y1 * scaleFactor, winLine.X2 * scaleFactor + marginLeft, winLine.Y2 * scaleFactor);
+                    gfx.DrawLine(pen, winLine.X1 * scaleFactor + marginLeft, winLine.Y1 * scaleFactor + marginTop, winLine.X2 * scaleFactor + marginLeft, winLine.Y2 * scaleFactor + marginTop);
                 }
                 else if (o is TextBlock)
                 {
@@ -132,7 +132,7 @@ namespace EXPIMP
 
                     double x = Canvas.GetLeft(winText);
                     //x += winText.ActualWidth / 2;
-                    double y = Canvas.GetTop(winText);                    
+                    double y = Canvas.GetTop(winText);
                     y += winText.FontSize;
                                         
                     System.Windows.Media.Color c = ((SolidColorBrush)winText.Foreground).Color;
@@ -140,7 +140,7 @@ namespace EXPIMP
 
                     XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
                     
-                    gfx.DrawString(winText.Text, f, solidBrush, new XPoint(x * scaleFactor + marginLeft, y * scaleFactor));
+                    gfx.DrawString(winText.Text, f, solidBrush, new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop));
                 }
             }
         }
@@ -152,30 +152,31 @@ namespace EXPIMP
             gfx.DrawImage(image, 50, 750);
         }
 
-        private static void DrawProductionInfo(XGraphics gfx, string customer, int amount)
+        private static void DrawProductionInfo(XGraphics gfx, string jobNumber, string customer, int amount)
         {
             XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
             XFont font2 = new XFont("Verdana", 12, XFontStyle.Underline);
 
-            gfx.DrawString("Customer:", font, XBrushes.Black, 10, 20);
-            if(customer != null) gfx.DrawString(customer, font2, XBrushes.Red, 100, 20);
-            gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 40);
-            gfx.DrawString(amount.ToString(), font, XBrushes.Red, 100, 40);
+            gfx.DrawString("Job Number: ", font, XBrushes.Black, 10, 20);
+            if (jobNumber != null) gfx.DrawString(jobNumber, font, XBrushes.Black, 100, 20);
+            gfx.DrawString("Customer: ", font, XBrushes.Black, 10, 40);
+            if(customer != null) gfx.DrawString(customer, font, XBrushes.Black, 100, 40);
+            gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 60);
+            gfx.DrawString(amount.ToString(), font, XBrushes.Black, 100, 60);
         }
-        private static void DrawPlateInfo(XGraphics gfx, string plateName, int thickness, int pitch)
+        private static void DrawPlateInfo(XGraphics gfx, string plateNamePrefix, string plateName, decimal thickness, decimal pitch)
         {
             XFont font1 = new XFont("Verdana", 14, XFontStyle.Bold);
             XFont font2 = new XFont("Verdana", 12, XFontStyle.Regular);
 
             XTextFormatter tf = new XTextFormatter(gfx);
             tf.Alignment = XParagraphAlignment.Center;
-            tf.DrawString(plateName, font1, XBrushes.Black, new XRect(0, 20, gfx.PageSize.Width, 40));
+            tf.DrawString(plateNamePrefix + " - " + plateName, font1, XBrushes.Black, new XRect(0, 20, gfx.PageSize.Width, 40));
 
-            gfx.DrawString(thickness.ToString(), font2, XBrushes.Red, 50, 730);
-            gfx.DrawString("mm Plate", font2, XBrushes.Black, 65, 730);
-            gfx.DrawString(pitch.ToString(), font2, XBrushes.Red, 500, 730);
-            gfx.DrawString("Pitch", font2, XBrushes.Black, 515, 730);
-            
+            gfx.DrawString(Math.Round(thickness, 2).ToString(), font2, XBrushes.Black, 50, 730);
+            gfx.DrawString("mm Plate", font2, XBrushes.Black, 85, 730);
+            gfx.DrawString(pitch.ToString(), font2, XBrushes.Black, 485, 730);
+            gfx.DrawString("° Pitch", font2, XBrushes.Black, 515, 730);
         }
 
         private static double DrawCanvasImage(XGraphics gfx, Canvas canvas)
@@ -185,7 +186,7 @@ namespace EXPIMP
                 XImage image = XImage.FromBitmapSource(GetBitmapSourceFromCanvas(canvas));
                 double scaleFactor = gfx.PageSize.Width / image.PointWidth;
                 double scaledImageWidth = gfx.PageSize.Width;
-                double scaledImageHeight = image.PointHeight * scaleFactor;                
+                double scaledImageHeight = image.PointHeight * scaleFactor;
 
                 gfx.DrawImage(image, 0, 0, scaledImageWidth, scaledImageHeight);
                 return scaledImageHeight;
@@ -241,7 +242,6 @@ namespace EXPIMP
         {
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
-                        
 
             Table t = GetSimpleTable(doc, tableParams);
             //Image image = sec.AddImage()
