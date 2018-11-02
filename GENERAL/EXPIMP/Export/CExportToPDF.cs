@@ -39,11 +39,13 @@ namespace EXPIMP
             PdfPage page = s_document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            DrawCanvas_PDF(canvas, gfx);
-
-            DrawLogo(gfx);
+            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             DrawProductionInfo(gfx, jobNumber, customer, amount);
             DrawPlateInfo(gfx, plateNamePrefix, plateName, thickness, pitch);
+            DrawCanvas_PDF(canvas, gfx);
+            DrawProductionNotes(gfx);
+            DrawLogo(gfx);
+            DrawFSAddress(gfx);
 
             //double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
@@ -65,7 +67,6 @@ namespace EXPIMP
             // ...and start a viewer
             Process.Start(filename);
         }
-
 
         public static void DrawCanvas_PDF(Canvas canvas, XGraphics gfx)
         {
@@ -134,7 +135,7 @@ namespace EXPIMP
                     //x += winText.ActualWidth / 2;
                     double y = Canvas.GetTop(winText);
                     y += winText.FontSize;
-                                        
+
                     System.Windows.Media.Color c = ((SolidColorBrush)winText.Foreground).Color;
                     XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
 
@@ -145,11 +146,34 @@ namespace EXPIMP
             }
         }
 
-
         private static void DrawLogo(XGraphics gfx)
         {
             XImage image = XImage.FromFile(ConfigurationManager.AppSettings["logoForPDF"]);
             gfx.DrawImage(image, 50, 750);
+
+            XImage image2 = XImage.FromFile(ConfigurationManager.AppSettings["confStampForPDF"]);
+            gfx.DrawImage(image2, 220, 750);
+        }
+
+        private static void DrawFSAddress(XGraphics gfx)
+        {
+            XFont font = new XFont("Verdana", 6, XFontStyle.Regular);
+
+            string sLine1 = "Enquires to:";
+            string sLine2 = "Formsteel Industries Ltd";
+            string sLine3 = "2-4 Waokauri Pl, Mangere";
+            string sLine4 = "P.O.Box 23-718, Auckland";
+            string sLine5 = "Telephone 09 275 0089";
+
+            double dposition_x = 100;
+            double dposition_y = 755;
+            double drowheight = 9.5;
+
+            gfx.DrawString(sLine1, font, XBrushes.Black, dposition_x, dposition_y);
+            gfx.DrawString(sLine2, font, XBrushes.Black, dposition_x, dposition_y + 1 * drowheight);
+            gfx.DrawString(sLine3, font, XBrushes.Black, dposition_x, dposition_y + 2 * drowheight);
+            gfx.DrawString(sLine4, font, XBrushes.Black, dposition_x, dposition_y + 3 * drowheight);
+            gfx.DrawString(sLine5, font, XBrushes.Black, dposition_x, dposition_y + 4 * drowheight);
         }
 
         private static void DrawProductionInfo(XGraphics gfx, string jobNumber, string customer, int amount)
@@ -164,6 +188,15 @@ namespace EXPIMP
             gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 60);
             gfx.DrawString(amount.ToString(), font, XBrushes.Black, 100, 60);
         }
+
+        private static void DrawProductionNotes(XGraphics gfx)
+        {
+            XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
+
+            string sNote1 = "Pre Drill to Ø = 5.7 mm";
+            gfx.DrawString(sNote1, font, XBrushes.Black, 200, 700);
+        }
+
         private static void DrawPlateInfo(XGraphics gfx, string plateNamePrefix, string plateName, decimal thickness, decimal pitch)
         {
             XFont font1 = new XFont("Verdana", 14, XFontStyle.Bold);
@@ -171,12 +204,12 @@ namespace EXPIMP
 
             XTextFormatter tf = new XTextFormatter(gfx);
             tf.Alignment = XParagraphAlignment.Center;
-            tf.DrawString(plateNamePrefix + " - " + plateName, font1, XBrushes.Black, new XRect(0, 20, gfx.PageSize.Width, 40));
+            tf.DrawString(plateNamePrefix + " (" + plateName + ")", font1, XBrushes.Black, new XRect(0, 20, gfx.PageSize.Width, 40));
 
             gfx.DrawString(Math.Round(thickness, 2).ToString(), font2, XBrushes.Black, 50, 730);
-            gfx.DrawString("mm Plate", font2, XBrushes.Black, 85, 730);
+            gfx.DrawString("mm Plate", font2, XBrushes.Black, 80, 730);
             gfx.DrawString(pitch.ToString(), font2, XBrushes.Black, 485, 730);
-            gfx.DrawString("° Pitch", font2, XBrushes.Black, 515, 730);
+            gfx.DrawString("° Pitch", font2, XBrushes.Black, 513, 730);
         }
 
         private static double DrawCanvasImage(XGraphics gfx, Canvas canvas)
