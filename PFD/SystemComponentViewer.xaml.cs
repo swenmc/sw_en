@@ -2056,7 +2056,7 @@ namespace PFD
                 plateName = "";
             }
 
-            decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(platePitch_rad), 1);
+            decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
 
             if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFile(Frame2D.Content as Canvas, list, vm.JobNumber,  vm.Customer, vm.Amount, plateNamePrefix, plateName, plateThickness, platePitch);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
