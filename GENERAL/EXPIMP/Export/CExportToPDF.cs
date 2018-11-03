@@ -175,7 +175,7 @@ namespace EXPIMP
             XFont font = new XFont("Verdana", 6, XFontStyle.Regular);
 
             string sLine1 = "Enquires to:";
-            string sLine2 = "Formsteel Industries Ltd";
+            string sLine2 = "Formsteel Technologies Ltd";
             string sLine3 = "2-4 Waokauri Pl, Mangere";
             string sLine4 = "P.O.Box 23-718, Auckland";
             string sLine5 = "Telephone 09 275 0089";
