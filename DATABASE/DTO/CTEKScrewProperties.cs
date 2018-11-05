@@ -22,6 +22,9 @@ namespace DATABASE.DTO
         public string headSizemm;
         public string washerSizemm;
         public string washerThicknessmm;
+        public string shearStrength_N;
+        public string axialTensileStrength_N;
+        public string torsionalStrength_Nm;
 
         public CTEKScrewProperties() { }
     }

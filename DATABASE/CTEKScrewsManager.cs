@@ -100,6 +100,9 @@ namespace DATABASE
             properties.headSizemm = reader["headSizemm"].ToString();
             properties.washerSizemm = reader["washerSizemm"].ToString();
             properties.washerThicknessmm = reader["washerThicknessmm"].ToString();
+            properties.shearStrength_N = reader["ShearStrength_N"].ToString();
+            properties.axialTensileStrength_N = reader["AxialTensileStrength_N"].ToString();
+            properties.torsionalStrength_Nm = reader["TorsionalStrength_Nm"].ToString();
 
             return properties;
         }

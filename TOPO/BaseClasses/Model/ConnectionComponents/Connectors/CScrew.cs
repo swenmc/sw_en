@@ -83,6 +83,48 @@ namespace BaseClasses
             }
         }
 
+        private float m_fShearStrength_nominal;
+        public float ShearStrength_nominal
+        {
+            get
+            {
+                return m_fShearStrength_nominal;
+            }
+
+            set
+            {
+                m_fShearStrength_nominal = value;
+            }
+        }
+
+        private float m_fAxialTensileStrength_nominal;
+        public float AxialTensileStrength_nominal
+        {
+            get
+            {
+                return m_fAxialTensileStrength_nominal;
+            }
+
+            set
+            {
+                m_fAxialTensileStrength_nominal = value;
+            }
+        }
+
+        private float m_fTorsionalStrength_nominal;
+        public float TorsionalStrength_nominal
+        {
+            get
+            {
+                return m_fTorsionalStrength_nominal;
+            }
+
+            set
+            {
+                m_fTorsionalStrength_nominal = value;
+            }
+        }
+
         public CScrew()
         { }
 
@@ -133,7 +175,7 @@ namespace BaseClasses
             Gauge = int.Parse(properties.gauge, nfi);
             try
             {
-                Diameter_thread = float.Parse(properties.threadDiameter, nfi) / 1000f;
+                Diameter_thread = float.Parse(properties.threadDiameter, nfi) / 1000f; // mm to m
             }
             catch
             {
@@ -142,7 +184,7 @@ namespace BaseClasses
 
             try
             {
-                Diameter_shank = float.Parse(properties.shankDiameter, nfi) / 1000f;
+                Diameter_shank = float.Parse(properties.shankDiameter, nfi) / 1000f; // mm to m
             }
             catch
             {
@@ -159,12 +201,11 @@ namespace BaseClasses
             properties.headSizeInch
             */
 
-
             // Temporary - chybajuce data v databaze
 
             try
             {
-                D_h_headdiameter = float.Parse(properties.headSizemm, nfi) / 1000f;
+                D_h_headdiameter = float.Parse(properties.headSizemm, nfi) / 1000f; // mm to m
             }
             catch
             {
@@ -173,7 +214,7 @@ namespace BaseClasses
 
             try
             {
-                D_w_washerdiameter = float.Parse(properties.washerSizemm, nfi) / 1000f;
+                D_w_washerdiameter = float.Parse(properties.washerSizemm, nfi) / 1000f; // mm to m
             }
             catch
             {
@@ -182,11 +223,38 @@ namespace BaseClasses
 
             try
             {
-                T_w_washerthickness = float.Parse(properties.washerThicknessmm, nfi) / 1000f;
+                T_w_washerthickness = float.Parse(properties.washerThicknessmm, nfi) / 1000f; // mm to m
             }
             catch
             {
                 T_w_washerthickness = 0;
+            }
+
+            try
+            {
+                ShearStrength_nominal = float.Parse(properties.shearStrength_N, nfi); // N
+            }
+            catch
+            {
+                ShearStrength_nominal = 0;
+            }
+
+            try
+            {
+                AxialTensileStrength_nominal = float.Parse(properties.axialTensileStrength_N, nfi); // N
+            }
+            catch
+            {
+                AxialTensileStrength_nominal = 0;
+            }
+
+            try
+            {
+                TorsionalStrength_nominal = float.Parse(properties.torsionalStrength_Nm, nfi); // Nm
+            }
+            catch
+            {
+                TorsionalStrength_nominal = 0;
             }
 
             // Default

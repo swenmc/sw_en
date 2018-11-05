@@ -137,7 +137,7 @@ namespace M_AS4600
 
         public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
         {
-            /// Bending Joint apex, knee joint
+            // Bending Joint apex, knee joint
 
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
 
@@ -225,10 +225,13 @@ namespace M_AS4600
 
             // Elastic resistance
             float fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
-            float fV_asterix_b_max_screw_Vyv = Math.Abs(sDIF.fV_zv) / fHolesCentersRadiiInOneGroup.Length;
-            float fV_asterix_b_max_screw_N = Math.Abs(sDIF.fN) / fHolesCentersRadiiInOneGroup.Length;
+            float fV_asterix_b_max_screw_Vyv = Math.Abs(fV_yv_oneside) / fHolesCentersRadiiInOneGroup.Length;
+            float fV_asterix_b_max_screw_N = Math.Abs(fN_oneside) / fHolesCentersRadiiInOneGroup.Length;
 
-            float fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
+            float fV_asterix_b_max_screw = 0;
+
+            if (fV_asterix_b_max_screw_Mxu != 0 || fV_asterix_b_max_screw_Vyv != 0 || fV_asterix_b_max_screw_N != 0)
+                fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
 
             float fEta_Vb_5424 = eq.Eq_5424_1__(fV_asterix_b_max_screw, 0.5f, fVb_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_Vb_5424);
@@ -241,7 +244,11 @@ namespace M_AS4600
 
             // Distance to an end of the connected part is parallel to the line of the applied force
             // Nemalo by rozhodovat pre moment (skrutka namahana rovnobezne s okrajom je uprostred plechu) ale moze rozhovat pre N a V
-            float fV_asterix_fv = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Vyv) + MathF.Pow2(fV_asterix_b_max_screw_N));
+
+            float fV_asterix_fv = 0;
+
+            if (fV_asterix_b_max_screw_Vyv != 0 || fV_asterix_b_max_screw_N != 0)
+                fV_asterix_fv = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Vyv) + MathF.Pow2(fV_asterix_b_max_screw_N));
 
             float fEta_V_fv_5425_MainMember = eq.Eq_5425_1__(fV_asterix_fv, fV_fv_MainMember, ff_uk_2_MainMember, ff_yk_2_MainMember);
             float fEta_V_fv_5425_SecondaryMember = eq.Eq_5425_1__(fV_asterix_fv, fV_fv_SecondaryMember, ff_uk_2_SecondaryMember, ff_yk_2_SecondaryMember);
@@ -250,6 +257,13 @@ namespace M_AS4600
             float fEta_V_fv_5425 = MathF.Max(fEta_V_fv_5425_MainMember, fEta_V_fv_5425_SecondaryMember, fEta_V_fv_5425_Plate);
             fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425);
 
+            // 5.4.2.6 Screws in shear
+            // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
+
+            float fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
+            float fEta_V_w_5426 = Math.Max(fV_asterix_b_max_screw, fV_asterix_fv) / (0.5f * fV_w_nom_screw_5426);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
+
             // Validation - negative design ratio
             if (fEta_Vb_5424 < 0 ||
                 fEta_V_fv_5425 < 0)
@@ -257,7 +271,7 @@ namespace M_AS4600
                 throw new Exception("Design ratio is invalid!");
             }
 
-            // Validation - inifiniti design ratio
+            // Validation - inifinity design ratio
             if (fEta_max > 9e+10)
             {
                 throw new Exception("Design ratio is invalid!");
@@ -323,7 +337,11 @@ namespace M_AS4600
             if (bIsEccentricallyLoadedJoint)
                 fN_ov_for5434_plate *= 0.5f; // Use 50% of resistance value in case of eccentrically loaded connection
 
-            float fV_asterix_b_for5434_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+            float fV_asterix_b_for5434_MainMember = 0;
+
+            if (sDIF_temp.fV_yu != 0 || sDIF_temp.fV_zv != 0)
+                fV_asterix_b_for5434_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+
             float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
             fEta_max = MathF.Max(fEta_max, fEta_5434_MainMember);
 
@@ -344,7 +362,11 @@ namespace M_AS4600
             float fV_b_for5435_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
             float fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // 5.4.3.2(a) Eq. 5.4.3.2(2) - Nou
 
-            float fV_asterix_b_for5435_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+            float fV_asterix_b_for5435_MainMember = 0;
+
+            if (sDIF_temp.fV_yu != 0 || sDIF_temp.fV_zv != 0)
+                fV_asterix_b_for5435_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+
             float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_5435_MainMember);
 
@@ -357,18 +379,25 @@ namespace M_AS4600
             float fEta_V_fv_5425_Plate = eq.Eq_5425_1__(fV_asterix_fv_plate, fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
             fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425_Plate);
 
-            // TODO
-            // Overit podla coho sa navrhuju samotne skrutky !!!! Mame k dispozicii unosnosti z experimentov ???
-            /*
-            5.4.2.6 Screws in shear
-            The design shear capacity of the screw shall be determined by testing in accordance with Section 8.
+            // 5.4.2.6 Screws in shear
+            // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
 
-            5.4.3.3 Screws in tension
-            The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
+            float fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
+            float fEta_V_w_5426 = (sDIF_temp.fN_t / iNumberOfScrewsInTension) / (0.5f * fV_w_nom_screw_5426);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
 
-            5.4.3.6 Screws subject to combined shear and tension
-            A screw required to resist simultaneously a design shear force and a design tensile where Vscrew and Nscrew shall be determined by testing in accordance with Section 8.
-            */
+            // 5.4.3.3 Screws in tension
+            // The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
+
+            float fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
+            float fEta_N_t_screw_5433 = Math.Max(fV_asterix_b_for5435_MainMember, fV_asterix_fv_plate) / (0.5f * fN_t_nom_screw_5433);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
+
+            // 5.4.3.6 Screws subject to combined shear and tension
+            // A screw required to resist simultaneously a design shear force and a design tensile where V screw and N screw shall be determined by testing in accordance with Section 8.
+
+            float fEta_V_N_t_screw_5436 = eq.Eq_5436____(Math.Max(fV_asterix_b_for5435_MainMember, fV_asterix_fv_plate), (sDIF_temp.fN_t / iNumberOfScrewsInTension), 0.5f, fV_w_nom_screw_5426, fN_t_nom_screw_5433);
+            fEta_max = MathF.Max(fEta_max, fEta_V_N_t_screw_5436);
 
             // Plate design
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
@@ -390,8 +419,13 @@ namespace M_AS4600
 
             // Pripoj plechu sekundarneho pruta
             int iNumberOfScrewsInConnectionOfSecondaryMember = 16; // Temporary (pocet plechov * pocet skrutiek v jednom ramene pripojneho plechu = 2 * 8)
+
             // Shear
-            float fV_asterix_b_SecondaryMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInConnectionOfSecondaryMember) + MathF.Pow2(sDIF_temp.fN / iNumberOfScrewsInConnectionOfSecondaryMember));
+            float fV_asterix_b_SecondaryMember = 0;
+
+            if (sDIF_temp.fV_yu != 0 || sDIF_temp.fV_zv != 0 || sDIF_temp.fN != 0)
+                fV_asterix_b_SecondaryMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInConnectionOfSecondaryMember) + MathF.Pow2(sDIF_temp.fN / iNumberOfScrewsInConnectionOfSecondaryMember));
+
             float fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_SecondaryMember);
             float fEta_Vb_5424_SecondaryMember = eq.Eq_5424_1__(fV_asterix_b_SecondaryMember, 0.5f, fVb_SecondaryMember);
             fEta_max = MathF.Max(fEta_max, fEta_Vb_5424_SecondaryMember);
@@ -451,7 +485,7 @@ namespace M_AS4600
                 fN_ov_for5434_plate *= 0.5f; // Use 50% of resistance value in case of eccentrically loaded connection
 
             float fV_asterix_b_for5434_MainMember = fDIF_V_connection_one_side / (iNumberOfScrewsInTension / 2);
-            float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
+            float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, Math.Abs(sDIF_temp.fV_zv) / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
             fEta_max = MathF.Max(fEta_max, fEta_5434_MainMember);
 
             // 5.4.3.5 Screwed connections subject to combined shear and pull-out
@@ -472,7 +506,7 @@ namespace M_AS4600
             float fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // 5.4.3.2(a) Eq. 5.4.3.2(2) - Nou
 
             float fV_asterix_b_for5435_MainMember = fDIF_V_connection_one_side / (iNumberOfScrewsInTension / 2);
-            float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
+            float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, Math.Abs(sDIF_temp.fV_zv), 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_5435_MainMember);
 
             // 5.4.2.5 Connection shear as limited by end distance
@@ -484,18 +518,25 @@ namespace M_AS4600
             float fEta_V_fv_5425_Plate = eq.Eq_5425_1__(fV_asterix_fv_plate, fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
             fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425_Plate);
 
-            // TODO
-            // Overit podla coho sa navrhuju samotne skrutky !!!! Mame k dispozicii unosnosti z experimentov ???
-            /*
-            5.4.2.6 Screws in shear
-            The design shear capacity of the screw shall be determined by testing in accordance with Section 8.
+            // 5.4.2.6 Screws in shear
+            // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
 
-            5.4.3.3 Screws in tension
-            The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
+            float fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
+            float fEta_V_w_5426 = Math.Max(fV_asterix_b_for5435_MainMember, fV_asterix_fv_plate) / (0.5f * fV_w_nom_screw_5426);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
 
-            5.4.3.6 Screws subject to combined shear and tension
-            A screw required to resist simultaneously a design shear force and a design tensile where Vscrew and Nscrew shall be determined by testing in accordance with Section 8.
-            */
+            // 5.4.3.3 Screws in tension
+            // The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
+
+            float fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
+            float fEta_N_t_screw_5433 = (Math.Abs(sDIF_temp.fV_zv) / (iNumberOfScrewsInTension / 2)) / (0.5f * fN_t_nom_screw_5433);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
+
+            // 5.4.3.6 Screws subject to combined shear and tension
+            // A screw required to resist simultaneously a design shear force and a design tensile where V screw and N screw shall be determined by testing in accordance with Section 8.
+
+            float fEta_V_N_t_screw_5436 = eq.Eq_5436____(Math.Max(fV_asterix_b_for5435_MainMember, fV_asterix_fv_plate), Math.Abs(sDIF_temp.fV_zv) / (iNumberOfScrewsInTension / 2), 0.5f, fV_w_nom_screw_5426, fN_t_nom_screw_5433);
+            fEta_max = MathF.Max(fEta_max, fEta_V_N_t_screw_5436);
 
             // Plate design
             // Plate tension design
@@ -507,8 +548,155 @@ namespace M_AS4600
 
         public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
         {
-            // Not implemented
-            fEta_max = 0;
+            // Okopirovane z CalculateDesignRatioApexOrKneeJoint
+            // TODO - refaktorovat
+
+            int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
+
+            float fN = 1f / iNumberOfPlatesInJoint * sDIF_temp.fN;
+            float fM_xu = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_yu;
+            float fV_yv = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_zv;
+
+            // Plate design
+
+            // Plate tension design
+            float fA_n_plate = plate.fA_n;
+            float fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, fA_n_plate, ff_uk_1_plate);
+            float fEta_N_t_5423_plate = eq.Eq_5423_1__(fN, 0.65f, fN_t_plate);
+            fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_plate);
+
+            // Plate shear resistance
+            float fA_vn_yv_plate = plate.fA_vn_zv;
+            float fV_y_yv_plate = eq.Eq_723_5___(fA_vn_yv_plate, ff_yk_1_plate);
+            float fEta_V_yv_3341_plate = eq.Eq_3341____(fV_yv, 0.65f, fV_y_yv_plate);
+            fEta_max = MathF.Max(fEta_max, fEta_V_yv_3341_plate);
+
+            // Plate bending resistance
+            float fM_xu_resitance_plate = eq.Eq_7222_4__(joint.m_arrPlates[0].fW_el_yu, ff_yk_1_plate);
+            float fEta_Mb_plate, fDesignReistance_M_plate;
+            eq.Eq_723_10__(Math.Abs(fM_xu), 0.65f, fM_xu_resitance_plate, out fDesignReistance_M_plate, out fEta_Mb_plate);
+            fEta_max = MathF.Max(fEta_max, fEta_Mb_plate);
+
+            // Connection -shear force design
+            // Shear in connection
+            float fVb_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
+
+            int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
+
+            float fEta_MainMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_MainMember);
+
+            float fMb_MainMember_oneside_plastic = 0;
+
+            float fSumri2tormax = 0; // F_max = Mxu / (Σ ri^2 / r_max)
+
+            // TEMPORARY
+            // fHolesCentersRadii - Moze sa lisit podla rozneho usporiadania skrutiek a vzdialenosti skrutiek od ich fiktivneho taziska (mali by byt symetricky)
+
+            float[] fHolesCentersRadiiInOneGroup = null;
+            int iNumberOfScrewGroupsInPlate = 0;
+            float fr_max = 0;
+
+            if (plate.ScrewArrangement != null) // Screw arrangement exist
+            {
+                if (plate.ScrewArrangement.ListOfSequenceGroups != null && plate.ScrewArrangement.ListOfSequenceGroups.Count > 0) // Screw arrangement groups are defined
+                {
+                    fHolesCentersRadiiInOneGroup = plate.ScrewArrangement.ListOfSequenceGroups[0].HolesRadii; // Use first group data (symmetry is expected
+                    iNumberOfScrewGroupsInPlate = plate.ScrewArrangement.ListOfSequenceGroups.Count;
+                }
+                else
+                {
+                    throw new ArgumentException("Groups of screws are not defined. Check screw arrangement data.");
+                }
+
+                if (fHolesCentersRadiiInOneGroup != null)
+                    fr_max = MathF.Max(fHolesCentersRadiiInOneGroup);
+                else
+                {
+                    throw new ArgumentException("Radii of screws are not defined. Check screw arrangement data.");
+                }
+            }
+
+            // 5.4.2.4 Tilting and hole bearing
+            // Bending - Calculate shear strength of plate connection - main member
+            for (int i = 0; i < fHolesCentersRadiiInOneGroup.Length; i++)
+            {
+                fMb_MainMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * fVb_MainMember;
+
+                fSumri2tormax += MathF.Pow2(fHolesCentersRadiiInOneGroup[i]) / fr_max;
+            }
+
+            float fN_oneside = sDIF_temp.fN / 2f;
+            float fM_xu_oneside = sDIF_temp.fM_yu / 2f; // Divided by Number of sides
+            float fV_yv_oneside = sDIF_temp.fV_zv / 2f;
+
+            // Plastic resistance (Design Ratio)
+            float fEta_Mb_MainMember_oneside_plastic = Math.Abs(fM_xu_oneside) / fMb_MainMember_oneside_plastic;
+            fEta_max = MathF.Max(fEta_max, fEta_Mb_MainMember_oneside_plastic);
+
+            // Elastic resistance
+            float fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
+            float fV_asterix_b_max_screw_Vyv = Math.Abs(fV_yv_oneside) / fHolesCentersRadiiInOneGroup.Length;
+            float fV_asterix_b_max_screw_N = Math.Abs(fN_oneside) / fHolesCentersRadiiInOneGroup.Length;
+
+            float fV_asterix_b_max_screw = 0;
+
+            if (fV_asterix_b_max_screw_Mxu != 0 || fV_asterix_b_max_screw_Vyv  != 0 || fV_asterix_b_max_screw_N != 0)
+                fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
+
+            float fEta_Vb_5424 = eq.Eq_5424_1__(fV_asterix_b_max_screw, 0.5f, fVb_MainMember);
+            fEta_max = MathF.Max(fEta_max, fEta_Vb_5424);
+
+            // 5.4.2.5 Connection shear as limited by end distance
+            float fe = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
+            float fV_fv_MainMember = eq.Eq_5425_2__(ft_2_crscmainMember, fe, ff_uk_2_MainMember);
+            float fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, fe, ff_uk_1_plate);
+
+            // Distance to an end of the connected part is parallel to the line of the applied force
+            // Nemalo by rozhodovat pre moment (skrutka namahana rovnobezne s okrajom je uprostred plechu) ale moze rozhovat pre N a V
+            float fV_asterix_fv = 0;
+
+            if (fV_asterix_b_max_screw_Vyv != 0 || fV_asterix_b_max_screw_N != 0)
+                fV_asterix_fv = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Vyv) + MathF.Pow2(fV_asterix_b_max_screw_N));
+
+            float fEta_V_fv_5425_MainMember = eq.Eq_5425_1__(fV_asterix_fv, fV_fv_MainMember, ff_uk_2_MainMember, ff_yk_2_MainMember);
+            float fEta_V_fv_5425_Plate = eq.Eq_5425_1__(fV_asterix_fv, fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
+
+            float fEta_V_fv_5425 = Math.Max(fEta_V_fv_5425_MainMember, fEta_V_fv_5425_Plate);
+            fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425);
+
+            // 5.4.2.6 Screws in shear
+            // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
+
+            float fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
+            float fEta_V_w_5426 = Math.Max(fV_asterix_b_max_screw, fV_asterix_fv) / (0.5f * fV_w_nom_screw_5426);
+            fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
+
+            // Validation - negative design ratio
+            if (fEta_Vb_5424 < 0 ||
+                fEta_V_fv_5425 < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - inifinity design ratio
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            int iNumberOfDecimalPlaces = 3;
+            if (bIsDebugging)
+                MessageBox.Show("Calculation finished.\n"
+                              + "Design Ratio η = " + Math.Round(fEta_Vb_5424, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 5.4.2.4" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_V_fv_5425, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 5.4.2.5" + "\n"
+                              + "Design Ratio η max = " + Math.Round(fEta_max, iNumberOfDecimalPlaces) + " [-]");
+
+            // Tension in members
+            // 5.4.2.3 Tension in the connected part
+            float fA_n_MainMember = (float)crsc_mainMember.A_g - plate.INumberOfConnectorsInSection * 2 * 2 * screw.Diameter_thread; // TODO - spocitat presne podla poctu a rozmeru otvorov v jednom reze
+            float fN_t_section_MainMember = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, fA_n_MainMember, ff_uk_2_MainMember);
+            float fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, 0.65f, fN_t_section_MainMember);
+            fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_MainMember);
         }
     }
 }
