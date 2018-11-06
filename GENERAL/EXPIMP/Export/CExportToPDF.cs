@@ -261,8 +261,10 @@ namespace EXPIMP
 
         private static void DrawProductionInfo(XGraphics gfx, string jobNumber, string customer, int amount)
         {
-            XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
-            XFont font2 = new XFont("Verdana", 12, XFontStyle.Underline);
+            // Set font encoding to unicode
+            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
+            XFont font = new XFont("Verdana", 12, XFontStyle.Regular, options);
+            XFont font2 = new XFont("Verdana", 12, XFontStyle.Underline, options);
 
             gfx.DrawString("Job Number: ", font, XBrushes.Black, 10, 20);
             if (jobNumber != null) gfx.DrawString(jobNumber, font, XBrushes.Black, 100, 20);
@@ -393,9 +395,7 @@ namespace EXPIMP
             }
 
             decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
-
-
-
+            
             XFont font1 = new XFont("Verdana", 14, XFontStyle.Bold);
             XFont font2 = new XFont("Verdana", 12, XFontStyle.Regular);
 
@@ -470,9 +470,11 @@ namespace EXPIMP
 
         private static void AddTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
+            gfx.MUH = PdfFontEncoding.Unicode;
+            gfx.MFEH = PdfFontEmbedding.Always;
+
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
-
             Table t = GetSimpleTable(doc, tableParams);
             //Image image = sec.AddImage()
 
@@ -493,10 +495,13 @@ namespace EXPIMP
             //  "essent augait el ing eumsan hendre feugait prat augiatem amconul laoreet. ≤≥≈≠");
             //para.Format.Borders.Distance = "5pt";
             //para.Format.Borders.Color = Colors.Gold;
-
+            
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
             // Create a renderer and prepare (=layout) the document
             MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
-            docRenderer.PrepareDocument();
+            docRenderer.PrepareDocument();            
             
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
@@ -545,7 +550,7 @@ namespace EXPIMP
             table.Borders.Width = 0.75;
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(7));
-            column1.Format.Alignment = ParagraphAlignment.Left;
+            column1.Format.Alignment = ParagraphAlignment.Left;            
             Column column2 = table.AddColumn(Unit.FromCentimeter(2));
             column2.Format.Alignment = ParagraphAlignment.Left;
             Column column3 = table.AddColumn(Unit.FromCentimeter(4));
