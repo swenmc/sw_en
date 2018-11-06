@@ -41,11 +41,13 @@ namespace EXPIMP
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             DrawProductionInfo(gfx, jobNumber, customer, amount);
-            DrawPlateInfo(gfx, plateNamePrefix, plateName, thickness, pitch);
-            DrawCanvas_PDF(canvas, gfx);
+            DrawPlateInfo(gfx, plateNamePrefix, plateName, thickness, pitch);            
             DrawProductionNotes(gfx);
             DrawLogo(gfx);
             DrawFSAddress(gfx);
+            gfx.Dispose();
+
+            DrawCanvas_PDF(canvas, page);
 
             //double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
@@ -57,7 +59,7 @@ namespace EXPIMP
             //new Text().DrawPage(s_document.AddPage());
             //new Images().DrawPage(s_document.AddPage());
 
-            gfx.Dispose();
+            
             PdfPage page2 = s_document.AddPage();
             XGraphics gfx2 = XGraphics.FromPdfPage(page2);
             AddTableToDocument(gfx2, 50, tableParams);
@@ -68,15 +70,17 @@ namespace EXPIMP
             Process.Start(filename);
         }
 
-        public static void DrawCanvas_PDF(Canvas canvas, XGraphics gfx)
+        public static void DrawCanvas_PDF(Canvas canvas, PdfPage page)
         {
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
             double scaleFactor = gfx.PageSize.Width / canvas.RenderSize.Width * 0.9; //90%
             double marginLeft = gfx.PageSize.Width * 0.1 / 2.0;
             double marginTop = gfx.PageSize.Height * 0.3 / 2.97;
 
             foreach (object o in canvas.Children)
             {
-                System.Diagnostics.Trace.WriteLine(o.GetType());
+                //System.Diagnostics.Trace.WriteLine(o.GetType());
 
                 if (o is Rectangle)
                 {
@@ -137,7 +141,7 @@ namespace EXPIMP
                     */
 
                     // TO Ondrej - Nieco som skusal vid tento riadok, ale otaca to celou skupinou objektov v gfx, neviem ci sa bude dat otocit len samotny jeden textblock
-                    // gfx.RotateAtTransform(12, new XPoint(200, 200));
+                    //gfx.RotateAtTransform(12, new XPoint(200, 200));
 
                     // To Ondrej - Pozri tieto odkazy:), mozno to tam najdes, ja si na to ani netrufam :)
                     // https://forum.pdfsharp.net/viewtopic.php?p=9591#p9591
@@ -145,20 +149,32 @@ namespace EXPIMP
                     // https://csharp.hotexamples.com/examples/PdfSharp.Drawing/XGraphics/RotateTransform/php-xgraphics-rotatetransform-method-examples.html
 
                     TextBlock winText = o as TextBlock;
-
+                    double angle = 0;
+                    if (winText.RenderTransform is RotateTransform)
+                    {
+                        RotateTransform rotTrans = (RotateTransform)winText.RenderTransform;
+                        //System.Diagnostics.Trace.WriteLine(winText.Text);
+                        //System.Diagnostics.Trace.WriteLine(rotTrans.Angle);
+                        angle = rotTrans.Angle;
+                    }                    
+                    
                     double x = Canvas.GetLeft(winText);
-                    //x += winText.ActualWidth / 2;
+                    if(Math.Abs(angle) > 45) x += winText.ActualHeight * scaleFactor;
                     double y = Canvas.GetTop(winText);
                     y += winText.FontSize;
 
                     System.Windows.Media.Color c = ((SolidColorBrush)winText.Foreground).Color;
                     XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
-
                     XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
+                    XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop);
 
-                    gfx.DrawString(winText.Text, f, solidBrush, new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop));
+                    XGraphicsState state = gfx.Save();
+                    gfx.RotateAtTransform(angle, p);
+                    gfx.DrawString(winText.Text, f, solidBrush, p);                    
+                    gfx.Restore(state);
                 }
             }
+            gfx.Dispose();
         }
 
         private static void DrawLogo(XGraphics gfx)
