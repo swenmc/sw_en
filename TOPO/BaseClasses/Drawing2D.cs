@@ -374,10 +374,10 @@ namespace BaseClasses
             DrawDimensions(bDrawDimensions, canvasDimensions, canvasForImage);
 
             // Member Outline
-            DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawSeparateLines(bDrawMemberOutline, canvasMemberOutline, Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             // Bend Lines
-            DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
         }
 
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
@@ -872,7 +872,7 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, DashStyle dashStyle, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
+        public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
         {
             if (bDrawLines && lines != null && lines.Count > 0)
             {
@@ -888,7 +888,9 @@ namespace BaseClasses
                         l.X2 = lines[i].X2;
                         l.Y2 = lines[i].Y2;
 
-                        DrawLine(l, color, dashStyle, startCap, endCap, thickness, canvasForImage);
+                        DoubleCollection dashes = new DoubleCollection();
+                        dashes.Add(10); dashes.Add(10);
+                        DrawLine(l, color, startCap, endCap, thickness, canvasForImage, DashStyles.Dash, dashes);
                     }
                 }
             }
@@ -899,7 +901,7 @@ namespace BaseClasses
             DrawRectangle(strokeColor, fillColor, thickness, imageCanvas, new Point(point.X - 0.5 * thickness, point.Y - 0.5 * thickness), new Point(point.X + 0.5 * thickness, point.Y + 0.5 * thickness));
         }
 
-        public static void DrawLine(Line line, SolidColorBrush color, DashStyle dashStyle, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public static void DrawLine(Line line, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas, DashStyle dashStyle, DoubleCollection dashArray = null)
         {
             //Random r = new Random();
             //Color randomcolor = Color.FromArgb((byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256), (byte)r.Next(0, 256));
@@ -916,7 +918,8 @@ namespace BaseClasses
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
 
-            myLine.StrokeDashArray = dashStyle.Dashes;
+            if (dashArray != null) myLine.StrokeDashArray = dashArray;
+            else myLine.StrokeDashArray = dashStyle.Dashes;            
 
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
@@ -1037,7 +1040,7 @@ namespace BaseClasses
                 l.X2 = center.X + fSideLength;
                 l.Y2 = center.Y;
 
-                DrawLine(l, color, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas, DashStyles.Solid);
 
                 l.X1 = center.X;
                 l.Y1 = center.Y - fSideLength;
@@ -1045,7 +1048,7 @@ namespace BaseClasses
                 l.X2 = center.X;
                 l.Y2 = center.Y + fSideLength;
 
-                DrawLine(l, color, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas);
+                DrawLine(l, color, PenLineCap.Flat, PenLineCap.Flat, thickness, imageCanvas, DashStyles.Solid);
             }
         }
 
@@ -1301,15 +1304,15 @@ namespace BaseClasses
             double textPositiony = lPrimaryLine.Y1 + 0.5 * (lPrimaryLine.Y2 - lPrimaryLine.Y1);
             
             // Draw dimension line
-            DrawLine(lPrimaryLine, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas);
+            DrawLine(lPrimaryLine, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dPrimaryLineThickness, imageCanvas, DashStyles.Solid);
             // Draw extension line - start
-            DrawLine(lExtensionLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+            DrawLine(lExtensionLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
             // Draw extension line - end
-            DrawLine(lExtensionLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas);
+            DrawLine(lExtensionLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dExtensionLineThickness, imageCanvas, DashStyles.Solid);
             // Draw slope line - start
-            DrawLine(lSlopeLine1, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
+            DrawLine(lSlopeLine1, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
             // Draw slope line - end
-            DrawLine(lSlopeLine2, Brushes.DarkGreen, DashStyles.Solid, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas);
+            DrawLine(lSlopeLine2, Brushes.DarkGreen, PenLineCap.Flat, PenLineCap.Flat, dSlopeLineThickness, imageCanvas, DashStyles.Solid);
             // Draw text            
             DrawText(sText, textPositionx, textPositiony, dRotation_deg, 12, dim.ControlPointRef, dim.IsTextOutSide, Brushes.DarkGreen, imageCanvas);
         }
@@ -1474,20 +1477,22 @@ namespace BaseClasses
             path.Stroke = Brushes.Black;
             imageCanvas.Children.Add(path);
 
+            DoubleCollection dashArray = new DoubleCollection();
+            dashArray.Add(10); dashArray.Add(10);
             // Lines
             Line l1 = new Line();
             l1.X1 = pCenter.X;
             l1.Y1 = pCenter.Y;
             l1.X2 = pStart.X;
             l1.Y2 = pStart.Y;
-            DrawLine(l1, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
+            DrawLine(l1, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas, DashStyles.Dash, dashArray);
 
             Line l2 = new Line();
             l2.X1 = pCenter.X;
             l2.Y1 = pCenter.Y;
             l2.X2 = pEnd.X;
             l2.Y2 = pEnd.Y;
-            DrawLine(l2, Brushes.Black, DashStyles.Dash, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas);
+            DrawLine(l2, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, imageCanvas, DashStyles.Dash, dashArray);
 
             // Draw text
             // Draw text in the middle of the arc

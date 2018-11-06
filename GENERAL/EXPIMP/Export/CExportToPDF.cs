@@ -180,7 +180,8 @@ namespace EXPIMP
                     System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color; 
                     XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness * scaleFactor);
 
-                    if(winLine.StrokeDashArray.Count > 0) pen.DashStyle = XDashStyle.Dash;
+                    if (winLine.StrokeDashArray.Count > 0) { pen.DashStyle = XDashStyle.Dash; double[] dashArray = new double[winLine.StrokeDashArray.Count]; winLine.StrokeDashArray.CopyTo(dashArray, 0); pen.DashPattern = dashArray; }
+                    
 
                     gfx.DrawLine(pen, winLine.X1 * scaleFactor + marginLeft, winLine.Y1 * scaleFactor + marginTop, winLine.X2 * scaleFactor + marginLeft, winLine.Y2 * scaleFactor + marginTop);
                 }
