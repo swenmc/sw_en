@@ -80,7 +80,7 @@ namespace EXPIMP
 
             foreach (object o in canvas.Children)
             {
-                //System.Diagnostics.Trace.WriteLine(o.GetType());
+                System.Diagnostics.Trace.WriteLine(o.GetType());
 
                 if (o is Rectangle)
                 {
@@ -105,6 +105,59 @@ namespace EXPIMP
                         points.Add(new XPoint(p.X * scaleFactor + marginLeft, p.Y * scaleFactor + marginTop));
                     }
                     gfx.DrawLines(pen, points.ToArray());
+                }
+                else if (o is Path)
+                {
+                    XGraphicsPath xGrPath = new XGraphicsPath();
+
+                    Path winPath = o as Path;
+                    System.Windows.Media.Color c = ((SolidColorBrush)winPath.Stroke).Color;
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness * scaleFactor);
+
+                    PathGeometry pathGeom = winPath.Data.GetFlattenedPathGeometry();
+                    //PathGeometry pathGeom = winPath.Data.GetOutlinedPathGeometry();
+                    
+                    foreach (PathFigure pf in pathGeom.Figures)
+                    {
+                        Point start = pf.StartPoint;
+                        foreach (PathSegment ps in pf.Segments)
+                        {
+                            if (ps is ArcSegment)
+                            {
+                                ArcSegment arc = (ArcSegment)ps;
+                                xGrPath.AddArc(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop), 
+                                    new XPoint(arc.Point.X * scaleFactor + marginLeft, arc.Point.Y * scaleFactor + marginTop), 
+                                    new XSize(arc.Size.Width, arc.Size.Height), arc.RotationAngle, arc.IsLargeArc, arc.SweepDirection);
+                            }
+                            else if (ps is BezierSegment)
+                            {
+                                BezierSegment bs = (BezierSegment)ps;
+                                xGrPath.AddBezier(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop),
+                                    new XPoint(bs.Point1.X * scaleFactor + marginLeft, bs.Point1.Y * scaleFactor + marginTop),
+                                    new XPoint(bs.Point2.X * scaleFactor + marginLeft, bs.Point2.Y * scaleFactor + marginTop),
+                                    new XPoint(bs.Point3.X * scaleFactor + marginLeft, bs.Point3.Y * scaleFactor + marginTop));
+                            }
+                            else if (ps is LineSegment)
+                            {
+                                LineSegment ls = (LineSegment)ps;
+                                XPoint p1 = new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop);
+                                XPoint p2 = new XPoint(ls.Point.X * scaleFactor + marginLeft, ls.Point.Y * scaleFactor + marginTop);  
+                                xGrPath.AddLine(p1, p2);
+                            }
+                            else if (ps is PolyLineSegment) 
+                            {
+                                PolyLineSegment pls = (PolyLineSegment)ps;
+                                List<XPoint> points = new List<XPoint>();
+                                points.Add(new XPoint(start.X * scaleFactor + marginLeft, start.Y * scaleFactor + marginTop));
+                                foreach (Point p in pls.Points)
+                                {
+                                    points.Add(new XPoint(p.X * scaleFactor + marginLeft, p.Y * scaleFactor + marginTop));
+                                }
+                                xGrPath.AddLines(points.ToArray());
+                            }
+                        }
+                    }                    
+                    gfx.DrawPath(pen, xGrPath);
                 }
                 else if (o is Ellipse)
                 {
