@@ -244,7 +244,7 @@ namespace BaseClasses
             //Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[8], pTip, true, true);
             //Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[8].X, PointsOut2D[7].Y), PointsOut2D[7], true, true, 40);
 
-            Dimensions[8] = new CDimensionArc(plateCenter, PointsOut2D[3], PointsOut2D[6], PointsOut2D[9]);
+            Dimensions[8] = new CDimensionArc(plateCenter, new Point(PointsOut2D[6].X, PointsOut2D[3].Y), PointsOut2D[6], PointsOut2D[9]);
         }
 
         public override void Set_MemberOutlinePoints2D()
