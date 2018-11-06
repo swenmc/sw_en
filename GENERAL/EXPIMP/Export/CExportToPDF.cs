@@ -1,4 +1,6 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using BaseClasses;
+using MATH;
+using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using PdfSharp.Drawing;
@@ -18,19 +20,30 @@ namespace EXPIMP
 {
     public static class CExportToPDF
     {
-        //public static void ExportCanvasToPDF(Canvas canvas, List<string[]> tableParams)
-        //{
-        //    CreatePDFFile(canvas, tableParams);
-        //}
-
-        public static void CreatePDFFile(Canvas canvas, List<string[]> tableParams, string jobNumber, string customer, int amount, string plateNamePrefix, string plateName, decimal thickness, decimal pitch)
+        private static string GetPDFNameForPlate(CPlate plate)
         {
-            // Create a temporary file
-            DateTime d = DateTime.Now;
-            string filename = string.Format("ExportPDF_{0}{1}{2}T{3}{4}{5}.pdf",
-                d.Year, d.Month.ToString("D2"), d.Day.ToString("D2"), d.Hour.ToString("D2"), d.Minute.ToString("D2"), d.Second.ToString("D2"));
+            float fUnitFactor = 1000; // defined in m, exported in mm
+            int count = 0;
+            string fileName = null;
+            bool nameOK = false;
+            while (!nameOK)
+            {
+                count++;
+                fileName = string.Format("{0}_{1}x{2}_{3:D3}.pdf", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
 
-            //string filename = String.Format("{0}_tempfile.pdf", Guid.NewGuid().ToString("D").ToUpper());
+                if (!System.IO.File.Exists(fileName)) nameOK = true;
+            }
+            return fileName;
+        }
+        private static string GetPlateSerieName(CPlate plate)
+        {
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) return "APEX";
+            else if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K) return "KNEE";
+            else return "PLATE";
+        }
+
+        public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, string jobNumber, string customer, int amount, CPlate plate)
+        {
             PdfDocument s_document = new PdfDocument();
             s_document.Info.Title = "Export from FormSteel software";
             //s_document.Info.Author = "";
@@ -41,7 +54,7 @@ namespace EXPIMP
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             DrawProductionInfo(gfx, jobNumber, customer, amount);
-            DrawPlateInfo(gfx, plateNamePrefix, plateName, thickness, pitch);            
+            DrawPlateInfo(gfx, plate);
             DrawProductionNotes(gfx);
             DrawLogo(gfx);
             DrawFSAddress(gfx);
@@ -58,16 +71,16 @@ namespace EXPIMP
             //new Paths().DrawPage(s_document.AddPage());
             //new Text().DrawPage(s_document.AddPage());
             //new Images().DrawPage(s_document.AddPage());
-
-            
+                        
             PdfPage page2 = s_document.AddPage();
             XGraphics gfx2 = XGraphics.FromPdfPage(page2);
             AddTableToDocument(gfx2, 50, tableParams);
-
+            
+            string fileName = GetPDFNameForPlate(plate);
             // Save the s_document...
-            s_document.Save(filename);
+            s_document.Save(fileName);
             // ...and start a viewer
-            Process.Start(filename);
+            Process.Start(fileName);
         }
 
         public static void DrawCanvas_PDF(Canvas canvas, PdfPage page)
@@ -267,8 +280,122 @@ namespace EXPIMP
             gfx.DrawString(sNote1, font, XBrushes.Black, 200, 700);
         }
 
-        private static void DrawPlateInfo(XGraphics gfx, string plateNamePrefix, string plateName, decimal thickness, decimal pitch)
+        private static void DrawPlateInfo(XGraphics gfx, CPlate plate)
         {
+            string plateNamePrefix = plate.Name;
+            string plateName = "";
+            decimal plateThickness = (decimal)plate.Ft * 1000; // Convert to mm
+            float platePitch_rad = 0;
+
+            if (plate is CConCom_Plate_JA)
+            {
+                CConCom_Plate_JA plateTemp = (CConCom_Plate_JA)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_JB)
+            {
+                CConCom_Plate_JB plateTemp = (CConCom_Plate_JB)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_JBS)
+            {
+                CConCom_Plate_JBS plateTemp = (CConCom_Plate_JBS)plate;
+                plateName = "Apex Plate";
+                platePitch_rad = plateTemp.FSlope_rad;
+            }
+            else if (plate is CConCom_Plate_KA)
+            {
+                CConCom_Plate_KA plateTemp = (CConCom_Plate_KA)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KBS plateTemp = (CConCom_Plate_KBS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KCS plateTemp = (CConCom_Plate_KCS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KDS plateTemp = (CConCom_Plate_KDS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else if (plate is CConCom_Plate_KE)
+            {
+                CConCom_Plate_KE plateTemp = (CConCom_Plate_KE)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    plateName = "Knee Plate - rising";
+                else
+                    plateName = "Knee Plate - falling";
+            }
+            else
+            {
+                // Not defined
+                platePitch_rad = 0;
+                plateName = "";
+            }
+
+            decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
+
+
+
             XFont font1 = new XFont("Verdana", 14, XFontStyle.Bold);
             XFont font2 = new XFont("Verdana", 12, XFontStyle.Regular);
 
@@ -276,9 +403,9 @@ namespace EXPIMP
             tf.Alignment = XParagraphAlignment.Center;
             tf.DrawString(plateNamePrefix + " (" + plateName + ")", font1, XBrushes.Black, new XRect(0, 20, gfx.PageSize.Width, 40));
 
-            gfx.DrawString(Math.Round(thickness, 2).ToString(), font2, XBrushes.Black, 50, 730);
+            gfx.DrawString(Math.Round(plateThickness, 2).ToString(), font2, XBrushes.Black, 50, 730);
             gfx.DrawString("mm Plate", font2, XBrushes.Black, 80, 730);
-            gfx.DrawString(pitch.ToString(), font2, XBrushes.Black, 485, 730);
+            gfx.DrawString(platePitch.ToString(), font2, XBrushes.Black, 485, 730);
             gfx.DrawString("° Pitch", font2, XBrushes.Black, 513, 730);
         }
 
