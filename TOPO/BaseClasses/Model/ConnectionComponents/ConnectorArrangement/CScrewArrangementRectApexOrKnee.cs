@@ -190,6 +190,75 @@ namespace BaseClasses
             UpdateArrangmentData();
         }
 
+        public CScrewArrangementRectApexOrKnee(
+            CScrew referenceScrew_temp,
+            float fCrscRafterDepth_temp,
+            float fCrscWebStraightDepth_temp,
+            float fStiffenerSize_temp,
+            int iNumberOfScrewsInRow_xDirection_G1_SQ1_temp,  // Bottom group of knee plate - G1 - SQ1
+            int iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp,
+            float fx_c_SQ1_temp,
+            float fy_c_SQ1_temp,
+            float fDistanceOfPointsX_SQ1_temp,
+            float fDistanceOfPointsY_SQ1_temp,
+            int iNumberOfScrewsInRow_xDirection_G1_SQ2_temp,  // Bottom group of knee plate - G1 - SQ2
+            int iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp,
+            float fx_c_SQ2_temp,
+            float fy_c_SQ2_temp,
+            float fDistanceOfPointsX_SQ2_temp,
+            float fDistanceOfPointsY_SQ2_temp,
+            int iNumberOfScrewsInRow_xDirection_G2_SQ3_temp,  // Upper group of knee plate - G2 - SQ3
+            int iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp,
+            float fx_c_SQ3_temp,
+            float fy_c_SQ3_temp,
+            float fDistanceOfPointsX_SQ3_temp,
+            float fDistanceOfPointsY_SQ3_temp,
+            int iNumberOfScrewsInRow_xDirection_G2_SQ4_temp,  // Upper group of knee plate - G2 - SQ4
+            int iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp,
+            float fx_c_SQ4_temp,
+            float fy_c_SQ4_temp,
+            float fDistanceOfPointsX_SQ4_temp,
+            float fDistanceOfPointsY_SQ4_temp) : base(iNumberOfScrewsInRow_xDirection_G1_SQ1_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp + iNumberOfScrewsInRow_xDirection_G1_SQ2_temp * iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp + iNumberOfScrewsInRow_xDirection_G2_SQ3_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp + iNumberOfScrewsInRow_xDirection_G2_SQ4_temp * iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp, referenceScrew_temp)
+        {
+            referenceScrew = referenceScrew_temp;
+            FCrscRafterDepth = fCrscRafterDepth_temp;
+            FCrscWebStraightDepth = fCrscWebStraightDepth_temp;
+            FStiffenerSize = fStiffenerSize_temp;
+
+            // TODO - docasne - doriesit ako by sa malo zadavat pre lubovolny pocet sekvencii
+            iNumberOfScrewsInRow_xDirection_SQ1 = iNumberOfScrewsInRow_xDirection_G1_SQ1_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ1 = iNumberOfScrewsInColumn_yDirection_G1_SQ1_temp;
+            fx_c_SQ1 = fx_c_SQ1_temp;
+            fy_c_SQ1 = fy_c_SQ1_temp;
+            fDistanceOfPointsX_SQ1 = fDistanceOfPointsX_SQ1_temp;
+            fDistanceOfPointsY_SQ1 = fDistanceOfPointsY_SQ1_temp;
+
+            iNumberOfScrewsInRow_xDirection_SQ2 = iNumberOfScrewsInRow_xDirection_G1_SQ2_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ2 = iNumberOfScrewsInColumn_yDirection_G1_SQ2_temp;
+            fx_c_SQ2 = fx_c_SQ2_temp;
+            fy_c_SQ2 = fy_c_SQ2_temp;
+            fDistanceOfPointsX_SQ2 = fDistanceOfPointsX_SQ2_temp;
+            fDistanceOfPointsY_SQ2 = fDistanceOfPointsY_SQ2_temp;
+
+            iNumberOfScrewsInRow_xDirection_SQ3 = iNumberOfScrewsInRow_xDirection_G2_SQ3_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ3 = iNumberOfScrewsInColumn_yDirection_G2_SQ3_temp;
+            fx_c_SQ3 = fx_c_SQ3_temp;
+            fy_c_SQ3 = fy_c_SQ3_temp;
+            fDistanceOfPointsX_SQ3 = fDistanceOfPointsX_SQ3_temp;
+            fDistanceOfPointsY_SQ3 = fDistanceOfPointsY_SQ3_temp;
+
+            iNumberOfScrewsInRow_xDirection_SQ4 = iNumberOfScrewsInRow_xDirection_G2_SQ4_temp;
+            iNumberOfScrewsInColumn_yDirection_SQ4 = iNumberOfScrewsInColumn_yDirection_G2_SQ4_temp;
+            fx_c_SQ4 = fx_c_SQ4_temp;
+            fy_c_SQ4 = fy_c_SQ4_temp;
+            fDistanceOfPointsX_SQ4 = fDistanceOfPointsX_SQ4_temp;
+            fDistanceOfPointsY_SQ4 = fDistanceOfPointsY_SQ4_temp;
+
+            ListOfSequenceGroups = new List<CScrewSequenceGroup>(2); // Two group, each for the connection of one member in joint
+
+            UpdateArrangmentData();
+        }
+
         public override void UpdateArrangmentData()
         {
             // TODO - toto prerobit tak ze sa parametre prevedu na cisla a nastavia v CTEKScrewsManager a nie tu
