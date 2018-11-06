@@ -176,9 +176,9 @@ namespace BaseClasses
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
             // Bottom
-            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], new Point(PointsOut2D[2].X, PointsOut2D[1].Y));
-            Dimensions[2] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[0].X, PointsOut2D[2].Y), PointsOut2D[2], true, true, 53);
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], new Point(PointsOut2D[2].X, PointsOut2D[1].Y), false, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[0].X, PointsOut2D[2].Y), PointsOut2D[2], false, true, 53);
 
             // Top
             if (FSlope_rad > 0)
@@ -203,9 +203,9 @@ namespace BaseClasses
                 Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[5], new Point(PointsOut2D[5].X, pTip.Y), true, true);
 
                 // Right
-                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], true, true);
+                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], false, true);
                 Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[3].X, pTip.Y), true, true);
-                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[2].Y), pTip, true, true, 55);
+                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[2].Y), pTip, false, true, 55);
             }
             else
             {
@@ -214,9 +214,9 @@ namespace BaseClasses
                 Dimensions[7] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[5], true, true);
 
                 // Right
-                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], true, true);
-                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[3].X, PointsOut2D[5].Y), true, true);
-                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), new Point(PointsOut2D[3].X, PointsOut2D[5].Y), true, true, 55);
+                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), PointsOut2D[3], false, true);
+                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[3], new Point(PointsOut2D[3].X, PointsOut2D[5].Y), false, true);
+                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[3].X, PointsOut2D[2].Y), new Point(PointsOut2D[3].X, PointsOut2D[5].Y), false, true, 55);
             }
 
             Dimensions[11] = new CDimensionArc(plateCenter, new Point(PointsOut2D[1].X, PointsOut2D[5].Y), PointsOut2D[4], PointsOut2D[5]);

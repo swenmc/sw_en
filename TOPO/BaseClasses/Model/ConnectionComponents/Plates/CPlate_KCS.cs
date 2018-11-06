@@ -188,15 +188,17 @@ namespace BaseClasses
 
         public override void Set_DimensionPoints2D()
         {
+            // TODO - Zhodne KC a KD - refaktorovat
+
             int iNumberOfDimensions = 14;
             Dimensions = new CDimension[iNumberOfDimensions + 1];
             Point plateCenter = Drawing2D.CalculateModelCenter(PointsOut2D);
 
             // Bottom
-            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1]);
-            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2]);
-            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3]);
-            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], true, true, 53);
+            Dimensions[0] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[1], false, true);
+            Dimensions[1] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[2], false, true);
+            Dimensions[2] = new CDimensionLinear(plateCenter, PointsOut2D[2], PointsOut2D[3], false, true);
+            Dimensions[3] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[3], false, true, 53);
 
             // Top
             Dimensions[4] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[5].X, pTip.Y), new Point(PointsOut2D[6].X, pTip.Y));
@@ -220,19 +222,19 @@ namespace BaseClasses
                 Dimensions[8] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
                 Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[7], new Point(PointsOut2D[7].X, pTip.Y), true, true);
 
-                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true);
+                Dimensions[10] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], false, true);
                 Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[4], new Point(PointsOut2D[4].X, pTip.Y), true, true);
-                Dimensions[12] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, true, true, 55);
+                Dimensions[12] = new CDimensionLinear(plateCenter, new Point(pTip.X, PointsOut2D[3].Y), pTip, false, true, 55);
 
                 Dimensions[13] = new CDimensionLinear(plateCenter, PointsOut2D[1], PointsOut2D[6], true, true, 95);
             }
             else
             {
-                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], true, true);
-                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[4], new Point(PointsOut2D[4].X, pTip.Y), true, true);
+                Dimensions[8] = new CDimensionLinear(plateCenter, new Point(PointsOut2D[4].X, PointsOut2D[3].Y), PointsOut2D[4], false, true);
+                Dimensions[9] = new CDimensionLinear(plateCenter, PointsOut2D[4], new Point(PointsOut2D[4].X, pTip.Y), false, true);
 
                 Dimensions[10] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true);
-                Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[7], pTip, true, true);
+                Dimensions[11] = new CDimensionLinear(plateCenter, PointsOut2D[7], pTip, false, true);
                 Dimensions[12] = new CDimensionLinear(plateCenter, PointsOut2D[0], pTip, true, true, 55);
 
                 Dimensions[13] = new CDimensionLinear(plateCenter, PointsOut2D[0], PointsOut2D[7], true, true); // Kopia kvoli rovnakemu poctu kot, prerobit na iny pocet kot pre falling knee
