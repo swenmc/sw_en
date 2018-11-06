@@ -187,21 +187,6 @@ namespace EXPIMP
                 }
                 else if (o is TextBlock)
                 {
-                    // TODO - Ondrej - rotacia textu v PDF, nasiel som toto vyjadrenie
-                    /*
-                    Rotation is not a property of text but of the XGraphics class.
-                    Use the functions RotateTransform or RotateAtTransform.
-                    More generally use the Transform property to set an arbitrary transformation matrix.
-                    */
-
-                    // TO Ondrej - Nieco som skusal vid tento riadok, ale otaca to celou skupinou objektov v gfx, neviem ci sa bude dat otocit len samotny jeden textblock
-                    //gfx.RotateAtTransform(12, new XPoint(200, 200));
-
-                    // To Ondrej - Pozri tieto odkazy:), mozno to tam najdes, ja si na to ani netrufam :)
-                    // https://forum.pdfsharp.net/viewtopic.php?p=9591#p9591
-                    // https://www.opten.ch/blog/2014/01/16/vertical-text-in-a-migradoc-table-cell-using-pdfsharp/
-                    // https://csharp.hotexamples.com/examples/PdfSharp.Drawing/XGraphics/RotateTransform/php-xgraphics-rotatetransform-method-examples.html
-
                     TextBlock winText = o as TextBlock;
                     double angle = 0;
                     if (winText.RenderTransform is RotateTransform)

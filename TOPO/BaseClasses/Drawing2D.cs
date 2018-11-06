@@ -428,7 +428,7 @@ namespace BaseClasses
         private static List<CLine2D> ConvertRealPointsToCanvasDrawingPoints(List<CLine2D> lines, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
             if (lines == null) return new List<CLine2D>();
-
+            
             List<CLine2D> updatedLines = new List<CLine2D>(lines);
             foreach (CLine2D l in updatedLines)
             {

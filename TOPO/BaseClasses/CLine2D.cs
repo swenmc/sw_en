@@ -29,6 +29,8 @@ namespace BaseClasses
             set
             {
                 MP1 = value;
+                MX1 = MP1.X;
+                MY1 = MP1.Y;
             }
         }
 
@@ -42,6 +44,8 @@ namespace BaseClasses
             set
             {
                 MP2 = value;
+                MX2 = MP2.X;
+                MY2 = MP2.Y;
             }
         }
 
@@ -52,10 +56,10 @@ namespace BaseClasses
                 return MX1;
             }
 
-            set
-            {
-                MX1 = value;
-            }
+            //set
+            //{
+            //    MX1 = value;
+            //}
         }
 
         public double X2
@@ -65,10 +69,10 @@ namespace BaseClasses
                 return MX2;
             }
 
-            set
-            {
-                MX2 = value;
-            }
+            //set
+            //{
+            //    MX2 = value;
+            //}
         }
 
         public double Y1
@@ -78,10 +82,10 @@ namespace BaseClasses
                 return MY1;
             }
 
-            set
-            {
-                MY1 = value;
-            }
+            //set
+            //{
+            //    MY1 = value;
+            //}
         }
 
         public double Y2
@@ -91,10 +95,10 @@ namespace BaseClasses
                 return MY2;
             }
 
-            set
-            {
-                MY2 = value;
-            }
+            //set
+            //{
+            //    MY2 = value;
+            //}
         }
 
         //-------------------------------------------------------------------------
@@ -108,20 +112,16 @@ namespace BaseClasses
             MX2 = p2.X;
             MY1 = p1.Y;
             MY2 = p2.Y;
-        }
-        public CLine2D(float X1, float Y1, float X2, float Y2)
-        {
-            MX1 = X1;
-            MX2 = X2;
-            MY1 = Y1;
-            MY2 = Y2;
-        }
+        }        
         public CLine2D(double X1, double Y1, double X2, double Y2)
         {
             MX1 = X1;
             MX2 = X2;
             MY1 = Y1;
             MY2 = Y2;
+
+            P1 = new Point(MX1, MY1);
+            P2 = new Point(MX2, MY2);
         }
 
         public bool IntersectsLine(CLine2D comparedLine)

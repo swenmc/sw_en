@@ -739,6 +739,9 @@ namespace BaseClasses
 
             //Dimensions
             MirrorAboutX_ChangeYDimensionsCoordinates();
+
+            //CLine2D[]
+            MirrorAboutX_ChangeYLinesCoordinates();
         }
 
         private void MirrorAboutX_ChangeYDimensionsCoordinates()
@@ -748,6 +751,23 @@ namespace BaseClasses
                 foreach (CDimension d in Dimensions)
                 {
                     d.MirrorYCoordinates();
+                }
+            }
+        }
+        private void MirrorAboutX_ChangeYLinesCoordinates()
+        {
+            if (MemberOutlines != null)
+            {
+                foreach (CLine2D l in MemberOutlines)
+                {
+                    l.MirrorYCoordinates();
+                }
+            }
+            if (BendLines != null)
+            {
+                foreach (CLine2D l in BendLines)
+                {
+                    l.MirrorYCoordinates();
                 }
             }
         }
@@ -777,6 +797,9 @@ namespace BaseClasses
 
             //Dimensions
             MirrorAboutY_ChangeXDimensionsCoordinates();
+
+            //CLine2D[]
+            MirrorAboutY_ChangeXLinesCoordinates();
         }
 
         private void MirrorAboutY_ChangeXDimensionsCoordinates()
@@ -786,6 +809,24 @@ namespace BaseClasses
                 foreach (CDimension d in Dimensions)
                 {
                     d.MirrorXCoordinates();
+                }
+            }
+        }
+
+        private void MirrorAboutY_ChangeXLinesCoordinates()
+        {
+            if (MemberOutlines != null)
+            {
+                foreach (CLine2D l in MemberOutlines)
+                {
+                    l.MirrorXCoordinates();
+                }
+            }
+            if (BendLines != null)
+            {
+                foreach (CLine2D l in BendLines)
+                {
+                    l.MirrorXCoordinates();
                 }
             }
         }
@@ -815,6 +856,10 @@ namespace BaseClasses
 
             //DIMENSIONS
             TransformPlateDimensions_CW_deg(fTheta_deg);
+
+            //CLine2D[]
+            TransformPlateLines2D_CW_deg(fTheta_deg);
+
         }
 
         private void TransformPlateDimensions_CW_deg(double theta_deg)
@@ -838,6 +883,26 @@ namespace BaseClasses
                         da.ControlPointCenter = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointCenter);
                         da.ControlPointRef = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, da.ControlPointRef);
                     }
+                }
+            }
+        }
+
+        private void TransformPlateLines2D_CW_deg(double theta_deg)
+        {
+            if (MemberOutlines != null)
+            {
+                foreach (CLine2D l in MemberOutlines)
+                {
+                    l.P1 = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, l.P1);
+                    l.P2 = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, l.P2);
+                }
+            }
+            if (BendLines != null)
+            {
+                foreach (CLine2D l in BendLines)
+                {
+                    l.P1 = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, l.P1);
+                    l.P2 = Geom2D.TransformPositions_CW_deg(0, 0, theta_deg, l.P2);
                 }
             }
         }
