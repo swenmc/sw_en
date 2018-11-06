@@ -155,6 +155,10 @@
       <Project>{41236339-3F00-4767-8150-24B22A54E8D5}</Project>
       <Name>BaseClasses</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MATH\MATH.csproj">
+      <Project>{0E2ADCC8-209E-4FCC-9AC2-D0C7EEA8AC26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
     <ProjectReference Include="..\netDxf\netDxf.csproj">
       <Project>{785380e0-ceb9-4c34-82e5-60d0e33e848e}</Project>
       <Name>netDxf</Name>
