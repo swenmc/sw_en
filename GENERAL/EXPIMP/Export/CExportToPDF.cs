@@ -21,7 +21,8 @@ namespace EXPIMP
     public static class CExportToPDF
     {
         //private const string fontFamily = "Verdana";
-        private const string fontFamily = "Times New Roman";
+        //private const string fontFamily = "Times New Roman";
+        private const string fontFamily = "Calibri";
         private static string GetPDFNameForPlate(CPlate plate)
         {
             float fUnitFactor = 1000; // defined in m, exported in mm
