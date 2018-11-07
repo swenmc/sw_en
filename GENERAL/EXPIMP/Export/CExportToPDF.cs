@@ -20,6 +20,8 @@ namespace EXPIMP
 {
     public static class CExportToPDF
     {
+        //private const string fontFamily = "Verdana";
+        private const string fontFamily = "Times New Roman";
         private static string GetPDFNameForPlate(CPlate plate)
         {
             float fUnitFactor = 1000; // defined in m, exported in mm
@@ -240,7 +242,7 @@ namespace EXPIMP
 
         private static void DrawFSAddress(XGraphics gfx)
         {
-            XFont font = new XFont("Verdana", 6, XFontStyle.Regular);
+            XFont font = new XFont(fontFamily, 6, XFontStyle.Regular);
 
             string sLine1 = "Enquires to:";
             string sLine2 = "Formsteel Technologies Ltd";
@@ -263,8 +265,8 @@ namespace EXPIMP
         {
             // Set font encoding to unicode
             XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
-            XFont font = new XFont("Verdana", 12, XFontStyle.Regular, options);
-            XFont font2 = new XFont("Verdana", 12, XFontStyle.Underline, options);
+            XFont font = new XFont(fontFamily, 12, XFontStyle.Regular, options);
+            XFont font2 = new XFont(fontFamily, 12, XFontStyle.Underline, options);
 
             gfx.DrawString("Job Number: ", font, XBrushes.Black, 10, 20);
             if (jobNumber != null) gfx.DrawString(jobNumber, font, XBrushes.Black, 100, 20);
@@ -276,7 +278,7 @@ namespace EXPIMP
 
         private static void DrawProductionNotes(XGraphics gfx)
         {
-            XFont font = new XFont("Verdana", 12, XFontStyle.Regular);
+            XFont font = new XFont(fontFamily, 12, XFontStyle.Regular);
 
             string sNote1 = "Screw Holes - Pre Drill to Ø = 5.7 mm";
             gfx.DrawString(sNote1, font, XBrushes.Black, 200, 700);
@@ -396,8 +398,8 @@ namespace EXPIMP
 
             decimal platePitch = (decimal)Math.Round(Geom2D.RadiansToDegrees(Math.Abs(platePitch_rad)), 1); // Display absolute value in deg, 1 decimal place
             
-            XFont font1 = new XFont("Verdana", 14, XFontStyle.Bold);
-            XFont font2 = new XFont("Verdana", 12, XFontStyle.Regular);
+            XFont font1 = new XFont(fontFamily, 14, XFontStyle.Bold);
+            XFont font2 = new XFont(fontFamily, 12, XFontStyle.Regular);
 
             XTextFormatter tf = new XTextFormatter(gfx);
             tf.Alignment = XParagraphAlignment.Center;
@@ -548,6 +550,7 @@ namespace EXPIMP
             Section sec = document.AddSection();
             Table table = new Table();
             table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(7));
             column1.Format.Alignment = ParagraphAlignment.Left;            
@@ -560,11 +563,11 @@ namespace EXPIMP
 
             foreach (string[] strParams in tableParams)
             {
-                Row row = table.AddRow();
+                Row row = table.AddRow();                
                 //row.Shading.Color = Colors.PaleGoldenrod;
                 Cell cell = row.Cells[0];
                 cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
-                cell.AddParagraph(strParams[0]);
+                cell.AddParagraph(strParams[0]);                
                 cell = row.Cells[1];
                 cell.AddParagraph(strParams[1]);
                 cell = row.Cells[2];
