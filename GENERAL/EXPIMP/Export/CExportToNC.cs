@@ -12,7 +12,7 @@ namespace EXPIMP
 	{
         //--------------------------------------------------------------------------------------------------
         //--------------------------------------------------------------------------------------------------
-        public static string ExportPlateToNC(CPlate plate, float fUnitFactor)
+        public static string ExportPlateToNC(CPlate plate, float fUnitFactor, string folder)
         {
             //[name]_[width]x[height]_[type]_[number] example APEX_1400x720_HOLES_001 APEX_1400x720_SETUP_001 KNEE_850x1410_HOLES_001 KNEE_850x1410_SETUP_001 , 
             //vytvorit novy s dalsim vyssim cislom, generovat tak ze dvojica ma vzdy rovnaky suffix
@@ -23,25 +23,29 @@ namespace EXPIMP
                 int count = 0;
                 string fileNameHoles = null;
                 string fileNameSetup = null;
+                string fileNameHolesPath = null;
+                string fileNameSetupPath = null;
                 bool namesOK = false;
                 while (!namesOK)
                 {
                     count++;
                     fileNameHoles = string.Format("{0}_{1}x{2}_HOLES_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
                     fileNameSetup = string.Format("{0}_{1}x{2}_SETUP_{3:D3}.NC", GetPlateSerieName(plate), Math.Round(plate.fWidth_bx * fUnitFactor, 3), Math.Round(plate.fHeight_hy * fUnitFactor, 3), count);
+                    fileNameHolesPath = string.Format("{0}\\{1}", folder, fileNameHoles);
+                    fileNameSetupPath = string.Format("{0}\\{1}", folder, fileNameSetup);
 
-                    if (!File.Exists(fileNameHoles) && !File.Exists(fileNameSetup)) namesOK = true;
+                    if (!File.Exists(fileNameHolesPath) && !File.Exists(fileNameSetupPath)) namesOK = true;
                 }
 
                 if (plate.DrillingRoutePoints != null)
                 {
                     StringBuilder sbHoles = GetCNCFileContentForHoles(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
-                    File.WriteAllText(fileNameHoles, sbHoles.ToString());
+                    File.WriteAllText(fileNameHolesPath, sbHoles.ToString());
                     result += string.Format("File {0} has been created.\n", fileNameHoles);
                 }
 
                 StringBuilder sbSetup = GetCNCFileContentForSetup(plate.PointsOut2D, fUnitFactor);
-                File.WriteAllText(fileNameSetup, sbSetup.ToString());
+                File.WriteAllText(fileNameSetupPath, sbSetup.ToString());
                 result += string.Format("File {0} has been created.\n", fileNameSetup);
             }
             catch (Exception ex)

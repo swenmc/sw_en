@@ -1272,6 +1272,9 @@ namespace PFD
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
+            
+
+
             // Export of drilling route to the .nc files
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
@@ -1281,19 +1284,18 @@ namespace PFD
             }
             else if (vm.ComponentTypeIndex == 1)
             {
-                if (plate.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found. Only setup file is exported."); }
+                using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+                {
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        string folder = dialog.SelectedPath;
+                        float fUnitFactor = 1000; // defined in m, exported in mm
+                        if (plate.DrillingRoutePoints == null) { MessageBox.Show("Could not create NC file. Drilling route points not found. Only setup file is exported."); }
 
-                float fUnitFactor = 1000; // defined in m, exported in mm
-
-                //Export Plate to NC = create Setup and Holes NC files
-                MessageBox.Show(CExportToNC.ExportPlateToNC(plate, fUnitFactor));
-
-                //// Export drilling file
-                //if (plate.DrillingRoutePoints != null)
-                //    CExportToNC.ExportHolesToNC(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
-
-                //// Export setup file
-                //CExportToNC.ExportSetupToNC(plate.PointsOut2D, fUnitFactor);
+                        //Export Plate to NC = create Setup and Holes NC files
+                        MessageBox.Show(CExportToNC.ExportPlateToNC(plate, fUnitFactor, folder));
+                    }
+                }
             }
             else
             {
