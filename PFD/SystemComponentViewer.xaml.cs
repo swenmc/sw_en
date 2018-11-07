@@ -419,6 +419,10 @@ namespace PFD
                 panelOptionsTransform2D.Visibility = Visibility.Visible;
 
                 tabItemDoc.IsEnabled = false;
+                panelProductionInfo.Visibility = Visibility.Hidden;
+                BtnExportToPDF.Visibility = Visibility.Hidden;
+                BtnSavePlate.Visibility = Visibility.Hidden;
+                BtnLoadPlate.Visibility = Visibility.Hidden;
             }
             else if (vm.ComponentTypeIndex == 1) //plate
             {
@@ -471,6 +475,24 @@ namespace PFD
                     //BtnExportCNC.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
                     BtnShowCNCDrillingFile.IsEnabled = (plate.DrillingRoutePoints != null && plate.DrillingRoutePoints.Count > 0);
                 }
+                panelProductionInfo.Visibility = Visibility.Visible;
+                BtnExportToPDF.Visibility = Visibility.Visible;
+                BtnSavePlate.Visibility = Visibility.Visible;
+                BtnLoadPlate.Visibility = Visibility.Visible;
+                if (vm.ComponentSerieIndex == (int)ESerieTypePlate.eSerie_K)
+                {
+                    LabelAmountRH.Visibility = Visibility.Visible;
+                    TextBoxAmountRH.Visibility = Visibility.Visible;
+                    LabelAmountLH.Visibility = Visibility.Visible;
+                    TextBoxAmountLH.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    LabelAmountRH.Visibility = Visibility.Hidden;
+                    TextBoxAmountRH.Visibility = Visibility.Hidden;
+                    LabelAmountLH.Visibility = Visibility.Hidden;
+                    TextBoxAmountLH.Visibility = Visibility.Hidden;
+                }
             }
             else if (vm.ComponentTypeIndex == 2) //screw
             {
@@ -502,6 +524,11 @@ namespace PFD
                 panelOptionsTransform2D.Visibility = Visibility.Hidden;
 
                 tabItemDoc.IsEnabled = false;
+
+                panelProductionInfo.Visibility = Visibility.Hidden;
+                BtnExportToPDF.Visibility = Visibility.Hidden;
+                BtnSavePlate.Visibility = Visibility.Hidden;
+                BtnLoadPlate.Visibility = Visibility.Hidden;
             }
 
             //uncheck all Transformation Options
@@ -1946,9 +1973,10 @@ namespace PFD
                     CComponentParamsViewString oStr = o as CComponentParamsViewString;
                     list.Add(new string[] { o.Name, o.ShortCut, oStr.Value, o.Unit });
                 }
-            }  
+            }
+            CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
 
-            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFileForPlate(Frame2D.Content as Canvas, list, vm.JobNumber,  vm.Customer, vm.Amount, plate);
+            if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFileForPlate(Frame2D.Content as Canvas, list, plate, pInfo);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
         }
 

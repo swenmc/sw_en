@@ -44,7 +44,7 @@ namespace EXPIMP
             else return "PLATE";
         }
 
-        public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, string jobNumber, string customer, int amount, CPlate plate)
+        public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, CPlate plate, CProductionInfo pInfo)
         {
             PdfDocument s_document = new PdfDocument();
             s_document.Info.Title = "Export from FormSteel software";
@@ -55,7 +55,7 @@ namespace EXPIMP
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
-            DrawProductionInfo(gfx, jobNumber, customer, amount);
+            DrawProductionInfo(gfx, pInfo, plate);
             DrawPlateInfo(gfx, plate);
             DrawProductionNotes(gfx);
             DrawLogo(gfx);
@@ -261,7 +261,7 @@ namespace EXPIMP
             gfx.DrawString(sLine5, font, XBrushes.Black, dposition_x, dposition_y + 4 * drowheight);
         }
 
-        private static void DrawProductionInfo(XGraphics gfx, string jobNumber, string customer, int amount)
+        private static void DrawProductionInfo(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
         {
             // Set font encoding to unicode
             XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
@@ -269,11 +269,19 @@ namespace EXPIMP
             XFont font2 = new XFont(fontFamily, 12, XFontStyle.Underline, options);
 
             gfx.DrawString("Job Number: ", font, XBrushes.Black, 10, 20);
-            if (jobNumber != null) gfx.DrawString(jobNumber, font, XBrushes.Black, 100, 20);
+            if (pInfo.JobNumber != null) gfx.DrawString(pInfo.JobNumber, font, XBrushes.Black, 100, 20);
             gfx.DrawString("Customer: ", font, XBrushes.Black, 10, 40);
-            if(customer != null) gfx.DrawString(customer, font, XBrushes.Black, 100, 40);
+            if(pInfo.Customer != null) gfx.DrawString(pInfo.Customer, font, XBrushes.Black, 100, 40);
             gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 60);
-            gfx.DrawString(amount.ToString(), font, XBrushes.Black, 100, 60);
+            gfx.DrawString(pInfo.Amount.ToString(), font, XBrushes.Black, 100, 60);
+
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
+            {                
+                gfx.DrawString("RH: ", font, XBrushes.Black, 40, 80);
+                gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 100, 80);
+                gfx.DrawString("LH: ", font, XBrushes.Black, 40, 100);
+                gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 100, 100);
+            }
         }
 
         private static void DrawProductionNotes(XGraphics gfx)

@@ -74,6 +74,8 @@ namespace PFD
         private string MJobNumber;
         private string MCustomer;
         private int MAmount;
+        private int MAmountRH;
+        private int MAmountLH;
 
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
@@ -493,6 +495,50 @@ namespace PFD
             set
             {
                 MAmount = value;
+                MAmountRH = (int)(Math.Ceiling(MAmount / 2.0));
+                MAmountLH = MAmount - MAmountRH;
+
+                NotifyPropertyChanged("Amount");
+                NotifyPropertyChanged("AmountRH");
+                NotifyPropertyChanged("AmountLH");
+            }
+        }
+
+        public int AmountRH
+        {
+            get
+            {
+                return MAmountRH;
+            }
+
+            set
+            {
+                if (value <= Amount)
+                {
+                    MAmountRH = value;
+                    MAmountLH = Amount - AmountRH;                    
+                }
+                NotifyPropertyChanged("AmountRH");
+                NotifyPropertyChanged("AmountLH");
+            }
+        }
+
+        public int AmountLH
+        {
+            get
+            {
+                return MAmountLH;
+            }
+
+            set
+            {
+                if (value <= Amount)
+                {
+                    MAmountLH = value;
+                    MAmountRH = Amount - AmountLH;
+                }                    
+                NotifyPropertyChanged("AmountRH");
+                NotifyPropertyChanged("AmountLH");
             }
         }
 

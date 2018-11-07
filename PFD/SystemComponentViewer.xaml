@@ -110,6 +110,8 @@
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Production Info: " HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
                     <Label Name="LabelJobNumber" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1">Job Number:</Label>
@@ -117,7 +119,11 @@
                     <Label Name="LabelCustomer" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="2">Customer: </Label>
                     <TextBox Name="TextBoxCustomer" Grid.Column="1" Grid.Row="2" Text="{Binding Path=Customer}" MinWidth="150" Height="20" HorizontalAlignment="Left"></TextBox>
                     <Label Name="LabelAmount" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="3">Amount: </Label>
-                    <TextBox Name="TextBoxAmount" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Amount}" MinWidth="70" Height="20" HorizontalAlignment="Left"></TextBox>
+                    <TextBox Name="TextBoxAmount" Grid.Column="1" Grid.Row="3" Text="{Binding Path=Amount}" MinWidth="60" Height="20" HorizontalAlignment="Left"></TextBox>
+                    <Label Name="LabelAmountRH" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="4">RH:</Label>
+                    <TextBox Name="TextBoxAmountRH" Grid.Column="1" Grid.Row="4" Text="{Binding Path=AmountRH}" MinWidth="40" Height="20" HorizontalAlignment="Left"></TextBox>
+                    <Label Name="LabelAmountLH" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="5">LH:</Label>
+                    <TextBox Name="TextBoxAmountLH" Grid.Column="1" Grid.Row="5" Text="{Binding Path=AmountLH}" MinWidth="40" Height="20" HorizontalAlignment="Left"></TextBox>
                 </Grid>
                 
                 
