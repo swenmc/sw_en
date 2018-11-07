@@ -277,7 +277,9 @@ namespace EXPIMP
             gfx.DrawString(pInfo.Amount.ToString(), font, XBrushes.Black, 100, 60);
 
             if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
-            {                
+            {
+                if (plate is CConCom_Plate_KA) return;
+                if (plate is CConCom_Plate_KE) return;
                 gfx.DrawString("RH: ", font, XBrushes.Black, 40, 80);
                 gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 100, 80);
                 gfx.DrawString("LH: ", font, XBrushes.Black, 40, 100);

@@ -479,7 +479,7 @@ namespace PFD
                 BtnExportToPDF.Visibility = Visibility.Visible;
                 BtnSavePlate.Visibility = Visibility.Visible;
                 BtnLoadPlate.Visibility = Visibility.Visible;
-                if (vm.ComponentSerieIndex == (int)ESerieTypePlate.eSerie_K)
+                if (vm.ComponentSerieIndex == (int)ESerieTypePlate.eSerie_K && (vm.ComponentIndex != 0 && vm.ComponentIndex != 4))
                 {
                     LabelAmountRH.Visibility = Visibility.Visible;
                     TextBoxAmountRH.Visibility = Visibility.Visible;
