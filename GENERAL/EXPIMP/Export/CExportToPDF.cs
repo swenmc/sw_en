@@ -58,6 +58,7 @@ namespace EXPIMP
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             DrawProductionInfo(gfx, pInfo, plate);
             DrawPlateInfo(gfx, plate);
+            Draw3DScheme(gfx, plate);
             DrawProductionNotes(gfx);
             DrawLogo(gfx);
             DrawFSAddress(gfx);
@@ -74,7 +75,7 @@ namespace EXPIMP
             //new Paths().DrawPage(s_document.AddPage());
             //new Text().DrawPage(s_document.AddPage());
             //new Images().DrawPage(s_document.AddPage());
-                        
+
             PdfPage page2 = s_document.AddPage();
             XGraphics gfx2 = XGraphics.FromPdfPage(page2);
             AddTableToDocument(gfx2, 50, tableParams);
@@ -172,7 +173,7 @@ namespace EXPIMP
                                 xGrPath.AddLines(points.ToArray());
                             }
                         }
-                    }                    
+                    }
                     gfx.DrawPath(pen, xGrPath);
                 }
                 else if (o is Ellipse)
@@ -211,8 +212,8 @@ namespace EXPIMP
                         //System.Diagnostics.Trace.WriteLine(winText.Text);
                         //System.Diagnostics.Trace.WriteLine(rotTrans.Angle);
                         angle = rotTrans.Angle;
-                    }                    
-                    
+                    }
+
                     double x = Canvas.GetLeft(winText);
                     if(Math.Abs(angle) > 45) x += winText.ActualHeight * scaleFactor;
                     double y = Canvas.GetTop(winText);
@@ -225,7 +226,7 @@ namespace EXPIMP
 
                     XGraphicsState state = gfx.Save();
                     gfx.RotateAtTransform(angle, p);
-                    gfx.DrawString(winText.Text, f, solidBrush, p);                    
+                    gfx.DrawString(winText.Text, f, solidBrush, p);
                     gfx.Restore(state);
                 }
             }
@@ -239,6 +240,86 @@ namespace EXPIMP
 
             XImage image2 = XImage.FromFile(ConfigurationManager.AppSettings["confStampForPDF"]);
             gfx.DrawImage(image2, 220, 750);
+        }
+
+        private static void Draw3DScheme(XGraphics gfx, CPlate plate)
+        {
+            XImage image;
+            string sFileName = "";
+            float platePitch_rad = 0;
+
+            if (plate is CConCom_Plate_KB)
+            {
+                CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KB_RK";
+                else
+                    sFileName = "KB_FK";
+            }
+            else if (plate is CConCom_Plate_KBS)
+            {
+                CConCom_Plate_KBS plateTemp = (CConCom_Plate_KBS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KB_RK";
+                else
+                    sFileName = "KB_FK";
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC plateTemp = (CConCom_Plate_KC)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KC_RK";
+                else
+                    sFileName = "KC_FK";
+            }
+            else if (plate is CConCom_Plate_KCS)
+            {
+                CConCom_Plate_KCS plateTemp = (CConCom_Plate_KCS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KC_RK";
+                else
+                    sFileName = "KC_FK";
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD plateTemp = (CConCom_Plate_KD)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KD_RK";
+                else
+                    sFileName = "KD_FK";
+            }
+            else if (plate is CConCom_Plate_KDS)
+            {
+                CConCom_Plate_KDS plateTemp = (CConCom_Plate_KDS)plate;
+                platePitch_rad = plateTemp.FSlope_rad;
+
+                if (plateTemp.FSlope_rad > 0)
+                    sFileName = "KD_RK";
+                else
+                    sFileName = "KD_FK";
+            }
+            else
+            {
+                // Not defined
+                sFileName = "";
+            }
+
+            if (sFileName != "")
+            {
+                image = XImage.FromFile(ConfigurationManager.AppSettings[sFileName]);
+
+                gfx.DrawImage(image, 455, 3);
+            }
         }
 
         private static void DrawFSAddress(XGraphics gfx)
