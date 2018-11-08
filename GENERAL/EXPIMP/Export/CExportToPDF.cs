@@ -58,7 +58,7 @@ namespace EXPIMP
             // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
             DrawProductionInfo(gfx, pInfo, plate);
             DrawPlateInfo(gfx, plate);
-            Draw3DScheme(gfx, plate);
+            Draw3DScheme(gfx, pInfo, plate);
             DrawProductionNotes(gfx);
             DrawLogo(gfx);
             DrawFSAddress(gfx);
@@ -242,8 +242,10 @@ namespace EXPIMP
             gfx.DrawImage(image2, 220, 750);
         }
 
-        private static void Draw3DScheme(XGraphics gfx, CPlate plate)
+        private static void Draw3DScheme(XGraphics gfx, CProductionInfo pInfo, CPlate plate)
         {
+            // Display scheme
+
             XImage image;
             string sFileName = "";
             float platePitch_rad = 0;
@@ -318,7 +320,23 @@ namespace EXPIMP
             {
                 image = XImage.FromFile(ConfigurationManager.AppSettings[sFileName]);
 
-                gfx.DrawImage(image, 455, 3);
+                gfx.DrawImage(image, 458, 2);
+            }
+
+            // Display number of plates
+
+            // Set font encoding to unicode
+            XPdfFontOptions options = new XPdfFontOptions(PdfFontEncoding.Unicode, PdfFontEmbedding.Always);
+            XFont font = new XFont(fontFamily, 12, XFontStyle.Regular, options);
+
+            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
+            {
+                if (plate is CConCom_Plate_KA) return;
+                if (plate is CConCom_Plate_KE) return;
+                //gfx.DrawString("RH: ", font, XBrushes.Black, 460, 20);
+                gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 486, 75);
+                //gfx.DrawString("LH: ", font, XBrushes.Black, 480, 20);
+                gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 546, 58);
             }
         }
 
