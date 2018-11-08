@@ -250,7 +250,11 @@ namespace EXPIMP
             string sFileName = "";
             float platePitch_rad = 0;
 
-            if (plate is CConCom_Plate_KB)
+            if (plate is CConCom_Plate_JB || plate is CConCom_Plate_JBS)
+            {
+                sFileName = "JB";
+            }
+            else if (plate is CConCom_Plate_KB)
             {
                 CConCom_Plate_KB plateTemp = (CConCom_Plate_KB)plate;
                 platePitch_rad = plateTemp.FSlope_rad;
@@ -320,7 +324,10 @@ namespace EXPIMP
             {
                 image = XImage.FromFile(ConfigurationManager.AppSettings[sFileName]);
 
-                gfx.DrawImage(image, 458, 2);
+                if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_J) // J
+                    gfx.DrawImage(image, 120, 45);
+                else // K
+                    gfx.DrawImage(image, 458, 2);
             }
 
             // Display number of plates
