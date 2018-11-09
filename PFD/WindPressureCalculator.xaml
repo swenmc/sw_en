@@ -57,7 +57,7 @@
                          Text="{Binding Path=AnnualProbabilitySLS, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <Button Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" ToolTip="Info" HorizontalAlignment="Right" Name="WindSpeedChart" Width="20" Margin="0 0 10 0" Height="20">
+        <Button Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" ToolTip="Info" HorizontalAlignment="Right" Name="WindSpeedChart" Click="WindSpeedChart_Click" Width="20" Margin="0 0 10 0" Height="20">
             <StackPanel>
                 <Image Source="Resources/info.png"></Image>
             </StackPanel>
