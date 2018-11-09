@@ -26,7 +26,7 @@ namespace PFD
     {
         BuildingGeometryDataInput sGeometryInputData;
         public UC_Loads(BuildingGeometryDataInput geometryInputData)
-        {            
+        {
             InitializeComponent();
 
             sGeometryInputData = geometryInputData;

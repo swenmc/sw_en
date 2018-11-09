@@ -84,6 +84,9 @@
     <Compile Include="CDatabaseComponents.cs" />
     <Compile Include="MODELS\CModel_PFD_01_GR.cs" />
     <Compile Include="MODELS\CModel_PFD.cs" />
+    <Compile Include="SystemComponentViewer.xaml.cs">
+      <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SystemComponentViewerViewModel.cs" />
     <Compile Include="UC_InternalForces.xaml.cs">
       <DependentUpon>UC_InternalForces.xaml</DependentUpon>
@@ -124,9 +127,6 @@
     <Compile Include="ProgressBarDialog.xaml.cs">
       <DependentUpon>ProgressBarDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SystemComponentViewer.xaml.cs">
-      <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WindPressureCalculator.xaml.cs">
       <DependentUpon>WindPressureCalculator.xaml</DependentUpon>
     </Compile>
@@ -154,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="SystemComponentViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UC_InternalForces.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -191,8 +195,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UC_WindPressureCalculator.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UC_MaterialList.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -207,10 +211,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProgressBarDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SystemComponentViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
