@@ -285,6 +285,7 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <Button Content="Wind Pressure" Grid.Column="2" HorizontalAlignment="Left" Margin="90.667,53,0,0" Grid.Row="9" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         </Grid>
         <Grid Grid.Row="0" Grid.Column="2">
             <Grid.ColumnDefinitions>

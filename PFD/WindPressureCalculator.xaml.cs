@@ -22,7 +22,6 @@ namespace PFD
         public WindPressureCalculator()
         {
             InitializeComponent();
-            if (this.Content == null) this.Content = new UC_WindPressureCalculator();
         }
     }
 }

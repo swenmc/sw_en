@@ -115,9 +115,6 @@
     <Compile Include="UC_ComponentList.xaml.cs">
       <DependentUpon>UC_ComponentList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_WindPressureCalculator.xaml.cs">
-      <DependentUpon>UC_WindPressureCalculator.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UC_MaterialList.xaml.cs">
       <DependentUpon>UC_MaterialList.xaml</DependentUpon>
     </Compile>
@@ -191,10 +188,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UC_ComponentList.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UC_WindPressureCalculator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
