@@ -91,6 +91,9 @@
     <Compile Include="UC_JointDesign.xaml.cs">
       <DependentUpon>UC_JointDesign.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UC_Loads.xaml.cs">
+      <DependentUpon>UC_Loads.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UC_MemberDesign.xaml.cs">
       <DependentUpon>UC_MemberDesign.xaml</DependentUpon>
     </Compile>
@@ -109,8 +112,8 @@
     <Compile Include="UC_ComponentList.xaml.cs">
       <DependentUpon>UC_ComponentList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UC_Loads.xaml.cs">
-      <DependentUpon>UC_Loads.xaml</DependentUpon>
+    <Compile Include="UC_WindPressureCalculator.xaml.cs">
+      <DependentUpon>UC_WindPressureCalculator.xaml</DependentUpon>
     </Compile>
     <Compile Include="UC_MaterialList.xaml.cs">
       <DependentUpon>UC_MaterialList.xaml</DependentUpon>
@@ -123,6 +126,9 @@
     </Compile>
     <Compile Include="SystemComponentViewer.xaml.cs">
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindPressureCalculator.xaml.cs">
+      <DependentUpon>WindPressureCalculator.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindSpeedChart.xaml.cs">
       <DependentUpon>WindSpeedChart.xaml</DependentUpon>
@@ -156,6 +162,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UC_Loads.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UC_MemberDesign.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -180,7 +190,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UC_Loads.xaml">
+    <Page Include="UC_WindPressureCalculator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -201,6 +211,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SystemComponentViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindPressureCalculator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
