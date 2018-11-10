@@ -45,6 +45,8 @@ namespace PFD
             this.DataContext = vm;
 
             // TODO Ondrej - zobrazovat vsetky faktory v GUI na 3 desatinne miesta (staci zopar ako priklad, ostatne si dopracujem)
+            //do bindingu treba dat StringFormat=F3,
+
 
             // Calculate
             SetInputAndCalculateWindPressure();
@@ -106,7 +108,6 @@ namespace PFD
             vm.WindSpeed_VR = windCalcResults.fV_R_ULS; // ULS
             vm.WindSpeed_VsitBeta = MathF.Max(windCalcResults.fV_sit_ULS_Theta_4); // ULS
             vm.WindSpeed_VdesTheta = MathF.Max(windCalcResults.fV_des_ULS_Theta_4); // ULS
-
             vm.WindPressure_p_basic = MathF.Max(windCalcResults.fp_basic_ULS_Theta_4); // ULS
 
             // Cp

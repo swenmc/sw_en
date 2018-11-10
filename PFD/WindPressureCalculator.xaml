@@ -278,7 +278,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="8" Grid.Column="4" Name ="TextBox_WindSpeed_VsitBeta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindSpeed_VsitBeta, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=WindSpeed_VsitBeta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
 
@@ -286,7 +286,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_WindSpeed_VdesTheta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindSpeed_VdesTheta, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=WindSpeed_VdesTheta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
 
@@ -294,7 +294,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_WindPressure_p_basic" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindPressure_p_basic, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=WindPressure_p_basic, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
 
