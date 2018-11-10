@@ -94,6 +94,7 @@ namespace BaseClasses
                      null, // TODO - dodefinovat koty i pre prierezy
                      null,
                      null,
+                     null,
                      0,
                      0,
                      fmodelMarginLeft_x,
@@ -193,6 +194,9 @@ namespace BaseClasses
 
             canvasForImage.Children.Clear();
             if (plate != null)
+            {
+                CNote2D note2D = GetNoteForPlate(plate);                
+
                 DrawComponent(
                     bDrawPoints,
                     bDrawOutLine,
@@ -211,6 +215,7 @@ namespace BaseClasses
                     plate.Dimensions,
                     plate.MemberOutlines,
                     plate.BendLines,
+                    note2D,
                     fDiameter_screw * scale_unit,
                     fDiameter_anchor * scale_unit,
                     fmodelMarginLeft_x,
@@ -221,6 +226,35 @@ namespace BaseClasses
                     dPointInOutDistance_x_page,
                     true,
                     canvasForImage);
+            }
+        }
+
+        private static CNote2D GetNoteForPlate(CPlate plate)
+        {
+            CNote2D note2D = null;
+            if (plate is CConCom_Plate_KB)
+            {                
+                CConCom_Plate_KB kb = (CConCom_Plate_KB)plate;
+                Point plateCenter = Drawing2D.CalculateModelCenter(kb.PointsOut2D);
+                if (kb.pTip != null) note2D = new CNote2D(new Point(kb.pTip.X, kb.pTip.Y), "Trim Off", 50, 50, true, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
+                
+
+            }
+            else if (plate is CConCom_Plate_KC)
+            {
+                CConCom_Plate_KC kc = (CConCom_Plate_KC)plate;
+                Point plateCenter = Drawing2D.CalculateModelCenter(kc.PointsOut2D);
+                if (kc.pTip != null) note2D = new CNote2D(new Point(kc.pTip.X + 50, kc.pTip.Y + 50), "Trim Off", 50, 50, true, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
+
+            }
+            else if (plate is CConCom_Plate_KD)
+            {
+                CConCom_Plate_KD kd = (CConCom_Plate_KD)plate;
+                Point plateCenter = Drawing2D.CalculateModelCenter(kd.PointsOut2D);
+                if (kd.pTip != null) note2D = new CNote2D(new Point(kd.pTip.X + 50, kd.pTip.Y + 50), "Trim Off", 50, 50, true, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
+
+            }
+            return note2D;
         }
 
         public static void DrawScrewToCanvas(CScrew screw, double width, double height, ref Canvas canvasForImage, bool bDrawCentreSymbol)
@@ -293,6 +327,7 @@ namespace BaseClasses
             CDimension[] Dimensions,
             CLine2D[] MemberOutline,
             CLine2D[] BendLines,
+            CNote2D note2D,
             double dHolesDiameterScrews,
             double dHolesDiameterAnchors,
             float fmodelMarginLeft_x,
@@ -312,6 +347,7 @@ namespace BaseClasses
             List<CDimension> canvasDimensions = null;
             List<CLine2D> canvasMemberOutline = null;
             List<CLine2D> canvasBendLines = null;
+            CNote2D canvasNote2D = null;
 
             if (bPointsHaveYinUpDirection)
             {
@@ -323,6 +359,7 @@ namespace BaseClasses
                 canvasDimensions = MirrorYCoordinates(Dimensions);
                 canvasMemberOutline = MirrorYCoordinates(MemberOutline);
                 canvasBendLines = MirrorYCoordinates(BendLines);
+                if(note2D != null) note2D.MirrorYCoordinates();
             }
             else
             {
@@ -334,7 +371,6 @@ namespace BaseClasses
                 canvasDimensions = new List<CDimension>(Dimensions);
                 canvasMemberOutline = new List<CLine2D>(MemberOutline);
                 canvasBendLines = new List<CLine2D>(BendLines);
-
             }
 
             double minX = canvasPointsOut.Min(p => p.X);
@@ -348,6 +384,7 @@ namespace BaseClasses
             canvasDimensions = ConvertRealPointsToCanvasDrawingPoints(canvasDimensions, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasMemberOutline = ConvertRealPointsToCanvasDrawingPoints(canvasMemberOutline, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             canvasBendLines = ConvertRealPointsToCanvasDrawingPoints(canvasBendLines, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            canvasNote2D = ConvertRealPointsToCanvasDrawingPoints(note2D, minX, minY, fmodelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
 
             // Definition Points
             DrawComponentPoints(bDrawPoints, canvasPointsOut, canvasPointsIn, canvasForImage);
@@ -378,6 +415,9 @@ namespace BaseClasses
 
             // Bend Lines
             DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+
+            //Notes
+            if (note2D != null) DrawNote(note2D, canvasForImage);
         }
 
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
@@ -424,6 +464,13 @@ namespace BaseClasses
                 d.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
             }
             return updatedDimensions;
+        }
+        private static CNote2D ConvertRealPointsToCanvasDrawingPoints(CNote2D note2D, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
+        {
+            if (note2D == null) return note2D;
+
+            note2D.UpdatePoints(minX, minY, modelMarginLeft_x, fmodelMarginTop_y, dReal_Model_Zoom_Factor);
+            return note2D;
         }
         private static List<CLine2D> ConvertRealPointsToCanvasDrawingPoints(List<CLine2D> lines, double minX, double minY, float modelMarginLeft_x, float fmodelMarginTop_y, double dReal_Model_Zoom_Factor)
         {
@@ -872,6 +919,22 @@ namespace BaseClasses
             }
         }
 
+        public static void DrawNote(CNote2D note, Canvas canvasForImage)
+        {
+            //todo implementacion
+            DrawText(note.Text, note.NotePoint.X, note.NotePoint.Y, 0, 12, Brushes.Black, canvasForImage);
+
+            if (note.DrawArrow)
+            {
+                Line line = new Line();
+                line.X1 = note.ArrowPoint1.X;
+                line.Y1 = note.ArrowPoint1.Y;
+                line.X2 = note.ArrowPoint2.X;
+                line.Y2 = note.ArrowPoint2.Y;
+                DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Flat, PenLineCap.Triangle, 3, canvasForImage, null);
+            }
+        }
+
         public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
         {
             if (bDrawLines && lines != null && lines.Count > 0)
@@ -918,8 +981,11 @@ namespace BaseClasses
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
 
-            if (dashArray != null) myLine.StrokeDashArray = dashArray;
-            else myLine.StrokeDashArray = dashStyle.Dashes;            
+            if (dashStyle != null)
+            {
+                if (dashArray != null) myLine.StrokeDashArray = dashArray;
+                else myLine.StrokeDashArray = dashStyle.Dashes;
+            }            
 
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
