@@ -67,6 +67,17 @@ namespace PFD
 
         private float MAverageStructureHeight_h;
 
+        private float MWindSpeed_VR;
+        private float MWindSpeed_VsitBeta;
+        private float MWindSpeed_VdesTheta;
+
+        private float MWindPressure_p_basic;
+
+        private float MWindPressure_pimin;
+        private float MWindPressure_pimax;
+        private float MWindPressure_pemin;
+        private float MWindPressure_pemax;
+
         // Not in GUI
         private float MDesignLife_Value;
 
@@ -616,6 +627,136 @@ namespace PFD
             }
         }
 
+        // Results
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindSpeed_VR
+        {
+            get
+            {
+                return MWindSpeed_VR;
+            }
+
+            set
+            {
+                MWindSpeed_VR = value;
+
+                NotifyPropertyChanged("WindSpeed_VR");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindSpeed_VsitBeta
+        {
+            get
+            {
+                return MWindSpeed_VsitBeta;
+            }
+
+            set
+            {
+                MWindSpeed_VsitBeta = value;
+
+                NotifyPropertyChanged("WindSpeed_VsitBeta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindSpeed_VdesTheta
+        {
+            get
+            {
+                return MWindSpeed_VdesTheta;
+            }
+
+            set
+            {
+                MWindSpeed_VdesTheta = value;
+
+                NotifyPropertyChanged("WindSpeed_VdesTheta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_p_basic
+        {
+            get
+            {
+                return MWindPressure_p_basic;
+            }
+
+            set
+            {
+                MWindPressure_p_basic = value;
+
+                NotifyPropertyChanged("WindPressure_p_basic");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pimin
+        {
+            get
+            {
+                return MWindPressure_pimin;
+            }
+
+            set
+            {
+                MWindPressure_pimin = value;
+
+                NotifyPropertyChanged("WindPressure_pimin");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pimax
+        {
+            get
+            {
+                return MWindPressure_pimax;
+            }
+
+            set
+            {
+                MWindPressure_pimax = value;
+
+                NotifyPropertyChanged("WindPressure_pimax");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pemin
+        {
+            get
+            {
+                return MWindPressure_pemin;
+            }
+
+            set
+            {
+                MWindPressure_pemin = value;
+
+                NotifyPropertyChanged("WindPressure_pemin");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pemax
+        {
+            get
+            {
+                return MWindPressure_pemax;
+            }
+
+            set
+            {
+                MWindPressure_pemax = value;
+
+                NotifyPropertyChanged("WindPressure_pemax");
+            }
+        }
+
         // Not in GUI
         //-------------------------------------------------------------------------------------------------------------
         public float DesignLife_Value
@@ -698,7 +839,13 @@ namespace PFD
             DesignLifeIndex = 4;
             ImportanceClassIndex = 1;
 
-            SiteElevation = 10; // m
+            AnnualProbabilityULS_Wind = 0.002f; // TODO - Odstranit po napojeni nacitania z databazy
+            AnnualProbabilitySLS = 0.04f; // TODO - Odstranit po napojeni nacitania z databazy
+
+            MR_ULS_Wind = 500; // TODO - Odstranit po napojeni nacitania z databazy
+            MR_SLS = 25; // TODO - Odstranit po napojeni nacitania z databazy
+
+            SiteElevation = 5; // m
             WindRegionIndex = 6;
             TerrainCategoryIndex = 3;
             AngleWindDirectionIndex = 90;

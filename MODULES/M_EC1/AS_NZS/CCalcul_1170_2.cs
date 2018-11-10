@@ -48,8 +48,8 @@ namespace M_EC1.AS_NZS
         public float fC_dyn = 1.0f; // Dynamic response factor
 
         // Table 3.1
-        float fV_R_ULS; // m / s (ULS)
-        float fV_R_SLS; // m / s (SLS)
+        public float fV_R_ULS; // m / s (ULS)
+        public float fV_R_SLS; // m / s (SLS)
 
         public float[] fM_D_array_angles_360;
         public float[] fM_D_array_values_360;
@@ -68,9 +68,6 @@ namespace M_EC1.AS_NZS
 
         public float[] fV_des_ULS_Theta_4;
         public float[] fV_des_SLS_Theta_4;
-
-        public float[] fp_ULS_Theta_4;
-        public float[] fp_SLS_Theta_4;
 
         float fs_shielding; // Shielding parameter Table 4.3 
         public float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
@@ -135,6 +132,10 @@ namespace M_EC1.AS_NZS
         public float[] fC_fig_e_R_roof_values_max;
 
         // Output
+        // Basic values of wind pressure (4 directions)
+        public float[] fp_basic_ULS_Theta_4;
+        public float[] fp_basic_SLS_Theta_4;
+
         // Internal pressure
         public float[] fp_i_min_ULS_Theta_4;
         public float[] fp_i_min_SLS_Theta_4;
@@ -218,6 +219,10 @@ namespace M_EC1.AS_NZS
 
             fV_sit_ULS_Theta_9 = new float[9];
             fV_sit_SLS_Theta_9 = new float[9];
+
+            // Terrain-height multiplier
+            // Table 4.1
+            fM_z_cat = AS_NZS_1170_2.Table41_Interpolation_positive(fz, sWindInput.fTerrainCategory);
 
             // Calculate value of V_sit for each angle (0-360 deg)
             int j = 0;
@@ -490,6 +495,17 @@ namespace M_EC1.AS_NZS
             }
 
             // Surface pressures
+            // Basic pressure Cfig = 1.0, Cdyn = 1.0
+
+            fp_basic_ULS_Theta_4 = new float[4];
+            fp_basic_SLS_Theta_4 = new float[4];
+
+            for (int i = 0; i < fp_basic_ULS_Theta_4.Length; i++)
+            {
+                fp_basic_ULS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_ULS_Theta_4[i], 1.0f, 1.0f);
+                fp_basic_SLS_Theta_4[i] = AS_NZS_1170_2.Eq_24_1____(fRho_air, fV_des_SLS_Theta_4[i], 1.0f, 1.0f);
+            }
+
             // Internal presssure
 
             fp_i_min_ULS_Theta_4 = new float[4];

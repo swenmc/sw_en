@@ -266,5 +266,26 @@ namespace M_EC1.AS_NZS
                 return 0;
             }
         }
+
+        static float[,] arrTable4_1 = new float[12, 7]
+            {
+            {003f,   0.990f, 0.950f, 0.910f, 0.870f, 0.830f, 0.750f },
+            {005f,   1.050f, 0.980f, 0.910f, 0.870f, 0.830f, 0.750f },
+            {010f,   1.120f, 1.060f, 1.000f, 0.915f, 0.830f, 0.750f },
+            {015f,   1.160f, 1.105f, 1.050f, 0.970f, 0.890f, 0.750f },
+            {020f,   1.190f, 1.135f, 1.080f, 1.010f, 0.940f, 0.750f },
+            {030f,   1.220f, 1.170f, 1.120f, 1.060f, 1.000f, 0.800f },
+            {040f,   1.240f, 1.200f, 1.160f, 1.100f, 1.040f, 0.850f },
+            {050f,   1.250f, 1.215f, 1.180f, 1.125f, 1.070f, 0.900f },
+            {075f,   1.270f, 1.245f, 1.220f, 1.170f, 1.120f, 0.980f },
+            {100f,   1.290f, 1.265f, 1.240f, 1.200f, 1.160f, 1.030f },
+            {150f,   1.310f, 1.290f, 1.270f, 1.240f, 1.210f, 1.110f },
+            {200f,   1.320f, 1.305f, 1.290f, 1.265f, 1.240f, 1.160f }
+            };
+
+        public static float Table41_Interpolation_positive(float fz, float fTerrainCategory)
+        {
+            return arrTable4_1[0, 4]; // TODO !!!! - zapracovat linearnu interpolaciu pre vysku
+        }
     }
 }

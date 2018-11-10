@@ -103,6 +103,13 @@ namespace PFD
             vm.CombinationFactorExternalPressures_Kce = windCalcResults.fK_ce;
             vm.CombinationFactorExternalPressures_Kci = windCalcResults.fK_ci;
 
+            vm.WindSpeed_VR = windCalcResults.fV_R_ULS; // ULS
+            vm.WindSpeed_VsitBeta = MathF.Max(windCalcResults.fV_sit_ULS_Theta_4); // ULS
+            vm.WindSpeed_VdesTheta = MathF.Max(windCalcResults.fV_des_ULS_Theta_4); // ULS
+
+            vm.WindPressure_p_basic = MathF.Max(windCalcResults.fp_basic_ULS_Theta_4); // ULS
+
+            // Cp
             vm.InternalPressureCoefficient_Cpimin = windCalcResults.fC_pi_min;
             vm.InternalPressureCoefficient_Cpimax = windCalcResults.fC_pi_max;
 
@@ -119,6 +126,7 @@ namespace PFD
             vm.ExternalPressureCoefficient_Cpemin = MathF.Min(fExternalPressureCoefficient_Cpemin_U, fExternalPressureCoefficient_Cpemin_D, fExternalPressureCoefficient_Cpemin_R);
             vm.ExternalPressureCoefficient_Cpemax = MathF.Max(fExternalPressureCoefficient_Cpemax_U, fExternalPressureCoefficient_Cpemax_D, fExternalPressureCoefficient_Cpemax_R);
 
+            // Cfig
             vm.AerodynamicShapeFactor_Cfigimin = windCalcResults.fC_fig_i_min;
             vm.AerodynamicShapeFactor_Cfigimax = windCalcResults.fC_fig_i_max;
 
@@ -134,6 +142,23 @@ namespace PFD
 
             vm.AerodynamicShapeFactor_Cfigemin = MathF.Min(fAerodynamicShapeFactor_Cfigemin_U, fAerodynamicShapeFactor_Cfigemin_D, fAerodynamicShapeFactor_Cfigemin_R);
             vm.AerodynamicShapeFactor_Cfigemax = MathF.Min(fAerodynamicShapeFactor_Cfigemax_U, fAerodynamicShapeFactor_Cfigemax_D, fAerodynamicShapeFactor_Cfigemax_R);
+
+            // Pressures - ULS
+
+            vm.WindPressure_pimin = MathF.Min(windCalcResults.fp_i_min_ULS_Theta_4); // ULS
+            vm.WindPressure_pimax = MathF.Min(windCalcResults.fp_i_max_ULS_Theta_4); // ULS
+
+            float fWindPressure_pemin_U = MathF.Min(windCalcResults.fp_e_min_U_roof_ULS_Theta_4); // ULS
+            float fWindPressure_pemax_U = MathF.Max(windCalcResults.fp_e_max_U_roof_ULS_Theta_4); // ULS
+
+            float fWindPressure_pemin_D = MathF.Min(windCalcResults.fp_e_min_D_roof_ULS_Theta_4); // ULS
+            float fWindPressure_pemax_D = MathF.Max(windCalcResults.fp_e_max_D_roof_ULS_Theta_4); // ULS
+
+            float fWindPressure_pemin_R = MathF.Min(windCalcResults.fp_e_min_R_roof_ULS_Theta_4); // ULS
+            float fWindPressure_pemax_R = MathF.Max(windCalcResults.fp_e_max_R_roof_ULS_Theta_4); // ULS
+
+            vm.WindPressure_pemin = MathF.Min(fWindPressure_pemin_U, fWindPressure_pemin_D, fWindPressure_pemin_R);
+            vm.WindPressure_pemax = MathF.Min(fWindPressure_pemax_U, fWindPressure_pemax_D, fWindPressure_pemax_R);
         }
 
         private void WindSpeedChart_Click(object sender, RoutedEventArgs e)

@@ -59,6 +59,24 @@ namespace MATH
         {
             return data.Max();
         }
+
+        // Min Max from multi-dimensional array
+        public static float Min( float[,] data)
+        {
+            IEnumerable<float> allValues = data.Cast<float>();
+            return allValues.Min();
+
+            //return (from float v in data select v).Min();
+        }
+
+        public static float Max(float[,] data)
+        {
+            IEnumerable<float> allValues = data.Cast<float>();
+            return allValues.Max();
+
+            //return (from float v in data select v).Max();
+        }
+
         #endregion
         //----------------------------------------------------------------------------------------------------------------------------
         // Equality of real numbers / Rovnost realnych cisel (float a double)
