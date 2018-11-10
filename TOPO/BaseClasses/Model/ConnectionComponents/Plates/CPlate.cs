@@ -715,7 +715,7 @@ namespace BaseClasses
 
         // Modification
         // Mirror plate about x
-        public void MirrorPlateAboutX()
+        public virtual void MirrorPlateAboutX()
         {
             Geom2D.MirrorAboutX_ChangeYCoordinates(ref PointsOut2D);
             //Geom3D.MirrorAboutX_ChangeYCoordinates(ref arrPoints3D);
@@ -773,7 +773,7 @@ namespace BaseClasses
         }
 
         // Mirror plate about y
-        public void MirrorPlateAboutY()
+        public virtual void MirrorPlateAboutY()
         {
             Geom2D.MirrorAboutY_ChangeXCoordinates(ref PointsOut2D);
             //Geom3D.MirrorAboutY_ChangeXCoordinates(ref arrPoints3D);
@@ -832,7 +832,7 @@ namespace BaseClasses
         }
 
         // Rotate plate
-        public void RotatePlateAboutZ_CW(float fTheta_deg)
+        public virtual void RotatePlateAboutZ_CW(float fTheta_deg)
         {
             Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, ref PointsOut2D);
             //Geom3D.TransformPositionsAboutZ_CW_deg(new Point3D(0, 0, 0), fTheta_deg, ref arrPoints3D);

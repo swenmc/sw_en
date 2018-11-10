@@ -173,12 +173,24 @@ namespace PFD
             if (sender == null) return;
             if (sender is WindPressureCalculatorViewModel)
             {
-                // Calculate
-                //SetInputAndCalculateWindPressure();
+                if (IsInputProperty(e.PropertyName))
+                {
+                    // Calculate
+                    SetInputAndCalculateWindPressure();
 
-                // Set Resutls
-                //SetOutputValues();
+                    // Set Resutls
+                    SetOutputValues();
+                }
             }
         }
+
+        private bool IsInputProperty(string propName)
+        {
+            List<string> list = new List<string>() { "DesignLife_Value", "ImportanceClassIndex", "AnnualProbabilityULS_Wind", "AnnualProbabilitySLS", "R_ULS_Wind", "R_SLS",
+                "GableWidth", "Length", "WallHeight", "RoofPitch_deg", "ApexHeigth_H_2", "WindRegion", "AngleWindDirectionIndex", "TerrainCategoryIndex"};
+
+            return list.Contains(propName);
+        }
+
     }
 }

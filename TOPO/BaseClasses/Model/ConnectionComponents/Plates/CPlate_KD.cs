@@ -597,5 +597,26 @@ namespace BaseClasses
 
             return wireFrame;
         }
+
+        public override void MirrorPlateAboutX()
+        {
+            pTip.Y *= -1;
+
+            base.MirrorPlateAboutX();
+        }
+
+        public override void MirrorPlateAboutY()
+        {
+            pTip.X *= -1;
+
+            base.MirrorPlateAboutY();
+        }
+
+        public override void RotatePlateAboutZ_CW(float fTheta_deg)
+        {
+            pTip = Geom2D.TransformPositions_CW_deg(0, 0, fTheta_deg, pTip);
+
+            base.RotatePlateAboutZ_CW(fTheta_deg);
+        }
     }
 }
