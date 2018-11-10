@@ -924,15 +924,15 @@ namespace BaseClasses
             //todo implementacion
             DrawText(note.Text, note.NotePoint.X, note.NotePoint.Y, 0, 12, Brushes.Black, canvasForImage);
 
-            if (note.DrawArrow)
-            {
-                Line line = new Line();
-                line.X1 = note.ArrowPoint1.X;
-                line.Y1 = note.ArrowPoint1.Y;
-                line.X2 = note.ArrowPoint2.X;
-                line.Y2 = note.ArrowPoint2.Y;
-                DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Flat, PenLineCap.Triangle, 3, canvasForImage, null);
-            }
+            //if (note.DrawArrow)
+            //{
+            //    Line line = new Line();
+            //    line.X1 = note.ArrowPoint1.X;
+            //    line.Y1 = note.ArrowPoint1.Y;
+            //    line.X2 = note.ArrowPoint2.X;
+            //    line.Y2 = note.ArrowPoint2.Y;
+            //    DrawLine(line, new SolidColorBrush(Colors.Red), PenLineCap.Flat, PenLineCap.Triangle, 3, canvasForImage, null);
+            //}
         }
 
         public static void DrawSeparateLines(bool bDrawLines, List<CLine2D> lines, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas canvasForImage)
