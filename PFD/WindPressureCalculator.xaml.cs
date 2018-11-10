@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BaseClasses;
+using MATH;
 
 namespace PFD
 {
@@ -21,6 +22,11 @@ namespace PFD
     public partial class WindPressureCalculator : Window
     {
         BuildingGeometryDataInput sGeometryInputData;
+        WindPressureCalculatorViewModel input;
+        BuildingDataInput sBuildingInputData;
+        WindLoadDataInput sWindInputData;
+        M_EC1.AS_NZS.CCalcul_1170_2 windCalcResults;
+
         public WindPressureCalculator()
         {
             InitializeComponent();
@@ -34,72 +40,119 @@ namespace PFD
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
 
-            loadInputComboboxIndexes sloadInputComboBoxes;
+            WindPressureCalculatorViewModel vm = new WindPressureCalculatorViewModel();
+            vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
+            this.DataContext = vm;
 
-            sloadInputComboBoxes.LocationIndex = 0;
-            sloadInputComboBoxes.DesignLifeIndex = 4;
-            sloadInputComboBoxes.ExposureCategoryIndex = 0;
-            sloadInputComboBoxes.SiteSubSoilClassIndex = 1;
-            sloadInputComboBoxes.ImportanceLevelIndex = 1;
-            sloadInputComboBoxes.TerrainCategoryIndex = 0;
-            sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
+            // TODO Ondrej - zobrazovat vsetky faktory v GUI na 3 desatinne miesta (staci zopar ako priklad, ostatne si dopracujem)
 
-            loadInputTextBoxValues sloadInputTextBoxes;
+            // Calculate
+            SetInputAndCalculateWindPressure();
 
-            sloadInputTextBoxes.SiteElevation = 30;               // m  // nastavovat tu - zavisi od Location Index
-            sloadInputTextBoxes.FaultDistanceDmin_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
-            sloadInputTextBoxes.FaultDistanceDmax_km = 0f;        // km // nastavovat tu - zavisi od Location Index (osetrit nacitanie z databazy, ak je null)
-            sloadInputTextBoxes.PeriodAlongXDirectionTx = 0.4f;
-            sloadInputTextBoxes.PeriodAlongYDirectionTy = 0.4f;
-            sloadInputTextBoxes.AdditionalDeadActionRoof = 0f;    // kN / m^2
-            sloadInputTextBoxes.AdditionalDeadActionWall = 0f;    // kN / m^2
-            sloadInputTextBoxes.ImposedActionRoof = 0.25f; // kN / m^2
+            // Set Resutls
+            SetOutputValues();
+        }
 
-            TextBox_Gable_Width.Text = "20";
-            TextBox_Wall_Height.Text = "5";
-            TextBox_Length.Text = "30";
-            TextBox_Roof_Pitch.Text = "5";
+        private void SetInputAndCalculateWindPressure()
+        {
+            // Set current input data
+            input = this.DataContext as WindPressureCalculatorViewModel;
+            // Basic data
+            sBuildingInputData.location = ELocation.eAuckland; // Temp - nepouzije sa ???
+            sBuildingInputData.fDesignLife_Value = input.DesignLife_Value;                   // Database value in years
+            sBuildingInputData.iImportanceClass = input.ImportanceClassIndex + 1;            // Importance Level (index + 1)
 
-            sGeometryInputData.fW = 20;
-            sGeometryInputData.fH_1 = 5;
-            sGeometryInputData.fL = 30;
-            sGeometryInputData.fRoofPitch_deg = 5;
+            sBuildingInputData.fAnnualProbabilityULS_Snow = 0.0f; // Temp - nepouzije sa
+            sBuildingInputData.fAnnualProbabilityULS_Wind = input.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
+            sBuildingInputData.fAnnualProbabilityULS_EQ = 0.0f; // Temp - nepouzije sa
+            sBuildingInputData.fAnnualProbabilitySLS = input.AnnualProbabilitySLS;           // Annual Probability of Exceedence SLS
 
-            sGeometryInputData.fH_2 = 7; // Dopocitat
+            sBuildingInputData.fR_ULS_Snow = 0.0f; // Temp - nepouzije sa
+            sBuildingInputData.fR_ULS_Wind = input.R_ULS_Wind;
+            sBuildingInputData.fR_ULS_EQ = 0.0f; // Temp - nepouzije sa
+            sBuildingInputData.fR_SLS = input.R_SLS;
 
-            // Loading
-            CPFDLoadInput loadinput = new CPFDLoadInput(sloadInputComboBoxes, sloadInputTextBoxes);
-            this.DataContext = loadinput;
+            sGeometryInputData.fW = input.GableWidth;
+            sGeometryInputData.fL = input.Length;
+            sGeometryInputData.fH_1 = input.WallHeight;
+            sGeometryInputData.fRoofPitch_deg = input.RoofPitch_deg;
+            sGeometryInputData.fH_2 = input.ApexHeigth_H_2;
+
+            sWindInputData.eWindRegion = input.WindRegion;
+            sWindInputData.iAngleWindDirection = input.AngleWindDirectionIndex;
+            sWindInputData.fTerrainCategory = input.TerrainCategoryIndex;
+
+            // Calculate
+            windCalcResults = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
+        }
+
+        private void SetOutputValues()
+        {
+            WindPressureCalculatorViewModel vm = this.DataContext as WindPressureCalculatorViewModel;
+
+            // Set results
+            vm.TopographicMultiplier_Mt = windCalcResults.fM_t;
+            vm.HillShapeMultiplier_Mh = windCalcResults.fM_h;
+            vm.ShieldingMultiplier_Ms = windCalcResults.fM_s;
+            //vm.WindDirectionMultiplier_Md;
+            vm.TerrainHeightMultiplier_Mzcat = windCalcResults.fM_z_cat;
+
+            vm.AreaReductionFactor_Ka = windCalcResults.fK_a_roof;
+            vm.LocalPressureFactor_Kl = windCalcResults.fK_l;
+            vm.PorousCladdingReductionFactor_Kp = windCalcResults.fK_p;
+            vm.CombinationFactorExternalPressures_Kce = windCalcResults.fK_ce;
+            vm.CombinationFactorExternalPressures_Kci = windCalcResults.fK_ci;
+
+            vm.InternalPressureCoefficient_Cpimin = windCalcResults.fC_pi_min;
+            vm.InternalPressureCoefficient_Cpimax = windCalcResults.fC_pi_max;
+
+            // ROOF
+            float fExternalPressureCoefficient_Cpemin_U = MathF.Min(windCalcResults.fC_pe_U_roof_values_min);
+            float fExternalPressureCoefficient_Cpemax_U = MathF.Max(windCalcResults.fC_pe_U_roof_values_max);
+
+            float fExternalPressureCoefficient_Cpemin_D = MathF.Min(windCalcResults.fC_pe_D_roof_values_min);
+            float fExternalPressureCoefficient_Cpemax_D = MathF.Max(windCalcResults.fC_pe_D_roof_values_max);
+
+            float fExternalPressureCoefficient_Cpemin_R = MathF.Min(windCalcResults.fC_pe_R_roof_values_min);
+            float fExternalPressureCoefficient_Cpemax_R = MathF.Max(windCalcResults.fC_pe_R_roof_values_max);
+
+            vm.ExternalPressureCoefficient_Cpemin = MathF.Min(fExternalPressureCoefficient_Cpemin_U, fExternalPressureCoefficient_Cpemin_D, fExternalPressureCoefficient_Cpemin_R);
+            vm.ExternalPressureCoefficient_Cpemax = MathF.Max(fExternalPressureCoefficient_Cpemax_U, fExternalPressureCoefficient_Cpemax_D, fExternalPressureCoefficient_Cpemax_R);
+
+            vm.AerodynamicShapeFactor_Cfigimin = windCalcResults.fC_fig_i_min;
+            vm.AerodynamicShapeFactor_Cfigimax = windCalcResults.fC_fig_i_max;
+
+            // ROOF
+            float fAerodynamicShapeFactor_Cfigemin_U = MathF.Min(windCalcResults.fC_fig_e_U_roof_values_min);
+            float fAerodynamicShapeFactor_Cfigemax_U = MathF.Max(windCalcResults.fC_fig_e_U_roof_values_max);
+
+            float fAerodynamicShapeFactor_Cfigemin_D = MathF.Min(windCalcResults.fC_fig_e_D_roof_values_min);
+            float fAerodynamicShapeFactor_Cfigemax_D = MathF.Max(windCalcResults.fC_fig_e_D_roof_values_max);
+
+            float fAerodynamicShapeFactor_Cfigemin_R = MathF.Min(windCalcResults.fC_fig_e_R_roof_values_min);
+            float fAerodynamicShapeFactor_Cfigemax_R = MathF.Max(windCalcResults.fC_fig_e_R_roof_values_max);
+
+            vm.AerodynamicShapeFactor_Cfigemin = MathF.Min(fAerodynamicShapeFactor_Cfigemin_U, fAerodynamicShapeFactor_Cfigemin_D, fAerodynamicShapeFactor_Cfigemin_R);
+            vm.AerodynamicShapeFactor_Cfigemax = MathF.Min(fAerodynamicShapeFactor_Cfigemax_U, fAerodynamicShapeFactor_Cfigemax_D, fAerodynamicShapeFactor_Cfigemax_R);
         }
 
         private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
         {
-            CPFDLoadInput loadinput = this.DataContext as CPFDLoadInput;
-            // Basic data
-            BuildingDataInput sBuildingInputData;
-            sBuildingInputData.location = (ELocation)loadinput.LocationIndex;                    // locations (cities) enum
-            sBuildingInputData.fDesignLife_Value = loadinput.DesignLife_Value;                   // Database value in years
-            sBuildingInputData.iImportanceClass = loadinput.ImportanceClassIndex + 1;            // Importance Level (index + 1)
-
-            sBuildingInputData.fAnnualProbabilityULS_Snow = loadinput.AnnualProbabilityULS_Snow; // Annual Probability of Exceedence ULS - Snow
-            sBuildingInputData.fAnnualProbabilityULS_Wind = loadinput.AnnualProbabilityULS_Wind; // Annual Probability of Exceedence ULS - Wind
-            sBuildingInputData.fAnnualProbabilityULS_EQ = loadinput.AnnualProbabilityULS_EQ;     // Annual Probability of Exceedence ULS - EQ
-            sBuildingInputData.fAnnualProbabilitySLS = loadinput.AnnualProbabilitySLS;           // Annual Probability of Exceedence SLS
-
-            sBuildingInputData.fR_ULS_Snow = loadinput.R_ULS_Snow;
-            sBuildingInputData.fR_ULS_Wind = loadinput.R_ULS_Wind;
-            sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
-            sBuildingInputData.fR_SLS = loadinput.R_SLS;
-
-            WindLoadDataInput sWindInputData;
-            sWindInputData.eWindRegion = loadinput.WindRegion;
-            sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
-            sWindInputData.fTerrainCategory = loadinput.TerrainCategoryIndex;
-
-            M_EC1.AS_NZS.CCalcul_1170_2 wind = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
-
-            WindSpeedChart wind_chart = new WindSpeedChart(wind);
+            WindSpeedChart wind_chart = new WindSpeedChart(windCalcResults);
             wind_chart.Show();
+        }
+
+        private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
+            if (sender is WindPressureCalculatorViewModel)
+            {
+                // Calculate
+                //SetInputAndCalculateWindPressure();
+
+                // Set Resutls
+                //SetOutputValues();
+            }
         }
     }
 }

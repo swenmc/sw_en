@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Wind Pressure Calculator"  Height="2000" Width="800">
+        Title="Wind Pressure Calculator"  Height="1250" Width="930">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -17,28 +17,12 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
@@ -101,6 +85,8 @@
         <TextBox Grid.Row="4" Grid.Column="1" Name ="TextBox_SiteElevation" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=SiteElevation, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
         
         <TextBlock Grid.Row="5" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -136,32 +122,35 @@
         <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_TopographicMultiplier_Mt" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=TopographicMultiplier_Mt, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="11" Grid.Column="0" Text="Topographic Multiplier M s:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="11" Grid.Column="0" Text="Shielding Multiplier M s:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_TopographicMultiplier_Ms" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_ShieldingMultiplier_Ms" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=TopographicMultiplier_Ms, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="12" Grid.Column="0" Text="Topographic Multiplier M d:" HorizontalAlignment="Left" 
+                         Text="{Binding Path=ShieldingMultiplier_Ms, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="12" Grid.Column="0" Text="Wind Direction Multiplier M d:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_TopographicMultiplier_Md" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_WindDirectionMultiplier_Md" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=TopographicMultiplier_Md, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="13" Grid.Column="0" Text="Topographic Multiplier M z.cat:" HorizontalAlignment="Left" 
+                         Text="{Binding Path=WindDirectionMultiplier_Md, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="13" Grid.Column="0" Text="Terrain/height Multiplier M z.cat:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_TopographicMultiplier_Mzcat" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=TopographicMultiplier_Mzcat, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_TerrainHeightMultiplier_Mzcat" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=TerrainHeightMultiplier_Mzcat, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         
         <TextBlock Grid.Row="15" Grid.Column="0" Text="Tributary Area A:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_TributaryArea_A" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=TributaryArea_A, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m²]" VerticalAlignment="Top"/>
+        
         <TextBlock Grid.Row="16" Grid.Column="0" Text="Area Reduction Factor Ka:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_AreaReductionFactor_Ka" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=AreaReductionFactor_Ka_Ka, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=AreaReductionFactor_Ka, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="17" Grid.Column="0" Text="Local Pressure Factor Kl:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -190,89 +179,90 @@
         <TextBlock Grid.Row="22" Grid.Column="0" Text="Internal Pressure Coefficient Cpi.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="22" Grid.Column="1" Name ="TextBox_InternalPressureCoefficient_Cpimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=Factor_InternalPressureCoefficient_Cpimin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=InternalPressureCoefficient_Cpimin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="23" Grid.Column="0" Text="Internal Pressure Coefficient Cpi.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_InternalPressureCoefficient_Cpimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=InternalPressureCoefficient_Cpimax, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="24" Grid.Column="0" Text="External Pressure Coefficient Cpe.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_ExternalPressureCoefficient_Cpemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ExternalPressureCoefficient_Cpemin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="25" Grid.Column="0" Text="External Pressure Coefficient Cpe.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="25" Grid.Column="1" Name ="TextBox_ExternalPressureCoefficient_Cpemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ExternalPressureCoefficient_Cpemax, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="26" Grid.Column="0" Text="Aerodynamic Shape Factor Cfig.i.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="26" Grid.Column="1" Name ="TextBox_AerodynamicShapeFactor_Cfigimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigimin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="27" Grid.Column="0" Text="Aerodynamic Shape Factor Cfig.i.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="27" Grid.Column="1" Name ="TextBox_AerodynamicShapeFactor_Cfigimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=Factor_AerodynamicShapeFactor_Cfigimax, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=AerodynamicShapeFactor_Cfigimax, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="28" Grid.Column="0" Text="Aerodynamic Shape Factor Cfig.e.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="28" Grid.Column="1" Name ="TextBox_AerodynamicShapeFactor_Cfigemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigemin, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="29" Grid.Column="0" Text="Aerodynamic Shape Factor Cfig.e.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="29" Grid.Column="1" Name ="TextBox_AerodynamicShapeFactor_Cfigemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigemax, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="40" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
+        <!-- Second Input Column -->
+        <TextBlock Grid.Row="0" Grid.Column="3" Text="Gable Width:" HorizontalAlignment="Left" Margin="5,0" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="40" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=GableWidth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="40" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="41" Grid.Column="0" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="Length:" HorizontalAlignment="Left" Margin="5,0"
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="41" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"  
+        <TextBox Grid.Row="1" Grid.Column="4" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=Length, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="41" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="42" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="Wall Height:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBox Grid.Row="42" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="2" Grid.Column="4" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=WallHeight, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="42" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="43" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="3" Grid.Column="3" Text="Roof Pitch:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBox Grid.Row="43" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="3" Grid.Column="4" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=RoofPitch_deg, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="43" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="3" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="44" Grid.Column="0" Text="Average Structure Height h:" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="4" Grid.Column="3" Text="Average Structure Height h:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBox Grid.Row="44" Grid.Column="1" Name ="TextBox_AverageStructureHeight_h" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="4" Grid.Column="4" Name ="TextBox_AverageStructureHeight_h" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=AverageStructureHeight_h, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="44" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="4" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
         
     </Grid>

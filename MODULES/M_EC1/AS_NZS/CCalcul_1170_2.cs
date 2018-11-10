@@ -27,6 +27,25 @@ namespace M_EC1.AS_NZS
         BuildingDataInput sBuildInput;
         BuildingGeometryDataInput sGeometryInput;
         WindLoadDataInput sWindInput;
+        public float fE_meters = 0;
+        public float fM_lee = 1.0f; // TODO load from database
+        public float fM_h = 1.0f;
+        public float fRoofArea = 0; // Moznost zadat alebo spocitat
+
+        public float fK_a_roof = 1.0f;
+        public float fK_a_wall_0or180 = 1.0f;
+        public float fK_a_wall_90or270 = 1.0f;
+
+        // 5.4.4 Local pressure factor(K l) for cladding
+        public float fK_l = 1f; // K_l - local pressure factor, as given in Paragraph D1.3
+        // Table 5.7 - reduction factor(Kr) due to parapets
+        // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
+        public float fK_p = 1f; // K_p - net porosity factor, as given in Paragraph D1.4
+
+        public float fK_ce = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ci = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+
+        public float fC_dyn = 1.0f; // Dynamic response factor
 
         // Table 3.1
         float fV_R_ULS; // m / s (ULS)
@@ -54,15 +73,15 @@ namespace M_EC1.AS_NZS
         public float[] fp_SLS_Theta_4;
 
         float fs_shielding; // Shielding parameter Table 4.3 
-        float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
-        float fM_t = 1.0f;  // Topographic multiplier (Cl 4.4)
+        public float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
+        public float fM_t = 1.0f;  // Topographic multiplier (Cl 4.4)
 
         float fSiteTerrainSlope_Phi = 1/20; // 3 deg
         float fSiteTerrainSlope_Phi_deg = 3;
 
-        float fM_z_cat; // Terrain multiplier
+        public float fM_z_cat; // Terrain multiplier
         float fz_max; // m
-        float fz;
+        public float fz;
         float fRho_air = 1.2f; // kgm^3
 
         // Cp factors and segments
@@ -92,28 +111,28 @@ namespace M_EC1.AS_NZS
         public float[] fC_pe_R_roof_values_max;
 
         // Cfig factors and segments
-        float fC_fig_i_min;
-        float fC_fig_i_max;
+        public float fC_fig_i_min;
+        public float fC_fig_i_max;
 
         // Wall
-        float fC_fig_e_W_wall_0or180;
-        float fC_fig_e_W_wall_90or270;
+        public float fC_fig_e_W_wall_0or180;
+        public float fC_fig_e_W_wall_90or270;
 
-        float fC_fig_e_L_wall_0or180;
-        float fC_fig_e_L_wall_90or270;
+        public float fC_fig_e_L_wall_0or180;
+        public float fC_fig_e_L_wall_90or270;
 
         // Roof
-        float[] fC_fig_e_S_wall_0or180;
-        float[] fC_fig_e_S_wall_90or270;
+        public float[] fC_fig_e_S_wall_0or180;
+        public float[] fC_fig_e_S_wall_90or270;
 
-        float[] fC_fig_e_U_roof_values_min;
-        float[] fC_fig_e_U_roof_values_max;
+        public float[] fC_fig_e_U_roof_values_min;
+        public float[] fC_fig_e_U_roof_values_max;
 
-        float[] fC_fig_e_D_roof_values_min;
-        float[] fC_fig_e_D_roof_values_max;
+        public float[] fC_fig_e_D_roof_values_min;
+        public float[] fC_fig_e_D_roof_values_max;
 
-        float[] fC_fig_e_R_roof_values_min;
-        float[] fC_fig_e_R_roof_values_max;
+        public float[] fC_fig_e_R_roof_values_min;
+        public float[] fC_fig_e_R_roof_values_max;
 
         // Output
         // Internal pressure
@@ -185,11 +204,9 @@ namespace M_EC1.AS_NZS
             // M_t
             bool bConsiderHillSlope = false;
 
-            float fE_meters = 0;
             if (bConsiderHillSlope)
             {
-                float fM_lee = 1.0f; // TODO load from database
-                float fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz); // TODO - fill values
+                fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz); // TODO - fill values
                 fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, fE_meters);
             }
 
@@ -408,25 +425,16 @@ namespace M_EC1.AS_NZS
             Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
 
             // 5.4.2 Area reduction factor(Ka) for roofs and side walls
-            float fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
+            fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
             float fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
             float fWallArea_90or270 = sGeometryInput.fH_1 * sGeometryInput.fW + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) * sGeometryInput.fW; // Gable Roof
 
             fx = new float[5] { 0, 10, 25, 100, 9999 };
             fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
 
-            float fK_a_roof = ArrayF.GetLinearInterpolationValuePositive(fRoofArea, fx, fy);
-            float fK_a_wall_0or180 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_0or180, fx, fy);
-            float fK_a_wall_90or270 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_90or270, fx, fy);
-
-            // 5.4.4 Local pressure factor(K l) for cladding
-            float fK_l = 1f; // K_l - local pressure factor, as given in Paragraph D1.3
-            // Table 5.7 - reduction factor(Kr) due to parapets
-            // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
-            float fK_p = 1f; // K_p - net porosity factor, as given in Paragraph D1.4
-
-            float fK_ce = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-            float fK_ci = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_a_roof = ArrayF.GetLinearInterpolationValuePositive(fRoofArea, fx, fy);
+            fK_a_wall_0or180 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_0or180, fx, fy);
+            fK_a_wall_90or270 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_90or270, fx, fy);
 
             // Aerodynamic shape factor (C fig)
             // Internal and external pressure factors
@@ -437,7 +445,6 @@ namespace M_EC1.AS_NZS
 
             // External pressure
             // Walls
-
             fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
             fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
@@ -481,8 +488,6 @@ namespace M_EC1.AS_NZS
                 fC_fig_e_R_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
                 fC_fig_e_R_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
             }
-
-            float fC_dyn = 1.0f; // Dynamic response factor
 
             // Surface pressures
             // Internal presssure

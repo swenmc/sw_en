@@ -87,6 +87,7 @@
     <Compile Include="SystemComponentViewer.xaml.cs">
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindPressureCalculatorViewModel.cs" />
     <Compile Include="SystemComponentViewerViewModel.cs" />
     <Compile Include="UC_InternalForces.xaml.cs">
       <DependentUpon>UC_InternalForces.xaml</DependentUpon>
