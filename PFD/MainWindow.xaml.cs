@@ -1501,5 +1501,11 @@ namespace PFD
                 MessageBox.Show(text);
             });
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            WindPressureCalculator win = new WindPressureCalculator();
+            win.Show();
+        }
     }
 }

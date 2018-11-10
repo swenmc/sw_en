@@ -161,7 +161,7 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sGeometryInput.fH_2; // Set height of building
+            fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ???
 
             // Regional wind speed - AS/NZS 1170.2 Table 3.1
             fV_R_ULS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_ULS_Wind, sWindInput.eWindRegion); //m /s (ULS)
@@ -279,8 +279,8 @@ namespace M_EC1.AS_NZS
             */
 
             // Internal pressure
-            fC_pi_min = -0.2f;
-            fC_pi_max = 0.0f;
+            fC_pi_min = -0.3f; // Underpressure
+            fC_pi_max = 0.0f; // Overpressure
 
             // External pressure
 

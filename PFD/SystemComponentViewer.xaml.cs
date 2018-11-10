@@ -2050,12 +2050,6 @@ namespace PFD
             else return 0;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            WindPressureCalculator win = new WindPressureCalculator();
-            win.Show();
-        }
-
         //private void RedrawComponentIn2D()
         //{
         //    SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;

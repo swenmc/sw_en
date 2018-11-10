@@ -282,6 +282,9 @@
                 <Button Name="SystemComponentViewer" Content="Component Viewer" Height="20" Width="120" Margin="0 0 10 0" Click="SystemComponentViewer_Click"/>
                 <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>
 
+                <!--Temporary-->
+                <Button Content="Wind Pressure" Grid.Column="2" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="Button_Click"/>
+
             </StackPanel>
         </StackPanel>
         
