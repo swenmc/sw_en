@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MATH;
+using MATH.ARRAY;
 using BaseClasses;
 using DATABASE;
 
@@ -151,7 +152,7 @@ namespace M_EC1.AS_NZS
             float fL_1 = Math.Max(0.36f * fL_u, 0.4f * fH);
             float fL_2 = MathF.Max(1.44f * fL_u, 1.6f * fH);
 
-            if(bIsEscarpment)
+            if (bIsEscarpment)
                 fL_2 = MathF.Max(3.6f * fL_u, 4f * fH);
 
             if (fH_2Lu_ratio < 0.05f)
@@ -285,7 +286,56 @@ namespace M_EC1.AS_NZS
 
         public static float Table41_Interpolation_positive(float fz, float fTerrainCategory)
         {
-            return arrTable4_1[0, 4]; // TODO !!!! - zapracovat linearnu interpolaciu pre vysku
+            bool bCalculate = false;
+            float fMultiplier_M_z_cat;
+
+            if (bCalculate)
+            {
+                float fz_0 = 2f * (float)Math.Pow(10f, fTerrainCategory - 4);
+                fMultiplier_M_z_cat = (float)Math.Log(fz / fz_0);
+
+                float fu_asterix = 0.4f; // friction velocity ???? rozne hodnoty
+                float fk_vonKarman = 0.4f; // von Karman constant usually taken as 0.4
+                float fV = (fu_asterix / fk_vonKarman) * (float)Math.Log(fz / fz_0);
+
+                return fMultiplier_M_z_cat;
+            }
+            else // Get interpolated value from table
+            {
+                float []fz_values = new float [12] {003f, 005f, 010f, 015f, 020f, 030f, 040f, 050f, 075f, 100f, 150f, 200f};
+
+                int iColumnIndex = 1; // Index 0 - z values
+
+                // Set column value - depends on Terrain Category
+                if (MathF.d_equal(fTerrainCategory, 1.0f))
+                    iColumnIndex = 1;
+                else if (MathF.d_equal(fTerrainCategory, 1.5f))
+                    iColumnIndex = 2;
+                else if (MathF.d_equal(fTerrainCategory, 2.0f))
+                    iColumnIndex = 3;
+                else if (MathF.d_equal(fTerrainCategory, 2.5f))
+                    iColumnIndex = 4;
+                else if (MathF.d_equal(fTerrainCategory, 3.0f))
+                    iColumnIndex = 5;
+                else if (MathF.d_equal(fTerrainCategory, 4.0f))
+                    iColumnIndex = 6;
+                else
+                {
+                    // Invalid index
+                    iColumnIndex = -1;
+                }
+
+                if (iColumnIndex > 0)
+                {
+                    float[] fM_z_cat_values = ArrayF.GetSpecificIndexColumnValuesFromArray2D(arrTable4_1, iColumnIndex);
+
+                    return ArrayF.GetLinearInterpolationValuePositive(fz, fz_values, fM_z_cat_values);
+                }
+                else
+                    return 0; // Invalid value of multiplier
+            }
         }
+
+
     }
 }

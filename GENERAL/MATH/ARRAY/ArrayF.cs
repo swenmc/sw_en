@@ -215,5 +215,20 @@ namespace MATH.ARRAY
                 return 0; // Error
             }
         }
+
+        public static float[] GetSpecificIndexColumnValuesFromArray2D(float[,] arr, int iColumnIndex)
+        {
+            int iNumberOfRows = arr.GetLength(0);
+            int iNumberOfColumns = arr.GetLength(1);
+
+            float[] outputArray = new float[iNumberOfRows];
+
+            for (int i = 0; i < iNumberOfRows; i++)
+            {
+                outputArray[i] = arr[i, iColumnIndex];
+            }
+
+            return outputArray;
+        }
     }
 }
