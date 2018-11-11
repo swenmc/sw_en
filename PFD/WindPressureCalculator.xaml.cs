@@ -82,7 +82,7 @@ namespace PFD
 
             sWindInputData.eWindRegion = input.WindRegion;
             sWindInputData.iAngleWindDirection = input.AngleWindDirectionIndex;
-            sWindInputData.fTerrainCategory = input.TerrainCategoryIndex;
+            sWindInputData.fTerrainCategory = GetTerrainCategory(input.TerrainCategoryIndex);
 
             // Calculate
             windCalcResults = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
@@ -186,11 +186,61 @@ namespace PFD
 
         private bool IsInputProperty(string propName)
         {
-            List<string> list = new List<string>() { "DesignLife_Value", "ImportanceClassIndex", "AnnualProbabilityULS_Wind", "AnnualProbabilitySLS", "R_ULS_Wind", "R_SLS",
-                "GableWidth", "Length", "WallHeight", "RoofPitch_deg", "ApexHeigth_H_2", "WindRegion", "AngleWindDirectionIndex", "TerrainCategoryIndex"};
+            List<string> list = new List<string>()
+            {   "DesignLife_Value",
+                "ImportanceClassIndex",
+                "AnnualProbabilityULS_Wind",
+                "AnnualProbabilitySLS",
+                "R_ULS_Wind",
+                "R_SLS",
+                "SiteElevation",
+
+                "WindRegion",
+                "TerrainCategoryIndex",
+                "AngleWindDirectionIndex",
+
+                "LeeMultiplier_Mlee",
+                //"TopographicMultiplier_Mt",
+                //"HillShapeMultiplier_Mh",
+                //"ShieldingMultiplier_Ms",
+                //"WindDirectionMultiplier_Md",
+                "TributaryArea_A",
+                //"AreaReductionFactor_Ka",
+                //"LocalPressureFactor_Kl",
+                //"PorousCladdingReductionFactor_Kp",
+                //"CombinationFactorExternalPressures_Kce",
+                //"CombinationFactorExternalPressures_Kci",
+
+                "GableWidth",
+                "Length",
+                "WallHeight",
+                "RoofPitch_deg",
+                "ApexHeigth_H_2"
+                //"AverageStructureHeight_h"
+            };
 
             return list.Contains(propName);
         }
 
+        private float GetTerrainCategory(int iCategoryIndex) // TODO - prerobit na nacitanie z databazy
+        {
+            if (iCategoryIndex == 0)
+                return 1.0f;
+            else if (iCategoryIndex == 1)
+                return 1.5f;
+            else if (iCategoryIndex == 2)
+                return 2.0f;
+            else if (iCategoryIndex == 3)
+                return 2.5f;
+            else if (iCategoryIndex == 4)
+                return 3.0f;
+            else if (iCategoryIndex == 5)
+                return 4.0f;
+            else
+            {
+                // Invalid index
+                return -1;
+            }
+        }
     }
 }

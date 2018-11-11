@@ -39,7 +39,7 @@ namespace PFD
             CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ExposureReductionCoefficient", "categoryName", Combobox_ExposureCategory);
             CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "WindRegions", "windRegion", Combobox_WindRegion);
             CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "ASNZS1170_2_421_THM_category", "terrainCategory_abb", Combobox_TerrainCategory);
-            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);            
+            CComboBoxHelper.FillComboboxValues("MainSQLiteDB", "SiteSubSoilClass", "class", Combobox_SiteSubSoilClass);
 
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
@@ -99,12 +99,33 @@ namespace PFD
             WindLoadDataInput sWindInputData;
             sWindInputData.eWindRegion = loadinput.WindRegion;
             sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
-            sWindInputData.fTerrainCategory = loadinput.TerrainCategoryIndex;
+            sWindInputData.fTerrainCategory = GetTerrainCategory(loadinput.TerrainCategoryIndex);
 
             M_EC1.AS_NZS.CCalcul_1170_2 wind = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
 
             WindSpeedChart wind_chart = new WindSpeedChart(wind);
             wind_chart.Show();
+        }
+
+        private float GetTerrainCategory(int iCategoryIndex) // TODO - prerobit na nacitanie z databazy
+        {
+            if (iCategoryIndex == 0)
+                return 1.0f;
+            else if (iCategoryIndex == 1)
+                return 1.5f;
+            else if (iCategoryIndex == 2)
+                return 2.0f;
+            else if (iCategoryIndex == 3)
+                return 2.5f;
+            else if (iCategoryIndex == 4)
+                return 3.0f;
+            else if (iCategoryIndex == 5)
+                return 4.0f;
+            else
+            {
+                // Invalid index
+                return -1;
+            }
         }
     }
 }
