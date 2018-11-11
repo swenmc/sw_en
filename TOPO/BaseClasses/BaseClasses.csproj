@@ -87,7 +87,6 @@
     <Compile Include="CLine2D.cs" />
     <Compile Include="CNote2D.cs" />
     <Compile Include="CProductionInfo.cs" />
-    <Compile Include="FractionConverter.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="GraphObj\CDimension.cs" />
     <Compile Include="GraphObj\CDimensionArc.cs" />

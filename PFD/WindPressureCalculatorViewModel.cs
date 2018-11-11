@@ -103,10 +103,8 @@ namespace PFD
             {
                 MDesignLifeIndex = value;
 
-                // TODO Ondrej - napojit, aby to bolo zjednotene, pouzit funkcie v CPFDLoadInput
-
-                //SetDesignLifeValueFromDatabaseValues();
-                //SetAnnualProbabilityValuesFromDatabaseValues();
+                DesignLife_Value = CDatabaseManager.GetDesignLifeValueFromDatabase(MDesignLifeIndex);
+                SetAnnualProbabilityValuesFromDatabaseValues();
 
                 NotifyPropertyChanged("DesignLifeIndex");
             }
@@ -123,10 +121,8 @@ namespace PFD
             set
             {
                 MImportanceClassIndex = value;
-
-                // TODO Ondrej - napojit, aby to bolo zjednotene, pouzit funkcie v CPFDLoadInput
-
-                //SetAnnualProbabilityValuesFromDatabaseValues();
+                
+                SetAnnualProbabilityValuesFromDatabaseValues();
 
                 NotifyPropertyChanged("ImportanceClassIndex");
             }
@@ -943,6 +939,21 @@ namespace PFD
         private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             this.PropertyChanged(sender, e);
+        }
+
+        protected void SetAnnualProbabilityValuesFromDatabaseValues()
+        {
+            CAnnualProbability prob = CDatabaseManager.GetAnnualProbabilityValuesFromDatabase(DesignLifeIndex, ImportanceClassIndex);
+
+            AnnualProbabilityULS_Wind = prob.AnnualProbabilityULS_Wind;
+            //AnnualProbabilityULS_Snow = prob.AnnualProbabilityULS_Snow;
+            //AnnualProbabilityULS_EQ = prob.AnnualProbabilityULS_EQ;
+            AnnualProbabilitySLS = prob.AnnualProbabilitySLS;
+
+            R_ULS_Wind = prob.R_ULS_Wind;
+            //R_ULS_Snow = prob.R_ULS_Snow;
+            //R_ULS_EQ = prob.R_ULS_EQ;
+            R_SLS = prob.R_SLS;
         }
     }
 }

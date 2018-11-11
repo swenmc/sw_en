@@ -8,6 +8,8 @@ using System.Data.SQLite;
 using System.Configuration;
 using System.Globalization;
 using BaseClasses;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -88,7 +90,8 @@ namespace PFD
             {
                 MDesignLifeIndex = value;
 
-                SetDesignLifeValueFromDatabaseValues();
+                DesignLife_Value = CDatabaseManager.GetDesignLifeValueFromDatabase(MDesignLifeIndex);
+                
                 SetAnnualProbabilityValuesFromDatabaseValues();
 
                 NotifyPropertyChanged("DesignLifeIndex");
@@ -682,32 +685,7 @@ namespace PFD
             }
         }
 
-        protected void SetDesignLifeValueFromDatabaseValues()
-        {
-            NumberFormatInfo nfi = new NumberFormatInfo();
-            nfi.NumberDecimalSeparator = ".";
-
-            // Connect to database
-            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
-            {
-                conn.Open();
-                SQLiteDataReader reader = null;
-                string sTableName = "ASNZS1170_Tab3_3_DWL";
-
-                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where ID = '" + DesignLifeIndex + "'", conn);
-
-                using (reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        DesignLife_Value = float.Parse(reader["time_in_years"].ToString(), nfi);
-                    }
-                }
-
-                reader.Close();
-            }
-
-        }
+        
 
         protected void SetLocationDependentDataFromDatabaseValues()
         {
@@ -785,104 +763,21 @@ namespace PFD
 
         protected void SetAnnualProbabilityValuesFromDatabaseValues()
         {
-            // Connect to database
-            using (conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["MainSQLiteDB"].ConnectionString))
-            {
-                /*
-                AnnualProbabilityULS_Wind = 1f / 250f;
-                AnnualProbabilityULS_Snow = 1f / 250f;
-                AnnualProbabilityULS_EQ = 1f / 250f;
-                AnnualProbabilitySLS = 1f / 25f;
-                */
+            CAnnualProbability prob = CDatabaseManager.GetAnnualProbabilityValuesFromDatabase(DesignLifeIndex, ImportanceClassIndex);
 
-                conn.Open();
-                SQLiteDataReader reader = null;
-                string sTableName = "ASNZS1170_Tab3_3_APOE";
-
-                // TODO - Ondrej - SQL subquery in database
-                // vybrat vsetky riadky s designWorkingLife_ID a z uz vybranych riadkov vybrat vsetky riadky s 
-                // s uvedenym importanceLevel_ID
-                // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
-                // TODO Mato - Ak je to OK, tak koment vymazat
-                // 26.09.2018 - TO Ondrej, nefunguje to - ten SQL dodaz nie je spravny, malo by to nacitavat hodnoty podla kombinacie stlpcov designWorkingLife_ID a importanceLevel_ID
-                // berie to podla importanceLevel_ID
-
-                //SQLiteCommand command = new SQLiteCommand(
-                //    "Select * from " +
-                //    " ( " +
-                //    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
-                //    "')," +
-                //    " ( " +
-                //    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
-                //    "')"
-                //    , conn);
-
-                // tak este raz...ak je to OK, tak zmazat vsetky predosle komenty
-                SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where designWorkingLife_ID = @designLifeIndex AND importanceLevel_ID = @importanceClassIndex", conn);
-                command.Parameters.AddWithValue("@designLifeIndex", DesignLifeIndex);
-                command.Parameters.AddWithValue("@importanceClassIndex", ImportanceClassIndex);
-
-                using (reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        //SnowRegionIndex = int.Parse(reader["snow_zone"].ToString());
-                        //WindRegionIndex = int.Parse(reader["wind_zone"].ToString());
-
-                        // TODO - Ondrej osetrit pripady ked nie je v databaze vyplnena hodnota
-                        // Osetrit ako nacitat zlomok zadany ako string v databaze do float
-                        // Bolo by super ak by sa zlomok v textboxe zobrazoval ako zlomok a potom sa previedol na float az vo vypocte
-                        // uzivatel by mohol zadavat do textboxu zlomok x / y alebo priamo float
-
-                        // TODO Ondrej - pridal som tuto triedu pre zadavanie zlomkov ako riesenie vyssie uvedeneho, mozes sa na to prosim pozriet a pripadne ju presunut na nejake bazove miesto aby sa dala pre GUI pouzivat univerzalne
-                        // Pridana trieda "FractionConverter.cs" - presunut inam ???
-
-                        /*
-                        AnnualProbabilityULS_Wind = float.Parse(reader["apoeULS_Wind"].ToString());
-                        AnnualProbabilityULS_Snow = float.Parse(reader["apoeULS_Snow"].ToString());
-                        AnnualProbabilityULS_EQ = float.Parse(reader["apoeULS_Earthquake"].ToString());
-                        AnnualProbabilitySLS = float.Parse(reader["SLS1"].ToString());
-                        float AnnualProbabilitySLS_2 = float.Parse(reader["SLS2"].ToString());
-                        */
-                        string sAnnualProbabilityULS_Wind = reader["apoeULS_Wind"].ToString();
-                        string sAnnualProbabilityULS_Snow = reader["apoeULS_Snow"].ToString();
-                        string sAnnualProbabilityULS_EQ = reader["apoeULS_Earthquake"].ToString();
-                        string sAnnualProbabilitySLS1 = reader["SLS1"].ToString();
-                        string sAnnualProbabilitySLS2 = "";
-                        try
-                        {
-                            if (!reader.IsDBNull(reader.GetOrdinal("SLS2")))
-                            {
-                                sAnnualProbabilitySLS2 = reader["SLS2"].ToString();
-                            }
-                        }
-                        catch (ArgumentNullException) { }
-
-                        AnnualProbabilityULS_Wind = (float)FractionConverter.Convert(sAnnualProbabilityULS_Wind);
-                        AnnualProbabilityULS_Snow = (float)FractionConverter.Convert(sAnnualProbabilityULS_Snow);
-                        AnnualProbabilityULS_EQ = (float)FractionConverter.Convert(sAnnualProbabilityULS_EQ);
-                        AnnualProbabilitySLS = (float)FractionConverter.Convert(sAnnualProbabilitySLS1);
-
-                        //TODO Martin - doriesit SLS1 a SLS2
-                        //AnnualProbabilitySLS2 = (float)FractionConverter.Convert(sAnnualProbabilitySLS2);
-
-                        R_ULS_Wind = float.Parse(reader["R_ULS_Wind_inyears"].ToString());
-                        R_ULS_Snow = float.Parse(reader["R_ULS_Snow_inyears"].ToString());
-                        R_ULS_EQ = float.Parse(reader["R_ULS_Earthquake_inyears"].ToString());
-
-                        try
-                        {
-                            if (!reader.IsDBNull(reader.GetOrdinal("R_SLS1_inyears")))
-                            {
-                                R_SLS = float.Parse(reader["R_SLS1_inyears"].ToString());
-                            }
-                        }
-                        catch (ArgumentNullException) { }
-                    }
-                }
-
-                reader.Close();
-            }
+            AnnualProbabilityULS_Wind = prob.AnnualProbabilityULS_Wind;
+            AnnualProbabilityULS_Snow = prob.AnnualProbabilityULS_Snow;
+            AnnualProbabilityULS_EQ = prob.AnnualProbabilityULS_EQ;
+            AnnualProbabilitySLS = prob.AnnualProbabilitySLS;
+            
+            R_ULS_Wind = prob.R_ULS_Wind;
+            R_ULS_Snow = prob.R_ULS_Snow;
+            R_ULS_EQ = prob.R_ULS_EQ;
+            R_SLS = prob.R_SLS;
         }
+
+
+
+
     }
 }
