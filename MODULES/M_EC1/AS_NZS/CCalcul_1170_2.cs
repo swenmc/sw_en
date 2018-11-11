@@ -204,6 +204,23 @@ namespace M_EC1.AS_NZS
             fK_ce = 0.8f;
             fK_ci = 1.0f;
 
+            // M_s
+            float fl_s = 1000f;    // Average spacing of shielding buildings
+            float fh_s = 0.1f;     // Average roof height of shielding buildings
+            float fb_s = 0.1f;     // Average breadth of shielding buildings, normal to the wind stream
+            int in_s = 1;          // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
+            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fH_2, in_s);
+            SetShieldingMultiplier();
+
+            // M_t
+            bool bConsiderHillSlope = false;
+
+            if (bConsiderHillSlope)
+            {
+                fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz); // TODO - fill values
+                fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
+            }
+
             CalculateWindData();
         }
 
@@ -265,25 +282,12 @@ namespace M_EC1.AS_NZS
             fM_D_array_angles_9 = new float[9] { 0, 45, 90, 135, 180, 225, 270, 315, 360 };
             SetWindDirectionFactors_9_Items();
 
+            // TODO - dve funkcie, upravit funkciu pre nacitanie z databazy a interpolaciu, bilinearna interpolacia databazovych hodnot asi nefunguje spravne
             // M_z_cat
             SetTerrainHeightMultiplier();
-
-            // M_s
-            float fl_s = 1000f;    // Average spacing of shielding buildings
-            float fh_s = 0.1f;     // Average roof height of shielding buildings
-            float fb_s = 0.1f;     // Average breadth of shielding buildings, normal to the wind stream
-            int in_s = 1;          // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
-            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fH_2, in_s);
-            SetShieldingMultiplier();
-
-            // M_t
-            bool bConsiderHillSlope = false;
-
-            if (bConsiderHillSlope)
-            {
-                fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz); // TODO - fill values
-                fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
-            }
+            // Terrain-height multiplier Mz.cat
+            // Table 4.1
+            fM_z_cat = AS_NZS_1170_2.Table41_Interpolation_positive(fz, sWindInput.fTerrainCategory);
 
             // 2.2 Site wind speed
             fM_D_array_angles_360 = new float[360];
@@ -293,10 +297,6 @@ namespace M_EC1.AS_NZS
 
             fV_sit_ULS_Theta_9 = new float[9];
             fV_sit_SLS_Theta_9 = new float[9];
-
-            // Terrain-height multiplier
-            // Table 4.1
-            fM_z_cat = AS_NZS_1170_2.Table41_Interpolation_positive(fz, sWindInput.fTerrainCategory);
 
             // Calculate value of V_sit for each angle (0-360 deg)
             int j = 0;
