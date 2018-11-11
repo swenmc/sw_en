@@ -40,6 +40,8 @@ namespace MATH.ARRAY
             float[] arrayRowHigher = new float[iNumberOfColumns];
             float[] arrayRowInterpolated = new float[iNumberOfColumns];
 
+            bool bPerformInterpolationBetweenRows = true;
+
             // Find smaller and higher value in row (defined by first column in array)
 
             for (int i = 0; i < iNumberOfRows; i++)
@@ -58,6 +60,8 @@ namespace MATH.ARRAY
                         // We dont need first interpolation between row values
                         arrayRowInterpolated[j] = array[i, j];
                     }
+
+                    bPerformInterpolationBetweenRows = false; // It is not necessary to interpolate between row values
 
                     break;
                 }
@@ -88,15 +92,18 @@ namespace MATH.ARRAY
             // First linear Interpolation - Get one Row corresponding to a_row value
             // TODO - Pridat podmienku ze nie je potrebne interpolovat ak je pole uz naplnene
 
-            if (arrayRowSmaller.Length != arrayRowHigher.Length)
+            if (bPerformInterpolationBetweenRows)
             {
-                throw new ArgumentException("Arrays must be of equal length.");
-            }
-            else
-            {
-                for (int k = 0; k < arrayRowSmaller.Length; k++)
+                if (arrayRowSmaller.Length != arrayRowHigher.Length)
                 {
-                    arrayRowInterpolated[k] = GetLinearInterpolationValuePositive(arrayRowSmaller[0], arrayRowHigher[0], arrayRowSmaller[k], arrayRowHigher[k], a_row);
+                    throw new ArgumentException("Arrays must be of equal length.");
+                }
+                else
+                {
+                    for (int k = 0; k < arrayRowSmaller.Length; k++)
+                    {
+                        arrayRowInterpolated[k] = GetLinearInterpolationValuePositive(arrayRowSmaller[0], arrayRowHigher[0], arrayRowSmaller[k], arrayRowHigher[k], a_row);
+                    }
                 }
             }
 

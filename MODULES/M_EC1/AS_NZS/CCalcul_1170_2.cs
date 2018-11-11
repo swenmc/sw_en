@@ -282,12 +282,20 @@ namespace M_EC1.AS_NZS
             fM_D_array_angles_9 = new float[9] { 0, 45, 90, 135, 180, 225, 270, 315, 360 };
             SetWindDirectionFactors_9_Items();
 
-            // TODO - dve funkcie, upravit funkciu pre nacitanie z databazy a interpolaciu, bilinearna interpolacia databazovych hodnot asi nefunguje spravne
-            // M_z_cat
-            SetTerrainHeightMultiplier();
+            // TODO - pripravene dve funkcie, je potrebne otestovat ci funguju spravne a vybrat jednu, pripadne ponechat validaciu
             // Terrain-height multiplier Mz.cat
             // Table 4.1
-            fM_z_cat = AS_NZS_1170_2.Table41_Interpolation_positive(fz, sWindInput.fTerrainCategory);
+            SetTerrainHeightMultiplier();
+            float fM_z_cat_second = AS_NZS_1170_2.Table41_Interpolation_positive(fz, sWindInput.fTerrainCategory);
+
+            // Validation
+            if(fM_z_cat > 0 && fM_z_cat_second > 0 && !MathF.d_equal(fM_z_cat, fM_z_cat_second,0.001))
+            {
+                throw new Exception("Check calculation and interpolation of multiplier Mz.cat"+"\n"+
+                    "Mz.cat.1 = " + Math.Round(fM_z_cat,3).ToString() + "\n" +
+                    "Mz.cat.2 = " + Math.Round(fM_z_cat_second, 3).ToString()
+                    );
+            }
 
             // 2.2 Site wind speed
             fM_D_array_angles_360 = new float[360];
