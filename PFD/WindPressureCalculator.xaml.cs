@@ -216,7 +216,7 @@ namespace PFD
         private bool IsInputProperty(string propName)
         {
             List<string> list = new List<string>()
-            {   "DesignLife_Value",
+            {   "DesignLifeIndex",
                 "ImportanceClassIndex",
                 "AnnualProbabilityULS_Wind",
                 "AnnualProbabilitySLS",
@@ -224,7 +224,7 @@ namespace PFD
                 "R_SLS",
                 "SiteElevation",
 
-                "WindRegion",
+                "WindRegionIndex",
                 "TerrainCategoryIndex",
                 "AngleWindDirectionIndex",
 

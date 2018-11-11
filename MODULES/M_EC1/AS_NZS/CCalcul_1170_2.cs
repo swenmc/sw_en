@@ -1026,14 +1026,20 @@ namespace M_EC1.AS_NZS
                     int i = 0;
                     while (reader.Read())
                     {
-                        // 3.3.1 Regions A and W
-                        fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString(), nfi);
-
-                        // 3.3.2 - Regions B,C and D
-                        if (sWindInput.eWindRegion == EWindRegion.eB ||
-                           sWindInput.eWindRegion == EWindRegion.eC ||
-                           sWindInput.eWindRegion == EWindRegion.eD)
+                        if (sWindInput.eWindRegion != EWindRegion.eB &&
+                            sWindInput.eWindRegion != EWindRegion.eC &&
+                            sWindInput.eWindRegion != EWindRegion.eD)
+                        {
+                            // 3.3.1 Regions A and W
+                            fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString(), nfi);
+                        }
+                        else
+                        {
+                            // 3.3.2 - Regions B, C and D
                             fM_D_array_values_9[i] = 0.95f;
+
+                            // // 3.3.2(b) TODO - doplnit identifikaciu ci sa jedna o celu budovu alebo podruzne prvky (cladding, purlins girts Md = 1.0)
+                        }
 
                         sWindDirections_9[i] = reader["cardinalDirection"].ToString();
 

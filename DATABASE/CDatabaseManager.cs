@@ -72,25 +72,6 @@ namespace DATABASE
                 SQLiteDataReader reader = null;
                 string sTableName = "ASNZS1170_Tab3_3_APOE";
 
-                // TODO - Ondrej - SQL subquery in database
-                // vybrat vsetky riadky s designWorkingLife_ID a z uz vybranych riadkov vybrat vsetky riadky s 
-                // s uvedenym importanceLevel_ID
-                // vysledkom dotazu ma byt jeden riadok, pricom hodnoty apoeULS_xxx a SLS1 sa zapisu do premennych
-                // TODO Mato - Ak je to OK, tak koment vymazat
-                // 26.09.2018 - TO Ondrej, nefunguje to - ten SQL dodaz nie je spravny, malo by to nacitavat hodnoty podla kombinacie stlpcov designWorkingLife_ID a importanceLevel_ID
-                // berie to podla importanceLevel_ID
-
-                //SQLiteCommand command = new SQLiteCommand(
-                //    "Select * from " +
-                //    " ( " +
-                //    "Select * from " + sTableName + " where designWorkingLife_ID = '" + DesignLifeIndex +
-                //    "')," +
-                //    " ( " +
-                //    "Select * from " + sTableName + " where importanceLevel_ID = '" + ImportanceClassIndex +
-                //    "')"
-                //    , conn);
-
-                // tak este raz...ak je to OK, tak zmazat vsetky predosle komenty
                 SQLiteCommand command = new SQLiteCommand("Select * from " + sTableName + " where designWorkingLife_ID = @designLifeIndex AND importanceLevel_ID = @importanceClassIndex", conn);
                 command.Parameters.AddWithValue("@designLifeIndex", DesignLifeIndex);
                 command.Parameters.AddWithValue("@importanceClassIndex", ImportanceClassIndex);
@@ -117,10 +98,59 @@ namespace DATABASE
                         AnnualProbabilitySLS = float.Parse(reader["SLS1"].ToString());
                         float AnnualProbabilitySLS_2 = float.Parse(reader["SLS2"].ToString());
                         */
-                        string sAnnualProbabilityULS_Wind = reader["apoeULS_Wind"].ToString();
-                        string sAnnualProbabilityULS_Snow = reader["apoeULS_Snow"].ToString();
-                        string sAnnualProbabilityULS_EQ = reader["apoeULS_Earthquake"].ToString();
-                        string sAnnualProbabilitySLS1 = reader["SLS1"].ToString();
+
+                        string sAnnualProbabilityULS_Wind = "";
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("apoeULS_Wind")))
+                            {
+                                sAnnualProbabilityULS_Wind = reader["apoeULS_Wind"].ToString();
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            sAnnualProbabilityULS_Wind = "0.2";
+                        }
+
+                        string sAnnualProbabilityULS_Snow = "";
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("apoeULS_Snow")))
+                            {
+                                sAnnualProbabilityULS_Snow = reader["apoeULS_Snow"].ToString();
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            sAnnualProbabilityULS_Snow = "0.2";
+                        }
+
+                        string sAnnualProbabilityULS_EQ = "";
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("apoeULS_Earthquake")))
+                            {
+                                sAnnualProbabilityULS_EQ = reader["apoeULS_Earthquake"].ToString();
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            sAnnualProbabilityULS_EQ = "0.2";
+                        }
+
+                        string sAnnualProbabilitySLS1 = "";
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("SLS1")))
+                            {
+                                sAnnualProbabilitySLS1 = reader["SLS1"].ToString();
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            sAnnualProbabilitySLS1 = "0.2";
+                        }
+
                         string sAnnualProbabilitySLS2 = "";
                         try
                         {
@@ -129,19 +159,53 @@ namespace DATABASE
                                 sAnnualProbabilitySLS2 = reader["SLS2"].ToString();
                             }
                         }
-                        catch (ArgumentNullException) { }
+                        catch (ArgumentNullException)
+                        {
+                            sAnnualProbabilitySLS2 = "0.2";
+                        }
+
                         annualProb = new CAnnualProbability();
                         annualProb.AnnualProbabilityULS_Wind = (float)FractionConverter.Convert(sAnnualProbabilityULS_Wind);
                         annualProb.AnnualProbabilityULS_Snow = (float)FractionConverter.Convert(sAnnualProbabilityULS_Snow);
                         annualProb.AnnualProbabilityULS_EQ = (float)FractionConverter.Convert(sAnnualProbabilityULS_EQ);
                         annualProb.AnnualProbabilitySLS = (float)FractionConverter.Convert(sAnnualProbabilitySLS1);
+                        //annualProb.AnnualProbabilitySLS2 = (float)FractionConverter.Convert(sAnnualProbabilitySLS2); //TODO Martin - doriesit SLS1 a SLS2
 
-                        //TODO Martin - doriesit SLS1 a SLS2
-                        //AnnualProbabilitySLS2 = (float)FractionConverter.Convert(sAnnualProbabilitySLS2);
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("R_ULS_Wind_inyears")))
+                            {
+                                annualProb.R_ULS_Wind = float.Parse(reader["R_ULS_Wind_inyears"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            annualProb.R_ULS_Wind = 5f;
+                        }
 
-                        annualProb.R_ULS_Wind = float.Parse(reader["R_ULS_Wind_inyears"].ToString());
-                        annualProb.R_ULS_Snow = float.Parse(reader["R_ULS_Snow_inyears"].ToString());
-                        annualProb.R_ULS_EQ = float.Parse(reader["R_ULS_Earthquake_inyears"].ToString());
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("R_ULS_Snow_inyears")))
+                            {
+                                annualProb.R_ULS_Snow = float.Parse(reader["R_ULS_Snow_inyears"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            annualProb.R_ULS_Snow = 5f;
+                        }
+
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("R_ULS_Earthquake_inyears")))
+                            {
+                                annualProb.R_ULS_EQ = float.Parse(reader["R_ULS_Earthquake_inyears"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            annualProb.R_ULS_EQ = 5f;
+                        }
 
                         try
                         {
@@ -150,7 +214,23 @@ namespace DATABASE
                                 annualProb.R_SLS = float.Parse(reader["R_SLS1_inyears"].ToString());
                             }
                         }
-                        catch (ArgumentNullException) { }
+                        catch (ArgumentNullException)
+                        {
+                            annualProb.R_SLS = 5f;
+                        }
+
+                        /*
+                        try
+                        {
+                            if (!reader.IsDBNull(reader.GetOrdinal("R_SLS2_inyears")))
+                            {
+                                annualProb.R_SLS2 = float.Parse(reader["R_SLS2_inyears"].ToString());
+                            }
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            annualProb.R_SLS2 = 5f;
+                        }*/
                     }
                 }
 
