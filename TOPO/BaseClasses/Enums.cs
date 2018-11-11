@@ -415,8 +415,8 @@
         eRC1,
         eRA1 = 1, // Temp - docasne
         eRA2 = 2, // Temp - docasne
-        eRA3,
-        eRA4,
+        eRA3 = 3,
+        eRA4 = 4,
         eSA1,
         eSA2,
         eSA3,
@@ -552,7 +552,8 @@
         //public float fz;
         //public float fh;
 
-        public ELocalWindPressureReference eLocalPressureReference;
+        public ELocalWindPressureReference eLocalPressureReferenceUpwind;
+        public ELocalWindPressureReference eLocalPressureReferenceDownwind;
 
         public float fM_lee;
         public float fM_h;

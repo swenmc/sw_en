@@ -40,9 +40,21 @@ namespace PFD
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
 
-            Combobox_LocalPressureReference.Items.Add("Undefined");
-            Combobox_LocalPressureReference.Items.Add("RA1");
-            Combobox_LocalPressureReference.Items.Add("RA2");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("Undefined");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("WA1");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("RC1");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("RA1");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("RA2");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("RA3");
+            Combobox_LocalPressureReferenceUpwind.Items.Add("RA4");
+
+            Combobox_LocalPressureReferenceDownwind.Items.Add("Undefined");
+            Combobox_LocalPressureReferenceDownwind.Items.Add("WA1");
+            Combobox_LocalPressureReferenceDownwind.Items.Add("RC1");
+            Combobox_LocalPressureReferenceDownwind.Items.Add("RA1");
+            Combobox_LocalPressureReferenceDownwind.Items.Add("RA2");
+            Combobox_LocalPressureReferenceDownwind.Items.Add("RA3");
+            Combobox_LocalPressureReferenceDownwind.Items.Add("RA4");
 
             WindPressureCalculatorViewModel vm = new WindPressureCalculatorViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
@@ -90,7 +102,9 @@ namespace PFD
             //sWindInputSpecificData.fz = input.AverageStructureHeight_h; //input.ApexHeigth_H_2; // Generally, the wind speed is determined at the average roof height (h).
             //sWindInputSpecificData.fh = input.AverageStructureHeight_h;
 
-            sWindInputSpecificData.eLocalPressureReference = (ELocalWindPressureReference)input.LocalPressureReferenceIndex;
+            sWindInputSpecificData.eLocalPressureReferenceUpwind = (ELocalWindPressureReference)input.LocalPressureReferenceUpwindIndex;
+            sWindInputSpecificData.eLocalPressureReferenceDownwind = (ELocalWindPressureReference)input.LocalPressureReferenceDownwindIndex;
+
             sWindInputSpecificData.fTributaryArea = input.TributaryArea_A;
 
             sWindInputSpecificData.fM_lee = input.LeeMultiplier_Mlee;
@@ -117,7 +131,8 @@ namespace PFD
             vm.TerrainHeightMultiplier_Mzcat = windCalcResults.fM_z_cat;
 
             vm.AreaReductionFactor_Ka = windCalcResults.fK_a_roof;
-            vm.LocalPressureFactor_Kl = windCalcResults.fK_l;
+            vm.LocalPressureFactorUpwind_Kl = windCalcResults.fK_l_upwind;
+            vm.LocalPressureFactorDownwind_Kl = windCalcResults.fK_l_downwind;
 
             vm.WindSpeed_VR = windCalcResults.fV_R_ULS; // ULS
             vm.WindSpeed_VsitBeta = MathF.Max(windCalcResults.fV_sit_ULS_Theta_4); // ULS
@@ -218,7 +233,8 @@ namespace PFD
                 "ShieldingMultiplier_Ms",
                 //"WindDirectionMultiplier_Md", // neaktivovat
 
-                "LocalPressureReferenceIndex",
+                "LocalPressureReferenceUpwindIndex",
+                "LocalPressureReferenceDownwindIndex",
                 "TributaryArea_A",
                 "PorousCladdingReductionFactor_Kp",
                 "CombinationFactorExternalPressures_Kce",

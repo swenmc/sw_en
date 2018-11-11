@@ -45,10 +45,13 @@ namespace PFD
         private float MWindDirectionMultiplier_Md;
         private float MTerrainHeightMultiplier_Mzcat;
 
-        private int MLocalPressureReferenceIndex;
+        private int MLocalPressureReferenceUpwindIndex;
+        private int MLocalPressureReferenceDownwindIndex;
         private float MTributaryArea_A;
         private float MAreaReductionFactor_Ka;
-        private float MLocalPressureFactor_Kl;
+        private float MLocalPressureFactorUpwind_Kl;
+        private float MLocalPressureFactorDownwind_Kl;
+
         private float MPorousCladdingReductionFactor_Kp;
         private float MCombinationFactorExternalPressures_Kce;
         private float MCombinationFactorExternalPressures_Kci;
@@ -326,18 +329,34 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LocalPressureReferenceIndex
+        public int LocalPressureReferenceUpwindIndex
         {
             get
             {
-                return MLocalPressureReferenceIndex;
+                return MLocalPressureReferenceUpwindIndex;
             }
 
             set
             {
-                MLocalPressureReferenceIndex = value;
+                MLocalPressureReferenceUpwindIndex = value;
 
-                NotifyPropertyChanged("LocalPressureReferenceIndex");
+                NotifyPropertyChanged("LocalPressureReferenceUpwindIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LocalPressureReferenceDownwindIndex
+        {
+            get
+            {
+                return MLocalPressureReferenceDownwindIndex;
+            }
+
+            set
+            {
+                MLocalPressureReferenceDownwindIndex = value;
+
+                NotifyPropertyChanged("LocalPressureReferenceDownwindIndex");
             }
         }
 
@@ -374,18 +393,34 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float LocalPressureFactor_Kl
+        public float LocalPressureFactorUpwind_Kl
         {
             get
             {
-                return MLocalPressureFactor_Kl;
+                return MLocalPressureFactorUpwind_Kl;
             }
 
             set
             {
-                MLocalPressureFactor_Kl = value;
+                MLocalPressureFactorUpwind_Kl = value;
 
-                NotifyPropertyChanged("LocalPressureFactor_Kl");
+                NotifyPropertyChanged("LocalPressureFactorUpwind_Kl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float LocalPressureFactorDownwind_Kl
+        {
+            get
+            {
+                return MLocalPressureFactorDownwind_Kl;
+            }
+
+            set
+            {
+                MLocalPressureFactorDownwind_Kl = value;
+
+                NotifyPropertyChanged("LocalPressureFactorDownwind_Kl");
             }
         }
 
@@ -875,7 +910,8 @@ namespace PFD
 
             TributaryArea_A = 16f; // m^2
 
-            LocalPressureReferenceIndex = 1;
+            LocalPressureReferenceUpwindIndex = 3;
+            LocalPressureReferenceDownwindIndex = 0;
 
             PorousCladdingReductionFactor_Kp = 1.0f;
             CombinationFactorExternalPressures_Kce = 0.8f;

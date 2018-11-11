@@ -44,7 +44,9 @@ namespace M_EC1.AS_NZS
         public float fK_a_wall_90or270 = 1.0f;
 
         // 5.4.4 Local pressure factor(K l) for cladding
-        public float fK_l; // K_l - local pressure factor, as given in Paragraph D1.3
+        public float fK_l_upwind; // K_l - local pressure factor, as given in Paragraph D1.3
+        public float fK_l_downwind;
+
         // Table 5.7 - reduction factor(Kr) due to parapets
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
         public float fK_p; // K_p - net porosity factor, as given in Paragraph D1.4
@@ -194,7 +196,7 @@ namespace M_EC1.AS_NZS
             fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
             fWallArea_90or270 = sGeometryInput.fH_1 * sGeometryInput.fW + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) * sGeometryInput.fW; // Gable Roof
 
-            fK_l = 1.0f;
+            fK_l_upwind = fK_l_downwind = 1.0f;
             fM_lee = 1.0f;
             fM_h = 1.0f;
             fM_s = 1.0f;
@@ -238,27 +240,13 @@ namespace M_EC1.AS_NZS
             //fh = sWinDataSpecific_temp.fh;
 
             fRoofArea = sWinDataSpecific_temp.fTributaryArea; // ROOF
-            fWallArea_0or180 = 1; // Temp
-            fWallArea_90or270 = 1; // Temp
+            fWallArea_0or180 = fRoofArea; // Temp
+            fWallArea_90or270 = fRoofArea; // Temp
 
             float fa = MathF.Min(0.2f * sGeometryInput.fW, 0.2f * sGeometryInput.fL, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
 
-            if (sWinDataSpecific_temp.eLocalPressureReference == ELocalWindPressureReference.eRA1)
-            {
-                if (fRoofArea <= MathF.Pow2(fa))
-                    fK_l = 1.5f;
-                else
-                    fK_l = 1.0f;
-            }
-            else if (sWinDataSpecific_temp.eLocalPressureReference == ELocalWindPressureReference.eRA2)
-            {
-                if (fRoofArea <= 0.25f * MathF.Pow2(fa))
-                    fK_l = 2.0f;
-                else
-                    fK_l = 1.0f;
-            }
-            else
-                fK_l = 1.0f; // TODO - dopracovat vsetky
+            fK_l_upwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceUpwind);
+            fK_l_downwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceDownwind);
 
             fM_lee = sWinDataSpecific_temp.fM_lee;
             fM_h = sWinDataSpecific_temp.fM_h;
@@ -527,21 +515,24 @@ namespace M_EC1.AS_NZS
 
             // External pressure
             // Walls
-            fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-            fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
-            fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-            fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+            float fK_l_wall = 1.0f; // TODO - doriesit zadanie pre steny (possitive alebo negative pressure
+
+            fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+            fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+
+            fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+            fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
 
             fC_fig_e_S_wall_0or180 = new float[fC_pe_S_wall_values.Length];
 
             for (int i = 0; i < fC_fig_e_S_wall_0or180.Length; i++)
-                fC_fig_e_S_wall_0or180[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_90or270, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_S_wall_0or180[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_90or270, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
 
             fC_fig_e_S_wall_90or270 = new float[fC_pe_S_wall_values.Length];
 
             for (int i = 0; i < fC_fig_e_S_wall_90or270.Length; i++)
-                fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
 
             // Roof
             fC_fig_e_U_roof_values_min = new float[fC_pe_U_roof_values_min.Length];
@@ -549,8 +540,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fC_fig_e_U_roof_values_min.Length; i++)
             {
-                fC_fig_e_U_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-                fC_fig_e_U_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_U_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_min[i], fK_a_roof, fK_ce, fK_l_upwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_U_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_max[i], fK_a_roof, fK_ce, fK_l_downwind, fK_p); // Aerodynamic shape factor
             }
 
             fC_fig_e_D_roof_values_min = new float[fC_pe_D_roof_values_min.Length];
@@ -558,8 +549,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fC_fig_e_D_roof_values_min.Length; i++)
             {
-                fC_fig_e_D_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-                fC_fig_e_D_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_D_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_min[i], fK_a_roof, fK_ce, fK_l_upwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_D_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_max[i], fK_a_roof, fK_ce, fK_l_downwind, fK_p); // Aerodynamic shape factor
             }
 
             fC_fig_e_R_roof_values_min = new float[fC_pe_R_roof_values_min.Length];
@@ -567,8 +558,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fC_fig_e_R_roof_values_min.Length; i++)
             {
-                fC_fig_e_R_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_min[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
-                fC_fig_e_R_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_max[i], fK_a_roof, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
+                fC_fig_e_R_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_min[i], fK_a_roof, fK_ce, fK_l_upwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_R_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_max[i], fK_a_roof, fK_ce, fK_l_downwind, fK_p); // Aerodynamic shape factor
             }
 
             // Surface pressures
@@ -1186,6 +1177,56 @@ namespace M_EC1.AS_NZS
                 return (fb + 2 * fh) / (fd - 4 * fh);
             else
                 return (fb + 2 * fh) / (fd - 4 * fb);
+        }
+
+        protected float Get_LocalPressureFactor_Kl(float fa, ELocalWindPressureReference eLWPR)
+        {
+            // TODO - zjednodusit a prerobit na switch
+
+            if (eLWPR == ELocalWindPressureReference.eWA1)
+            {
+                if (fRoofArea <= 0.25f * MathF.Pow2(fa))
+                    return 1.5f;
+                else
+                    return 1.0f;
+            }
+            else if (eLWPR == ELocalWindPressureReference.eRC1)
+            {
+                if (fRoofArea <= 0.25f * MathF.Pow2(fa))
+                    return 3.0f;
+                else
+                    return 1.0f;
+            }
+            if (eLWPR == ELocalWindPressureReference.eRA1)
+            {
+                if (fRoofArea <= MathF.Pow2(fa))
+                    return 1.5f;
+                else
+                    return 1.0f;
+            }
+            else if (eLWPR == ELocalWindPressureReference.eRA2)
+            {
+                if (fRoofArea <= 0.25f * MathF.Pow2(fa))
+                    return 2.0f;
+                else
+                    return 1.0f;
+            }
+            else if (eLWPR == ELocalWindPressureReference.eRA3)
+            {
+                if (fRoofArea <= MathF.Pow2(fa))
+                    return 1.5f;
+                else
+                    return 1.0f;
+            }
+            else if (eLWPR == ELocalWindPressureReference.eRA4)
+            {
+                if (fRoofArea <= 0.25f * MathF.Pow2(fa))
+                    return 2.0f;
+                else
+                    return 1.0f;
+            }
+            else
+                return 1.0f; // TODO - dopracovat vsetky
         }
     }
 }
