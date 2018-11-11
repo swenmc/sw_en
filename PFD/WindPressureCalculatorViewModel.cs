@@ -44,6 +44,8 @@ namespace PFD
         private float MShieldingMultiplier_Ms;
         private float MWindDirectionMultiplier_Md;
         private float MTerrainHeightMultiplier_Mzcat;
+
+        private int MLocalPressureReferenceIndex;
         private float MTributaryArea_A;
         private float MAreaReductionFactor_Ka;
         private float MLocalPressureFactor_Kl;
@@ -320,6 +322,22 @@ namespace PFD
                 MTerrainHeightMultiplier_Mzcat = value;
 
                 NotifyPropertyChanged("TerrainHeightMultiplier_Mzcat");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int LocalPressureReferenceIndex
+        {
+            get
+            {
+                return MLocalPressureReferenceIndex;
+            }
+
+            set
+            {
+                MLocalPressureReferenceIndex = value;
+
+                NotifyPropertyChanged("LocalPressureReferenceIndex");
             }
         }
 
@@ -851,20 +869,24 @@ namespace PFD
             AngleWindDirectionIndex = 90;
 
             LeeMultiplier_Mlee = 1.0f;
+            WindDirectionMultiplier_Md = 1.0f; // Temp
+            HillShapeMultiplier_Mh = 1.0f;
+            ShieldingMultiplier_Ms = 1.0f;
 
             TributaryArea_A = 16f; // m^2
 
-            LocalPressureFactor_Kl = 1.5f;
-            PorousCladdingReductionFactor_Kp = 1.0f;
+            LocalPressureReferenceIndex = 1;
 
-            MCombinationFactorExternalPressures_Kce = 0.8f;
-            MCombinationFactorExternalPressures_Kci = 1.0f;
+            PorousCladdingReductionFactor_Kp = 1.0f;
+            CombinationFactorExternalPressures_Kce = 0.8f;
+            CombinationFactorExternalPressures_Kci = 1.0f;
 
             GableWidth = 20f; // m
             Length = 40f; // m
             WallHeight = 6f; // m
             RoofPitch_deg = 8f; // deg
 
+            // Dopocitane hodnoty
             float fRoofPitch_rad = RoofPitch_deg / 180f * MathF.fPI;
             float fPedimentHeight_H1toH2 = 0.5f * GableWidth * (float)Math.Tan(fRoofPitch_rad);
             ApexHeigth_H_2 = WallHeight + fPedimentHeight_H1toH2; // Apex Height

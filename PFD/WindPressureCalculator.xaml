@@ -120,7 +120,7 @@
         <TextBlock Grid.Row="10" Grid.Column="0" Text="Topographic Multiplier M t:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_TopographicMultiplier_Mt" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=TopographicMultiplier_Mt, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="11" Grid.Column="0" Text="Shielding Multiplier M s:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -130,14 +130,19 @@
         <TextBlock Grid.Row="12" Grid.Column="0" Text="Wind Direction Multiplier M d:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_WindDirectionMultiplier_Md" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=WindDirectionMultiplier_Md, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="13" Grid.Column="0" Text="Terrain/height Multiplier M z.cat:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_TerrainHeightMultiplier_Mzcat" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=TerrainHeightMultiplier_Mzcat, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        
+
+        <TextBlock Grid.Row="14" Grid.Column="0" Text="Local Pressure Reference:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_LocalPressureReference" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LocalPressureReferenceIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
         <TextBlock Grid.Row="15" Grid.Column="0" Text="Tributary Area A:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_TributaryArea_A" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -149,13 +154,13 @@
         <TextBlock Grid.Row="16" Grid.Column="0" Text="Area Reduction Factor Ka:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_AreaReductionFactor_Ka" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AreaReductionFactor_Ka, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="17" Grid.Column="0" Text="Local Pressure Factor Kl:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="17" Grid.Column="1" Name ="TextBox_LocalPressureFactor_Kl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=LocalPressureFactor_Kl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="18" Grid.Column="0" Text="Porous Cladding Reduction Factor Kp:" HorizontalAlignment="Left" 
@@ -260,7 +265,7 @@
         <TextBlock Grid.Row="4" Grid.Column="3" Text="Average Structure Height h:" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox Grid.Row="4" Grid.Column="4" Name ="TextBox_AverageStructureHeight_h" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AverageStructureHeight_h, StringFormat=F2, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="4" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>

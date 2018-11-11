@@ -27,20 +27,27 @@ namespace M_EC1.AS_NZS
         BuildingDataInput sBuildInput;
         BuildingGeometryDataInput sGeometryInput;
         WindLoadDataInput sWindInput;
-        public float fE_meters = 0;
-        public float fM_lee = 1.0f; // TODO load from database
-        public float fM_h = 1.0f;
-        public float fRoofArea = 0; // Moznost zadat alebo spocitat
+
+        float fz_max = 200f; // m
+        public float fz;
+        public float fh;
+
+        public float fRoofArea;
+        public float fWallArea_0or180;
+        public float fWallArea_90or270;
+
+        public float fM_lee; // TODO load from database
+        public float fM_h;
 
         public float fK_a_roof = 1.0f;
         public float fK_a_wall_0or180 = 1.0f;
         public float fK_a_wall_90or270 = 1.0f;
 
         // 5.4.4 Local pressure factor(K l) for cladding
-        public float fK_l = 1f; // K_l - local pressure factor, as given in Paragraph D1.3
+        public float fK_l; // K_l - local pressure factor, as given in Paragraph D1.3
         // Table 5.7 - reduction factor(Kr) due to parapets
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
-        public float fK_p = 1f; // K_p - net porosity factor, as given in Paragraph D1.4
+        public float fK_p; // K_p - net porosity factor, as given in Paragraph D1.4
 
         public float fK_ce = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
         public float fK_ci = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
@@ -70,15 +77,13 @@ namespace M_EC1.AS_NZS
         public float[] fV_des_SLS_Theta_4;
 
         float fs_shielding; // Shielding parameter Table 4.3 
-        public float fM_s = 1.0f;  // Shielding multiplier (Cl 4.3) Table 4.3
-        public float fM_t = 1.0f;  // Topographic multiplier (Cl 4.4)
+        public float fM_s;  // Shielding multiplier (Cl 4.3) Table 4.3
+        public float fM_t;  // Topographic multiplier (Cl 4.4)
 
         float fSiteTerrainSlope_Phi = 1/20; // 3 deg
         float fSiteTerrainSlope_Phi_deg = 3;
 
         public float fM_z_cat; // Terrain multiplier
-        float fz_max; // m
-        public float fz;
         float fRho_air = 1.2f; // kgm^3
 
         // Cp factors and segments
@@ -175,6 +180,7 @@ namespace M_EC1.AS_NZS
 
         public int iFirst_D_SegmentColorID = 0; // Color ID of first downwind side segment (continue from upwind U side)
 
+        // Basic Input
         public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp)
         {
             sBuildInput = sBuildingData_temp;
@@ -182,7 +188,72 @@ namespace M_EC1.AS_NZS
             sWindInput = sWindData_temp;
 
             fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ???
+            fh = 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) + sGeometryInput.fH_1;
 
+            fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
+            fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
+            fWallArea_90or270 = sGeometryInput.fH_1 * sGeometryInput.fW + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) * sGeometryInput.fW; // Gable Roof
+
+            fK_l = 1.0f;
+            fM_lee = 1.0f;
+            fM_h = 1.0f;
+            fM_s = 1.0f;
+            fM_t = 1.0f;
+
+            fK_p = 1.0f;
+            fK_ce = 0.8f;
+            fK_ci = 1.0f;
+
+            CalculateWindData();
+        }
+
+        // Specific GUI input
+        public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp, WindLoadDataSpecificInput sWinDataSpecific_temp)
+        {
+            sBuildInput = sBuildingData_temp;
+            sGeometryInput = sGeometryData_temp;
+            sWindInput = sWindData_temp;
+
+            fz = sWinDataSpecific_temp.fz;
+            fh = sWinDataSpecific_temp.fh;
+
+            fRoofArea = sWinDataSpecific_temp.fTributaryArea; // ROOF
+            fWallArea_0or180 = 1; // Temp
+            fWallArea_90or270 = 1; // Temp
+
+            float fa = MathF.Min(0.2f * sGeometryInput.fW, 0.2f * sGeometryInput.fL, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
+
+            if (sWinDataSpecific_temp.eLocalPressureReference == ELocalWindPressureReference.eRA1)
+            {
+                if (fRoofArea <= MathF.Pow2(fa))
+                    fK_l = 1.5f;
+                else
+                    fK_l = 1.0f;
+            }
+            else if (sWinDataSpecific_temp.eLocalPressureReference == ELocalWindPressureReference.eRA2)
+            {
+                if (fRoofArea <= 0.25f * MathF.Pow2(fa))
+                    fK_l = 2.0f;
+                else
+                    fK_l = 1.0f;
+            }
+            else
+                fK_l = 1.0f; // TODO - dopracovat vsetky
+
+            fM_lee = sWinDataSpecific_temp.fM_lee;
+            fM_h = sWinDataSpecific_temp.fM_h;
+            fM_s = sWinDataSpecific_temp.fM_s;
+            fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
+
+            fK_p = sWinDataSpecific_temp.fK_p;
+            fK_ce = sWinDataSpecific_temp.fK_ce;
+            fK_ci = sWinDataSpecific_temp.fK_ci;
+
+            CalculateWindData();
+        }
+
+        void CalculateWindData()
+        {
             // Regional wind speed - AS/NZS 1170.2 Table 3.1
             fV_R_ULS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_ULS_Wind, sWindInput.eWindRegion); //m /s (ULS)
             fV_R_SLS = AS_NZS_1170_2.Eq_32_V_R__((int)sBuildInput.fR_SLS, sWindInput.eWindRegion);      //m /s (SLS)
@@ -208,7 +279,7 @@ namespace M_EC1.AS_NZS
             if (bConsiderHillSlope)
             {
                 fM_h = AS_NZS_1170_2.Get_Mh_v1__(false, 0, 0, 0, fz); // TODO - fill values
-                fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, fE_meters);
+                fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
             }
 
             // 2.2 Site wind speed
@@ -309,7 +380,6 @@ namespace M_EC1.AS_NZS
             // Gable Roof (TODO - change for other roof shape, see Fig. 5.2)
             float fb; // Width perpendicular to the wind direction
             float fd; // Length in wind direction;
-            float fh = 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) + sGeometryInput.fH_1;
 
             float fRatioDtoB_Theta0or180 = sGeometryInput.fL / sGeometryInput.fW;
             float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fL;
@@ -355,14 +425,14 @@ namespace M_EC1.AS_NZS
             fC_pe_L_wall_Theta90or270 = ArrayF.GetLinearInterpolationValuePositive(fRatioDtoB_Theta90or270, fx, fy);
 
             // Table 5.2(C) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - side walls (S)
-            fC_pe_S_wall_dimensions = new float[5] {0, fh, 2 * fh, 3 * fh, 9999 };
+            fC_pe_S_wall_dimensions = new float[5] { 0, fh, 2 * fh, 3 * fh, 9999 };
             fC_pe_S_wall_values = new float[5] { -0.65f, -0.5f, -0.3f, -0.2f, -0.2f };
 
             // Roof
             fC_pe_D_roof_values_min = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
             fC_pe_D_roof_values_max = new float[1]; // TODO - odtranit a alokovat podla potrebnej velkosti
 
-            if(sGeometryInput.fRoofPitch_deg < 10) // Table 5.3(A)
+            if (sGeometryInput.fRoofPitch_deg < 10) // Table 5.3(A)
             {
                 // TODO Martin - Interpolation shall only be carried out on values of the same sign ???? To bude neprijemne !!!!
 
@@ -381,7 +451,7 @@ namespace M_EC1.AS_NZS
                 {
                     // Find dimension corresponding to the half of building width (change of gable roof slope from U to D)
                     // and set factor for U
-                    if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i+1] >= 0.5f * sGeometryInput.fW) // Half of building width for gable roof
+                    if ((fC_pe_UD_roof_dimensions[i] < fC_pe_UD_roof_dimensions[fC_pe_UD_roof_dimensions.Length - 1]) && fC_pe_UD_roof_dimensions[i + 1] >= 0.5f * sGeometryInput.fW) // Half of building width for gable roof
                     {
                         fC_pe_D_roof_dimensions = new float[fC_pe_UD_roof_dimensions.Length - i];
                         fC_pe_D_roof_values_min = new float[fC_pe_UD_roof_values_min.Length - i];
@@ -408,11 +478,11 @@ namespace M_EC1.AS_NZS
             }
             else // More or equal to 10°
             {
-                fC_pe_U_roof_dimensions = new float[2] {0, 9999 };
+                fC_pe_U_roof_dimensions = new float[2] { 0, 9999 };
                 fC_pe_U_roof_values_min = new float[2];
                 fC_pe_U_roof_values_max = new float[2];
 
-                fC_pe_D_roof_dimensions = new float[2] {0, 9999 };
+                fC_pe_D_roof_dimensions = new float[2] { 0, 9999 };
                 fC_pe_D_roof_values_min = new float[2];
                 fC_pe_D_roof_values_max = new float[2];
 
@@ -430,10 +500,6 @@ namespace M_EC1.AS_NZS
             Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
 
             // 5.4.2 Area reduction factor(Ka) for roofs and side walls
-            fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
-            float fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
-            float fWallArea_90or270 = sGeometryInput.fH_1 * sGeometryInput.fW + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) * sGeometryInput.fW; // Gable Roof
-
             fx = new float[5] { 0, 10, 25, 100, 9999 };
             fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
 
@@ -463,7 +529,7 @@ namespace M_EC1.AS_NZS
 
             fC_fig_e_S_wall_90or270 = new float[fC_pe_S_wall_values.Length];
 
-            for(int i = 0; i< fC_fig_e_S_wall_90or270.Length; i++)
+            for (int i = 0; i < fC_fig_e_S_wall_90or270.Length; i++)
                 fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce, fK_l, fK_p); // Aerodynamic shape factor
 
             // Roof

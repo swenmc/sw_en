@@ -40,13 +40,13 @@ namespace PFD
             for (int i = 0; i < 360; i++)
                 Combobox_AngleWindDirection.Items.Add(i);
 
+            Combobox_LocalPressureReference.Items.Add("Undefined");
+            Combobox_LocalPressureReference.Items.Add("RA1");
+            Combobox_LocalPressureReference.Items.Add("RA2");
+
             WindPressureCalculatorViewModel vm = new WindPressureCalculatorViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
-
-            // TODO Ondrej - zobrazovat vsetky faktory v GUI na 3 desatinne miesta (staci zopar ako priklad, ostatne si dopracujem)
-            //do bindingu treba dat StringFormat=F3,
-
 
             // Calculate
             SetInputAndCalculateWindPressure();
@@ -74,6 +74,8 @@ namespace PFD
             sBuildingInputData.fR_ULS_EQ = 0.0f; // Temp - nepouzije sa
             sBuildingInputData.fR_SLS = input.R_SLS;
 
+            sBuildingInputData.fE = input.SiteElevation;
+
             sGeometryInputData.fW = input.GableWidth;
             sGeometryInputData.fL = input.Length;
             sGeometryInputData.fH_1 = input.WallHeight;
@@ -84,8 +86,23 @@ namespace PFD
             sWindInputData.iAngleWindDirection = input.AngleWindDirectionIndex;
             sWindInputData.fTerrainCategory = GetTerrainCategory(input.TerrainCategoryIndex);
 
+            WindLoadDataSpecificInput sWindInputSpecificData;
+            sWindInputSpecificData.fz = input.ApexHeigth_H_2;
+            sWindInputSpecificData.fh = input.AverageStructureHeight_h;
+
+            sWindInputSpecificData.eLocalPressureReference = (ELocalWindPressureReference)input.LocalPressureReferenceIndex;
+            sWindInputSpecificData.fTributaryArea = input.TributaryArea_A;
+
+            sWindInputSpecificData.fM_lee = input.LeeMultiplier_Mlee;
+            sWindInputSpecificData.fM_h = input.HillShapeMultiplier_Mh;
+            sWindInputSpecificData.fM_s = input.ShieldingMultiplier_Ms;
+
+            sWindInputSpecificData.fK_p = input.PorousCladdingReductionFactor_Kp;
+            sWindInputSpecificData.fK_ce = input.CombinationFactorExternalPressures_Kce;
+            sWindInputSpecificData.fK_ci = input.CombinationFactorExternalPressures_Kci;
+
             // Calculate
-            windCalcResults = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
+            windCalcResults = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData, sWindInputSpecificData);
         }
 
         private void SetOutputValues()
@@ -199,14 +216,13 @@ namespace PFD
                 "TerrainCategoryIndex",
                 "AngleWindDirectionIndex",
 
-                "LeeMultiplier_Mlee",
-                //"TopographicMultiplier_Mt",
+                //"LeeMultiplier_Mlee",
                 //"HillShapeMultiplier_Mh",
                 //"ShieldingMultiplier_Ms",
                 //"WindDirectionMultiplier_Md",
+
+                "LocalPressureReferenceIndex",
                 "TributaryArea_A",
-                //"AreaReductionFactor_Ka",
-                //"LocalPressureFactor_Kl",
                 //"PorousCladdingReductionFactor_Kp",
                 //"CombinationFactorExternalPressures_Kce",
                 //"CombinationFactorExternalPressures_Kci",
@@ -215,7 +231,7 @@ namespace PFD
                 "Length",
                 "WallHeight",
                 "RoofPitch_deg",
-                "ApexHeigth_H_2"
+                //"ApexHeigth_H_2"
                 //"AverageStructureHeight_h"
             };
 

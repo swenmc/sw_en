@@ -408,6 +408,22 @@
         eD
     }
 
+    public enum ELocalWindPressureReference
+    {
+        eUndefined = 0,
+        eWA1,
+        eRC1,
+        eRA1 = 1, // Temp - docasne
+        eRA2 = 2, // Temp - docasne
+        eRA3,
+        eRA4,
+        eSA1,
+        eSA2,
+        eSA3,
+        eSA4,
+        eSA5
+    }
+
     public enum ESnowRegion
     {
         eN0,
@@ -502,6 +518,8 @@
         public float fR_ULS_Wind;                // Number of years - ULS - Wind
         public float fR_ULS_EQ;                  // Number of years - ULS - EQ
         public float fR_SLS;                     // Number of years - SLS
+
+        public float fE;
     }
 
     public struct BuildingGeometryDataInput
@@ -526,6 +544,29 @@
         public EWindRegion eWindRegion; // Wind region // Wind region Cl 3.2 - Fig 3.1(A)
         public int iAngleWindDirection; // Clockwise angle between Notrth  cardinal direction (Beta = 0) and Theta = 0 (building side L)
         public float fTerrainCategory;  // float value 1-4 see Tab 4.2
+    }
+
+    public struct WindLoadDataSpecificInput
+    {
+        public float fTributaryArea;
+        public float fz;
+        public float fh;
+
+        public ELocalWindPressureReference eLocalPressureReference;
+
+        public float fM_lee;
+        public float fM_h;
+        public float fM_s;
+
+        public float fK_p;
+        public float fK_ce;
+        public float fK_ci;
+
+        /*
+        public float fRoofArea;
+        public float fWallArea_0or180;
+        public float fWallArea_90or270;
+        */
     }
 
     public struct SeisLoadDataInput

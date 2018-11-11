@@ -96,6 +96,8 @@ namespace PFD
             sBuildingInputData.fR_ULS_EQ = loadinput.R_ULS_EQ;
             sBuildingInputData.fR_SLS = loadinput.R_SLS;
 
+            sBuildingInputData.fE = loadinput.SiteElevation;
+
             WindLoadDataInput sWindInputData;
             sWindInputData.eWindRegion = loadinput.WindRegion;
             sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
