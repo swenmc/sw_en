@@ -187,8 +187,8 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ???
-            fh = 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) + sGeometryInput.fH_1;
+            fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fh = fz;
 
             fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
             fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
@@ -214,8 +214,11 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sWinDataSpecific_temp.fz;
-            fh = sWinDataSpecific_temp.fh;
+            fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fh = fz;
+
+            //fz = sWinDataSpecific_temp.fz;
+            //fh = sWinDataSpecific_temp.fh;
 
             fRoofArea = sWinDataSpecific_temp.fTributaryArea; // ROOF
             fWallArea_0or180 = 1; // Temp

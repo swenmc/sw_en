@@ -80,15 +80,15 @@ namespace PFD
             sGeometryInputData.fL = input.Length;
             sGeometryInputData.fH_1 = input.WallHeight;
             sGeometryInputData.fRoofPitch_deg = input.RoofPitch_deg;
-            sGeometryInputData.fH_2 = input.ApexHeigth_H_2;
+            sGeometryInputData.fH_2 = sGeometryInputData.fH_1 + (float)Math.Tan(sGeometryInputData.fRoofPitch_deg / 180 * Math.PI) * 0.5f * sGeometryInputData.fW;
 
             sWindInputData.eWindRegion = input.WindRegion;
             sWindInputData.iAngleWindDirection = input.AngleWindDirectionIndex;
             sWindInputData.fTerrainCategory = GetTerrainCategory(input.TerrainCategoryIndex);
 
             WindLoadDataSpecificInput sWindInputSpecificData;
-            sWindInputSpecificData.fz = input.ApexHeigth_H_2;
-            sWindInputSpecificData.fh = input.AverageStructureHeight_h;
+            //sWindInputSpecificData.fz = input.AverageStructureHeight_h; //input.ApexHeigth_H_2; // Generally, the wind speed is determined at the average roof height (h).
+            //sWindInputSpecificData.fh = input.AverageStructureHeight_h;
 
             sWindInputSpecificData.eLocalPressureReference = (ELocalWindPressureReference)input.LocalPressureReferenceIndex;
             sWindInputSpecificData.fTributaryArea = input.TributaryArea_A;
@@ -110,17 +110,14 @@ namespace PFD
             WindPressureCalculatorViewModel vm = this.DataContext as WindPressureCalculatorViewModel;
 
             // Set results
+            vm.AverageStructureHeight_h = windCalcResults.fh;
+
             vm.TopographicMultiplier_Mt = windCalcResults.fM_t;
-            vm.HillShapeMultiplier_Mh = windCalcResults.fM_h;
-            vm.ShieldingMultiplier_Ms = windCalcResults.fM_s;
             //vm.WindDirectionMultiplier_Md;
             vm.TerrainHeightMultiplier_Mzcat = windCalcResults.fM_z_cat;
 
             vm.AreaReductionFactor_Ka = windCalcResults.fK_a_roof;
             vm.LocalPressureFactor_Kl = windCalcResults.fK_l;
-            vm.PorousCladdingReductionFactor_Kp = windCalcResults.fK_p;
-            vm.CombinationFactorExternalPressures_Kce = windCalcResults.fK_ce;
-            vm.CombinationFactorExternalPressures_Kci = windCalcResults.fK_ci;
 
             vm.WindSpeed_VR = windCalcResults.fV_R_ULS; // ULS
             vm.WindSpeed_VsitBeta = MathF.Max(windCalcResults.fV_sit_ULS_Theta_4); // ULS
@@ -216,23 +213,23 @@ namespace PFD
                 "TerrainCategoryIndex",
                 "AngleWindDirectionIndex",
 
-                //"LeeMultiplier_Mlee",
-                //"HillShapeMultiplier_Mh",
-                //"ShieldingMultiplier_Ms",
-                //"WindDirectionMultiplier_Md",
+                "LeeMultiplier_Mlee",
+                "HillShapeMultiplier_Mh",
+                "ShieldingMultiplier_Ms",
+                //"WindDirectionMultiplier_Md", // neaktivovat
 
                 "LocalPressureReferenceIndex",
                 "TributaryArea_A",
-                //"PorousCladdingReductionFactor_Kp",
-                //"CombinationFactorExternalPressures_Kce",
-                //"CombinationFactorExternalPressures_Kci",
+                "PorousCladdingReductionFactor_Kp",
+                "CombinationFactorExternalPressures_Kce",
+                "CombinationFactorExternalPressures_Kci",
 
                 "GableWidth",
                 "Length",
                 "WallHeight",
                 "RoofPitch_deg",
-                //"ApexHeigth_H_2"
-                //"AverageStructureHeight_h"
+                //"ApexHeigth_H_2" // neaktivovat
+                //"AverageStructureHeight_h" // neaktivovat
             };
 
             return list.Contains(propName);

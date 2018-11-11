@@ -549,8 +549,8 @@
     public struct WindLoadDataSpecificInput
     {
         public float fTributaryArea;
-        public float fz;
-        public float fh;
+        //public float fz;
+        //public float fh;
 
         public ELocalWindPressureReference eLocalPressureReference;
 

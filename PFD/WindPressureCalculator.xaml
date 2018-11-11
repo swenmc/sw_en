@@ -138,25 +138,25 @@
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=TerrainHeightMultiplier_Mzcat, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="14" Grid.Column="0" Text="Local Pressure Reference:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="14" Grid.Column="0" Text="Tributary Area A:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <ComboBox Grid.Row="14" Grid.Column="1" Name ="Combobox_LocalPressureReference" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LocalPressureReferenceIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-
-        <TextBlock Grid.Row="15" Grid.Column="0" Text="Tributary Area A:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-        <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_TributaryArea_A" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_TributaryArea_A" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=TributaryArea_A, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m²]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="16" Grid.Column="0" Text="Area Reduction Factor Ka:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="15" Grid.Column="0" Text="Area Reduction Factor Ka:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_AreaReductionFactor_Ka" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_AreaReductionFactor_Ka" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AreaReductionFactor_Ka, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
+        <TextBlock Grid.Row="16" Grid.Column="0" Text="Local Pressure Reference:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="16" Grid.Column="1" Name ="Combobox_LocalPressureReference" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LocalPressureReferenceIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        
         <TextBlock Grid.Row="17" Grid.Column="0" Text="Local Pressure Factor Kl:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="17" Grid.Column="1" Name ="TextBox_LocalPressureFactor_Kl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
