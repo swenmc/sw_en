@@ -23,6 +23,9 @@ namespace EXPIMP
         //private const string fontFamily = "Verdana";
         //private const string fontFamily = "Times New Roman";
         private const string fontFamily = "Calibri";
+
+        private static PdfDocument document = null;
+
         private static string GetPDFNameForPlate(CPlate plate)
         {
             float fUnitFactor = 1000; // defined in m, exported in mm
@@ -85,6 +88,38 @@ namespace EXPIMP
             s_document.Save(fileName);
             // ...and start a viewer
             Process.Start(fileName);
+        }
+
+
+        public static void CreatePDFDocument()
+        {
+            document = new PdfDocument();
+            document.Info.Title = "Export from FormSteel software";            
+        }
+        public static void AddPlateToPDF(Canvas canvas, CPlate plate, CProductionInfo pInfo)
+        {
+            PdfPage page = document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Vykreslenie zobrazovanych textov a objektov do PDF - zoradene z hora
+            DrawProductionInfo(gfx, pInfo, plate);
+            DrawPlateInfo(gfx, plate);
+            Draw3DScheme(gfx, pInfo, plate);
+            DrawProductionNotes(gfx);
+            DrawLogo(gfx);
+            DrawFSAddress(gfx);
+            gfx.Dispose();
+
+            DrawCanvas_PDF(canvas, page);
+        }
+
+        public static void SavePDFDocument(string fileName)
+        {
+            // Save the s_document...
+            document.Save(fileName);
+            // ...and start a viewer
+            Process.Start(fileName);
+            document = null;
         }
 
         public static void DrawCanvas_PDF(Canvas canvas, PdfPage page)

@@ -1982,6 +1982,8 @@ namespace PFD
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
         }
 
+        
+
         private void BtnSavePlate_Click(object sender, RoutedEventArgs e)
         {
             if (plate == null) { MessageBox.Show("No plate to serialize."); return; }
@@ -1992,12 +1994,19 @@ namespace PFD
             sfd.AddExtension = true;
             sfd.FileName = "Plate_" + plate.Name;
 
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
+
+            object[] arr = new object[2];
+            arr[0] = plate;
+            arr[1] = pInfo;
+
             if (sfd.ShowDialog() == true)
             {
                 using (Stream stream = File.Open(sfd.FileName, FileMode.Create))
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(stream, plate);
+                    binaryFormatter.Serialize(stream, arr);
                     stream.Close();
                 }
             }
@@ -2009,35 +2018,10 @@ namespace PFD
             ofd.Filter = "Data Files (*.dat)|*.dat";
             ofd.DefaultExt = "dat";
             ofd.AddExtension = true;
-
-            CPlate deserializedPlate = null;
-            if(ofd.ShowDialog() == true)
+            
+            if (ofd.ShowDialog() == true)
             {
-                using (Stream stream = File.Open(ofd.FileName, FileMode.Open))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-                    deserializedPlate = (CPlate)binaryFormatter.Deserialize(stream);
-                }
-            }
-
-            if (deserializedPlate != null)
-            {
-                SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
-                vm.ComponentTypeIndex = 1;
-                vm.ComponentSerieIndex = (int)deserializedPlate.m_ePlateSerieType_FS;
-                vm.ComponentIndex = GetPlateIndex(deserializedPlate);
-                
-                //TODO Mato: tu by trebalo ponastavovat vsetky dolezite premenne,ktore chceme preniest, lebo ked to preniesiem tak ako je na riadku dole, tak to potom neskor pada
-                // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
-                plate = deserializedPlate;
-                
-                if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
-                else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
-                else vm.ScrewArrangementIndex = 0;
-
-                vm.SetComponentProperties(plate);
-                if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
+                OpenDataFile(ofd.FileName);
             }
         }
 
@@ -2048,6 +2032,78 @@ namespace PFD
             else if (plate is CConCom_Plate_KD || plate is CConCom_Plate_KDS) return 3;
             else if (plate is CConCom_Plate_KE) return 4;
             else return 0;
+        }
+
+
+        private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string folder = dialog.SelectedPath;                    
+                    DirectoryInfo dirInfo = new DirectoryInfo(folder);
+                    FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
+                    if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
+
+                    CExportToPDF.CreatePDFDocument();
+                    foreach (FileInfo fi in files)
+                    {
+                        OpenDataFile(fi.FullName);
+
+                        SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+                        CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
+
+                        if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
+                        else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name);
+                    }
+
+                    string fileName = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.pdf");
+                    CExportToPDF.SavePDFDocument(fileName);
+                }
+            }
+        }
+
+        private void OpenDataFile(string fileName)
+        {
+            CPlate deserializedPlate = null;
+            CProductionInfo pInfo = null;
+            using (Stream stream = File.Open(fileName, FileMode.Open))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();                
+                object[] arr = (object[])binaryFormatter.Deserialize(stream);
+                deserializedPlate = (CPlate)arr[0];
+                pInfo = (CProductionInfo)arr[1];
+            }
+
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            if (pInfo != null)
+            {
+                vm.JobNumber = pInfo.JobNumber;
+                vm.Customer = pInfo.Customer;
+                vm.Amount = pInfo.Amount;
+                vm.AmountLH = pInfo.AmountLH;
+                vm.AmountRH = pInfo.AmountRH;
+            }
+            if (deserializedPlate != null)
+            {                
+                vm.ComponentTypeIndex = 1;
+                vm.ComponentSerieIndex = (int)deserializedPlate.m_ePlateSerieType_FS;
+                vm.ComponentIndex = GetPlateIndex(deserializedPlate);
+
+                //TODO Mato: tu by trebalo ponastavovat vsetky dolezite premenne,ktore chceme preniest, lebo ked to preniesiem tak ako je na riadku dole, tak to potom neskor pada
+                // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
+                plate = deserializedPlate;
+
+                if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
+                else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
+                else vm.ScrewArrangementIndex = 0;
+
+                vm.SetComponentProperties(plate);
+                if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
+            }
+            
+
         }
 
         //private void RedrawComponentIn2D()

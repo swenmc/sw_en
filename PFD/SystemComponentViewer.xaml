@@ -333,6 +333,8 @@
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnSavePlate_Click"/>
             <Button Name="BtnLoadPlate" Content="Load Plate" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnLoadPlate_Click"/>
+            <Button Name="BtnExportToPDFFromDirectory" Content="Export to PDF from directory" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDFFromDirectory_Click"/>
 
         </StackPanel>
     </Grid>
