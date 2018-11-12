@@ -17,8 +17,7 @@ namespace BaseClasses
         {
             get { return m_TriangleIndices; }
             set { m_TriangleIndices = value; }
-        }
-        [NonSerialized]
+        }        
         public Point[] PointsOut2D;
         /*
         public Point[] m_arrPoints2D;

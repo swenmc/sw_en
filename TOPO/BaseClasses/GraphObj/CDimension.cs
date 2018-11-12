@@ -7,6 +7,7 @@ using System.Windows;
 
 namespace BaseClasses.GraphObj
 {
+    [Serializable]
     public class CDimension
     {
         private Point m_controlPointRef;

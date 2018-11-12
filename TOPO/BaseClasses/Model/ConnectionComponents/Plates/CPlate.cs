@@ -67,8 +67,7 @@ namespace BaseClasses
             {
                 m_drillingRoutePoints = value;
             }
-        }
-        [NonSerialized]
+        }        
         private CDimension[] m_dimensions; // Pole kot pre Plate
         public CDimension[] Dimensions
         {

@@ -2054,7 +2054,9 @@ namespace PFD
                         SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
                         CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
 
-                        if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
+                        page2D.RenderSize = new Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
+                        //if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
+                        if (page2D != null) CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
                         else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name);
                     }
 
@@ -2093,14 +2095,17 @@ namespace PFD
 
                 //TODO Mato: tu by trebalo ponastavovat vsetky dolezite premenne,ktore chceme preniest, lebo ked to preniesiem tak ako je na riadku dole, tak to potom neskor pada
                 // samozrejme preto,ze nie je mozne serializovat vsetko ako je napr. Material, 3DTriedy ktore nie su urcene na serializaciu atd
-                plate = deserializedPlate;
+                
 
-                if (plate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
-                else if (plate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
+                if (deserializedPlate.ScrewArrangement is CScrewArrangementCircleApexOrKnee) vm.ScrewArrangementIndex = 2;
+                else if (deserializedPlate.ScrewArrangement is CScrewArrangementRectApexOrKnee) vm.ScrewArrangementIndex = 1;
                 else vm.ScrewArrangementIndex = 0;
 
+                plate = deserializedPlate;
                 vm.SetComponentProperties(plate);
                 if (plate != null) vm.SetScrewArrangementProperties(plate.ScrewArrangement);
+
+                DisplayComponent(vm);
             }
             
 
