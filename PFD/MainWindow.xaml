@@ -283,8 +283,9 @@
                 <Button Name="ExportDXF_3D" Content="Export DXF" Height="20" Width="100" Margin="0 0 10 0" Click="ExportDXF_3D_Click"/>
 
                 <!--Temporary-->
-                <Button Content="Wind Pressure" Grid.Column="2" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="Button_Click"/>
-
+                <Button Content="Wind Pressure" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="WindPressureButton_Click"/>
+                <Button Content="Purlin Designer" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="PurlinDesignerButton_Click"/>
+                
             </StackPanel>
         </StackPanel>
         

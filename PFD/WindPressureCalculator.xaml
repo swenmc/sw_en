@@ -12,7 +12,7 @@
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
     </Window.Resources>
-    <Grid Name="LoadParamsGrid" Margin="5,10,5,5">
+    <Grid Name="WindLoadParamsGrid" Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="150"/>

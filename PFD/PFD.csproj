@@ -84,6 +84,9 @@
     <Compile Include="CDatabaseComponents.cs" />
     <Compile Include="MODELS\CModel_PFD_01_GR.cs" />
     <Compile Include="MODELS\CModel_PFD.cs" />
+    <Compile Include="PurlinDesigner.xaml.cs">
+      <DependentUpon>PurlinDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SystemComponentViewer.xaml.cs">
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
@@ -152,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="PurlinDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SystemComponentViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

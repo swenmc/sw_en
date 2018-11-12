@@ -1502,9 +1502,15 @@ namespace PFD
             });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void WindPressureButton_Click(object sender, RoutedEventArgs e)
         {
             WindPressureCalculator win = new WindPressureCalculator();
+            win.Show();
+        }
+
+        private void PurlinDesignerButton_Click(object sender, RoutedEventArgs e)
+        {
+            PurlinDesigner win = new PurlinDesigner();
             win.Show();
         }
     }
