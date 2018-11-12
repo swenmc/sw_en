@@ -38,6 +38,27 @@ namespace PFD
         private float MWindLoadExternalPressure_pemin;
         private float MWindLoadExternalPressure_pemax;
 
+        private float MCladdingSelfWeight_gcl;
+        private float MAdditionalDeadLoad_gl;
+        private float MLiveLoad_ql;
+        private float MSnowLoad_sl;
+        private float MInternalPressure_piminl;
+        private float MInternalPressure_pimaxl;
+        private float MExternalPressure_peminl;
+        private float MExternalPressure_pemaxl;
+
+        private float MBendingMomentUpwind_M_asterix;
+        private float MShearForceUpwind_V_asterix;
+        private float MBendingMomentDownwind_M_asterix;
+        private float MShearForceDownwind_V_asterix;
+        private float MBendingCapacity_Mb;
+        private float MShearCapacity_Vw;
+
+        private float MBracingLength_Lb;
+
+        private float MDeflectionUpwind_Delta;
+        private float MDeflectionDownwind_Delta;
+
         //-------------------------------------------------------------------------------------------------------------
         public float Length_L
         {
@@ -230,6 +251,261 @@ namespace PFD
                 MWindLoadExternalPressure_pemax = value;
 
                 NotifyPropertyChanged("WindLoadExternalPressure_pemax");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float CladdingSelfWeight_gcl
+        {
+            get
+            {
+                return MCladdingSelfWeight_gcl;
+            }
+            set
+            {
+                MCladdingSelfWeight_gcl = value;
+
+                NotifyPropertyChanged("CladdingSelfWeight_gcl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float AdditionalDeadLoad_gl
+        {
+            get
+            {
+                return MAdditionalDeadLoad_gl;
+            }
+            set
+            {
+                MAdditionalDeadLoad_gl = value;
+
+                NotifyPropertyChanged("AdditionalDeadLoad_gl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float LiveLoad_ql
+        {
+            get
+            {
+                return MLiveLoad_ql;
+            }
+            set
+            {
+                MLiveLoad_ql = value;
+
+                NotifyPropertyChanged("LiveLoad_ql");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float SnowLoad_sl
+        {
+            get
+            {
+                return MSnowLoad_sl;
+            }
+            set
+            {
+                MSnowLoad_sl = value;
+
+                NotifyPropertyChanged("SnowLoad_sl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float InternalPressure_piminl
+        {
+            get
+            {
+                return MInternalPressure_piminl;
+            }
+            set
+            {
+                MInternalPressure_piminl = value;
+
+                NotifyPropertyChanged("InternalPressure_piminl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float InternalPressure_pimaxl
+        {
+            get
+            {
+                return MInternalPressure_pimaxl;
+            }
+            set
+            {
+                MInternalPressure_pimaxl = value;
+
+                NotifyPropertyChanged("InternalPressure_pimaxl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ExternalPressure_peminl
+        {
+            get
+            {
+                return MExternalPressure_peminl;
+            }
+            set
+            {
+                MExternalPressure_peminl = value;
+
+                NotifyPropertyChanged("IExternalPressure_peminl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ExternalPressure_pemaxl
+        {
+            get
+            {
+                return MExternalPressure_pemaxl;
+            }
+            set
+            {
+                MExternalPressure_pemaxl = value;
+
+                NotifyPropertyChanged("ExternalPressure_pemaxl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BendingMomentUpwind_M_asterix
+        {
+            get
+            {
+                return MBendingMomentUpwind_M_asterix;
+            }
+            set
+            {
+                MBendingMomentUpwind_M_asterix = value;
+
+                NotifyPropertyChanged("BendingMomentUpwind_M_asterix");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ShearForceUpwind_V_asterix
+        {
+            get
+            {
+                return MShearForceUpwind_V_asterix;
+            }
+            set
+            {
+                MShearForceUpwind_V_asterix = value;
+
+                NotifyPropertyChanged("ShearForceUpwind_V_asterix");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BendingMomentDownwind_M_asterix
+        {
+            get
+            {
+                return MBendingMomentDownwind_M_asterix;
+            }
+            set
+            {
+                MBendingMomentDownwind_M_asterix = value;
+
+                NotifyPropertyChanged("BendingMomentDownwind_M_asterix");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ShearForceDownwind_V_asterix
+        {
+            get
+            {
+                return MShearForceDownwind_V_asterix;
+            }
+            set
+            {
+                MShearForceDownwind_V_asterix = value;
+
+                NotifyPropertyChanged("ShearForceDownwind_V_asterix");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BendingCapacity_Mb
+        {
+            get
+            {
+                return MBendingCapacity_Mb;
+            }
+            set
+            {
+                MBendingCapacity_Mb = value;
+
+                NotifyPropertyChanged("BendingCapacity_Mb");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ShearCapacity_Vw
+        {
+            get
+            {
+                return MShearCapacity_Vw;
+            }
+            set
+            {
+                MShearCapacity_Vw = value;
+
+                NotifyPropertyChanged("ShearCapacity_Vw");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BracingLength_Lb
+        {
+            get
+            {
+                return MBracingLength_Lb;
+            }
+            set
+            {
+                MBracingLength_Lb = value;
+
+                NotifyPropertyChanged("BracingLength_Lb");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionUpwind_Delta
+        {
+            get
+            {
+                return MDeflectionUpwind_Delta;
+            }
+            set
+            {
+                MDeflectionUpwind_Delta = value;
+
+                NotifyPropertyChanged("DeflectionUpwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionDownwind_Delta
+        {
+            get
+            {
+                return MDeflectionDownwind_Delta;
+            }
+            set
+            {
+                MDeflectionDownwind_Delta = value;
+
+                NotifyPropertyChanged("DeflectionDownwind_Delta");
             }
         }
 
