@@ -87,6 +87,7 @@
     <Compile Include="PurlinDesigner.xaml.cs">
       <DependentUpon>PurlinDesigner.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PurlinDesignerViewModel.cs" />
     <Compile Include="SystemComponentViewer.xaml.cs">
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
