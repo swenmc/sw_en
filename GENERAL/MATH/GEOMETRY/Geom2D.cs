@@ -413,8 +413,8 @@ namespace MATH
 
         public static List<Point> TransformArrayToList(Point[] array_input)
         {
-            if (array_input == null)
-                throw new ArgumentNullException("Not inicialized array of point coordinates!");
+            if (array_input == null) return null;
+                //throw new ArgumentNullException("Not inicialized array of point coordinates!");
 
             List<Point> listPoints = new List<Point>(array_input.Length);
 

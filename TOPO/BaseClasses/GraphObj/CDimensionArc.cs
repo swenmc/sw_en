@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BaseClasses.GraphObj
 {
+    [Serializable]
     public class CDimensionArc : CDimension
     {
         private Point m_controlPointStart;
