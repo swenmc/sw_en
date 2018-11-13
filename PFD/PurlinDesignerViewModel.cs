@@ -511,7 +511,25 @@ namespace PFD
 
         public PurlinDesignerViewModel()
         {
+            // Set default
+            Length_L = 6f;
+            TributaryWidth_B = 2f;
 
+            CrossSectionIndex = 0;
+
+            CladdingSelfWeight_gc = 0.05f;
+            AdditionalDeadLoad_g = 0.10f;
+
+            LiveLoad_q = 0.25f;
+            SnowLoad_s = 0;
+
+            WindLoadInternalPressure_pimin = -0.3f;
+            WindLoadInternalPressure_pimax = 0;
+
+            WindLoadExternalPressure_pemin = -0.9f;
+            WindLoadExternalPressure_pemax = 0.3f;
+
+            IsSetFromCode = false;
         }
 
         //-------------------------------------------------------------------------------------------------------------
