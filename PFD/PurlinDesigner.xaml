@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Purlin Designer" Height="850" Width="950">
+        Title="Purlin Designer" Height="1010" Width="950">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -23,6 +23,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
@@ -285,6 +289,22 @@
                          Text="{Binding Path=DeflectionDownwind_Delta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="21" Grid.Column="3" Text="Deflection Limit δ.lim:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_DeflectionLimit_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=DeflectionLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="23" Grid.Column="3" Text="Design Ratio - Deflection η:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="23" Grid.Column="4" Name ="TextBox_DesignRatioDeflection_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=DesignRatioDeflection_eta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="23" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

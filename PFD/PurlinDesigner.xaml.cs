@@ -20,7 +20,7 @@ namespace PFD
     /// </summary>
     public partial class PurlinDesigner : Window
     {
-        PurlinDesignerViewModel vm;
+        PurlinDesignerViewModel calcModel;
 
         public PurlinDesigner()
         {
@@ -35,7 +35,7 @@ namespace PFD
             Combobox_CrossSection.Items.Add("C270155n");
             Combobox_CrossSection.Items.Add("C270195n");
 
-            vm = new PurlinDesignerViewModel();
+            PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
 
@@ -84,27 +84,28 @@ namespace PFD
 
         void SetInputAndCalculate()
         {
-            vm.TributaryArea_A = vm.Length_L * vm.TributaryWidth_B;
+            calcModel = this.DataContext as PurlinDesignerViewModel;
+
+            calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
             float fE = 2e+11f;
-            float fI_x = 0.001111f;
-            float fI_x_eff = 0.000511f;
+            float fI_x = MomentOfInertia[calcModel.CrossSectionIndex] / 1e+12f;
+            float fI_x_eff = 0.8f * fI_x; // TODO - doplnit aj Ieff, zistit ci sa da pre simlpy supported beam vyjadrit faktorom
 
+            calcModel.AdditionalDeadLoad_gl =  calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
 
-            vm.AdditionalDeadLoad_gl *=  vm.TributaryWidth_B;
+            calcModel.CladdingSelfWeight_gcl = calcModel.CladdingSelfWeight_gc * calcModel.TributaryWidth_B;
+            calcModel.AdditionalDeadLoad_gl = calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
+            calcModel.LiveLoad_ql = calcModel.LiveLoad_q * calcModel.TributaryWidth_B;
+            calcModel.SnowLoad_sl = calcModel.SnowLoad_s * calcModel.TributaryWidth_B;
+            calcModel.InternalPressure_piminl = calcModel.WindLoadInternalPressure_pimin * calcModel.TributaryWidth_B;
+            calcModel.InternalPressure_pimaxl = calcModel.WindLoadInternalPressure_pimax * calcModel.TributaryWidth_B;
+            calcModel.ExternalPressure_peminl = calcModel.WindLoadExternalPressure_pemin * calcModel.TributaryWidth_B;
+            calcModel.ExternalPressure_pemaxl = calcModel.WindLoadExternalPressure_pemax * calcModel.TributaryWidth_B;
 
-            vm.CladdingSelfWeight_gcl *= vm.TributaryWidth_B;
-            vm.AdditionalDeadLoad_gl *= vm.TributaryWidth_B;
-            vm.LiveLoad_ql *= vm.TributaryWidth_B;
-            vm.SnowLoad_sl *= vm.TributaryWidth_B;
-            vm.InternalPressure_piminl *= vm.TributaryWidth_B;
-            vm.InternalPressure_pimaxl *= vm.TributaryWidth_B;
-            vm.ExternalPressure_peminl *= vm.TributaryWidth_B;
-            vm.ExternalPressure_pemaxl *= vm.TributaryWidth_B;
-
-            float fTotalDeadLoad_l = vm.CladdingSelfWeight_gcl + vm.AdditionalDeadLoad_gl + vm.CladdingSelfWeight_gcl + vm.AdditionalDeadLoad_gl;
-            float fTotalWindLoad_upwind_l = vm.InternalPressure_pimaxl + vm.ExternalPressure_peminl;
-            float fTotalWindLoad_downwind_l = Math.Abs(vm.InternalPressure_piminl) + vm.ExternalPressure_pemaxl;
+            float fTotalDeadLoad_l = calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl + calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl;
+            float fTotalWindLoad_upwind_l = calcModel.InternalPressure_pimaxl + calcModel.ExternalPressure_peminl;
+            float fTotalWindLoad_downwind_l = Math.Abs(calcModel.InternalPressure_piminl) + calcModel.ExternalPressure_pemaxl;
 
 
             // Load Combinations
@@ -123,29 +124,44 @@ namespace PFD
             float fGamma_Q = 1.5f;
             float fPsi_wind = 0.65f;
 
-            float fload_CO1 = fGamma_G_dest * fTotalDeadLoad_l + fGamma_Q * vm.LiveLoad_ql;
-            float fload_CO2 = fGamma_G_stab * (fTotalDeadLoad_l - vm.AdditionalDeadLoad_gl) + fTotalWindLoad_upwind_l;
-            float fload_CO3 = fGamma_G_dest * fTotalDeadLoad_l + fTotalWindLoad_downwind_l;
-            float fload_CO4 = fGamma_G_dest * fTotalDeadLoad_l + vm.SnowLoad_sl;
-            float fload_CO5 = (fTotalDeadLoad_l - vm.AdditionalDeadLoad_gl) + fPsi_wind * fTotalWindLoad_upwind_l;
-            float fload_CO6 = fTotalDeadLoad_l + fPsi_wind * fTotalWindLoad_downwind_l;
+            float fload_CO1_ULS = fGamma_G_dest * fTotalDeadLoad_l + fGamma_Q * calcModel.LiveLoad_ql;
+            float fload_CO2_ULS = fGamma_G_stab * (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fTotalWindLoad_upwind_l;
+            float fload_CO3_ULS = fGamma_G_dest * fTotalDeadLoad_l + fTotalWindLoad_downwind_l;
+            float fload_CO4_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.SnowLoad_sl;
+            float fload_CO5_ULS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fPsi_wind * fTotalWindLoad_upwind_l;
+            float fload_CO6_ULS = fTotalDeadLoad_l + fPsi_wind * fTotalWindLoad_downwind_l;
 
-            float fload_up = MathF.Min(fload_CO1, fload_CO2, fload_CO3, fload_CO4, fload_CO5, fload_CO6);
-            float fload_down = MathF.Min(fload_CO1, fload_CO2, fload_CO3, fload_CO4, fload_CO5, fload_CO6);
+            float fload_up_ULS = MathF.Min(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS, fload_CO5_ULS, fload_CO6_ULS);
+            float fload_down_ULS = MathF.Max(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS, fload_CO5_ULS, fload_CO6_ULS);
+
+            float fload_CO1_SLS = fTotalDeadLoad_l + 0.7f * calcModel.LiveLoad_ql;
+            float fload_CO2_SLS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fTotalWindLoad_upwind_l;
+            float fload_CO3_SLS = fTotalDeadLoad_l + fTotalWindLoad_downwind_l;
+            float fload_CO4_SLS = fTotalDeadLoad_l + calcModel.SnowLoad_sl;
+
+            float fload_up_SLS = MathF.Min(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
+            float fload_down_SLS = MathF.Max(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
+
+            // Convert kN/m to N/m
+            fload_up_ULS *= 1000;
+            fload_down_ULS *= 1000;
+
+            fload_up_SLS *= 1000;
+            fload_down_SLS *= 1000;
 
             // Simply supported beam
-            vm.BendingMomentUpwind_M_asterix = 1f/8f * fload_up * MathF.Pow2(vm.Length_L);
-            vm.ShearForceUpwind_V_asterix =  1f / 2f * fload_up * vm.Length_L;
-            vm.BendingMomentDownwind_M_asterix = 1f / 8f * fload_down * MathF.Pow2(vm.Length_L);
-            vm.ShearForceDownwind_V_asterix = 1f / 2f * fload_down * vm.Length_L;
+            calcModel.BendingMomentUpwind_M_asterix = 1f/8f * fload_up_ULS * MathF.Pow2(calcModel.Length_L);
+            calcModel.ShearForceUpwind_V_asterix =  1f / 2f * fload_up_ULS * calcModel.Length_L;
+            calcModel.BendingMomentDownwind_M_asterix = 1f / 8f * fload_down_ULS * MathF.Pow2(calcModel.Length_L);
+            calcModel.ShearForceDownwind_V_asterix = 1f / 2f * fload_down_ULS * calcModel.Length_L;
 
             int iNumberOfSectionsPerBeam = 11;
 
-            float fx_step = 0.1f * vm.Length_L;
+            float fx_step = 0.1f * calcModel.Length_L;
 
-            vm.BendingCapacity_Mb = 0.002f; // Nm napojit
-            vm.ShearCapacity_Vw = 0.012f; // Nm napojit
-            vm.BracingLength_Lb = 2f; // m napojit
+            calcModel.BendingCapacity_Mb = 0.002f; // Nm napojit
+            calcModel.ShearCapacity_Vw = 0.012f; // Nm napojit
+            calcModel.BracingLength_Lb = 2f; // m napojit
 
             float fMaximumDesignRatio_Strength = 0;
 
@@ -154,16 +170,16 @@ namespace PFD
             {
                 float fx = i * fx_step;
 
-                float fBendingMomentUpwind_M_asterix_inLocation_x = vm.ShearForceUpwind_V_asterix * fx - fload_up * 0.5f * MathF.Pow2(fx);
-                float ShearForceUpwind_V_asterix_inLocation_x = vm.ShearForceUpwind_V_asterix - fload_up * fx;
-                float fBendingMomentDownwind_M_asterix_inLocation_x = vm.ShearForceDownwind_V_asterix * fx - fload_down * 0.5f * MathF.Pow2(fx);
-                float ShearForceDownwind_V_asterix_inLocation_x = vm.ShearForceDownwind_V_asterix - fload_down * fx;
+                float fBendingMomentUpwind_M_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix * fx - fload_up_ULS * 0.5f * MathF.Pow2(fx);
+                float ShearForceUpwind_V_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix - fload_up_ULS * fx;
+                float fBendingMomentDownwind_M_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix * fx - fload_down_ULS * 0.5f * MathF.Pow2(fx);
+                float ShearForceDownwind_V_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix - fload_down_ULS * fx;
 
-                float fRatio_M_upwind_inLocation_x = Math.Abs(fBendingMomentUpwind_M_asterix_inLocation_x) / vm.BendingCapacity_Mb;
-                float fRatio_V_upwind_inLocation_x = Math.Abs(ShearForceUpwind_V_asterix_inLocation_x) / vm.ShearCapacity_Vw;
+                float fRatio_M_upwind_inLocation_x = Math.Abs(fBendingMomentUpwind_M_asterix_inLocation_x) / calcModel.BendingCapacity_Mb;
+                float fRatio_V_upwind_inLocation_x = Math.Abs(ShearForceUpwind_V_asterix_inLocation_x) / calcModel.ShearCapacity_Vw;
 
-                float fRatio_M_downwind_inLocation_x = Math.Abs(fBendingMomentDownwind_M_asterix_inLocation_x) / vm.BendingCapacity_Mb;
-                float fRatio_V_downwind_inLocation_x = Math.Abs(ShearForceDownwind_V_asterix_inLocation_x) / vm.ShearCapacity_Vw;
+                float fRatio_M_downwind_inLocation_x = Math.Abs(fBendingMomentDownwind_M_asterix_inLocation_x) / calcModel.BendingCapacity_Mb;
+                float fRatio_V_downwind_inLocation_x = Math.Abs(ShearForceDownwind_V_asterix_inLocation_x) / calcModel.ShearCapacity_Vw;
 
                 // Interaction
                 float fRatio_MandV_upwind_inLocation_x = fRatio_M_upwind_inLocation_x + fRatio_V_upwind_inLocation_x;
@@ -175,28 +191,51 @@ namespace PFD
                     fMaximumDesignRatio_Strength = fMaximumRatio_Strength;
             }
 
-            vm.DeflectionUpwind_Delta = 5f / 384f * fload_up * MathF.Pow4(vm.Length_L) / (fE * fI_x_eff);
-            vm.DeflectionDownwind_Delta = 5f / 384f * fload_down * MathF.Pow4(vm.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
 
             float fLimitRatioDelta = 1f / 150f;
-            float fLimitValueDelta = vm.Length_L * fLimitRatioDelta;
+            calcModel.DeflectionLimit_Delta_lim = calcModel.Length_L * fLimitRatioDelta;
 
-            float fRatioDeflectionUpwind = Math.Abs(vm.DeflectionUpwind_Delta / fLimitValueDelta);
-            float fRatioDeflectionDownwind = Math.Abs(vm.DeflectionDownwind_Delta / fLimitValueDelta);
+            float fRatioDeflectionUpwind = Math.Abs(calcModel.DeflectionUpwind_Delta / calcModel.DeflectionLimit_Delta_lim);
+            float fRatioDeflectionDownwind = Math.Abs(calcModel.DeflectionDownwind_Delta / calcModel.DeflectionLimit_Delta_lim);
 
-            float fMaximumDesignRatio_Deflection = Math.Max(fRatioDeflectionUpwind, fRatioDeflectionDownwind);
+            calcModel.DesignRatioDeflection_eta = Math.Max(fRatioDeflectionUpwind, fRatioDeflectionDownwind);
 
-            float fMaximumDesignRatio = Math.Max(fMaximumDesignRatio_Strength, fMaximumDesignRatio_Deflection);
+            float fMaximumDesignRatio = Math.Max(fMaximumDesignRatio_Strength, calcModel.DesignRatioDeflection_eta);
         }
 
         private void SetOutputValues()
         {
-            PurlinDesignerViewModel vm = this.DataContext as PurlinDesignerViewModel;
+          PurlinDesignerViewModel vm = this.DataContext as PurlinDesignerViewModel;
 
             // Set results
+            vm = calcModel;
+
+            vm.BendingMomentUpwind_M_asterix *= 0.001f;
+            vm.ShearForceUpwind_V_asterix *= 0.001f;
+            vm.BendingMomentDownwind_M_asterix *= 0.001f;
+            vm.ShearForceDownwind_V_asterix *= 0.001f;
 
 
+            vm.DeflectionUpwind_Delta *= 1000f;
+            vm.DeflectionDownwind_Delta *= 1000f;
 
+            vm.DeflectionLimit_Delta_lim *= 1000f;
+            vm.DesignRatioDeflection_eta *= 100;
         }
+
+        float[] MomentOfInertia = new float[8]
+        {
+            4513000f,
+            5432000f,
+            7446751f,
+            9351163f,
+
+           09237100f,
+           11000000f,
+           13097830f,
+           18873060f
+        };
     }
 }

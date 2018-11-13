@@ -59,6 +59,10 @@ namespace PFD
         private float MDeflectionUpwind_Delta;
         private float MDeflectionDownwind_Delta;
 
+        private float MDeflectionLimit_Delta_lim;
+
+        private float MDesignRatioDeflection_eta;
+
         //-------------------------------------------------------------------------------------------------------------
         public float Length_L
         {
@@ -506,6 +510,36 @@ namespace PFD
                 MDeflectionDownwind_Delta = value;
 
                 NotifyPropertyChanged("DeflectionDownwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionLimit_Delta_lim
+        {
+            get
+            {
+                return MDeflectionLimit_Delta_lim;
+            }
+            set
+            {
+                MDeflectionLimit_Delta_lim = value;
+
+                NotifyPropertyChanged("DeflectionLimit_Delta_lim");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DesignRatioDeflection_eta
+        {
+            get
+            {
+                return MDesignRatioDeflection_eta;
+            }
+            set
+            {
+                MDesignRatioDeflection_eta = value;
+
+                NotifyPropertyChanged("DesignRatioDeflection_eta");
             }
         }
 
