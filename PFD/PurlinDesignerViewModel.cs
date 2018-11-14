@@ -94,7 +94,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float TributaryArea
+        public float TributaryArea_A
         {
             get
             {
@@ -104,7 +104,7 @@ namespace PFD
             {
                 MTributaryArea_A = value;
 
-                NotifyPropertyChanged("TributaryArea");
+                NotifyPropertyChanged("TributaryArea_A");
             }
         }
 
