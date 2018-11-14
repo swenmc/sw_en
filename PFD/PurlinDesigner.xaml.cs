@@ -86,7 +86,7 @@ namespace PFD
         {
             PurlinDesignerViewModel calcModel = this.DataContext as PurlinDesignerViewModel;
 
-            calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
+            calcModel.TributaryArea = calcModel.Length_L * calcModel.TributaryWidth_B;
 
             float fE = 2e+11f;
             float fI_x = MomentOfInertia[calcModel.CrossSectionIndex] / 1e+12f;
@@ -220,6 +220,11 @@ namespace PFD
 
             vm.DeflectionLimit_Delta_lim *= 1000f;
             vm.DesignRatioDeflection_eta *= 100;
+        }
+
+        public void TextBoxLostFocus()
+        {
+            this.Focus();
         }
 
         float[] MomentOfInertia = new float[8]

@@ -15,11 +15,11 @@ using DATABASE.DTO;
 
 namespace PFD
 {
-    public class PurlinDesignerViewModel
+    public class PurlinDesignerViewModel : INotifyPropertyChanged
     {
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
-        public SQLiteConnection conn;
+        //public SQLiteConnection conn;
         public bool IsSetFromCode = false;
 
         //-------------------------------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float TributaryArea_A
+        public float TributaryArea
         {
             get
             {
@@ -104,7 +104,7 @@ namespace PFD
             {
                 MTributaryArea_A = value;
 
-                NotifyPropertyChanged("TributaryArea_A");
+                NotifyPropertyChanged("TributaryArea");
             }
         }
 
@@ -573,9 +573,9 @@ namespace PFD
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            this.PropertyChanged(sender, e);
-        }
+        //private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    this.PropertyChanged(sender, e);
+        //}
     }
 }

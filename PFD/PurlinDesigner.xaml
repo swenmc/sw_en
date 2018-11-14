@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -55,7 +56,9 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="0" Grid.Column="1" Name ="TextBox_Length_L" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=Length_L, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=Length_L, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}">            
+                <i:Interaction.Behaviors><local:TextBoxEnterKeyUpdateBehavior /></i:Interaction.Behaviors>            
+        </TextBox>
         <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
@@ -63,22 +66,22 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_TributaryWidth_B" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=TributaryWidth_B, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=TributaryWidth_B, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Tributary Area A:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="2" Grid.Column="1" Name ="TextBox_TributaryArea_A" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=TributaryArea_A, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top" 
+                         Text="{Binding Path=TributaryArea, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m²]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Cross-section:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_CrossSection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=CrossSectionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=CrossSectionIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="8" Grid.Column="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Top" />
         
@@ -158,7 +161,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_CladdingSelfWeight_gcl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=CladdingSelfWeight_gcl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=CladdingSelfWeight_gcl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -166,7 +169,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="1" Grid.Column="4" Name ="TextBox_AdditionalDeadLoad_gl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=AdditionalDeadLoad_gl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=AdditionalDeadLoad_gl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -174,7 +177,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="2" Grid.Column="4" Name ="TextBox_LiveLoad_ql" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=LiveLoad_ql, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=LiveLoad_ql, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -182,7 +185,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="3" Grid.Column="4" Name ="TextBox_SnowLoad_sl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=SnowLoad_sl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=SnowLoad_sl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="3" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -190,7 +193,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="4" Grid.Column="4" Name ="TextBox_InternalPressure_piminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=InternalPressure_piminl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=InternalPressure_piminl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="4" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -198,7 +201,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="5" Grid.Column="4" Name ="TextBox_InternalPressure_pimaxl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=InternalPressure_pimaxl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=InternalPressure_pimaxl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="5" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -206,7 +209,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_ExternalPressure_peminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ExternalPressure_peminl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ExternalPressure_peminl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="6" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -214,7 +217,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="7" Grid.Column="4" Name ="TextBox_ExternalPressure_pemaxl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ExternalPressure_pemaxl, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ExternalPressure_pemaxl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="7" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
@@ -222,7 +225,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_BendingMomentUpwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BendingMomentUpwind_M_asterix, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=BendingMomentUpwind_M_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
 
@@ -230,7 +233,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_ShearForceUpwind_V_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ShearForceUpwind_V_asterix, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ShearForceUpwind_V_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
@@ -238,7 +241,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_BendingMomentDownwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BendingMomentDownwind_M_asterix, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=BendingMomentDownwind_M_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
 
@@ -246,7 +249,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="12" Grid.Column="4" Name ="TextBox_ShearForceDownwind_V_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ShearForceDownwind_V_asterix, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ShearForceDownwind_V_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="12" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
@@ -254,7 +257,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="14" Grid.Column="4" Name ="TextBox_BendingCapacity_Mb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BendingCapacity_Mb, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=BendingCapacity_Mb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="14" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
         
@@ -262,7 +265,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="15" Grid.Column="4" Name ="TextBox_ShearCapacity_Vw" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ShearCapacity_Vw, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ShearCapacity_Vw, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
@@ -270,7 +273,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="17" Grid.Column="4" Name ="TextBox_BracingLength_Lb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
@@ -278,7 +281,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="18" Grid.Column="4" Name ="TextBox_DeflectionUpwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionUpwind_Delta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionUpwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="18" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
@@ -286,7 +289,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="19" Grid.Column="4" Name ="TextBox_DeflectionUDownwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionDownwind_Delta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionDownwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
@@ -294,7 +297,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_DeflectionLimit_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
@@ -302,7 +305,7 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="23" Grid.Column="4" Name ="TextBox_DesignRatioDeflection_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DesignRatioDeflection_eta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DesignRatioDeflection_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="23" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
