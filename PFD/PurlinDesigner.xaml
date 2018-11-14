@@ -62,8 +62,8 @@
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="0" Grid.Column="1" Name ="TextBox_Length_L" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=Length_L, StringFormat=F3, UpdateSourceTrigger=LostFocus, Mode=TwoWay, ValidatesOnExceptions=True}">            
-                <!--<i:Interaction.Behaviors><local:TextBoxEnterKeyUpdateBehavior /></i:Interaction.Behaviors>-->
+                         Text="{Binding Path=Length_L, StringFormat=F3, UpdateSourceTrigger=LostFocus, Mode=TwoWay, ValidatesOnExceptions=True}">
+            <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
