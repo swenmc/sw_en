@@ -20,7 +20,7 @@ namespace PFD
     /// </summary>
     public partial class PurlinDesigner : Window
     {
-        PurlinDesignerViewModel calcModel;
+        //PurlinDesignerViewModel calcModel;
 
         public PurlinDesigner()
         {
@@ -84,7 +84,7 @@ namespace PFD
 
         void SetInputAndCalculate()
         {
-            calcModel = this.DataContext as PurlinDesignerViewModel;
+            PurlinDesignerViewModel calcModel = this.DataContext as PurlinDesignerViewModel;
 
             calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
@@ -207,10 +207,7 @@ namespace PFD
 
         private void SetOutputValues()
         {
-          PurlinDesignerViewModel vm = this.DataContext as PurlinDesignerViewModel;
-
-            // Set results
-            vm = calcModel;
+            PurlinDesignerViewModel vm = this.DataContext as PurlinDesignerViewModel;
 
             vm.BendingMomentUpwind_M_asterix *= 0.001f;
             vm.ShearForceUpwind_V_asterix *= 0.001f;
