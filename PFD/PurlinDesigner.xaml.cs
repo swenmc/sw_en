@@ -105,9 +105,8 @@ namespace PFD
             calcModel.ExternalPressure_pemaxl = calcModel.WindLoadExternalPressure_pemax * calcModel.TributaryWidth_B;
 
             float fTotalDeadLoad_l = calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl + calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl;
-            float fTotalWindLoad_upwind_l = calcModel.InternalPressure_pimaxl + calcModel.ExternalPressure_peminl;
-            float fTotalWindLoad_downwind_l = Math.Abs(calcModel.InternalPressure_piminl) + calcModel.ExternalPressure_pemaxl;
-
+            calcModel.WindLoadUpwind_puwl = Math.Abs(-calcModel.InternalPressure_pimaxl + calcModel.ExternalPressure_peminl);
+            calcModel.WindLoadDownwind_pdwl = Math.Abs(-calcModel.InternalPressure_piminl + calcModel.ExternalPressure_pemaxl);
 
             // Load Combinations
 
@@ -115,7 +114,7 @@ namespace PFD
             1.2G + 1.5Q
             0.9G + W1
             1.2G + W2
-            1.2G + Su 
+            1.2G + Su
             G + 0.65*W1
             G + 0.65*W2
             */
@@ -123,21 +122,22 @@ namespace PFD
             float fGamma_G_stab = 0.9f;
             float fGamma_G_dest = 1.2f;
             float fGamma_Q = 1.5f;
+            float fPsi_liveload = 0.7f;
             float fPsi_wind = 0.65f;
 
             float fload_CO1_ULS = fGamma_G_dest * fTotalDeadLoad_l + fGamma_Q * calcModel.LiveLoad_ql;
-            float fload_CO2_ULS = fGamma_G_stab * (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fTotalWindLoad_upwind_l;
-            float fload_CO3_ULS = fGamma_G_dest * fTotalDeadLoad_l + fTotalWindLoad_downwind_l;
+            float fload_CO2_ULS = fGamma_G_stab * (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + calcModel.WindLoadUpwind_puwl;
+            float fload_CO3_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl;
             float fload_CO4_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.SnowLoad_sl;
-            float fload_CO5_ULS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fPsi_wind * fTotalWindLoad_upwind_l;
-            float fload_CO6_ULS = fTotalDeadLoad_l + fPsi_wind * fTotalWindLoad_downwind_l;
+            float fload_CO5_ULS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fPsi_wind * calcModel.WindLoadUpwind_puwl;
+            float fload_CO6_ULS = fTotalDeadLoad_l + fPsi_wind * calcModel.WindLoadDownwind_pdwl;
 
             float fload_up_ULS = MathF.Min(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS, fload_CO5_ULS, fload_CO6_ULS);
             float fload_down_ULS = MathF.Max(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS, fload_CO5_ULS, fload_CO6_ULS);
 
-            float fload_CO1_SLS = fTotalDeadLoad_l + 0.7f * calcModel.LiveLoad_ql;
-            float fload_CO2_SLS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fTotalWindLoad_upwind_l;
-            float fload_CO3_SLS = fTotalDeadLoad_l + fTotalWindLoad_downwind_l;
+            float fload_CO1_SLS = fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql;
+            float fload_CO2_SLS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + calcModel.WindLoadUpwind_puwl;
+            float fload_CO3_SLS = fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl;
             float fload_CO4_SLS = fTotalDeadLoad_l + calcModel.SnowLoad_sl;
 
             float fload_up_SLS = MathF.Min(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);

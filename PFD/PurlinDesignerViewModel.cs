@@ -38,6 +38,9 @@ namespace PFD
         private float MWindLoadExternalPressure_pemin;
         private float MWindLoadExternalPressure_pemax;
 
+        private float MWindLoadUpwind_puwl;
+        private float MWindLoadDownwind_pdwl;
+
         private float MCladdingSelfWeight_gcl;
         private float MAdditionalDeadLoad_gl;
         private float MLiveLoad_ql;
@@ -359,7 +362,7 @@ namespace PFD
             {
                 MExternalPressure_peminl = value;
 
-                NotifyPropertyChanged("IExternalPressure_peminl");
+                NotifyPropertyChanged("ExternalPressure_peminl");
             }
         }
 
@@ -375,6 +378,36 @@ namespace PFD
                 MExternalPressure_pemaxl = value;
 
                 NotifyPropertyChanged("ExternalPressure_pemaxl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadUpwind_puwl
+        {
+            get
+            {
+                return MWindLoadUpwind_puwl;
+            }
+            set
+            {
+                MWindLoadUpwind_puwl = value;
+
+                NotifyPropertyChanged("WindLoadUpwind_puwl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadDownwind_pdwl
+        {
+            get
+            {
+                return MWindLoadDownwind_pdwl;
+            }
+            set
+            {
+                MWindLoadDownwind_pdwl = value;
+
+                NotifyPropertyChanged("WindLoadDownwind_pdwl");
             }
         }
 
@@ -551,17 +584,17 @@ namespace PFD
 
             CrossSectionIndex = 0;
 
-            CladdingSelfWeight_gc = 0.05f;
-            AdditionalDeadLoad_g = 0.10f;
+            CladdingSelfWeight_gc = 0.05f; // kN/m^2
+            AdditionalDeadLoad_g = 0.10f; // kN/m^2
 
-            LiveLoad_q = 0.25f;
-            SnowLoad_s = 0;
+            LiveLoad_q = 0.25f; // kN/m^2
+            SnowLoad_s = 0; // kN/m^2
 
-            WindLoadInternalPressure_pimin = -0.3f;
-            WindLoadInternalPressure_pimax = 0;
+            WindLoadInternalPressure_pimin = -0.3f; // kN/m^2
+            WindLoadInternalPressure_pimax = 0; // kN/m^2
 
-            WindLoadExternalPressure_pemin = -0.9f;
-            WindLoadExternalPressure_pemax = 0.3f;
+            WindLoadExternalPressure_pemin = -1.0f; // kN/m^2
+            WindLoadExternalPressure_pemax = 0.15f; // kN/m^2
 
             IsSetFromCode = false;
         }
