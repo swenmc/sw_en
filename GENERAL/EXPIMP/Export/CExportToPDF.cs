@@ -113,6 +113,13 @@ namespace EXPIMP
             DrawCanvas_PDF(canvas, page);
         }
 
+        public static void AddPlatesParamsTableToDocumentOnNewPage(List<string[]> tableParams)
+        {
+            PdfPage page = document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            AddPlatesTableToDocument(gfx, 50, tableParams);
+        }
+
         public static void SavePDFDocument(string fileName)
         {
             // Save the s_document...
@@ -629,26 +636,7 @@ namespace EXPIMP
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
-            Table t = GetSimpleTable(doc, tableParams);
-            //Image image = sec.AddImage()
-
-            //Section sec = doc.AddSection();
-            // Add a single paragraph with some text and format information.
-            //Paragraph para = sec.AddParagraph();
-            //para.Format.Alignment = ParagraphAlignment.Justify;
-            //para.Format.Font.Name = "Times New Roman";
-            //para.Format.Font.Size = 12;
-            //para.Format.Font.Color = MigraDoc.DocumentObjectModel.Colors.DarkGray;
-            //para.Format.Font.Color = MigraDoc.DocumentObjectModel.Colors.DarkGray;
-            //para.AddText("Duisism odigna acipsum delesenisl ");
-            //para.AddFormattedText("ullum in velenit", TextFormat.Bold);
-            //para.AddText(" ipit iurero dolum zzriliquisis nit wis dolore vel et nonsequipit, velendigna " +
-            //  "auguercilit lor se dipisl duismod tatem zzrit at laore magna feummod oloborting ea con vel " +
-            //  "essit augiati onsequat luptat nos diatum vel ullum illummy nonsent nit ipis et nonsequis " +
-            //  "niation utpat. Odolobor augait et non etueril landre min ut ulla feugiam commodo lortie ex " +
-            //  "essent augait el ing eumsan hendre feugait prat augiatem amconul laoreet. ≤≥≈≠");
-            //para.Format.Borders.Distance = "5pt";
-            //para.Format.Borders.Color = Colors.Gold;
+            Table t = GetSimpleTable(doc, tableParams);            
             
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
@@ -662,40 +650,28 @@ namespace EXPIMP
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
 
-        public static Table DemonstrateSimpleTable(Document document)
+        private static void AddPlatesTableToDocument(XGraphics gfx, double offsetY, List<string[]> tableParams)
         {
-            Section sec = document.AddSection();
-            Table table = new Table();
-            table.Borders.Width = 0.75;
+            gfx.MUH = PdfFontEncoding.Unicode;
+            gfx.MFEH = PdfFontEmbedding.Always;
+            
+            // You always need a MigraDoc document for rendering.
+            Document doc = new Document();
+            Table t = GetPlatesParamsTable(doc, gfx, tableParams);
 
-            Column column = table.AddColumn(Unit.FromCentimeter(2));
-            column.Format.Alignment = ParagraphAlignment.Center;
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
+            pdfRenderer.Document = doc;
+            pdfRenderer.RenderDocument();
+            // Create a renderer and prepare (=layout) the document
+            MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
+            docRenderer.PrepareDocument();
 
-            table.AddColumn(Unit.FromCentimeter(5));
-
-            Row row = table.AddRow();
-            row.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
-            Cell cell = row.Cells[0];
-            cell.AddParagraph("Itemus");
-            cell = row.Cells[1];
-            cell.AddParagraph("Descriptum");
-
-            row = table.AddRow();
-            cell = row.Cells[0];
-            cell.AddParagraph("1");
-            cell = row.Cells[1];
-            cell.AddParagraph("ffassdasda");
-
-            row = table.AddRow();
-            cell = row.Cells[0];
-            cell.AddParagraph("2");
-            cell = row.Cells[1];
-            cell.AddParagraph("dsadkja asklk daj a");
-
-            table.SetEdge(0, 0, 2, 3, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
-            sec.Add(table);
-            return table;
+            // Render the paragraph. You can render tables or shapes the same way.
+            docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
+            //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
+
+        
 
         public static Table GetSimpleTable(Document document, List<string[]> tableParams)
         {
@@ -729,6 +705,63 @@ namespace EXPIMP
             }
 
             table.SetEdge(0, 0, 4, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
+            sec.Add(table);
+            return table;
+        }
+        public static Table GetPlatesParamsTable(Document document, XGraphics gfx, List<string[]> tableParams)
+        {
+            Section sec = document.AddSection();
+            Table table = new Table();
+            table.Borders.Width = 0.75;
+            table.Format.Font.Name = fontFamily;
+
+            //{ "ID", "Name", "Width", "Height", "Thickness", "Area", "Volume", "Mass", "Amount", "Amount - left", "Amount - right", "Mass Total" };
+            Column columnID = table.AddColumn(Unit.FromCentimeter(0.8));
+            columnID.Format.Alignment = ParagraphAlignment.Left;
+            Column columnName = table.AddColumn(Unit.FromCentimeter(2));
+            columnName.Format.Alignment = ParagraphAlignment.Left;
+            Column columnWidth = table.AddColumn();
+            columnWidth.Format.Alignment = ParagraphAlignment.Left;
+            Column columnHeight = table.AddColumn();
+            columnHeight.Format.Alignment = ParagraphAlignment.Left;
+            Column columnThickness = table.AddColumn();
+            columnThickness.Format.Alignment = ParagraphAlignment.Left;
+            Column columnArea = table.AddColumn();
+            columnArea.Format.Alignment = ParagraphAlignment.Left;
+            Column columnVolume = table.AddColumn();
+            columnVolume.Format.Alignment = ParagraphAlignment.Left;
+            Column columnMass = table.AddColumn(Unit.FromCentimeter(1.5));
+            columnMass.Format.Alignment = ParagraphAlignment.Left;
+            Column columnAmount = table.AddColumn(Unit.FromCentimeter(1.5));
+            columnAmount.Format.Alignment = ParagraphAlignment.Left;
+            Column columnAmountL = table.AddColumn(Unit.FromCentimeter(1.5));
+            columnAmountL.Format.Alignment = ParagraphAlignment.Left;
+            Column columnAmountR = table.AddColumn(Unit.FromCentimeter(1.5));
+            columnAmountR.Format.Alignment = ParagraphAlignment.Left;
+            Column columnMassTotal = table.AddColumn(Unit.FromCentimeter(1.5));
+            columnMassTotal.Format.Alignment = ParagraphAlignment.Left;
+
+            int columns = 0;
+            foreach (string[] strParams in tableParams)
+            {
+                Row row = table.AddRow();
+                //row.Shading.Color = Colors.PaleGoldenrod;
+                Cell cell = row.Cells[0];
+                cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
+                cell.AddParagraph(strParams[0]);
+                cell = row.Cells[1];
+                cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
+                cell.AddParagraph(strParams[1]);
+                for (int i = 2; i < strParams.Length; i++)
+                {
+                    cell = row.Cells[i];
+                    
+                    cell.AddParagraph(strParams[i]);
+                }
+                columns = strParams.Length;
+            }
+            
+            table.SetEdge(0, 0, columns, tableParams.Count, Edge.Box, BorderStyle.Single, 1.5, MigraDoc.DocumentObjectModel.Colors.Black);
             sec.Add(table);
             return table;
         }

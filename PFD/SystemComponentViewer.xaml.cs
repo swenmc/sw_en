@@ -2046,7 +2046,10 @@ namespace PFD
                     FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
                     if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
 
+                    List<string[]> tableParams = new List<string[]>();
+                    tableParams.Add(new string[] { "ID", "Name", "Width", "Height", "Thickness", "Area", "Volume", "Mass", "Amount", "Amount - left", "Amount - right", "Mass Total" });
                     CExportToPDF.CreatePDFDocument();
+                    int count = 0;
                     foreach (FileInfo fi in files)
                     {
                         OpenDataFile(fi.FullName);
@@ -2056,9 +2059,28 @@ namespace PFD
 
                         page2D.RenderSize = new Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
                         //if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
-                        if (page2D != null) CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
-                        else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name);
+                        if (page2D == null) { MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name); return; }
+
+                        CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
+
+                        count++;
+                        string[] plateParams = new string[12];
+                        plateParams[0] = count.ToString();
+                        plateParams[1] = plate.Name;
+                        plateParams[2] = plate.fWidth_bx.ToString();
+                        plateParams[3] = plate.fHeight_hy.ToString();
+                        plateParams[4] = plate.fI_yu.ToString();
+                        plateParams[5] = plate.fArea.ToString();
+                        plateParams[6] = plate.fVolume.ToString();
+                        plateParams[7] = plate.fMass.ToString();
+                        plateParams[8] = pInfo.Amount.ToString();
+                        plateParams[9] = pInfo.AmountLH.ToString();
+                        plateParams[10] = pInfo.AmountRH.ToString();
+                        plateParams[11] = (plate.fMass * pInfo.Amount).ToString();
+                        tableParams.Add(plateParams);
                     }
+                    
+                    CExportToPDF.AddPlatesParamsTableToDocumentOnNewPage(tableParams);
 
                     string fileName = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.pdf");
                     CExportToPDF.SavePDFDocument(fileName);
