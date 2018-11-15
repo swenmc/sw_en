@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -26,6 +27,11 @@
 
         </Grid.RowDefinitions>
 
+        <StackPanel Name="WaitPanel" Visibility="Hidden" Grid.Row="0" Grid.Column="0" Grid.RowSpan="10" Grid.ColumnSpan="10" Panel.ZIndex="100" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Name="WaitImage" Width="400" Height="400" gif:ImageBehavior.AnimatedSource="spin.gif" />
+        </StackPanel>
+        
+
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="208" />
@@ -45,6 +51,9 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
             </Grid.RowDefinitions>
+
+            
+            
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Type:" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="10 5 0 0"/>
             <ComboBox Grid.Row="0" Grid.Column="1" Name ="Combobox_Type" HorizontalAlignment="Left" MinWidth="180" VerticalAlignment="Top" Margin="0 5 0 0"

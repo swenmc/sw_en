@@ -17,6 +17,7 @@ using System.Data;
 using Microsoft.Win32;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Threading;
 
 namespace PFD
 {
@@ -33,7 +34,7 @@ namespace PFD
         public DisplayOptions sDisplayOptions = new DisplayOptions();
 
         CCrSc_TW crsc;
-        CPlate plate;
+        public CPlate plate;
         CScrew screw;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
         Color cComponentColor = Colors.Aquamarine; // Default
@@ -70,7 +71,7 @@ namespace PFD
 
             SystemComponentViewerViewModel vm = new SystemComponentViewerViewModel(dcomponents);
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
-            this.DataContext = vm;
+            this.DataContext = vm;            
             vm.ComponentIndex = 1;
         }
 
@@ -1957,8 +1958,10 @@ namespace PFD
 
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+            WaitWindow ww = new WaitWindow();
+            ww.Show();
 
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;            
             List<string[]> list = new List<string[]>();
             foreach (CComponentParamsView o in vm.ComponentGeometry)
             {
@@ -1980,8 +1983,41 @@ namespace PFD
 
             if (Frame2D.Content is Canvas) CExportToPDF.CreatePDFFileForPlate(Frame2D.Content as Canvas, list, plate, pInfo);
             else MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image.");
+            
+            ww.Close();
         }
 
+        public static void ForceUIToUpdate()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Render, new DispatcherOperationCallback(delegate (object parameter)
+            {
+                frame.Continue = false;
+                return null;
+            }), null);
+
+            Dispatcher.PushFrame(frame);
+        }
+
+        public void ShowMessageBoxInWindow(string text)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show(text);
+            });
+        }
+
+        //SplashScreen splashScreen = null;
+        //public void ShowWaitScreen()
+        //{
+        //    splashScreen = new SplashScreen("loading2.gif");
+        //    splashScreen.Show(false);
+        //}
+        //public void HideWaitScreen()
+        //{
+        //    splashScreen.Close(TimeSpan.FromSeconds(0.1));
+        //}
         
 
         private void BtnSavePlate_Click(object sender, RoutedEventArgs e)
@@ -2041,6 +2077,9 @@ namespace PFD
             {
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    WaitWindow ww = new WaitWindow();
+                    ww.Show();
+
                     string folder = dialog.SelectedPath;                    
                     DirectoryInfo dirInfo = new DirectoryInfo(folder);
                     FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
@@ -2084,6 +2123,7 @@ namespace PFD
 
                     string fileName = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.pdf");
                     CExportToPDF.SavePDFDocument(fileName);
+                    ww.Close();
                 }
             }
         }

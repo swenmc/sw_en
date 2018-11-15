@@ -64,6 +64,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.17\lib\net\WpfAnimatedGif.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -98,6 +102,9 @@
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextBoxEnterKeyUpdateBehavior.cs" />
+    <Compile Include="WaitWindow.xaml.cs">
+      <DependentUpon>WaitWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindPressureCalculatorViewModel.cs" />
     <Compile Include="SystemComponentViewerViewModel.cs" />
     <Compile Include="UC_InternalForces.xaml.cs">
@@ -223,6 +230,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WaitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindPressureCalculator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -342,7 +353,9 @@
   <ItemGroup>
     <Resource Include="formsteel-screen.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="spin.gif" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\info.png" />
   </ItemGroup>

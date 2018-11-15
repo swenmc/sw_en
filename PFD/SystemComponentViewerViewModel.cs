@@ -16,6 +16,8 @@ using CRSC;
 using DATABASE;
 using DATABASE.DTO;
 using System.Windows;
+using System.Windows.Controls;
+using EXPIMP;
 
 namespace PFD
 {
@@ -23,7 +25,7 @@ namespace PFD
     {
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private int MComponentTypeIndex;
@@ -583,6 +585,8 @@ namespace PFD
 
             IsSetFromCode = false;
         }
+
+        
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
