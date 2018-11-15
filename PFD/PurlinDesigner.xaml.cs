@@ -192,6 +192,15 @@ namespace PFD
                     fMaximumDesignRatio_Strength = fMaximumRatio_Strength;
             }
 
+            // Dead Load + imposed live load
+            calcModel.DeflectionUpwind_Delta = 0;
+            calcModel.DeflectionDownwind_Delta = 5f / 384f * (fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql) * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+
+            // Imposed load
+            calcModel.DeflectionUpwind_Delta = 5f / 384f * calcModel.WindLoadUpwind_puwl * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionDownwind_Delta = 5f / 384f * (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+
+            // Total (maximum) load
             calcModel.DeflectionUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
             calcModel.DeflectionDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
 
