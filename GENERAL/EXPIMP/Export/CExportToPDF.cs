@@ -150,13 +150,15 @@ namespace EXPIMP
                     System.Windows.Media.Color c = ((SolidColorBrush)winRect.Fill).Color;
                     XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
                     gfx.DrawRectangle(solidBrush, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winRect.Width * scaleFactor, winRect.Height * scaleFactor);
+                    //gfx.DrawRectangle(solidBrush, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winRect.Width, winRect.Height); //width, height scale factor not applied
                 }
                 else if (o is Polyline)
                 {
                     Polyline winPol = o as Polyline;
 
                     System.Windows.Media.Color c = ((SolidColorBrush)winPol.Stroke).Color;
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness * scaleFactor);
+                    //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness * scaleFactor);
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPol.StrokeThickness); //thickness scalefactor not applied
 
                     List<XPoint> points = new List<XPoint>();
                     foreach (Point p in winPol.Points)
@@ -171,7 +173,8 @@ namespace EXPIMP
 
                     Path winPath = o as Path;
                     System.Windows.Media.Color c = ((SolidColorBrush)winPath.Stroke).Color;
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness * scaleFactor);
+                    //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness * scaleFactor);
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness);
 
                     PathGeometry pathGeom = winPath.Data.GetFlattenedPathGeometry();
                     //PathGeometry pathGeom = winPath.Data.GetOutlinedPathGeometry();
@@ -231,15 +234,24 @@ namespace EXPIMP
                     double y = Canvas.GetTop(winElipse) - winElipse.StrokeThickness / 2;
 
                     gfx.DrawEllipse(pen, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winElipse.Width * scaleFactor, winElipse.Height * scaleFactor);
+                    //gfx.DrawEllipse(pen, x * scaleFactor + marginLeft, y * scaleFactor + marginTop, winElipse.Width, winElipse.Height);
                 }
                 else if (o is Line)
                 {
                     Line winLine = o as Line;
                     
-                    System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color; 
-                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness * scaleFactor);
+                    System.Windows.Media.Color c = ((SolidColorBrush)winLine.Stroke).Color;
+                    //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness * scaleFactor);
+                    XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winLine.StrokeThickness);
 
-                    if (winLine.StrokeDashArray.Count > 0) { pen.DashStyle = XDashStyle.Dash; double[] dashArray = new double[winLine.StrokeDashArray.Count]; winLine.StrokeDashArray.CopyTo(dashArray, 0); pen.DashPattern = dashArray; }
+                    if (winLine.StrokeDashArray.Count > 0) { pen.DashStyle = XDashStyle.Dash;
+                        double[] dashArray = new double[winLine.StrokeDashArray.Count];
+                        for (int i = 0; i < dashArray.Length; i++)
+                        {
+                            dashArray[i] = winLine.StrokeDashArray[i] * scaleFactor;
+                        }
+                        pen.DashPattern = dashArray;
+                    }
                     
 
                     gfx.DrawLine(pen, winLine.X1 * scaleFactor + marginLeft, winLine.Y1 * scaleFactor + marginTop, winLine.X2 * scaleFactor + marginLeft, winLine.Y2 * scaleFactor + marginTop);
@@ -257,17 +269,23 @@ namespace EXPIMP
                     }
 
                     double x = Canvas.GetLeft(winText);
-                    if(Math.Abs(angle) > 45) x += winText.ActualHeight * scaleFactor;
+                    //if(Math.Abs(angle) > 45) x += winText.ActualHeight;
                     double y = Canvas.GetTop(winText);
-                    y += winText.FontSize;
+                    //y += winText.FontSize;
 
                     System.Windows.Media.Color c = ((SolidColorBrush)winText.Foreground).Color;
                     XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
-                    XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
-                    XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop);
+                    //XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
+                    XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize / 4 * 3);  //pixels to points
+                    //XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop);
+
+                    //este by stalo mozno za pokus sa pohrat s rotaciou, ci netreba nahodou robit rotaciu
+                    XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 * scaleFactor + marginLeft, y * scaleFactor + winText.ActualHeight / 4*3 * scaleFactor + marginTop);
+                    //XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 + marginLeft, y * scaleFactor + winText.ActualHeight / 2  + marginTop);
+                    if (Math.Abs(angle) > 45) p.X += winText.ActualHeight / 4 * scaleFactor;
 
                     XGraphicsState state = gfx.Save();
-                    gfx.RotateAtTransform(angle, p);
+                    gfx.RotateAtTransform(angle, p);                    
                     gfx.DrawString(winText.Text, f, solidBrush, p);
                     gfx.Restore(state);
                 }
