@@ -2080,13 +2080,28 @@ namespace PFD
                     WaitWindow ww = new WaitWindow();
                     ww.Show();
 
-                    string folder = dialog.SelectedPath;                    
+                    string folder = dialog.SelectedPath;
                     DirectoryInfo dirInfo = new DirectoryInfo(folder);
                     FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
                     if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
 
                     List<string[]> tableParams = new List<string[]>();
-                    tableParams.Add(new string[] { "ID", "Name", "Width", "Height", "Thickness", "Area", "Volume", "Mass", "Amount", "Amount - left", "Amount - right", "Mass Total" });
+                    tableParams.Add(new string[] {
+                        "ID",
+                        "Name",
+                        "Width [m]",
+                        "Height [m]",
+                        "Thickness [mm]",
+                        "Area [m²]",
+                        "Volume [m³]",
+                        "Mass [kg]",
+                        "Amount",
+                        "Amount Left",
+                        "Amount Right",
+                        "Mass Total [kg]",
+                        "Screws Plate",
+                        "Screws Total"});
+
                     CExportToPDF.CreatePDFDocument();
                     int count = 0;
                     foreach (FileInfo fi in files)
@@ -2102,20 +2117,41 @@ namespace PFD
 
                         CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
 
+                        float fUnitFactor_Length_m_to_mm = 1000f;
+
                         count++;
-                        string[] plateParams = new string[12];
+                        string[] plateParams = new string[14];
                         plateParams[0] = count.ToString();
                         plateParams[1] = plate.Name;
-                        plateParams[2] = plate.fWidth_bx.ToString();
-                        plateParams[3] = plate.fHeight_hy.ToString();
-                        plateParams[4] = plate.fI_yu.ToString();
-                        plateParams[5] = plate.fArea.ToString();
-                        plateParams[6] = plate.fVolume.ToString();
-                        plateParams[7] = plate.fMass.ToString();
+                        plateParams[2] = Math.Round(plate.fWidth_bx,3).ToString();
+                        plateParams[3] = Math.Round(plate.fHeight_hy,3).ToString();
+                        plateParams[4] = Math.Round(plate.Ft * fUnitFactor_Length_m_to_mm, 2).ToString();
+                        plateParams[5] = Math.Round(plate.fArea, 3).ToString();
+                        plateParams[6] = Math.Round(plate.fVolume, 4).ToString();
+
+                        if (plate.fMass < 0) // TODO- Ondrej : zistit preco sa mass nenaplni, objekt m_Mat v plate je asi null, dedi sa z CConnectionComponentEntity3D
+                            plate.fMass = plate.fVolume * 7850f;
+
+                        plateParams[7] = Math.Round(plate.fMass, 1).ToString(); // TODO- Ondrej : zistit preco sa mass nenaplni, objekt m_Mat v plate je asi null, dedi sa z CConnectionComponentEntity3D
                         plateParams[8] = pInfo.Amount.ToString();
-                        plateParams[9] = pInfo.AmountLH.ToString();
-                        plateParams[10] = pInfo.AmountRH.ToString();
-                        plateParams[11] = (plate.fMass * pInfo.Amount).ToString();
+                        plateParams[9] = pInfo.AmountLH.ToString(); // TODO - Ondrej - ak je plech J, tak zobrazit len Amount a LH, RH nechat prazdne
+                        plateParams[10] = pInfo.AmountRH.ToString(); // TODO - Ondrej - ak je plech J, tak zobrazit len Amount a LH, RH nechat prazdne
+                        plateParams[11] = Math.Round(plate.fMass * pInfo.Amount, 1).ToString();
+
+                        // Screws
+                        if (plate.ScrewArrangement != null)
+                        {
+                            plateParams[12] = plate.ScrewArrangement.IHolesNumber.ToString();
+                            plateParams[13] = (plate.ScrewArrangement.IHolesNumber * pInfo.Amount).ToString();
+                        }else
+                        {
+                            plateParams[12] = "0";
+                            plateParams[13] = "0";
+                        }
+
+                        // TODO - Ondrej - bolo by mozne pridat na zaver do tabulky este jeden riadok, kde budu sumu z niektorych stlpcov
+                        // napr. Amount, Mass Total, Screws Total
+
                         tableParams.Add(plateParams);
                     }
                     
@@ -2134,7 +2170,7 @@ namespace PFD
             CProductionInfo pInfo = null;
             using (Stream stream = File.Open(fileName, FileMode.Open))
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();                
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
                 object[] arr = (object[])binaryFormatter.Deserialize(stream);
                 deserializedPlate = (CPlate)arr[0];
                 pInfo = (CProductionInfo)arr[1];

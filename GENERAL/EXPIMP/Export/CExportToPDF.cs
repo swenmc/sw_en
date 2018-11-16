@@ -7,6 +7,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -122,11 +123,21 @@ namespace EXPIMP
 
         public static void SavePDFDocument(string fileName)
         {
-            // Save the s_document...
-            document.Save(fileName);
-            // ...and start a viewer
-            Process.Start(fileName);
-            document = null;
+            try
+            {
+                // Save the s_document...
+                document.Save(fileName); // TODO - Ondrej - tu je chyba, ak je subor s rovnakym nazvom ako ma subor ktory je otvoreny v ADOBE, nemoze sa don zapisovat
+                                         // ...and start a viewer
+                Process.Start(fileName);
+                document = null;
+            }
+            catch (IOException ex)
+            {
+                // The process cannot access the file 'filename' because it is being used by another process
+                MessageBox.Show("The process cannot access the file because it is being used by another process.");
+                return;
+            }
+
         }
 
         public static void DrawCanvas_PDF(Canvas canvas, PdfPage page)
@@ -167,11 +178,11 @@ namespace EXPIMP
                     }
                     gfx.DrawLines(pen, points.ToArray());
                 }
-                else if (o is Path)
+                else if (o is System.Windows.Shapes.Path)
                 {
                     XGraphicsPath xGrPath = new XGraphicsPath();
 
-                    Path winPath = o as Path;
+                    System.Windows.Shapes.Path winPath = o as System.Windows.Shapes.Path;
                     System.Windows.Media.Color c = ((SolidColorBrush)winPath.Stroke).Color;
                     //XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness * scaleFactor);
                     XPen pen = new XPen(XColor.FromArgb(c.A, c.R, c.G, c.B), winPath.StrokeThickness);
@@ -285,7 +296,7 @@ namespace EXPIMP
                     if (Math.Abs(angle) > 45) p.X += winText.ActualHeight / 4 * scaleFactor;
 
                     XGraphicsState state = gfx.Save();
-                    gfx.RotateAtTransform(angle, p);                    
+                    gfx.RotateAtTransform(angle, p);
                     gfx.DrawString(winText.Text, f, solidBrush, p);
                     gfx.Restore(state);
                 }
@@ -654,14 +665,14 @@ namespace EXPIMP
 
             // You always need a MigraDoc document for rendering.
             Document doc = new Document();
-            Table t = GetSimpleTable(doc, tableParams);            
+            Table t = GetSimpleTable(doc, tableParams);
             
             PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
             pdfRenderer.Document = doc;
             pdfRenderer.RenderDocument();
             // Create a renderer and prepare (=layout) the document
             MigraDoc.Rendering.DocumentRenderer docRenderer = new DocumentRenderer(doc);
-            docRenderer.PrepareDocument();            
+            docRenderer.PrepareDocument();
             
             // Render the paragraph. You can render tables or shapes the same way.
             docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
@@ -699,7 +710,7 @@ namespace EXPIMP
             table.Format.Font.Name = fontFamily;
 
             Column column1 = table.AddColumn(Unit.FromCentimeter(7));
-            column1.Format.Alignment = ParagraphAlignment.Left;            
+            column1.Format.Alignment = ParagraphAlignment.Left;
             Column column2 = table.AddColumn(Unit.FromCentimeter(2));
             column2.Format.Alignment = ParagraphAlignment.Left;
             Column column3 = table.AddColumn(Unit.FromCentimeter(4));
@@ -709,11 +720,11 @@ namespace EXPIMP
 
             foreach (string[] strParams in tableParams)
             {
-                Row row = table.AddRow();                
+                Row row = table.AddRow();
                 //row.Shading.Color = Colors.PaleGoldenrod;
                 Cell cell = row.Cells[0];
                 cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
-                cell.AddParagraph(strParams[0]);                
+                cell.AddParagraph(strParams[0]);
                 cell = row.Cells[1];
                 cell.AddParagraph(strParams[1]);
                 cell = row.Cells[2];
@@ -733,22 +744,22 @@ namespace EXPIMP
             table.Borders.Width = 0.75;
             table.Format.Font.Name = fontFamily;
 
-            //{ "ID", "Name", "Width", "Height", "Thickness", "Area", "Volume", "Mass", "Amount", "Amount - left", "Amount - right", "Mass Total" };
+            //{ "ID", "Name", "Width", "Height", "Thickness", "Area", "Volume", "Mass", "Amount", "Amount Left", "Amount Right", "Mass Total", "Screws Plate", "Screws Total" };
             Column columnID = table.AddColumn(Unit.FromCentimeter(0.8));
             columnID.Format.Alignment = ParagraphAlignment.Left;
-            Column columnName = table.AddColumn(Unit.FromCentimeter(2));
+            Column columnName = table.AddColumn(Unit.FromCentimeter(1.1));
             columnName.Format.Alignment = ParagraphAlignment.Left;
-            Column columnWidth = table.AddColumn();
+            Column columnWidth = table.AddColumn(Unit.FromCentimeter(1.2));
             columnWidth.Format.Alignment = ParagraphAlignment.Left;
-            Column columnHeight = table.AddColumn();
+            Column columnHeight = table.AddColumn(Unit.FromCentimeter(1.2));
             columnHeight.Format.Alignment = ParagraphAlignment.Left;
-            Column columnThickness = table.AddColumn();
+            Column columnThickness = table.AddColumn(Unit.FromCentimeter(1.6));
             columnThickness.Format.Alignment = ParagraphAlignment.Left;
-            Column columnArea = table.AddColumn();
+            Column columnArea = table.AddColumn(Unit.FromCentimeter(1.2));
             columnArea.Format.Alignment = ParagraphAlignment.Left;
-            Column columnVolume = table.AddColumn();
+            Column columnVolume = table.AddColumn(Unit.FromCentimeter(1.3));
             columnVolume.Format.Alignment = ParagraphAlignment.Left;
-            Column columnMass = table.AddColumn(Unit.FromCentimeter(1.5));
+            Column columnMass = table.AddColumn(Unit.FromCentimeter(1.2));
             columnMass.Format.Alignment = ParagraphAlignment.Left;
             Column columnAmount = table.AddColumn(Unit.FromCentimeter(1.5));
             columnAmount.Format.Alignment = ParagraphAlignment.Left;
@@ -756,8 +767,13 @@ namespace EXPIMP
             columnAmountL.Format.Alignment = ParagraphAlignment.Left;
             Column columnAmountR = table.AddColumn(Unit.FromCentimeter(1.5));
             columnAmountR.Format.Alignment = ParagraphAlignment.Left;
-            Column columnMassTotal = table.AddColumn(Unit.FromCentimeter(1.5));
+            Column columnMassTotal = table.AddColumn(Unit.FromCentimeter(1.4));
             columnMassTotal.Format.Alignment = ParagraphAlignment.Left;
+
+            Column columnAmountScrewPlate = table.AddColumn(Unit.FromCentimeter(1.2));
+            columnAmountScrewPlate.Format.Alignment = ParagraphAlignment.Left;
+            Column columnAmountScrewTotal = table.AddColumn(Unit.FromCentimeter(1.2));
+            columnAmountScrewTotal.Format.Alignment = ParagraphAlignment.Left;
 
             int columns = 0;
             foreach (string[] strParams in tableParams)
@@ -770,12 +786,26 @@ namespace EXPIMP
                 cell = row.Cells[1];
                 cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;
                 cell.AddParagraph(strParams[1]);
-                for (int i = 2; i < strParams.Length; i++)
+
+                // Insert column data ID 2 - 10
+                for (int i = 2; i < strParams.Length - 3; i++)
                 {
                     cell = row.Cells[i];
-                    
+
                     cell.AddParagraph(strParams[i]);
                 }
+
+                cell = row.Cells[11];
+                cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.LightCyan;
+                cell.AddParagraph(strParams[11]);
+
+                cell = row.Cells[12];
+                cell.AddParagraph(strParams[12]);
+
+                cell = row.Cells[13];
+                cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.LightCyan;
+                cell.AddParagraph(strParams[13]);
+
                 columns = strParams.Length;
             }
             
