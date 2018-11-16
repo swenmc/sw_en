@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="Please wait..." WindowStartupLocation="CenterScreen" WindowStyle="None" Height="400" Width="400">
     <Grid>
-        <Image Name="WaitImage" Width="400" Height="400" gif:ImageBehavior.AnimatedSource="spin.gif" />
+        <!--<Image Name="WaitImage" Width="400" Height="400" gif:ImageBehavior.AnimatedSource="spin.gif" />-->
+        <Image Name="WaitImage" Source ="/Resources/PDFfilelogo.png" Width="400" Height="400"/>
     </Grid>
 </Window>

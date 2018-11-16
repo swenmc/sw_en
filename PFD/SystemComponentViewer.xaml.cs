@@ -10,10 +10,13 @@ using MATH;
 using CRSC;
 using EXPIMP;
 using System.Windows.Media.Media3D;
+using System.Windows.Media.Imaging;
 using System.Windows.Documents;
 using System.Text;
 using System.Linq;
 using System.Data;
+using System.Drawing;
+using System.Windows.Navigation;
 using Microsoft.Win32;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -37,7 +40,7 @@ namespace PFD
         public CPlate plate;
         CScrew screw;
         CPoint controlpoint = new CPoint(0, 0, 0, 0, 0);
-        Color cComponentColor = Colors.Aquamarine; // Default
+        System.Windows.Media.Color cComponentColor = Colors.Aquamarine; // Default
         float fb_R; // Rafter Width
         float fb; // in plane XY -X coord
         float fb2; // in plane XY - X coord
@@ -1308,7 +1311,7 @@ namespace PFD
 
         private void BtnFindCNCPath_Click(object sender, RoutedEventArgs e)
         {
-            List<Point> points = null;
+            List<System.Windows.Point> points = null;
 
             if (plate.ScrewArrangement != null) // Screw arrangmenet must exists
                 points = plate.ScrewArrangement.HolesCentersPoints2D.ToList();
@@ -1332,7 +1335,7 @@ namespace PFD
             double fHeightToWidthRatio = fHeigth / fWidth;
 
             // Add coordinates of drilling machine start point
-            points.Insert(0, new Point(0, 0));
+            points.Insert(0, new System.Windows.Point(0, 0));
 
             TwoOpt.WindowRunSalesman w = new TwoOpt.WindowRunSalesman(points, fHeightToWidthRatio);
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
@@ -1350,7 +1353,7 @@ namespace PFD
             TwoOpt.WindowRunSalesman w = sender as TwoOpt.WindowRunSalesman;
             TwoOpt.MainWindowViewModel viewModel = w.DataContext as TwoOpt.MainWindowViewModel;
 
-            List<Point> PathPoints = new List<Point>(viewModel.RoutePoints.Count);
+            List<System.Windows.Point> PathPoints = new List<System.Windows.Point>(viewModel.RoutePoints.Count);
             for (int i = 0; i < viewModel.RoutePoints.Count; i++)
             {
                 PathPoints.Add(viewModel.RoutePoints[viewModel._model._tour.GetCities()[i]]);
@@ -1382,7 +1385,7 @@ namespace PFD
                 StringBuilder sb2 = CExportToNC.GetCNCFileContentForSetup(plate.PointsOut2D, fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
-                paragraph.FontFamily = new FontFamily("Consolas");
+                paragraph.FontFamily = new System.Windows.Media.FontFamily("Consolas");
                 paragraph.Inlines.Add(sb2.ToString());
                 FlowDocument document = new FlowDocument(paragraph);
                 FlowDocViewer.Document = document;
@@ -1405,7 +1408,7 @@ namespace PFD
                 StringBuilder sb1 = CExportToNC.GetCNCFileContentForHoles(plate.DrillingRoutePoints, plate.Ft, fUnitFactor);
                 Paragraph paragraph = new Paragraph();
                 paragraph.FontSize = 14;
-                paragraph.FontFamily = new FontFamily("Consolas");
+                paragraph.FontFamily = new System.Windows.Media.FontFamily("Consolas");
                 paragraph.Inlines.Add(sb1.ToString());
                 FlowDocument document = new FlowDocument(paragraph);
                 FlowDocViewer.Document = document;
@@ -1959,9 +1962,14 @@ namespace PFD
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
             WaitWindow ww = new WaitWindow();
+            ImageBrush myBrush = new ImageBrush();
+
+            myBrush.ImageSource = new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(this), @"Resources/PDFfilelogo.png"));
+            ww.Background = myBrush;
+
             ww.Show();
 
-            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;            
+            SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             List<string[]> list = new List<string[]>();
             foreach (CComponentParamsView o in vm.ComponentGeometry)
             {
@@ -2078,6 +2086,12 @@ namespace PFD
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     WaitWindow ww = new WaitWindow();
+
+                    ImageBrush myBrush = new ImageBrush();
+
+                    myBrush.ImageSource = new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(this), @"Resources/PDFfilelogo.png"));
+                    ww.Background = myBrush;
+
                     ww.Show();
 
                     string folder = dialog.SelectedPath;
@@ -2111,7 +2125,7 @@ namespace PFD
                         SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
                         CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
 
-                        page2D.RenderSize = new Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
+                        page2D.RenderSize = new System.Windows.Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
                         //if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
                         if (page2D == null) { MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name); return; }
 
