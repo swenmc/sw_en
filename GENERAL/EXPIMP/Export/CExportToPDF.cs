@@ -127,7 +127,7 @@ namespace EXPIMP
             {
                 // Save the s_document...
                 document.Save(fileName); // TODO - Ondrej - tu je chyba, ak je subor s rovnakym nazvom ako ma subor ktory je otvoreny v ADOBE, nemoze sa don zapisovat
-                                         // ...and start a viewer
+                // ...and start a viewer
                 Process.Start(fileName);
                 document = null;
             }
@@ -743,35 +743,35 @@ namespace EXPIMP
             table.Format.Font.Name = fontFamily;
 
             //{ "ID", "Name", "Width", "Height", "Thickness", "Area", "Volume", "Mass", "Amount", "Amount Left", "Amount Right", "Mass Total", "Screws Plate", "Screws Total" };
-            Column columnID = table.AddColumn(Unit.FromCentimeter(0.8));
-            columnID.Format.Alignment = ParagraphAlignment.Left;
+            Column columnID = table.AddColumn(Unit.FromCentimeter(0.7));
+            columnID.Format.Alignment = ParagraphAlignment.Center;
             Column columnName = table.AddColumn(Unit.FromCentimeter(1.1));
-            columnName.Format.Alignment = ParagraphAlignment.Left;
+            columnName.Format.Alignment = ParagraphAlignment.Center;
             Column columnWidth = table.AddColumn(Unit.FromCentimeter(1.2));
-            columnWidth.Format.Alignment = ParagraphAlignment.Left;
+            columnWidth.Format.Alignment = ParagraphAlignment.Center;
             Column columnHeight = table.AddColumn(Unit.FromCentimeter(1.2));
-            columnHeight.Format.Alignment = ParagraphAlignment.Left;
+            columnHeight.Format.Alignment = ParagraphAlignment.Center;
             Column columnThickness = table.AddColumn(Unit.FromCentimeter(1.6));
-            columnThickness.Format.Alignment = ParagraphAlignment.Left;
-            Column columnArea = table.AddColumn(Unit.FromCentimeter(1.2));
-            columnArea.Format.Alignment = ParagraphAlignment.Left;
+            columnThickness.Format.Alignment = ParagraphAlignment.Center;
+            Column columnArea = table.AddColumn(Unit.FromCentimeter(1.1));
+            columnArea.Format.Alignment = ParagraphAlignment.Center;
             Column columnVolume = table.AddColumn(Unit.FromCentimeter(1.3));
-            columnVolume.Format.Alignment = ParagraphAlignment.Left;
-            Column columnMass = table.AddColumn(Unit.FromCentimeter(1.2));
-            columnMass.Format.Alignment = ParagraphAlignment.Left;
+            columnVolume.Format.Alignment = ParagraphAlignment.Center;
+            Column columnMass = table.AddColumn(Unit.FromCentimeter(1.1));
+            columnMass.Format.Alignment = ParagraphAlignment.Center;
             Column columnAmount = table.AddColumn(Unit.FromCentimeter(1.5));
-            columnAmount.Format.Alignment = ParagraphAlignment.Left;
+            columnAmount.Format.Alignment = ParagraphAlignment.Center;
             Column columnAmountL = table.AddColumn(Unit.FromCentimeter(1.5));
-            columnAmountL.Format.Alignment = ParagraphAlignment.Left;
+            columnAmountL.Format.Alignment = ParagraphAlignment.Center;
             Column columnAmountR = table.AddColumn(Unit.FromCentimeter(1.5));
-            columnAmountR.Format.Alignment = ParagraphAlignment.Left;
-            Column columnMassTotal = table.AddColumn(Unit.FromCentimeter(1.4));
-            columnMassTotal.Format.Alignment = ParagraphAlignment.Left;
+            columnAmountR.Format.Alignment = ParagraphAlignment.Center;
+            Column columnMassTotal = table.AddColumn(Unit.FromCentimeter(1.8));
+            columnMassTotal.Format.Alignment = ParagraphAlignment.Center;
 
             Column columnAmountScrewPlate = table.AddColumn(Unit.FromCentimeter(1.25));
-            columnAmountScrewPlate.Format.Alignment = ParagraphAlignment.Left;
+            columnAmountScrewPlate.Format.Alignment = ParagraphAlignment.Center;
             Column columnAmountScrewTotal = table.AddColumn(Unit.FromCentimeter(1.25));
-            columnAmountScrewTotal.Format.Alignment = ParagraphAlignment.Left;
+            columnAmountScrewTotal.Format.Alignment = ParagraphAlignment.Center;
 
             int columns = 0;
             int count = 0;
@@ -780,6 +780,12 @@ namespace EXPIMP
                 count++;
                 Row row = table.AddRow();
                 if (count == 1 || count == tableParams.Count) row.Format.Font.Bold = true;
+
+                if(count > 1)
+                {
+                    row.Format.Alignment = ParagraphAlignment.Right;
+                    row.VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center;
+                }
 
                 //row.Shading.Color = Colors.PaleGoldenrod;
                 Cell cell = row.Cells[0];

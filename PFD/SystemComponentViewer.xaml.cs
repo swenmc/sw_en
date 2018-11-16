@@ -2140,10 +2140,10 @@ namespace PFD
                         plateParams[5] = Math.Round(plate.fArea, 3).ToString();
                         plateParams[6] = Math.Round(plate.fVolume, 4).ToString();
 
-                        if (plate.fMass < 0) 
-                            plate.fMass = plate.fVolume * 7850f;
+                        if (plate.fMass < 0)
+                            plate.fMass = plate.fVolume * 7850f; // Pre pripad, ze nebol spravne inicializovany objekt materialu plechu
 
-                        plateParams[7] = Math.Round(plate.fMass, 1).ToString();                         
+                        plateParams[7] = Math.Round(plate.fMass, 1).ToString();
                         plateParams[8] = pInfo.Amount.ToString();
                         totalAmount += pInfo.Amount;
                         if (plate.IsSymmetric())
@@ -2175,7 +2175,7 @@ namespace PFD
                     }
 
                     //last total count row
-                    tableParams.Add(new string[] {"","","","","","","","",totalAmount.ToString(),"","", totalMass.ToString("F1"), "", totalScrews.ToString()});
+                    tableParams.Add(new string[] {"","","","","","","Total", "Σ", totalAmount.ToString(),"", "Σ", totalMass.ToString("F1"), "Σ", totalScrews.ToString()});
 
                     CExportToPDF.AddPlatesParamsTableToDocumentOnNewPage(tableParams);
 
