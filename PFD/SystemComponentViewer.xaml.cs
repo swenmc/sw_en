@@ -483,6 +483,8 @@ namespace PFD
                 BtnExportToPDF.Visibility = Visibility.Visible;
                 BtnSavePlate.Visibility = Visibility.Visible;
                 BtnLoadPlate.Visibility = Visibility.Visible;
+
+                //mozno by sa to dalo naviazat na plate.IsSymmetric() metodu
                 if (vm.ComponentSerieIndex == (int)ESerieTypePlate.eSerie_K && (vm.ComponentIndex != 0 && vm.ComponentIndex != 4))
                 {
                     LabelAmountRH.Visibility = Visibility.Visible;
@@ -1961,12 +1963,7 @@ namespace PFD
 
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow();
-            ImageBrush myBrush = new ImageBrush();
-
-            myBrush.ImageSource = new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(this), @"Resources/PDFfilelogo.png"));
-            ww.Background = myBrush;
-
+            WaitWindow ww = new WaitWindow();            
             ww.Show();
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -2086,12 +2083,6 @@ namespace PFD
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     WaitWindow ww = new WaitWindow();
-
-                    ImageBrush myBrush = new ImageBrush();
-
-                    myBrush.ImageSource = new BitmapImage(new Uri(BaseUriHelper.GetBaseUri(this), @"Resources/PDFfilelogo.png"));
-                    ww.Background = myBrush;
-
                     ww.Show();
 
                     string folder = dialog.SelectedPath;
@@ -2100,6 +2091,8 @@ namespace PFD
                     if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
 
                     List<string[]> tableParams = new List<string[]>();
+
+                    //header row
                     tableParams.Add(new string[] {
                         "ID",
                         "Name",
@@ -2118,6 +2111,10 @@ namespace PFD
 
                     CExportToPDF.CreatePDFDocument();
                     int count = 0;
+                    int totalAmount = 0;
+                    float totalMass = 0;
+                    int totalScrews = 0;
+
                     foreach (FileInfo fi in files)
                     {
                         OpenDataFile(fi.FullName);
@@ -2143,32 +2140,43 @@ namespace PFD
                         plateParams[5] = Math.Round(plate.fArea, 3).ToString();
                         plateParams[6] = Math.Round(plate.fVolume, 4).ToString();
 
-                        if (plate.fMass < 0) // TODO- Ondrej : zistit preco sa mass nenaplni, objekt m_Mat v plate je asi null, dedi sa z CConnectionComponentEntity3D
+                        if (plate.fMass < 0) 
                             plate.fMass = plate.fVolume * 7850f;
 
-                        plateParams[7] = Math.Round(plate.fMass, 1).ToString(); // TODO- Ondrej : zistit preco sa mass nenaplni, objekt m_Mat v plate je asi null, dedi sa z CConnectionComponentEntity3D
+                        plateParams[7] = Math.Round(plate.fMass, 1).ToString();                         
                         plateParams[8] = pInfo.Amount.ToString();
-                        plateParams[9] = pInfo.AmountLH.ToString(); // TODO - Ondrej - ak je plech J, tak zobrazit len Amount a LH, RH nechat prazdne
-                        plateParams[10] = pInfo.AmountRH.ToString(); // TODO - Ondrej - ak je plech J, tak zobrazit len Amount a LH, RH nechat prazdne
-                        plateParams[11] = Math.Round(plate.fMass * pInfo.Amount, 1).ToString();
+                        totalAmount += pInfo.Amount;
+                        if (plate.IsSymmetric())
+                        {
+                            plateParams[9] = string.Empty;
+                            plateParams[10] = string.Empty;
+                        }
+                        else
+                        {
+                            plateParams[9] = pInfo.AmountLH.ToString();
+                            plateParams[10] = pInfo.AmountRH.ToString();
+                        }
 
+                        plateParams[11] = Math.Round(plate.fMass * pInfo.Amount, 1).ToString();
+                        totalMass += (plate.fMass * pInfo.Amount);
                         // Screws
                         if (plate.ScrewArrangement != null)
                         {
                             plateParams[12] = plate.ScrewArrangement.IHolesNumber.ToString();
                             plateParams[13] = (plate.ScrewArrangement.IHolesNumber * pInfo.Amount).ToString();
-                        }else
+                            totalScrews += (plate.ScrewArrangement.IHolesNumber * pInfo.Amount);
+                        }
+                        else
                         {
                             plateParams[12] = "0";
                             plateParams[13] = "0";
                         }
-
-                        // TODO - Ondrej - bolo by mozne pridat na zaver do tabulky este jeden riadok, kde budu sumu z niektorych stlpcov
-                        // napr. Amount, Mass Total, Screws Total
-
                         tableParams.Add(plateParams);
                     }
-                    
+
+                    //last total count row
+                    tableParams.Add(new string[] {"","","","","","","","",totalAmount.ToString(),"","", totalMass.ToString("F1"), "", totalScrews.ToString()});
+
                     CExportToPDF.AddPlatesParamsTableToDocumentOnNewPage(tableParams);
 
                     string fileName = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.pdf");

@@ -453,15 +453,13 @@ namespace EXPIMP
             gfx.DrawString("Amount: ", font, XBrushes.Black, 10, 60);
             gfx.DrawString(pInfo.Amount.ToString(), font, XBrushes.Black, 100, 60);
 
-            if (plate.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
+            if (!plate.IsSymmetric())
             {
-                if (plate is CConCom_Plate_KA) return;
-                if (plate is CConCom_Plate_KE) return;
                 gfx.DrawString("RH: ", font, XBrushes.Black, 40, 80);
                 gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 100, 80);
                 gfx.DrawString("LH: ", font, XBrushes.Black, 40, 100);
                 gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 100, 100);
-            }
+            }            
         }
 
         private static void DrawProductionNotes(XGraphics gfx)
@@ -770,15 +768,19 @@ namespace EXPIMP
             Column columnMassTotal = table.AddColumn(Unit.FromCentimeter(1.4));
             columnMassTotal.Format.Alignment = ParagraphAlignment.Left;
 
-            Column columnAmountScrewPlate = table.AddColumn(Unit.FromCentimeter(1.2));
+            Column columnAmountScrewPlate = table.AddColumn(Unit.FromCentimeter(1.25));
             columnAmountScrewPlate.Format.Alignment = ParagraphAlignment.Left;
-            Column columnAmountScrewTotal = table.AddColumn(Unit.FromCentimeter(1.2));
+            Column columnAmountScrewTotal = table.AddColumn(Unit.FromCentimeter(1.25));
             columnAmountScrewTotal.Format.Alignment = ParagraphAlignment.Left;
 
             int columns = 0;
+            int count = 0;
             foreach (string[] strParams in tableParams)
             {
+                count++;
                 Row row = table.AddRow();
+                if (count == 1 || count == tableParams.Count) row.Format.Font.Bold = true;
+
                 //row.Shading.Color = Colors.PaleGoldenrod;
                 Cell cell = row.Cells[0];
                 cell.Shading.Color = MigraDoc.DocumentObjectModel.Colors.PaleGoldenrod;

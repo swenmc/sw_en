@@ -906,6 +906,18 @@ namespace BaseClasses
             }
         }
 
+        public bool IsSymmetric()
+        {
+            if (this.m_ePlateSerieType_FS == ESerieTypePlate.eSerie_K)
+            {
+                if (this is CConCom_Plate_KA) return true;
+                if (this is CConCom_Plate_KE) return true;
+
+                return false;                
+            }
+            return true;
+        }
+
         public virtual void Calc_Coord2D()
         {
             //to override

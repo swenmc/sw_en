@@ -36,7 +36,6 @@ namespace BaseClasses
             set { m_arrPoints3D = value; }
         }
 
-        [NonSerialized]
         public new CMat_03_00 m_Mat;
         [NonSerialized]
         public EConnectionComponentType eConnComponentType;

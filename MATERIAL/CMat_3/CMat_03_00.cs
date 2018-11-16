@@ -1,6 +1,9 @@
 ﻿
+using System;
+
 namespace MATERIAL
 {
+    [Serializable]
     // Default steel material class
     public class CMat_03_00:CMat
     {
