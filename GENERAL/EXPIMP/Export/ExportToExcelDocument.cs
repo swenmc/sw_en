@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Windows;
 
 namespace EXPIMP
 {
@@ -78,13 +79,19 @@ namespace EXPIMP
                 workSheet.Column(i).AutoFit();
             }
 
-            using (FileStream fs = File.OpenWrite(filename))
+            try
             {
-                excel.SaveAs(fs);
+                using (FileStream fs = File.OpenWrite(filename))
+                {
+                    excel.SaveAs(fs);
+                }
+            }
+            catch (IOException ex)
+            {
+                // The process cannot access the file 'filename' because it is being used by another process
+                MessageBox.Show("The process cannot access the file because it is being used by another process.");
+                return;
             }
         }
-
-
     }
 }
-
