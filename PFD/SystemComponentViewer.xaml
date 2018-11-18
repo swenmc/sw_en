@@ -344,6 +344,8 @@
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnLoadPlate_Click"/>
             <Button Name="BtnExportToPDFFromDirectory" Content="Export to PDF from directory" Margin="5 0 5 0"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToPDFFromDirectory_Click"/>
+            <Button Name="BtnExportToXLSFromDirectory" Content="Export to XLS from directory" Margin="5 0 5 0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnExportToXLSFromDirectory_Click"/>
 
         </StackPanel>
     </Grid>

@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 
@@ -51,6 +52,36 @@ namespace EXPIMP
             {
                 excel.SaveAs(fs);
             }                
+        }
+
+
+        public static void ExportToExcel(string filename, List<string[]> tableParams, string workSheetName)
+        {
+            ExcelPackage excel = new ExcelPackage();
+            var workSheet = excel.Workbook.Worksheets.Add(workSheetName);
+            int rowCount = 0;
+            int cellNum = 0;
+            foreach (string[] rowParams in tableParams)
+            {
+                rowCount++;
+                if(rowCount == 1) workSheet.Row(1).Style.Font.Bold = true;
+                cellNum = 0;
+                foreach (string s in rowParams)
+                {
+                    cellNum++;
+                    workSheet.Cells[rowCount, cellNum].Value = s;
+                }
+            }
+            
+            for (int i = 1; i <= cellNum; i++)
+            {
+                workSheet.Column(i).AutoFit();
+            }
+
+            using (FileStream fs = File.OpenWrite(filename))
+            {
+                excel.SaveAs(fs);
+            }
         }
 
 
