@@ -2241,7 +2241,7 @@ namespace PFD
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     WaitWindow ww = new WaitWindow();
-                    //ww.WaitImage.Source = new BitmapImage(new Uri(@"..\..\..\Resources\XLSfilelogo.png"));
+                    ww.WaitImage.Source = new BitmapImage(new Uri("Resources/XLSfilelogo.png", UriKind.Relative));
                     ww.Show();
 
                     string folder = dialog.SelectedPath;
