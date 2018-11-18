@@ -586,7 +586,7 @@ namespace PFD
             IsSetFromCode = false;
         }
 
-        
+        //treba skusit ulozit Canvas do MemoryStream a nasledne v background workeri vybrat z Memory canvas
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)

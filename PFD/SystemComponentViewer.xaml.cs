@@ -2179,7 +2179,10 @@ namespace PFD
 
                     CExportToPDF.AddPlatesParamsTableToDocumentOnNewPage(tableParams);
 
+                    
                     string fileName = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.pdf");
+                    string fileNameXLSX = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.xlsx");
+                    ExportToExcelDocument.ExportToExcel(fileNameXLSX, tableParams, "plates");
                     CExportToPDF.SavePDFDocument(fileName);
                     ww.Close();
                 }
@@ -2229,6 +2232,106 @@ namespace PFD
             }
             
 
+        }
+
+        private void BtnExportToXLSFromDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    WaitWindow ww = new WaitWindow();
+                    //ww.WaitImage.Source = new BitmapImage(new Uri(@"..\..\..\Resources\XLSfilelogo.png"));
+                    ww.Show();
+
+                    string folder = dialog.SelectedPath;
+                    DirectoryInfo dirInfo = new DirectoryInfo(folder);
+                    FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
+                    if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
+
+                    List<string[]> tableParams = new List<string[]>();
+
+                    //header row
+                    tableParams.Add(new string[] {
+                        "ID",
+                        "Name",
+                        "Width [m]",
+                        "Height [m]",
+                        "Thickness [mm]",
+                        "Area [m²]",
+                        "Volume [m³]",
+                        "Mass [kg]",
+                        "Amount",
+                        "Amount Left",
+                        "Amount Right",
+                        "Mass Total [kg]",
+                        "Screws Plate",
+                        "Screws Total"});
+
+                    CExportToPDF.CreatePDFDocument();
+                    int count = 0;
+                    int totalAmount = 0;
+                    float totalMass = 0;
+                    int totalScrews = 0;
+
+                    foreach (FileInfo fi in files)
+                    {
+                        OpenDataFile(fi.FullName);
+
+                        SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
+                        CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
+                        
+                        float fUnitFactor_Length_m_to_mm = 1000f;
+
+                        count++;
+                        string[] plateParams = new string[14];
+                        plateParams[0] = count.ToString();
+                        plateParams[1] = plate.Name;
+                        plateParams[2] = Math.Round(plate.fWidth_bx, 3).ToString();
+                        plateParams[3] = Math.Round(plate.fHeight_hy, 3).ToString();
+                        plateParams[4] = Math.Round(plate.Ft * fUnitFactor_Length_m_to_mm, 2).ToString();
+                        plateParams[5] = Math.Round(plate.fArea, 3).ToString();
+                        plateParams[6] = Math.Round(plate.fVolume, 4).ToString();                        
+                        plateParams[7] = Math.Round(plate.fMass, 1).ToString();
+                        plateParams[8] = pInfo.Amount.ToString();
+                        totalAmount += pInfo.Amount;
+                        if (plate.IsSymmetric())
+                        {
+                            plateParams[9] = string.Empty;
+                            plateParams[10] = string.Empty;
+                        }
+                        else
+                        {
+                            plateParams[9] = pInfo.AmountLH.ToString();
+                            plateParams[10] = pInfo.AmountRH.ToString();
+                        }
+
+                        plateParams[11] = Math.Round(plate.fMass * pInfo.Amount, 1).ToString();
+                        totalMass += (plate.fMass * pInfo.Amount);
+                        // Screws
+                        if (plate.ScrewArrangement != null)
+                        {
+                            plateParams[12] = plate.ScrewArrangement.IHolesNumber.ToString();
+                            plateParams[13] = (plate.ScrewArrangement.IHolesNumber * pInfo.Amount).ToString();
+                            totalScrews += (plate.ScrewArrangement.IHolesNumber * pInfo.Amount);
+                        }
+                        else
+                        {
+                            plateParams[12] = "0";
+                            plateParams[13] = "0";
+                        }
+                        tableParams.Add(plateParams);
+                    }
+
+                    //last total count row
+                    tableParams.Add(new string[] { "", "", "", "", "", "", "Total", "Σ", totalAmount.ToString(), "", "Σ", totalMass.ToString("F1"), "Σ", totalScrews.ToString() });
+                    
+                    string fileNameXLSX = string.Format("{0}\\{1}", folder, "ExportAllPlatesInFolder.xlsx");
+                    ExportToExcelDocument.ExportToExcel(fileNameXLSX, tableParams, "plates");
+                    
+                    ww.Close();
+                }
+            }
         }
 
         //private void RedrawComponentIn2D()
