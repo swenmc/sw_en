@@ -1963,7 +1963,7 @@ namespace PFD
 
         private void BtnExportToPDF_Click(object sender, RoutedEventArgs e)
         {
-            WaitWindow ww = new WaitWindow();            
+            WaitWindow ww = new WaitWindow();
             ww.Show();
 
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
@@ -2074,7 +2074,6 @@ namespace PFD
             else if (plate is CConCom_Plate_KE) return 4;
             else return 0;
         }
-
 
         private void BtnExportToPDFFromDirectory_Click(object sender, RoutedEventArgs e)
         {
@@ -2208,7 +2207,7 @@ namespace PFD
                 vm.AmountRH = pInfo.AmountRH;
             }
             if (deserializedPlate != null)
-            {                
+            {
                 vm.ComponentTypeIndex = 1;
                 vm.ComponentSerieIndex = (int)deserializedPlate.m_ePlateSerieType_FS;
                 vm.ComponentIndex = GetPlateIndex(deserializedPlate);
@@ -2227,8 +2226,6 @@ namespace PFD
 
                 DisplayComponent(vm);
             }
-            
-
         }
 
         //private void RedrawComponentIn2D()

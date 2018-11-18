@@ -95,7 +95,7 @@ namespace EXPIMP
         public static void CreatePDFDocument()
         {
             document = new PdfDocument();
-            document.Info.Title = "Export from FormSteel software";            
+            document.Info.Title = "Export from FormSteel software";
         }
         public static void AddPlateToPDF(Canvas canvas, CPlate plate, CProductionInfo pInfo)
         {
@@ -459,7 +459,7 @@ namespace EXPIMP
                 gfx.DrawString(pInfo.AmountRH.ToString(), font, XBrushes.Black, 100, 80);
                 gfx.DrawString("LH: ", font, XBrushes.Black, 40, 100);
                 gfx.DrawString(pInfo.AmountLH.ToString(), font, XBrushes.Black, 100, 100);
-            }            
+            }
         }
 
         private static void DrawProductionNotes(XGraphics gfx)
@@ -697,8 +697,6 @@ namespace EXPIMP
             docRenderer.RenderObject(gfx, XUnit.FromPoint(40), XUnit.FromPoint(offsetY), XUnit.FromPoint(gfx.PageSize.Width * 0.8), t);
             //docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
         }
-
-        
 
         public static Table GetSimpleTable(Document document, List<string[]> tableParams)
         {
