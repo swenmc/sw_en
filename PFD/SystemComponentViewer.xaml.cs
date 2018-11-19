@@ -2121,11 +2121,12 @@ namespace PFD
                         SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
                         CProductionInfo pInfo = new CProductionInfo(vm.JobNumber, vm.Customer, vm.Amount, vm.AmountRH, vm.AmountLH);
 
-                        page2D.RenderSize = new System.Windows.Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
+                        //page2D.RenderSize = new System.Windows.Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
                         //if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
                         if (page2D == null) { MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name); return; }
-
-                        CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
+                        
+                        //CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
+                        CExportToPDF.AddPlateToPDF((Canvas)Frame2D.Content, plate, pInfo);
 
                         float fUnitFactor_Length_m_to_mm = 1000f;
 
