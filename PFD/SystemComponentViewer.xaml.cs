@@ -21,6 +21,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Threading;
+using System.Configuration;
 
 namespace PFD
 {
@@ -961,7 +962,7 @@ namespace PFD
             // Create 3D window
             // Screw
             PerspectiveCamera camera = new PerspectiveCamera(new Point3D(36.6796089675504, -63.5328099899833, 57.4552066599888), new Vector3D(-43.3, 75, -50), new Vector3D(0, 0, 1), 51.5103932666685);
-            page3D = new Page3Dmodel("../../Resources/self_drilling_screwModel3D.xaml", camera);
+            page3D = new Page3Dmodel(ConfigurationManager.AppSettings["screwModel3D"], camera);
 
             // Display model in 3D preview frame
             Frame3D.Content = page3D;
@@ -1278,9 +1279,6 @@ namespace PFD
 
         private void BtnExportCNC_Click(object sender, RoutedEventArgs e)
         {
-            
-
-
             // Export of drilling route to the .nc files
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             if (vm.ComponentTypeIndex == 0)
