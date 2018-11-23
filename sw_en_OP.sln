@@ -118,8 +118,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConcoleApp", "ConsoleAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoOpt", "Test Projects\TwoOpt\TwoOpt.csproj", "{7A2ECCC8-7762-4A4F-B2F2-11EF555281B7}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupSystemComponentViewer", "SetupSystemComponentViewer\SetupSystemComponentViewer.vdproj", "{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M_NZS3101", "M_NZS3101\M_NZS3101.csproj", "{38B77165-5E1C-4CE7-8662-33D8EBF853B1}"
 EndProject
 Global
@@ -803,16 +801,6 @@ Global
 		{7A2ECCC8-7762-4A4F-B2F2-11EF555281B7}.Release|x64.Build.0 = Release|Any CPU
 		{7A2ECCC8-7762-4A4F-B2F2-11EF555281B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{7A2ECCC8-7762-4A4F-B2F2-11EF555281B7}.Release|x86.Build.0 = Release|Any CPU
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Debug|Any CPU.ActiveCfg = Debug
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Debug|ARM.ActiveCfg = Debug
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Debug|x64.ActiveCfg = Debug
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Debug|x86.ActiveCfg = Debug
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Release|Any CPU.ActiveCfg = Release
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Release|ARM.ActiveCfg = Release
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Release|Mixed Platforms.ActiveCfg = Release
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Release|x64.ActiveCfg = Release
-		{D99209C1-4BBE-45CB-91F7-6D906F81B9C4}.Release|x86.ActiveCfg = Release
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -877,8 +865,8 @@ Global
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1} = {7239374F-E8CD-4AB3-B6FC-181D1525AF71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
