@@ -287,12 +287,14 @@ namespace EXPIMP
                     XSolidBrush solidBrush = new XSolidBrush(XColor.FromArgb(c.A, c.R, c.G, c.B));
                     //XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize * scaleFactor);
                     XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize / 4 * 3);  //pixels to points
+                    //XFont f = new XFont(winText.FontFamily.ToString(), winText.FontSize);  //pixels to points
                     //XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + marginTop);
 
                     //este by stalo mozno za pokus sa pohrat s rotaciou, ci netreba nahodou robit rotaciu
-                    XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 * scaleFactor + marginLeft, y * scaleFactor + winText.ActualHeight / 4*3 * scaleFactor + marginTop);
+                    //XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 * scaleFactor + marginLeft, y * scaleFactor + winText.ActualHeight / 4*3 * scaleFactor + marginTop);
+                    XPoint p = new XPoint(x * scaleFactor + marginLeft, y * scaleFactor + winText.ActualHeight / 4 * 3 * scaleFactor + marginTop);
                     //XPoint p = new XPoint(x * scaleFactor + winText.ActualWidth / 2 + marginLeft, y * scaleFactor + winText.ActualHeight / 2  + marginTop);
-                    if (Math.Abs(angle) > 45) p.X += winText.ActualHeight / 4 * scaleFactor;
+                    if (Math.Abs(angle) > 45) p.X += winText.ActualHeight * scaleFactor;
 
                     XGraphicsState state = gfx.Save();
                     gfx.RotateAtTransform(angle, p);

@@ -236,7 +236,12 @@ namespace BaseClasses
             {                
                 CConCom_Plate_KB kb = (CConCom_Plate_KB)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kb.PointsOut2D);
-                if (kb.pTip != null) note2D = new CNote2D(new Point(kb.pTip.X, kb.pTip.Y), "Trim Off", 50, 50, true, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
+                if (kb.pTip != null)
+                {
+                    double moveX = Math.Abs(kb.pTip.X) < 1 ? kb.pTip.X / 10 : kb.pTip.X / 18;
+                    double moveY = Math.Abs(kb.pTip.Y) < 1 ? kb.pTip.Y / 10 : kb.pTip.Y / 25;
+                    note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", 0, 0, true, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
+                } 
                 
 
             }
@@ -417,7 +422,7 @@ namespace BaseClasses
             DrawSeparateLines(bDrawBendLines, canvasBendLines, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             //Notes
-            if (note2D != null) DrawNote(note2D, canvasForImage);
+            if (note2D != null) DrawNote(canvasNote2D, canvasForImage);
         }
 
         private static List<CDimension> MirrorYCoordinates(CDimension[] Dimensions)
