@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sw_en", "sw_en", "{2103852C-828A-4D0B-AEB7-0BCE9168AF35}"
 EndProject
@@ -119,8 +119,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoOpt", "Test Projects\TwoOpt\TwoOpt.csproj", "{7A2ECCC8-7762-4A4F-B2F2-11EF555281B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M_NZS3101", "M_NZS3101\M_NZS3101.csproj", "{38B77165-5E1C-4CE7-8662-33D8EBF853B1}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupSCV", "SetupSCV\SetupSCV.vdproj", "{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -823,16 +821,6 @@ Global
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Release|x64.Build.0 = Release|Any CPU
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Release|x86.Build.0 = Release|Any CPU
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Debug|Any CPU.ActiveCfg = Debug
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Debug|ARM.ActiveCfg = Debug
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Debug|x64.ActiveCfg = Debug
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Debug|x86.ActiveCfg = Debug
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Release|Any CPU.ActiveCfg = Release
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Release|ARM.ActiveCfg = Release
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Release|Mixed Platforms.ActiveCfg = Release
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Release|x64.ActiveCfg = Release
-		{9DE7E5F7-11A1-4524-9D3A-DDCA50A7DF72}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -877,8 +865,8 @@ Global
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1} = {7239374F-E8CD-4AB3-B6FC-181D1525AF71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

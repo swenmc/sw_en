@@ -1456,7 +1456,7 @@ namespace PFD
                         // Changed number of screws in circle
                         if (item.Name.Contains(CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " "))
                         {
-                            int circleNum = int.Parse(item.Name.Substring((CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " ").Length));
+                            int circleNum = int.Parse(item.Name.Substring((CParamsResources.NumberOfScrewsInCircleSequenceS.Name + " ").Length));                            
                             UpdateCircleSequencesNumberOfScrews(circleNum, itemStr, ref arrangementTemp);
                         }
                         // Changed Radius

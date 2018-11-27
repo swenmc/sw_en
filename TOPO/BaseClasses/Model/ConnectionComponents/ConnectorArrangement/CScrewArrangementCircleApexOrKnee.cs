@@ -275,6 +275,7 @@ namespace BaseClasses
         public void NumberOfCirclesInGroup_Updated(int newNumberOfCirclesInGroup)
         {
             if (newNumberOfCirclesInGroup < 0) return;
+            if (newNumberOfCirclesInGroup > 5) return;
 
             if (newNumberOfCirclesInGroup == 0)
             {
