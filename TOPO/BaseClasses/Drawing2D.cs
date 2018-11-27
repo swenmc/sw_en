@@ -195,7 +195,7 @@ namespace BaseClasses
             canvasForImage.Children.Clear();
             if (plate != null)
             {
-                CNote2D note2D = GetNoteForPlate(plate);                
+                CNote2D note2D = GetNoteForPlate(plate);
 
                 DrawComponent(
                     bDrawPoints,
@@ -233,7 +233,7 @@ namespace BaseClasses
         {
             CNote2D note2D = null;
             if (plate is CConCom_Plate_KB)
-            {                
+            {
                 CConCom_Plate_KB kb = (CConCom_Plate_KB)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kb.PointsOut2D);
                 if (kb.pTip != null)
@@ -241,23 +241,29 @@ namespace BaseClasses
                     double moveX = Math.Abs(kb.pTip.X) < 1 ? kb.pTip.X / 10 : kb.pTip.X / 18;
                     double moveY = Math.Abs(kb.pTip.Y) < 1 ? kb.pTip.Y / 10 : kb.pTip.Y / 25;
                     note2D = new CNote2D(new Point(kb.pTip.X + moveX, kb.pTip.Y + moveY), "Trim Off", 0, 0, true, kb.pTip, new Point(kb.pTip.X + 40, kb.pTip.Y + 40), plateCenter);
-                } 
-                
-
+                }
             }
             else if (plate is CConCom_Plate_KC)
             {
                 CConCom_Plate_KC kc = (CConCom_Plate_KC)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kc.PointsOut2D);
-                if (kc.pTip != null) note2D = new CNote2D(new Point(kc.pTip.X + 50, kc.pTip.Y + 50), "Trim Off", 50, 50, true, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
-
+                if (kc.pTip != null)
+                {
+                    double moveX = Math.Abs(kc.pTip.X) < 1 ? kc.pTip.X / 10 : kc.pTip.X / 18;
+                    double moveY = Math.Abs(kc.pTip.Y) < 1 ? kc.pTip.Y / 10 : kc.pTip.Y / 25;
+                    note2D = new CNote2D(new Point(kc.pTip.X + moveX, kc.pTip.Y + moveY), "Trim Off", 0, 0, true, kc.pTip, new Point(kc.pTip.X + 40, kc.pTip.Y + 40), plateCenter);
+                }
             }
             else if (plate is CConCom_Plate_KD)
             {
                 CConCom_Plate_KD kd = (CConCom_Plate_KD)plate;
                 Point plateCenter = Drawing2D.CalculateModelCenter(kd.PointsOut2D);
-                if (kd.pTip != null) note2D = new CNote2D(new Point(kd.pTip.X + 50, kd.pTip.Y + 50), "Trim Off", 50, 50, true, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
-
+                if (kd.pTip != null)
+                {
+                    double moveX = Math.Abs(kd.pTip.X) < 1 ? kd.pTip.X / 10 : kd.pTip.X / 18;
+                    double moveY = Math.Abs(kd.pTip.Y) < 1 ? kd.pTip.Y / 10 : kd.pTip.Y / 25;
+                    note2D = new CNote2D(new Point(kd.pTip.X + moveX, kd.pTip.Y + moveY), "Trim Off", 0, 0, true, kd.pTip, new Point(kd.pTip.X + 40, kd.pTip.Y + 40), plateCenter);
+                }
             }
             return note2D;
         }
