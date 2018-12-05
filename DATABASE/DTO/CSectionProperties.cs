@@ -41,6 +41,10 @@ namespace DATABASE.DTO
         public string Compression_curve_1;
         public string Compression_curve_2;
         public string Compression_curve_3;
+        public string fol_b;
+        public string fod_b;
+        public string fol_c;
+        public string fod_c;
 
         public CSectionProperties() { }
     }

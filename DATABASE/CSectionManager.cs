@@ -141,6 +141,10 @@ namespace DATABASE
             properties.Compression_curve_1 = reader["Compression_curve_1"].ToString();
             properties.Compression_curve_2 = reader["Compression_curve_2"].ToString();
             properties.Compression_curve_3 = reader["Compression_curve_3"].ToString();
+            properties.fol_b = reader["fol_b"].ToString();
+            properties.fod_b = reader["fod_b"].ToString();
+            properties.fol_c = reader["fol_c"].ToString();
+            properties.fod_c = reader["fod_c"].ToString();
 
             return properties;
         }
@@ -187,13 +191,18 @@ namespace DATABASE
                         crsc.Beta_y = double.Parse(reader["betay"].ToString(), nfi);
                         crsc.Beta_z = double.Parse(reader["betaz"].ToString(), nfi);
                         crsc.Alpha_rad = double.Parse(reader["alpha_deg"].ToString(), nfi) / 180 * Math.PI;
-                        crsc.Bending_curve_stress_x1 = double.Parse(reader["Bending_curve_x1"].ToString(), nfi);
-                        crsc.Bending_curve_stress_x2 = double.Parse(reader["Bending_curve_x2"].ToString(), nfi);
+                        //crsc.Bending_curve_stress_x1 = double.Parse(reader["Bending_curve_x1"].ToString(), nfi);
+                        //crsc.Bending_curve_stress_x2 = double.Parse(reader["Bending_curve_x2"].ToString(), nfi);
                         //crsc.Bending_curve_stress_x3 = double.Parse(reader["Bending_curve_x3"].ToString(), nfi);
                         //crsc.Bending_curve_stress_y = double.Parse(reader["Bending_curve_y"].ToString(), nfi);
-                        crsc.Compression_curve_stress_1 = double.Parse(reader["Compression_curve_1"].ToString(), nfi);
+                        //crsc.Compression_curve_stress_1 = double.Parse(reader["Compression_curve_1"].ToString(), nfi);
                         //crsc.Compression_curve_stress_2 = double.Parse(reader["Compression_curve_2"].ToString(), nfi);
                         //crsc.Compression_curve_stress_3 = double.Parse(reader["Compression_curve_3"].ToString(), nfi);
+
+                        crsc.fol_b = reader["fol_b"].ToString() == "" ? double.NaN : double.Parse(reader["fol_b"].ToString(), nfi);
+                        crsc.fod_b = reader["fod_b"].ToString() == "" ? double.NaN : double.Parse(reader["fod_b"].ToString(), nfi);
+                        crsc.fol_c = reader["fol_c"].ToString() == "" ? double.NaN : double.Parse(reader["fol_c"].ToString(), nfi);
+                        crsc.fod_c = reader["fod_c"].ToString() == "" ? double.NaN : double.Parse(reader["fod_c"].ToString(), nfi);
                     }
                 }
             }
@@ -247,6 +256,10 @@ namespace DATABASE
             list.Add(properties.Compression_curve_1);
             list.Add(properties.Compression_curve_2);
             list.Add(properties.Compression_curve_3);
+            list.Add(properties.fol_b);
+            list.Add(properties.fod_b);
+            list.Add(properties.fol_c);
+            list.Add(properties.fod_c);
 
             return list;
         }

@@ -102,6 +102,7 @@ namespace M_AS4600
         float fM_34;
 
         float ff_y;
+        float ff_u;
         float fE;
         float fG;
         float fNu;
@@ -263,12 +264,6 @@ namespace M_AS4600
             sDIF.fM_xx = sDIF_x_temp.fM_yy;
             sDIF.fM_yv = sDIF_x_temp.fM_zz;
 
-            // Set material properties
-            ff_y = cs.m_Mat.m_ff_yk[0];
-            fE = cs.m_Mat.m_fE;
-            fG = cs.m_Mat.m_fG;
-            fNu = cs.m_Mat.m_fNu;
-
             // Set cross-section properties
             fh = (float)cs.h;
             fb = (float)cs.b;
@@ -285,6 +280,18 @@ namespace M_AS4600
             fZ_ft_yv = fZ_f_yv; //Todo // section modulus of the full unreduced section for the extreme tension fibre about the appropriate axis
             fI_xu = (float)cs.I_y;
             fI_yv = (float)cs.I_z;
+
+            ff_ol = cs.fol_c > 0 ? (float)cs.fol_c : 1e+9f; // Hodnota z databazy alebo 1000 MPa, ak nie je definovane
+            ff_od = cs.fod_c > 0 ? (float)cs.fod_c : 1e+9f;
+            ff_ol_bend = cs.fol_b > 0 ? (float)cs.fol_b : 1e+9f;
+            ff_od_bend = cs.fod_b > 0 ? (float)cs.fod_b : 1e+9f;
+
+            // Set material properties
+            ff_y = cs.m_Mat.Get_f_yk_by_thickness(ft);
+            ff_u = cs.m_Mat.Get_f_uk_by_thickness(ft);
+            fE = cs.m_Mat.m_fE;
+            fG = cs.m_Mat.m_fG;
+            fNu = cs.m_Mat.m_fNu;
 
             float fh_x = fb;
             float fh_y = 0.02f; // No lip
@@ -344,7 +351,7 @@ namespace M_AS4600
             ff_oc = (float)cubic_solver.x_min_positive > 0 ? (float)cubic_solver.x_min_positive : 0f;
 
             //if(ff_oc <= 0f)
-            // Error  
+            // Error // TODO - kontrolovat vystup z funkcie ci je to kladne napatie
 
             // 7.2.1.2.1 Compression members without holes
             fN_y = eq.Eq_7212_5__(fA_g, ff_y);
@@ -357,7 +364,7 @@ namespace M_AS4600
 
             fk = 4.0f; //see kst
 
-            ff_ol = eq.Eq_D131____(fk, fE, fNu, ft, fb);
+            //ff_ol = eq.Eq_D131____(fk, fE, fNu, ft, fb); // Nacitavat z vlastnosti prierezu
             fN_ol = eq.Eq_7213_4__(fA_g, ff_ol);
             flambda_l = eq.Eq_7213_3__(fN_ce, fN_ol);
             fN_cl = eq.Eq_7213____(flambda_l, fN_ol, fN_ce);
@@ -367,19 +374,23 @@ namespace M_AS4600
 
             // General channel in compression (picture D2(a))
 
-            eq.Calc_CFL_Properties(fb, fd_l, ft, out fA_cfl, out fx_cfl_par, out fy_cfl_par, out fJ_cfl, out fI_x_cfl, out fI_y_cfl, out fI_xy_cfl);
-            // The values of A, J, Ix, Iy, Ixy, Iw are for the compression flange and lip alone.
-            float fb_w = fb; // ???
-
-            if (cs.IsShapeSolid) // Open Cross-section
+            float fb_w = fb; // ??? // TODO - doriesit
+            bool bUseCalculation_D2_a = false;
+            if (bUseCalculation_D2_a) // Je mozne pouzit len v pripade jednoducheho C, inak nacitat z vlastnosti prierezu
             {
-                ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
+                eq.Calc_CFL_Properties(fb, fd_l, ft, out fA_cfl, out fx_cfl_par, out fy_cfl_par, out fJ_cfl, out fI_x_cfl, out fI_y_cfl, out fI_xy_cfl);
+                // The values of A, J, Ix, Iy, Ixy, Iw are for the compression flange and lip alone.
 
-                if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
-                    ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
+                if (cs.IsShapeSolid) // Open Cross-section
+                {
+                    ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
+
+                    if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
+                        ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
+                }
+                else
+                    ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
             }
-            else
-                ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
 
             fN_od = eq.Eq_7214_4__(fA_g, ff_od);
             flambda_d = eq.Eq_7214_3__(fN_ce, fN_ol);
@@ -460,7 +471,7 @@ namespace M_AS4600
                 float fk_bend = 4.0f; // Todo - factors for bending
                 // ft, fb - asi pre kazdy element -> rozhoduje najstihlejsi ???
 
-                ff_ol_bend = eq.Eq_D131____(fk_bend, fE, fNu, ft, fb);
+                //ff_ol_bend = eq.Eq_D131____(fk_bend, fE, fNu, ft, fb); // Nacitavat z vlastnosti prierezu
                 fM_ol_xu = eq.Eq_7223_4__(fZ_f_xu, ff_ol_bend);
                 fLambda_l_xu = eq.Eq_7223_3__(fM_be_xu, fM_ol_xu);
                 fM_bl_xu = eq.Eq_7223____(fM_ol_xu, fM_be_xu, fLambda_l_xu);
@@ -490,14 +501,18 @@ namespace M_AS4600
                 // 7.2.2.4 Distorsional buckling
                 // 7.2.2.4.2 Beams without holes
 
-                if (cs.IsShapeSolid) // Open Cross-section
+                bool bUseCalculation_DistBuckling_Bending = false;
+                if (bUseCalculation_DistBuckling_Bending) // Je mozne pouzit len v pripade jednoducheho tvaru, inak nacitat z vlastnosti prierezu
                 {
-                    ff_od_bend = eq.Eq_D121_1_DB(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_f, fb_w, ft);
+                    if (cs.IsShapeSolid) // Open Cross-section
+                    {
+                        ff_od_bend = eq.Eq_D121_1_DB(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_f, fb_w, ft);
+                    }
+                    else
+                        ff_od_bend = ff_y; // Closed cross-section - ignore distorsional buckling
                 }
-                else
-                    ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
 
-                fM_od_xu = eq.Eq_7224_4__(fZ_f_xu, ff_od);
+                fM_od_xu = eq.Eq_7224_4__(fZ_f_xu, ff_od_bend);
                 fLambda_d_xu = eq.Eq_7224_3__(fM_y_xu, fM_od_xu);
                 fM_bd_xu = eq.Eq_7224____(fM_y_xu, fM_od_xu, fLambda_d_xu);
             }
@@ -505,7 +520,7 @@ namespace M_AS4600
             // D2.3  Local buckling stresses
             float fk_LB_D23 = 4.0f; //see Todo - value valid for bending
 
-            float ff_ol_D23 = eq.Eq_D131____(fk_LB_D23, fE, fNu, ft, fb);
+            float ff_ol_D23 = eq.Eq_D131____(fk_LB_D23, fE, fNu, ft, fb); // TODO - overit ci nacitvat z vlastnosti prierezu alebo pocitat
 
             // 7.2.3 Design of member subject to shear, an combined bending and shear
             fV_y_yv = eq.Eq_723_5___(fA_w_yv, ff_y);

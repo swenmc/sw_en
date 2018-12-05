@@ -86,6 +86,11 @@ namespace CRSC
         public double dCompression_curve_stress_2;
         public double dCompression_curve_stress_3;
 
+        public double dfol_b;
+        public double dfod_b;
+        public double dfol_c;
+        public double dfod_c;
+
         public ObservableCollection<string> Series = new ObservableCollection<string>()
         {
                 "Box-10075",
@@ -226,6 +231,30 @@ namespace CRSC
         {
             get { return dCompression_curve_stress_3; }
             set { dCompression_curve_stress_3 = value; }
+        }
+
+        public double fol_b
+        {
+            get { return dfol_b; }
+            set { dfol_b = value; }
+        }
+
+        public double fod_b
+        {
+            get { return dfod_b; }
+            set { dfod_b = value; }
+        }
+
+        public double fol_c
+        {
+            get { return dfol_c; }
+            set { dfol_c = value; }
+        }
+
+        public double fod_c
+        {
+            get { return dfod_c; }
+            set { dfod_c = value; }
         }
 
         // end of cross-section variables definition
