@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Purlin Designer" Height="1450" Width="950">
+        Title="Purlin Designer" Height="1250" Width="950">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -24,11 +24,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
@@ -91,11 +86,13 @@
         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m²]" VerticalAlignment="Top"/>
         
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Bracing Length Lb:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Bracing Block Distance Lb:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_BracingLength_Lb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="True"
-                         Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+        <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
+        </TextBox>
         <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
@@ -109,9 +106,8 @@
         <TextBlock Grid.Row="9" Grid.Column="0" Text="Purlin Self Weight gp.l:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_PurlinSelfWeight_gp" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=PurlinSelfWeight_gp, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
-            <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
@@ -280,164 +276,194 @@
 
 
 
-        <TextBlock Grid.Row="9" Grid.Column="3" Text="Bending Moment - Upwind M*:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="0" Grid.Column="3" Text="Bending Moment - Upwind M*:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_BendingMomentUpwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_BendingMomentUpwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=BendingMomentUpwind_M_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="10" Grid.Column="3" Text="Shear Force - Upwind V*:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="Shear Force - Upwind V*:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_ShearForceUpwind_V_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="1" Grid.Column="4" Name ="TextBox_ShearForceUpwind_V_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ShearForceUpwind_V_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="11" Grid.Column="3" Text="Bending Moment - Downwind M*:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="2" Grid.Column="3" Text="Bending Moment - Downwind M*:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_BendingMomentDownwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="2" Grid.Column="4" Name ="TextBox_BendingMomentDownwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=BendingMomentDownwind_M_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="12" Grid.Column="3" Text="Shear Force - Downwind V*:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="3" Grid.Column="3" Text="Shear Force - Downwind V*:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="12" Grid.Column="4" Name ="TextBox_ShearForceDownwind_V_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="3" Grid.Column="4" Name ="TextBox_ShearForceDownwind_V_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ShearForceDownwind_V_asterix, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="12" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="3" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="14" Grid.Column="3" Text="Bending Capacity Mb:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="5" Grid.Column="3" Text="Bending Capacity Ms:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="14" Grid.Column="4" Name ="TextBox_BendingCapacity_Mb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="5" Grid.Column="4" Name ="TextBox_BendingCapacity_Ms" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BendingCapacity_Mb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="14" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         Text="{Binding Path=BendingCapacity_Ms, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="5" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
         
-        <TextBlock Grid.Row="15" Grid.Column="3" Text="Shear Capacity Vw:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="6" Grid.Column="3" Text="Bending Capacity Mb:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="15" Grid.Column="4" Name ="TextBox_ShearCapacity_Vw" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_BendingCapacity_Mb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=BendingCapacity_Mb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="6" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+        
+        <TextBlock Grid.Row="7" Grid.Column="3" Text="Shear Capacity Vy:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="7" Grid.Column="4" Name ="TextBox_ShearCapacity_Vy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ShearCapacity_Vy, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="7" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
+        
+        <TextBlock Grid.Row="8" Grid.Column="3" Text="Shear Capacity Vw:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="8" Grid.Column="4" Name ="TextBox_ShearCapacity_Vw" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ShearCapacity_Vw, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="16" Grid.Column="3" Text="Design Ratio - Strength η:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="10" Grid.Column="3" Text="Design Ratio - Strength η:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_DesignRatioStrength_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_DesignRatioStrength_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=DesignRatioStrength_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="16" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="18" Grid.Column="3" Text="Deflection (G + Q) δ:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="16" Grid.Column="3" Text="Deflection (G + Q) δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="18" Grid.Column="4" Name ="TextBox_DeflectionGQ_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_DeflectionGQ_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=DeflectionGQ_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="16" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="17" Grid.Column="3" Text="Deflection Limit Fraction (G + Q) L/" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="17" Grid.Column="4" Name ="TextBox_DeflectionGQLimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         Text="{Binding Path=DeflectionGQLimitFraction, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+            <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+        
+        <TextBlock Grid.Row="18" Grid.Column="3" Text="Deflection Limit (G + Q) δ.lim:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="18" Grid.Column="4" Name ="TextBox_DeflectionGQLimit_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=DeflectionGQLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="18" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="19" Grid.Column="3" Text="Deflection Limit Fraction (G + Q) L/" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="19" Grid.Column="3" Text="Design Ratio - Deflection (G + Q) η:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="19" Grid.Column="4" Name ="TextBox_DeflectionGQLimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="19" Grid.Column="4" Name ="TextBox_DesignRatioDeflectionGQ_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionGQLimitFraction, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DesignRatioDeflectionGQ_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
-        
-        <TextBlock Grid.Row="20" Grid.Column="3" Text="Deflection Limit (G + Q) δ.lim:" HorizontalAlignment="Left" 
+                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="20" Grid.Column="3" Text="Deflection W - Upwind δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="20" Grid.Column="4" Name ="TextBox_DeflectionGQLimit_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="20" Grid.Column="4" Name ="TextBox_Deflection_W_Upwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionGQLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=Deflection_W_Upwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="20" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="21" Grid.Column="3" Text="Design Ratio - Deflection (G + Q) η:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="21" Grid.Column="3" Text="Deflection (S + W) - Downwind δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_DesignRatioDeflectionGQ_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_Deflection_SW_Downwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DesignRatioDeflectionGQ_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=Deflection_SW_Downwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="22" Grid.Column="3" Text="Deflection W - Upwind δ:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="22" Grid.Column="3" Text="Deflection Limit Fraction (S + W) L/" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="22" Grid.Column="4" Name ="TextBox_Deflection_W_Upwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=Deflection_W_Upwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBox Grid.Row="22" Grid.Column="4" Name ="TextBox_Deflection_SW_LimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         Text="{Binding Path=DeflectionSWLimitFraction, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+            <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
+        </TextBox>
         <TextBlock Grid.Row="22" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="23" Grid.Column="3" Text="Deflection (S + W) - Downwind δ:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="23" Grid.Column="3" Text="Deflection Limit (S + W) δ.lim:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="23" Grid.Column="4" Name ="TextBox_Deflection_SW_Downwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="23" Grid.Column="4" Name ="TextBox_DeflectionLimit_SW_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=Deflection_SW_Downwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionLimit_SW_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="23" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="24" Grid.Column="3" Text="Deflection Limit Fraction (S + W) L/" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="24" Grid.Column="3" Text="Design Ratio (S + W) - Deflection η:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="24" Grid.Column="4" Name ="TextBox_Deflection_SW_LimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="24" Grid.Column="4" Name ="TextBox_DesignRatio_SW_Deflection_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionGQLimitFraction, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DesignRatio_SW_Deflection_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="24" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="25" Grid.Column="3" Text="Deflection Limit (S + W) δ.lim:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="25" Grid.Column="3" Text="Deflection - Upwind δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="25" Grid.Column="4" Name ="TextBox_DeflectionLimit_SW_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="25" Grid.Column="4" Name ="TextBox_DeflectionTotalUpwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionLimit_SW_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionTotalUpwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="25" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="26" Grid.Column="3" Text="Design Ratio (S + W) - Deflection η:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="26" Grid.Column="3" Text="Deflection - Downwind δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="26" Grid.Column="4" Name ="TextBox_DesignRatio_SW_Deflection_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="26" Grid.Column="4" Name ="TextBox_DeflectionTotalDownwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DesignRatio_SW_Deflection_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionTotalDownwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="26" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="28" Grid.Column="3" Text="Deflection - Upwind δ:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="27" Grid.Column="3" Text="Deflection Limit Fraction L/" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="28" Grid.Column="4" Name ="TextBox_DeflectionUpwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="27" Grid.Column="4" Name ="TextBox_DeflectionTotal_LimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         Text="{Binding Path=DeflectionTotalLimitFraction, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
+            <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Grid.Row="27" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+        
+        <TextBlock Grid.Row="28" Grid.Column="3" Text="Deflection Limit δ.lim:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="28" Grid.Column="4" Name ="TextBox_DeflectionTotalLimit_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionUpwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DeflectionTotalLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="28" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="29" Grid.Column="3" Text="Deflection - Downwind δ:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="29" Grid.Column="3" Text="Design Ratio - Deflection η:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="29" Grid.Column="4" Name ="TextBox_DeflectionUDownwind_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="29" Grid.Column="4" Name ="TextBox_DesignRatioDeflectionTotal_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionDownwind_Delta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=DesignRatioDeflectionTotal_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="29" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
-
-        <TextBlock Grid.Row="30" Grid.Column="3" Text="Deflection Limit δ.lim:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-        <TextBox Grid.Row="30" Grid.Column="4" Name ="TextBox_DeflectionLimit_Delta_lim" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DeflectionLimit_Delta_lim, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="30" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
-
-        <TextBlock Grid.Row="31" Grid.Column="3" Text="Design Ratio - Deflection η:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-        <TextBox Grid.Row="31" Grid.Column="4" Name ="TextBox_DesignRatioDeflection_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=DesignRatioDeflection_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="31" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
     </Grid>
 </Window>

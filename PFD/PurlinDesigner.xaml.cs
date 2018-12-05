@@ -35,10 +35,12 @@ namespace PFD
             Combobox_CrossSection.Items.Add("270115");
             //Combobox_CrossSection.Items.Add("270155");
             //Combobox_CrossSection.Items.Add("270195");
+            Combobox_CrossSection.Items.Add("50020");
             Combobox_CrossSection.Items.Add("27095n");
             Combobox_CrossSection.Items.Add("270115n");
             //Combobox_CrossSection.Items.Add("270155n");
             //Combobox_CrossSection.Items.Add("270195n");
+            Combobox_CrossSection.Items.Add("50020n");
 
             PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
@@ -83,7 +85,11 @@ namespace PFD
                 "WindLoadInternalPressure_pimin",
                 "WindLoadInternalPressure_pimax",
                 "WindLoadExternalPressure_pemin",
-                "WindLoadExternalPressure_pemax"
+                "WindLoadExternalPressure_pemax",
+
+                "DeflectionGQLimitFraction",
+                "DeflectionSWLimitFraction",
+                "DeflectionTotalLimitFraction"
             };
 
             return list.Contains(propName);
@@ -96,6 +102,7 @@ namespace PFD
             calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
             float fE = 2e+11f;
+            float fRho_Steel = 7850f; // kg/m3
 
             CCrSc_TW cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
             CSectionManager.LoadCrossSectionProperties_meters(cs, (string)Combobox_CrossSection.SelectedValue);
@@ -103,7 +110,9 @@ namespace PFD
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
 
             float fI_x = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
-            float fI_x_eff = 0.9f * fI_x; // TODO - doplnit aj Ieff, zistit ci sa da pre simlpy supported beam vyjadrit faktorom
+            float fI_x_eff = 0.9f * fI_x; // TODO - doplnit aj Ieff, zistit ci sa da pre simply supported beam vyjadrit faktorom
+
+            calcModel.PurlinSelfWeight_gp = (float)cs.A_g * fRho_Steel;
 
             calcModel.AdditionalDeadLoad_gl =  calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
 
@@ -156,11 +165,15 @@ namespace PFD
             float fload_down_SLS = MathF.Max(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
 
             // Convert kN/m to N/m
-            fload_up_ULS *= 1000;
-            fload_down_ULS *= 1000;
+            float fLoadPerLength_UnitFactor = 1000f;
 
-            fload_up_SLS *= 1000;
-            fload_down_SLS *= 1000;
+            fTotalDeadLoad_l *= fLoadPerLength_UnitFactor;
+
+            fload_up_ULS *= fLoadPerLength_UnitFactor;
+            fload_down_ULS *= fLoadPerLength_UnitFactor;
+
+            fload_up_SLS *= fLoadPerLength_UnitFactor;
+            fload_down_SLS *= fLoadPerLength_UnitFactor;
 
             // Simply supported beam
             calcModel.BendingMomentUpwind_M_asterix = 1f/8f * fload_up_ULS * MathF.Pow2(calcModel.Length_L);
@@ -233,54 +246,86 @@ namespace PFD
 
                 float fMaximumRatio_Strength = Math.Max(fRatio_MandV_upwind_inLocation_x , fRatio_MandV_downwind_inLocation_x);
 
-                if (fMaximumRatio_Strength > calcModel.DesignRatioStrength_eta)
+                // Upwind - results
+                if (fRatio_MandV_downwind_inLocation_x > calcModel.DesignRatioStrength_eta)
                 {
-                    calcModel.BendingCapacity_Mb = 0; // Napojit
-                    calcModel.ShearCapacity_Vw = 0; // Napojit
+                    calcModel.BendingCapacity_Ms = cCalcULS_upwind.fM_s_xu;
+                    calcModel.BendingCapacity_Mb = cCalcULS_upwind.fM_b_xu;
+                    calcModel.ShearCapacity_Vy = cCalcULS_upwind.fV_y_yv;
+                    calcModel.ShearCapacity_Vw = cCalcULS_upwind.fV_v_yv;
+                    calcModel.DesignRatioStrength_eta = fRatio_MandV_upwind_inLocation_x;
+                }
 
-                    calcModel.DesignRatioStrength_eta = fMaximumRatio_Strength;
+                // Downwind results
+                if (fRatio_MandV_downwind_inLocation_x > calcModel.DesignRatioStrength_eta)
+                {
+                    calcModel.BendingCapacity_Ms = cCalcULS_downwind.fM_s_xu;
+                    calcModel.BendingCapacity_Mb = cCalcULS_downwind.fM_b_xu;
+                    calcModel.ShearCapacity_Vy = cCalcULS_downwind.fV_y_yv;
+                    calcModel.ShearCapacity_Vw = cCalcULS_downwind.fV_v_yv;
+                    calcModel.DesignRatioStrength_eta = fRatio_MandV_downwind_inLocation_x;
                 }
             }
 
-            // Dead Load + imposed live load
-            calcModel.DeflectionUpwind_Delta = 0;
-            calcModel.DeflectionDownwind_Delta = 5f / 384f * (fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql) * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            // Dead Load + imposed live load (long-term)
+            float DeflectionGQUpwind_Delta = 0;
+            float DeflectionGQDownwind_Delta = 5f / 384f * (fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql * fLoadPerLength_UnitFactor) * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
 
-            // Imposed load
-            calcModel.DeflectionUpwind_Delta = 5f / 384f * calcModel.WindLoadUpwind_puwl * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
-            calcModel.DeflectionDownwind_Delta = 5f / 384f * (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionGQ_Delta = DeflectionGQDownwind_Delta;
+            calcModel.DeflectionGQLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionGQLimitFraction;
+            calcModel.DesignRatioDeflectionGQ_eta = Math.Abs(calcModel.DeflectionGQ_Delta) / calcModel.DeflectionGQLimit_Delta_lim;
+
+            // Imposed load (snow + wind)
+            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * calcModel.WindLoadUpwind_puwl * fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) *fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            float fDeflection_SW_Maximum_Delta = Math.Max(Math.Abs(calcModel.Deflection_W_Upwind_Delta), Math.Abs(calcModel.Deflection_SW_Downwind_Delta));
+            calcModel.DeflectionLimit_SW_Delta_lim = calcModel.Length_L / calcModel.DeflectionSWLimitFraction;
+            calcModel.DesignRatio_SW_Deflection_eta = Math.Abs(fDeflection_SW_Maximum_Delta) / calcModel.DeflectionLimit_SW_Delta_lim;
 
             // Total (maximum) load
-            calcModel.DeflectionUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
-            calcModel.DeflectionDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionTotalUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionTotalDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionTotalLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionTotalLimitFraction;
+            float fDeflectionTotalMaximum_Delta = Math.Max(Math.Abs(calcModel.DeflectionTotalUpwind_Delta), Math.Abs(calcModel.DeflectionTotalDownwind_Delta));
+            calcModel.DesignRatioDeflectionTotal_eta = Math.Abs(fDeflectionTotalMaximum_Delta / calcModel.DeflectionTotalLimit_Delta_lim);
 
-            float fLimitRatioDelta = 1f / 150f;
-            calcModel.DeflectionLimit_Delta_lim = calcModel.Length_L * fLimitRatioDelta;
-
-            float fRatioDeflectionUpwind = Math.Abs(calcModel.DeflectionUpwind_Delta / calcModel.DeflectionLimit_Delta_lim);
-            float fRatioDeflectionDownwind = Math.Abs(calcModel.DeflectionDownwind_Delta / calcModel.DeflectionLimit_Delta_lim);
-
-            calcModel.DesignRatioDeflection_eta = Math.Max(fRatioDeflectionUpwind, fRatioDeflectionDownwind);
-
-            float fMaximumDesignRatio = Math.Max(calcModel.DesignRatioStrength_eta, calcModel.DesignRatioDeflection_eta);
+            // ULS and SLS - Maximum
+            float fMaximumDesignRatio = Math.Max(calcModel.DesignRatioStrength_eta, calcModel.DesignRatioDeflectionTotal_eta);
         }
 
         private void SetOutputValues()
         {
             PurlinDesignerViewModel vm = this.DataContext as PurlinDesignerViewModel;
 
+            vm.PurlinSelfWeight_gp *= 0.001f;
+
+            // Strength
             vm.BendingMomentUpwind_M_asterix *= 0.001f;
             vm.ShearForceUpwind_V_asterix *= 0.001f;
             vm.BendingMomentDownwind_M_asterix *= 0.001f;
             vm.ShearForceDownwind_V_asterix *= 0.001f;
 
+            vm.BendingCapacity_Ms *= 0.001f;
+            vm.BendingCapacity_Mb *= 0.001f;
+            vm.ShearCapacity_Vy *= 0.001f;
+            vm.ShearCapacity_Vw *= 0.001f;
+
             vm.DesignRatioStrength_eta *= 100;
 
-            vm.DeflectionUpwind_Delta *= 1000f;
-            vm.DeflectionDownwind_Delta *= 1000f;
+            // Deflection
+            vm.DeflectionGQ_Delta *= 1000f;
+            vm.DeflectionGQLimit_Delta_lim *= 1000f;
+            vm.DesignRatioDeflectionGQ_eta *= 100;
 
-            vm.DeflectionLimit_Delta_lim *= 1000f;
-            vm.DesignRatioDeflection_eta *= 100;
+            vm.Deflection_W_Upwind_Delta *= 1000f;
+            vm.Deflection_SW_Downwind_Delta *= 1000f;
+            vm.DeflectionLimit_SW_Delta_lim *= 1000f;
+            vm.DesignRatio_SW_Deflection_eta *= 100;
+
+            vm.DeflectionTotalUpwind_Delta *= 1000f;
+            vm.DeflectionTotalDownwind_Delta *= 1000f;
+            vm.DeflectionTotalLimit_Delta_lim *= 1000f;
+            vm.DesignRatioDeflectionTotal_eta *= 100;
         }
 
         public void TextBoxLostFocus()

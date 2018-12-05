@@ -55,17 +55,29 @@ namespace PFD
         private float MShearForceUpwind_V_asterix;
         private float MBendingMomentDownwind_M_asterix;
         private float MShearForceDownwind_V_asterix;
+
+        private float MBendingCapacity_Ms;
         private float MBendingCapacity_Mb;
+        private float MShearCapacity_Vy; // Yield shear force
         private float MShearCapacity_Vw;
 
         private float MDesignRatioStrength_eta;
 
-        private float MDeflectionUpwind_Delta;
-        private float MDeflectionDownwind_Delta;
+        private float MDeflectionGQ_Delta;
+        private float MDeflectionGQLimitFraction;
+        private float MDeflectionGQLimit_Delta_lim;
+        private float MDesignRatioDeflectionGQ_eta;
+        private float MDeflection_W_Upwind_Delta;
+        private float MDeflection_SW_Downwind_Delta;
+        private float MDeflectionSWLimitFraction;
+        private float MDeflectionLimit_SW_Delta_lim;
+        private float MDesignRatio_SW_Deflection_eta;
 
-        private float MDeflectionLimit_Delta_lim;
-
-        private float MDesignRatioDeflection_eta;
+        private float MDeflectionTotalUpwind_Delta;
+        private float MDeflectionTotalDownwind_Delta;
+        private float MDeflectionTotalLimitFraction;
+        private float MDeflectionTotalLimit_Delta_lim;
+        private float MDesignRatioDeflectionTotal_eta;
 
         //-------------------------------------------------------------------------------------------------------------
         public float Length_L
@@ -488,6 +500,21 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float BendingCapacity_Ms
+        {
+            get
+            {
+                return MBendingCapacity_Ms;
+            }
+            set
+            {
+                MBendingCapacity_Ms = value;
+
+                NotifyPropertyChanged("BendingCapacity_Ms");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float BendingCapacity_Mb
         {
             get
@@ -499,6 +526,21 @@ namespace PFD
                 MBendingCapacity_Mb = value;
 
                 NotifyPropertyChanged("BendingCapacity_Mb");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ShearCapacity_Vy // Yield shear force
+        {
+            get
+            {
+                return MShearCapacity_Vy;
+            }
+            set
+            {
+                MShearCapacity_Vy = value;
+
+                NotifyPropertyChanged("ShearCapacity_Vy");
             }
         }
 
@@ -533,62 +575,216 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float DeflectionUpwind_Delta
+        // DEFLECTIONS
+        //-------------------------------------------------------------------------------------------------------------
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionGQ_Delta
         {
             get
             {
-                return MDeflectionUpwind_Delta;
+                return MDeflectionGQ_Delta;
             }
             set
             {
-                MDeflectionUpwind_Delta = value;
+                MDeflectionGQ_Delta = value;
 
-                NotifyPropertyChanged("DeflectionUpwind_Delta");
+                NotifyPropertyChanged("DeflectionGQ_Delta");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float DeflectionDownwind_Delta
+        public float DeflectionGQLimitFraction
         {
             get
             {
-                return MDeflectionDownwind_Delta;
+                return MDeflectionGQLimitFraction;
             }
             set
             {
-                MDeflectionDownwind_Delta = value;
+                MDeflectionGQLimitFraction = value;
 
-                NotifyPropertyChanged("DeflectionDownwind_Delta");
+                NotifyPropertyChanged("DeflectionGQLimitFraction");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float DeflectionLimit_Delta_lim
+        public float DeflectionGQLimit_Delta_lim
         {
             get
             {
-                return MDeflectionLimit_Delta_lim;
+                return MDeflectionGQLimit_Delta_lim;
             }
             set
             {
-                MDeflectionLimit_Delta_lim = value;
+                MDeflectionGQLimit_Delta_lim = value;
 
-                NotifyPropertyChanged("DeflectionLimit_Delta_lim");
+                NotifyPropertyChanged("DeflectionGQLimit_Delta_lim");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float DesignRatioDeflection_eta
+        public float DesignRatioDeflectionGQ_eta
         {
             get
             {
-                return MDesignRatioDeflection_eta;
+                return MDesignRatioDeflectionGQ_eta;
             }
             set
             {
-                MDesignRatioDeflection_eta = value;
+                MDesignRatioDeflectionGQ_eta = value;
 
-                NotifyPropertyChanged("DesignRatioDeflection_eta");
+                NotifyPropertyChanged("DesignRatioDeflectionGQ_eta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Deflection_W_Upwind_Delta
+        {
+            get
+            {
+                return MDeflection_W_Upwind_Delta;
+            }
+            set
+            {
+                MDeflection_W_Upwind_Delta = value;
+
+                NotifyPropertyChanged("Deflection_W_Upwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Deflection_SW_Downwind_Delta
+        {
+            get
+            {
+                return MDeflection_SW_Downwind_Delta;
+            }
+            set
+            {
+                MDeflection_SW_Downwind_Delta = value;
+
+                NotifyPropertyChanged("Deflection_SW_Downwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionSWLimitFraction
+        {
+            get
+            {
+                return MDeflectionSWLimitFraction;
+            }
+            set
+            {
+                MDeflectionSWLimitFraction = value;
+
+                NotifyPropertyChanged("DeflectionSWLimitFraction");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionLimit_SW_Delta_lim
+        {
+            get
+            {
+                return MDeflectionLimit_SW_Delta_lim;
+            }
+            set
+            {
+                MDeflectionLimit_SW_Delta_lim = value;
+
+                NotifyPropertyChanged("DeflectionLimit_SW_Delta_lim");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DesignRatio_SW_Deflection_eta
+        {
+            get
+            {
+                return MDesignRatio_SW_Deflection_eta;
+            }
+            set
+            {
+                MDesignRatio_SW_Deflection_eta = value;
+
+                NotifyPropertyChanged("DesignRatio_SW_Deflection_eta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionTotalUpwind_Delta
+        {
+            get
+            {
+                return MDeflectionTotalUpwind_Delta;
+            }
+            set
+            {
+                MDeflectionTotalUpwind_Delta = value;
+
+                NotifyPropertyChanged("DeflectionTotalUpwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionTotalDownwind_Delta
+        {
+            get
+            {
+                return MDeflectionTotalDownwind_Delta;
+            }
+            set
+            {
+                MDeflectionTotalDownwind_Delta = value;
+
+                NotifyPropertyChanged("DeflectionTotalDownwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionTotalLimitFraction
+        {
+            get
+            {
+                return MDeflectionTotalLimitFraction;
+            }
+            set
+            {
+                MDeflectionTotalLimitFraction = value;
+
+                NotifyPropertyChanged("DeflectionTotalLimitFraction");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DeflectionTotalLimit_Delta_lim
+        {
+            get
+            {
+                return MDeflectionTotalLimit_Delta_lim;
+            }
+            set
+            {
+                MDeflectionTotalLimit_Delta_lim = value;
+
+                NotifyPropertyChanged("DeflectionTotalLimit_Delta_lim");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float DesignRatioDeflectionTotal_eta
+        {
+            get
+            {
+                return MDesignRatioDeflectionTotal_eta;
+            }
+            set
+            {
+                MDesignRatioDeflectionTotal_eta = value;
+
+                NotifyPropertyChanged("DesignRatioDeflectionTotal_eta");
             }
         }
 
@@ -613,6 +809,10 @@ namespace PFD
 
             WindLoadExternalPressure_pemin = -1.0f; // kN/m^2
             WindLoadExternalPressure_pemax = 0.15f; // kN/m^2
+
+            DeflectionGQLimitFraction = 300f;
+            DeflectionSWLimitFraction = 120f;
+            DeflectionTotalLimitFraction = 150f;
 
             IsSetFromCode = false;
         }
