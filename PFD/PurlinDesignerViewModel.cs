@@ -29,6 +29,9 @@ namespace PFD
         private float MTributaryWidth_B;
         private float MTributaryArea_A;
         private int MCrossSectionIndex;
+        private float MArea_Ag;
+        private float MMomentOfInertia_Ix;
+        private int MMaterialIndex;
         private float MPurlinSelfWeight_gp;
         private float MCladdingSelfWeight_gc;
         private float MAdditionalDeadLoad_g;
@@ -151,6 +154,51 @@ namespace PFD
                 MCrossSectionIndex = value;
 
                 NotifyPropertyChanged("CrossSectionIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float Area_Ag
+        {
+            get
+            {
+                return MArea_Ag;
+            }
+            set
+            {
+                MArea_Ag = value;
+
+                NotifyPropertyChanged("Area_Ag");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float MomentOfInertia_Ix
+        {
+            get
+            {
+                return MMomentOfInertia_Ix;
+            }
+            set
+            {
+                MMomentOfInertia_Ix = value;
+
+                NotifyPropertyChanged("MomentOfInertia_Ix");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int MaterialIndex
+        {
+            get
+            {
+                return MMaterialIndex;
+            }
+            set
+            {
+                MMaterialIndex = value;
+
+                NotifyPropertyChanged("MaterialIndex");
             }
         }
 
@@ -797,6 +845,7 @@ namespace PFD
             TributaryWidth_B = 2f;
 
             CrossSectionIndex = 0;
+            MaterialIndex = 0; // TODO nastavit na G550
 
             CladdingSelfWeight_gc = 0.05f; // kN/m^2
             AdditionalDeadLoad_g = 0.10f; // kN/m^2
@@ -804,6 +853,7 @@ namespace PFD
             LiveLoad_q = 0.25f; // kN/m^2
             SnowLoad_s = 0; // kN/m^2
 
+            // TODO - napojit vypocet z Wind Load Calculator a po spusteni zapisat hodnoty do Purlin Designer
             WindLoadInternalPressure_pimin = -0.3f; // kN/m^2
             WindLoadInternalPressure_pimax = 0; // kN/m^2
 

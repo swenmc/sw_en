@@ -264,7 +264,7 @@ namespace DATABASE
             return list;
         }
 
-            public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
+        public static List<CSectionPropertiesText> LoadSectionPropertiesNamesSymbolsUnits()
         {
             CSectionPropertiesText properties;
             List<CSectionPropertiesText> items = new List<CSectionPropertiesText>();

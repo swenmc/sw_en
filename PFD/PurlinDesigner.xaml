@@ -101,8 +101,29 @@
         <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_CrossSection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=CrossSectionIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Area Ag:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="5" Grid.Column="1" Name ="TextBox_Area_Ag" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=Area_Ag, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[mm²]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Moment of Inertia Ix:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="6" Grid.Column="1" Name ="TextBox_MomentOfInertia_Ix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=MomentOfInertia_Ix, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[mm⁴]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Material:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_Material" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=MaterialIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
+
         <TextBlock Grid.Row="8" Grid.Column="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        
+
         <TextBlock Grid.Row="9" Grid.Column="0" Text="Purlin Self Weight gp.l:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_PurlinSelfWeight_gp" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"

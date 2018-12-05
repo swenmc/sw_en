@@ -9,7 +9,7 @@ namespace MATERIAL
         // Predok pre jednotlive materialy
         private int m_iMat_ID;
 
-        public int IMat_ID
+        public int ID
         {
             get { return m_iMat_ID; }
             set { m_iMat_ID = value; }
@@ -22,6 +22,14 @@ namespace MATERIAL
         {
             get { return m_sName; }
             set { m_sName = value; }
+        }
+
+        private string m_sNameDatabase;
+
+        public string NameDatabase
+        {
+            get { return m_sNameDatabase; }
+            set { m_sNameDatabase = value; }
         }
 
         // Default material - steel

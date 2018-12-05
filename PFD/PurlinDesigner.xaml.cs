@@ -42,6 +42,8 @@ namespace PFD
             //Combobox_CrossSection.Items.Add("270195n");
             Combobox_CrossSection.Items.Add("50020n");
 
+            Combobox_Material.Items.Add("G550‡");
+
             PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
@@ -101,18 +103,21 @@ namespace PFD
 
             calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
-            float fE = 2e+11f;
-            float fRho_Steel = 7850f; // kg/m3
+            MATERIAL.CMat_03_00 mat = new MATERIAL.CMat_03_00();
+            CMaterialManager.LoadMaterialProperties(mat, (string)Combobox_Material.SelectedValue);
+            mat.m_fE = 2e+11f; // Change default value of E (see AS 4600)
 
             CCrSc_TW cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
             CSectionManager.LoadCrossSectionProperties_meters(cs, (string)Combobox_CrossSection.SelectedValue);
+            cs.m_Mat = mat; // Set material from GUI to the cross-section
 
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
 
-            float fI_x = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
-            float fI_x_eff = 0.9f * fI_x; // TODO - doplnit aj Ieff, zistit ci sa da pre simply supported beam vyjadrit faktorom
+            calcModel.Area_Ag = (float)cs.A_g;
+            calcModel.MomentOfInertia_Ix = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
+            float fI_x_eff = 0.9f * calcModel.MomentOfInertia_Ix; // TODO - doplnit aj Ieff, zistit ci sa da pre simply supported beam vyjadrit faktorom
 
-            calcModel.PurlinSelfWeight_gp = (float)cs.A_g * fRho_Steel;
+            calcModel.PurlinSelfWeight_gp = calcModel.Area_Ag * mat.m_fRho;
 
             calcModel.AdditionalDeadLoad_gl =  calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
 
@@ -176,7 +181,7 @@ namespace PFD
             fload_down_SLS *= fLoadPerLength_UnitFactor;
 
             // Simply supported beam
-            calcModel.BendingMomentUpwind_M_asterix = 1f/8f * fload_up_ULS * MathF.Pow2(calcModel.Length_L);
+            calcModel.BendingMomentUpwind_M_asterix = 1f / 8f * fload_up_ULS * MathF.Pow2(calcModel.Length_L);
             calcModel.ShearForceUpwind_V_asterix =  1f / 2f * fload_up_ULS * calcModel.Length_L;
             calcModel.BendingMomentDownwind_M_asterix = 1f / 8f * fload_down_ULS * MathF.Pow2(calcModel.Length_L);
             calcModel.ShearForceDownwind_V_asterix = 1f / 2f * fload_down_ULS * calcModel.Length_L;
@@ -269,22 +274,22 @@ namespace PFD
 
             // Dead Load + imposed live load (long-term)
             float DeflectionGQUpwind_Delta = 0;
-            float DeflectionGQDownwind_Delta = 5f / 384f * (fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql * fLoadPerLength_UnitFactor) * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            float DeflectionGQDownwind_Delta = 5f / 384f * (fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql * fLoadPerLength_UnitFactor) * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
 
             calcModel.DeflectionGQ_Delta = DeflectionGQDownwind_Delta;
             calcModel.DeflectionGQLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionGQLimitFraction;
             calcModel.DesignRatioDeflectionGQ_eta = Math.Abs(calcModel.DeflectionGQ_Delta) / calcModel.DeflectionGQLimit_Delta_lim;
 
             // Imposed load (snow + wind)
-            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * calcModel.WindLoadUpwind_puwl * fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
-            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) *fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * calcModel.WindLoadUpwind_puwl * fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) *fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
             float fDeflection_SW_Maximum_Delta = Math.Max(Math.Abs(calcModel.Deflection_W_Upwind_Delta), Math.Abs(calcModel.Deflection_SW_Downwind_Delta));
             calcModel.DeflectionLimit_SW_Delta_lim = calcModel.Length_L / calcModel.DeflectionSWLimitFraction;
             calcModel.DesignRatio_SW_Deflection_eta = Math.Abs(fDeflection_SW_Maximum_Delta) / calcModel.DeflectionLimit_SW_Delta_lim;
 
             // Total (maximum) load
-            calcModel.DeflectionTotalUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
-            calcModel.DeflectionTotalDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (fE * fI_x_eff);
+            calcModel.DeflectionTotalUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            calcModel.DeflectionTotalDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
             calcModel.DeflectionTotalLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionTotalLimitFraction;
             float fDeflectionTotalMaximum_Delta = Math.Max(Math.Abs(calcModel.DeflectionTotalUpwind_Delta), Math.Abs(calcModel.DeflectionTotalDownwind_Delta));
             calcModel.DesignRatioDeflectionTotal_eta = Math.Abs(fDeflectionTotalMaximum_Delta / calcModel.DeflectionTotalLimit_Delta_lim);
@@ -297,6 +302,11 @@ namespace PFD
         {
             PurlinDesignerViewModel vm = this.DataContext as PurlinDesignerViewModel;
 
+            // Cross-section
+            vm.Area_Ag *= 1e+6f;
+            vm.MomentOfInertia_Ix *= 1e+12f;
+
+            // Loads
             vm.PurlinSelfWeight_gp *= 0.001f;
 
             // Strength
