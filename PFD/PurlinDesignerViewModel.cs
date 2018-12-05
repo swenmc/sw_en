@@ -25,6 +25,7 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         private float MLength_L;
+        private float MBracingLength_Lb;
         private float MTributaryWidth_B;
         private float MTributaryArea_A;
         private int MCrossSectionIndex;
@@ -57,7 +58,7 @@ namespace PFD
         private float MBendingCapacity_Mb;
         private float MShearCapacity_Vw;
 
-        private float MBracingLength_Lb;
+        private float MDesignRatioStrength_eta;
 
         private float MDeflectionUpwind_Delta;
         private float MDeflectionDownwind_Delta;
@@ -78,6 +79,21 @@ namespace PFD
                 MLength_L = value;
 
                 NotifyPropertyChanged("Length_L");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BracingLength_Lb
+        {
+            get
+            {
+                return MBracingLength_Lb;
+            }
+            set
+            {
+                MBracingLength_Lb = value;
+
+                NotifyPropertyChanged("BracingLength_Lb");
             }
         }
 
@@ -502,17 +518,17 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float BracingLength_Lb
+        public float DesignRatioStrength_eta
         {
             get
             {
-                return MBracingLength_Lb;
+                return MDesignRatioStrength_eta;
             }
             set
             {
-                MBracingLength_Lb = value;
+                MDesignRatioStrength_eta = value;
 
-                NotifyPropertyChanged("BracingLength_Lb");
+                NotifyPropertyChanged("DesignRatioStrength_eta");
             }
         }
 
@@ -580,6 +596,8 @@ namespace PFD
         {
             // Set default
             Length_L = 6f;
+            BracingLength_Lb = 2f;
+
             TributaryWidth_B = 2f;
 
             CrossSectionIndex = 0;

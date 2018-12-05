@@ -190,6 +190,8 @@ namespace M_AS4600
         public float fEta_Nt = 0.0f;
         public float fEta_721_N = 0.0f;
         public float fEta_723_9_xu_yv = 0.0f;
+        public float fEta_7232_xu = 0.0f; // M* / (phi_b * Ms)
+        public float fEta_7232_yv = 0.0f; // V* / (phi_v * Vv)
         public float fEta_723_10_xu = 0.0f;
         public float fEta_723_11_xu_yv = 0.0f;
         public float fEta_723_12_xu_yv_10 = 0.0f;
@@ -276,6 +278,13 @@ namespace M_AS4600
 
             fA_f_xu = (float)cs.A_vy;
             fA_w_yv = (float)cs.A_vz;
+
+            // TODO - pridat smykove plochy do parametrov prierezu (malo by sa jednat o celkovu smykovu plochy, obe pasnice resp stojiny atd
+            if (fA_f_xu <= 0)
+                fA_f_xu = ft * fb;
+            if (fA_w_yv <= 0)
+                fA_w_yv = ft * fh;
+
             fZ_ft_xu = fZ_f_xu; //Todo // section modulus of the full unreduced section for the extreme tension fibre about the appropriate axis
             fZ_ft_yv = fZ_f_yv; //Todo // section modulus of the full unreduced section for the extreme tension fibre about the appropriate axis
             fI_xu = (float)cs.I_y;
@@ -285,6 +294,8 @@ namespace M_AS4600
             ff_od = cs.fod_c > 0 ? (float)cs.fod_c : 1e+9f;
             ff_ol_bend = cs.fol_b > 0 ? (float)cs.fol_b : 1e+9f;
             ff_od_bend = cs.fod_b > 0 ? (float)cs.fod_b : 1e+9f;
+
+            float fb_w = fb; // ??? // TODO - doriesit
 
             // Set material properties
             ff_y = cs.m_Mat.Get_f_yk_by_thickness(ft);
@@ -323,12 +334,6 @@ namespace M_AS4600
             fEta_Nt = sDIF.fN_t / fN_t_min;
 
             // Compression
-
-            double fa_CEQ = 0f;
-            double fb_CEQ = 0f;
-            double fc_CEQ = 0f;
-            double fd_CEQ = 0f;
-
             fx_o = (float)cs.D_y_s;
             fy_o = (float)cs.D_z_s;
 
@@ -338,68 +343,78 @@ namespace M_AS4600
             //float fr_o1 = cs.i_yz_rg;
             fr_o1 = eq.Eq_D111_6__(fr_x, fr_y, fx_o, fy_o);
 
-            ff_oz = eq.Eq_D111_5__(fG, fE, (float)cs.I_t, (float)cs.I_w, fA_g, fl_ez, fr_o1);
-
             ff_ox = eq.Eq_D111_3__(fE, fl_ex, fr_x);
             ff_oy = eq.Eq_D111_3__(fE, fl_ey, fr_y);
+            ff_oz = eq.Eq_D111_5__(fG, fE, (float)cs.I_t, (float)cs.I_w, fA_g, fl_ez, fr_o1);
 
-            eq.Eq_D111_9__(ff_oz, ff_ox, ff_oy, fr_o1, fx_o, fy_o, out fa_CEQ, out fb_CEQ, out fc_CEQ, out fd_CEQ);
-            CCardanoCubicEQSolver cubic_solver = new CCardanoCubicEQSolver(fa_CEQ, fb_CEQ, fc_CEQ, fd_CEQ);
-
-            double ff_oc_real_1 = cubic_solver.x_min_positive;
-
-            ff_oc = (float)cubic_solver.x_min_positive > 0 ? (float)cubic_solver.x_min_positive : 0f;
-
-            //if(ff_oc <= 0f)
-            // Error // TODO - kontrolovat vystup z funkcie ci je to kladne napatie
-
-            // 7.2.1.2.1 Compression members without holes
-            fN_y = eq.Eq_7212_5__(fA_g, ff_y);
-            fN_oc = eq.Eq_7212_4__(fA_g, ff_oc);
-            flambda_c = eq.Eq_7212_3__(fN_y, fN_oc);
-            fN_ce = eq.Eq_7212_1__(flambda_c, fN_y);
-
-            // 7.2.1.3 Local buckling
-            // 7.2.1.3.1 Compression members without holes
-
-            fk = 4.0f; //see kst
-
-            //ff_ol = eq.Eq_D131____(fk, fE, fNu, ft, fb); // Nacitavat z vlastnosti prierezu
-            fN_ol = eq.Eq_7213_4__(fA_g, ff_ol);
-            flambda_l = eq.Eq_7213_3__(fN_ce, fN_ol);
-            fN_cl = eq.Eq_7213____(flambda_l, fN_ol, fN_ce);
-
-            // 7.2.1.4 Distorsial buckling
-            // 7.2.1.4.1 Compression members without holes
-
-            // General channel in compression (picture D2(a))
-
-            float fb_w = fb; // ??? // TODO - doriesit
-            bool bUseCalculation_D2_a = false;
-            if (bUseCalculation_D2_a) // Je mozne pouzit len v pripade jednoducheho C, inak nacitat z vlastnosti prierezu
+            if (!MathF.d_equal(sDIF.fN_c, 0))
             {
-                eq.Calc_CFL_Properties(fb, fd_l, ft, out fA_cfl, out fx_cfl_par, out fy_cfl_par, out fJ_cfl, out fI_x_cfl, out fI_y_cfl, out fI_xy_cfl);
-                // The values of A, J, Ix, Iy, Ixy, Iw are for the compression flange and lip alone.
+                double fa_CEQ = 0f;
+                double fb_CEQ = 0f;
+                double fc_CEQ = 0f;
+                double fd_CEQ = 0f;
 
-                if (cs.IsShapeSolid) // Open Cross-section
+                eq.Eq_D111_9__(ff_oz, ff_ox, ff_oy, fr_o1, fx_o, fy_o, out fa_CEQ, out fb_CEQ, out fc_CEQ, out fd_CEQ);
+                CCardanoCubicEQSolver cubic_solver = new CCardanoCubicEQSolver(fa_CEQ, fb_CEQ, fc_CEQ, fd_CEQ);
+
+                double ff_oc_real_1 = cubic_solver.x_min_positive;
+
+                ff_oc = (float)cubic_solver.x_min_positive > 0 ? (float)cubic_solver.x_min_positive : 0f;
+
+                //if(ff_oc <= 0f)
+                // Error // TODO - kontrolovat vystup z funkcie ci je to kladne napatie
+
+                // 7.2.1.2.1 Compression members without holes
+                fN_y = eq.Eq_7212_5__(fA_g, ff_y);
+                fN_oc = eq.Eq_7212_4__(fA_g, ff_oc);
+                flambda_c = eq.Eq_7212_3__(fN_y, fN_oc);
+                fN_ce = eq.Eq_7212_1__(flambda_c, fN_y);
+
+                // 7.2.1.3 Local buckling
+                // 7.2.1.3.1 Compression members without holes
+
+                fk = 4.0f; //see kst
+
+                //ff_ol = eq.Eq_D131____(fk, fE, fNu, ft, fb); // Nacitavat z vlastnosti prierezu
+                fN_ol = eq.Eq_7213_4__(fA_g, ff_ol);
+                flambda_l = eq.Eq_7213_3__(fN_ce, fN_ol);
+                fN_cl = eq.Eq_7213____(flambda_l, fN_ol, fN_ce);
+
+                // 7.2.1.4 Distorsial buckling
+                // 7.2.1.4.1 Compression members without holes
+
+                // General channel in compression (picture D2(a))
+
+                bool bUseCalculation_D2_a = false;
+                if (bUseCalculation_D2_a) // Je mozne pouzit len v pripade jednoducheho C, inak nacitat z vlastnosti prierezu
                 {
-                    ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
+                    eq.Calc_CFL_Properties(fb, fd_l, ft, out fA_cfl, out fx_cfl_par, out fy_cfl_par, out fJ_cfl, out fI_x_cfl, out fI_y_cfl, out fI_xy_cfl);
+                    // The values of A, J, Ix, Iy, Ixy, Iw are for the compression flange and lip alone.
 
-                    if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
-                        ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
+                    if (cs.IsShapeSolid) // Open Cross-section
+                    {
+                        ff_od = eq.Eq_D121_1__(fE, fA_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fJ_cfl, fI_w_cfl, fx_o, fy_o, fh_x, fh_y, fb_w, ft);
+
+                        if (ff_od <= 0f) // TODO - Overit ci moze byt zaporne a dalej sa ma uvazovat abs hodnota ????
+                            ff_od = (float)cs.Compression_curve_stress_1; // Temp TODO - osetrit error
+                    }
+                    else
+                        ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
                 }
-                else
-                    ff_od = ff_y; // Closed cross-section - ignore distorsional buckling
+
+                fN_od = eq.Eq_7214_4__(fA_g, ff_od);
+                flambda_d = eq.Eq_7214_3__(fN_ce, fN_ol);
+                fN_cd = eq.Eq_7214____(flambda_d, fN_y, fN_od);
+
+                fN_c_min = MathF.Min(fN_ce, fN_cl, fN_cd);
+
+                fEta_721_N = Math.Abs(sDIF.fN_c / fN_c_min);
+                fEta_max = MathF.Max(fEta_max, fEta_721_N);
             }
-
-            fN_od = eq.Eq_7214_4__(fA_g, ff_od);
-            flambda_d = eq.Eq_7214_3__(fN_ce, fN_ol);
-            fN_cd = eq.Eq_7214____(flambda_d, fN_y, fN_od);
-
-            fN_c_min = MathF.Min(fN_ce, fN_cl, fN_cd);
-
-            fEta_721_N = Math.Abs(sDIF.fN_c / fN_c_min);
-            fEta_max = MathF.Max(fEta_max, fEta_721_N);
+            else
+            {
+                fEta_721_N = 0;
+            }
 
             // 7.2.2 Design of members subject to bending
             fM_p_xu = eq.Eq_7222_6__(fS_f_xu, ff_y);
@@ -407,6 +422,13 @@ namespace M_AS4600
 
             fM_p_yv = eq.Eq_7222_6__(fS_f_yv, ff_y);
             fM_y_yv = eq.Eq_7222_4__(fZ_f_yv, ff_y);
+
+            // TODO - doplnit plasticke moduly prierezu do databazy
+            if (fM_p_xu <= 0)
+                fM_p_xu = fM_y_xu;
+
+            if (fM_p_yv <= 0)
+                fM_p_yv = fM_y_yv;
 
             // Bending about xu-axis
             // Default values (used for design ratio in case that fM_xu = 0)
@@ -580,6 +602,8 @@ namespace M_AS4600
 
             // 7.2.3.5 Combined bending and shear
             eq.Eq_723_9___(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
+            fEta_7232_xu = fEta_M_xu;
+            fEta_7232_yv = fEta_V_yv;
             fEta_max = MathF.Max(fEta_max, fEta_723_9_xu_yv);
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)

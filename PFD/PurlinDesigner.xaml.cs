@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Interactivity;
 using MATH;
+using BaseClasses;
+using CRSC;
+using DATABASE;
+using M_AS4600;
 
 namespace PFD
 {
@@ -27,14 +31,14 @@ namespace PFD
         {
             InitializeComponent();
 
-            Combobox_CrossSection.Items.Add("C270095");
-            Combobox_CrossSection.Items.Add("C270115");
-            Combobox_CrossSection.Items.Add("C270155");
-            Combobox_CrossSection.Items.Add("C270195");
-            Combobox_CrossSection.Items.Add("C270095n");
-            Combobox_CrossSection.Items.Add("C270115n");
-            Combobox_CrossSection.Items.Add("C270155n");
-            Combobox_CrossSection.Items.Add("C270195n");
+            Combobox_CrossSection.Items.Add("27095");
+            Combobox_CrossSection.Items.Add("270115");
+            //Combobox_CrossSection.Items.Add("270155");
+            //Combobox_CrossSection.Items.Add("270195");
+            Combobox_CrossSection.Items.Add("27095n");
+            Combobox_CrossSection.Items.Add("270115n");
+            //Combobox_CrossSection.Items.Add("270155n");
+            //Combobox_CrossSection.Items.Add("270195n");
 
             PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
@@ -67,8 +71,10 @@ namespace PFD
         {
             List<string> list = new List<string>()
             {   "Length_L",
+                "BracingLength_Lb",
                 "TributaryWidth_B",
                 "CrossSectionIndex",
+
                 "CladdingSelfWeight_gc",
                 "AdditionalDeadLoad_g",
                 "LiveLoad_q",
@@ -90,8 +96,14 @@ namespace PFD
             calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
             float fE = 2e+11f;
-            float fI_x = MomentOfInertia[calcModel.CrossSectionIndex] / 1e+12f;
-            float fI_x_eff = 0.8f * fI_x; // TODO - doplnit aj Ieff, zistit ci sa da pre simlpy supported beam vyjadrit faktorom
+
+            CCrSc_TW cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
+            CSectionManager.LoadCrossSectionProperties_meters(cs, (string)Combobox_CrossSection.SelectedValue);
+
+            CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
+
+            float fI_x = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
+            float fI_x_eff = 0.9f * fI_x; // TODO - doplnit aj Ieff, zistit ci sa da pre simlpy supported beam vyjadrit faktorom
 
             calcModel.AdditionalDeadLoad_gl =  calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
 
@@ -160,36 +172,74 @@ namespace PFD
 
             float fx_step = 0.1f * calcModel.Length_L;
 
-            calcModel.BendingCapacity_Mb = 0.002f; // Nm napojit
-            calcModel.ShearCapacity_Vw = 0.012f; // Nm napojit
-            calcModel.BracingLength_Lb = 2f; // m napojit
-
-            float fMaximumDesignRatio_Strength = 0;
+            calcModel.BendingCapacity_Mb = 0;
+            calcModel.ShearCapacity_Vw = 0;
+            calcModel.DesignRatioStrength_eta = 0;
 
             // Cycle per half of beam
             for(int i = 0; i < iNumberOfSectionsPerBeam / 2; i++)
             {
                 float fx = i * fx_step;
 
+                // Upwind
                 float fBendingMomentUpwind_M_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix * fx - fload_up_ULS * 0.5f * MathF.Pow2(fx);
                 float ShearForceUpwind_V_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix - fload_up_ULS * fx;
+
+                designInternalForces sDIF_x_temp_upwind;
+
+                SetZeroValues(out sDIF_x_temp_upwind);
+                sDIF_x_temp_upwind.fV_zv = ShearForceUpwind_V_asterix_inLocation_x;
+                sDIF_x_temp_upwind.fV_zz = ShearForceUpwind_V_asterix_inLocation_x;
+                sDIF_x_temp_upwind.fM_yu = fBendingMomentUpwind_M_asterix_inLocation_x;
+                sDIF_x_temp_upwind.fM_yy = fBendingMomentUpwind_M_asterix_inLocation_x;
+
+                designMomentValuesForCb sMomentValuesForCb_upwind;
+                sMomentValuesForCb_upwind.fM_14 = calcModel.ShearForceUpwind_V_asterix * (0.25f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
+                sMomentValuesForCb_upwind.fM_24 = calcModel.ShearForceUpwind_V_asterix * (0.50f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
+                sMomentValuesForCb_upwind.fM_34 = calcModel.ShearForceUpwind_V_asterix * (0.75f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
+                sMomentValuesForCb_upwind.fM_max = calcModel.BendingMomentUpwind_M_asterix;
+
+                CCalculMember cCalcULS_upwind = new CCalculMember(false, sDIF_x_temp_upwind, member, sMomentValuesForCb_upwind);
+
+                float fRatio_M_upwind_inLocation_x = cCalcULS_upwind.fEta_7232_xu;
+                float fRatio_V_upwind_inLocation_x = cCalcULS_upwind.fEta_7232_yv; // Combined bending and shear
+
+                // Downwind
                 float fBendingMomentDownwind_M_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix * fx - fload_down_ULS * 0.5f * MathF.Pow2(fx);
                 float ShearForceDownwind_V_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix - fload_down_ULS * fx;
 
-                float fRatio_M_upwind_inLocation_x = Math.Abs(fBendingMomentUpwind_M_asterix_inLocation_x) / calcModel.BendingCapacity_Mb;
-                float fRatio_V_upwind_inLocation_x = Math.Abs(ShearForceUpwind_V_asterix_inLocation_x) / calcModel.ShearCapacity_Vw;
+                designInternalForces sDIF_x_temp_downwind;
 
-                float fRatio_M_downwind_inLocation_x = Math.Abs(fBendingMomentDownwind_M_asterix_inLocation_x) / calcModel.BendingCapacity_Mb;
-                float fRatio_V_downwind_inLocation_x = Math.Abs(ShearForceDownwind_V_asterix_inLocation_x) / calcModel.ShearCapacity_Vw;
+                SetZeroValues(out sDIF_x_temp_downwind);
+                sDIF_x_temp_downwind.fV_zv = ShearForceDownwind_V_asterix_inLocation_x;
+                sDIF_x_temp_downwind.fV_zz = ShearForceDownwind_V_asterix_inLocation_x;
+                sDIF_x_temp_downwind.fM_yu = fBendingMomentDownwind_M_asterix_inLocation_x;
+                sDIF_x_temp_downwind.fM_yy = fBendingMomentDownwind_M_asterix_inLocation_x;
+
+                designMomentValuesForCb sMomentValuesForCb_downwind;
+                sMomentValuesForCb_downwind.fM_14 = calcModel.ShearForceDownwind_V_asterix * (0.25f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
+                sMomentValuesForCb_downwind.fM_24 = calcModel.ShearForceDownwind_V_asterix * (0.50f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
+                sMomentValuesForCb_downwind.fM_34 = calcModel.ShearForceDownwind_V_asterix * (0.75f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
+                sMomentValuesForCb_downwind.fM_max = calcModel.BendingMomentDownwind_M_asterix;
+
+                CCalculMember cCalcULS_downwind = new CCalculMember(false, sDIF_x_temp_downwind, member, sMomentValuesForCb_downwind);
+
+                float fRatio_M_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_xu;
+                float fRatio_V_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_yv;
 
                 // Interaction
-                float fRatio_MandV_upwind_inLocation_x = fRatio_M_upwind_inLocation_x + fRatio_V_upwind_inLocation_x;
-                float fRatio_MandV_downwind_inLocation_x = fRatio_M_downwind_inLocation_x + fRatio_V_downwind_inLocation_x;
+                float fRatio_MandV_upwind_inLocation_x = Math.Max(fRatio_M_upwind_inLocation_x + fRatio_V_upwind_inLocation_x, cCalcULS_upwind.fEta_max);
+                float fRatio_MandV_downwind_inLocation_x = Math.Max(fRatio_M_downwind_inLocation_x + fRatio_V_downwind_inLocation_x, cCalcULS_downwind.fEta_max);
 
                 float fMaximumRatio_Strength = Math.Max(fRatio_MandV_upwind_inLocation_x , fRatio_MandV_downwind_inLocation_x);
 
-                if (fMaximumRatio_Strength > fMaximumDesignRatio_Strength)
-                    fMaximumDesignRatio_Strength = fMaximumRatio_Strength;
+                if (fMaximumRatio_Strength > calcModel.DesignRatioStrength_eta)
+                {
+                    calcModel.BendingCapacity_Mb = 0; // Napojit
+                    calcModel.ShearCapacity_Vw = 0; // Napojit
+
+                    calcModel.DesignRatioStrength_eta = fMaximumRatio_Strength;
+                }
             }
 
             // Dead Load + imposed live load
@@ -212,7 +262,7 @@ namespace PFD
 
             calcModel.DesignRatioDeflection_eta = Math.Max(fRatioDeflectionUpwind, fRatioDeflectionDownwind);
 
-            float fMaximumDesignRatio = Math.Max(fMaximumDesignRatio_Strength, calcModel.DesignRatioDeflection_eta);
+            float fMaximumDesignRatio = Math.Max(calcModel.DesignRatioStrength_eta, calcModel.DesignRatioDeflection_eta);
         }
 
         private void SetOutputValues()
@@ -224,6 +274,7 @@ namespace PFD
             vm.BendingMomentDownwind_M_asterix *= 0.001f;
             vm.ShearForceDownwind_V_asterix *= 0.001f;
 
+            vm.DesignRatioStrength_eta *= 100;
 
             vm.DeflectionUpwind_Delta *= 1000f;
             vm.DeflectionDownwind_Delta *= 1000f;
@@ -237,17 +288,29 @@ namespace PFD
             this.Focus();
         }
 
-        float[] MomentOfInertia = new float[8]
+        private void SetZeroValues(out designInternalForces sDIF)
         {
-            4513000f,
-            5432000f,
-            7446751f,
-            9351163f,
+            sDIF.fN = 0;
+            sDIF.fN_c = 0;
+            sDIF.fN_t = 0;
+            sDIF.fV_yu = 0;
+            sDIF.fV_yy = 0;
+            sDIF.fV_zv = 0;
+            sDIF.fV_zz = 0;
+            sDIF.fT = 0;
+            sDIF.fM_yu = 0;
+            sDIF.fM_yy = 0;
+            sDIF.fM_zv = 0;
+            sDIF.fM_zz = 0;
+        }
 
-           09237100f,
-           11000000f,
-           13097830f,
-           18873060f
-        };
+        private void SetZeroValues(out designDeflections sDDeflections)
+        {
+            sDDeflections.fDelta_yu = 0;
+            sDDeflections.fDelta_yy = 0;
+            sDDeflections.fDelta_zv = 0;
+            sDDeflections.fDelta_tot = 0;
+            sDDeflections.fDelta_zz = 0;
+        }
     }
 }

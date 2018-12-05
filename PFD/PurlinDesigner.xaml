@@ -90,6 +90,14 @@
                          Text="{Binding Path=TributaryArea_A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m²]" VerticalAlignment="Top"/>
+        
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Bracing Length Lb:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_BracingLength_Lb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="True"
+                         Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Cross-section:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -320,13 +328,13 @@
         <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="17" Grid.Column="3" Text="Bracing Length Lb:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="16" Grid.Column="3" Text="Design Ratio - Strength η:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="17" Grid.Column="4" Name ="TextBox_BracingLength_Lb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_DesignRatioStrength_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
+                         Text="{Binding Path=DesignRatioStrength_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="16" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="18" Grid.Column="3" Text="Deflection (G + Q) δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -431,6 +439,5 @@
                          Text="{Binding Path=DesignRatioDeflection_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="31" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
-
     </Grid>
 </Window>
