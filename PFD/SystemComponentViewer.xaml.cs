@@ -1907,7 +1907,7 @@ namespace PFD
                 vm.DrillingRoutePoints = null;
                 plate.DrillingRoutePoints = null;
                 // Redraw plate in 2D and 3D
-                DisplayPlate(false);
+                DisplayPlate(true);
 
                 //Update ComponentDetails Datagrid
                 vm.SetComponentProperties(plate);
