@@ -205,10 +205,8 @@ namespace M_AS4600
         public float fEta_721_N = 0.0f;
         public float fEta_722_M_xu = 0.0f;
         public float fEta_723_9_xu_yv = 0.0f;
-        public float fEta_7232_xu = 0.0f; // M* / (phi_b * Ms)
-        public float fEta_7232_yv = 0.0f; // V* / (phi_v * Vv)
         public float fEta_723_10_xu = 0.0f;
-        public float fEta_723_11_xu_yv = 0.0f;
+        public float fEta_723_11_V_yv = 0.0f;
         public float fEta_723_12_xu_yv_10 = 0.0f;
         public float fEta_724 = 0f;
         public float fEta_725_1 = 0f;
@@ -648,8 +646,6 @@ namespace M_AS4600
 
             // 7.2.3.5 Combined bending and shear
             eq.Eq_723_9___(sDIF.fM_xu, fPhi_b_section, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
-            fEta_7232_xu = fEta_M_xu;
-            fEta_7232_yv = fEta_V_yv;
             fEta_max = MathF.Max(fEta_max, fEta_723_9_xu_yv);
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
@@ -659,8 +655,8 @@ namespace M_AS4600
             }
 
             // Shear
-            eq.Eq_723_11__(sDIF.fV_yv, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_xu_yv);
-            fEta_max = MathF.Max(fEta_max, fEta_723_11_xu_yv);
+            eq.Eq_723_11__(sDIF.fV_yv, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_V_yv);
+            fEta_max = MathF.Max(fEta_max, fEta_723_11_V_yv);
 
             if ((Math.Abs(sDIF.fM_xu) / (fPhi_b_section * fM_s_xu)) > 0.5f && (Math.Abs(sDIF.fV_yv) / (fPhi_v * fV_v_yv)) > 0.7f)
             {
@@ -699,7 +695,7 @@ namespace M_AS4600
                 fEta_722_M_xu < 0 ||
                 fEta_723_9_xu_yv < 0 ||
                 fEta_723_10_xu < 0 ||
-                fEta_723_11_xu_yv < 0 ||
+                fEta_723_11_V_yv < 0 ||
                 fEta_723_12_xu_yv_10 < 0 ||
                 fEta_724 < 0 ||
                 fEta_725_1 < 0 ||
@@ -721,7 +717,7 @@ namespace M_AS4600
                               + "Design Ratio η = " + Math.Round(fEta_722_M_xu, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.2" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_723_9_xu_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(9)" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_723_10_xu, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(10)" + "\n"
-                              + "Design Ratio η = " + Math.Round(fEta_723_11_xu_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(11)" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_723_11_V_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(11)" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(12)" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_724, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.4" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_725_1, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.5(1)" + "\n"
