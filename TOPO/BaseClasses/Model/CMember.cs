@@ -164,6 +164,14 @@ namespace BaseClasses
         }
 
         // Member results - list of values in each Load Case
+        private List<designBucklingLengthFactors> m_sBucklingLengthFactors;
+
+        public List<designBucklingLengthFactors> MBucklingLengthFactors
+        {
+            get { return m_sBucklingLengthFactors; }
+            set { m_sBucklingLengthFactors = value; }
+        }
+
         private List<designMomentValuesForCb> m_sMomentValuesforCb;
 
         public List<designMomentValuesForCb> MMomentValuesforCb

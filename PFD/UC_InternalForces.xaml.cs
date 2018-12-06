@@ -75,13 +75,14 @@ namespace PFD
 
             // Perform displayin of internal foces just for ULS combinations
             // Member basic internal forces
+            designBucklingLengthFactors sBucklingLengthFactors;
             designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
             basicInternalForces[] sBIF_x;
 
             // TODO - kombinacia ktorej vysledky chceme zobrazit
             CLoadCombination lcomb = Model.m_arrLoadCombs[memberIF.LoadCombinationIndex];
             // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
-            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sMomentValuesforCb, out sBIF_x);
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
 
             float[] fArr_AxialForceValuesN;
             float[] fArr_ShearForceValuesVx;

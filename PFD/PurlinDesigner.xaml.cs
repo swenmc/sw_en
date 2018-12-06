@@ -26,6 +26,8 @@ namespace PFD
     public partial class PurlinDesigner : Window
     {
         //PurlinDesignerViewModel calcModel;
+        CCrSc_TW cs;
+        MATERIAL.CMat_03_00 mat;
 
         public PurlinDesigner()
         {
@@ -42,11 +44,16 @@ namespace PFD
             //Combobox_CrossSection.Items.Add("270195n");
             Combobox_CrossSection.Items.Add("50020n");
 
-            Combobox_Material.Items.Add("G550‡");
+            // Fill material combobox items
+            CComboBoxHelper.FillComboboxValues("MaterialsSQLiteDB", "materialSteelAS4600", "Grade", Combobox_Material);
 
             PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
+
+            // Default object of material and cross-section
+            //cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
+            mat = new MATERIAL.CMat_03_00();
 
             // Calculate
             SetInputAndCalculate();
@@ -77,6 +84,7 @@ namespace PFD
             {   "Length_L",
                 "BracingLength_Lb",
                 "TributaryWidth_B",
+                "MaterialIndex",
                 "CrossSectionIndex",
 
                 "CladdingSelfWeight_gc",
@@ -103,13 +111,17 @@ namespace PFD
 
             calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
-            MATERIAL.CMat_03_00 mat = new MATERIAL.CMat_03_00();
             CMaterialManager.LoadMaterialProperties(mat, (string)Combobox_Material.SelectedValue);
             mat.m_fE = 2e+11f; // Change default value of E (see AS 4600)
+            mat.m_fG = 08e+10f;
+            mat.m_fNu = 0.25f;
 
-            CCrSc_TW cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
-            CSectionManager.LoadCrossSectionProperties_meters(cs, (string)Combobox_CrossSection.SelectedValue);
+            FillCrossSectionData((string)Combobox_CrossSection.Items[calcModel.CrossSectionIndex]);
+
             cs.m_Mat = mat; // Set material from GUI to the cross-section
+
+            float ff_y = mat.Get_f_yk_by_thickness((float)cs.m_t_min);
+            float ff_u = mat.Get_f_uk_by_thickness((float)cs.m_t_min);
 
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
 
@@ -117,7 +129,8 @@ namespace PFD
             calcModel.MomentOfInertia_Ix = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
             float fI_x_eff = 0.9f * calcModel.MomentOfInertia_Ix; // TODO - doplnit aj Ieff, zistit ci sa da pre simply supported beam vyjadrit faktorom
 
-            calcModel.PurlinSelfWeight_gp = calcModel.Area_Ag * mat.m_fRho;
+            float fMemberMassPerLength = calcModel.Area_Ag * mat.m_fRho;
+            calcModel.PurlinSelfWeight_gp = fMemberMassPerLength * GlobalConstants.fg_acceleration;
 
             calcModel.AdditionalDeadLoad_gl =  calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
 
@@ -186,6 +199,12 @@ namespace PFD
             calcModel.BendingMomentDownwind_M_asterix = 1f / 8f * fload_down_ULS * MathF.Pow2(calcModel.Length_L);
             calcModel.ShearForceDownwind_V_asterix = 1f / 2f * fload_down_ULS * calcModel.Length_L;
 
+            designBucklingLengthFactors sBucklingLengthFactors;
+            sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f;
+            sBucklingLengthFactors.fBeta_y_FB_fl_ey =  calcModel.BracingLength_Lb / member.FLength;
+            sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = calcModel.BracingLength_Lb / member.FLength;
+            sBucklingLengthFactors.fBeta_LTB_fl_LTB = calcModel.BracingLength_Lb / member.FLength;
+
             int iNumberOfSectionsPerBeam = 11;
 
             float fx_step = 0.1f * calcModel.Length_L;
@@ -217,7 +236,7 @@ namespace PFD
                 sMomentValuesForCb_upwind.fM_34 = calcModel.ShearForceUpwind_V_asterix * (0.75f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
                 sMomentValuesForCb_upwind.fM_max = calcModel.BendingMomentUpwind_M_asterix;
 
-                CCalculMember cCalcULS_upwind = new CCalculMember(false, sDIF_x_temp_upwind, member, sMomentValuesForCb_upwind);
+                CCalculMember cCalcULS_upwind = new CCalculMember(false, sDIF_x_temp_upwind, member, sBucklingLengthFactors, sMomentValuesForCb_upwind);
 
                 float fRatio_M_upwind_inLocation_x = cCalcULS_upwind.fEta_7232_xu;
                 float fRatio_V_upwind_inLocation_x = cCalcULS_upwind.fEta_7232_yv; // Combined bending and shear
@@ -240,7 +259,7 @@ namespace PFD
                 sMomentValuesForCb_downwind.fM_34 = calcModel.ShearForceDownwind_V_asterix * (0.75f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
                 sMomentValuesForCb_downwind.fM_max = calcModel.BendingMomentDownwind_M_asterix;
 
-                CCalculMember cCalcULS_downwind = new CCalculMember(false, sDIF_x_temp_downwind, member, sMomentValuesForCb_downwind);
+                CCalculMember cCalcULS_downwind = new CCalculMember(false, sDIF_x_temp_downwind, member, sBucklingLengthFactors, sMomentValuesForCb_downwind);
 
                 float fRatio_M_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_xu;
                 float fRatio_V_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_yv;
@@ -366,6 +385,84 @@ namespace PFD
             sDDeflections.fDelta_zv = 0;
             sDDeflections.fDelta_tot = 0;
             sDDeflections.fDelta_zz = 0;
+        }
+
+        private void FillCrossSectionData(string sSectionNameDatabase)
+        {
+            Color cComponentColor = Colors.Aquamarine;
+
+            /*
+            10075
+            27055
+            27095
+            27095n
+            270115
+            270115btb
+            270115n
+            50020
+            50020n
+            63020
+            63020s1
+            63020s2
+            */
+
+            if (sSectionNameDatabase == "10075")
+            {
+                cs = new CCrSc_3_10075_BOX(0, 01f, 0.1f, 0.00075f, cComponentColor); // BOX
+            }
+            else if (sSectionNameDatabase == "27055")
+            {
+                cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00055f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "27095")
+            {
+                cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "27095n")
+            {
+                cs = new CCrSc_3_270XX_C_NESTED(0, 0.29f, 0.071f, 0.00095f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "270115")
+            {
+                cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00115f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "270115btb")
+            {
+                cs = new CCrSc_3_270XX_C_BACK_TO_BACK(0, 0.29f, 0.14f, 0.020f, 0.00115f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "270115n")
+            {
+                cs = new CCrSc_3_270XX_C_NESTED(0, 0.29f, 0.071f, 0.00115f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "50020")
+            {
+                cs = new CCrSc_3_50020_C(0, 0.5f, 0.01f, 0.00195f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "50020n")
+            {
+                cs = new CCrSc_3_50020_C_NESTED(0, 0.5f, 0.01f, 0.00195f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "63020")
+            {
+                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0.00195f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "63020s1")
+            {
+                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0.00390f, cComponentColor);
+            }
+            else if (sSectionNameDatabase == "63020s2")
+            {
+                cs = new CCrSc_3_63020_BOX(0, 0.63f, 0.18f, 0.00195f, 0.00858f, cComponentColor);
+            }
+            else
+            {
+                cs = null;
+                throw new NotImplementedException("Invalid cross-section name: " + sSectionNameDatabase + ". \n" +
+                                                  "Cross-section with this name is not implemented");
+            }
+
+            if(cs != null)
+                CSectionManager.LoadCrossSectionProperties_meters(cs, sSectionNameDatabase);
         }
     }
 }

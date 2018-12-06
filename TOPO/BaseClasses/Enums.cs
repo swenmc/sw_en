@@ -709,4 +709,12 @@
         public float fM_24;
         public float fM_34;
     }
+
+    public struct designBucklingLengthFactors
+    {
+        public float fBeta_x_FB_fl_ex;
+        public float fBeta_y_FB_fl_ey;
+        public float fBeta_z_TB_TFB_l_ez;
+        public float fBeta_LTB_fl_LTB;
+    }
 }

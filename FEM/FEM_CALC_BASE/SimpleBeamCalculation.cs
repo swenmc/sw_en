@@ -14,8 +14,9 @@ namespace FEM_CALC_BASE
 
         // SBD funkcie (zahrnaju kombinacie)
         public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, float[] fx_positions,
-            float[] fE_d_load_values_LCS_y, float[] fE_d_load_values_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+            float[] fE_d_load_values_LCS_y, float[] fE_d_load_values_LCS_z, out basicInternalForces[,] sBIF_x, out designBucklingLengthFactors[] sBucklingLengthFactors, out designMomentValuesForCb[] sMomentValuesforCb)
         {
+            sBucklingLengthFactors = new designBucklingLengthFactors[iNumberOfLoadCombinations];
             sMomentValuesforCb = new designMomentValuesForCb[iNumberOfLoadCombinations];
             sBIF_x = new basicInternalForces[iNumberOfLoadCombinations, iNumberOfDesignSections];
 
@@ -45,6 +46,11 @@ namespace FEM_CALC_BASE
                         fM_abs_max = sBIF_x[i, j].fM_yu;
                 }
 
+                sBucklingLengthFactors[i].fBeta_x_FB_fl_ex = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+                sBucklingLengthFactors[i].fBeta_y_FB_fl_ey = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+                sBucklingLengthFactors[i].fBeta_z_TB_TFB_l_ez = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+                sBucklingLengthFactors[i].fBeta_LTB_fl_LTB = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+
                 sMomentValuesforCb[i].fM_max = fM_abs_max;
                 sMomentValuesforCb[i].fM_14 = memberModel_qz.GetM_x(0.25f * member.FLength);
                 sMomentValuesforCb[i].fM_24 = memberModel_qz.GetM_x(0.50f * member.FLength);
@@ -53,30 +59,30 @@ namespace FEM_CALC_BASE
         }
 
         public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfDesignSections, CMember member, float[] fx_positions, 
-            float fE_d_load_value_LCS_y, float fE_d_load_value_LCS_z, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+            float fE_d_load_value_LCS_y, float fE_d_load_value_LCS_z, out basicInternalForces[,] sBIF_x, out designBucklingLengthFactors[] sBucklingLengthFactors, out designMomentValuesForCb[] sMomentValuesforCb)
         {
             int iNumberOfLoadCombinations = 1;
             float[] fE_d_load_values_LCS_y = new float[1] { fE_d_load_value_LCS_y };
             float[] fE_d_load_values_LCS_z = new float[1] { fE_d_load_value_LCS_z };
 
-            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
         }
 
         public void CalculateInternalForcesOnSimpleBeam_SBD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
-        CMLoad_21 memberload, out basicInternalForces[,] sBIF_x, out designMomentValuesForCb[] sMomentValuesforCb)
+        CMLoad_21 memberload, out basicInternalForces[,] sBIF_x, out designBucklingLengthFactors[] sBucklingLengthFactors,  out designMomentValuesForCb[] sMomentValuesforCb)
         {
             int iNumberOfLoadCombinations = 1;
             float[] fE_d_load_values_LCS_y = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? memberload.Fq : 0};
             float[] fE_d_load_values_LCS_z = new float[1] { memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? memberload.Fq : 0};
 
-            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+            CalculateInternalForcesOnSimpleBeam_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
         }
 
         // PFD - nove funkcie (nezahrnaju kombinacie)
 
         // Internal Forces
         public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, CMember member, float[] fx_positions,
-            float fE_d_load_values_LCS_y, float fE_d_load_values_LCS_z, out basicInternalForces[] sBIF_x, out designMomentValuesForCb sMomentValuesforCb)
+            float fE_d_load_values_LCS_y, float fE_d_load_values_LCS_z, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb)
         {
             sMomentValuesforCb = new designMomentValuesForCb();
             sBIF_x = new basicInternalForces[iNumberOfDesignSections];
@@ -101,6 +107,11 @@ namespace FEM_CALC_BASE
                         fM_abs_max = sBIF_x[j].fM_yu;
                 }
 
+                sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+                sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+                sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+                sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1f; // TODO - nastavit pre member - moze zavisiet od zatazenia
+
                 sMomentValuesforCb.fM_max = fM_abs_max;
                 sMomentValuesforCb.fM_14 = memberModel_qz.GetM_x(0.25f * member.FLength);
                 sMomentValuesforCb.fM_24 = memberModel_qz.GetM_x(0.50f * member.FLength);
@@ -108,12 +119,12 @@ namespace FEM_CALC_BASE
         }
 
         public void CalculateInternalForcesOnSimpleBeam_PFD(int iNumberOfDesignSections, float[] fx_positions, CMember member,
-        CMLoad_21 memberload, out basicInternalForces[] sBIF_x, out designMomentValuesForCb sMomentValuesforCb)
+        CMLoad_21 memberload, out basicInternalForces[] sBIF_x, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb)
         {
             float fE_d_load_values_LCS_y = memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? memberload.Fq : 0;
             float fE_d_load_values_LCS_z = memberload.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? memberload.Fq : 0;
 
-            CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sMomentValuesforCb);
+            CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, member, fx_positions, fE_d_load_values_LCS_y, fE_d_load_values_LCS_z, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
         }
 
         // Deflections

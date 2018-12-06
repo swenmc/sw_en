@@ -13,6 +13,7 @@ namespace BaseClasses
         private float MMaximumDesignRatio;
 
         private designInternalForces MDesignInternalForces;
+        private designBucklingLengthFactors MDesignBucklingLengthFactors;
         private designMomentValuesForCb MDesignMomentValuesForCb;
 
 
@@ -68,6 +69,19 @@ namespace BaseClasses
             }
         }
 
+        public designBucklingLengthFactors DesignBucklingLengthFactors
+        {
+            get
+            {
+                return MDesignBucklingLengthFactors;
+            }
+
+            set
+            {
+                MDesignBucklingLengthFactors = value;
+            }
+        }
+
         public designMomentValuesForCb DesignMomentValuesForCb
         {
             get
@@ -86,14 +100,14 @@ namespace BaseClasses
 
         }
         public CMemberLoadCombinationRatio_ULS(CMember member, CLoadCombination loadCombination, float maxDesignRatio,
-            designInternalForces designInternalForces, designMomentValuesForCb designMomentValuesForCb)
+            designInternalForces designInternalForces, designBucklingLengthFactors bucklingLengthFactors, designMomentValuesForCb designMomentValuesForCb)
         {
             Member = member;
             LoadCombination = loadCombination;
             MaximumDesignRatio = maxDesignRatio;
             DesignInternalForces = designInternalForces;
+            DesignBucklingLengthFactors = bucklingLengthFactors;
             DesignMomentValuesForCb = designMomentValuesForCb;
-
         }
     }
 }

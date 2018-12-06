@@ -89,8 +89,6 @@ namespace PFD
         //List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         //List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
 
-        
-
         // TODO Ondrej pouzit na zobrazovanie jednotlivych zaloziek (tabitems) aktivitu tlacitok a podobne podla toho ci existuju vysledky pre vnutorne sily, posudenie prutov, posudenie spojov
         bool bInternalForcesResultsExists = false;
         bool bMemberDesignResultsExists = false;

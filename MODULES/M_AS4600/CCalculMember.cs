@@ -83,7 +83,8 @@ namespace M_AS4600
 
         CCrSc_TW cs; // Thin-walled cross-section
 
-        Cb_option eCb_option = Cb_option.eCb_Tab_D2_1;
+        //Cb_option eCb_option = Cb_option.eCb_Tab_D2_1;
+        Cb_option eCb_option = Cb_option.eCb_D2112;
         SecShape eCS_shape = SecShape.eC_lip;
         SectionShape_Table_D3 eCS_shape_Tab_D3 = SectionShape_Table_D3.eLC;
         SecSymmetry eCS_sym = SecSymmetry.eMS_xu;
@@ -208,9 +209,9 @@ namespace M_AS4600
         public float fEta_defl_zz = 0f;
         public float fEta_defl_tot = 0f;
 
-        public CCalculMember(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sMomentValuesForCb);
+            CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -246,7 +247,7 @@ namespace M_AS4600
             fEta_max = fEta_defl_tot;
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designMomentValuesForCb sMomentValuesForCb)
+        public void CalculateDesignRatio(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors,  designMomentValuesForCb sMomentValuesForCb)
         {
             AS_4600 eq = new AS_4600();
 
@@ -276,10 +277,16 @@ namespace M_AS4600
             fS_f_xu = (float)cs.W_y_pl; // Plastic section modulus
             fS_f_yv = (float)cs.W_z_pl;
 
+            // TODO - pridat plasticke moduly do parametrov prierezu
+            if (fS_f_xu <= 0)
+                fS_f_xu = 1.01f * fZ_f_xu; // Konzervativne + len 1%
+            if (fS_f_yv <= 0)
+                fS_f_yv = 1.01f * fZ_f_yv; // Konzervativne + len 1%
+
             fA_f_xu = (float)cs.A_vy;
             fA_w_yv = (float)cs.A_vz;
 
-            // TODO - pridat smykove plochy do parametrov prierezu (malo by sa jednat o celkovu smykovu plochy, obe pasnice resp stojiny atd
+            // TODO - pridat smykove plochy do parametrov prierezu (malo by sa jednat o celkovu smykovu plochy, obe pasnice resp stojiny atd)
             if (fA_f_xu <= 0)
                 fA_f_xu = ft * fb;
             if (fA_w_yv <= 0)
@@ -312,10 +319,11 @@ namespace M_AS4600
             fd_1 = fh - 2 * ft; // Web Depth Web-flange juncture // Todo // depth of the flat portion of a web
 
             fl_member = fL_temp;
-            fl_ez = fl_member; // TODO nastavit podla faktora
-            fl_ex = fl_member; // TODO nastavit podla faktora
-            fl_ey = fl_member; // TODO nastavit podla faktora
-            fl_LTB = fl_member; // TODO nastavit podla faktora
+            fl_ex = sBucklingLengthFactors.fBeta_x_FB_fl_ex * fl_member; // Flexural buckling - major axis (Nc)
+            fl_ey = sBucklingLengthFactors.fBeta_y_FB_fl_ey * fl_member; // Flexural buckling - minor axis (Nc)
+            fl_ez = sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez * fl_member; // Torsional / Torsional-flexural buckling (Nc)
+
+            fl_LTB = sBucklingLengthFactors.fBeta_LTB_fl_LTB * fl_member; // Laterla-torsional buckling (Mx)
 
             fM_max = sMomentValuesForCb.fM_max;
             fM_14  = sMomentValuesForCb.fM_14;
@@ -336,6 +344,10 @@ namespace M_AS4600
             // Compression
             fx_o = (float)cs.D_y_s;
             fy_o = (float)cs.D_z_s;
+
+            // TODO - doplnit vypocet polomerov zotrvacnosti do prierezov // Doriesit jednoznacnost indexov
+            cs.i_y_rg = Math.Sqrt(cs.I_y / cs.A_g);
+            cs.i_z_rg = Math.Sqrt(cs.I_z / cs.A_g);
 
             fr_x = (float)cs.i_y_rg;
             fr_y = (float)cs.i_z_rg;
@@ -629,20 +641,23 @@ namespace M_AS4600
             fM_s_xu_f = eq.Eq_725_3___(fZ_ft_xu, ff_y);
             fM_s_yv_f = eq.Eq_725_3___(fZ_ft_yv, ff_y);
 
-            if (sDIF.fN < 0.0f) // Compression
+            if (!MathF.d_equal(sDIF.fN, 0.0f)) // Some axial force exists
             {
-                // 7.2.4 Design of members subject to combined axial compression and bending
-                eq.Eq_724_____(fPhi_c, fPhi_b, sDIF.fN_c, fN_c_min, sDIF.fM_xu, fM_b_xu, sDIF.fM_yv, fM_b_yv, out fEta_N_724, out fEta_Mxu_724, out fEta_Myv_724, out fEta_724);
-                fEta_max = MathF.Max(fEta_max, fEta_724);
-            }
-            else
-            {
-                // 7.2.5 Design of members subject to combined axial tension and bending
-                eq.Eq_725_1___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_b_xu, sDIF.fM_yv, fM_b_yv, out fEta_N_725_1, out fEta_Mxu_725_1, out fEta_Myv_725_1, out fEta_725_1);
-                fEta_max = MathF.Max(fEta_max, fEta_725_1);
+                if (sDIF.fN < 0.0f) // Compression
+                {
+                    // 7.2.4 Design of members subject to combined axial compression and bending
+                    eq.Eq_724_____(fPhi_c, fPhi_b, sDIF.fN_c, fN_c_min, sDIF.fM_xu, fM_b_xu, sDIF.fM_yv, fM_b_yv, out fEta_N_724, out fEta_Mxu_724, out fEta_Myv_724, out fEta_724);
+                    fEta_max = MathF.Max(fEta_max, fEta_724);
+                }
+                else
+                {
+                    // 7.2.5 Design of members subject to combined axial tension and bending
+                    eq.Eq_725_1___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_b_xu, sDIF.fM_yv, fM_b_yv, out fEta_N_725_1, out fEta_Mxu_725_1, out fEta_Myv_725_1, out fEta_725_1);
+                    fEta_max = MathF.Max(fEta_max, fEta_725_1);
 
-                eq.Eq_725_2___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_s_xu_f, sDIF.fM_yv, fM_s_yv_f, out fEta_N_725_2, out fEta_Mxu_725_2, out fEta_Myv_725_2, out fEta_725_2);
-                fEta_max = MathF.Max(fEta_max, fEta_725_2);
+                    eq.Eq_725_2___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_s_xu_f, sDIF.fM_yv, fM_s_yv_f, out fEta_N_725_2, out fEta_Mxu_725_2, out fEta_Myv_725_2, out fEta_725_2);
+                    fEta_max = MathF.Max(fEta_max, fEta_725_2);
+                }
             }
 
             // Validation - negative design ratio

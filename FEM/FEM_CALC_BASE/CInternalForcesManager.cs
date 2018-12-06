@@ -11,8 +11,9 @@ namespace FEM_CALC_BASE
     public static class CMemberResultsManager
     {
         // Internal forces - ULS
-        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, int iNumberOfMemberResultsSections, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
+        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, int iNumberOfMemberResultsSections, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
+            sBucklingLengthFactors = new designBucklingLengthFactors();
             sMomentValuesforCb_output = new designMomentValuesForCb();
             sBIF_x_output = new basicInternalForces[iNumberOfMemberResultsSections];
 
@@ -23,6 +24,12 @@ namespace FEM_CALC_BASE
                     CMemberInternalForcesInLoadCases mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
                     if (mlf != null)
                     {
+                        // TODO - malo by sa nastavovat u pruta ale moze zavisiet od zatazenia
+                        sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f;
+                        sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1f;
+                        sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1f;
+                        sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1f;
+
                         sMomentValuesforCb_output.fM_14 += lc.Factor * mlf.BendingMomentValues.fM_14;
                         sMomentValuesforCb_output.fM_24 += lc.Factor * mlf.BendingMomentValues.fM_24;
                         sMomentValuesforCb_output.fM_34 += lc.Factor * mlf.BendingMomentValues.fM_34;

@@ -385,7 +385,7 @@
             <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
         
         <TextBlock Grid.Row="18" Grid.Column="3" Text="Deflection Limit (G + Q) δ.lim:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -427,7 +427,7 @@
             <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="22" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="23" Grid.Column="3" Text="Deflection Limit (S + W) δ.lim:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
@@ -469,7 +469,7 @@
             <i:Interaction.Behaviors> <local:TextBoxEnterKeyUpdateBehavior /> </i:Interaction.Behaviors>
         </TextBox>
         <TextBlock Grid.Row="27" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top"/>
+                         TextWrapping="Wrap" Text="[-]" VerticalAlignment="Top"/>
         
         <TextBlock Grid.Row="28" Grid.Column="3" Text="Deflection Limit δ.lim:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />

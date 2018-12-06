@@ -85,7 +85,7 @@ namespace PFD
                     //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
                     CMemberLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
-                    CCalculMember c = new CCalculMember(false, res.DesignInternalForces, m, res.DesignMomentValuesForCb);
+                    CCalculMember c = new CCalculMember(false, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
@@ -116,6 +116,7 @@ namespace PFD
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
             float[] fx_positions = new float[iNumberOfDesignSections];
+            designBucklingLengthFactors sBucklingLengthFactors = new designBucklingLengthFactors();
             designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
             basicInternalForces[] sBIF_x = null;
             basicDeflections[] sBDeflections_x = null;
@@ -148,6 +149,7 @@ namespace PFD
                     for (int i = 0; i < iNumberOfDesignSections; i++)
                         fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
+                    m.MBucklingLengthFactors = new List<designBucklingLengthFactors>();
                     m.MMomentValuesforCb = new List<designMomentValuesForCb>();
                     m.MBIF_x = new List<basicInternalForces[]>();
                     m.MBDef_x = new List<basicDeflections[]>();
@@ -162,7 +164,7 @@ namespace PFD
                                 if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
                                 {
                                     // ULS - internal forces
-                                    calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sMomentValuesforCb);
+                                    calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
 
                                     // SLS - deflections
                                     calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
@@ -200,10 +202,12 @@ namespace PFD
                     {
                         if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for SLS
                         {
+                            designBucklingLengthFactors sBucklingLengthFactors_design;
+
                             // Member basic internal forces
                             designMomentValuesForCb sMomentValuesforCb_design;
                             basicInternalForces[] sBIF_x_design;
-                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sMomentValuesforCb_design, out sBIF_x_design);
+                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
 
                             // Member design internal forces
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
@@ -212,8 +216,8 @@ namespace PFD
 
                                 // Member Design
                                 CMemberDesign memberDesignModel = new CMemberDesign();
-                                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sMomentValuesforCb_design, out sMemberDIF_x);
-                                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sMomentValuesforCb_design));
+                                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sBucklingLengthFactors_design, sMomentValuesforCb_design, out sMemberDIF_x);
+                                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors, sMomentValuesforCb_design));
 
                                 // Set maximum design ratio of whole structure
                                 if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
