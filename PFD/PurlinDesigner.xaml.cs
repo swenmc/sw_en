@@ -216,7 +216,7 @@ namespace PFD
             float fMaximumRatio_Strength = 0;
 
             // Cycle per half of beam
-            for (int i = 0; i < iNumberOfSectionsPerBeam / 2; i++)
+            for (int i = 0; i < (iNumberOfSectionsPerBeam / 2) + 1; i++)
             {
                 float fx = i * fx_step;
 
