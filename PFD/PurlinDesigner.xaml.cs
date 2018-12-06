@@ -464,5 +464,22 @@ namespace PFD
             if(cs != null)
                 CSectionManager.LoadCrossSectionProperties_meters(cs, sSectionNameDatabase);
         }
+
+        private void WindPressureCalculator_Click(object sender, RoutedEventArgs e)
+        {
+            WindPressureCalculator window_windpressure = new WindPressureCalculator();
+            window_windpressure.Show();
+
+            PurlinDesignerViewModel vm_CalcModel = this.DataContext as PurlinDesignerViewModel;
+
+            WindPressureCalculatorViewModel vm_WindPressure = window_windpressure.DataContext as WindPressureCalculatorViewModel;
+
+            // TODO - Ondrej - Pri zavreti okna WindPressureCalculator nastavit hodnoty z okna WindPressureCalculator do PurlinDesigner
+            // Reakcia na zavretie okna
+            vm_CalcModel.WindLoadInternalPressure_pimin = vm_WindPressure.WindPressure_pimin * 0.001f; // Convert from Pa to kPa
+            vm_CalcModel.WindLoadInternalPressure_pimax = vm_WindPressure.WindPressure_pimax * 0.001f;
+            vm_CalcModel.WindLoadExternalPressure_pemin = vm_WindPressure.WindPressure_pemin * 0.001f;
+            vm_CalcModel.WindLoadExternalPressure_pemax = vm_WindPressure.WindPressure_pemin * 0.001f;
+        }
     }
 }

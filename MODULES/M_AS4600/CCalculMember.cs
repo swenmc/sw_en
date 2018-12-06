@@ -132,6 +132,7 @@ namespace M_AS4600
         public float fA_cfl, fJ_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fI_w_cfl;
 
         public float fPhi_t = 0.9f; // Todo
+        public float fPhi_b_section = 0.95f;
         public float fPhi_b = 0.9f;
         public float fPhi_v = 0.9f;
         public float fPhi_c = 0.85f;
@@ -613,7 +614,7 @@ namespace M_AS4600
             float fV_v_yv_drv;
 
             // 7.2.3.5 Combined bending and shear
-            eq.Eq_723_9___(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
+            eq.Eq_723_9___(sDIF.fM_xu, fPhi_b_section, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
             fEta_7232_xu = fEta_M_xu;
             fEta_7232_yv = fEta_V_yv;
             fEta_max = MathF.Max(fEta_max, fEta_723_9_xu_yv);
@@ -628,9 +629,9 @@ namespace M_AS4600
             eq.Eq_723_11__(sDIF.fV_yv, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_xu_yv);
             fEta_max = MathF.Max(fEta_max, fEta_723_11_xu_yv);
 
-            if ((Math.Abs(sDIF.fM_xu) / (fPhi_b * fM_s_xu)) > 0.5f && (Math.Abs(sDIF.fV_yv) / (fPhi_v * fV_v_yv)) > 0.7f)
+            if ((Math.Abs(sDIF.fM_xu) / (fPhi_b_section * fM_s_xu)) > 0.5f && (Math.Abs(sDIF.fV_yv) / (fPhi_v * fV_v_yv)) > 0.7f)
             {
-                eq.Eq_723_12__(sDIF.fM_xu, fPhi_b, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_xu_yv_13, out fEta_723_12_xu_yv_10);
+                eq.Eq_723_12__(sDIF.fM_xu, fPhi_b_section, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_xu_yv_13, out fEta_723_12_xu_yv_10);
                 fEta_max = MathF.Max(fEta_max, fEta_723_12_xu_yv_10);
             }
 

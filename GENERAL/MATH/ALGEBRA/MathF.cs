@@ -291,7 +291,7 @@ namespace MATH
         public const int iKaprekar = 6174;
         // Apéry's constant ζ(3)
         public const decimal Zeta3 = 1.202056903159594285399738161511449990764986292m;
-        //Pythagoras' constant, square root of 2 (√2)
+        // Pythagoras' constant, square root of 2 (√2)
         public const float    fSqrt2 = 1.4142135f;
         public const double   dSqrt2 = 1.414213562373095;
         public const decimal  mSqrt2 = 1.41421356237309504880168872420969807m;

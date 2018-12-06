@@ -246,6 +246,12 @@
         <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
+        <Button Grid.Row="24" Grid.Column="0" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
+            <StackPanel>
+                <Image Source="Resources/windgust.png"></Image>
+            </StackPanel>
+        </Button>
+        
         <TextBlock Grid.Row="24" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min.l:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_InternalPressure_piminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
