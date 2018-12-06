@@ -213,9 +213,10 @@ namespace PFD
             calcModel.BendingCapacity_Mb = 0;
             calcModel.ShearCapacity_Vw = 0;
             calcModel.DesignRatioStrength_eta = 0;
+            float fMaximumRatio_Strength = 0;
 
             // Cycle per half of beam
-            for(int i = 0; i < iNumberOfSectionsPerBeam / 2; i++)
+            for (int i = 0; i < iNumberOfSectionsPerBeam / 2; i++)
             {
                 float fx = i * fx_step;
 
@@ -265,14 +266,12 @@ namespace PFD
                 float fRatio_M_downwind_inLocation_x = cCalcULS_downwind.fEta_722_M_xu; // Lateral-torsional bending
                 float fRatio_V_downwind_inLocation_x = cCalcULS_downwind.fEta_723_11_V_yv; // Combined bending and shear
 
-                // Interaction
-                float fRatio_MandV_upwind_inLocation_x = Math.Max(fRatio_M_upwind_inLocation_x + fRatio_V_upwind_inLocation_x, cCalcULS_upwind.fEta_max);
-                float fRatio_MandV_downwind_inLocation_x = Math.Max(fRatio_M_downwind_inLocation_x + fRatio_V_downwind_inLocation_x, cCalcULS_downwind.fEta_max);
-
-                float fMaximumRatio_Strength = Math.Max(fRatio_MandV_upwind_inLocation_x , fRatio_MandV_downwind_inLocation_x);
+                // Maximum
+                float fRatio_Max_upwind_inLocation_x = cCalcULS_upwind.fEta_max;
+                float fRatio_Max_downwind_inLocation_x = cCalcULS_downwind.fEta_max;
 
                 // Upwind - results
-                if (fRatio_MandV_upwind_inLocation_x > calcModel.DesignRatioStrength_eta)
+                if (fRatio_Max_upwind_inLocation_x > fMaximumRatio_Strength)
                 {
                     cCalcULS_data = cCalcULS_upwind;
                     calcModel.BendingCapacity_Ms = cCalcULS_upwind.fM_s_xu;
@@ -285,11 +284,13 @@ namespace PFD
                     calcModel.BendingCapacity_Mb = cCalcULS_upwind.fM_b_xu;
                     calcModel.ShearCapacity_Vy = cCalcULS_upwind.fV_y_yv;
                     calcModel.ShearCapacity_Vw = cCalcULS_upwind.fV_v_yv;
-                    calcModel.DesignRatioStrength_eta = fRatio_MandV_upwind_inLocation_x;
+                    calcModel.DesignRatioStrength_eta = fRatio_Max_upwind_inLocation_x;
+
+                    fMaximumRatio_Strength = fRatio_Max_upwind_inLocation_x;
                 }
 
                 // Downwind results
-                if (fRatio_MandV_downwind_inLocation_x > calcModel.DesignRatioStrength_eta)
+                if (fRatio_Max_downwind_inLocation_x > fMaximumRatio_Strength)
                 {
                     cCalcULS_data = cCalcULS_downwind;
                     calcModel.BendingCapacity_Ms = cCalcULS_downwind.fM_s_xu;
@@ -302,7 +303,9 @@ namespace PFD
                     calcModel.BendingCapacity_Mb = cCalcULS_downwind.fM_b_xu;
                     calcModel.ShearCapacity_Vy = cCalcULS_downwind.fV_y_yv;
                     calcModel.ShearCapacity_Vw = cCalcULS_downwind.fV_v_yv;
-                    calcModel.DesignRatioStrength_eta = fRatio_MandV_downwind_inLocation_x;
+                    calcModel.DesignRatioStrength_eta = fRatio_Max_downwind_inLocation_x;
+
+                    fMaximumRatio_Strength = fRatio_Max_downwind_inLocation_x;
                 }
             }
 
