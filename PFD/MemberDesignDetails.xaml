@@ -1,0 +1,23 @@
+﻿<Window x:Class="PFD.MemberDesignDetails"
+        xmlns:local="clr-namespace:PFD"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Member Design Details" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="780"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="420"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="5,0"/>
+    </Grid>
+</Window>

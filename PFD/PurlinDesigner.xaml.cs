@@ -523,6 +523,12 @@ namespace PFD
         private void Details_Click(object sender, RoutedEventArgs e)
         {
             // TODO zobrazit detaily vypoctu
+            // TODO - Ondrej - zobecnit a refaktorovat UC_MemberDesign, aby bola funkcia DisplayDesignResultsInGridView dostupna aj bez vytvorenia objektu UC ...
+            UC_MemberDesign temp = new UC_MemberDesign(); // Pomocny objekt, aby sme sa dostali k funkcii DisplayDesignResultsInGridView 
+
+            MemberDesignDetails win = new MemberDesignDetails();
+            temp.DisplayDesignResultsInGridView(ELSType.eLS_ULS, win.Results_GridView, cCalcULS_data);
+            win.Show();
         }
     }
 }

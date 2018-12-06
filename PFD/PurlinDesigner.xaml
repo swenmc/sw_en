@@ -445,6 +445,12 @@
         <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
+        <Button Grid.Row="15" Grid.Column="6" VerticalAlignment="Top" ToolTip="Details" HorizontalAlignment="Left" Name="Details" Click="Details_Click" Width="20" Margin="0 0 10 0" Height="20">
+            <StackPanel>
+                <Image Source="Resources/details.png"></Image>
+            </StackPanel>
+        </Button>
+
         <TextBlock Grid.Row="16" Grid.Column="3" Text="Deflection (G + Q) δ:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
         <TextBox Grid.Row="16" Grid.Column="4" Name ="TextBox_DeflectionGQ_Delta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -568,7 +574,5 @@
                          Text="{Binding Path=DesignRatioDeflectionTotal_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="29" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
-
-        <Button Name="Details" Content="Details" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="15" Grid.Column="6" VerticalAlignment="Top" Width="40" Click="Details_Click" />
     </Grid>
 </Window>

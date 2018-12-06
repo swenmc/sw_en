@@ -355,7 +355,7 @@ namespace PFD
                 // Myslel som ze CEntityGroup alebo CMemberGroup bude nieco ako obyvacka, kuchyna, jedalen a ta bude vediet ze je obyvacka a ktore stolicky, stoly, obrazy v nej su
 
                 // Ak to vidis logicky inak a jednoduchsie, nebranim sa
-                // Mozno ma stolicka nielen ze je stolicka ale aj kde je:)
+                // Mozno ma stolicka vediet nielen to ze je stolicka, ale aj kde je:)
 
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
