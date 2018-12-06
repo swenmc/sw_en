@@ -279,9 +279,9 @@ namespace M_AS4600
 
             // TODO - pridat plasticke moduly do parametrov prierezu
             if (fS_f_xu <= 0)
-                fS_f_xu = 1.01f * fZ_f_xu; // Konzervativne + len 1%
+                fS_f_xu = 1.001f * fZ_f_xu; // Konzervativne + len 0.1%
             if (fS_f_yv <= 0)
-                fS_f_yv = 1.01f * fZ_f_yv; // Konzervativne + len 1%
+                fS_f_yv = 1.001f * fZ_f_yv; // Konzervativne + len 0.1%
 
             fA_f_xu = (float)cs.A_vy;
             fA_w_yv = (float)cs.A_vz;
@@ -444,9 +444,9 @@ namespace M_AS4600
 
             // Bending about xu-axis
             // Default values (used for design ratio in case that fM_xu = 0)
-            fM_o_xu = fM_p_xu;
-            fM_ol_xu = fM_p_xu;
-            fM_od_xu = fM_p_xu;
+            fM_o_xu = fM_y_xu;
+            fM_ol_xu = fM_y_xu;
+            fM_od_xu = fM_y_xu;
 
             fM_be_xu = fM_y_xu; // Default value
             fM_bd_xu = fM_y_xu;
@@ -454,9 +454,9 @@ namespace M_AS4600
 
             // Bending about yv-axis
             // Default values (used for design ratio in case that fM_yv = 0)
-            float fM_o_yv = fM_p_yv;
-            float fM_ol_yv = fM_p_yv;
-            float fM_od_yv = fM_p_yv;
+            float fM_o_yv = fM_y_yv;
+            float fM_ol_yv = fM_y_yv;
+            float fM_od_yv = fM_y_yv;
 
             float fM_be_yv = fM_y_yv; // Default value
             float fM_bd_yv = fM_y_yv;

@@ -258,7 +258,7 @@ namespace MATH
             {
                 float x = num;
                 int i;
-                for (i = 0; i < 20; i++)
+                for (i = 0; i < 100; i++) // !!! Pocet cyklov musi byt dostatocny
                 {
                     x = (((x * x) + num) / (2 * x));
                 }

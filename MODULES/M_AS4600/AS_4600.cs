@@ -589,11 +589,11 @@ namespace M_AS4600
         }
         public float Eq_D111_3__(float fE, float fl_ex, float fr_x)
         {
-            return MathF.Pow2(MathF.fPI) * fE / (fl_ex / fr_x); // Eq. (D1.1.1(3)) // ff_ox
+            return MathF.Pow2(MathF.fPI) * fE / MathF.Pow2(fl_ex / fr_x); // Eq. (D1.1.1(3)) // ff_ox
         }
         public float Eq_D111_4__(float fE, float fl_ey, float fr_y)
         {
-            return MathF.Pow2(MathF.fPI) * fE / (fl_ey / fr_y); // Eq. (D1.1.1(4)) // ff_oy
+            return MathF.Pow2(MathF.fPI) * fE / MathF.Pow2(fl_ey / fr_y); // Eq. (D1.1.1(4)) // ff_oy
         }
         public float Eq_D111_5__(float fG, float fE, float fJ, float fI_w, float fA_g, float fl_ez, float fr_01)
         {
