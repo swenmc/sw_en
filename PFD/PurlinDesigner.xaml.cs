@@ -28,6 +28,7 @@ namespace PFD
         //PurlinDesignerViewModel calcModel;
         CCrSc_TW cs;
         MATERIAL.CMat_03_00 mat;
+        CCalculMember cCalcULS_data;
 
         public PurlinDesigner()
         {
@@ -271,8 +272,9 @@ namespace PFD
                 float fMaximumRatio_Strength = Math.Max(fRatio_MandV_upwind_inLocation_x , fRatio_MandV_downwind_inLocation_x);
 
                 // Upwind - results
-                if (fRatio_MandV_downwind_inLocation_x > calcModel.DesignRatioStrength_eta)
+                if (fRatio_MandV_upwind_inLocation_x > calcModel.DesignRatioStrength_eta)
                 {
+                    cCalcULS_data = cCalcULS_upwind;
                     calcModel.BendingCapacity_Ms = cCalcULS_upwind.fM_s_xu;
                     calcModel.BendingCapacity_Mb = cCalcULS_upwind.fM_b_xu;
                     calcModel.ShearCapacity_Vy = cCalcULS_upwind.fV_y_yv;
@@ -283,6 +285,7 @@ namespace PFD
                 // Downwind results
                 if (fRatio_MandV_downwind_inLocation_x > calcModel.DesignRatioStrength_eta)
                 {
+                    cCalcULS_data = cCalcULS_downwind;
                     calcModel.BendingCapacity_Ms = cCalcULS_downwind.fM_s_xu;
                     calcModel.BendingCapacity_Mb = cCalcULS_downwind.fM_b_xu;
                     calcModel.ShearCapacity_Vy = cCalcULS_downwind.fV_y_yv;
@@ -482,6 +485,11 @@ namespace PFD
             vm_CalcModel.WindLoadInternalPressure_pimax = vm_WindPressure.WindPressure_pimax * 0.001f;
             vm_CalcModel.WindLoadExternalPressure_pemin = vm_WindPressure.WindPressure_pemin * 0.001f;
             vm_CalcModel.WindLoadExternalPressure_pemax = vm_WindPressure.WindPressure_pemin * 0.001f;
+        }
+
+        private void Details_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO zobrazit detaily vypoctu
         }
     }
 }

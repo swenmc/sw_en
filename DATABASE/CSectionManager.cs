@@ -15,7 +15,7 @@ namespace DATABASE
         {
             CSectionProperties properties;
             List<CSectionProperties> items = new List<CSectionProperties>();
-            
+
             using (SQLiteConnection conn = new SQLiteConnection(ConfigurationManager.ConnectionStrings["SectionsSQLiteDB"].ConnectionString))
             {
                 conn.Open();
