@@ -358,6 +358,19 @@ namespace PFD
             vm.DeflectionTotalDownwind_Delta *= 1000f;
             vm.DeflectionTotalLimit_Delta_lim *= 1000f;
             vm.DesignRatioDeflectionTotal_eta *= 100;
+
+            // Set background colors
+
+            // TODO - doplnit i pre dalsie textboxy
+            if (vm.DesignRatioStrength_eta > 100)
+                TextBox_DesignRatioStrength_eta.Background = Brushes.Red;
+            else
+                TextBox_DesignRatioStrength_eta.Background = Brushes.LightGreen;
+
+            if (vm.DesignRatioDeflectionTotal_eta > 100)
+                TextBox_DesignRatioDeflectionTotal_eta.Background = Brushes.Red;
+            else
+                TextBox_DesignRatioDeflectionTotal_eta.Background = Brushes.LightGreen;
         }
 
         public void TextBoxLostFocus()
