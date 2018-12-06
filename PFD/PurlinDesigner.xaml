@@ -16,11 +16,11 @@
     <Grid Name="ParamsGrid" Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="90"/>
             <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="90"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -104,7 +104,7 @@
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Cross-section:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_CrossSection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+        <ComboBox Grid.Row="4" Grid.Column="1" Name ="Combobox_CrossSection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=CrossSectionIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="5" Grid.Column="0" Text="Area Ag:" HorizontalAlignment="Left" 
@@ -125,7 +125,7 @@
 
         <TextBlock Grid.Row="7" Grid.Column="0" Text="Material:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_Material" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+        <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_Material" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=MaterialIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="8" Grid.Column="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Top" />
@@ -187,7 +187,7 @@
         <TextBlock Grid.Row="13" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <Button Grid.Row="14" Grid.Column="1" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
+        <Button Grid.Row="14" Grid.Column="2" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
             <StackPanel>
                 <Image Source="Resources/windgust.png"></Image>
             </StackPanel>
@@ -365,36 +365,84 @@
         <TextBlock Grid.Row="5" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="6" Grid.Column="3" Text="Bending Capacity Mb:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="6" Grid.Column="3" Text="Elastic Buckling Moment Mo:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_BendingCapacity_Mb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_ElasticBucklingMoment_Mo" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=BendingCapacity_Mb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=ElasticBucklingMoment_Mo, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="6" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="7" Grid.Column="3" Text="Shear Capacity Vy:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="7" Grid.Column="3" Text="Nominal Member Capacity Mbe:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="7" Grid.Column="4" Name ="TextBox_ShearCapacity_Vy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="7" Grid.Column="4" Name ="TextBox_NominalMemberCapacity_Mbe" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=NominalMemberCapacity_Mbe, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="7" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="8" Grid.Column="3" Text="Elastic Buckling Moment Mol:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="8" Grid.Column="4" Name ="TextBox_ElasticBucklingMoment_Mol" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ElasticBucklingMoment_Mol, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="9" Grid.Column="3" Text="Nominal Member Capacity Mbl:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_NominalMemberCapacity_Mbl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=NominalMemberCapacity_Mbl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="10" Grid.Column="3" Text="Elastic Buckling Moment Mod:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_ElasticBucklingMoment_Mod" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ElasticBucklingMoment_Mod, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="11" Grid.Column="3" Text="Nominal Member Capacity Mbd:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_NominalMemberCapacity_Mbd" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=NominalMemberCapacity_Mbd, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="12" Grid.Column="3" Text="Bending Capacity Mb:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="12" Grid.Column="4" Name ="TextBox_BendingCapacity_Mb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=BendingCapacity_Mb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="12" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kNm]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="13" Grid.Column="3" Text="Shear Capacity Vy:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="13" Grid.Column="4" Name ="TextBox_ShearCapacity_Vy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ShearCapacity_Vy, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="7" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="13" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="8" Grid.Column="3" Text="Shear Capacity Vw:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="14" Grid.Column="3" Text="Shear Capacity Vw:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="8" Grid.Column="4" Name ="TextBox_ShearCapacity_Vw" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="14" Grid.Column="4" Name ="TextBox_ShearCapacity_Vw" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ShearCapacity_Vw, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="14" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="10" Grid.Column="3" Text="Design Ratio - Strength η:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="15" Grid.Column="3" Text="Design Ratio - Strength η:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_DesignRatioStrength_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="15" Grid.Column="4" Name ="TextBox_DesignRatioStrength_eta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=DesignRatioStrength_eta, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="16" Grid.Column="3" Text="Deflection (G + Q) δ:" HorizontalAlignment="Left" 
@@ -521,6 +569,6 @@
         <TextBlock Grid.Row="29" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[%]" VerticalAlignment="Top"/>
 
-        <Button Name="Details" Content="Details" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="11" VerticalAlignment="Top" Width="75" Click="Details_Click" Grid.Column="3"/>
+        <Button Name="Details" Content="Details" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Row="15" Grid.Column="6" VerticalAlignment="Top" Width="40" Click="Details_Click" />
     </Grid>
 </Window>

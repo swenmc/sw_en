@@ -906,20 +906,22 @@ namespace M_AS4600
                             float ratio_temp2 = ft_f / ft_w;
 
                             if (ratio_temp2 <= 0.5f)
-                                return 0.2f; // ?????
+                                return 0.23f; // ?????
                             else if (ratio_temp2 < 1.6f)
                                 return 0.82f * ratio_temp2 - 0.41f;
                             else
                                 return 0.9f;
                         }
                     default:
-                        return 0.2f; //?????
+                        return 0.23f; //?????
                 }
             }
             else
             {
-                //b_f / d_1 is greater than limit
-                return 0.0f; // Error
+                // TODO - vyriesit co sa ma nastavit ak pomer nesplna pozadovany limit
+                return 0.23f; //?????
+                // b_f / d_1 is greater than limit
+                // return 0.0f; // Error
             }
         }
         public float Eq_D3_c____(SectionShape_Table_D3 eShape, float fb_f, float fa, float fd_1, float ft_f, float ft_w)

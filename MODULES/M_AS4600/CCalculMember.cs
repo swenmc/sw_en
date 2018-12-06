@@ -24,6 +24,13 @@ namespace M_AS4600
         eAS          // Asymmetric
     };
 
+    public enum SecShape_OSC
+    {
+        eO,      // Open section It.Bredt / It << 1
+        eS,      // Solid bar (flat, round, ...)
+        eC       // Closed section (one or more closed cells) It.Bredt / It > 0.95
+    };
+
     public enum Cb_option
     {
         eCb_1,         // Cb = 1.0
@@ -132,7 +139,12 @@ namespace M_AS4600
         public float fA_cfl, fJ_cfl, fI_x_cfl, fI_y_cfl, fI_xy_cfl, fI_w_cfl;
 
         public float fPhi_t = 0.9f; // Todo
-        public float fPhi_b_section = 0.95f;
+
+        /*
+         For members subject to bending, meeting the geometric requirements of Clause 7.1.2, phib shall be taken as 0.90. 
+         For all other members subject to bending, phib specified in Clause 1.6.3(c)(i) applies.
+        */
+        public float fPhi_b_section = 0.95f; // TODO - Moze sa pouzit len ak je section splna podmienky 7.1.2
         public float fPhi_b = 0.9f;
         public float fPhi_v = 0.9f;
         public float fPhi_c = 0.85f;
@@ -191,6 +203,7 @@ namespace M_AS4600
 
         public float fEta_Nt = 0.0f;
         public float fEta_721_N = 0.0f;
+        public float fEta_722_M_xu = 0.0f;
         public float fEta_723_9_xu_yv = 0.0f;
         public float fEta_7232_xu = 0.0f; // M* / (phi_b * Ms)
         public float fEta_7232_yv = 0.0f; // V* / (phi_v * Vv)
@@ -289,7 +302,7 @@ namespace M_AS4600
 
             // TODO - pridat smykove plochy do parametrov prierezu (malo by sa jednat o celkovu smykovu plochy, obe pasnice resp stojiny atd)
             if (fA_f_xu <= 0)
-                fA_f_xu = ft * fb;
+                fA_f_xu = 2 * ft * fb;
             if (fA_w_yv <= 0)
                 fA_w_yv = ft * fh;
 
@@ -484,16 +497,30 @@ namespace M_AS4600
                         break;
                 }
 
-                fC_b = eq.Eq_D211_2__(fM_max, fM_14, fM_24, fM_34);
+                SecShape_OSC eCS_type_OSC = SecShape_OSC.eO; // TODO - dopracovat identifikaciu tvaru do databazy
 
-                if (eCS_sym == SecSymmetry.eDS || eCS_sym == SecSymmetry.eMS_xu || eCS_shape == SecShape.eZ)
-                    fM_o_xu = eq.Eq_D211_1__(fC_b, fA_g, fr_o1, ff_oy, ff_oz); // D 2.1.1.2(a)
-                                                                               //else if()
-                                                                               // D 2.1.1.2(b)
-                else if (eCS_sym == SecSymmetry.eCS && eCS_shape == SecShape.eZ)
-                    fM_o_xu = eq.Eq_D211_7__(fE, fC_b, fh, fI_yc, fl_LTB); // D 2.1.1.3 - Eq. D 2.1.1(7)
+                if (cs.I_t > 1e-8) // TODO - upravit a nacitat z databazy
+                    eCS_type_OSC = SecShape_OSC.eC;
+
+                if (eCS_type_OSC == SecShape_OSC.eO) // Open
+                {
+                    if (eCS_sym == SecSymmetry.eDS || eCS_sym == SecSymmetry.eMS_xu || eCS_shape == SecShape.eZ)
+                        fM_o_xu = eq.Eq_D211_1__(fC_b, fA_g, fr_o1, ff_oy, ff_oz); // D 2.1.1.2(a)
+                                                                                   //else if()
+                                                                                   // D 2.1.1.2(b)
+                    else if (eCS_sym == SecSymmetry.eCS && eCS_shape == SecShape.eZ)
+                        fM_o_xu = eq.Eq_D211_7__(fE, fC_b, fh, fI_yc, fl_LTB); // D 2.1.1.3 - Eq. D 2.1.1(7)
+                    else
+                        fM_o_xu = 0.0f; // Neni definovano, zadat manualne
+                }
+                else if (eCS_type_OSC == SecShape_OSC.eC) // Closed
+                {
+                    fM_o_xu = (float)((fC_b * MathF.fPI / fl_LTB) * Math.Sqrt(fE * fG * cs.I_t * cs.I_z));
+                }
                 else
+                {
                     fM_o_xu = 0.0f; // Neni definovano, zadat manualne
+                }
 
                 fM_be_xu = eq.Eq_7222____(fM_o_xu, fM_y_xu);
 
@@ -562,14 +589,16 @@ namespace M_AS4600
             float fk_v_yv;
 
             TransStiff_D3 eTrStiff = TransStiff_D3.eD3c_StiffFlanges; // Todo
+            float fd_1_straightToTotal = 0.35f; // TODO - urcit pri prierezoch pomer medzi nevystuzenou castou stojiny a celkovou vyskou
+            float fd_1_straight = fd_1_straightToTotal * fd_1;
 
             switch (eTrStiff)
             {
                 case TransStiff_D3.eD3b_HasTrStiff:
-                    fk_v_yv = eq.Eq_D3_b____(fa, fd_1);
+                    fk_v_yv = eq.Eq_D3_b____(fa, fd_1_straight);
                     break;
                 case TransStiff_D3.eD3c_StiffFlanges:
-                    fk_v_yv = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, fd_1, ft_f, ft_w);
+                    fk_v_yv = eq.Eq_D3_c____(eCS_shape_Tab_D3, fb_f, fa, fd_1_straight, ft_f, ft_w);
                     break;
                 case TransStiff_D3.eD3a_NoTrStiff:
                 default:
@@ -577,7 +606,7 @@ namespace M_AS4600
                     break;
             }
 
-            fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, fd_1, ft);
+            fV_cr_yv = eq.Eq_D3_1____(fE, fA_w_yv, fk_v_yv, fNu, fd_1_straight, ft);
 
             fLambda_v_yv = eq.Eq_723_4___(fV_y_yv, fV_cr_yv);
 
@@ -610,6 +639,10 @@ namespace M_AS4600
             float fEta_723_12_xu_yv_13;
 
             fM_b_xu =  MathF.Min(fM_be_xu, MathF.Min(fM_bl_xu, fM_bd_xu)); // Design resistance value 7.2.2
+
+            fEta_722_M_xu = Math.Abs(sDIF.fM_xu) / (fPhi_b * fM_b_xu); // 7.2.2
+            fEta_max = MathF.Max(fEta_max, fEta_722_M_xu);
+
             float fM_b_xu_drv;
             float fV_v_yv_drv;
 
@@ -663,6 +696,7 @@ namespace M_AS4600
 
             // Validation - negative design ratio
             if (fEta_721_N < 0 ||
+                fEta_722_M_xu < 0 ||
                 fEta_723_9_xu_yv < 0 ||
                 fEta_723_10_xu < 0 ||
                 fEta_723_11_xu_yv < 0 ||
@@ -684,6 +718,7 @@ namespace M_AS4600
             if (bIsDebugging)
                 MessageBox.Show("Calculation finished.\n"
                               + "Design Ratio η = " + Math.Round(fEta_721_N, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.1" + "\n"
+                              + "Design Ratio η = " + Math.Round(fEta_722_M_xu, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.2" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_723_9_xu_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(9)" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_723_10_xu, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(10)" + "\n"
                               + "Design Ratio η = " + Math.Round(fEta_723_11_xu_yv, iNumberOfDecimalPlaces) + " [-]" + "\t" + " 7.2.3(11)" + "\n"

@@ -239,7 +239,7 @@ namespace PFD
 
                 CCalculMember cCalcULS_upwind = new CCalculMember(false, sDIF_x_temp_upwind, member, sBucklingLengthFactors, sMomentValuesForCb_upwind);
 
-                float fRatio_M_upwind_inLocation_x = cCalcULS_upwind.fEta_7232_xu;
+                float fRatio_M_upwind_inLocation_x = cCalcULS_upwind.fEta_722_M_xu; // Lateral-torsional bending
                 float fRatio_V_upwind_inLocation_x = cCalcULS_upwind.fEta_7232_yv; // Combined bending and shear
 
                 // Downwind
@@ -262,8 +262,8 @@ namespace PFD
 
                 CCalculMember cCalcULS_downwind = new CCalculMember(false, sDIF_x_temp_downwind, member, sBucklingLengthFactors, sMomentValuesForCb_downwind);
 
-                float fRatio_M_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_xu;
-                float fRatio_V_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_yv;
+                float fRatio_M_downwind_inLocation_x = cCalcULS_downwind.fEta_722_M_xu; // Lateral-torsional bending
+                float fRatio_V_downwind_inLocation_x = cCalcULS_downwind.fEta_7232_yv; // Combined bending and shear
 
                 // Interaction
                 float fRatio_MandV_upwind_inLocation_x = Math.Max(fRatio_M_upwind_inLocation_x + fRatio_V_upwind_inLocation_x, cCalcULS_upwind.fEta_max);
@@ -276,6 +276,12 @@ namespace PFD
                 {
                     cCalcULS_data = cCalcULS_upwind;
                     calcModel.BendingCapacity_Ms = cCalcULS_upwind.fM_s_xu;
+                    calcModel.ElasticBucklingMoment_Mo = cCalcULS_upwind.fM_o_xu;
+                    calcModel.NominalMemberCapacity_Mbe = cCalcULS_upwind.fM_be_xu;
+                    calcModel.ElasticBucklingMoment_Mol = cCalcULS_upwind.fM_ol_xu;
+                    calcModel.NominalMemberCapacity_Mbl = cCalcULS_upwind.fM_bl_xu;
+                    calcModel.ElasticBucklingMoment_Mod = cCalcULS_upwind.fM_od_xu;
+                    calcModel.NominalMemberCapacity_Mbd = cCalcULS_upwind.fM_bd_xu;
                     calcModel.BendingCapacity_Mb = cCalcULS_upwind.fM_b_xu;
                     calcModel.ShearCapacity_Vy = cCalcULS_upwind.fV_y_yv;
                     calcModel.ShearCapacity_Vw = cCalcULS_upwind.fV_v_yv;
@@ -287,6 +293,12 @@ namespace PFD
                 {
                     cCalcULS_data = cCalcULS_downwind;
                     calcModel.BendingCapacity_Ms = cCalcULS_downwind.fM_s_xu;
+                    calcModel.ElasticBucklingMoment_Mo = cCalcULS_downwind.fM_o_xu;
+                    calcModel.NominalMemberCapacity_Mbe = cCalcULS_upwind.fM_be_xu;
+                    calcModel.ElasticBucklingMoment_Mol = cCalcULS_downwind.fM_ol_xu;
+                    calcModel.NominalMemberCapacity_Mbl = cCalcULS_downwind.fM_bl_xu;
+                    calcModel.ElasticBucklingMoment_Mod = cCalcULS_downwind.fM_od_xu;
+                    calcModel.NominalMemberCapacity_Mbd = cCalcULS_downwind.fM_bd_xu;
                     calcModel.BendingCapacity_Mb = cCalcULS_downwind.fM_b_xu;
                     calcModel.ShearCapacity_Vy = cCalcULS_downwind.fV_y_yv;
                     calcModel.ShearCapacity_Vw = cCalcULS_downwind.fV_v_yv;
@@ -338,6 +350,14 @@ namespace PFD
             vm.ShearForceDownwind_V_asterix *= 0.001f;
 
             vm.BendingCapacity_Ms *= 0.001f;
+
+            vm.ElasticBucklingMoment_Mo *= 0.001f;
+            vm.NominalMemberCapacity_Mbe *= 0.001f;
+            vm.ElasticBucklingMoment_Mol *= 0.001f;
+            vm.NominalMemberCapacity_Mbl *= 0.001f;
+            vm.ElasticBucklingMoment_Mod *= 0.001f;
+            vm.NominalMemberCapacity_Mbd *= 0.001f;
+
             vm.BendingCapacity_Mb *= 0.001f;
             vm.ShearCapacity_Vy *= 0.001f;
             vm.ShearCapacity_Vw *= 0.001f;

@@ -60,6 +60,12 @@ namespace PFD
         private float MShearForceDownwind_V_asterix;
 
         private float MBendingCapacity_Ms;
+        private float MElasticBucklingMoment_Mo;
+        private float MNominalMemberCapacity_Mbe;
+        private float MElasticBucklingMoment_Mol;
+        private float MNominalMemberCapacity_Mbl;
+        private float MElasticBucklingMoment_Mod;
+        private float MNominalMemberCapacity_Mbd;
         private float MBendingCapacity_Mb;
         private float MShearCapacity_Vy; // Yield shear force
         private float MShearCapacity_Vw;
@@ -559,6 +565,96 @@ namespace PFD
                 MBendingCapacity_Ms = value;
 
                 NotifyPropertyChanged("BendingCapacity_Ms");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ElasticBucklingMoment_Mo
+        {
+            get
+            {
+                return MElasticBucklingMoment_Mo;
+            }
+            set
+            {
+                MElasticBucklingMoment_Mo = value;
+
+                NotifyPropertyChanged("ElasticBucklingMoment_Mo");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float NominalMemberCapacity_Mbe
+        {
+            get
+            {
+                return MNominalMemberCapacity_Mbe;
+            }
+            set
+            {
+                MNominalMemberCapacity_Mbe = value;
+
+                NotifyPropertyChanged("NominalMemberCapacity_Mbe");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ElasticBucklingMoment_Mol
+        {
+            get
+            {
+                return MElasticBucklingMoment_Mol;
+            }
+            set
+            {
+                MElasticBucklingMoment_Mol = value;
+
+                NotifyPropertyChanged("ElasticBucklingMoment_Mol");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float NominalMemberCapacity_Mbl
+        {
+            get
+            {
+                return MNominalMemberCapacity_Mbl;
+            }
+            set
+            {
+                MNominalMemberCapacity_Mbl = value;
+
+                NotifyPropertyChanged("NominalMemberCapacity_Mbl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ElasticBucklingMoment_Mod
+        {
+            get
+            {
+                return MElasticBucklingMoment_Mod;
+            }
+            set
+            {
+                MElasticBucklingMoment_Mod = value;
+
+                NotifyPropertyChanged("ElasticBucklingMoment_Mod");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float NominalMemberCapacity_Mbd
+        {
+            get
+            {
+                return MNominalMemberCapacity_Mbd;
+            }
+            set
+            {
+                MNominalMemberCapacity_Mbd = value;
+
+                NotifyPropertyChanged("NominalMemberCapacity_Mbd");
             }
         }
 
