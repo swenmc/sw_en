@@ -68,7 +68,7 @@ namespace EXPIMP
             DrawFSAddress(gfx);
             gfx.Dispose();
 
-            DrawCanvas_PDF(canvas, page);
+            DrawCanvas_PDF(canvas, page, canvas.RenderSize.Width);
 
             //double height = DrawCanvasImage(gfx, canvas);
             //DrawImage(gfx);
@@ -97,7 +97,7 @@ namespace EXPIMP
             document = new PdfDocument();
             document.Info.Title = "Export from FormSteel software";
         }
-        public static void AddPlateToPDF(Canvas canvas, CPlate plate, CProductionInfo pInfo)
+        public static void AddPlateToPDF(Canvas canvas, double canvasWidth, CPlate plate, CProductionInfo pInfo)
         {
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
@@ -111,7 +111,7 @@ namespace EXPIMP
             DrawFSAddress(gfx);
             gfx.Dispose();
 
-            DrawCanvas_PDF(canvas, page);
+            DrawCanvas_PDF(canvas, page, canvasWidth);
         }
 
         public static void AddPlatesParamsTableToDocumentOnNewPage(List<string[]> tableParams)
@@ -139,11 +139,11 @@ namespace EXPIMP
             }
         }
 
-        public static void DrawCanvas_PDF(Canvas canvas, PdfPage page)
+        public static void DrawCanvas_PDF(Canvas canvas, PdfPage page, double canvasWidth)
         {
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            double scaleFactor = gfx.PageSize.Width / canvas.RenderSize.Width * 0.9; //90%
+            double scaleFactor = gfx.PageSize.Width / canvasWidth * 0.9; //90%
             double marginLeft = gfx.PageSize.Width * 0.1 / 2.0;
             double marginTop = gfx.PageSize.Height * 0.3 / 2.97;
 

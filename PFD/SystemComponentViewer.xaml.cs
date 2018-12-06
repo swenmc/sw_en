@@ -872,8 +872,11 @@ namespace PFD
             SystemComponentViewerViewModel vm = this.DataContext as SystemComponentViewerViewModel;
             // Create 2D page
             page2D = new Canvas();
-
+                        
             SetFrame2DSize();
+
+            //page2D.RenderSize = new System.Windows.Size(Frame2DWidth, Frame2DHeight);            
+
             if (useTransformOptions)
             {
                 if (vm.MirrorX) plate.MirrorPlateAboutX();
@@ -2124,7 +2127,7 @@ namespace PFD
                         if (page2D == null) { MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name); return; }
                         
                         //CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
-                        CExportToPDF.AddPlateToPDF((Canvas)Frame2D.Content, plate, pInfo);
+                        CExportToPDF.AddPlateToPDF(page2D, ((Canvas)Frame2D.Content).RenderSize.Width, plate, pInfo);
 
                         float fUnitFactor_Length_m_to_mm = 1000f;
 
