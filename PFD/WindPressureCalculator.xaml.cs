@@ -271,5 +271,12 @@ namespace PFD
                 return -1;
             }
         }
+
+        public void WindPressureCalculator_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            WindPressureCalculatorViewModel w = sender as WindPressureCalculatorViewModel;
+
+            // TODO - Ondrej
+        }
     }
 }
