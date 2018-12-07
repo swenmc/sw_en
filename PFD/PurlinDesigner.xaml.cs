@@ -513,6 +513,7 @@ namespace PFD
 
             WindPressureCalculatorViewModel vm_WindPressure = window_windpressure.DataContext as WindPressureCalculatorViewModel;
 
+            // TODO - 169
             // TODO - Ondrej - Pri zavreti okna WindPressureCalculator nastavit hodnoty z okna WindPressureCalculator do PurlinDesigner
             // Reakcia na zavretie okna - nastavit tieto hodnoty do VM purlin designer
             //window_windpressure += window_windpressure.WindPressureCalculator_Closing();
@@ -525,7 +526,7 @@ namespace PFD
 
         private void Details_Click(object sender, RoutedEventArgs e)
         {
-            // TODO zobrazit detaily vypoctu
+            // TODO - 171
             // TODO - Ondrej - zobecnit a refaktorovat UC_MemberDesign, aby bola funkcia DisplayDesignResultsInGridView dostupna aj bez vytvorenia objektu UC ...
             UC_MemberDesign temp = new UC_MemberDesign(); // Pomocny objekt, aby sme sa dostali k funkcii DisplayDesignResultsInGridView 
 

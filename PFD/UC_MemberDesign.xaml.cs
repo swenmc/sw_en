@@ -420,7 +420,7 @@ namespace PFD
             table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
             table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
 
-            // TODO - umoznit formatovat vzhlad datagridu, asi by bolo dobre urobit nejako takto
+            // TODO 170 - umoznit formatovat vzhlad datagridu, asi by bolo dobre urobit nejako takto
 
             /*
               var centerTextSetter = new Style(typeof(DataGridCell))
