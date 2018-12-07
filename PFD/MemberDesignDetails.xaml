@@ -8,16 +8,16 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Member Design Details" Height="450" Width="800">
+        Title="Member Design Details" Height="380" Width="450">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="780"/>
+            <ColumnDefinition Width="440"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="420"/>
+            <RowDefinition Height="340"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="5,0"/>
+        <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="2,2,2,2"/>
     </Grid>
 </Window>
