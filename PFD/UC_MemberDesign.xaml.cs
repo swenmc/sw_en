@@ -420,6 +420,31 @@ namespace PFD
             table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
             table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
 
+            // TODO - umoznit formatovat vzhlad datagridu, asi by bolo dobre urobit nejako takto
+
+            /*
+              var centerTextSetter = new Style(typeof(DataGridCell))
+              {
+                  Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) }
+              };
+
+              DgDbNames.Columns.Add(new DataGridTextColumn()
+              {
+                  Header = "Db Name",
+                  Binding = new System.Windows.Data.Binding("DbName"),
+                  IsReadOnly = true,
+                  Width = new DataGridLength(0.2, DataGridLengthUnitType.Star),
+                  CellStyle = centerTextSetter
+              });
+            */
+
+            // Set right alignment of datagrid cell text
+            // TODO - Ondrej - umoznit nastavit rozne pre jednotlive stlpce
+
+            Style s = new Style();
+            s.Setters.Add(new Setter(DataGridCell.HorizontalAlignmentProperty, HorizontalAlignment.Right));
+            dataGrid.CellStyle = s;
+
             // Create Datases
             ds = new DataSet();
             // Add Table to Dataset
@@ -474,6 +499,13 @@ namespace PFD
 
         private void SetResultsDetailsFor_ULS(CCalculMember obj_CalcDesign)
         {
+            float fUnitFactor_Force = 0.001f;     // from N to kN
+            float fUnitFactor_Moment = 0.001f;    // from Nm to kNm
+            float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
+
+            int iNumberOfDecimalPlaces = 3;
+
+
             // Display results in datagrid
             // AS 4600 output variables
 
@@ -485,11 +517,11 @@ namespace PFD
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("N t,min");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fN_t_min.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_t_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[N]");
 
                 zoznamMenuNazvy.Add("η Nt");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_Nt.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_Nt, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
             }
 
@@ -498,83 +530,83 @@ namespace PFD
             if (obj_CalcDesign.fEta_721_N > 0 || obj_CalcDesign.fEta_722_M_xu > 0)
             {
                 zoznamMenuNazvy.Add("f ox");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ox.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_ox * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Pa]");
 
                 zoznamMenuNazvy.Add("f oy");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Pa]");
 
                 zoznamMenuNazvy.Add("f oz");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oz.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oz * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Pa]");
 
                 if (obj_CalcDesign.fEta_721_N > 0)
                 {
                     zoznamMenuNazvy.Add("f oc");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oc.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oc * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[Pa]");
 
                     zoznamMenuNazvy.Add("λ c");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_c.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_c, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
 
                     zoznamMenuNazvy.Add("N y");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_y.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_y * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     zoznamMenuNazvy.Add("N oc");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_oc.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_oc * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     zoznamMenuNazvy.Add("N ce");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ce.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_ce * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     // Local Buckling
                     zoznamMenuNazvy.Add("f ol");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.ff_oy.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[Pa]");
 
                     zoznamMenuNazvy.Add("λ l");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_l.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_l, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
 
                     zoznamMenuNazvy.Add("N ol");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_ol.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_ol * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     zoznamMenuNazvy.Add("N cl");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cl.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_cl * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     // Distorsial Buckling
                     zoznamMenuNazvy.Add("f od");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_od * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[Pa]");
 
                     zoznamMenuNazvy.Add("λ d");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.flambda_d.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_d, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
 
                     zoznamMenuNazvy.Add("N od");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_od.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_od * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     zoznamMenuNazvy.Add("N cd");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_cd.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_cd * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     zoznamMenuNazvy.Add("N c,min");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fN_c_min.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_c_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[N]");
 
                     zoznamMenuNazvy.Add("φ c");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_c.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_c, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
 
                     zoznamMenuNazvy.Add("η Nc");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_721_N.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_721_N, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
                 }
             }
@@ -582,76 +614,76 @@ namespace PFD
             // Bending
 
             zoznamMenuNazvy.Add("M p,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_xu.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_p_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
             zoznamMenuNazvy.Add("M y,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_xu.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_y_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
             zoznamMenuNazvy.Add("M p,y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_p_yv.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_p_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
             zoznamMenuNazvy.Add("M y,y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_y_yv.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_y_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
             if (obj_CalcDesign.fEta_722_M_xu > 0)
             {
                 // Bending about x/u axis
                 zoznamMenuNazvy.Add("C b");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fC_b.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fC_b, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("M o,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_o_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_o_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 zoznamMenuNazvy.Add("M be,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_be_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_be_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 // Local Buckling
                 zoznamMenuNazvy.Add("f ol,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.ff_ol_bend.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_ol_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Pa]");
 
                 zoznamMenuNazvy.Add("M ol,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_ol_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_ol_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 zoznamMenuNazvy.Add("λ l,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_l_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_l_xu, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("M bl,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bl_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_bl_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 // Distrosial buckling
                 zoznamMenuNazvy.Add("f od,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.ff_od_bend.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_od_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Pa]");
 
                 zoznamMenuNazvy.Add("M od,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_od_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_od_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 zoznamMenuNazvy.Add("λ d,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_d_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_d_xu, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("M bd,x");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_bd_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_bd_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 zoznamMenuNazvy.Add("φ b");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_b.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_b, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_722_M_xu.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_722_M_xu, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
             }
 
@@ -659,62 +691,62 @@ namespace PFD
             if (obj_CalcDesign.fEta_723_9_xu_yv > 0)
             {
                 zoznamMenuNazvy.Add("V y,y");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fV_y_yv.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_y_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[N]");
 
                 zoznamMenuNazvy.Add("V v,y");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fV_v_yv.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_v_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[N]");
 
                 zoznamMenuNazvy.Add("V cr,y");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fV_cr_yv.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_cr_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[N]");
 
                 zoznamMenuNazvy.Add("λ v,y");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fLambda_v_yv.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_v_yv, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("φ v");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_v.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_v, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_9_xu_yv.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_9_xu_yv, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_11_V_yv.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_11_V_yv, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 if (obj_CalcDesign.fEta_723_10_xu > 0)
                 {
                     zoznamMenuNazvy.Add("η");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_10_xu.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_10_xu, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
                 }
            
                 if(obj_CalcDesign.fEta_723_12_xu_yv_10 > 0)
                 {
                     zoznamMenuNazvy.Add("η");
-                    zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_723_12_xu_yv_10.ToString());
+                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces).ToString());
                     zoznamMenuJednotky.Add("[-]");
                 }
             }
 
             // Interation of internal forces
             zoznamMenuNazvy.Add("M s,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_xu.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
             zoznamMenuNazvy.Add("M b,x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fM_b_xu.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_b_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[Nm]");
 
             // Compression and bending
             if (obj_CalcDesign.fEta_721_N > 0 && obj_CalcDesign.fEta_724 > 0)
             {
                 zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_724.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_724, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
             }
 
@@ -722,25 +754,25 @@ namespace PFD
             if (obj_CalcDesign.fEta_Nt > 0 && obj_CalcDesign.fEta_725_1 > 0)
             {
                 zoznamMenuNazvy.Add("M s,x,f");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_xu_f.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_xu_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 zoznamMenuNazvy.Add("M s,y,f");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fM_s_yv_f.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_yv_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[Nm]");
 
                 zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_725_1.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_725_1, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
 
                 zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_725_2.ToString());
+                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_725_2, iNumberOfDecimalPlaces).ToString());
                 zoznamMenuJednotky.Add("[-]");
             }
 
             // Maximum design ratio
             zoznamMenuNazvy.Add("η max");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_max.ToString());
+            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_max, iNumberOfDecimalPlaces).ToString());
             zoznamMenuJednotky.Add("[-]");
         }
 
