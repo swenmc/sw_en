@@ -98,6 +98,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0.5 || value > 50)
+                    throw new ArgumentException("Purlin length must be between 0.5 and 50 [m]");
+
                 MLength_L = value;
 
                 NotifyPropertyChanged("Length_L");
@@ -113,6 +116,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0.5 || value > Length_L)
+                    throw new ArgumentException("Distance of bracing blocks must be between 0.5 and " + Math.Round(Length_L,3).ToString() + " [m]");
+
                 MBracingLength_Lb = value;
 
                 NotifyPropertyChanged("BracingLength_Lb");
@@ -128,6 +134,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0.5 || value > 10)
+                    throw new ArgumentException("Tributary width must be between 0.5 and 10 [m]");
+
                 MTributaryWidth_B = value;
 
                 NotifyPropertyChanged("TributaryWidth_B");
@@ -248,6 +257,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0 || value > 1)
+                    throw new ArgumentException("Load value must be between 0 and 1 [kN/m²]");
+
                 MCladdingSelfWeight_gc = value;
 
                 NotifyPropertyChanged("CladdingSelfWeight_gc");
@@ -263,6 +275,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0 || value > 5)
+                    throw new ArgumentException("Load value must be between 0 and 5 [kN/m²]");
+
                 MAdditionalDeadLoad_g = value;
 
                 NotifyPropertyChanged("AdditionalDeadLoad_g");
@@ -278,6 +293,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0 || value > 5)
+                    throw new ArgumentException("Load value must be between 0 and 5 [kN/m²]");
+
                 MLiveLoad_q = value;
 
                 NotifyPropertyChanged("LiveLoad_q");
@@ -293,6 +311,9 @@ namespace PFD
             }
             set
             {
+                if (value < 0 || value > 10)
+                    throw new ArgumentException("Load value must be between 0 and 10 [kN/m²]");
+
                 MSnowLoad_s = value;
 
                 NotifyPropertyChanged("SnowLoad_s");
@@ -308,6 +329,9 @@ namespace PFD
             }
             set
             {
+                if (value < -2 || value > 2)
+                    throw new ArgumentException("Load value must be between -2 and 2 [kN/m²]");
+
                 MWindLoadInternalPressure_pimin = value;
 
                 NotifyPropertyChanged("WindLoadInternalPressure_pimin");
@@ -323,6 +347,9 @@ namespace PFD
             }
             set
             {
+                if (value < -2 || value > 2)
+                    throw new ArgumentException("Load value must be between -2 and 2 [kN/m²]");
+
                 MWindLoadInternalPressure_pimax = value;
 
                 NotifyPropertyChanged("WindLoadInternalPressure_pimax");
@@ -338,6 +365,9 @@ namespace PFD
             }
             set
             {
+                if (value < -5 || value > 5)
+                    throw new ArgumentException("Load value must be between -5 and 5 [kN/m²]");
+
                 MWindLoadExternalPressure_pemin = value;
 
                 NotifyPropertyChanged("WindLoadExternalPressure_pemin");
@@ -353,6 +383,9 @@ namespace PFD
             }
             set
             {
+                if (value < -5 || value > 5)
+                    throw new ArgumentException("Load value must be between -5 and 5 [kN/m²]");
+
                 MWindLoadExternalPressure_pemax = value;
 
                 NotifyPropertyChanged("WindLoadExternalPressure_pemax");
@@ -762,6 +795,9 @@ namespace PFD
             }
             set
             {
+                if (value < 50 || value > 1000)
+                    throw new ArgumentException("Fraction denominator value must be between 50 and 500 [-]");
+
                 MDeflectionGQLimitFraction = value;
 
                 NotifyPropertyChanged("DeflectionGQLimitFraction");
@@ -837,6 +873,9 @@ namespace PFD
             }
             set
             {
+                if (value < 50 || value > 1000)
+                    throw new ArgumentException("Fraction denominator value must be between 50 and 500 [-]");
+
                 MDeflectionSWLimitFraction = value;
 
                 NotifyPropertyChanged("DeflectionSWLimitFraction");
@@ -912,6 +951,9 @@ namespace PFD
             }
             set
             {
+                if (value < 50 || value > 1000)
+                    throw new ArgumentException("Fraction denominator value must be between 50 and 500 [-]");
+
                 MDeflectionTotalLimitFraction = value;
 
                 NotifyPropertyChanged("DeflectionTotalLimitFraction");
