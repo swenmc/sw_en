@@ -32,6 +32,7 @@ namespace PFD
         private float MArea_Ag;
         private float MMomentOfInertia_Ix;
         private int MMaterialIndex;
+        private float MYieldStrength_fy;
         private float MPurlinSelfWeight_gp;
         private float MCladdingSelfWeight_gc;
         private float MAdditionalDeadLoad_g;
@@ -205,6 +206,21 @@ namespace PFD
                 MMaterialIndex = value;
 
                 NotifyPropertyChanged("MaterialIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float YieldStrength_fy
+        {
+            get
+            {
+                return MYieldStrength_fy;
+            }
+            set
+            {
+                MYieldStrength_fy = value;
+
+                NotifyPropertyChanged("YieldStrength_fy");
             }
         }
 

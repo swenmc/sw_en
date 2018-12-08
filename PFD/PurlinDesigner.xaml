@@ -128,46 +128,30 @@
         <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_Material" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=MaterialIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
-        <TextBlock Grid.Row="8" Grid.Column="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Top" />
-
-        <TextBlock Grid.Row="9" Grid.Column="0" Text="Purlin Self Weight gp.l:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Yield Strength fy:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_PurlinSelfWeight_gp" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_YieldStrength_fy" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=YieldStrength_fy, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[MPa]" VerticalAlignment="Top"/>
+        
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+        <TextBlock Grid.Row="11" Grid.Column="0" Text="Purlin Self Weight gp.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_PurlinSelfWeight_gp" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=PurlinSelfWeight_gp, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
         </TextBox>
-        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="10" Grid.Column="0" Text="Cladding Self Weight gc:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="12" Grid.Column="0" Text="Cladding Self Weight gc:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="10" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gc" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gc" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=CladdingSelfWeight_gc, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
-            <i:Interaction.Behaviors>
-                <local:TextBoxEnterKeyUpdateBehavior />
-            </i:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
-
-        <TextBlock Grid.Row="11" Grid.Column="0" Text="Additional Dead Load g:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-        <TextBox Grid.Row="11" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=AdditionalDeadLoad_g, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
-            <i:Interaction.Behaviors>
-                <local:TextBoxEnterKeyUpdateBehavior />
-            </i:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
-
-        <TextBlock Grid.Row="12" Grid.Column="0" Text="Live Load q:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-        <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_LiveLoad_q" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=LiveLoad_q, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
             <i:Interaction.Behaviors>
                 <local:TextBoxEnterKeyUpdateBehavior />
             </i:Interaction.Behaviors>
@@ -175,11 +159,11 @@
         <TextBlock Grid.Row="12" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="13" Grid.Column="0" Text="Snow Load s:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="13" Grid.Column="0" Text="Additional Dead Load g:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_SnowLoad_s" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=SnowLoad_s, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=AdditionalDeadLoad_g, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
             <i:Interaction.Behaviors>
                 <local:TextBoxEnterKeyUpdateBehavior />
             </i:Interaction.Behaviors>
@@ -187,17 +171,11 @@
         <TextBlock Grid.Row="13" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <Button Grid.Row="14" Grid.Column="2" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
-            <StackPanel>
-                <Image Source="Resources/windgust.png"></Image>
-            </StackPanel>
-        </Button>
-        
-        <TextBlock Grid.Row="14" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="14" Grid.Column="0" Text="Live Load q:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_InternalPressure_pimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_LiveLoad_q" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadInternalPressure_pimin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=LiveLoad_q, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
             <i:Interaction.Behaviors>
                 <local:TextBoxEnterKeyUpdateBehavior />
             </i:Interaction.Behaviors>
@@ -205,11 +183,11 @@
         <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="15" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="15" Grid.Column="0" Text="Snow Load s:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_InternalPressure_pimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_SnowLoad_s" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadInternalPressure_pimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=SnowLoad_s, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
             <i:Interaction.Behaviors>
                 <local:TextBoxEnterKeyUpdateBehavior />
             </i:Interaction.Behaviors>
@@ -217,11 +195,17 @@
         <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wind Load - External Pressure pe.min:" HorizontalAlignment="Left" 
+        <Button Grid.Row="16" Grid.Column="2" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
+            <StackPanel>
+                <Image Source="Resources/windgust.png"></Image>
+            </StackPanel>
+        </Button>
+        
+        <TextBlock Grid.Row="16" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_ExternalPressure_pemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_InternalPressure_pimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadExternalPressure_pemin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=WindLoadInternalPressure_pimin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
             <i:Interaction.Behaviors>
                 <local:TextBoxEnterKeyUpdateBehavior />
             </i:Interaction.Behaviors>
@@ -229,11 +213,11 @@
         <TextBlock Grid.Row="16" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wind Load - External Pressure pe.max:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="17" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="17" Grid.Column="1" Name ="TextBox_ExternalPressure_pemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="17" Grid.Column="1" Name ="TextBox_InternalPressure_pimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadExternalPressure_pemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=WindLoadInternalPressure_pimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
             <i:Interaction.Behaviors>
                 <local:TextBoxEnterKeyUpdateBehavior />
             </i:Interaction.Behaviors>
@@ -241,21 +225,45 @@
         <TextBlock Grid.Row="17" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="19" Grid.Column="0" Text="Cladding Self Weight gc.l:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="18" Grid.Column="0" Text="Wind Load - External Pressure pe.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="19" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gcl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="18" Grid.Column="1" Name ="TextBox_ExternalPressure_pemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadExternalPressure_pemin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+            <i:Interaction.Behaviors>
+                <local:TextBoxEnterKeyUpdateBehavior />
+            </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Grid.Row="18" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="19" Grid.Column="0" Text="Wind Load - External Pressure pe.max:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="19" Grid.Column="1" Name ="TextBox_ExternalPressure_pemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadExternalPressure_pemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+            <i:Interaction.Behaviors>
+                <local:TextBoxEnterKeyUpdateBehavior />
+            </i:Interaction.Behaviors>
+        </TextBox>
+        <TextBlock Grid.Row="19" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="20" Grid.Column="0" Text="Cladding Self Weight gc.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="20" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gcl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=CladdingSelfWeight_gcl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
         </TextBox>
-        <TextBlock Grid.Row="19" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="20" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
-        <TextBlock Grid.Row="20" Grid.Column="0" Text="Additional Dead Load g.l:" HorizontalAlignment="Left" 
+        <TextBlock Grid.Row="21" Grid.Column="0" Text="Additional Dead Load g.l:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-        <TextBox Grid.Row="20" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad_gl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+        <TextBox Grid.Row="21" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad_gl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AdditionalDeadLoad_gl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-        <TextBlock Grid.Row="20" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+        <TextBlock Grid.Row="21" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
         <TextBlock Grid.Row="22" Grid.Column="0" Text="Live Load q.l:" HorizontalAlignment="Left" 
