@@ -957,7 +957,7 @@ namespace PFD
             TributaryWidth_B = 2f;
 
             CrossSectionIndex = 1;
-            MaterialIndex = 11; // Default AS1397 - Grade G550‡ (database row ID 12) TODO - Ondrej - nenastavuje sa spravne
+            MaterialIndex = 11; // Default AS1397 - Grade G550‡ (database row ID 12)
 
             CladdingSelfWeight_gc = 0.05f; // kN/m^2
             AdditionalDeadLoad_g = 0.10f; // kN/m^2

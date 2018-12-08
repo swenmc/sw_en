@@ -112,7 +112,7 @@ namespace PFD
 
             calcModel.TributaryArea_A = calcModel.Length_L * calcModel.TributaryWidth_B;
 
-            CMaterialManager.LoadMaterialProperties(mat, (string)Combobox_Material.SelectedValue);
+            CMaterialManager.LoadMaterialProperties(mat, (string)Combobox_Material.Items[calcModel.MaterialIndex]);
             mat.m_fE = 2e+11f; // Change default value of E (see AS 4600)
             mat.m_fG = 08e+10f;
             mat.m_fNu = 0.25f;
