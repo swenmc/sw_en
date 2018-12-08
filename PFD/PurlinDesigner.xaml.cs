@@ -121,7 +121,7 @@ namespace PFD
 
             cs.m_Mat = mat; // Set material from GUI to the cross-section
 
-            float ff_y = mat.Get_f_yk_by_thickness((float)cs.m_t_min);
+            calcModel.YieldStrength_fy = mat.Get_f_yk_by_thickness((float)cs.m_t_min);
             float ff_u = mat.Get_f_uk_by_thickness((float)cs.m_t_min);
 
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
@@ -342,6 +342,9 @@ namespace PFD
             // Cross-section
             vm.Area_Ag *= 1e+6f;
             vm.MomentOfInertia_Ix *= 1e+12f;
+
+            // Material
+            vm.YieldStrength_fy *= 0.000001f;
 
             // Loads
             vm.PurlinSelfWeight_gp *= 0.001f;
