@@ -796,7 +796,7 @@ namespace PFD
             set
             {
                 if (value < 50 || value > 1000)
-                    throw new ArgumentException("Fraction denominator value must be between 50 and 500 [-]");
+                    throw new ArgumentException("Fraction denominator value must be between 50 and 1000 [-]");
 
                 MDeflectionGQLimitFraction = value;
 
@@ -874,7 +874,7 @@ namespace PFD
             set
             {
                 if (value < 50 || value > 1000)
-                    throw new ArgumentException("Fraction denominator value must be between 50 and 500 [-]");
+                    throw new ArgumentException("Fraction denominator value must be between 50 and 1000 [-]");
 
                 MDeflectionSWLimitFraction = value;
 
@@ -952,7 +952,7 @@ namespace PFD
             set
             {
                 if (value < 50 || value > 1000)
-                    throw new ArgumentException("Fraction denominator value must be between 50 and 500 [-]");
+                    throw new ArgumentException("Fraction denominator value must be between 50 and 1000 [-]");
 
                 MDeflectionTotalLimitFraction = value;
 
