@@ -122,7 +122,7 @@ namespace PFD
             cs.m_Mat = mat; // Set material from GUI to the cross-section
 
             calcModel.YieldStrength_fy = mat.Get_f_yk_by_thickness((float)cs.m_t_min);
-            float ff_u = mat.Get_f_uk_by_thickness((float)cs.m_t_min);
+            calcModel.TensileStrength_fu = mat.Get_f_uk_by_thickness((float)cs.m_t_min);
 
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
 
@@ -345,6 +345,7 @@ namespace PFD
 
             // Material
             vm.YieldStrength_fy *= 0.000001f;
+            vm.TensileStrength_fu *= 0.000001f;
 
             // Loads
             vm.PurlinSelfWeight_gp *= 0.001f;

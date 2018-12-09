@@ -135,6 +135,14 @@
                          Text="{Binding Path=YieldStrength_fy, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
         <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[MPa]" VerticalAlignment="Top"/>
+
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Tensile Strength fu:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+        <TextBox Grid.Row="9" Grid.Column="1" Name ="TextBox_TensileStrength_fu" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=TensileStrength_fu, StringFormat=F1, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+        <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[MPa]" VerticalAlignment="Top"/>
         
         <TextBlock Grid.Row="10" Grid.Column="0" Text="Loading" HorizontalAlignment="Left" VerticalAlignment="Top" />
 

@@ -33,6 +33,7 @@ namespace PFD
         private float MMomentOfInertia_Ix;
         private int MMaterialIndex;
         private float MYieldStrength_fy;
+        private float MTensileStrength_fu;
         private float MPurlinSelfWeight_gp;
         private float MCladdingSelfWeight_gc;
         private float MAdditionalDeadLoad_g;
@@ -230,6 +231,21 @@ namespace PFD
                 MYieldStrength_fy = value;
 
                 NotifyPropertyChanged("YieldStrength_fy");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float TensileStrength_fu
+        {
+            get
+            {
+                return MTensileStrength_fu;
+            }
+            set
+            {
+                MTensileStrength_fu = value;
+
+                NotifyPropertyChanged("TensileStrength_fu");
             }
         }
 
