@@ -513,16 +513,16 @@ namespace PFD
         {
             WindPressureCalculator window_windpressure = new WindPressureCalculator();
             window_windpressure.Show();
+            // Reakcia na zavretie okna - nastavit tieto hodnoty do VM purlin designer
+            window_windpressure.Closing += WindPressureCalculator_Closing;
+        }
 
-            PurlinDesignerViewModel vm_CalcModel = this.DataContext as PurlinDesignerViewModel;
-
+        private void WindPressureCalculator_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            WindPressureCalculator window_windpressure = sender as WindPressureCalculator;
             WindPressureCalculatorViewModel vm_WindPressure = window_windpressure.DataContext as WindPressureCalculatorViewModel;
 
-            // TODO - 169
-            // TODO - Ondrej - Pri zavreti okna WindPressureCalculator nastavit hodnoty z okna WindPressureCalculator do PurlinDesigner
-            // Reakcia na zavretie okna - nastavit tieto hodnoty do VM purlin designer
-            //window_windpressure += window_windpressure.WindPressureCalculator_Closing();
-
+            PurlinDesignerViewModel vm_CalcModel = this.DataContext as PurlinDesignerViewModel;
             vm_CalcModel.WindLoadInternalPressure_pimin = vm_WindPressure.WindPressure_pimin * 0.001f; // Convert from Pa to kPa
             vm_CalcModel.WindLoadInternalPressure_pimax = vm_WindPressure.WindPressure_pimax * 0.001f;
             vm_CalcModel.WindLoadExternalPressure_pemin = vm_WindPressure.WindPressure_pemin * 0.001f;
