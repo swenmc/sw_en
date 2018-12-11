@@ -27,11 +27,6 @@ namespace PFD
     /// </summary>
     public partial class UC_MemberDesign : UserControl
     {
-        DataSet ds;
-        List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
-        List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
-        List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
-
         CModel_PFD Model;
         List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
@@ -95,7 +90,8 @@ namespace PFD
                 }
 
                 if (cGoverningMemberResults != null)
-                    DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView, cGoverningMemberResults);
+                    cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView);
+                    //DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView, cGoverningMemberResults);
                 else
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
@@ -375,7 +371,8 @@ namespace PFD
                 }
 
                 if (cGoverningMemberResults != null)
-                    DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView, cGoverningMemberResults);
+                    cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView);
+                    //DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView, cGoverningMemberResults);
                 else
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
@@ -385,417 +382,103 @@ namespace PFD
             }
         }
 
-        public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid, CCalculMember obj_CalcDesign)
-        {
-            DeleteLists();
+        //public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid, CCalculMember obj_CalcDesign)
+        //{
+        //    DeleteLists();
 
-            if (eCombinationType == ELSType.eLS_ULS)
-                SetResultsDetailsFor_ULS(obj_CalcDesign);
-            else
-                SetResultsDetailsFor_SLS(obj_CalcDesign);
+        //    if (eCombinationType == ELSType.eLS_ULS)
+        //        SetResultsDetailsFor_ULS(obj_CalcDesign);
+        //    else
+        //        SetResultsDetailsFor_SLS(obj_CalcDesign);
 
-            // TODO Ondrej - prepracovat a spojit s UC_JointDesign
-            // hm? co prepracovat? Ako spojit s UCJointDesign?
+        //    // TODO Ondrej - prepracovat a spojit s UC_JointDesign
+        //    // hm? co prepracovat? Ako spojit s UCJointDesign?
             
             
-            // Create Table
-            DataTable table = new DataTable("Table");
-            table.Columns.Add("Symbol", typeof(String));                        
-            table.Columns.Add("Value", typeof(String));
-            table.Columns.Add("Unit", typeof(String));
+        //    // Create Table
+        //    DataTable table = new DataTable("Table");
+        //    table.Columns.Add("Symbol", typeof(String));                        
+        //    table.Columns.Add("Value", typeof(String));
+        //    table.Columns.Add("Unit", typeof(String));
 
-            table.Columns.Add("Symbol1", typeof(String));
-            table.Columns.Add("Value1", typeof(String));
-            table.Columns.Add("Unit1", typeof(String));
+        //    table.Columns.Add("Symbol1", typeof(String));
+        //    table.Columns.Add("Value1", typeof(String));
+        //    table.Columns.Add("Unit1", typeof(String));
 
-            table.Columns.Add("Symbol2", typeof(String));
-            table.Columns.Add("Value2", typeof(String));
-            table.Columns.Add("Unit2", typeof(String));
+        //    table.Columns.Add("Symbol2", typeof(String));
+        //    table.Columns.Add("Value2", typeof(String));
+        //    table.Columns.Add("Unit2", typeof(String));
 
-            // Set Column Caption
-            table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
-            table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
-            table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
+        //    // Set Column Caption
+        //    table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
+        //    table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
+        //    table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
             
-            // Create Dataset
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
+        //    // Create Dataset
+        //    ds = new DataSet();
+        //    // Add Table to Dataset
+        //    ds.Tables.Add(table);
 
-            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
-            {
-                DataRow row = table.NewRow();
-                try
-                {
-                    row["Symbol"] = zoznamMenuNazvy[i];
-                    row["Value"] = zoznamMenuHodnoty[i];
-                    row["Unit"] = zoznamMenuJednotky[i];
-                    i++;
-                    if (i >= zoznamMenuNazvy.Count) break;
-                    row["Symbol1"] = zoznamMenuNazvy[i];
-                    row["Value1"] = zoznamMenuHodnoty[i];
-                    row["Unit1"] = zoznamMenuJednotky[i];
-                    i++;
-                    if (i >= zoznamMenuNazvy.Count) break;
-                    row["Symbol2"] = zoznamMenuNazvy[i];
-                    row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];                    
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
+        //    for (int i = 0; i < zoznamMenuNazvy.Count; i++)
+        //    {
+        //        DataRow row = table.NewRow();
+        //        try
+        //        {
+        //            row["Symbol"] = zoznamMenuNazvy[i];
+        //            row["Value"] = zoznamMenuHodnoty[i];
+        //            row["Unit"] = zoznamMenuJednotky[i];
+        //            i++;
+        //            if (i >= zoznamMenuNazvy.Count) break;
+        //            row["Symbol1"] = zoznamMenuNazvy[i];
+        //            row["Value1"] = zoznamMenuHodnoty[i];
+        //            row["Unit1"] = zoznamMenuJednotky[i];
+        //            i++;
+        //            if (i >= zoznamMenuNazvy.Count) break;
+        //            row["Symbol2"] = zoznamMenuNazvy[i];
+        //            row["Value2"] = zoznamMenuHodnoty[i];
+        //            row["Unit2"] = zoznamMenuJednotky[i];                    
+        //        }
+        //        catch (ArgumentOutOfRangeException) { }
+        //        table.Rows.Add(row);
+        //    }
 
-            dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+        //    dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
             
-            //styling datagrid
-            //TO Mato - tu sa mozes vyblaznit a ponastavovat rozne Style property tak ako sa ti zapaci (farbicky a podobne)
-            Style alignRight = new Style();
-            alignRight.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));            
+        //    //styling datagrid
+        //    //TO Mato - tu sa mozes vyblaznit a ponastavovat rozne Style property tak ako sa ti zapaci (farbicky a podobne)
+        //    Style alignRight = new Style();
+        //    alignRight.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));            
             
-            Style alignLeft = new Style();            
-            alignLeft.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Left));
-            //alignLeft.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
-            Style alignCenter = new Style();
-            alignCenter.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));            
-            alignCenter.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.AliceBlue)));
-            //alignCenter.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
+        //    Style alignLeft = new Style();            
+        //    alignLeft.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Left));
+        //    //alignLeft.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
+        //    Style alignCenter = new Style();
+        //    alignCenter.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));            
+        //    alignCenter.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.AliceBlue)));
+        //    //alignCenter.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
             
-            dataGrid.Columns[0].CellStyle = alignLeft;
-            dataGrid.Columns[1].CellStyle = alignRight;
-            dataGrid.Columns[2].CellStyle = alignCenter;
-            dataGrid.Columns[3].CellStyle = alignLeft;
-            dataGrid.Columns[4].CellStyle = alignRight;
-            dataGrid.Columns[5].CellStyle = alignCenter;
-            dataGrid.Columns[6].CellStyle = alignLeft;
-            dataGrid.Columns[7].CellStyle = alignRight;
-            dataGrid.Columns[8].CellStyle = alignCenter;
+        //    dataGrid.Columns[0].CellStyle = alignLeft;
+        //    dataGrid.Columns[1].CellStyle = alignRight;
+        //    dataGrid.Columns[2].CellStyle = alignCenter;
+        //    dataGrid.Columns[3].CellStyle = alignLeft;
+        //    dataGrid.Columns[4].CellStyle = alignRight;
+        //    dataGrid.Columns[5].CellStyle = alignCenter;
+        //    dataGrid.Columns[6].CellStyle = alignLeft;
+        //    dataGrid.Columns[7].CellStyle = alignRight;
+        //    dataGrid.Columns[8].CellStyle = alignCenter;
 
-            // Set Column Header
-            dataGrid.Columns[0].Header = dataGrid.Columns[3].Header = dataGrid.Columns[6].Header = "Symbol";
-            dataGrid.Columns[1].Header = dataGrid.Columns[4].Header = dataGrid.Columns[7].Header = "Value";
-            dataGrid.Columns[2].Header = dataGrid.Columns[5].Header = dataGrid.Columns[8].Header = "Unit";
+        //    // Set Column Header
+        //    dataGrid.Columns[0].Header = dataGrid.Columns[3].Header = dataGrid.Columns[6].Header = "Symbol";
+        //    dataGrid.Columns[1].Header = dataGrid.Columns[4].Header = dataGrid.Columns[7].Header = "Value";
+        //    dataGrid.Columns[2].Header = dataGrid.Columns[5].Header = dataGrid.Columns[8].Header = "Unit";
             
-            //Set Column Width
-            //Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
-            //Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
-            //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;            
+        //    //Set Column Width
+        //    //Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
+        //    //Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
+        //    //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;            
 
-        }
+        //}
 
-        private void DeleteLists()
-        {
-            // Deleting lists for updating actual values
-            zoznamMenuNazvy.Clear();
-            zoznamMenuHodnoty.Clear();
-            zoznamMenuJednotky.Clear();
-        }
-
-        private void SetResultsDetailsFor_ULS(CCalculMember obj_CalcDesign)
-        {
-            float fUnitFactor_Force = 0.001f;     // from N to kN
-            float fUnitFactor_Moment = 0.001f;    // from Nm to kNm
-            float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
-
-            int iNumberOfDecimalPlaces = 3;
-
-
-            // Display results in datagrid
-            // AS 4600 output variables
-
-            // Tension
-            if (obj_CalcDesign.fEta_Nt > 0)
-            {
-                zoznamMenuNazvy.Add("φ t");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("N t,min");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_t_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
-
-                zoznamMenuNazvy.Add("η Nt");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_Nt, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-            }
-
-            // Compression
-            // Global Buckling
-            if (obj_CalcDesign.fEta_721_N > 0 || obj_CalcDesign.fEta_722_M_xu > 0)
-            {
-                zoznamMenuNazvy.Add("f ox");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_ox * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
-
-                zoznamMenuNazvy.Add("f oy");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
-
-                zoznamMenuNazvy.Add("f oz");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oz * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
-
-                if (obj_CalcDesign.fEta_721_N > 0)
-                {
-                    zoznamMenuNazvy.Add("f oc");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oc * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[Pa]");
-
-                    zoznamMenuNazvy.Add("λ c");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_c, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-
-                    zoznamMenuNazvy.Add("N y");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_y * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    zoznamMenuNazvy.Add("N oc");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_oc * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    zoznamMenuNazvy.Add("N ce");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_ce * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    // Local Buckling
-                    zoznamMenuNazvy.Add("f ol");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[Pa]");
-
-                    zoznamMenuNazvy.Add("λ l");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_l, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-
-                    zoznamMenuNazvy.Add("N ol");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_ol * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    zoznamMenuNazvy.Add("N cl");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_cl * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    // Distorsial Buckling
-                    zoznamMenuNazvy.Add("f od");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_od * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[Pa]");
-
-                    zoznamMenuNazvy.Add("λ d");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_d, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-
-                    zoznamMenuNazvy.Add("N od");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_od * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    zoznamMenuNazvy.Add("N cd");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_cd * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    zoznamMenuNazvy.Add("N c,min");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_c_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
-
-                    zoznamMenuNazvy.Add("φ c");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_c, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-
-                    zoznamMenuNazvy.Add("η Nc");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_721_N, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-                }
-            }
-
-            // Bending
-
-            zoznamMenuNazvy.Add("M p,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_p_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M y,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_y_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M p,y");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_p_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M y,y");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_y_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            if (obj_CalcDesign.fEta_722_M_xu > 0)
-            {
-                // Bending about x/u axis
-                zoznamMenuNazvy.Add("C b");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fC_b, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("M o,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_o_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                zoznamMenuNazvy.Add("M be,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_be_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                // Local Buckling
-                zoznamMenuNazvy.Add("f ol,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_ol_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
-
-                zoznamMenuNazvy.Add("M ol,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_ol_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                zoznamMenuNazvy.Add("λ l,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_l_xu, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("M bl,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_bl_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                // Distrosial buckling
-                zoznamMenuNazvy.Add("f od,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_od_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
-
-                zoznamMenuNazvy.Add("M od,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_od_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                zoznamMenuNazvy.Add("λ d,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_d_xu, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("M bd,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_bd_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                zoznamMenuNazvy.Add("φ b");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_b, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_722_M_xu, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-            }
-
-            // Shear
-            if (obj_CalcDesign.fEta_723_9_xu_yv > 0)
-            {
-                zoznamMenuNazvy.Add("V y,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_y_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
-
-                zoznamMenuNazvy.Add("V v,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_v_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
-
-                zoznamMenuNazvy.Add("V cr,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_cr_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
-
-                zoznamMenuNazvy.Add("λ v,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_v_yv, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("φ v");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_v, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_9_xu_yv, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_11_V_yv, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                if (obj_CalcDesign.fEta_723_10_xu > 0)
-                {
-                    zoznamMenuNazvy.Add("η");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_10_xu, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-                }
-           
-                if(obj_CalcDesign.fEta_723_12_xu_yv_10 > 0)
-                {
-                    zoznamMenuNazvy.Add("η");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
-                }
-            }
-
-            // Interation of internal forces
-            zoznamMenuNazvy.Add("M s,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            zoznamMenuNazvy.Add("M b,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_b_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
-
-            // Compression and bending
-            if (obj_CalcDesign.fEta_721_N > 0 && obj_CalcDesign.fEta_724 > 0)
-            {
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_724, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-            }
-
-            // Tension and bending
-            if (obj_CalcDesign.fEta_Nt > 0 && obj_CalcDesign.fEta_725_1 > 0)
-            {
-                zoznamMenuNazvy.Add("M s,x,f");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_xu_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                zoznamMenuNazvy.Add("M s,y,f");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_yv_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
-
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_725_1, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_725_2, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
-            }
-
-            // Maximum design ratio
-            zoznamMenuNazvy.Add("η max");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_max, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
-        }
-
-        private void SetResultsDetailsFor_SLS(CCalculMember obj_CalcDesign)
-        {
-            // Display results in datagrid
-
-            // Deflection
-            // δ
-
-            zoznamMenuNazvy.Add("δ lim");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fLimitDeflection.ToString());
-            zoznamMenuJednotky.Add("[mm]");
-
-            // Design ratio
-            zoznamMenuNazvy.Add("η x/u");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_yu.ToString());
-            zoznamMenuJednotky.Add("[mm]");
-
-            zoznamMenuNazvy.Add("η y/v");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zv.ToString());
-            zoznamMenuJednotky.Add("[mm]");
-
-            zoznamMenuNazvy.Add("η x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_yy.ToString());
-            zoznamMenuJednotky.Add("[mm]");
-
-            zoznamMenuNazvy.Add("η y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zz.ToString());
-            zoznamMenuJednotky.Add("[mm]");
-        }
+       
     }
 }
