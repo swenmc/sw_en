@@ -68,6 +68,7 @@ namespace PFD
             if (sender == null) return;
             if (sender is PurlinDesignerViewModel)
             {
+                //recalculate only if input property is changed (prevent cycling)
                 if (IsInputProperty(e.PropertyName))
                 {
                     // Calculate

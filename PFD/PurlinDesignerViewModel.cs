@@ -24,6 +24,7 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
+        #region private fields
         private float MLength_L;
         private float MBracingLength_Lb;
         private float MTributaryWidth_B;
@@ -89,7 +90,10 @@ namespace PFD
         private float MDeflectionTotalLimitFraction;
         private float MDeflectionTotalLimit_Delta_lim;
         private float MDesignRatioDeflectionTotal_eta;
+        #endregion
 
+
+        #region Properties
         //-------------------------------------------------------------------------------------------------------------
         public float Length_L
         {
@@ -1006,6 +1010,11 @@ namespace PFD
             }
         }
 
+        #endregion
+
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------
         public PurlinDesignerViewModel()
         {
             // Set default
@@ -1043,10 +1052,6 @@ namespace PFD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        //private void HandleComponentParamsViewPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    this.PropertyChanged(sender, e);
-        //}
+        
     }
 }
