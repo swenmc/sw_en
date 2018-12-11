@@ -385,8 +385,6 @@ namespace PFD
             }
         }
 
-        // TODO - Display Data in DataGrid Results_GridView
-
         public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid, CCalculMember obj_CalcDesign)
         {
             DeleteLists();
@@ -399,11 +397,10 @@ namespace PFD
             // TODO Ondrej - prepracovat a spojit s UC_JointDesign
             // hm? co prepracovat? Ako spojit s UCJointDesign?
             
+            
             // Create Table
             DataTable table = new DataTable("Table");
-            // Create Table Rows
-
-            table.Columns.Add("Symbol", typeof(String));
+            table.Columns.Add("Symbol", typeof(String));                        
             table.Columns.Add("Value", typeof(String));
             table.Columns.Add("Unit", typeof(String));
 
@@ -419,33 +416,8 @@ namespace PFD
             table.Columns["Symbol1"].Caption = table.Columns["Symbol2"].Caption = "Symbol";
             table.Columns["Value1"].Caption = table.Columns["Value2"].Caption = "Value";
             table.Columns["Unit1"].Caption = table.Columns["Unit2"].Caption = "Unit";
-
-            // TODO 170 - umoznit formatovat vzhlad datagridu, asi by bolo dobre urobit nejako takto
-
-            /*
-              var centerTextSetter = new Style(typeof(DataGridCell))
-              {
-                  Setters = { new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center) }
-              };
-
-              DgDbNames.Columns.Add(new DataGridTextColumn()
-              {
-                  Header = "Db Name",
-                  Binding = new System.Windows.Data.Binding("DbName"),
-                  IsReadOnly = true,
-                  Width = new DataGridLength(0.2, DataGridLengthUnitType.Star),
-                  CellStyle = centerTextSetter
-              });
-            */
-
-            // Set right alignment of datagrid cell text
-            // TODO - Ondrej - umoznit nastavit rozne pre jednotlive stlpce
-
-            Style s = new Style();
-            s.Setters.Add(new Setter(DataGridCell.HorizontalAlignmentProperty, HorizontalAlignment.Right));
-            dataGrid.CellStyle = s;
-
-            // Create Datases
+            
+            // Create Dataset
             ds = new DataSet();
             // Add Table to Dataset
             ds.Tables.Add(table);
@@ -453,7 +425,6 @@ namespace PFD
             for (int i = 0; i < zoznamMenuNazvy.Count; i++)
             {
                 DataRow row = table.NewRow();
-
                 try
                 {
                     row["Symbol"] = zoznamMenuNazvy[i];
@@ -468,25 +439,54 @@ namespace PFD
                     if (i >= zoznamMenuNazvy.Count) break;
                     row["Symbol2"] = zoznamMenuNazvy[i];
                     row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];
+                    row["Unit2"] = zoznamMenuJednotky[i];                    
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
             }
 
             dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            
+            //styling datagrid
+            //TO Mato - tu sa mozes vyblaznit a ponastavovat rozne Style property tak ako sa ti zapaci (farbicky a podobne)
+            Style alignRight = new Style();
+            alignRight.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));            
+            
+            Style alignLeft = new Style();            
+            alignLeft.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Left));
+            //alignLeft.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
+            Style alignCenter = new Style();
+            alignCenter.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));            
+            alignCenter.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.AliceBlue)));
+            //alignCenter.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
+            
+            dataGrid.Columns[0].CellStyle = alignLeft;
+            dataGrid.Columns[1].CellStyle = alignRight;
+            dataGrid.Columns[2].CellStyle = alignCenter;
+            dataGrid.Columns[3].CellStyle = alignLeft;
+            dataGrid.Columns[4].CellStyle = alignRight;
+            dataGrid.Columns[5].CellStyle = alignCenter;
+            dataGrid.Columns[6].CellStyle = alignLeft;
+            dataGrid.Columns[7].CellStyle = alignRight;
+            dataGrid.Columns[8].CellStyle = alignCenter;
+
+            //foreach (var column in dataGrid.Columns) {
+            //    column.Width = DataGridLength.SizeToHeader;
+            //}
+
 
             /*
             // Set Column Header
             Results_GridView.Columns[0].Header = Results_GridView.Columns[3].Header = Results_GridView.Columns[6].Header = "Symbol";
             Results_GridView.Columns[1].Header = Results_GridView.Columns[4].Header = Results_GridView.Columns[7].Header = "Value";
             Results_GridView.Columns[2].Header = Results_GridView.Columns[5].Header = Results_GridView.Columns[8].Header = "Unit";
-
-            // Set Column Width
-            Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
-            Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
-            Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
             */
+
+            //Set Column Width
+            //Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
+            //Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
+            //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;            
+
         }
 
         private void DeleteLists()
