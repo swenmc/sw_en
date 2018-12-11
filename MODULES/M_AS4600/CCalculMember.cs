@@ -805,26 +805,33 @@ namespace M_AS4600
             alignCenter.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.AliceBlue)));
             //alignCenter.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
 
-            dataGrid.Columns[0].CellStyle = alignLeft;
-            dataGrid.Columns[1].CellStyle = alignRight;
-            dataGrid.Columns[2].CellStyle = alignCenter;
-            dataGrid.Columns[3].CellStyle = alignLeft;
-            dataGrid.Columns[4].CellStyle = alignRight;
-            dataGrid.Columns[5].CellStyle = alignCenter;
-            dataGrid.Columns[6].CellStyle = alignLeft;
-            dataGrid.Columns[7].CellStyle = alignRight;
-            dataGrid.Columns[8].CellStyle = alignCenter;
+            // Bug 175 - TO Ondrej - toto mi nefunguje, preto boli tie riadky s indexom u columns zakomentovane, vyskakuje vynimka na neplatny index
+            try
+            {
+                dataGrid.Columns[0].CellStyle = alignLeft;
+                dataGrid.Columns[1].CellStyle = alignRight;
+                dataGrid.Columns[2].CellStyle = alignCenter;
+                dataGrid.Columns[3].CellStyle = alignLeft;
+                dataGrid.Columns[4].CellStyle = alignRight;
+                dataGrid.Columns[5].CellStyle = alignCenter;
+                dataGrid.Columns[6].CellStyle = alignLeft;
+                dataGrid.Columns[7].CellStyle = alignRight;
+                dataGrid.Columns[8].CellStyle = alignCenter;
 
-            // Set Column Header
-            dataGrid.Columns[0].Header = dataGrid.Columns[3].Header = dataGrid.Columns[6].Header = "Symbol";
-            dataGrid.Columns[1].Header = dataGrid.Columns[4].Header = dataGrid.Columns[7].Header = "Value";
-            dataGrid.Columns[2].Header = dataGrid.Columns[5].Header = dataGrid.Columns[8].Header = "Unit";
+                // Set Column Header
+                dataGrid.Columns[0].Header = dataGrid.Columns[3].Header = dataGrid.Columns[6].Header = "Symbol";
+                dataGrid.Columns[1].Header = dataGrid.Columns[4].Header = dataGrid.Columns[7].Header = "Value";
+                dataGrid.Columns[2].Header = dataGrid.Columns[5].Header = dataGrid.Columns[8].Header = "Unit";
+            }
+            catch
+            {
+                throw new IndexOutOfRangeException("Index is out of range!");
+            }
 
             //Set Column Width
             //Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;
             //Results_GridView.Columns[1].Width = Results_GridView.Columns[4].Width = Results_GridView.Columns[7].Width = 90;
-            //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;            
-
+            //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;
         }
 
 
