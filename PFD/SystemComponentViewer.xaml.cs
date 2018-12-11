@@ -2031,8 +2031,8 @@ namespace PFD
             if (plate == null) { MessageBox.Show("No plate to serialize."); return; }
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Data Files (*.dat)|*.dat";
-            sfd.DefaultExt = "dat";
+            sfd.Filter = "Data Files (*.scw)|*.scw";
+            sfd.DefaultExt = "scw";
             sfd.AddExtension = true;
             sfd.FileName = "Plate_" + plate.Name;
 
@@ -2057,8 +2057,8 @@ namespace PFD
         private void BtnLoadPlate_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Data Files (*.dat)|*.dat";
-            ofd.DefaultExt = "dat";
+            ofd.Filter = "Data Files (*.scw)|*.scw";
+            ofd.DefaultExt = "scw";
             ofd.AddExtension = true;
             
             if (ofd.ShowDialog() == true)
@@ -2087,8 +2087,8 @@ namespace PFD
 
                     string folder = dialog.SelectedPath;
                     DirectoryInfo dirInfo = new DirectoryInfo(folder);
-                    FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
-                    if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
+                    FileInfo[] files = dirInfo.GetFiles("*.scw", SearchOption.TopDirectoryOnly);
+                    if (files.Length == 0) { MessageBox.Show("No .scw files in the directory."); return; }
 
                     List<string[]> tableParams = new List<string[]>();
 
@@ -2245,8 +2245,8 @@ namespace PFD
 
                     string folder = dialog.SelectedPath;
                     DirectoryInfo dirInfo = new DirectoryInfo(folder);
-                    FileInfo[] files = dirInfo.GetFiles("*.dat", SearchOption.TopDirectoryOnly);
-                    if (files.Length == 0) { MessageBox.Show("No .dat files in the directory."); return; }
+                    FileInfo[] files = dirInfo.GetFiles("*.scw", SearchOption.TopDirectoryOnly);
+                    if (files.Length == 0) { MessageBox.Show("No .scw files in the directory."); return; }
 
                     List<string[]> tableParams = new List<string[]>();
 
