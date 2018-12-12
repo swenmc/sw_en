@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace M_AS4600
@@ -789,9 +790,19 @@ namespace M_AS4600
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
             }
-
-            dataGrid.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
-
+            
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Symbol", Binding = new Binding("Symbol") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Value", Binding = new Binding("Value") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Unit", Binding = new Binding("Unit") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Symbol", Binding = new Binding("Symbol1") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Value", Binding = new Binding("Value1") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Unit", Binding = new Binding("Unit1") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Symbol", Binding = new Binding("Symbol2") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Value", Binding = new Binding("Value2") });
+            dataGrid.Columns.Add(new DataGridTextColumn { Header = "Unit", Binding = new Binding("Unit2") });
+            dataGrid.DataContext = ds.Tables[0];  //draw the table to datagridview                        
+            
+            
             //styling datagrid
             //TO Mato - tu sa mozes vyblaznit a ponastavovat rozne Style property tak ako sa ti zapaci (farbicky a podobne)
             Style alignRight = new Style();

@@ -18,6 +18,6 @@
             <RowDefinition Height="340"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="2,2,2,2"/>
+        <DataGrid Grid.Row="0" Grid.Column="0" Name ="Results_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="2,2,2,2"/>
     </Grid>
 </Window>
