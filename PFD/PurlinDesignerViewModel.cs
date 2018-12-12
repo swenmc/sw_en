@@ -121,11 +121,17 @@ namespace PFD
             }
             set
             {
-                if (value < 0.5 || value > Length_L)
-                    throw new ArgumentException("Distance of bracing blocks must be between 0.5 and " + Math.Round(Length_L,3).ToString() + " [m]");
-
-                MBracingLength_Lb = value;
-
+                if (value < 0.5)
+                {
+                    MBracingLength_Lb = 0.5f;
+                }
+                else if (value > Length_L)
+                {
+                    MBracingLength_Lb = Length_L;
+                }
+                else MBracingLength_Lb = value;
+                //throw new ArgumentException("Distance of bracing blocks must be between 0.5 and " + Math.Round(Length_L,3).ToString() + " [m]");
+                
                 NotifyPropertyChanged("BracingLength_Lb");
             }
         }
