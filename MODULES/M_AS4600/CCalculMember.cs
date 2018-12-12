@@ -800,11 +800,11 @@ namespace M_AS4600
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Symbol", Binding = new Binding("Symbol2") });
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Value", Binding = new Binding("Value2") });
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Unit", Binding = new Binding("Unit2") });
-            dataGrid.DataContext = ds.Tables[0];  //draw the table to datagridview                        
-            
-            
-            //styling datagrid
-            //TO Mato - tu sa mozes vyblaznit a ponastavovat rozne Style property tak ako sa ti zapaci (farbicky a podobne)
+            dataGrid.DataContext = ds.Tables[0];  //draw the table to datagridview
+
+            // Styling datagrid
+            //TODO - ponastavovat rozne Style property
+
             Style alignRight = new Style();
             alignRight.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Right));
 
@@ -816,28 +816,20 @@ namespace M_AS4600
             alignCenter.Setters.Add(new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(Colors.AliceBlue)));
             //alignCenter.Setters.Add(new Setter(DataGridCell.WidthProperty, DataGridLength.SizeToCells));
 
-            // Bug 175 - TO Ondrej - toto mi nefunguje, preto boli tie riadky s indexom u columns zakomentovane, vyskakuje vynimka na neplatny index
-            try
-            {
-                dataGrid.Columns[0].CellStyle = alignLeft;
-                dataGrid.Columns[1].CellStyle = alignRight;
-                dataGrid.Columns[2].CellStyle = alignCenter;
-                dataGrid.Columns[3].CellStyle = alignLeft;
-                dataGrid.Columns[4].CellStyle = alignRight;
-                dataGrid.Columns[5].CellStyle = alignCenter;
-                dataGrid.Columns[6].CellStyle = alignLeft;
-                dataGrid.Columns[7].CellStyle = alignRight;
-                dataGrid.Columns[8].CellStyle = alignCenter;
+            dataGrid.Columns[0].CellStyle = alignLeft;
+            dataGrid.Columns[1].CellStyle = alignRight;
+            dataGrid.Columns[2].CellStyle = alignLeft;
+            dataGrid.Columns[3].CellStyle = alignLeft;
+            dataGrid.Columns[4].CellStyle = alignRight;
+            dataGrid.Columns[5].CellStyle = alignLeft;
+            dataGrid.Columns[6].CellStyle = alignLeft;
+            dataGrid.Columns[7].CellStyle = alignRight;
+            dataGrid.Columns[8].CellStyle = alignLeft;
 
-                // Set Column Header
-                dataGrid.Columns[0].Header = dataGrid.Columns[3].Header = dataGrid.Columns[6].Header = "Symbol";
-                dataGrid.Columns[1].Header = dataGrid.Columns[4].Header = dataGrid.Columns[7].Header = "Value";
-                dataGrid.Columns[2].Header = dataGrid.Columns[5].Header = dataGrid.Columns[8].Header = "Unit";
-            }
-            catch
-            {
-                throw new IndexOutOfRangeException("Index is out of range!");
-            }
+            // Set Column Header
+            dataGrid.Columns[0].Header = dataGrid.Columns[3].Header = dataGrid.Columns[6].Header = "Symbol";
+            dataGrid.Columns[1].Header = dataGrid.Columns[4].Header = dataGrid.Columns[7].Header = "Value";
+            dataGrid.Columns[2].Header = dataGrid.Columns[5].Header = dataGrid.Columns[8].Header = "Unit";
 
             //Set Column Width
             //Results_GridView.Columns[0].Width = Results_GridView.Columns[3].Width = Results_GridView.Columns[6].Width = 117;

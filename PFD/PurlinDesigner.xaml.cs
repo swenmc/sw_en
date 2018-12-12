@@ -526,7 +526,7 @@ namespace PFD
             vm_CalcModel.WindLoadInternalPressure_pimin = vm_WindPressure.WindPressure_pimin * 0.001f; // Convert from Pa to kPa
             vm_CalcModel.WindLoadInternalPressure_pimax = vm_WindPressure.WindPressure_pimax * 0.001f;
             vm_CalcModel.WindLoadExternalPressure_pemin = vm_WindPressure.WindPressure_pemin * 0.001f;
-            vm_CalcModel.WindLoadExternalPressure_pemax = vm_WindPressure.WindPressure_pemin * 0.001f;
+            vm_CalcModel.WindLoadExternalPressure_pemax = vm_WindPressure.WindPressure_pemax * 0.001f;
         }
 
         private void Details_Click(object sender, RoutedEventArgs e)
