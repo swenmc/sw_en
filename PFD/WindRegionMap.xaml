@@ -24,14 +24,14 @@
         <Slider x:Name="sldOpacity" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.9" IsSnapToTickEnabled="True" TickFrequency="0.01"/>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="600" Height="770">
             <Grid>
-                <Grid.ColumnDefinitions>                    
+                <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="1" x:Name="baseImg" Source="Resources/NZwindregionmap.png" RenderTransformOrigin="0, 0" >
+                <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="1" x:Name="baseImg" Source="Resources/NZwindregionmap2.png" RenderTransformOrigin="0, 0" >
                     <Image.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform ScaleX="0.01" ScaleY="0.01"/>
@@ -46,9 +46,9 @@
                         </TransformGroup>
                     </Image.RenderTransform>
                 </Image>
-                <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="100" x:Name="overlayImg" Source="Resources/NZwindregionmapOverlay.png" Opacity="{Binding Value, ElementName=sldOpacity}" RenderTransformOrigin="0, 0">
+                <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="100" x:Name="overlayImg" Source="Resources/NZmap.jpg" Opacity="{Binding Value, ElementName=sldOpacity}" RenderTransformOrigin="0, 0">
                     <Image.RenderTransform>
-                        <TransformGroup>                            
+                        <TransformGroup>
                             <ScaleTransform ScaleX="0.01" ScaleY="0.01"/>
                             <ScaleTransform>
                                 <ScaleTransform.ScaleX>
@@ -61,13 +61,7 @@
                         </TransformGroup>
                     </Image.RenderTransform>
                 </Image>
-
             </Grid>
-            
         </ScrollViewer>
-
-
     </StackPanel>
-
-
 </Window>
