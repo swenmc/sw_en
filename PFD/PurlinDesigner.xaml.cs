@@ -542,5 +542,11 @@ namespace PFD
             cCalcULS_data.DisplayDesignResultsInGridView(ELSType.eLS_ULS, win.Results_GridView);
             win.Show();
         }
+
+        private void DeflectionLimitInfo_Click(object sender, RoutedEventArgs e)
+        {
+            DeflectionLimit win = new DeflectionLimit();
+            win.Show();
+        }
     }
 }

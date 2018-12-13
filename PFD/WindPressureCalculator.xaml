@@ -120,9 +120,9 @@
 
             <TextBlock Grid.Row="7" Grid.Column="0" Text="Angle from Cardinal Direction:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_AngleWindDirection" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <ComboBox Grid.Row="7" Grid.Column="1" Name ="Combobox_AngleWindDirection" HorizontalAlignment="Left" IsEnabled="False" Width="{StaticResource theTextBoxWidth}"
                           VerticalAlignment="Top" SelectedIndex="{Binding Path=AngleWindDirectionIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="8" Grid.Column="0" Text="Lee Multiplier M lee:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="8" Grid.Column="0" Text="Lee Multiplier M lee:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="8" Grid.Column="1" Name ="TextBox_LeeMultiplier_Mlee" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
