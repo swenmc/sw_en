@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Wind Region Map" Height="900" Width="620">
+        Title="Wind Region Map" Height="923" Width="567">
     <!--<Grid>
         <StackPanel>
             <Image Source="Resources/NZwindregionmap.png" Stretch="UniformToFill"/>
@@ -22,7 +22,7 @@
         <Slider x:Name="sldZoom" Orientation="Horizontal" Minimum="1" Maximum="250" Value="40" IsSnapToTickEnabled="True" TickFrequency="1"/>
         <TextBlock Margin="5,5,10,5">Opacity:</TextBlock>
         <Slider x:Name="sldOpacity" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.9" IsSnapToTickEnabled="True" TickFrequency="0.01"/>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="600" Height="770">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="550" Height="800">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -34,7 +34,7 @@
                 <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="1" x:Name="baseImg" Source="Resources/NZwindregionmap2.png" RenderTransformOrigin="0, 0" >
                     <Image.RenderTransform>
                         <TransformGroup>
-                            <ScaleTransform ScaleX="0.01" ScaleY="0.01"/>
+                            <ScaleTransform ScaleX="0.005" ScaleY="0.005"/>
                             <ScaleTransform>
                                 <ScaleTransform.ScaleX>
                                     <Binding ElementName="sldZoom" Path="Value" Mode="OneWay"/>
@@ -49,7 +49,7 @@
                 <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="100" x:Name="overlayImg" Source="Resources/NZmap.jpg" Opacity="{Binding Value, ElementName=sldOpacity}" RenderTransformOrigin="0, 0">
                     <Image.RenderTransform>
                         <TransformGroup>
-                            <ScaleTransform ScaleX="0.01" ScaleY="0.01"/>
+                            <ScaleTransform ScaleX="0.005" ScaleY="0.005"/>
                             <ScaleTransform>
                                 <ScaleTransform.ScaleX>
                                     <Binding ElementName="sldZoom" Path="Value" Mode="OneWay"/>
