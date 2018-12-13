@@ -5,10 +5,69 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Wind Region Map" Height="620" Width="465">
-    <Grid>
+        Title="Wind Region Map" Height="900" Width="620">
+    <!--<Grid>
         <StackPanel>
             <Image Source="Resources/NZwindregionmap.png" Stretch="UniformToFill"/>
         </StackPanel>
-    </Grid>
+    </Grid>-->
+
+    <StackPanel x:Name="LayoutRoot" Background="Gray">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Margin="5,5,10,5">Zoom:</TextBlock>
+            <TextBlock Margin="5,5,0,5" Text="{Binding Path=Value, ElementName=sldZoom, Mode=OneWay}"/>
+            <TextBlock Margin="0,5">%</TextBlock>
+        </StackPanel>
+
+        <Slider x:Name="sldZoom" Orientation="Horizontal" Minimum="1" Maximum="250" Value="40" IsSnapToTickEnabled="True" TickFrequency="1"/>
+        <TextBlock Margin="5,5,10,5">Opacity:</TextBlock>
+        <Slider x:Name="sldOpacity" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.9" IsSnapToTickEnabled="True" TickFrequency="0.01"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="600" Height="770">
+            <Grid>
+                <Grid.ColumnDefinitions>                    
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="1" x:Name="baseImg" Source="Resources/NZwindregionmap.png" RenderTransformOrigin="0, 0" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="0.01" ScaleY="0.01"/>
+                            <ScaleTransform>
+                                <ScaleTransform.ScaleX>
+                                    <Binding ElementName="sldZoom" Path="Value" Mode="OneWay"/>
+                                </ScaleTransform.ScaleX>
+                                <ScaleTransform.ScaleY>
+                                    <Binding ElementName="sldZoom" Path="Value" Mode="OneWay"/>
+                                </ScaleTransform.ScaleY>
+                            </ScaleTransform>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+                <Image Grid.Row="0" Grid.Column="0" Panel.ZIndex="100" x:Name="overlayImg" Source="Resources/NZwindregionmapOverlay.png" Opacity="{Binding Value, ElementName=sldOpacity}" RenderTransformOrigin="0, 0">
+                    <Image.RenderTransform>
+                        <TransformGroup>                            
+                            <ScaleTransform ScaleX="0.01" ScaleY="0.01"/>
+                            <ScaleTransform>
+                                <ScaleTransform.ScaleX>
+                                    <Binding ElementName="sldZoom" Path="Value" Mode="OneWay"/>
+                                </ScaleTransform.ScaleX>
+                                <ScaleTransform.ScaleY>
+                                    <Binding ElementName="sldZoom" Path="Value" Mode="OneWay"/>
+                                </ScaleTransform.ScaleY>
+                            </ScaleTransform>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+
+            </Grid>
+            
+        </ScrollViewer>
+
+
+    </StackPanel>
+
+
 </Window>

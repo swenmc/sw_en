@@ -65,6 +65,11 @@ namespace PFD
 
             // Set Resutls
             SetOutputValues();
+
+            //Nonsens je to s tym Matom,ze mi stale zmeni height okna na take, ze nic nevidim a musim klikat na okraje okna aby som ho dokazal posunut dole a zadat nieco do policok.
+            //Ani zavriet okno neviem, lebo sa mi nezobrazi krizik na zavretie okna.
+            double startMenuHeight = 30;
+            this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - startMenuHeight;
         }
 
         private void SetInputAndCalculateWindPressure()
