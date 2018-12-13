@@ -63,6 +63,11 @@
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Importance Level:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
+            <Button Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" ToolTip="Info" HorizontalAlignment="Right" Name="ImportanceLevels" Click="ImportanceLevels_Click" Width="20" Margin="0 0 10 0" Height="20">
+                <StackPanel>
+                    <Image Source="Resources/info.png"></Image>
+                </StackPanel>
+            </Button>
             <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_ImportanceClass" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=ImportanceClassIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 

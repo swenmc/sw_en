@@ -191,6 +191,12 @@ namespace PFD
             vm.WindPressure_pemax = MathF.Min(fWindPressure_pemax_U, fWindPressure_pemax_D, fWindPressure_pemax_R);
         }
 
+        private void ImportanceLevels_Click(object sender, RoutedEventArgs e)
+        {
+            ImportanceLevels win_importancelevels = new ImportanceLevels();
+            win_importancelevels.Show();
+        }
+
         private void WindRegionMap_Click(object sender, RoutedEventArgs e)
         {
             WindRegionMap win_windregionmap = new WindRegionMap();
