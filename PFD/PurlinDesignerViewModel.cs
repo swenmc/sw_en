@@ -108,6 +108,12 @@ namespace PFD
 
                 MLength_L = value;
 
+                if (MLength_L < MBracingLength_Lb)
+                {
+                    BracingLength_Lb = MLength_L;
+                    MessageBox.Show($"Distance of bracing blocks was changed to {MLength_L}.");
+                }
+                
                 NotifyPropertyChanged("Length_L");
             }
         }
