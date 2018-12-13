@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Wind Region Map" Height="923" Width="567">
+        Title="Wind Region Map" Width="707" Height="1123">
     <!--<Grid>
         <StackPanel>
             <Image Source="Resources/NZwindregionmap.png" Stretch="UniformToFill"/>
@@ -19,10 +19,10 @@
             <TextBlock Margin="0,5">%</TextBlock>
         </StackPanel>
 
-        <Slider x:Name="sldZoom" Orientation="Horizontal" Minimum="1" Maximum="250" Value="40" IsSnapToTickEnabled="True" TickFrequency="1"/>
+        <Slider x:Name="sldZoom" Orientation="Horizontal" Minimum="1" Maximum="400" Value="50" IsSnapToTickEnabled="True" TickFrequency="1"/>
         <TextBlock Margin="5,5,10,5">Opacity:</TextBlock>
         <Slider x:Name="sldOpacity" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.9" IsSnapToTickEnabled="True" TickFrequency="0.01"/>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="550" Height="800">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="690" Height="1000">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
