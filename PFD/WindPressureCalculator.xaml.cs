@@ -209,6 +209,12 @@ namespace PFD
             win_windterraincategories.Show();
         }
 
+        private void WindTerrainCategories2_Click(object sender, RoutedEventArgs e)
+        {
+            WindTerrainCategories2 win_windterraincategories = new WindTerrainCategories2();
+            win_windterraincategories.Show();
+        }
+
         private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
         {
             WindSpeedChart wind_chart = new WindSpeedChart(windCalcResults);

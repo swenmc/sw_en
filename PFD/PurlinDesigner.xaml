@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Purlin Designer" Height="1050" Width="1050">
+        Title="Purlin Designer" Height="1250" Width="1050">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -62,7 +62,7 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Length L:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="0" Grid.Column="1" Name ="TextBox_Length_L" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=Length_L, StringFormat=F3, UpdateSourceTrigger=LostFocus, Mode=TwoWay, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -74,7 +74,7 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Tributary Width B:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="1" Grid.Column="1" Name ="TextBox_TributaryWidth_B" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=TributaryWidth_B, StringFormat=F3, UpdateSourceTrigger=LostFocus, Mode=TwoWay, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -94,7 +94,7 @@
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Bracing Block Distance Lb:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="3" Grid.Column="1" Name ="TextBox_BracingLength_Lb" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  Background="AntiqueWhite" IsReadOnly="False" IsEnabled="True"
                          Text="{Binding Path=BracingLength_Lb, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -159,7 +159,7 @@
             <TextBlock Grid.Row="12" Grid.Column="0" Text="Cladding Self Weight gc:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gc" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=CladdingSelfWeight_gc, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -171,7 +171,7 @@
             <TextBlock Grid.Row="13" Grid.Column="0" Text="Additional Dead Load g:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="13" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=AdditionalDeadLoad_g, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -183,7 +183,7 @@
             <TextBlock Grid.Row="14" Grid.Column="0" Text="Live Load q:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_LiveLoad_q" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=LiveLoad_q, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -195,7 +195,7 @@
             <TextBlock Grid.Row="15" Grid.Column="0" Text="Snow Load s:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_SnowLoad_s" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=SnowLoad_s, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -479,7 +479,7 @@
             <TextBlock Grid.Row="17" Grid.Column="3" Text="Deflection Limit Fraction (G + Q) L/" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="17" Grid.Column="4" Name ="TextBox_DeflectionGQLimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  Background="AntiqueWhite" IsReadOnly="False" IsEnabled="True"
                          Text="{Binding Path=DeflectionGQLimitFraction, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -523,7 +523,7 @@
             <TextBlock Grid.Row="22" Grid.Column="3" Text="Deflection Limit Fraction (S + W) L/" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="22" Grid.Column="4" Name ="TextBox_Deflection_SW_LimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  Background="AntiqueWhite" IsReadOnly="False" IsEnabled="True"
                          Text="{Binding Path=DeflectionSWLimitFraction, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
@@ -567,7 +567,7 @@
             <TextBlock Grid.Row="27" Grid.Column="3" Text="Deflection Limit Fraction L/" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="27" Grid.Column="4" Name ="TextBox_DeflectionTotal_LimitFraction" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="False" IsEnabled="True"
+                         TextWrapping="Wrap" VerticalAlignment="Top"  Background="AntiqueWhite" IsReadOnly="False" IsEnabled="True"
                          Text="{Binding Path=DeflectionTotalLimitFraction, StringFormat=F0, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />

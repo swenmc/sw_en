@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Wind Terrain Categories" Height="896" Width="465">
+        Title="Wind Terrain Categories" Height="1010" Width="465">
     <Grid>
         <StackPanel>
             <Image Source="Resources/windterraincategories.png" Stretch="UniformToFill"/>
