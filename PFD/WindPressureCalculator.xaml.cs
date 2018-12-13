@@ -191,6 +191,12 @@ namespace PFD
             vm.WindPressure_pemax = MathF.Min(fWindPressure_pemax_U, fWindPressure_pemax_D, fWindPressure_pemax_R);
         }
 
+        private void WindRegionMap_Click(object sender, RoutedEventArgs e)
+        {
+            WindRegionMap win_windregionmap = new WindRegionMap();
+            win_windregionmap.Show();
+        }
+
         private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
         {
             WindSpeedChart wind_chart = new WindSpeedChart(windCalcResults);

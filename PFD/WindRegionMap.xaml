@@ -1,13 +1,14 @@
-﻿<Window x:Class="PFD.WindSpeedChart"
+﻿<Window x:Class="PFD.WindRegionMap"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="WindSpeedChart" Height="500" Width="900">
+        Title="Wind Region Map" Height="620" Width="465">
     <Grid>
-        <Canvas Name="canvasForImage" Grid.Column="0" Grid.Row="1" Margin="0,0,0,10">
-        </Canvas>
+        <StackPanel>
+            <Image Source="Resources/NZwindregionmap.png" Stretch="UniformToFill"/>
+        </StackPanel>
     </Grid>
 </Window>

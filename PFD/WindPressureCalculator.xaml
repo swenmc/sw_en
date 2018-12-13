@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Wind Pressure Calculator"  Height="1050" Width="950">
+        Title="Wind Pressure Calculator"  Height="1150" Width="950">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -90,7 +90,7 @@
 
             <TextBlock Grid.Row="5" Grid.Column="0" Text="Wind Region:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <Button Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" ToolTip="Info" HorizontalAlignment="Right" Name="WindSpeedChart" Click="WindSpeedChart_Click" Width="20" Margin="0 0 10 0" Height="20">
+            <Button Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" ToolTip="Info" HorizontalAlignment="Right" Name="WindRegionMap" Click="WindRegionMap_Click" Width="20" Margin="0 0 10 0" Height="20">
                 <StackPanel>
                     <Image Source="Resources/info.png"></Image>
                 </StackPanel>
@@ -129,6 +129,11 @@
                          Text="{Binding Path=ShieldingMultiplier_Ms, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="12" Grid.Column="0" Text="Wind Direction Multiplier M d:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
+            <Button Grid.Row="12" Grid.Column="0" VerticalAlignment="Top" ToolTip="Info" HorizontalAlignment="Right" Name="WindSpeedChart" Click="WindSpeedChart_Click" Width="20" Margin="0 0 10 0" Height="20">
+                <StackPanel>
+                    <Image Source="Resources/info.png"></Image>
+                </StackPanel>
+            </Button>
             <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_WindDirectionMultiplier_Md" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=WindDirectionMultiplier_Md, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
@@ -141,7 +146,7 @@
             <TextBlock Grid.Row="14" Grid.Column="0" Text="Tributary Area A:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="14" Grid.Column="1" Name ="TextBox_TributaryArea_A" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=TributaryArea_A, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m²]" VerticalAlignment="Top"/>
@@ -195,7 +200,7 @@
             <TextBlock Grid.Row="23" Grid.Column="0" Text="Gable Width:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_Gable_Width" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=GableWidth, StringFormat=F2, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
@@ -203,7 +208,7 @@
             <TextBlock Grid.Row="24" Grid.Column="0" Text="Length:" HorizontalAlignment="Left"
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_Length" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=Length, StringFormat=F2, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
@@ -211,7 +216,7 @@
             <TextBlock Grid.Row="25" Grid.Column="0" Text="Wall Height:" HorizontalAlignment="Left"
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
             <TextBox Grid.Row="25" Grid.Column="1" Name ="TextBox_Wall_Height" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=WallHeight, StringFormat=F2, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="25" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
@@ -219,7 +224,7 @@
             <TextBlock Grid.Row="26" Grid.Column="0" Text="Roof Pitch:" HorizontalAlignment="Left"
                          TextWrapping="Wrap" VerticalAlignment="Top"/>
             <TextBox Grid.Row="26" Grid.Column="1" Name ="TextBox_Roof_Pitch" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=RoofPitch_deg, StringFormat=F2, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="26" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[°]" VerticalAlignment="Top"/>
