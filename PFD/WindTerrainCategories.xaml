@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Wind Terrain Categories" Height="1010" Width="465">
     <Grid>
         <StackPanel>
