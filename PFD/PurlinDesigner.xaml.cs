@@ -63,6 +63,9 @@ namespace PFD
             SetOutputValues();
 
             //Nonsens je to s tym Matom,ze mi stale zmeni height okna na take, ze nic nevidim a musim klikat na okraje okna aby som ho dokazal posunut dole a zadat nieco do policok
+            // TO Ondrej - Vravel zom si ze sa asi nasrdis, ked som to menil. :-))))))))))))
+            // Neexistuje nejaky sposob ze by sa tieto velkosti okna nastavovali nejako dynamicky podla velkosti a rozlisenia monitora ? To by si bol frajer :))))))
+
             double startMenuHeight = 30;
             this.Height = System.Windows.SystemParameters.PrimaryScreenHeight - startMenuHeight;
         }
