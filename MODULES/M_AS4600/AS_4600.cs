@@ -278,8 +278,13 @@ namespace M_AS4600
             return 0.6f * ff_y * fA_av  + ff_u * fA_nt * (0.9f + 0.1f * fd_f / fs_f); // Eq. (5.7.3(2)) // fR_n
         }
 
-
         // Direct Strength Method
+        public float Eq_714____(float fI_g, float fM_n, float fM, float fM_y)
+        {
+            // Mn - nominal flexural capacity specified in Clause 7.2.2, but with My replaced by M in all equations of Clause 7.2.2
+            // M - moment due to nominal loads on member to be considered
+            return MathF.Min(fI_g * (fM_n / MathF.Min(fM, fM_y)), fI_g); // Eq. (7.1.4) // fI_eff
+        }
         public float Eq_7212_1__(float flambda_c, float fN_y)
         {
             return (float)(Math.Pow(0.658f, MathF.Pow2(flambda_c)) * fN_y); // Eq. (7.2.1.2(1)) // fN_ce

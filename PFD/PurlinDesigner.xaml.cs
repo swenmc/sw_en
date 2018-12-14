@@ -136,7 +136,6 @@ namespace PFD
 
             calcModel.Area_Ag = (float)cs.A_g;
             calcModel.MomentOfInertia_Ix = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
-            float fI_x_eff = 0.9f * calcModel.MomentOfInertia_Ix; // TODO - doplnit aj Ieff, zistit ci sa da pre simply supported beam vyjadrit faktorom
 
             float fMemberMassPerLength = calcModel.Area_Ag * mat.m_fRho;
             calcModel.PurlinSelfWeight_gp = fMemberMassPerLength * GlobalConstants.fg_acceleration;
@@ -317,24 +316,59 @@ namespace PFD
                 }
             }
 
+            // Deflections - SLS
+            float fLoad_GQ = fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql * fLoadPerLength_UnitFactor;
+            float fV_asterix_GQ = 1f / 2f * fLoad_GQ * calcModel.Length_L;
+            float fM_asterix_max_GQ = 1f / 8f * fLoad_GQ * MathF.Pow2(calcModel.Length_L);
+            // Hodnota Cb bude rovnaka pre rozne zatazenia - stale sa jedna o jednoduchy nosniky rovnomerne zatazeny spojitym zatazenim Cb = 1.136
+            designMomentValuesForCb sMomentValuesForCb_SLS;
+            sMomentValuesForCb_SLS.fM_14 = fV_asterix_GQ * (0.25f * calcModel.Length_L) - fLoad_GQ * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
+            sMomentValuesForCb_SLS.fM_24 = fV_asterix_GQ * (0.50f * calcModel.Length_L) - fLoad_GQ * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
+            sMomentValuesForCb_SLS.fM_34 = fV_asterix_GQ * (0.75f * calcModel.Length_L) - fLoad_GQ * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
+            sMomentValuesForCb_SLS.fM_max = fM_asterix_max_GQ;
+
+            CCalculMember cCalcSLS = new CCalculMember(false, member, fM_asterix_max_GQ, 0.0f, sBucklingLengthFactors, sMomentValuesForCb_SLS); // Pomocny objekt
+            float fI_x_eff = calcModel.MomentOfInertia_Ix; // Default value same as Ix
+
             // Dead Load + imposed live load (long-term)
             float DeflectionGQUpwind_Delta = 0;
-            float DeflectionGQDownwind_Delta = 5f / 384f * (fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql * fLoadPerLength_UnitFactor) * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_GQ, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_GQ, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            float DeflectionGQDownwind_Delta = 5f / 384f * fLoad_GQ * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
 
             calcModel.DeflectionGQ_Delta = DeflectionGQDownwind_Delta;
             calcModel.DeflectionGQLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionGQLimitFraction;
             calcModel.DesignRatioDeflectionGQ_eta = Math.Abs(calcModel.DeflectionGQ_Delta) / calcModel.DeflectionGQLimit_Delta_lim;
 
             // Imposed load (snow + wind)
-            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * calcModel.WindLoadUpwind_puwl * fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
-            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) *fLoadPerLength_UnitFactor * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            float fLoad_W_Upwind = calcModel.WindLoadUpwind_puwl * fLoadPerLength_UnitFactor;
+            float fM_asterix_max_W_Upwind = 1f / 8f * fLoad_W_Upwind * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_W_Upwind, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_W_Upwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * fLoad_W_Upwind * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+
+            float fLoad_SW_Downwind = (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) * fLoadPerLength_UnitFactor;
+            float fM_asterix_max_SW_Downwind = 1f / 8f * fLoad_SW_Downwind * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_SW_Downwind, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_SW_Downwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * fLoad_SW_Downwind * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+
             float fDeflection_SW_Maximum_Delta = Math.Max(Math.Abs(calcModel.Deflection_W_Upwind_Delta), Math.Abs(calcModel.Deflection_SW_Downwind_Delta));
             calcModel.DeflectionLimit_SW_Delta_lim = calcModel.Length_L / calcModel.DeflectionSWLimitFraction;
             calcModel.DesignRatio_SW_Deflection_eta = Math.Abs(fDeflection_SW_Maximum_Delta) / calcModel.DeflectionLimit_SW_Delta_lim;
 
             // Total (maximum) load
+            float fM_asterix_max_TotalUpwind = 1f / 8f * fload_up_SLS * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_TotalUpwind, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_TotalUpwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
             calcModel.DeflectionTotalUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+
+            float fM_asterix_max_TotalDownwind = 1f / 8f * fload_down_SLS * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_TotalDownwind, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_TotalDownwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
             calcModel.DeflectionTotalDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+
             calcModel.DeflectionTotalLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionTotalLimitFraction;
             float fDeflectionTotalMaximum_Delta = Math.Max(Math.Abs(calcModel.DeflectionTotalUpwind_Delta), Math.Abs(calcModel.DeflectionTotalDownwind_Delta));
             calcModel.DesignRatioDeflectionTotal_eta = Math.Abs(fDeflectionTotalMaximum_Delta / calcModel.DeflectionTotalLimit_Delta_lim);

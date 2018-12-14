@@ -22,7 +22,7 @@
 
         <Slider x:Name="sldZoom" Orientation="Horizontal" Minimum="1" Maximum="500" Value="50" IsSnapToTickEnabled="True" TickFrequency="1"/>
         <TextBlock Margin="5,5,10,5">Opacity:</TextBlock>
-        <Slider x:Name="sldOpacity" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.9" IsSnapToTickEnabled="True" TickFrequency="0.01"/>
+        <Slider x:Name="sldOpacity" Orientation="Horizontal" Minimum="0" Maximum="1" Value="0.7" IsSnapToTickEnabled="True" TickFrequency="0.01"/>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Width="690" Height="1000">
             <Grid>
                 <Grid.ColumnDefinitions>
