@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Purlin Designer" Height="1250" Width="1050">
+        Title="Purlin Designer" Height="1970" Width="1050">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -25,6 +25,24 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
@@ -156,6 +174,7 @@
             <TextBlock Grid.Row="11" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
+            <!-- Surface loads -->
             <TextBlock Grid.Row="12" Grid.Column="0" Text="Cladding Self Weight gc:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="12" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gc" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
@@ -192,41 +211,30 @@
             <TextBlock Grid.Row="14" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="15" Grid.Column="0" Text="Snow Load s:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="15" Grid.Column="0" Text="Ultimate Limit State" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="15" Grid.Column="1" Name ="TextBox_SnowLoad_s" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBlock Grid.Row="16" Grid.Column="0" Text="Snow Load s:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_SnowLoad_s" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
                          Text="{Binding Path=SnowLoad_s, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
                 </i:Interaction.Behaviors>
             </TextBox>
-            <TextBlock Grid.Row="15" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+            <TextBlock Grid.Row="16" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
-
-            <Button Grid.Row="16" Grid.Column="2" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
+            <Button Grid.Row="17" Grid.Column="2" VerticalAlignment="Top" ToolTip="Wind Pressure" HorizontalAlignment="Right" Name="WindPressureCalculator" Click="WindPressureCalculator_Click" Width="20" Margin="0 0 10 0" Height="20">
                 <StackPanel>
                     <Image Source="Resources/windgust.png"></Image>
                 </StackPanel>
             </Button>
 
-            <TextBlock Grid.Row="16" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="17" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="16" Grid.Column="1" Name ="TextBox_InternalPressure_pimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="17" Grid.Column="1" Name ="TextBox_InternalPressure_pimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
                          Text="{Binding Path=WindLoadInternalPressure_pimin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
-                <i:Interaction.Behaviors>
-                    <local:TextBoxEnterKeyUpdateBehavior />
-                </i:Interaction.Behaviors>
-            </TextBox>
-            <TextBlock Grid.Row="16" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="17" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="17" Grid.Column="1" Name ="TextBox_InternalPressure_pimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadInternalPressure_pimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
                 </i:Interaction.Behaviors>
@@ -234,11 +242,11 @@
             <TextBlock Grid.Row="17" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="18" Grid.Column="0" Text="Wind Load - External Pressure pe.min:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="18" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="18" Grid.Column="1" Name ="TextBox_ExternalPressure_pemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="18" Grid.Column="1" Name ="TextBox_InternalPressure_pimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadExternalPressure_pemin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=WindLoadInternalPressure_pimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
                 </i:Interaction.Behaviors>
@@ -246,11 +254,11 @@
             <TextBlock Grid.Row="18" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="19" Grid.Column="0" Text="Wind Load - External Pressure pe.max:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="19" Grid.Column="0" Text="Wind Load - External Pressure pe.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="19" Grid.Column="1" Name ="TextBox_ExternalPressure_pemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="19" Grid.Column="1" Name ="TextBox_ExternalPressure_pemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top"
-                         Text="{Binding Path=WindLoadExternalPressure_pemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                         Text="{Binding Path=WindLoadExternalPressure_pemin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
                 <i:Interaction.Behaviors>
                     <local:TextBoxEnterKeyUpdateBehavior />
                 </i:Interaction.Behaviors>
@@ -258,90 +266,224 @@
             <TextBlock Grid.Row="19" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="20" Grid.Column="0" Text="Cladding Self Weight gc.l:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="20" Grid.Column="0" Text="Wind Load - External Pressure pe.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="20" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gcl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="20" Grid.Column="1" Name ="TextBox_ExternalPressure_pemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadExternalPressure_pemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxEnterKeyUpdateBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Grid.Row="20" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="21" Grid.Column="0" Text="Serviceability Limit State" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBlock Grid.Row="22" Grid.Column="0" Text="Snow Load s:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="22" Grid.Column="1" Name ="TextBox_SnowLoad_s_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" Background="AntiqueWhite"
+                         Text="{Binding Path=SnowLoad_s_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxEnterKeyUpdateBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Grid.Row="22" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+            <TextBlock Grid.Row="23" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_InternalPressure_pimin_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadInternalPressure_pimin_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxEnterKeyUpdateBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="24" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_InternalPressure_pimax_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadInternalPressure_pimax_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxEnterKeyUpdateBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="25" Grid.Column="0" Text="Wind Load - External Pressure pe.min:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="25" Grid.Column="1" Name ="TextBox_ExternalPressure_pemin_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadExternalPressure_pemin_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxEnterKeyUpdateBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Grid.Row="25" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="26" Grid.Column="0" Text="Wind Load - External Pressure pe.max:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="26" Grid.Column="1" Name ="TextBox_ExternalPressure_pemax_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top"
+                         Text="{Binding Path=WindLoadExternalPressure_pemax_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}">
+                <i:Interaction.Behaviors>
+                    <local:TextBoxEnterKeyUpdateBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <TextBlock Grid.Row="26" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m²]" VerticalAlignment="Top"/>
+
+            <!-- Linear loads -->
+            <TextBlock Grid.Row="28" Grid.Column="0" Text="Cladding Self Weight gc.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="28" Grid.Column="1" Name ="TextBox_CladdingSelfWeight_gcl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=CladdingSelfWeight_gcl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}">
             </TextBox>
-            <TextBlock Grid.Row="20" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="21" Grid.Column="0" Text="Additional Dead Load g.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="21" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad_gl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=AdditionalDeadLoad_gl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="21" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="22" Grid.Column="0" Text="Live Load q.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="22" Grid.Column="1" Name ="TextBox_LiveLoad_ql" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=LiveLoad_ql, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="22" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="23" Grid.Column="0" Text="Snow Load s.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="23" Grid.Column="1" Name ="TextBox_SnowLoad_sl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=SnowLoad_sl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="23" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="24" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="24" Grid.Column="1" Name ="TextBox_InternalPressure_piminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=InternalPressure_piminl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="24" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="25" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="25" Grid.Column="1" Name ="TextBox_InternalPressure_pimaxl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=InternalPressure_pimaxl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="25" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="26" Grid.Column="0" Text="Wind Load - External Pressure pe.min.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="26" Grid.Column="1" Name ="TextBox_ExternalPressure_peminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ExternalPressure_peminl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="26" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="27" Grid.Column="0" Text="Wind Load - External Pressure pe.max.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="27" Grid.Column="1" Name ="TextBox_ExternalPressure_pemaxl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=ExternalPressure_pemaxl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="27" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="28" Grid.Column="0" Text="Wind Load - Upwind puw.l:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="28" Grid.Column="1" Name ="TextBox_WindLoadUpwind_puwl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindLoadUpwind_puwl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="28" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
-            <TextBlock Grid.Row="29" Grid.Column="0" Text="Wind Load - Downwind pdw.l:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="29" Grid.Column="0" Text="Additional Dead Load g.l:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="29" Grid.Column="1" Name ="TextBox_WindLoadDownwind_pdwl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="29" Grid.Column="1" Name ="TextBox_AdditionalDeadLoad_gl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindLoadDownwind_pdwl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                         Text="{Binding Path=AdditionalDeadLoad_gl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="29" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
+            <TextBlock Grid.Row="30" Grid.Column="0" Text="Live Load q.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="30" Grid.Column="1" Name ="TextBox_LiveLoad_ql" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=LiveLoad_ql, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="30" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
+            <TextBlock Grid.Row="32" Grid.Column="0" Text="Ultimate Limit State" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
 
+            <TextBlock Grid.Row="33" Grid.Column="0" Text="Snow Load s.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="33" Grid.Column="1" Name ="TextBox_SnowLoad_sl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=SnowLoad_sl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="33" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+            
+            <TextBlock Grid.Row="34" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="34" Grid.Column="1" Name ="TextBox_InternalPressure_piminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=InternalPressure_piminl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="34" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
 
+            <TextBlock Grid.Row="35" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="35" Grid.Column="1" Name ="TextBox_InternalPressure_pimaxl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=InternalPressure_pimaxl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="35" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="36" Grid.Column="0" Text="Wind Load - External Pressure pe.min.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="36" Grid.Column="1" Name ="TextBox_ExternalPressure_peminl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ExternalPressure_peminl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="36" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="37" Grid.Column="0" Text="Wind Load - External Pressure pe.max.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="37" Grid.Column="1" Name ="TextBox_ExternalPressure_pemaxl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ExternalPressure_pemaxl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="37" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="38" Grid.Column="0" Text="Wind Load - Upwind puw.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="38" Grid.Column="1" Name ="TextBox_WindLoadUpwind_puwl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindLoadUpwind_puwl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="38" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="39" Grid.Column="0" Text="Wind Load - Downwind pdw.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="39" Grid.Column="1" Name ="TextBox_WindLoadDownwind_pdwl" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindLoadDownwind_pdwl, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="39" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="40" Grid.Column="0" Text="Serviceability Limit State" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+
+            <TextBlock Grid.Row="41" Grid.Column="0" Text="Snow Load s.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="41" Grid.Column="1" Name ="TextBox_SnowLoad_sl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=SnowLoad_sl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="41" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="42" Grid.Column="0" Text="Wind Load - Internal Pressure pi.min.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="42" Grid.Column="1" Name ="TextBox_InternalPressure_piminl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=InternalPressure_piminl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="42" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="43" Grid.Column="0" Text="Wind Load - Internal Pressure pi.max.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="43" Grid.Column="1" Name ="TextBox_InternalPressure_pimaxl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=InternalPressure_pimaxl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="43" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="44" Grid.Column="0" Text="Wind Load - External Pressure pe.min.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="44" Grid.Column="1" Name ="TextBox_ExternalPressure_peminl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ExternalPressure_peminl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="44" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="45" Grid.Column="0" Text="Wind Load - External Pressure pe.max.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="45" Grid.Column="1" Name ="TextBox_ExternalPressure_pemaxl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=ExternalPressure_pemaxl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="45" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="46" Grid.Column="0" Text="Wind Load - Upwind puw.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="46" Grid.Column="1" Name ="TextBox_WindLoadUpwind_puwl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindLoadUpwind_puwl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="46" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="47" Grid.Column="0" Text="Wind Load - Downwind pdw.l:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="47" Grid.Column="1" Name ="TextBox_WindLoadDownwind_pdwl_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindLoadDownwind_pdwl_SLS, StringFormat=F3, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="47" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[kN/m]" VerticalAlignment="Top"/>
+
+            <!-- Second column - Internal forces -->
             <TextBlock Grid.Row="0" Grid.Column="3" Text="Bending Moment - Upwind M*:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
             <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_BendingMomentUpwind_M_asterix" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"

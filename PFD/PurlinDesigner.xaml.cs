@@ -99,12 +99,18 @@ namespace PFD
                 "CladdingSelfWeight_gc",
                 "AdditionalDeadLoad_g",
                 "LiveLoad_q",
-                "SnowLoad_s",
 
+                "SnowLoad_s",
                 "WindLoadInternalPressure_pimin",
                 "WindLoadInternalPressure_pimax",
                 "WindLoadExternalPressure_pemin",
                 "WindLoadExternalPressure_pemax",
+
+                "SnowLoad_s_SLS",
+                "WindLoadInternalPressure_pimin_SLS",
+                "WindLoadInternalPressure_pimax_SLS",
+                "WindLoadExternalPressure_pemin_SLS",
+                "WindLoadExternalPressure_pemax_SLS",
 
                 "DeflectionGQLimitFraction",
                 "DeflectionSWLimitFraction",
@@ -145,16 +151,24 @@ namespace PFD
             calcModel.CladdingSelfWeight_gcl = calcModel.CladdingSelfWeight_gc * calcModel.TributaryWidth_B;
             calcModel.AdditionalDeadLoad_gl = calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
             calcModel.LiveLoad_ql = calcModel.LiveLoad_q * calcModel.TributaryWidth_B;
+
             calcModel.SnowLoad_sl = calcModel.SnowLoad_s * calcModel.TributaryWidth_B;
             calcModel.InternalPressure_piminl = calcModel.WindLoadInternalPressure_pimin * calcModel.TributaryWidth_B;
             calcModel.InternalPressure_pimaxl = calcModel.WindLoadInternalPressure_pimax * calcModel.TributaryWidth_B;
             calcModel.ExternalPressure_peminl = calcModel.WindLoadExternalPressure_pemin * calcModel.TributaryWidth_B;
             calcModel.ExternalPressure_pemaxl = calcModel.WindLoadExternalPressure_pemax * calcModel.TributaryWidth_B;
-
-            float fTotalDeadLoad_l = calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl + calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl;
             calcModel.WindLoadUpwind_puwl = Math.Abs(-calcModel.InternalPressure_pimaxl + calcModel.ExternalPressure_peminl);
             calcModel.WindLoadDownwind_pdwl = Math.Abs(-calcModel.InternalPressure_piminl + calcModel.ExternalPressure_pemaxl);
 
+            calcModel.SnowLoad_sl_SLS = calcModel.SnowLoad_s_SLS * calcModel.TributaryWidth_B;
+            calcModel.InternalPressure_piminl_SLS = calcModel.WindLoadInternalPressure_pimin_SLS * calcModel.TributaryWidth_B;
+            calcModel.InternalPressure_pimaxl_SLS = calcModel.WindLoadInternalPressure_pimax_SLS * calcModel.TributaryWidth_B;
+            calcModel.ExternalPressure_peminl_SLS = calcModel.WindLoadExternalPressure_pemin_SLS * calcModel.TributaryWidth_B;
+            calcModel.ExternalPressure_pemaxl_SLS = calcModel.WindLoadExternalPressure_pemax_SLS * calcModel.TributaryWidth_B;
+            calcModel.WindLoadUpwind_puwl_SLS = Math.Abs(-calcModel.InternalPressure_pimaxl_SLS + calcModel.ExternalPressure_peminl_SLS);
+            calcModel.WindLoadDownwind_pdwl_SLS = Math.Abs(-calcModel.InternalPressure_piminl_SLS + calcModel.ExternalPressure_pemaxl_SLS);
+
+            float fTotalDeadLoad_l = calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl + calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl;
             // Load Combinations
 
             /*
@@ -162,30 +176,25 @@ namespace PFD
             0.9G + W1
             1.2G + W2
             1.2G + Su
-            G + 0.65*W1
-            G + 0.65*W2
             */
 
             float fGamma_G_stab = 0.9f;
             float fGamma_G_dest = 1.2f;
             float fGamma_Q = 1.5f;
             float fPsi_liveload = 0.7f;
-            float fPsi_wind = 0.65f;
 
             float fload_CO1_ULS = fGamma_G_dest * fTotalDeadLoad_l + fGamma_Q * calcModel.LiveLoad_ql;
             float fload_CO2_ULS = fGamma_G_stab * (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + calcModel.WindLoadUpwind_puwl;
             float fload_CO3_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl;
             float fload_CO4_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.SnowLoad_sl;
-            float fload_CO5_ULS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + fPsi_wind * calcModel.WindLoadUpwind_puwl;
-            float fload_CO6_ULS = fTotalDeadLoad_l + fPsi_wind * calcModel.WindLoadDownwind_pdwl;
 
-            float fload_up_ULS = MathF.Min(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS, fload_CO5_ULS, fload_CO6_ULS);
-            float fload_down_ULS = MathF.Max(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS, fload_CO5_ULS, fload_CO6_ULS);
+            float fload_up_ULS = MathF.Min(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS);
+            float fload_down_ULS = MathF.Max(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS);
 
             float fload_CO1_SLS = fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql;
-            float fload_CO2_SLS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + calcModel.WindLoadUpwind_puwl;
-            float fload_CO3_SLS = fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl;
-            float fload_CO4_SLS = fTotalDeadLoad_l + calcModel.SnowLoad_sl;
+            float fload_CO2_SLS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + calcModel.WindLoadUpwind_puwl_SLS;
+            float fload_CO3_SLS = fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl_SLS;
+            float fload_CO4_SLS = fTotalDeadLoad_l + calcModel.SnowLoad_sl_SLS;
 
             float fload_up_SLS = MathF.Min(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
             float fload_down_SLS = MathF.Max(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
@@ -342,17 +351,17 @@ namespace PFD
             calcModel.DesignRatioDeflectionGQ_eta = Math.Abs(calcModel.DeflectionGQ_Delta) / calcModel.DeflectionGQLimit_Delta_lim;
 
             // Imposed load (snow + wind)
-            float fLoad_W_Upwind = calcModel.WindLoadUpwind_puwl * fLoadPerLength_UnitFactor;
-            float fM_asterix_max_W_Upwind = 1f / 8f * fLoad_W_Upwind * MathF.Pow2(calcModel.Length_L);
-            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_W_Upwind, 0.0f);
-            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_W_Upwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
-            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * fLoad_W_Upwind * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            float fLoad_W_Upwind_SLS = calcModel.WindLoadUpwind_puwl_SLS * fLoadPerLength_UnitFactor;
+            float fM_asterix_max_W_Upwind_SLS = 1f / 8f * fLoad_W_Upwind_SLS * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_W_Upwind_SLS, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_W_Upwind_SLS, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            calcModel.Deflection_W_Upwind_Delta = 5f / 384f * fLoad_W_Upwind_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
 
-            float fLoad_SW_Downwind = (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl + calcModel.SnowLoad_sl) * fLoadPerLength_UnitFactor;
-            float fM_asterix_max_SW_Downwind = 1f / 8f * fLoad_SW_Downwind * MathF.Pow2(calcModel.Length_L);
-            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_SW_Downwind, 0.0f);
-            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_SW_Downwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
-            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * fLoad_SW_Downwind * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            float fLoad_SW_Downwind_SLS = (fPsi_liveload * calcModel.LiveLoad_ql + calcModel.WindLoadDownwind_pdwl_SLS + calcModel.SnowLoad_sl_SLS) * fLoadPerLength_UnitFactor;
+            float fM_asterix_max_SW_Downwind_SLS = 1f / 8f * fLoad_SW_Downwind_SLS * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_SW_Downwind_SLS, 0.0f);
+            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_SW_Downwind_SLS, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            calcModel.Deflection_SW_Downwind_Delta = 5f / 384f * fLoad_SW_Downwind_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
 
             float fDeflection_SW_Maximum_Delta = Math.Max(Math.Abs(calcModel.Deflection_W_Upwind_Delta), Math.Abs(calcModel.Deflection_SW_Downwind_Delta));
             calcModel.DeflectionLimit_SW_Delta_lim = calcModel.Length_L / calcModel.DeflectionSWLimitFraction;
@@ -564,10 +573,18 @@ namespace PFD
             WindPressureCalculatorViewModel vm_WindPressure = window_windpressure.DataContext as WindPressureCalculatorViewModel;
 
             PurlinDesignerViewModel vm_CalcModel = this.DataContext as PurlinDesignerViewModel;
+
+            // ULS
             vm_CalcModel.WindLoadInternalPressure_pimin = vm_WindPressure.WindPressure_pimin * 0.001f; // Convert from Pa to kPa
             vm_CalcModel.WindLoadInternalPressure_pimax = vm_WindPressure.WindPressure_pimax * 0.001f;
             vm_CalcModel.WindLoadExternalPressure_pemin = vm_WindPressure.WindPressure_pemin * 0.001f;
             vm_CalcModel.WindLoadExternalPressure_pemax = vm_WindPressure.WindPressure_pemax * 0.001f;
+
+            // SLS
+            vm_CalcModel.WindLoadInternalPressure_pimin_SLS = vm_WindPressure.WindPressure_pimin_SLS * 0.001f; // Convert from Pa to kPa
+            vm_CalcModel.WindLoadInternalPressure_pimax_SLS = vm_WindPressure.WindPressure_pimax_SLS * 0.001f;
+            vm_CalcModel.WindLoadExternalPressure_pemin_SLS = vm_WindPressure.WindPressure_pemin_SLS * 0.001f;
+            vm_CalcModel.WindLoadExternalPressure_pemax_SLS = vm_WindPressure.WindPressure_pemax_SLS * 0.001f;
         }
 
         private void Details_Click(object sender, RoutedEventArgs e)

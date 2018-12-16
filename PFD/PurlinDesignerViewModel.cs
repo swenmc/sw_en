@@ -35,27 +35,43 @@ namespace PFD
         private int MMaterialIndex;
         private float MYieldStrength_fy;
         private float MTensileStrength_fu;
+
         private float MPurlinSelfWeight_gp;
         private float MCladdingSelfWeight_gc;
         private float MAdditionalDeadLoad_g;
         private float MLiveLoad_q;
+
         private float MSnowLoad_s;
         private float MWindLoadInternalPressure_pimin;
         private float MWindLoadInternalPressure_pimax;
         private float MWindLoadExternalPressure_pemin;
         private float MWindLoadExternalPressure_pemax;
 
-        private float MWindLoadUpwind_puwl;
-        private float MWindLoadDownwind_pdwl;
+        private float MSnowLoad_s_SLS;
+        private float MWindLoadInternalPressure_pimin_SLS;
+        private float MWindLoadInternalPressure_pimax_SLS;
+        private float MWindLoadExternalPressure_pemin_SLS;
+        private float MWindLoadExternalPressure_pemax_SLS;
 
         private float MCladdingSelfWeight_gcl;
         private float MAdditionalDeadLoad_gl;
         private float MLiveLoad_ql;
+
         private float MSnowLoad_sl;
         private float MInternalPressure_piminl;
         private float MInternalPressure_pimaxl;
         private float MExternalPressure_peminl;
         private float MExternalPressure_pemaxl;
+        private float MWindLoadUpwind_puwl;
+        private float MWindLoadDownwind_pdwl;
+
+        private float MSnowLoad_sl_SLS;
+        private float MInternalPressure_piminl_SLS;
+        private float MInternalPressure_pimaxl_SLS;
+        private float MExternalPressure_peminl_SLS;
+        private float MExternalPressure_pemaxl_SLS;
+        private float MWindLoadUpwind_puwl_SLS;
+        private float MWindLoadDownwind_pdwl_SLS;
 
         private float MBendingMomentUpwind_M_asterix;
         private float MShearForceUpwind_V_asterix;
@@ -425,6 +441,96 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float SnowLoad_s_SLS
+        {
+            get
+            {
+                return MSnowLoad_s_SLS;
+            }
+            set
+            {
+                if (value < 0 || value > 10)
+                    throw new ArgumentException("Load value must be between 0 and 10 [kN/m²]");
+
+                MSnowLoad_s_SLS = value;
+
+                NotifyPropertyChanged("SnowLoad_s_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadInternalPressure_pimin_SLS
+        {
+            get
+            {
+                return MWindLoadInternalPressure_pimin_SLS;
+            }
+            set
+            {
+                if (value < -2 || value > 2)
+                    throw new ArgumentException("Load value must be between -2 and 2 [kN/m²]");
+
+                MWindLoadInternalPressure_pimin_SLS = value;
+
+                NotifyPropertyChanged("WindLoadInternalPressure_pimin_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadInternalPressure_pimax_SLS
+        {
+            get
+            {
+                return MWindLoadInternalPressure_pimax_SLS;
+            }
+            set
+            {
+                if (value < -2 || value > 2)
+                    throw new ArgumentException("Load value must be between -2 and 2 [kN/m²]");
+
+                MWindLoadInternalPressure_pimax_SLS = value;
+
+                NotifyPropertyChanged("WindLoadInternalPressure_pimax_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadExternalPressure_pemin_SLS
+        {
+            get
+            {
+                return MWindLoadExternalPressure_pemin_SLS;
+            }
+            set
+            {
+                if (value < -5 || value > 5)
+                    throw new ArgumentException("Load value must be between -5 and 5 [kN/m²]");
+
+                MWindLoadExternalPressure_pemin_SLS = value;
+
+                NotifyPropertyChanged("WindLoadExternalPressure_pemin_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadExternalPressure_pemax_SLS
+        {
+            get
+            {
+                return MWindLoadExternalPressure_pemax_SLS;
+            }
+            set
+            {
+                if (value < -5 || value > 5)
+                    throw new ArgumentException("Load value must be between -5 and 5 [kN/m²]");
+
+                MWindLoadExternalPressure_pemax_SLS = value;
+
+                NotifyPropertyChanged("WindLoadExternalPressure_pemax_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float CladdingSelfWeight_gcl
         {
             get
@@ -571,6 +677,111 @@ namespace PFD
                 MWindLoadDownwind_pdwl = value;
 
                 NotifyPropertyChanged("WindLoadDownwind_pdwl");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float SnowLoad_sl_SLS
+        {
+            get
+            {
+                return MSnowLoad_sl_SLS;
+            }
+            set
+            {
+                MSnowLoad_sl_SLS = value;
+
+                NotifyPropertyChanged("SnowLoad_sl_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float InternalPressure_piminl_SLS
+        {
+            get
+            {
+                return MInternalPressure_piminl_SLS;
+            }
+            set
+            {
+                MInternalPressure_piminl_SLS = value;
+
+                NotifyPropertyChanged("InternalPressure_piminl_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float InternalPressure_pimaxl_SLS
+        {
+            get
+            {
+                return MInternalPressure_pimaxl_SLS;
+            }
+            set
+            {
+                MInternalPressure_pimaxl_SLS = value;
+
+                NotifyPropertyChanged("InternalPressure_pimaxl_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ExternalPressure_peminl_SLS
+        {
+            get
+            {
+                return MExternalPressure_peminl_SLS;
+            }
+            set
+            {
+                MExternalPressure_peminl_SLS = value;
+
+                NotifyPropertyChanged("ExternalPressure_peminl_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float ExternalPressure_pemaxl_SLS
+        {
+            get
+            {
+                return MExternalPressure_pemaxl_SLS;
+            }
+            set
+            {
+                MExternalPressure_pemaxl_SLS = value;
+
+                NotifyPropertyChanged("ExternalPressure_pemaxl_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadUpwind_puwl_SLS
+        {
+            get
+            {
+                return MWindLoadUpwind_puwl_SLS;
+            }
+            set
+            {
+                MWindLoadUpwind_puwl_SLS = value;
+
+                NotifyPropertyChanged("WindLoadUpwind_puwl_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindLoadDownwind_pdwl_SLS
+        {
+            get
+            {
+                return MWindLoadDownwind_pdwl_SLS;
+            }
+            set
+            {
+                MWindLoadDownwind_pdwl_SLS = value;
+
+                NotifyPropertyChanged("WindLoadDownwind_pdwl_SLS");
             }
         }
 
@@ -1042,14 +1253,22 @@ namespace PFD
             AdditionalDeadLoad_g = 0.10f; // kN/m^2
 
             LiveLoad_q = 0.25f; // kN/m^2
+
+            // Default
+
+            // ULS
             SnowLoad_s = 0; // kN/m^2
+            WindLoadInternalPressure_pimin = -0.30f; // kN/m^2
+            WindLoadInternalPressure_pimax =  0.00f; // kN/m^2
+            WindLoadExternalPressure_pemin = -1.00f; // kN/m^2
+            WindLoadExternalPressure_pemax =  0.15f; // kN/m^2
 
-            // TODO - napojit vypocet z Wind Load Calculator a po spusteni zapisat hodnoty do Purlin Designer
-            WindLoadInternalPressure_pimin = -0.3f; // kN/m^2
-            WindLoadInternalPressure_pimax = 0; // kN/m^2
-
-            WindLoadExternalPressure_pemin = -1.0f; // kN/m^2
-            WindLoadExternalPressure_pemax = 0.15f; // kN/m^2
+            // SLS
+            SnowLoad_s_SLS = 0; // kN/m^2
+            WindLoadInternalPressure_pimin_SLS = -0.20f; // kN/m^2
+            WindLoadInternalPressure_pimax_SLS =  0.00f; // kN/m^2
+            WindLoadExternalPressure_pemin_SLS = -0.80f; // kN/m^2
+            WindLoadExternalPressure_pemax_SLS =  0.12f; // kN/m^2
 
             DeflectionGQLimitFraction = 300f;
             DeflectionSWLimitFraction = 120f;

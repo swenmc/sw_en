@@ -75,13 +75,20 @@ namespace PFD
         private float MWindSpeed_VR;
         private float MWindSpeed_VsitBeta;
         private float MWindSpeed_VdesTheta;
-
         private float MWindPressure_p_basic;
-
         private float MWindPressure_pimin;
         private float MWindPressure_pimax;
         private float MWindPressure_pemin;
         private float MWindPressure_pemax;
+
+        private float MWindSpeed_VR_SLS;
+        private float MWindSpeed_VsitBeta_SLS;
+        private float MWindSpeed_VdesTheta_SLS;
+        private float MWindPressure_p_basic_SLS;
+        private float MWindPressure_pimin_SLS;
+        private float MWindPressure_pimax_SLS;
+        private float MWindPressure_pemin_SLS;
+        private float MWindPressure_pemax_SLS;
 
         // Not in GUI
         private float MDesignLife_Value;
@@ -806,6 +813,134 @@ namespace PFD
             }
         }
 
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindSpeed_VR_SLS
+        {
+            get
+            {
+                return MWindSpeed_VR_SLS;
+            }
+
+            set
+            {
+                MWindSpeed_VR_SLS = value;
+
+                NotifyPropertyChanged("WindSpeed_VR_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindSpeed_VsitBeta_SLS
+        {
+            get
+            {
+                return MWindSpeed_VsitBeta_SLS;
+            }
+
+            set
+            {
+                MWindSpeed_VsitBeta_SLS = value;
+
+                NotifyPropertyChanged("WindSpeed_VsitBeta_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindSpeed_VdesTheta_SLS
+        {
+            get
+            {
+                return MWindSpeed_VdesTheta_SLS;
+            }
+
+            set
+            {
+                MWindSpeed_VdesTheta_SLS = value;
+
+                NotifyPropertyChanged("WindSpeed_VdesTheta_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_p_basic_SLS
+        {
+            get
+            {
+                return MWindPressure_p_basic_SLS;
+            }
+
+            set
+            {
+                MWindPressure_p_basic_SLS = value;
+
+                NotifyPropertyChanged("WindPressure_p_basic_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pimin_SLS
+        {
+            get
+            {
+                return MWindPressure_pimin_SLS;
+            }
+
+            set
+            {
+                MWindPressure_pimin_SLS = value;
+
+                NotifyPropertyChanged("WindPressure_pimin_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pimax_SLS
+        {
+            get
+            {
+                return MWindPressure_pimax_SLS;
+            }
+
+            set
+            {
+                MWindPressure_pimax_SLS = value;
+
+                NotifyPropertyChanged("WindPressure_pimax_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pemin_SLS
+        {
+            get
+            {
+                return MWindPressure_pemin_SLS;
+            }
+
+            set
+            {
+                MWindPressure_pemin_SLS = value;
+
+                NotifyPropertyChanged("WindPressure_pemin_SLS");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float WindPressure_pemax_SLS
+        {
+            get
+            {
+                return MWindPressure_pemax_SLS;
+            }
+
+            set
+            {
+                MWindPressure_pemax_SLS = value;
+
+                NotifyPropertyChanged("WindPressure_pemax_SLS");
+            }
+        }
+
         // Not in GUI
         //-------------------------------------------------------------------------------------------------------------
         public float DesignLife_Value
@@ -888,11 +1023,13 @@ namespace PFD
             DesignLifeIndex = 4;
             ImportanceClassIndex = 1;
 
+            /*
             AnnualProbabilityULS_Wind = 0.002f; // TODO - Odstranit po napojeni nacitania z databazy
             AnnualProbabilitySLS = 0.04f; // TODO - Odstranit po napojeni nacitania z databazy
 
             MR_ULS_Wind = 500; // TODO - Odstranit po napojeni nacitania z databazy
             MR_SLS = 25; // TODO - Odstranit po napojeni nacitania z databazy
+            */
 
             SiteElevation = 5; // m
             WindRegionIndex = 6;
@@ -910,7 +1047,7 @@ namespace PFD
             LocalPressureReferenceDownwindIndex = 0;
 
             PorousCladdingReductionFactor_Kp = 1.0f;
-            CombinationFactorExternalPressures_Kce = 0.8f;
+            CombinationFactorExternalPressures_Kce = 0.9f;
             CombinationFactorExternalPressures_Kci = 1.0f;
 
             GableWidth = 20f; // m

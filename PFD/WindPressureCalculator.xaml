@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Wind Pressure Calculator"  Height="1150" Width="950">
+        Title="Wind Pressure Calculator"  Height="1160" Width="950">
     <Window.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">150</System:Double>
@@ -253,86 +253,88 @@
                          TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top"/>
 
             <!-- Second Input Column -->
-            <!-- Results - wind speed -->
-            <TextBlock Grid.Row="0" Grid.Column="3" Text="Wind Speed V R:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="Internal Pressure Coefficient Cpi.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_WindSpeed_VR" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindSpeed_VR, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="0" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="1" Grid.Column="3" Text="Wind Speed V sit β:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="1" Grid.Column="4" Name ="TextBox_WindSpeed_VsitBeta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindSpeed_VsitBeta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="2" Grid.Column="3" Text="Wind Speed V des θ:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="2" Grid.Column="4" Name ="TextBox_WindSpeed_VdesTheta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindSpeed_VdesTheta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="3" Grid.Column="3" Text="Wind Pressure p basic:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="3" Grid.Column="4" Name ="TextBox_WindPressure_p_basic" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
-                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
-                         Text="{Binding Path=WindPressure_p_basic, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
-            <TextBlock Grid.Row="3" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
-                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
-
-            <TextBlock Grid.Row="5" Grid.Column="3" Text="Internal Pressure Coefficient Cpi.min:" HorizontalAlignment="Left" 
-                         VerticalAlignment="Top" />
-            <TextBox Grid.Row="5" Grid.Column="4" Name ="TextBox_InternalPressureCoefficient_Cpimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="0" Grid.Column="4" Name ="TextBox_InternalPressureCoefficient_Cpimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=InternalPressureCoefficient_Cpimin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="6" Grid.Column="3" Text="Internal Pressure Coefficient Cpi.max:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="Internal Pressure Coefficient Cpi.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_InternalPressureCoefficient_Cpimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="1" Grid.Column="4" Name ="TextBox_InternalPressureCoefficient_Cpimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=InternalPressureCoefficient_Cpimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="7" Grid.Column="3" Text="External Pressure Coefficient Cpe.min:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="2" Grid.Column="3" Text="External Pressure Coefficient Cpe.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="7" Grid.Column="4" Name ="TextBox_ExternalPressureCoefficient_Cpemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="2" Grid.Column="4" Name ="TextBox_ExternalPressureCoefficient_Cpemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ExternalPressureCoefficient_Cpemin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="8" Grid.Column="3" Text="External Pressure Coefficient Cpe.max:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="3" Grid.Column="3" Text="External Pressure Coefficient Cpe.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="8" Grid.Column="4" Name ="TextBox_ExternalPressureCoefficient_Cpemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="3" Grid.Column="4" Name ="TextBox_ExternalPressureCoefficient_Cpemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=ExternalPressureCoefficient_Cpemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="9" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.i.min:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="4" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.i.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="9" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="4" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigimin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigimin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="10" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.i.max:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="5" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.i.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="5" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigimax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigimax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="11" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.e.min:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="6" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.e.min:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="6" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigemin" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigemin, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
 
-            <TextBlock Grid.Row="12" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.e.max:" HorizontalAlignment="Left" 
+            <TextBlock Grid.Row="7" Grid.Column="3" Text="Aerodynamic Shape Factor Cfig.e.max:" HorizontalAlignment="Left" 
                          VerticalAlignment="Top" />
-            <TextBox Grid.Row="12" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+            <TextBox Grid.Row="7" Grid.Column="4" Name ="TextBox_AerodynamicShapeFactor_Cfigemax" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
                          TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
                          Text="{Binding Path=AerodynamicShapeFactor_Cfigemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            
+            <!-- Results - wind speed -->
+            <TextBlock Grid.Row="9" Grid.Column="3" Text="Ultimate Limit State" HorizontalAlignment="Left"
+                         VerticalAlignment="Top" />
+            <TextBlock Grid.Row="10" Grid.Column="3" Text="Wind Speed V R:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="10" Grid.Column="4" Name ="TextBox_WindSpeed_VR" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindSpeed_VR, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="10" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="11" Grid.Column="3" Text="Wind Speed V sit β:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="11" Grid.Column="4" Name ="TextBox_WindSpeed_VsitBeta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindSpeed_VsitBeta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="12" Grid.Column="3" Text="Wind Speed V des θ:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="12" Grid.Column="4" Name ="TextBox_WindSpeed_VdesTheta" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindSpeed_VdesTheta, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="12" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="13" Grid.Column="3" Text="Wind Pressure p basic:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="13" Grid.Column="4" Name ="TextBox_WindPressure_p_basic" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindPressure_p_basic, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="13" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
 
             <!-- Results - wind pressures -->
             <TextBlock Grid.Row="14" Grid.Column="3" Text="Wind Pressure pi.min:" HorizontalAlignment="Left" 
@@ -366,7 +368,74 @@
                          Text="{Binding Path=WindPressure_pemax, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
             <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
                          TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
+
+            <!-- Results - wind speed -->
+            <TextBlock Grid.Row="19" Grid.Column="3" Text="Serviceability Limit State" HorizontalAlignment="Left"
+                         VerticalAlignment="Top" />
+            <TextBlock Grid.Row="20" Grid.Column="3" Text="Wind Speed V R:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="20" Grid.Column="4" Name ="TextBox_WindSpeed_VR_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindSpeed_VR_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="20" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="21" Grid.Column="3" Text="Wind Speed V sit β:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="21" Grid.Column="4" Name ="TextBox_WindSpeed_VsitBeta_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindSpeed_VsitBeta_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="22" Grid.Column="3" Text="Wind Speed V des θ:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="22" Grid.Column="4" Name ="TextBox_WindSpeed_VdesTheta_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindSpeed_VdesTheta_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="22" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[m/s]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="23" Grid.Column="3" Text="Wind Pressure p basic:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="23" Grid.Column="4" Name ="TextBox_WindPressure_p_basic_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindPressure_p_basic_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="23" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
+
+            <!-- Results - wind pressures -->
+            <TextBlock Grid.Row="24" Grid.Column="3" Text="Wind Pressure pi.min:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="24" Grid.Column="4" Name ="TextBox_WindPressure_pimin_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindPressure_pimin_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="24" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="25" Grid.Column="3" Text="Wind Pressure pi.max:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="25" Grid.Column="4" Name ="TextBox_WindPressure_pimax_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindPressure_pimax_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="25" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="26" Grid.Column="3" Text="Wind Pressure pe.min:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="26" Grid.Column="4" Name ="TextBox_WindPressure_pemin_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindPressure_pemin_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="26" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
+
+            <TextBlock Grid.Row="27" Grid.Column="3" Text="Wind Pressure pe.max:" HorizontalAlignment="Left" 
+                         VerticalAlignment="Top" />
+            <TextBox Grid.Row="27" Grid.Column="4" Name ="TextBox_WindPressure_pemax_SLS" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidth}"
+                         TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" IsEnabled="False"
+                         Text="{Binding Path=WindPressure_pemax_SLS, StringFormat=F3, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"/>
+            <TextBlock Grid.Row="27" Grid.Column="5" HorizontalAlignment="Left" Margin="5,0"
+                         TextWrapping="Wrap" Text="[Pa]" VerticalAlignment="Top"/>
         </Grid>
     </ScrollViewer>
-    
 </Window>
