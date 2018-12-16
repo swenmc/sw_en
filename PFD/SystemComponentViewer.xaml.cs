@@ -2125,9 +2125,11 @@ namespace PFD
                         //page2D.RenderSize = new System.Windows.Size(((Canvas)Frame2D.Content).RenderSize.Width, ((Canvas)Frame2D.Content).RenderSize.Height);
                         //if (Frame2D.Content is Canvas) CExportToPDF.AddPlateToPDF(Frame2D.Content as Canvas, plate, pInfo);
                         if (page2D == null) { MessageBox.Show("Exporting to PDF is not possible because 2D view does not contain required image. " + fi.Name); return; }
-                        
+
+                        ForceUIToUpdate();
                         //CExportToPDF.AddPlateToPDF(page2D, plate, pInfo);
-                        CExportToPDF.AddPlateToPDF(page2D, ((Canvas)Frame2D.Content).RenderSize.Width, plate, pInfo);
+                        //CExportToPDF.AddPlateToPDF(page2D, ((Canvas)Frame2D.Content).RenderSize.Width, plate, pInfo);
+                        CExportToPDF.AddPlateToPDF(((Canvas)Frame2D.Content), ((Canvas)Frame2D.Content).RenderSize.Width, plate, pInfo);
 
                         float fUnitFactor_Length_m_to_mm = 1000f;
 
