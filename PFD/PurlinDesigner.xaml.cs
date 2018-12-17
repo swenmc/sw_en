@@ -157,16 +157,16 @@ namespace PFD
             calcModel.InternalPressure_pimaxl = calcModel.WindLoadInternalPressure_pimax * calcModel.TributaryWidth_B;
             calcModel.ExternalPressure_peminl = calcModel.WindLoadExternalPressure_pemin * calcModel.TributaryWidth_B;
             calcModel.ExternalPressure_pemaxl = calcModel.WindLoadExternalPressure_pemax * calcModel.TributaryWidth_B;
-            calcModel.WindLoadUpwind_puwl = Math.Abs(-calcModel.InternalPressure_pimaxl + calcModel.ExternalPressure_peminl);
-            calcModel.WindLoadDownwind_pdwl = Math.Abs(-calcModel.InternalPressure_piminl + calcModel.ExternalPressure_pemaxl);
+            calcModel.WindLoadUpwind_puwl = -calcModel.InternalPressure_pimaxl + calcModel.ExternalPressure_peminl;
+            calcModel.WindLoadDownwind_pdwl = -calcModel.InternalPressure_piminl + calcModel.ExternalPressure_pemaxl;
 
             calcModel.SnowLoad_sl_SLS = calcModel.SnowLoad_s_SLS * calcModel.TributaryWidth_B;
             calcModel.InternalPressure_piminl_SLS = calcModel.WindLoadInternalPressure_pimin_SLS * calcModel.TributaryWidth_B;
             calcModel.InternalPressure_pimaxl_SLS = calcModel.WindLoadInternalPressure_pimax_SLS * calcModel.TributaryWidth_B;
             calcModel.ExternalPressure_peminl_SLS = calcModel.WindLoadExternalPressure_pemin_SLS * calcModel.TributaryWidth_B;
             calcModel.ExternalPressure_pemaxl_SLS = calcModel.WindLoadExternalPressure_pemax_SLS * calcModel.TributaryWidth_B;
-            calcModel.WindLoadUpwind_puwl_SLS = Math.Abs(-calcModel.InternalPressure_pimaxl_SLS + calcModel.ExternalPressure_peminl_SLS);
-            calcModel.WindLoadDownwind_pdwl_SLS = Math.Abs(-calcModel.InternalPressure_piminl_SLS + calcModel.ExternalPressure_pemaxl_SLS);
+            calcModel.WindLoadUpwind_puwl_SLS = -calcModel.InternalPressure_pimaxl_SLS + calcModel.ExternalPressure_peminl_SLS;
+            calcModel.WindLoadDownwind_pdwl_SLS = -calcModel.InternalPressure_piminl_SLS + calcModel.ExternalPressure_pemaxl_SLS;
 
             float fTotalDeadLoad_l = calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl + calcModel.CladdingSelfWeight_gcl + calcModel.AdditionalDeadLoad_gl;
             // Load Combinations

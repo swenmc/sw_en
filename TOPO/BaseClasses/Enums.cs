@@ -560,8 +560,10 @@
         public float fM_s;
 
         public float fK_p;
-        public float fK_ce;
-        public float fK_ci;
+        public float fK_ce_min;
+        public float fK_ce_max;
+        public float fK_ci_min;
+        public float fK_ci_max;
 
         /*
         public float fRoofArea;

@@ -117,8 +117,11 @@ namespace PFD
             sWindInputSpecificData.fM_s = input.ShieldingMultiplier_Ms;
 
             sWindInputSpecificData.fK_p = input.PorousCladdingReductionFactor_Kp;
-            sWindInputSpecificData.fK_ce = input.CombinationFactorExternalPressures_Kce;
-            sWindInputSpecificData.fK_ci = input.CombinationFactorExternalPressures_Kci;
+
+            sWindInputSpecificData.fK_ci_min = input.CombinationFactorExternalPressures_Kci_downwind; // Kci = 0.9, Cpi = -0.3
+            sWindInputSpecificData.fK_ci_max = input.CombinationFactorExternalPressures_Kci_upwind;   // Kci = 1.0, Cpi =  0.0
+            sWindInputSpecificData.fK_ce_min = input.CombinationFactorExternalPressures_Kce_upwind;   // Kce = 1.0, Cpe = -0.9
+            sWindInputSpecificData.fK_ce_max = input.CombinationFactorExternalPressures_Kce_downwind; // Kce = 0.9, Cpe = +0.2
 
             // Calculate
             windCalcResults = new M_EC1.AS_NZS.CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData, sWindInputSpecificData);

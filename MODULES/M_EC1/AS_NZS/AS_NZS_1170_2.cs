@@ -129,11 +129,17 @@ namespace M_EC1.AS_NZS
         }
         public static float Eq_52_2____(float fC_pe, float fK_a, float fK_ce, float fK_l, float fK_p)
         {
-            return fC_pe * fK_a * fK_ce * fK_l * fK_p; // Eq. (5.2(2)) // fC_fig_e
+            if (fK_a * fK_ce < 0.8f)
+                return fC_pe * 0.8f * fK_l * fK_p;
+            else
+                return fC_pe * fK_a * fK_ce * fK_l * fK_p; // Eq. (5.2(2)) // fC_fig_e
         }
         public static float Eq_52_3____(float fC_f, float fK_a, float fK_c)
         {
-            return fC_f * fK_a * fK_c; // Eq. (5.2(3)) // fC_fig
+            if (fK_a * fK_c < 0.8f)
+                return fC_f * 0.8f;
+            else
+                return fC_f * fK_a * fK_c; // Eq. (5.2(3)) // fC_fig
         }
         public static float Get_Mh_442_(bool bIsEscarpment, float fH, float fH_2Lu_ratio, float fx, float fz)
         {

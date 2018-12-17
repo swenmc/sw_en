@@ -51,8 +51,11 @@ namespace M_EC1.AS_NZS
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
         public float fK_p; // K_p - net porosity factor, as given in Paragraph D1.4
 
-        public float fK_ce = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-        public float fK_ci = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ce_min; // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ce_max; // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ci_min; // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ci_max; // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ce_wall; // TODO - dopracovat podla kombinacii external and internal pressure
 
         public float fC_dyn = 1.0f; // Dynamic response factor
 
@@ -203,8 +206,11 @@ namespace M_EC1.AS_NZS
             fM_t = 1.0f;
 
             fK_p = 1.0f;
-            fK_ce = 0.8f;
-            fK_ci = 1.0f;
+            fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_ci_min = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_ci_max = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_ce_wall = 0.8f;
 
             // M_s
             float fl_s = 1000f;    // Average spacing of shielding buildings
@@ -254,8 +260,11 @@ namespace M_EC1.AS_NZS
             fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
 
             fK_p = sWinDataSpecific_temp.fK_p;
-            fK_ce = sWinDataSpecific_temp.fK_ce;
-            fK_ci = sWinDataSpecific_temp.fK_ci;
+            fK_ci_min = sWinDataSpecific_temp.fK_ci_min;
+            fK_ci_max = sWinDataSpecific_temp.fK_ci_max;
+            fK_ce_min = sWinDataSpecific_temp.fK_ce_min;
+            fK_ce_max = sWinDataSpecific_temp.fK_ce_max;
+            fK_ce_wall = 1.0f; // TODO - nastavit podobne ako pre strechu rozne pre min a max Cpi
 
             CalculateWindData();
         }
@@ -510,29 +519,29 @@ namespace M_EC1.AS_NZS
             // Internal and external pressure factors
 
             // Internal presssure
-            fC_fig_i_min = AS_NZS_1170_2.Eq_52_1____(fC_pi_min, fK_ci); // Aerodynamic shape factor
-            fC_fig_i_max = AS_NZS_1170_2.Eq_52_1____(fC_pi_max, fK_ci); // Aerodynamic shape factor
+            fC_fig_i_min = AS_NZS_1170_2.Eq_52_1____(fC_pi_min, fK_ci_min); // Aerodynamic shape factor
+            fC_fig_i_max = AS_NZS_1170_2.Eq_52_1____(fC_pi_max, fK_ci_max); // Aerodynamic shape factor
 
             // External pressure
             // Walls
 
             float fK_l_wall = 1.0f; // TODO - doriesit zadanie pre steny (possitive alebo negative pressure
 
-            fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
-            fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+            fC_fig_e_W_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_0or180, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
+            fC_fig_e_W_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_W_wall, fK_a_wall_90or270, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
 
-            fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
-            fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+            fC_fig_e_L_wall_0or180 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta0or180, fK_a_wall_0or180, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
+            fC_fig_e_L_wall_90or270 = AS_NZS_1170_2.Eq_52_2____(fC_pe_L_wall_Theta90or270, fK_a_wall_90or270, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
 
             fC_fig_e_S_wall_0or180 = new float[fC_pe_S_wall_values.Length];
 
             for (int i = 0; i < fC_fig_e_S_wall_0or180.Length; i++)
-                fC_fig_e_S_wall_0or180[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_90or270, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+                fC_fig_e_S_wall_0or180[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_90or270, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
 
             fC_fig_e_S_wall_90or270 = new float[fC_pe_S_wall_values.Length];
 
             for (int i = 0; i < fC_fig_e_S_wall_90or270.Length; i++)
-                fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce, fK_l_wall, fK_p); // Aerodynamic shape factor
+                fC_fig_e_S_wall_90or270[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_S_wall_values[i], fK_a_wall_0or180, fK_ce_wall, fK_l_wall, fK_p); // Aerodynamic shape factor
 
             // Roof
             fC_fig_e_U_roof_values_min = new float[fC_pe_U_roof_values_min.Length];
@@ -540,8 +549,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fC_fig_e_U_roof_values_min.Length; i++)
             {
-                fC_fig_e_U_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_min[i], fK_a_roof, fK_ce, fK_l_upwind, fK_p); // Aerodynamic shape factor
-                fC_fig_e_U_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_max[i], fK_a_roof, fK_ce, fK_l_downwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_U_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_min[i], fK_a_roof, fK_ce_min, fK_l_upwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_U_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_U_roof_values_max[i], fK_a_roof, fK_ce_max, fK_l_downwind, fK_p); // Aerodynamic shape factor
             }
 
             fC_fig_e_D_roof_values_min = new float[fC_pe_D_roof_values_min.Length];
@@ -549,8 +558,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fC_fig_e_D_roof_values_min.Length; i++)
             {
-                fC_fig_e_D_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_min[i], fK_a_roof, fK_ce, fK_l_upwind, fK_p); // Aerodynamic shape factor
-                fC_fig_e_D_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_max[i], fK_a_roof, fK_ce, fK_l_downwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_D_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_min[i], fK_a_roof, fK_ce_min, fK_l_upwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_D_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_D_roof_values_max[i], fK_a_roof, fK_ce_max, fK_l_downwind, fK_p); // Aerodynamic shape factor
             }
 
             fC_fig_e_R_roof_values_min = new float[fC_pe_R_roof_values_min.Length];
@@ -558,8 +567,8 @@ namespace M_EC1.AS_NZS
 
             for (int i = 0; i < fC_fig_e_R_roof_values_min.Length; i++)
             {
-                fC_fig_e_R_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_min[i], fK_a_roof, fK_ce, fK_l_upwind, fK_p); // Aerodynamic shape factor
-                fC_fig_e_R_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_max[i], fK_a_roof, fK_ce, fK_l_downwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_R_roof_values_min[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_min[i], fK_a_roof, fK_ce_min, fK_l_upwind, fK_p); // Aerodynamic shape factor
+                fC_fig_e_R_roof_values_max[i] = AS_NZS_1170_2.Eq_52_2____(fC_pe_R_roof_values_max[i], fK_a_roof, fK_ce_max, fK_l_downwind, fK_p); // Aerodynamic shape factor
             }
 
             // Surface pressures

@@ -53,8 +53,10 @@ namespace PFD
         private float MLocalPressureFactorDownwind_Kl;
 
         private float MPorousCladdingReductionFactor_Kp;
-        private float MCombinationFactorExternalPressures_Kce;
-        private float MCombinationFactorExternalPressures_Kci;
+        private float MCombinationFactorExternalPressures_Kci_upwind;
+        private float MCombinationFactorExternalPressures_Kci_downwind;
+        private float MCombinationFactorExternalPressures_Kce_upwind;
+        private float MCombinationFactorExternalPressures_Kce_downwind;
 
         private float MInternalPressureCoefficient_Cpimin;
         private float MInternalPressureCoefficient_Cpimax;
@@ -444,34 +446,66 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float CombinationFactorExternalPressures_Kce
+        public float CombinationFactorExternalPressures_Kci_upwind
         {
             get
             {
-                return MCombinationFactorExternalPressures_Kce;
+                return MCombinationFactorExternalPressures_Kci_upwind;
             }
 
             set
             {
-                MCombinationFactorExternalPressures_Kce = value;
+                MCombinationFactorExternalPressures_Kci_upwind = value;
 
-                NotifyPropertyChanged("CombinationFactorExternalPressures_Kce");
+                NotifyPropertyChanged("CombinationFactorExternalPressures_Kci_upwind");
             }
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public float CombinationFactorExternalPressures_Kci
+        public float CombinationFactorExternalPressures_Kci_downwind
         {
             get
             {
-                return MCombinationFactorExternalPressures_Kci;
+                return MCombinationFactorExternalPressures_Kci_downwind;
             }
 
             set
             {
-                MCombinationFactorExternalPressures_Kci = value;
+                MCombinationFactorExternalPressures_Kci_downwind = value;
 
-                NotifyPropertyChanged("CombinationFactorExternalPressures_Kci");
+                NotifyPropertyChanged("CombinationFactorExternalPressures_Kci_downwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float CombinationFactorExternalPressures_Kce_upwind
+        {
+            get
+            {
+                return MCombinationFactorExternalPressures_Kce_upwind;
+            }
+
+            set
+            {
+                MCombinationFactorExternalPressures_Kce_upwind = value;
+
+                NotifyPropertyChanged("CombinationFactorExternalPressures_Kce_upwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float CombinationFactorExternalPressures_Kce_downwind
+        {
+            get
+            {
+                return MCombinationFactorExternalPressures_Kce_downwind;
+            }
+
+            set
+            {
+                MCombinationFactorExternalPressures_Kce_downwind = value;
+
+                NotifyPropertyChanged("CombinationFactorExternalPressures_Kce_downwind");
             }
         }
 
@@ -1047,8 +1081,10 @@ namespace PFD
             LocalPressureReferenceDownwindIndex = 0;
 
             PorousCladdingReductionFactor_Kp = 1.0f;
-            CombinationFactorExternalPressures_Kce = 0.9f;
-            CombinationFactorExternalPressures_Kci = 1.0f;
+            CombinationFactorExternalPressures_Kci_upwind = 1.0f;
+            CombinationFactorExternalPressures_Kci_downwind = 0.9f;
+            CombinationFactorExternalPressures_Kce_upwind = 1.0f;
+            CombinationFactorExternalPressures_Kce_downwind = 0.9f;
 
             GableWidth = 20f; // m
             Length = 40f; // m

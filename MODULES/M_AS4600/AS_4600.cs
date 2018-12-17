@@ -283,7 +283,7 @@ namespace M_AS4600
         {
             // Mn - nominal flexural capacity specified in Clause 7.2.2, but with My replaced by M in all equations of Clause 7.2.2
             // M - moment due to nominal loads on member to be considered
-            return MathF.Min(fI_g * (fM_n / MathF.Min(fM, fM_y)), fI_g); // Eq. (7.1.4) // fI_eff
+            return MathF.Min(fI_g * (fM_n / MathF.Min(Math.Abs(fM), fM_y)), fI_g); // Eq. (7.1.4) // fI_eff
         }
         public float Eq_7212_1__(float flambda_c, float fN_y)
         {
