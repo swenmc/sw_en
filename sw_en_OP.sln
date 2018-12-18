@@ -840,6 +840,7 @@ Global
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Any CPU.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|ARM.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Mixed Platforms.ActiveCfg = Release
+		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Mixed Platforms.Build.0 = Release
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|x64.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|x86.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Release|Any CPU.ActiveCfg = Release
@@ -892,8 +893,8 @@ Global
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695} = {E380D78C-3BFC-4FCB-B5A1-84CD77C5BF97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

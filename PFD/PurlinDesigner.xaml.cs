@@ -577,7 +577,13 @@ namespace PFD
             WindPressureCalculator window_windpressure = new WindPressureCalculator();
             window_windpressure.Show();
             // Reakcia na zavretie okna - nastavit tieto hodnoty do VM purlin designer
-            window_windpressure.Closing += WindPressureCalculator_Closing;
+            //window_windpressure.Closing += WindPressureCalculator_Closing;
+            window_windpressure.Closed += Window_windpressure_Closed;
+        }
+
+        private void Window_windpressure_Closed(object sender, EventArgs e)
+        {
+            WindPressureCalculator_Closing(sender, null);
         }
 
         private void WindPressureCalculator_Closing(object sender, System.ComponentModel.CancelEventArgs e)
