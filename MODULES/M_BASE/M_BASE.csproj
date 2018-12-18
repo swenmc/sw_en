@@ -6,7 +6,7 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AD3E14F4-72C6-476E-B67F-93CC194E0E02}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>M_BASE</RootNamespace>
     <AssemblyName>M_BASE</AssemblyName>
@@ -62,6 +62,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -84,15 +87,8 @@
     <Compile Include="CJointDesign.cs" />
     <Compile Include="CMemberDesign.cs" />
     <Compile Include="Concrete\MatTemp.cs" />
-    <Compile Include="FormModBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormModBase.Designer.cs">
-      <DependentUpon>FormModBase.cs</DependentUpon>
-    </Compile>
     <Compile Include="Metal\CMetal.cs" />
     <Compile Include="Metal\CCrSc.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

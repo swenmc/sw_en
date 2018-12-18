@@ -101,8 +101,8 @@ namespace CENEX
         }
         private void eC1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form_M_EC1 obj_M_C1_Form = new Form_M_EC1();
-            obj_M_C1_Form.ShowDialog();
+            //Form_M_EC1 obj_M_C1_Form = new Form_M_EC1();
+            //obj_M_C1_Form.ShowDialog();
         }
         private void eC2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
