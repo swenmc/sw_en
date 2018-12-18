@@ -426,9 +426,6 @@
     <Resource Include="Resources\windterraincategories2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\NZwindregionmapOverlay.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\NZmap.jpg" />
   </ItemGroup>
   <ItemGroup>
