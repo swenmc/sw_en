@@ -73,8 +73,11 @@ namespace PFD
         private float MWindLoadUpwind_puwl_SLS;
         private float MWindLoadDownwind_pdwl_SLS;
 
+        private float MTotalLoad_ULS_Upwind;
         private float MBendingMomentUpwind_M_asterix;
         private float MShearForceUpwind_V_asterix;
+
+        private float MTotalLoad_ULS_Downwind;
         private float MBendingMomentDownwind_M_asterix;
         private float MShearForceDownwind_V_asterix;
 
@@ -101,8 +104,16 @@ namespace PFD
         private float MDeflectionLimit_SW_Delta_lim;
         private float MDesignRatio_SW_Deflection_eta;
 
+        private float MTotalLoad_DeflectionTotalUpwind;
+        private float MBendingMoment_DeflectionTotalUpwind;
+        private float MMomentOfInertia_DeflectionTotalUpwind;
         private float MDeflectionTotalUpwind_Delta;
+
+        private float MTotalLoad_DeflectionTotalDownwind;
+        private float MBendingMoment_DeflectionTotalDownwind;
+        private float MMomentOfInertia_DeflectionTotalDownwind;
         private float MDeflectionTotalDownwind_Delta;
+
         private float MDeflectionTotalLimitFraction;
         private float MDeflectionTotalLimit_Delta_lim;
         private float MDesignRatioDeflectionTotal_eta;
@@ -786,6 +797,21 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float TotalLoad_ULS_Upwind
+        {
+            get
+            {
+                return MTotalLoad_ULS_Upwind;
+            }
+            set
+            {
+                MTotalLoad_ULS_Upwind = value;
+
+                NotifyPropertyChanged("TotalLoad_ULS_Upwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float BendingMomentUpwind_M_asterix
         {
             get
@@ -812,6 +838,21 @@ namespace PFD
                 MShearForceUpwind_V_asterix = value;
 
                 NotifyPropertyChanged("ShearForceUpwind_V_asterix");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float TotalLoad_ULS_Downwind
+        {
+            get
+            {
+                return MTotalLoad_ULS_Downwind;
+            }
+            set
+            {
+                MTotalLoad_ULS_Downwind = value;
+
+                NotifyPropertyChanged("TotalLoad_ULS_Downwind");
             }
         }
 
@@ -1156,6 +1197,51 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
+        public float TotalLoad_DeflectionTotalUpwind
+        {
+            get
+            {
+                return MTotalLoad_DeflectionTotalUpwind;
+            }
+            set
+            {
+                MTotalLoad_DeflectionTotalUpwind = value;
+
+                NotifyPropertyChanged("TotalLoad_DeflectionTotalUpwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BendingMoment_DeflectionTotalUpwind
+        {
+            get
+            {
+                return MBendingMoment_DeflectionTotalUpwind;
+            }
+            set
+            {
+                MBendingMoment_DeflectionTotalUpwind = value;
+
+                NotifyPropertyChanged("BendingMoment_DeflectionTotalUpwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float MomentOfInertia_DeflectionTotalUpwind
+        {
+            get
+            {
+                return MMomentOfInertia_DeflectionTotalUpwind;
+            }
+            set
+            {
+                MMomentOfInertia_DeflectionTotalUpwind = value;
+
+                NotifyPropertyChanged("MomentOfInertia_DeflectionTotalUpwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
         public float DeflectionTotalUpwind_Delta
         {
             get
@@ -1167,6 +1253,51 @@ namespace PFD
                 MDeflectionTotalUpwind_Delta = value;
 
                 NotifyPropertyChanged("DeflectionTotalUpwind_Delta");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float TotalLoad_DeflectionTotalDownwind
+        {
+            get
+            {
+                return MTotalLoad_DeflectionTotalDownwind;
+            }
+            set
+            {
+                MTotalLoad_DeflectionTotalDownwind = value;
+
+                NotifyPropertyChanged("TotalLoad_DeflectionTotalDownwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float BendingMoment_DeflectionTotalDownwind
+        {
+            get
+            {
+                return MBendingMoment_DeflectionTotalDownwind;
+            }
+            set
+            {
+                MBendingMoment_DeflectionTotalDownwind = value;
+
+                NotifyPropertyChanged("BendingMoment_DeflectionTotalDownwind");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public float MomentOfInertia_DeflectionTotalDownwind
+        {
+            get
+            {
+                return MMomentOfInertia_DeflectionTotalDownwind;
+            }
+            set
+            {
+                MMomentOfInertia_DeflectionTotalDownwind = value;
+
+                NotifyPropertyChanged("MomentOfInertia_DeflectionTotalDownwind");
             }
         }
 

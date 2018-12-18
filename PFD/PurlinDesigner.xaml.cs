@@ -188,33 +188,33 @@ namespace PFD
             float fload_CO3_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl;
             float fload_CO4_ULS = fGamma_G_dest * fTotalDeadLoad_l + calcModel.SnowLoad_sl;
 
-            float fload_up_ULS = MathF.Min(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS);
-            float fload_down_ULS = MathF.Max(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS);
+            calcModel.TotalLoad_ULS_Upwind = MathF.Min(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS);
+            calcModel.TotalLoad_ULS_Downwind = MathF.Max(fload_CO1_ULS, fload_CO2_ULS, fload_CO3_ULS, fload_CO4_ULS);
 
             float fload_CO1_SLS = fTotalDeadLoad_l + fPsi_liveload * calcModel.LiveLoad_ql;
             float fload_CO2_SLS = (fTotalDeadLoad_l - calcModel.AdditionalDeadLoad_gl) + calcModel.WindLoadUpwind_puwl_SLS;
             float fload_CO3_SLS = fTotalDeadLoad_l + calcModel.WindLoadDownwind_pdwl_SLS;
             float fload_CO4_SLS = fTotalDeadLoad_l + calcModel.SnowLoad_sl_SLS;
 
-            float fload_up_SLS = MathF.Min(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
-            float fload_down_SLS = MathF.Max(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
+            calcModel.TotalLoad_DeflectionTotalUpwind = MathF.Min(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
+            calcModel.TotalLoad_DeflectionTotalDownwind = MathF.Max(fload_CO1_SLS, fload_CO2_SLS, fload_CO3_SLS, fload_CO4_SLS);
 
             // Convert kN/m to N/m
             float fLoadPerLength_UnitFactor = 1000f;
 
             fTotalDeadLoad_l *= fLoadPerLength_UnitFactor;
 
-            fload_up_ULS *= fLoadPerLength_UnitFactor;
-            fload_down_ULS *= fLoadPerLength_UnitFactor;
+            calcModel.TotalLoad_ULS_Upwind *= fLoadPerLength_UnitFactor;
+            calcModel.TotalLoad_ULS_Downwind *= fLoadPerLength_UnitFactor;
 
-            fload_up_SLS *= fLoadPerLength_UnitFactor;
-            fload_down_SLS *= fLoadPerLength_UnitFactor;
+            calcModel.TotalLoad_DeflectionTotalUpwind *= fLoadPerLength_UnitFactor;
+            calcModel.TotalLoad_DeflectionTotalDownwind *= fLoadPerLength_UnitFactor;
 
             // Simply supported beam
-            calcModel.BendingMomentUpwind_M_asterix = 1f / 8f * fload_up_ULS * MathF.Pow2(calcModel.Length_L);
-            calcModel.ShearForceUpwind_V_asterix =  1f / 2f * fload_up_ULS * calcModel.Length_L;
-            calcModel.BendingMomentDownwind_M_asterix = 1f / 8f * fload_down_ULS * MathF.Pow2(calcModel.Length_L);
-            calcModel.ShearForceDownwind_V_asterix = 1f / 2f * fload_down_ULS * calcModel.Length_L;
+            calcModel.BendingMomentUpwind_M_asterix = 1f / 8f * calcModel.TotalLoad_ULS_Upwind * MathF.Pow2(calcModel.Length_L);
+            calcModel.ShearForceUpwind_V_asterix =  1f / 2f * calcModel.TotalLoad_ULS_Upwind * calcModel.Length_L;
+            calcModel.BendingMomentDownwind_M_asterix = 1f / 8f * calcModel.TotalLoad_ULS_Downwind * MathF.Pow2(calcModel.Length_L);
+            calcModel.ShearForceDownwind_V_asterix = 1f / 2f * calcModel.TotalLoad_ULS_Downwind * calcModel.Length_L;
 
             designBucklingLengthFactors sBucklingLengthFactors;
             sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f;
@@ -237,8 +237,8 @@ namespace PFD
                 float fx = i * fx_step;
 
                 // Upwind
-                float fBendingMomentUpwind_M_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix * fx - fload_up_ULS * 0.5f * MathF.Pow2(fx);
-                float ShearForceUpwind_V_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix - fload_up_ULS * fx;
+                float fBendingMomentUpwind_M_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix * fx - calcModel.TotalLoad_ULS_Upwind * 0.5f * MathF.Pow2(fx);
+                float ShearForceUpwind_V_asterix_inLocation_x = calcModel.ShearForceUpwind_V_asterix - calcModel.TotalLoad_ULS_Upwind * fx;
 
                 designInternalForces sDIF_x_temp_upwind;
 
@@ -249,9 +249,9 @@ namespace PFD
                 sDIF_x_temp_upwind.fM_yy = fBendingMomentUpwind_M_asterix_inLocation_x;
 
                 designMomentValuesForCb sMomentValuesForCb_upwind;
-                sMomentValuesForCb_upwind.fM_14 = calcModel.ShearForceUpwind_V_asterix * (0.25f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
-                sMomentValuesForCb_upwind.fM_24 = calcModel.ShearForceUpwind_V_asterix * (0.50f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
-                sMomentValuesForCb_upwind.fM_34 = calcModel.ShearForceUpwind_V_asterix * (0.75f * calcModel.Length_L) - fload_up_ULS * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
+                sMomentValuesForCb_upwind.fM_14 = calcModel.ShearForceUpwind_V_asterix * (0.25f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Upwind * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
+                sMomentValuesForCb_upwind.fM_24 = calcModel.ShearForceUpwind_V_asterix * (0.50f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Upwind * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
+                sMomentValuesForCb_upwind.fM_34 = calcModel.ShearForceUpwind_V_asterix * (0.75f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Upwind * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
                 sMomentValuesForCb_upwind.fM_max = calcModel.BendingMomentUpwind_M_asterix;
 
                 CCalculMember cCalcULS_upwind = new CCalculMember(false, sDIF_x_temp_upwind, member, sBucklingLengthFactors, sMomentValuesForCb_upwind);
@@ -260,8 +260,8 @@ namespace PFD
                 float fRatio_V_upwind_inLocation_x = cCalcULS_upwind.fEta_723_11_V_yv; // Combined bending and shear
 
                 // Downwind
-                float fBendingMomentDownwind_M_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix * fx - fload_down_ULS * 0.5f * MathF.Pow2(fx);
-                float ShearForceDownwind_V_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix - fload_down_ULS * fx;
+                float fBendingMomentDownwind_M_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix * fx - calcModel.TotalLoad_ULS_Downwind * 0.5f * MathF.Pow2(fx);
+                float ShearForceDownwind_V_asterix_inLocation_x = calcModel.ShearForceDownwind_V_asterix - calcModel.TotalLoad_ULS_Downwind * fx;
 
                 designInternalForces sDIF_x_temp_downwind;
 
@@ -272,9 +272,9 @@ namespace PFD
                 sDIF_x_temp_downwind.fM_yy = fBendingMomentDownwind_M_asterix_inLocation_x;
 
                 designMomentValuesForCb sMomentValuesForCb_downwind;
-                sMomentValuesForCb_downwind.fM_14 = calcModel.ShearForceDownwind_V_asterix * (0.25f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
-                sMomentValuesForCb_downwind.fM_24 = calcModel.ShearForceDownwind_V_asterix * (0.50f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
-                sMomentValuesForCb_downwind.fM_34 = calcModel.ShearForceDownwind_V_asterix * (0.75f * calcModel.Length_L) - fload_down_ULS * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
+                sMomentValuesForCb_downwind.fM_14 = calcModel.ShearForceDownwind_V_asterix * (0.25f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Downwind * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
+                sMomentValuesForCb_downwind.fM_24 = calcModel.ShearForceDownwind_V_asterix * (0.50f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Downwind * 0.5f * MathF.Pow2(0.50f * calcModel.Length_L);
+                sMomentValuesForCb_downwind.fM_34 = calcModel.ShearForceDownwind_V_asterix * (0.75f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Downwind * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
                 sMomentValuesForCb_downwind.fM_max = calcModel.BendingMomentDownwind_M_asterix;
 
                 CCalculMember cCalcULS_downwind = new CCalculMember(false, sDIF_x_temp_downwind, member, sBucklingLengthFactors, sMomentValuesForCb_downwind);
@@ -368,15 +368,15 @@ namespace PFD
             calcModel.DesignRatio_SW_Deflection_eta = Math.Abs(fDeflection_SW_Maximum_Delta) / calcModel.DeflectionLimit_SW_Delta_lim;
 
             // Total (maximum) load
-            float fM_asterix_max_TotalUpwind = 1f / 8f * fload_up_SLS * MathF.Pow2(calcModel.Length_L);
-            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_TotalUpwind, 0.0f);
-            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_TotalUpwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
-            calcModel.DeflectionTotalUpwind_Delta = 5f / 384f * fload_up_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            calcModel.BendingMoment_DeflectionTotalUpwind = 1f / 8f * calcModel.TotalLoad_DeflectionTotalUpwind * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, calcModel.BendingMoment_DeflectionTotalUpwind, 0.0f);
+            calcModel.MomentOfInertia_DeflectionTotalUpwind = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, calcModel.BendingMoment_DeflectionTotalUpwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            calcModel.DeflectionTotalUpwind_Delta = 5f / 384f * calcModel.TotalLoad_DeflectionTotalUpwind * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * calcModel.MomentOfInertia_DeflectionTotalUpwind);
 
-            float fM_asterix_max_TotalDownwind = 1f / 8f * fload_down_SLS * MathF.Pow2(calcModel.Length_L);
-            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, fM_asterix_max_TotalDownwind, 0.0f);
-            fI_x_eff = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, fM_asterix_max_TotalDownwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
-            calcModel.DeflectionTotalDownwind_Delta = 5f / 384f * fload_down_SLS * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * fI_x_eff);
+            calcModel.BendingMoment_DeflectionTotalDownwind = 1f / 8f * calcModel.TotalLoad_DeflectionTotalDownwind * MathF.Pow2(calcModel.Length_L);
+            cCalcSLS.CalculateBendingStrength_722(ELSType.eLS_SLS, calcModel.BendingMoment_DeflectionTotalDownwind, 0.0f);
+            calcModel.MomentOfInertia_DeflectionTotalDownwind = cCalcSLS.eq.Eq_714____(calcModel.MomentOfInertia_Ix, cCalcSLS.fM_b_xu, calcModel.BendingMoment_DeflectionTotalDownwind, cCalcSLS.fM_y_xu); // TODO - AS_4600.cs prerobit na staticku triedu
+            calcModel.DeflectionTotalDownwind_Delta = 5f / 384f * calcModel.TotalLoad_DeflectionTotalDownwind * MathF.Pow4(calcModel.Length_L) / (mat.m_fE * calcModel.MomentOfInertia_DeflectionTotalDownwind);
 
             calcModel.DeflectionTotalLimit_Delta_lim = calcModel.Length_L / calcModel.DeflectionTotalLimitFraction;
             float fDeflectionTotalMaximum_Delta = Math.Max(Math.Abs(calcModel.DeflectionTotalUpwind_Delta), Math.Abs(calcModel.DeflectionTotalDownwind_Delta));
@@ -394,6 +394,9 @@ namespace PFD
             vm.Area_Ag *= 1e+6f;
             vm.MomentOfInertia_Ix *= 1e+12f;
 
+            vm.MomentOfInertia_DeflectionTotalUpwind *= 1e+12f;
+            vm.MomentOfInertia_DeflectionTotalDownwind *= 1e+12f;
+
             // Material
             vm.YieldStrength_fy *= 0.000001f;
             vm.TensileStrength_fu *= 0.000001f;
@@ -401,12 +404,22 @@ namespace PFD
             // Loads
             vm.PurlinSelfWeight_gp *= 0.001f;
 
-            // Strength
+            vm.TotalLoad_ULS_Upwind *= 0.001f;
+            vm.TotalLoad_ULS_Downwind *= 0.001f;
+
+            vm.TotalLoad_DeflectionTotalUpwind *= 0.001f;
+            vm.TotalLoad_DeflectionTotalDownwind *= 0.001f;
+
+            // Internal forces
             vm.BendingMomentUpwind_M_asterix *= 0.001f;
             vm.ShearForceUpwind_V_asterix *= 0.001f;
             vm.BendingMomentDownwind_M_asterix *= 0.001f;
             vm.ShearForceDownwind_V_asterix *= 0.001f;
 
+            vm.BendingMoment_DeflectionTotalUpwind *= 0.001f;
+            vm.BendingMoment_DeflectionTotalDownwind *= 0.001f;
+
+            // Strength
             vm.BendingCapacity_Ms *= 0.001f;
 
             vm.ElasticBucklingMoment_Mo *= 0.001f;
