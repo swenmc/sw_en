@@ -48,9 +48,15 @@ namespace PFD
             // Fill material combobox items
             CComboBoxHelper.FillComboboxValues("MaterialsSQLiteDB", "materialSteelAS4600", "Grade", Combobox_Material);
 
+            // Fill cladding type and thicknesses
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", "trapezoidalSheeting", "name", Combobox_RoofCladding);
+
             PurlinDesignerViewModel vm = new PurlinDesignerViewModel();
             vm.PropertyChanged += HandleComponentViewerPropertyChangedEvent;
             this.DataContext = vm;
+
+            Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
+            CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), "name", Combobox_RoofCladdingThickness);
 
             // Default object of material and cross-section
             //cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
@@ -62,7 +68,7 @@ namespace PFD
             // Set Results
             SetOutputValues();
 
-            //Nonsens je to s tym Matom,ze mi stale zmeni height okna na take, ze nic nevidim a musim klikat na okraje okna aby som ho dokazal posunut dole a zadat nieco do policok
+            // Nonsens je to s tym Matom,ze mi stale zmeni height okna na take, ze nic nevidim a musim klikat na okraje okna aby som ho dokazal posunut dole a zadat nieco do policok
             // TO Ondrej - Vravel zom si ze sa asi nasrdis, ked som to menil. :-))))))))))))
             // Neexistuje nejaky sposob ze by sa tieto velkosti okna nastavovali nejako dynamicky podla velkosti a rozlisenia monitora ? To by si bol frajer :))))))
 
@@ -73,6 +79,21 @@ namespace PFD
         private void HandleComponentViewerPropertyChangedEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender == null) return;
+
+            ///////////////////////////////
+            // TO Ondrej - potrebujem nastavit hodnoty thickness v comboboxe Combobox_RoofCladdingThickness na zaklade toho aka je hodnota v RoofCladdingIndex
+            // Skopiroval som to z MainWindow.xaml.cs ale tu to mame s viewmodelmi inak a neviem to akosi dat dokopy, aby to fungovalo :-(
+            ///////////////////////////////
+
+            PurlinDesignerViewModel viewModel = sender as PurlinDesignerViewModel;
+            if (viewModel != null && viewModel.IsSetFromCode) return; //ak je to property nastavena v kode napr. pri zmene typu modelu tak nic netreba robit
+
+            //tu sa da spracovat  e.PropertyName a reagovat konkretne na to,ze ktora property bola zmenena vo view modeli
+            if (e.PropertyName == "RoofCladdingIndex")
+            {
+                CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), "name", Combobox_RoofCladdingThickness);
+            }
+
             if (sender is PurlinDesignerViewModel)
             {
                 //recalculate only if input property is changed (prevent cycling)
@@ -96,7 +117,11 @@ namespace PFD
                 "MaterialIndex",
                 "CrossSectionIndex",
 
-                "CladdingSelfWeight_gc",
+                // TO Ondrej - Neviem ci to tu mam pridavat
+                "RoofCladdingIndex",
+                "RoofCladdingThicknessIndex",
+
+                //"CladdingSelfWeight_gc", // Toto uz nie je vstup ale pocita sa v zdrojovom kode
                 "AdditionalDeadLoad_g",
                 "LiveLoad_q",
 
@@ -128,7 +153,7 @@ namespace PFD
 
             CMaterialManager.LoadMaterialProperties(mat, (string)Combobox_Material.Items[calcModel.MaterialIndex]);
             mat.m_fE = 2e+11f; // Change default value of E (see AS 4600)
-            mat.m_fG = 08e+10f;
+            mat.m_fG = 8e+10f;
             mat.m_fNu = 0.25f;
 
             FillCrossSectionData((string)Combobox_CrossSection.Items[calcModel.CrossSectionIndex]);
@@ -137,6 +162,14 @@ namespace PFD
 
             calcModel.YieldStrength_fy = mat.Get_f_yk_by_thickness((float)cs.m_t_min);
             calcModel.TensileStrength_fu = mat.Get_f_uk_by_thickness((float)cs.m_t_min);
+
+            ////////////////////////////////////////////////////////////////////////////////
+            // TO ONDREJ - neviem ci ten komentar plati aj na tomto mieste :)
+            ////////////////////////////////////////////////////////////////////////////////
+            //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
+            float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", calcModel.RoofCladdingThicknessIndex);
+            // Chcem nacitat z databazy plosnu hmotnost plechu a vypocitat zatazenie (doriesit jednotky kN a N, predtym sa zadavalo v kN, pocitat by sa malo v N)
+            calcModel.CladdingSelfWeight_gc = fMass_Roof * GlobalConstants.fg_acceleration / 1000f;
 
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
 

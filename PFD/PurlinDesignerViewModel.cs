@@ -37,6 +37,8 @@ namespace PFD
         private float MTensileStrength_fu;
 
         private float MPurlinSelfWeight_gp;
+        private int MRoofCladdingIndex;
+        private int MRoofCladdingThicknessIndex;
         private float MCladdingSelfWeight_gc;
         private float MAdditionalDeadLoad_g;
         private float MLiveLoad_q;
@@ -138,7 +140,7 @@ namespace PFD
                 if (MLength_L < MBracingLength_Lb)
                 {
                     BracingLength_Lb = MLength_L;
-                    MessageBox.Show($"Distance of bracing blocks was changed to {MLength_L}.");
+                    MessageBox.Show($"Distance of bracing blocks was changed to {MLength_L.ToString("F3")} [m].");
                 }
                 
                 NotifyPropertyChanged("Length_L");
@@ -316,12 +318,46 @@ namespace PFD
             }
             set
             {
+                // Uz sa nenastavuje v GUI ale pocita z hodnoty plosnej hmotnosti ziskanej v databaze plechov
+                /*
                 if (value < 0 || value > 1)
                     throw new ArgumentException("Load value must be between 0 and 1 [kN/m²]");
-
+                */
                 MCladdingSelfWeight_gc = value;
 
                 NotifyPropertyChanged("CladdingSelfWeight_gc");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int RoofCladdingIndex
+        {
+            get
+            {
+                return MRoofCladdingIndex;
+            }
+
+            set
+            {
+                MRoofCladdingIndex = value;
+
+                NotifyPropertyChanged("RoofCladdingIndex");
+            }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
+        public int RoofCladdingThicknessIndex
+        {
+            get
+            {
+                return MRoofCladdingThicknessIndex;
+            }
+
+            set
+            {
+                MRoofCladdingThicknessIndex = value;
+
+                NotifyPropertyChanged("RoofCladdingThicknessIndex");
             }
         }
 
@@ -1380,7 +1416,11 @@ namespace PFD
             CrossSectionIndex = 1;
             MaterialIndex = 11; // Default AS1397 - Grade G550‡ (database row ID 12)
 
-            CladdingSelfWeight_gc = 0.05f; // kN/m^2
+            // TO Ondrej - Neviem ci to tu mam nastavovat
+            RoofCladdingIndex = 2;
+            RoofCladdingThicknessIndex = 1;
+            //CladdingSelfWeight_gc = 0.05f; // kN/m^2
+
             AdditionalDeadLoad_g = 0.10f; // kN/m^2
 
             LiveLoad_q = 0.25f; // kN/m^2
