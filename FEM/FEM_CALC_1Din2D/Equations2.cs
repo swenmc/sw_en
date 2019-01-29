@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using MATH;
 
 namespace FEM_CALC_1Din2D
@@ -24,27 +25,97 @@ namespace FEM_CALC_1Din2D
             return (yj - yi) / L; // lambda_y
         }
 
-        public static double [,] GetMemberStiffnessMatrix_K(double A, double I, double E, double L, double lambda_x, double lambda_y)
-            {
-        double kMA = A * E / L * MathF.Pow2(lambda_x) + 12 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_y);
-        double kMB = (A * E / L - 12 * E * I / MathF.Pow3(L)) * lambda_x * lambda_y;
-        double kMC = 6 * E * I / MathF.Pow2(L) * lambda_y;
-        double kMD = A * E / L * MathF.Pow2(lambda_y) + 12 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_x);
-        double kME = 6 * E * I / MathF.Pow2(L) * lambda_x;
-        double kMF = 4 * E * I / L;
-        double kMG = 2 * E * I / L;
-
-        double[,] k = new double[6, 6]
+        public static void GetMemberStiffnessMatrix_K_Items(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF, out double kMG)
         {
-            { kMA,  kMB,-kMC,-kMA, -kMB, -kMC},
-            { kMB,  kMD, kME,-kMB, -kMD,  kME},
-            {-kMC,  kME, kMF, kMC, -kME,  kMG},
-            {-kMA, -kMB, kMC, kMA,  kMB,  kMC},
-            {-kMB, -kMD,-kME, kMB,  kMD, -kME},
-            {-kMC,  kME, kMG, kMC, -kME,  kMF}
-        };
+            kMA = A * E / L * MathF.Pow2(lambda_x) + 12 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_y);
+            kMB = (A * E / L - 12 * E * I / MathF.Pow3(L)) * lambda_x * lambda_y;
+            kMC = 6 * E * I / MathF.Pow2(L) * lambda_y;
+            kMD = A * E / L * MathF.Pow2(lambda_y) + 12 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_x);
+            kME = 6 * E * I / MathF.Pow2(L) * lambda_x;
+            kMF = 4 * E * I / L;
+            kMG = 2 * E * I / L;
+        }
 
-        return k;
+        public static double [,] GetMemberStiffnessMatrixArray_K(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+            double kME;
+            double kMF;
+            double kMG;
+
+            GetMemberStiffnessMatrix_K_Items(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
+
+            double[,] k = new double[6, 6]
+            {
+                { kMA,  kMB,-kMC,-kMA, -kMB, -kMC},
+                { kMB,  kMD, kME,-kMB, -kMD,  kME},
+                {-kMC,  kME, kMF, kMC, -kME,  kMG},
+                {-kMA, -kMB, kMC, kMA,  kMB,  kMC},
+                {-kMB, -kMD,-kME, kMB,  kMD, -kME},
+                {-kMC,  kME, kMG, kMC, -kME,  kMF}
+            };
+
+            return k;
+        }
+
+        public static MatrixF64 GetMemberStiffnessMatrix_K(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+            double kME;
+            double kMF;
+            double kMG;
+
+            GetMemberStiffnessMatrix_K_Items(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
+
+            double[] entries = new double[36]{
+                 kMA,  kMB, -kMC, -kMA, -kMB, -kMC,
+                 kMB,  kMD,  kME, -kMB, -kMD,  kME,
+                -kMC,  kME,  kMF,  kMC, -kME,  kMG,
+                -kMA, -kMB,  kMC,  kMA,  kMB,  kMC,
+                -kMB, -kMD, -kME,  kMB,  kMD, -kME,
+                -kMC,  kME,  kMG,  kMC, -kME,  kMF};
+
+            MatrixF64 k_member = new MatrixF64(6, 6);
+            k_member.Entries = entries;
+
+            return k_member;
+        }
+
+        public static double[,] GetMemberTransformationMatrixArray_T(double lambda_x, double lambda_y)
+        {
+            double[,] T = new double[6, 6]
+            {
+            { lambda_x, lambda_y,   0,          0,        0,   0},
+            {-lambda_y, lambda_x,   0,          0,        0,   0},
+            {        0,        0,   1,          0,        0,   0},
+            {        0,        0,   0,   lambda_x, lambda_y,   0},
+            {        0,        0,   0,  -lambda_y, lambda_x,   0},
+            {        0,        0,   0,          0,        0,   1}
+            };
+
+            return T;
+        }
+
+        public static MatrixF64 GetMemberTransformationMatrix_T(double lambda_x, double lambda_y)
+        {
+            double[] entries = new double[36]{
+                 lambda_x, lambda_y,   0,          0,        0,   0,
+                -lambda_y, lambda_x,   0,          0,        0,   0,
+                        0,        0,   1,          0,        0,   0,
+                        0,        0,   0,   lambda_x, lambda_y,   0,
+                        0,        0,   0,  -lambda_y, lambda_x,   0,
+                        0,        0,   0,          0,        0,   1};
+
+            MatrixF64 T = new MatrixF64(6, 6);
+            T.Entries = entries;
+
+            return T;
         }
 
         public static void GetFunctionUniformDistributedLoad_L(double E, double I, double w, double b, double e, double L, out double FvL, out double FmL, out double FPhiL, out double FDeltaL)
