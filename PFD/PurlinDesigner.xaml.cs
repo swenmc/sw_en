@@ -608,6 +608,12 @@ namespace PFD
         {
             WindPressureCalculator window_windpressure = new WindPressureCalculator();
             if (vm_WindPressure != null) window_windpressure.DataContext = vm_WindPressure;
+
+            //setting default Tributary area from purlin designer to windpressure calculator
+            WindPressureCalculatorViewModel vm_Wind = window_windpressure.DataContext as WindPressureCalculatorViewModel;
+            PurlinDesignerViewModel vm_CalcModel = this.DataContext as PurlinDesignerViewModel;
+            vm_Wind.TributaryArea_A = vm_CalcModel.TributaryArea_A;
+
             window_windpressure.Show();
             // Reakcia na zavretie okna - nastavit tieto hodnoty do VM purlin designer
             //window_windpressure.Closing += WindPressureCalculator_Closing;
