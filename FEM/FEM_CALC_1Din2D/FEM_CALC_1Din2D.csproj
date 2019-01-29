@@ -63,6 +63,7 @@
     <Compile Include="CMLoadPart.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Equations2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CalcForm.resx">
