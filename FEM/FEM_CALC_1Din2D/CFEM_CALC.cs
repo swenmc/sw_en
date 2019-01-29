@@ -42,13 +42,13 @@ namespace FEM_CALC_1Din2D
                 {
                     // Member ID
                     Console.WriteLine("Member ID: " + FEMModel.m_arrFemMembers[i].ID + "\n");
-                    // kij_0 - local stiffeness matrix       3 x  3
+                    // kij_0 - local stiffeness matrix       3 x 3
                     Console.WriteLine("Local stiffeness matrix k" + FEMModel.m_arrFemMembers[i].NodeStart.ID + FEMModel.m_arrFemMembers[i].NodeEnd.ID + "0 - Dimensions: 3 x 3 \n");
                     FEMModel.m_arrFemMembers[i].m_fkLocMatr.Print2DMatrixFormated();
-                    // A  Tranformation Rotation Matrixes    3 x  3
+                    // A  Tranformation Rotation Matrixes    3 x 3
                     Console.WriteLine("Tranformation rotation matrix A - Dimensions: 3 x 3 \n");
                     FEMModel.m_arrFemMembers[i].m_fATRMatr2D.Print2DMatrixFormated();
-                    // B  Transfer Matrixes                  3 x  3
+                    // B  Transfer Matrixes                  3 x 3
                     Console.WriteLine("Transfer matrix B - Dimensions: 3 x 3 \n");
                     FEMModel.m_arrFemMembers[i].m_fBTTMatr2D.Print2DMatrixFormated();
                     // Kij - global matrix of member         6 x 6
@@ -104,7 +104,7 @@ namespace FEM_CALC_1Din2D
 
 
 
-
+            // TO Ondrej
             // Auxiliary temporary transformation from 2D to 1D array / from float do double 
             // Pomocne prevody medzi jednorozmernym, dvojrozmernym polom a triedou Matrix, 
             // bude nutne zladit a urcit jeden format v akom budeme pracovat s datami a potom zmazat 
@@ -242,7 +242,7 @@ namespace FEM_CALC_1Din2D
         void SetNodesGlobCodeNo()
         {
             // Degree of indeterminacy in structural analysis
-            //int iD_Inderminacy = iNodeDOFNo * FEMModel.m_arrFemNodes.Length - XXXXXXXXXXXXXXXXXXXXXX
+            //int iD_Indeterminacy = iNodeDOFNo * FEMModel.m_arrFemNodes.Length - XXXXXXXXXXXXXXXXXXXXXX
 
             // Set Global Code Number of Nodes / Nastavit globalne kodove cisla uzlov
 
