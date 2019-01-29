@@ -58,6 +58,7 @@
     <Compile Include="CE_1D.cs" />
     <Compile Include="CFemNode.cs" />
     <Compile Include="CFEM_CALC.cs" />
+    <Compile Include="CFEM_CALC2.cs" />
     <Compile Include="CGenex.cs" />
     <Compile Include="CMLoadPart.cs" />
     <Compile Include="Constants.cs" />
