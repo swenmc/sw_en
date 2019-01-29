@@ -515,6 +515,10 @@ namespace BaseClasses
             else
             {
                 throw new Exception("Exception - material is not valid");
+
+                // Temporary - default in case that material si not defined
+                //bUseDiffuseMaterial = true;
+                //materialGroup.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.YellowGreen)));
             }
 
             model.Material = materialGroup;
@@ -866,9 +870,17 @@ namespace BaseClasses
             // Mesh Triangles - various cross-sections shapes defined
             mesh.TriangleIndices = obj_CrScA.TriangleIndices;
 
-            foreach (int n in obj_CrScA.WireFrameIndices)
+            if (obj_CrScA.WireFrameIndices != null) // Validation of cross-section wireframe data
             {
-                WireFramePoints.Add(meshPositions[n]);
+                foreach (int n in obj_CrScA.WireFrameIndices)
+                {
+                    WireFramePoints.Add(meshPositions[n]);
+                }
+            }
+            else
+            {
+                // TODO - zatial disabled, je potrebne najprv prerobit prierezy a doplnit definiciu wireframe
+                //throw new ArgumentNullException();
             }
 
             if (BIsDebugging)

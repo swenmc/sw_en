@@ -1,6 +1,7 @@
 ﻿using MATERIAL;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Media;
 
 namespace CRSC
@@ -266,12 +267,14 @@ namespace CRSC
         public CCrSc_TW()
         {
             m_Mat.Name = "Steel S500"; //Temporary
+            CrScPointsOut = new List<Point>();
         }
 
         // Data in datagrid
         public CCrSc_TW(List<double> y_suradnice, List<double> z_suradnice, List<double> t_hodnoty)
         {
             m_Mat.Name = "Steel S500"; //Temporary
+            CrScPointsOut = new List<Point>();
 
             int count = y_suradnice.Count;
 
