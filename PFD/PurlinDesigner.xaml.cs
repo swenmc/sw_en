@@ -29,6 +29,7 @@ namespace PFD
         CCrSc_TW cs;
         MATERIAL.CMat_03_00 mat;
         CCalculMember cCalcULS_data;
+        WindPressureCalculatorViewModel vm_WindPressure = null;
 
         public PurlinDesigner()
         {
@@ -606,6 +607,7 @@ namespace PFD
         private void WindPressureCalculator_Click(object sender, RoutedEventArgs e)
         {
             WindPressureCalculator window_windpressure = new WindPressureCalculator();
+            if (vm_WindPressure != null) window_windpressure.DataContext = vm_WindPressure;
             window_windpressure.Show();
             // Reakcia na zavretie okna - nastavit tieto hodnoty do VM purlin designer
             //window_windpressure.Closing += WindPressureCalculator_Closing;
@@ -620,7 +622,7 @@ namespace PFD
         private void WindPressureCalculator_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             WindPressureCalculator window_windpressure = sender as WindPressureCalculator;
-            WindPressureCalculatorViewModel vm_WindPressure = window_windpressure.DataContext as WindPressureCalculatorViewModel;
+            vm_WindPressure = window_windpressure.DataContext as WindPressureCalculatorViewModel;
 
             PurlinDesignerViewModel vm_CalcModel = this.DataContext as PurlinDesignerViewModel;
 
