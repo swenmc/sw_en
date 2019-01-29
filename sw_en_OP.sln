@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sw_en", "sw_en", "{2103852C-828A-4D0B-AEB7-0BCE9168AF35}"
 EndProject
@@ -119,8 +119,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoOpt", "Test Projects\TwoOpt\TwoOpt.csproj", "{7A2ECCC8-7762-4A4F-B2F2-11EF555281B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "M_NZS3101", "M_NZS3101\M_NZS3101.csproj", "{38B77165-5E1C-4CE7-8662-33D8EBF853B1}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupSCV", "SetupSCV\SetupSCV.vdproj", "{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{E380D78C-3BFC-4FCB-B5A1-84CD77C5BF97}"
 EndProject
@@ -828,16 +826,6 @@ Global
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Release|x64.Build.0 = Release|Any CPU
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{38B77165-5E1C-4CE7-8662-33D8EBF853B1}.Release|x86.Build.0 = Release|Any CPU
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Debug|Any CPU.ActiveCfg = Debug
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Debug|ARM.ActiveCfg = Debug
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Debug|x64.ActiveCfg = Debug
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Debug|x86.ActiveCfg = Debug
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Release|Any CPU.ActiveCfg = Release
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Release|ARM.ActiveCfg = Release
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Release|Mixed Platforms.ActiveCfg = Release
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Release|x64.ActiveCfg = Release
-		{363F2321-FCF1-4AB4-AA68-A89F16BDCE8B}.Release|x86.ActiveCfg = Release
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Any CPU.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|ARM.ActiveCfg = Debug
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695}.Debug|Mixed Platforms.ActiveCfg = Release
@@ -894,8 +882,8 @@ Global
 		{0EAA90DF-E589-4D77-A584-CD27E07E1695} = {E380D78C-3BFC-4FCB-B5A1-84CD77C5BF97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {3213026E-7FBB-4D9E-901B-23243EDEA58A}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
