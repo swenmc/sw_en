@@ -57,17 +57,14 @@ namespace PFD
 
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), "name", Combobox_RoofCladdingThickness);
+            
 
             // Default object of material and cross-section
             //cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
             mat = new MATERIAL.CMat_03_00();
-
-            // Calculate
-            SetInputAndCalculate();
-
-            // Set Results
-            SetOutputValues();
-
+            
+            vm.RoofCladdingThicknessIndex = 0; //this calls SetInputAndCalculate(); SetOutputValues();
+            
             // Nonsens je to s tym Matom,ze mi stale zmeni height okna na take, ze nic nevidim a musim klikat na okraje okna aby som ho dokazal posunut dole a zadat nieco do policok
             // TO Ondrej - Vravel zom si ze sa asi nasrdis, ked som to menil. :-))))))))))))
             // Neexistuje nejaky sposob ze by sa tieto velkosti okna nastavovali nejako dynamicky podla velkosti a rozlisenia monitora ? To by si bol frajer :))))))
@@ -92,6 +89,7 @@ namespace PFD
             if (e.PropertyName == "RoofCladdingIndex")
             {
                 CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", Combobox_RoofCladding.Items[viewModel.RoofCladdingIndex].ToString(), "name", Combobox_RoofCladdingThickness);
+                viewModel.RoofCladdingThicknessIndex = 0;
             }
 
             if (sender is PurlinDesignerViewModel)
@@ -117,8 +115,8 @@ namespace PFD
                 "MaterialIndex",
                 "CrossSectionIndex",
 
-                // TO Ondrej - Neviem ci to tu mam pridavat
-                "RoofCladdingIndex",
+                
+                //"RoofCladdingIndex",  nakolko sa stale pri zmene RoofCladding zmeni RoofCladdingThicknessIndex na 0, tak netreba aby tato bola ako input property
                 "RoofCladdingThicknessIndex",
 
                 //"CladdingSelfWeight_gc", // Toto uz nie je vstup ale pocita sa v zdrojovom kode
