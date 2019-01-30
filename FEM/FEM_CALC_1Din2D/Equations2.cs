@@ -25,7 +25,7 @@ namespace FEM_CALC_1Din2D
             return (yj - yi) / L; // lambda_y
         }
 
-        public static void GetMemberStiffnessMatrix_K_Items(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF, out double kMG)
+        public static void GetMemberStiffnessMatrix_K_Items_000_000(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF, out double kMG)
         {
             kMA = A * E / L * MathF.Pow2(lambda_x) + 12 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_y);
             kMB = (A * E / L - 12 * E * I / MathF.Pow3(L)) * lambda_x * lambda_y;
@@ -46,7 +46,7 @@ namespace FEM_CALC_1Din2D
             double kMF;
             double kMG;
 
-            GetMemberStiffnessMatrix_K_Items(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
+            GetMemberStiffnessMatrix_K_Items_000_000(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
 
             double[,] k = new double[6, 6]
             {
@@ -71,7 +71,7 @@ namespace FEM_CALC_1Din2D
             double kMF;
             double kMG;
 
-            GetMemberStiffnessMatrix_K_Items(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
+            GetMemberStiffnessMatrix_K_Items_000_000(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
 
             double[] entries = new double[36]{
                  kMA,  kMB, -kMC, -kMA, -kMB, -kMC,

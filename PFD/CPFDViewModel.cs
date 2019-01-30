@@ -201,7 +201,7 @@ namespace PFD
                 // aj ked je nevalidna a malo by vypisat nizsie uvedene varovanie, model by sa nemal prekreslit kym nie su vsetky hodnoty validne
 
                 if (value < 3 || value > 35)
-                    throw new ArgumentException("Roof Pitch must be between 2 and 35 degrees");
+                    throw new ArgumentException("Roof Pitch must be between 3 and 35 degrees");
                 MRoofPitch_deg = value;
 
                 if (MModelIndex != 0)

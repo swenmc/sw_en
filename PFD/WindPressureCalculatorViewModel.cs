@@ -375,6 +375,9 @@ namespace PFD
 
             set
             {
+                if (value < 1 || value > 1000)
+                    throw new ArgumentException("Tributary Area must be between 1 and 1000 [m^2]");
+
                 MTributaryArea_A = value;
 
                 NotifyPropertyChanged("TributaryArea_A");
@@ -647,6 +650,8 @@ namespace PFD
 
             set
             {
+                if (value < 3 || value > 100)
+                    throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
                 MGableWidth = value;
 
                 NotifyPropertyChanged("GableWidth");
@@ -663,6 +668,8 @@ namespace PFD
 
             set
             {
+                if (value < 3 || value > 150)
+                    throw new ArgumentException("Length must be between 3 and 150 [m]");
                 MLength = value;
 
                 NotifyPropertyChanged("Length");
@@ -679,6 +686,8 @@ namespace PFD
 
             set
             {
+                if (value < 2 || value > 30)
+                    throw new ArgumentException("Wall Height must be between 2 and 30 [m]");
                 MWallHeight = value;
 
                 NotifyPropertyChanged("WallHeight");
@@ -695,6 +704,8 @@ namespace PFD
 
             set
             {
+                if (value < 3 || value > 35)
+                    throw new ArgumentException("Roof Pitch must be between 3 and 35 degrees");
                 MRoofPitch_deg = value;
 
                 NotifyPropertyChanged("RoofPitch_deg");

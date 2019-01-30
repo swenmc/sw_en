@@ -260,9 +260,9 @@ namespace M_EC1.AS_NZS
                     else
                     {
                         if (eRegion < EWindRegion.eW)
-                            return TableValues[0, 1]; // Minimum
+                            return TableValues[0, 1]; // Minimum (Column ID 1)
                         else
-                            return TableValues[0, (int)(eRegion + 6)]; // Minimum
+                            return TableValues[0, (int)(eRegion + 6)]; // Minimum (Column ID 2)
                     }
                 }
 
