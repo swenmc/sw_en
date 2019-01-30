@@ -50,7 +50,7 @@ namespace MATERIAL
             m_fG = m_fE / (2f * (1f + m_fNu));
         }
 
-        // User defined material
+        // User-defined material
         public CMat(float fE, float fNu, float fAlpha_T, float fRho)
         {
             Name = "Steel S500"; // Temporary default
