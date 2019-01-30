@@ -28,7 +28,9 @@ namespace FEM_CALC_1Din2D
 
         // USA
 
-        public static void GetMemberStiffnessMatrix_K_Items_000_000(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF, out double kMG)
+        // Member stifness matrix in GCS
+        //000 000
+        public static void GetMemberStiffnessMatrix_K_Items_000_000_GCS(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF, out double kMG)
         {
             kMA = A * E / L * MathF.Pow2(lambda_x) + 12 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_y);
             kMB = (A * E / L - 12 * E * I / MathF.Pow3(L)) * lambda_x * lambda_y;
@@ -38,8 +40,7 @@ namespace FEM_CALC_1Din2D
             kMF = 4 * E * I / L;
             kMG = 2 * E * I / L;
         }
-
-        public static double [,] GetMemberStiffnessMatrixArray_K(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        public static double [,] GetMemberStiffnessMatrixArray_K_000_000_GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
         {
             double kMA;
             double kMB;
@@ -49,7 +50,7 @@ namespace FEM_CALC_1Din2D
             double kMF;
             double kMG;
 
-            GetMemberStiffnessMatrix_K_Items_000_000(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
+            GetMemberStiffnessMatrix_K_Items_000_000_GCS(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
 
             double[,] k = new double[6, 6]
             {
@@ -63,8 +64,7 @@ namespace FEM_CALC_1Din2D
 
             return k;
         }
-
-        public static MatrixF64 GetMemberStiffnessMatrix_K(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        public static MatrixF64 GetMemberStiffnessMatrix_K_000_000_GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
         {
             double kMA;
             double kMB;
@@ -74,7 +74,7 @@ namespace FEM_CALC_1Din2D
             double kMF;
             double kMG;
 
-            GetMemberStiffnessMatrix_K_Items_000_000(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
+            GetMemberStiffnessMatrix_K_Items_000_000_GCS(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF, out kMG);
 
             double[] entries = new double[36]{
                  kMA,  kMB, -kMC, -kMA, -kMB, -kMC,
@@ -89,6 +89,179 @@ namespace FEM_CALC_1Din2D
 
             return k_member;
         }
+
+        //000 00_
+        public static void GetMemberStiffnessMatrix_K_Items_000_00__GCS(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF)
+        {
+            kMA = A * E / L * MathF.Pow2(lambda_x) + 3 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_y);
+            kMB = (A * E / L - 3 * E * I / MathF.Pow3(L)) * lambda_x * lambda_y;
+            kMC = 3 * E * I / MathF.Pow2(L) * lambda_y;
+            kMD = A * E / L * MathF.Pow2(lambda_y) + 3 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_x);
+            kME = 3 * E * I / MathF.Pow2(L) * lambda_x;
+            kMF = 0;
+        }
+        public static double[,] GetMemberStiffnessMatrixArray_K_000_00__GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+            double kME;
+            double kMF;
+
+            GetMemberStiffnessMatrix_K_Items_000_00__GCS(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF);
+
+            double[,] k = new double[6, 6]
+            {
+                { kMA, kMB,-kMC,-kMA,-kMB, kMF},
+                { kMB, kMD, kME,-kMB,-kMD, kMF},
+                {-kMC, kME, kMF, kMC,-kME, kMF},
+                {-kMA,-kMB, kMC, kMA, kMB, kMF},
+                {-kMB,-kMD,-kME, kMB, kMD, kMF},
+                { kMF, kMF, kMF, kMF, kMF, kMF}
+            };
+
+            return k;
+        }
+        public static MatrixF64 GetMemberStiffnessMatrix_K_000_00__GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+            double kME;
+            double kMF;
+
+            GetMemberStiffnessMatrix_K_Items_000_00__GCS(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF);
+
+            double[] entries = new double[36]{
+                 kMA, kMB,-kMC,-kMA,-kMB, kMF,
+                 kMB, kMD, kME,-kMB,-kMD, kMF,
+                -kMC, kME, kMF, kMC,-kME, kMF,
+                -kMA,-kMB, kMC, kMA, kMB, kMF,
+                -kMB,-kMD,-kME, kMB, kMD, kMF,
+                 kMF, kMF, kMF, kMF, kMF, kMF};
+
+            MatrixF64 k_member = new MatrixF64(6, 6);
+            k_member.Entries = entries;
+
+            return k_member;
+        }
+
+        //00_ 000
+        public static void GetMemberStiffnessMatrix_K_Items_00__000_GCS(double A, double I, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF)
+        {
+            kMA = A * E / L * MathF.Pow2(lambda_x) + 3 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_y);
+            kMB = (A * E / L - 3 * E * I / MathF.Pow3(L)) * lambda_x * lambda_y;
+            kMC = 3 * E * I / MathF.Pow2(L) * lambda_y;
+            kMD = A * E / L * MathF.Pow2(lambda_y) + 3 * E * I / MathF.Pow3(L) * MathF.Pow2(lambda_x);
+            kME = 3 * E * I / MathF.Pow2(L) * lambda_x;
+            kMF = 0;
+        }
+        public static double[,] GetMemberStiffnessMatrixArray_K_00__000_GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+            double kME;
+            double kMF;
+
+            GetMemberStiffnessMatrix_K_Items_00__000_GCS(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF);
+
+            double[,] k = new double[6, 6]
+            {
+                { kMA, kMB, kMF,-kMA,-kMB, kMC},
+                { kMB, kMD, kMF,-kMB,-kMD,-kME},
+                { kMF, kMF, kMF, kMF, kMF, kMF},
+                {-kMA,-kMB, kMF, kMA, kMB,-kMC},
+                {-kMB,-kMD, kMF, kMB, kMD, kME},
+                { kMC,-kME, kMF,-kMC, kME, kMF}
+            };
+
+            return k;
+        }
+        public static MatrixF64 GetMemberStiffnessMatrix_K_00__000_GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+            double kME;
+            double kMF;
+
+            GetMemberStiffnessMatrix_K_Items_00__000_GCS(A, I, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD, out kME, out kMF);
+
+            double[] entries = new double[36]{
+                 kMA, kMB, kMF,-kMA,-kMB, kMC,
+                 kMB, kMD, kMF,-kMB,-kMD,-kME,
+                 kMF, kMF, kMF, kMF, kMF, kMF,
+                -kMA,-kMB, kMF, kMA, kMB,-kMC,
+                -kMB,-kMD, kMF, kMB, kMD, kME,
+                 kMC,-kME, kMF,-kMC, kME, kMF};
+
+            MatrixF64 k_member = new MatrixF64(6, 6);
+            k_member.Entries = entries;
+
+            return k_member;
+        }
+
+        //00_ 00_
+        public static void GetMemberStiffnessMatrix_K_Items_00__00__GCS(double A, double E, double L, double lambda_x, double lambda_y, out double kMA, out double kMB, out double kMC, out double kMD)
+        {
+            kMA = A * E / L * MathF.Pow2(lambda_x);
+            kMB = A * E / L * lambda_x * lambda_y;
+            kMC = A * E / L * MathF.Pow2(lambda_y);
+            kMD = 0;
+        }
+        public static double[,] GetMemberStiffnessMatrixArray_K_00__00__GCS(double A, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+
+            GetMemberStiffnessMatrix_K_Items_00__00__GCS(A, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD);
+
+            double[,] k = new double[6, 6]
+            {
+                { kMA, kMB, kMD,-kMA,-kMB, kMD},
+                { kMB, kMC, kMD,-kMB,-kMC, kMD},
+                { kMD, kMD, kMD, kMD, kMD, kMD},
+                {-kMA,-kMB, kMD, kMA, kMB, kMD},
+                {-kMB,-kMC, kMD, kMB, kMC, kMD},
+                { kMD, kMD, kMD, kMD, kMD, kMD}
+            };
+
+            return k;
+        }
+        public static MatrixF64 GetMemberStiffnessMatrix_K_00__00__GCS(double A, double I, double E, double L, double lambda_x, double lambda_y)
+        {
+            double kMA;
+            double kMB;
+            double kMC;
+            double kMD;
+
+            GetMemberStiffnessMatrix_K_Items_00__00__GCS(A, E, L, lambda_x, lambda_y, out kMA, out kMB, out kMC, out kMD);
+
+            double[] entries = new double[36]{
+                 kMA, kMB, kMD,-kMA,-kMB, kMD,
+                 kMB, kMC, kMD,-kMB,-kMC, kMD,
+                 kMD, kMD, kMD, kMD, kMD, kMD,
+                -kMA,-kMB, kMD, kMA, kMB, kMD,
+                -kMB,-kMC, kMD, kMB, kMC, kMD,
+                 kMD, kMD, kMD, kMD, kMD, kMD};
+
+            MatrixF64 k_member = new MatrixF64(6, 6);
+            k_member.Entries = entries;
+
+            return k_member;
+        }
+
+
+
+
+
 
         public static double[,] GetMemberTransformationMatrixArray_T(double lambda_x, double lambda_y)
         {
@@ -228,6 +401,7 @@ namespace FEM_CALC_1Din2D
 
         // Cesky zdroj
 
+        // Member coordinate matrix in LCS
         public static void GetMemberStiffnessMatrix_K_Items_000_000v2(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF)
         {
             kMA = A * E / L;
