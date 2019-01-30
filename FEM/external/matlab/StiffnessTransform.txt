@@ -1,0 +1,25 @@
+syms a_11 a_12 a_13 a_21 a_22 a_23 a_31 a_32 a_33
+syms b_i_j b_i1_j b_i2_j b_i_j1 b_i1_j1 b_i2_j1 b_i_j2 b_i1_j2 b_i2_j2
+
+B = transpose([b_i_j, b_i1_j, b_i2_j; b_i_j1, b_i1_j1, b_i2_j1; b_i_j2, b_i1_j2, b_i2_j2;])
+
+A = [a_11, a_12, a_13; a_21, a_22, a_23; a_31, a_32, a_33;]
+
+at_b_a = transpose(A) * B * A;
+a_b_at = A * B * transpose(A);
+
+fprintf('At B A:\n');
+for i = 1:3
+ for j = 1:3
+  disp (at_b_a(i,j));
+  fprintf(' \n');
+ endfor
+endfor
+
+fprintf('A B At\n');
+for i = 1:3
+ for j = 1:3
+  disp (a_b_at(i,j));
+  fprintf(' \n');
+ endfor
+endfor

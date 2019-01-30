@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7CDA20D4-9BC8-4BC3-9F22-CB86CD4DC3E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BriefFiniteElementNet</RootNamespace>
+    <AssemblyName>BriefFiniteElementNet</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\BriefFiniteElementNet.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CSparse, Version=3.2.2.38595, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSparse.3.2.2\lib\net40\CSparse.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArrayEqualityCompairer.cs" />
+    <Compile Include="ArrayPool.cs" />
+    <Compile Include="BendingStressTensor.cs" />
+    <Compile Include="Constraints.cs" />
+    <Compile Include="ElementHelpers\Gt9Helper.cs" />
+    <Compile Include="ElementHelpers\TriangleBasicDrillingDofHelper.cs" />
+    <Compile Include="Elements\TriangleElementBehaviours.cs" />
+    <Compile Include="Mathh\Polynomial.cs" />
+    <Compile Include="MpcElements\VirtualSupport.cs" />
+    <Compile Include="Loads\ConcentratedLoad.cs" />
+    <Compile Include="Loads\PartialTrapezoidalLoad.cs" />
+    <Compile Include="Mathh\SparseEqSystem.cs" />
+    <Compile Include="Mathh\GaussRrefFinder.cs" />
+    <Compile Include="Mathh\SparseRow.cs" />
+    <Compile Include="FemUtilities\StiffnessCenterFinder.cs" />
+    <Compile Include="Sections\UniformGeometric1DSection.cs" />
+    <Compile Include="StrainTensor.cs" />
+    <Compile Include="ElementHelpers\BeamDirection.cs" />
+    <Compile Include="ElementHelpers\CstHelper.cs" />
+    <Compile Include="ElementHelpers\DktHelper.cs" />
+    <Compile Include="ElementHelpers\ElementHelperExtensions.cs" />
+    <Compile Include="ElementHelpers\ShaftHelper.cs" />
+    <Compile Include="ElementHelpers\TetrahedronHelper.cs" />
+    <Compile Include="ElementHelpers\TimoshenkoBeamHelper.cs" />
+    <Compile Include="ElementHelpers\EulerBernoulliBeamHelper.cs" />
+    <Compile Include="ElementHelpers\IElementHelper.cs" />
+    <Compile Include="ElementHelpers\TrussHelper.cs" />
+    <Compile Include="Elements\_1DCrossSectionGeometricProperties.cs" />
+    <Compile Include="Elements\BarCrossSectionMechanicalProperties.cs" />
+    <Compile Include="Elements\BarElementBehaviours.cs" />
+    <Compile Include="CheckingUtil.cs" />
+    <Compile Include="DoF.cs" />
+    <Compile Include="DofMap.cs" />
+    <Compile Include="DofMappingManager.cs" />
+    <Compile Include="Elements\BarElement.cs" />
+    <Compile Include="Elements\BarElementBehaviour.cs" />
+    <Compile Include="Elements\BarElementEndConnection.cs" />
+    <Compile Include="Elements\FlatShellBehaviour.cs" />
+    <Compile Include="MpcElements\RigidElement.cs" />
+    <Compile Include="MpcElements\TelepathyLink.cs" />
+    <Compile Include="Elements\TriangleCoordinatedMechanicalProperties.cs" />
+    <Compile Include="Elements\TriangleCoordinatedGeometricProperties.cs" />
+    <Compile Include="Elements\AnisotropicMaterialInfo.cs" />
+    <Compile Include="Loads\UniformLoad.cs" />
+    <Compile Include="Materials\BaseMaterial.cs" />
+    <Compile Include="Materials\UniformIsotropicMaterial.cs" />
+    <Compile Include="Materials\UniformAnisotropicMaterial.cs" />
+    <Compile Include="Mathh\DenseIrrefFinder.cs" />
+    <Compile Include="Mathh\IRrefFinder.cs" />
+    <Compile Include="MpcElements\MpcElement.cs" />
+    <Compile Include="Mathh\LinkedListIrrefFinder.cs" />
+    <Compile Include="MpcElementCollection.cs" />
+    <Compile Include="ReflectionUtils.cs" />
+    <Compile Include="Sections\Base1DSection.cs" />
+    <Compile Include="Elements\ConcentratedMass.cs" />
+    <Compile Include="Elements\CstElement.cs" />
+    <Compile Include="Elements\DktElement.cs" />
+    <Compile Include="Sections\Base2DSection.cs" />
+    <Compile Include="Sections\UniformParametric1DSection.cs" />
+    <Compile Include="Elements\SdofMass.cs" />
+    <Compile Include="Elements\Spring1D.cs" />
+    <Compile Include="Elements\TriangleElement.cs" />
+    <Compile Include="Elements\TriangleElementBehaviour.cs" />
+    <Compile Include="Elements\TriangleFlatShell.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="CalcUtil.cs" />
+    <Compile Include="CustomGaussianIntegrator.cs" />
+    <Compile Include="FlatShellStressTensor.cs" />
+    <Compile Include="FluentElementPermuteManager.cs" />
+    <Compile Include="MpcElements\HingeLink.cs" />
+    <Compile Include="IntArrayCompairer.cs" />
+    <Compile Include="Integration\FunctionMatrixFunction.cs" />
+    <Compile Include="Integration\GaussianIntegrator.cs" />
+    <Compile Include="Integration\GaussPoints.cs" />
+    <Compile Include="Integration\IMatrixFunction.cs" />
+    <Compile Include="Geometry\LineSegment.cs" />
+    <Compile Include="LoadCaseCollection.cs" />
+    <Compile Include="LoadTypeCollection.cs" />
+    <Compile Include="MassFormulation.cs" />
+    <Compile Include="MatrixAssemblerUtil.cs" />
+    <Compile Include="MatrixException.cs" />
+    <Compile Include="MembraneFormulation.cs" />
+    <Compile Include="MembraneStressTensor.cs" />
+    <Compile Include="NodeList.cs" />
+    <Compile Include="NotPositiveDefiniteException.cs" />
+    <Compile Include="PermutationGenerator.cs" />
+    <Compile Include="PermutationMatrixAssembler.cs" />
+    <Compile Include="Geometry\Plane.cs" />
+    <Compile Include="PointYz.cs" />
+    <Compile Include="PolygonYz.cs" />
+    <Compile Include="Elements\FrameElement2Node.cs" />
+    <Compile Include="RandomStuff.cs" />
+    <Compile Include="RigidElement.cs" />
+    <Compile Include="RigidElementCollection.cs" />
+    <Compile Include="SectionGenerator.cs" />
+    <Compile Include="FemNetSerializationBinder.cs" />
+    <Compile Include="Sections\UniformParametric2DSection.cs" />
+    <Compile Include="SimplePermuteManager.cs" />
+    <Compile Include="SolverConfiguration.cs" />
+    <Compile Include="SolverFailException.cs" />
+    <Compile Include="BuiltInSolverType.cs" />
+    <Compile Include="Solver\CholeskySolver.cs" />
+    <Compile Include="Solver\CholeskySolverFactory.cs" />
+    <Compile Include="Solver\ConjugateGradientFactory.cs" />
+    <Compile Include="Solver\Extensions.cs" />
+    <Compile Include="Solver\IdentityPreconditioner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Solver\IIterativeSolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Solver\IPreconditioner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Solver\IterativeSolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Solver\PCG.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Solver\SolverResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Solver\SSOR.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SparseMatrixMultiplication.cs" />
+    <Compile Include="StaticLinearAnalysisResult.cs" />
+    <Compile Include="BriefFiniteElementNetException.cs" />
+    <Compile Include="ConcentratedLoad1D.cs" />
+    <Compile Include="Constraint.cs" />
+    <Compile Include="CoordinationSystem.cs" />
+    <Compile Include="LoadDirection.cs" />
+    <Compile Include="Displacement.cs" />
+    <Compile Include="DofConstraint.cs" />
+    <Compile Include="Elements\Element.cs" />
+    <Compile Include="Elements\Element1D.cs" />
+    <Compile Include="Elements\Element2D.cs" />
+    <Compile Include="Elements\Element3D.cs" />
+    <Compile Include="ElementCollection.cs" />
+    <Compile Include="ElementType.cs" />
+    <Compile Include="ExceptionHelper.cs" />
+    <Compile Include="FemNetStringCompairer.cs" />
+    <Compile Include="Force.cs" />
+    <Compile Include="Load.cs" />
+    <Compile Include="Load1D.cs" />
+    <Compile Include="Load2D.cs" />
+    <Compile Include="Load3D.cs" />
+    <Compile Include="LoadCase.cs" />
+    <Compile Include="LoadCombination.cs" />
+    <Compile Include="LoadType.cs" />
+    <Compile Include="MathUtil.cs" />
+    <Compile Include="InvalidLabelException.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="NodalLoad.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="NodeCollection.cs" />
+    <Compile Include="Point.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model.cs" />
+    <Compile Include="ModelWarningChecker.cs" />
+    <Compile Include="StrainTensor3D.cs" />
+    <Compile Include="CauchyStressTensor.cs" />
+    <Compile Include="StructuralPartCollection.cs" />
+    <Compile Include="StructureGenerator.cs" />
+    <Compile Include="StructurePart.cs" />
+    <Compile Include="Elements\Tetrahedral.cs" />
+    <Compile Include="ThrowUtil.cs" />
+    <Compile Include="TraceUtil.cs" />
+    <Compile Include="Elements\TrussElement2Node.cs" />
+    <Compile Include="Elements\TriangleFlatShellExtensions.cs" />
+    <Compile Include="TransformManagerL2G.cs" />
+    <Compile Include="UniformLoad1D.cs" />
+    <Compile Include="UniformBodyLoad3D.cs" />
+    <Compile Include="UniformLoadForPlanarElements.cs" />
+    <Compile Include="UniformSurfaceLoadFor3DElement.cs" />
+    <Compile Include="Vector.cs" />
+    <Compile Include="ZoneDevidedMatrix.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CalcUtil.md" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Documents\SupportReactions.mkd" />
+    <None Include="Elements\BarElement.md" />
+    <None Include="Elements\FrameElement2Node.md" />
+    <None Include="ElementHelpers\IElementHelper.md" />
+    <None Include="MpcElements\RigidElement.md" />
+    <None Include="Elements\SdofMass.md" />
+    <None Include="Elements\Spring1D.md" />
+    <None Include="MpcElements\TelepathyLink.md" />
+    <None Include="Elements\Tetrahedral.md" />
+    <None Include="MpcElements\VirtualSupport.md" />
+    <None Include="Mathh\IRrefFinder.md" />
+    <None Include="packages.config" />
+    <None Include="TransformManagerL2G.md" />
+    <None Include="Elements\TriangleFlatShell.md" />
+    <None Include="Elements\TriangleFlatShellExtensions.md" />
+    <None Include="MpcElements\HingeLink.md" />
+    <None Include="Integration\GaussianIntegrator.md" />
+    <None Include="RigidElement.md" />
+    <None Include="Todo.md" />
+    <None Include="UniformLoad1D.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BriefFiniteElementNet.Common\BriefFiniteElementNet.Common.csproj">
+      <Project>{82c63c6b-651a-4308-8b89-b4c643f3a7c2}</Project>
+      <Name>BriefFiniteElementNet.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
