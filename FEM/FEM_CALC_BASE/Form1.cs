@@ -15,5 +15,11 @@ namespace FEM_CALC_BASE
         {
             InitializeComponent();
         }
+
+        private void BtnCalculate_Click(object sender, EventArgs e)
+        {
+            //tu mozes nieco pocitat
+            MessageBox.Show("Zobrazujem Vysledok");
+        }
     }
 }
