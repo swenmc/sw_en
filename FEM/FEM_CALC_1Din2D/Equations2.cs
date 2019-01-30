@@ -402,7 +402,7 @@ namespace FEM_CALC_1Din2D
         // Cesky zdroj
 
         // Member coordinate matrix in LCS
-        public static void GetMemberStiffnessMatrix_K_Items_000_000v2(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF)
+        public static void GetMemberStiffnessMatrix_K_Items_000_000_LCS(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME, out double kMF)
         {
             kMA = A * E / L;
             kMB = 12 * E * I / MathF.Pow3(L);
@@ -411,8 +411,7 @@ namespace FEM_CALC_1Din2D
             kME = 2 * E * I / L;
             kMF = 0;
         }
-
-        public static void GetMemberStiffnessMatrix_K_Items_000_00_v2(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME)
+        public static void GetMemberStiffnessMatrix_K_Items_000_00__LCS(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME)
         {
             kMA = A * E / L;
             kMB = 3 * E * I / MathF.Pow3(L);
@@ -420,8 +419,7 @@ namespace FEM_CALC_1Din2D
             kMD = 3 * E * I / L;
             kME = 0;
         }
-
-        public static void GetMemberStiffnessMatrix_K_Items_00__000v2(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME)
+        public static void GetMemberStiffnessMatrix_K_Items_00__000_LCS(double A, double I, double E, double L, out double kMA, out double kMB, out double kMC, out double kMD, out double kME)
         {
             kMA = A * E / L;
             kMB = 3 * E * I / MathF.Pow3(L);
@@ -429,14 +427,13 @@ namespace FEM_CALC_1Din2D
             kMD = 3 * E * I / L;
             kME = 0;
         }
-
-        public static void GetMemberStiffnessMatrix_K_Items_00__00_v2(double A, double E, double L, out double kMA, out double kMB)
+        public static void GetMemberStiffnessMatrix_K_Items_00__00__LCS(double A, double E, double L, out double kMA, out double kMB)
         {
             kMA = A * E / L;
             kMB = 0;
         }
 
-        public static MatrixF64 GetMemberStiffnessMatrix_K_000_000v2(double A, double I, double E, double L)
+        public static MatrixF64 GetMemberStiffnessMatrix_K_000_000_LCS(double A, double I, double E, double L)
         {
             double kMA;
             double kMB;
@@ -444,8 +441,8 @@ namespace FEM_CALC_1Din2D
             double kMD;
             double kME;
             double kMF;
-  
-            GetMemberStiffnessMatrix_K_Items_000_000v2(A, I, E, L, out kMA, out kMB, out kMC, out kMD, out kME, out kMF);
+
+            GetMemberStiffnessMatrix_K_Items_000_000_LCS(A, I, E, L, out kMA, out kMB, out kMC, out kMD, out kME, out kMF);
 
             double[] entries = new double[36]{
                  kMA,  kMF,  kMF, -kMA,  kMF,  kMF,
@@ -460,8 +457,7 @@ namespace FEM_CALC_1Din2D
 
             return k_member;
         }
-
-        public static MatrixF64 GetMemberStiffnessMatrix_K_000_00_v2(double A, double I, double E, double L)
+        public static MatrixF64 GetMemberStiffnessMatrix_K_000_00__LCS(double A, double I, double E, double L)
         {
             double kMA;
             double kMB;
@@ -469,7 +465,7 @@ namespace FEM_CALC_1Din2D
             double kMD;
             double kME;
 
-            GetMemberStiffnessMatrix_K_Items_000_00_v2(A, I, E, L, out kMA, out kMB, out kMC, out kMD, out kME);
+            GetMemberStiffnessMatrix_K_Items_000_00__LCS(A, I, E, L, out kMA, out kMB, out kMC, out kMD, out kME);
 
             double[] entries = new double[36]{
                  kMA,  kME,  kME, -kMA,  kME,  kME,
@@ -484,8 +480,7 @@ namespace FEM_CALC_1Din2D
 
             return k_member;
         }
-
-        public static MatrixF64 GetMemberStiffnessMatrix_K_00__000v2(double A, double I, double E, double L)
+        public static MatrixF64 GetMemberStiffnessMatrix_K_00__000_LCS(double A, double I, double E, double L)
         {
             double kMA;
             double kMB;
@@ -493,7 +488,7 @@ namespace FEM_CALC_1Din2D
             double kMD;
             double kME;
 
-            GetMemberStiffnessMatrix_K_Items_00__000v2(A, I, E, L, out kMA, out kMB, out kMC, out kMD, out kME);
+            GetMemberStiffnessMatrix_K_Items_00__000_LCS(A, I, E, L, out kMA, out kMB, out kMC, out kMD, out kME);
 
             double[] entries = new double[36]{
                  kMA,  kME,  kME, -kMA,  kME,  kME,
@@ -508,13 +503,12 @@ namespace FEM_CALC_1Din2D
 
             return k_member;
         }
-
-        public static MatrixF64 GetMemberStiffnessMatrix_K_00__00_v2(double A, double E, double L)
+        public static MatrixF64 GetMemberStiffnessMatrix_K_00__00__LCS(double A, double E, double L)
         {
             double kMA;
             double kMB;
 
-            GetMemberStiffnessMatrix_K_Items_00__00_v2(A, E, L, out kMA, out kMB);
+            GetMemberStiffnessMatrix_K_Items_00__00__LCS(A, E, L, out kMA, out kMB);
 
             double[] entries = new double[36]{
                  kMA,  kMB,  kMB, -kMA,  kMB,  kMB,
