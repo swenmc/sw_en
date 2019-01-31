@@ -347,33 +347,78 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                     for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
                     {
                         // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
+                        // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
 
-                        CMLoad_21 load = new CMLoad_21();
-                        // Create member load
-                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_21)
-                            load = (CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+                        // load
+                        var l = new UniformLoad1D();
 
-                        // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
-                        // Skontrolovat zadanie v GCS a LCS
+                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_21) // Uniform load per whole member
+                        {
+                            CMLoad_21 load = new CMLoad_21();
+                            // Create member load
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_21)
+                                load = (CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
 
-                        CoordinationSystem eCS;
-                        if (load.ELoadCS == ELoadCoordSystem.eGCS)
-                            eCS = CoordinationSystem.Global;
-                        else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
-                            eCS = CoordinationSystem.Local;
+                            // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+                            // Skontrolovat zadanie v GCS a LCS
 
-                        LoadDirection eLD;
+                            CoordinationSystem eCS;
+                            if (load.ELoadCS == ELoadCoordSystem.eGCS)
+                                eCS = CoordinationSystem.Global;
+                            else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+                                eCS = CoordinationSystem.Local;
 
-                        if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
-                            eLD = LoadDirection.X;
-                        else if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
-                            eLD = LoadDirection.Y;
-                        else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
-                            eLD = LoadDirection.Z;
+                            LoadDirection eLD;
 
-                        var l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+                            if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                                eLD = LoadDirection.X;
+                            else if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                                eLD = LoadDirection.Y;
+                            else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                                eLD = LoadDirection.Z;
 
-                        elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
+                            l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+                        }
+                        else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_24) // Uniform load on segment
+                        {
+                            CMLoad_24 load = new CMLoad_24();
+
+                            // Create member load
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_24)
+                                load = (CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+
+                            // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+                            // Skontrolovat zadanie v GCS a LCS
+
+                            CoordinationSystem eCS;
+                            if (load.ELoadCS == ELoadCoordSystem.eGCS)
+                                eCS = CoordinationSystem.Global;
+                            else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+                                eCS = CoordinationSystem.Local;
+
+                            LoadDirection eLD;
+
+                            if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                                eLD = LoadDirection.X;
+                            else if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                                eLD = LoadDirection.Y;
+                            else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                                eLD = LoadDirection.Z;
+
+                            // PartialTrapezoidalLoad
+                            // TODO - toto by sme potrebovali, pisu tam ze je to obsolete ale na internete je uz priklad
+                            // Urcite mame najnovsie zdroje?, resp. to mozno mali v starsej verzii a skryli to
+                            // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
+                            // https://media.readthedocs.org/pdf/bfenet/latest/bfenet.pdf
+
+                            l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+                        }
+                        else
+                        {
+                            // Not implemented load type
+                            // l = new UniformLoad1D();
+                        }
+                              elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
                     }
                 }
             }
