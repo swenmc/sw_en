@@ -17,7 +17,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            //Example2();
+            Example2();
             //DocSnippets.Test1();
 
 
@@ -26,10 +26,10 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00195f, System.Windows.Media.Colors.Coral);
             CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan);
 
-            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
+            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 5000f, 2000f, -1000f, 1000f);
 
             
-            Example3(model);
+            //Example3(model);
             
             Console.ReadLine();
         }
@@ -188,9 +188,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             // Cross-sections
             
-            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
-            var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
-
+            //var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+            //var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
 
             // To Ondrej - Pochopil som to tak, ze hodnoty pre prierez A,Iy,Iz je mozne zadat numericky alebo definovat Geometry,
             // ale Geometry ma len definiciou pre obdlznik a tvar I
@@ -230,7 +229,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
                 node.A = topomodel.m_arrMembers[i].CrScStart.A_g;
                 node.Iy = topomodel.m_arrMembers[i].CrScStart.I_y;
-                node.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;  //tu su nastavene stale 0 hodnoty, tak zobrazuje tam nejaky warning, MC: je to parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
+                node.Iz = topomodel.m_arrMembers[i].CrScStart.I_z; // TO Ondrej: parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
                 node.E = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE;
                 node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
 
@@ -286,11 +285,11 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
                             {
                                 // 2D
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType_2D.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
                             }
                             else if (topomodel.m_eSLN == BaseClasses.ESLN.e3DD_1D)

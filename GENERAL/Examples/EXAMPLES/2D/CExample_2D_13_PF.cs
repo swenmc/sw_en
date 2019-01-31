@@ -2,6 +2,7 @@
 using CRSC;
 using MATERIAL;
 using System;
+using System.Collections.Generic;
 
 namespace Examples
 {
@@ -37,7 +38,7 @@ namespace Examples
 
             // TODO - Ondrej - asi by to malo byt v konstruktore prierezu (akonahle vieme meno prierezu v databaze)
             for(int i = 0; i< m_arrCrSc.Length; i++)
-                DATABASE.CSectionManager.LoadSectionProperties(m_arrCrSc[i].NameDatabase);
+                DATABASE.CSectionManager.LoadCrossSectionProperties_meters((CCrSc_TW)m_arrCrSc[i], m_arrCrSc[i].NameDatabase);
 
             // Nodes
             // Nodes List - Nodes Array
@@ -167,6 +168,10 @@ namespace Examples
             // Load Case 1
             CLoadCase LoadCase0 = new CLoadCase();
             LoadCase0.ID = 1;
+            LoadCase0.Type = ELCType.ePermanentLoad;
+            LoadCase0.MType_LS = ELCGTypeForLimitState.eUniversal;
+            LoadCase0.Factor = 1.00f;
+            LoadCase0.MemberLoadsList = new List<CMLoad>() { m_arrMLoads[0], m_arrMLoads[1], m_arrMLoads[2], m_arrMLoads[3] };
 
             m_arrLoadCases[0] = LoadCase0;
 
@@ -174,6 +179,9 @@ namespace Examples
             // Load Combination 1
             CLoadCombination LoadComb0 = new CLoadCombination();
             LoadComb0.ID = 1;
+            LoadComb0.eLComType = ELSType.eLS_ULS;
+            LoadComb0.LoadCasesList = new List<CLoadCase>() {LoadCase0};
+            LoadComb0.LoadCasesFactorsList = new List<float>() {1.35f};
 
             m_arrLoadCombs[0] = LoadComb0;
         }
