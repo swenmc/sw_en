@@ -28,9 +28,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
 
-            /*
+            
             Example3(model);
-            */
+            
             Console.ReadLine();
         }
 
@@ -145,6 +145,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             var wnd = WpfTraceListener.CreateModelTrace(model);
             new ModelWarningChecker().CheckModel(model);
             wnd.ShowDialog();
+            //wnd.Show();
 
             model.Solve();
         }
@@ -176,24 +177,26 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             */
 
             // Nodes
-            NodeCollection nodecollection_temp = new NodeCollection(model);
+            NodeCollection nodeCollection = new NodeCollection(model);
 
             for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
-                nodecollection_temp.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z));
+                nodeCollection.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z));
             }
 
-            model.Nodes = nodecollection_temp;
+            model.Nodes = nodeCollection;
 
             // Cross-sections
-            /*
+            
             var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
             var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
-            */
+
 
             // To Ondrej - Pochopil som to tak, ze hodnoty pre prierez A,Iy,Iz je mozne zadat numericky alebo definovat Geometry,
             // ale Geometry ma len definiciou pre obdlznik a tvar I
             // do buducna by sme mohli geometry rozsirit alebo mozeme predavat hodnoty z nasich prierezov do solvera len ciselne
+            
+            //Mato: Podla mna by sa malo dat rozsirit SectionGenerator a to tak ze vstupom bude nas Crsc a vygeneruje to len to pole bodov
 
             /*
             var e1 = new FrameElement2Node(n1, n2);
@@ -218,26 +221,26 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             */
 
             // Elements (Members)
-            ElementCollection elementcollection_temp = new ElementCollection(model);
+            ElementCollection elementCollection = new ElementCollection(model);
 
             for (int i = 0; i < topomodel.m_arrMembers.Length; i++)
             {
-                var eTemp = new FrameElement2Node(nodecollection_temp[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodecollection_temp[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
-                eTemp.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
-                eTemp.A = topomodel.m_arrMembers[i].CrScStart.A_g;
-                eTemp.Iy = topomodel.m_arrMembers[i].CrScStart.I_y;
-                eTemp.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;
-                eTemp.E = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE;
-                eTemp.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
+                var node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
+                node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
+                node.A = topomodel.m_arrMembers[i].CrScStart.A_g;
+                node.Iy = topomodel.m_arrMembers[i].CrScStart.I_y;
+                node.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;  //tu su nastavene stale 0 hodnoty, tak zobrazuje tam nejaky warning
+                node.E = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE;
+                node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
 
                 // Note: Elements with UseOverridedProperties = true are shown with square sections(dimension of section automatically tunes for better visualization of elements)
                 // but elements with UseOverridedProperties = false will be shown with their real section with real dimesion.
-                eTemp.UseOverridedProperties = true;
+                node.UseOverridedProperties = true;
 
-                elementcollection_temp.Add(eTemp);
+                elementCollection.Add(node);
             }
 
-            model.Elements = elementcollection_temp;
+            model.Elements = elementCollection;
 
             // Supports
             /*
@@ -254,6 +257,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
             // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
+            //(Sorry ale ja nemam sajnu co sa tu deje :-) )
 
             for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
@@ -261,13 +265,16 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             }
 
             // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
+            //(Sorry ale ja nemam sajnu co sa tu deje :-) )
             for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
             {
                 for (int j = 0; j < topomodel.m_arrNSupports[i].m_iNodeCollection.Length; j++)
                 {
                     for (int k = 0; k < model.Nodes.Count; k++)
                     {
-                        if (k == (topomodel.m_arrNSupports[i].m_iNodeCollection[j] - 1)) // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
+                        if (k == (topomodel.m_arrNSupports[i].m_iNodeCollection[j] - 1)) 
+                            // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) 
+                            // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
                         {
                             if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
@@ -275,11 +282,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
                             if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
+
+                            //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
+                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
                         }
                     }
@@ -417,7 +426,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // Not implemented load type
                             // l = new UniformLoad1D();
                         }
-                        elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
+                        elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
                     }
                 }
             }
@@ -436,10 +445,33 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             /*
             var n3Force = model.Nodes["N3"].GetSupportReaction(combination1);
             Console.WriteLine(n3Force);
-            or for finding internal force of e4 element with combination D + 0.8 L at it’s centre:
+            //or for finding internal force of e4 element with combination D + 0.8 L at it’s centre:
             var e4Force = (model.Elements["e4"] as BarElement).GetInternalForceAt(0, combination1);
             Console.WriteLine(e4Force);
             */
+            model.ShowInternalForce();
+            model.Show();
+
+            Console.WriteLine("\nmodel.LastResult.Forces:");
+            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.Forces)
+            {
+                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+            }
+            Console.WriteLine("\nmodel.LastResult.ConcentratedForces:");
+            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.ConcentratedForces)
+            {
+                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+            }
+            Console.WriteLine("\nmodel.LastResult.Displacements:");
+            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.Displacements)
+            {
+                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+            }
+            Console.WriteLine("\nmodel.LastResult.ElementForces:");
+            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.ElementForces)
+            {
+                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+            }
         }
 
         private static void LoadComb()
