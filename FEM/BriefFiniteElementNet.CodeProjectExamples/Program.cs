@@ -153,6 +153,11 @@ namespace BriefFiniteElementNet.CodeProjectExamples
         // Pokus o napojenie SW_EN
         private static void Example3(BaseClasses.CModel topomodel)
         {
+            // Dokumentacia a priklady
+            // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
+            // https://bfenet.readthedocs.io/en/latest/example/inclinedframe/index.html
+            // BarIncliendFrameExample.cs file
+
             // TO Ondrej - pointa je v tom ze potrebujeme preklopit nase datove objekty a zatazenia do objektov BFEMNet, vytvorit model, spustit vypocet, nacitat vysledky a tie pouzit v nasom hlavnom programe
             // Skopiroval som priklad 2, Nieco som skusil napojit a zakomentoval som to co sa nepouzije, ale ked som pridal referencie na nase projekty tak to neide prelozit
             // Ten DebugerVisualizer, ktory sa mal otvorit cez ikonku lupy ked spustim Example 2 som v VS nenasiel takze to okno s 3D sa mi nepodarilo zobrazit
@@ -290,14 +295,52 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             e3.Loads.Add(lr);
             */
 
+            // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat, ake su typy atd - load cases, load combinations
 
             // Load Cases
+            List<LoadCase> loadcases = new List<LoadCase>();
 
-            // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat - load cases, load combinations
+            for (int i = 0; i < topomodel.m_arrLoadCases.Length; i++)
+            {
+                LoadType loadtype;
+
+                if (topomodel.m_arrLoadCases[i].Type == ELCType.ePermanentLoad)
+                    loadtype = LoadType.Dead;
+                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eImposedLoad_LT || topomodel.m_arrLoadCases[i].Type == ELCType.eImposedLoad_ST)
+                    loadtype = LoadType.Live;
+                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eSnow)
+                    loadtype = LoadType.Snow;
+                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eWind)
+                    loadtype = LoadType.Wind;
+                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eEarthquake)
+                    loadtype = LoadType.Quake;
+                else
+                    loadtype = LoadType.Other;
+
+                loadcases.Add(new LoadCase(topomodel.m_arrLoadCases[i].Name, loadtype));
+            }
+
+            // Load Combinations
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+
+            for (int i = 0; i < topomodel.m_arrLoadCombs.Length; i++)
+            {
+                // LoadCombination dedi od Dictionary<LoadCase, double>, tj. load case a faktor
+
+                LoadCombination lcomb = new LoadCombination();
+
+                // Add specific load cases into the combination and set load factors
+                for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
+                {
+                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
+                }
+
+                loadcombinations.Add(lcomb);
+            }
 
             // Loads
 
-            for (int i = 0; i < topomodel.m_arrLoadCases.Length; i++) // Each load case
+            for (int i = 0; i < loadcases.Count; i++) // Each load case
             {
                 for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
                 {
@@ -328,7 +371,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                         else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
                             eLD = LoadDirection.Z;
 
-                        var l = new UniformLoad1D(load.Fq, eLD, eCS /*, load case*/);
+                        var l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
 
                         elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
                     }
@@ -340,6 +383,19 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             wnd.ShowDialog();
 
             model.Solve();
+            // model.Solve_MPC(); //no different with Model.Solve() - toto su asi identicke prikazy
+
+            // Ako ziskat reakcie a vnutrne sily pre kombinacie
+            // identifikator uzla (nazov "N3") + pozadovana kombinacia
+            // indetifikator elementu (nazov "e4") + pozicia x na prute (0 je asi stred pruta ???) a kombinacia
+
+            /*
+            var n3Force = model.Nodes["N3"].GetSupportReaction(combination1);
+            Console.WriteLine(n3Force);
+            or for finding internal force of e4 element with combination D + 0.8 L at it’s centre:
+            var e4Force = (model.Elements["e4"] as BarElement).GetInternalForceAt(0, combination1);
+            Console.WriteLine(e4Force);
+            */
         }
 
         private static void LoadComb()
