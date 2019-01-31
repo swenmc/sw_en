@@ -17,7 +17,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            Example2();
+            //Example2();
             //DocSnippets.Test1();
 
 
@@ -29,7 +29,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 5000f, 2000f, -1000f, 1000f);
 
             
-            //Example3(model);
+            Example3(model);
             
             Console.ReadLine();
         }
@@ -329,6 +329,20 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat, ake su typy atd - load cases, load combinations
 
+            /*
+            var d_case = new LoadCase("d1", LoadType.Dead);
+            var l_case = new LoadCase("l1", LoadType.Dead);
+            var qx_case = new LoadCase("qx", LoadType.Dead);
+            var qy_case = new LoadCase("qy", LoadType.Dead);
+
+            var d1 = new Loads.UniformLoad(d_case, -1 * Vector.K, 2e3, CoordinationSystem.Global);
+            var l1 = new Loads.UniformLoad(l_case, -1 * Vector.K, 1e3, CoordinationSystem.Global);
+
+            var combination1 = new LoadCombination();// for D + 0.8 L
+            combination1[d_case] = 1.0;
+            combination1[l_case] = 0.8;
+            */
+
             // Load Cases
             List<LoadCase> loadcases = new List<LoadCase>();
 
@@ -364,7 +378,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 // Add specific load cases into the combination and set load factors
                 for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
                 {
-                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
+                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID-1], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
                 }
 
                 loadcombinations.Add(lcomb);
@@ -450,7 +464,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // Not implemented load type
                             // l = new UniformLoad1D();
                         }
-                        elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
+                        elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]-1].Loads.Add(l);
                     }
                 }
             }

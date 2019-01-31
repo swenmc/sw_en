@@ -168,6 +168,7 @@ namespace Examples
             // Load Case 1
             CLoadCase LoadCase0 = new CLoadCase();
             LoadCase0.ID = 1;
+            LoadCase0.Name = "lcase1";
             LoadCase0.Type = ELCType.ePermanentLoad;
             LoadCase0.MType_LS = ELCGTypeForLimitState.eUniversal;
             LoadCase0.Factor = 1.00f;
@@ -179,6 +180,7 @@ namespace Examples
             // Load Combination 1
             CLoadCombination LoadComb0 = new CLoadCombination();
             LoadComb0.ID = 1;
+            LoadCase0.Name = "lcomb1";
             LoadComb0.eLComType = ELSType.eLS_ULS;
             LoadComb0.LoadCasesList = new List<CLoadCase>() {LoadCase0};
             LoadComb0.LoadCasesFactorsList = new List<float>() {1.35f};
