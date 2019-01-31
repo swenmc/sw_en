@@ -258,6 +258,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
             // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
             //(Sorry ale ja nemam sajnu co sa tu deje :-) )
+            // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine, ale pocitame ho 3D solverom,
+            // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
 
             for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
@@ -276,20 +278,40 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) 
                             // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
                         {
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+                            // Set restraints depending on the FEM DOF number
 
-                            //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
-                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
+                            if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
+                            {
+                                // 2D
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+                            }
+                            else if (topomodel.m_eSLN == BaseClasses.ESLN.e3DD_1D)
+                            {
+                                // 3D
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+
+                                //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
+                            }
+                            else
+                            {
+                                // Not implenented or not defined type
+                            }
                         }
                     }
                 }
