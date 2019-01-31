@@ -61,6 +61,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CRSC\CRSC.csproj">
+      <Project>{ffb65036-8dd2-4633-b25a-d5a65d7213bd}</Project>
+      <Name>CRSC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GENERAL\Examples\Examples.csproj">
+      <Project>{9fe2caf6-e5ea-4a35-80a8-38956c08025d}</Project>
+      <Name>Examples</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MATERIAL\MATERIAL.csproj">
+      <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
+      <Name>MATERIAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TOPO\BaseClasses\BaseClasses.csproj">
+      <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
+      <Name>BaseClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BriefFiniteElementNet.Controls\BriefFiniteElementNet.Controls.csproj">
       <Project>{8dabde62-8a8e-4153-b753-3a62015a9c16}</Project>
       <Name>BriefFiniteElementNet.Controls</Name>

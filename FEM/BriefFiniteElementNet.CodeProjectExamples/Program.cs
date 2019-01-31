@@ -6,6 +6,7 @@ using BriefFiniteElementNet.Controls;
 using BriefFiniteElementNet.Elements;
 using BriefFiniteElementNet.MpcElements;
 
+using BaseClasses;
 
 namespace BriefFiniteElementNet.CodeProjectExamples
 {
@@ -14,13 +15,23 @@ namespace BriefFiniteElementNet.CodeProjectExamples
         [STAThread]
         static void Main(string[] args)
         {
-
             //InternalForceExample.Run();
-            DocSnippets.Test2();
+            //DocSnippets.Test2();
 
             //Example1();
             //Example2();
             //DocSnippets.Test1();
+
+            // POKUS O NAPOJENIE SW_EN modelu
+            MATERIAL.CMat mat = new MATERIAL.CMat();
+            CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00195f, System.Windows.Media.Colors.Coral);
+            CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan);
+
+            CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
+
+            /*
+            Example3(model);
+            */
             Console.ReadLine();
         }
 
@@ -78,7 +89,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
         private static void Example2()
         {
-            Console.WriteLine("Example 1: Simple 3D Frame with distributed loads");
+            Console.WriteLine("Example 2: Simple 3D Frame with distributed loads");
 
             var model = new Model();
             
@@ -120,12 +131,11 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                     n3.Constraints =
                         n4.Constraints =
                             n5.Constraints =
-                                Constraint.FixedDY & Constraint.FixedRX & Constraint.FixedRZ;//DY fixed and RX fixed and RZ fixed
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
 
 
-            n1.Constraints = n1.Constraints & Constraint.MovementFixed;
-            n5.Constraints = n5.Constraints & Constraint.MovementFixed;
-
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n5.Constraints = n5.Constraints & Constraints.MovementFixed;
 
             var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global);
             var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local);
@@ -140,11 +150,201 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             model.Solve();
         }
 
+        // Pokus o napojenie SW_EN
+        private static void Example3(BaseClasses.CModel topomodel)
+        {
+            // TO Ondrej - pointa je v tom ze potrebujeme preklopit nase datove objekty a zatazenia do objektov BFEMNet, vytvorit model, spustit vypocet, nacitat vysledky a tie pouzit v nasom hlavnom programe
+            // Skopiroval som priklad 2, Nieco som skusil napojit a zakomentoval som to co sa nepouzije, ale ked som pridal referencie na nase projekty tak to neide prelozit
+            // Ten DebugerVisualizer, ktory sa mal otvorit cez ikonku lupy ked spustim Example 2 som v VS nenasiel takze to okno s 3D sa mi nepodarilo zobrazit
+
+            Console.WriteLine("Example 3: Simple 3D Frame with distributed loads");
+
+            var model = new Model();
+
+            /*
+            var n1 = new Node(-10, 0, 0);
+            var n2 = new Node(-10, 0, 6);
+            var n3 = new Node(0, 0, 8);
+            var n4 = new Node(10, 0, 6);
+            var n5 = new Node(10, 0, 0);
+
+            model.Nodes.Add(n1, n2, n3, n4, n5);
+            */
+
+            // Nodes
+            NodeCollection nodecollection_temp = new NodeCollection(model);
+
+            for(int i = 0; i< topomodel.m_arrNodes.Length; i++)
+            {
+                nodecollection_temp.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z));
+            }
+
+            model.Nodes = nodecollection_temp;
+
+            // Cross-sections
+            /*
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+            var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
+            */
+
+            // To Ondrej - Pochopil som to tak, ze hodnoty pre prierez A,Iy,Iz je mozne zadat numericky alebo definovat Geometry,
+            // ale Geometry ma len definiciou pre obdlznik a tvar I
+            // do buducna by sme mohli geometry rozsirit alebo mozeme predavat hodnoty z nasich prierezov do solvera len ciselne
+
+            /*
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+            var e2 = new FrameElement2Node(n2, n3);
+            e2.Label = "e2";
+            var e3 = new FrameElement2Node(n3, n4);
+            e3.Label = "e3";
+            var e4 = new FrameElement2Node(n4, n5);
+            e4.Label = "e4";
+
+            e1.Geometry = e4.Geometry = secAA;
+            e2.Geometry = e3.Geometry = secBB;
+
+            e1.E = e2.E = e3.E = e4.E = 210e9;
+            e1.G = e2.G = e3.G = e4.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties =
+                e2.UseOverridedProperties = e3.UseOverridedProperties = e4.UseOverridedProperties = false;
+
+            model.Elements.Add(e1, e2, e3, e4);
+            */
+
+            // Elements (Members)
+            ElementCollection elementcollection_temp = new ElementCollection(model);
+
+            for (int i = 0; i < topomodel.m_arrMembers.Length; i++)
+            {
+                var eTemp = new FrameElement2Node(nodecollection_temp[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodecollection_temp[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
+                eTemp.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
+                eTemp.A = topomodel.m_arrMembers[i].CrScStart.A_g;
+                eTemp.Iy = topomodel.m_arrMembers[i].CrScStart.I_y;
+                eTemp.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;
+                eTemp.E = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE;
+                eTemp.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
+
+                // Note: Elements with UseOverridedProperties = true are shown with square sections(dimension of section automatically tunes for better visualization of elements)
+                // but elements with UseOverridedProperties = false will be shown with their real section with real dimesion.
+                eTemp.UseOverridedProperties = true;
+
+                elementcollection_temp.Add(eTemp);
+            }
+
+            model.Elements = elementcollection_temp;
+
+            // Supports
+            /*
+            n1.Constraints =
+                n2.Constraints =
+                    n3.Constraints =
+                        n4.Constraints =
+                            n5.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n5.Constraints = n5.Constraints & Constraints.MovementFixed;
+            */
+
+            // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
+            // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
+
+            for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
+            {
+                model.Nodes[i].Constraints = Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;
+            }
+
+            // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
+            for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
+            {
+                for (int j = 0; j < topomodel.m_arrNSupports[i].m_iNodeCollection.Length; j++)
+                {
+                    for (int k = 0; k < model.Nodes.Count; k++)
+                    {
+                        if (k == (topomodel.m_arrNSupports[i].m_iNodeCollection[j] - 1)) // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
+                        {
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Ux] == true)
+                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Uy] == true)
+                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Uz] == true)
+                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Rx] == true)
+                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Ry] == true)
+                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Rz] == true)
+                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
+                        }
+                    }
+                }
+            }
+
+            /*
+            var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global);
+            var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local);
+
+            e2.Loads.Add(ll);
+            e3.Loads.Add(lr);
+            */
+
+
+            // Load Cases
+
+            // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat - load cases, load combinations
+
+            // Loads
+
+            for (int i = 0; i < topomodel.m_arrLoadCases.Length; i++) // Each load case
+            {
+                for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
+                {
+                    for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
+                    {
+                        // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
+
+                        CMLoad_21 load = new CMLoad_21();
+                        // Create member load
+                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_21)
+                            load = (CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+
+                        // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+                        // Skontrolovat zadanie v GCS a LCS
+
+                        CoordinationSystem eCS;
+                        if (load.ELoadCS == ELoadCoordSystem.eGCS)
+                            eCS = CoordinationSystem.Global;
+                        else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+                            eCS = CoordinationSystem.Local;
+
+                        LoadDirection eLD;
+
+                        if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                            eLD = LoadDirection.X;
+                        else if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                            eLD = LoadDirection.Y;
+                        else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                            eLD = LoadDirection.Z;
+
+                        var l = new UniformLoad1D(load.Fq, eLD, eCS /*, load case*/);
+
+                        elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
+                    }
+                }
+            }
+
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            model.Solve();
+        }
+
         private static void LoadComb()
         {
             new BarIncliendFrameExample().Run();
         }
-
-        
     }
 }
