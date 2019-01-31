@@ -227,9 +227,10 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             {
                 var node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
                 node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
+
                 node.A = topomodel.m_arrMembers[i].CrScStart.A_g;
                 node.Iy = topomodel.m_arrMembers[i].CrScStart.I_y;
-                node.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;  //tu su nastavene stale 0 hodnoty, tak zobrazuje tam nejaky warning
+                node.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;  //tu su nastavene stale 0 hodnoty, tak zobrazuje tam nejaky warning, MC: je to parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
                 node.E = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE;
                 node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
 
@@ -258,8 +259,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
             // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
             //(Sorry ale ja nemam sajnu co sa tu deje :-) )
-            // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine, ale pocitame ho 3D solverom,
+            // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine XZ, ale pocitame ho 3D solverom ktory berie do uvahy ze sa to moze posunut aj mimo tejto roviny,
             // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
+            // Preto sa na vsetky uzly nastavia tieto tri podmienky
 
             for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
@@ -268,6 +270,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
             //(Sorry ale ja nemam sajnu co sa tu deje :-) )
+            // Tu by sa mali nastavit podpory v rovine ramu (posuny UX a UZ) a pototocenie RY
             for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
             {
                 for (int j = 0; j < topomodel.m_arrNSupports[i].m_iNodeCollection.Length; j++)

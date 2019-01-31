@@ -35,6 +35,10 @@ namespace Examples
             m_arrCrSc[1] = crscRafter;
             m_arrCrSc[1].m_Mat = m_arrMat[0]; // Set CrSc Material
 
+            // TODO - Ondrej - asi by to malo byt v konstruktore prierezu (akonahle vieme meno prierezu v databaze)
+            for(int i = 0; i< m_arrCrSc.Length; i++)
+                DATABASE.CSectionManager.LoadSectionProperties(m_arrCrSc[i].NameDatabase);
+
             // Nodes
             // Nodes List - Nodes Array
 
