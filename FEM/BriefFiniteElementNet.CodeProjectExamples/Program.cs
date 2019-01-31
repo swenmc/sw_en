@@ -6,8 +6,6 @@ using BriefFiniteElementNet.Controls;
 using BriefFiniteElementNet.Elements;
 using BriefFiniteElementNet.MpcElements;
 
-using BaseClasses;
-
 namespace BriefFiniteElementNet.CodeProjectExamples
 {
     class Program
@@ -22,12 +20,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //Example2();
             //DocSnippets.Test1();
 
+
             // POKUS O NAPOJENIE SW_EN modelu
             MATERIAL.CMat mat = new MATERIAL.CMat();
             CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00195f, System.Windows.Media.Colors.Coral);
             CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan);
 
-            CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
+            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
 
             /*
             Example3(model);
@@ -179,7 +178,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             // Nodes
             NodeCollection nodecollection_temp = new NodeCollection(model);
 
-            for(int i = 0; i< topomodel.m_arrNodes.Length; i++)
+            for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
                 nodecollection_temp.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z));
             }
@@ -270,17 +269,17 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                     {
                         if (k == (topomodel.m_arrNSupports[i].m_iNodeCollection[j] - 1)) // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
                         {
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Ux] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Uy] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Uz] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Rx] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Ry] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)ENSupportType.eNST_Rz] == true)
+                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
                                 model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
                         }
                     }
@@ -304,15 +303,15 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             {
                 LoadType loadtype;
 
-                if (topomodel.m_arrLoadCases[i].Type == ELCType.ePermanentLoad)
+                if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.ePermanentLoad)
                     loadtype = LoadType.Dead;
-                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eImposedLoad_LT || topomodel.m_arrLoadCases[i].Type == ELCType.eImposedLoad_ST)
+                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eImposedLoad_LT || topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eImposedLoad_ST)
                     loadtype = LoadType.Live;
-                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eSnow)
+                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eSnow)
                     loadtype = LoadType.Snow;
-                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eWind)
+                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eWind)
                     loadtype = LoadType.Wind;
-                else if (topomodel.m_arrLoadCases[i].Type == ELCType.eEarthquake)
+                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eEarthquake)
                     loadtype = LoadType.Quake;
                 else
                     loadtype = LoadType.Other;
@@ -352,55 +351,55 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                         // load
                         var l = new UniformLoad1D();
 
-                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_21) // Uniform load per whole member
+                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21) // Uniform load per whole member
                         {
-                            CMLoad_21 load = new CMLoad_21();
+                            BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
                             // Create member load
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_21)
-                                load = (CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
+                                load = (BaseClasses.CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
 
                             // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
                             // Skontrolovat zadanie v GCS a LCS
 
                             CoordinationSystem eCS;
-                            if (load.ELoadCS == ELoadCoordSystem.eGCS)
+                            if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
                                 eCS = CoordinationSystem.Global;
                             else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
                                 eCS = CoordinationSystem.Local;
 
                             LoadDirection eLD;
 
-                            if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                            if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
                                 eLD = LoadDirection.X;
-                            else if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                            else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
                                 eLD = LoadDirection.Y;
                             else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
                                 eLD = LoadDirection.Z;
 
                             l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
                         }
-                        else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_24) // Uniform load on segment
+                        else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24) // Uniform load on segment
                         {
-                            CMLoad_24 load = new CMLoad_24();
+                            BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
 
                             // Create member load
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is CMLoad_24)
-                                load = (CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
+                                load = (BaseClasses.CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
 
                             // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
                             // Skontrolovat zadanie v GCS a LCS
 
                             CoordinationSystem eCS;
-                            if (load.ELoadCS == ELoadCoordSystem.eGCS)
+                            if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
                                 eCS = CoordinationSystem.Global;
                             else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
                                 eCS = CoordinationSystem.Local;
 
                             LoadDirection eLD;
 
-                            if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                            if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
                                 eLD = LoadDirection.X;
-                            else if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                            else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
                                 eLD = LoadDirection.Y;
                             else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
                                 eLD = LoadDirection.Z;
@@ -418,7 +417,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // Not implemented load type
                             // l = new UniformLoad1D();
                         }
-                              elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
+                        elementcollection_temp[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
                     }
                 }
             }
