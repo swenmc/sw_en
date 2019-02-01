@@ -18,18 +18,22 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            Example2();
+            //Example2();
             //DocSnippets.Test1();
 
 
             // POKUS O NAPOJENIE SW_EN modelu
             MATERIAL.CMat mat = new MATERIAL.CMat();
             CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00195f, System.Windows.Media.Colors.Coral);
-            CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan);
+            CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(2, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan); // TODO - skontrolovat ci sa nacitavaju pre prierezy s vn vyztuhou spravne hodnoty z databazy, zda sa mi ze nie
 
-            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.1f, -10000f, -10000f, 0.1f);
+            CRSC.CCrSc_0_50 secAA = new CRSC.CCrSc_0_50(0.67f, 0.24f, 0.01f, 0.006f);
+            CRSC.CCrSc_0_50 secBB = new CRSC.CCrSc_0_50(0.52f, 0.24f, 0.01f, 0.006f);
 
-            //Example3(model);
+            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
+            // BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, secAA, secBB, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
+
+            Example3(model);
 
             Console.ReadLine();
         }
@@ -256,7 +260,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 element_1D_2Node.Iy = sec.Iy;
                 element_1D_2Node.Iz = sec.Iz;
                 element_1D_2Node.J = sec.J;
-                element_1D_2Node.ConsiderShearDeformation = true;
+                //element_1D_2Node.ConsiderShearDeformation = true;
 
                 if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
                 {
@@ -618,6 +622,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             {
                 try
                 {
+                    Console.WriteLine("\nWritting results to the file D:\\Results.txt.");
+
                     //Pass the filepath and filename to the StreamWriter Constructor
                     StreamWriter sw = new StreamWriter("D:\\Results.txt");
 

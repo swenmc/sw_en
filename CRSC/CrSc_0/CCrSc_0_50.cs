@@ -97,6 +97,8 @@ namespace CRSC
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
+
+            CalculatePropertiesForFEM_AgAyAzIyIzIt();
         }
 
         //----------------------------------------------------------------------------
@@ -255,6 +257,8 @@ namespace CRSC
 
             // Fill list of indices for drawing of surface - triangles edges
             loadCrScIndices();
+
+            CalculatePropertiesForFEM_AgAyAzIyIzIt();
         }
 
         //----------------------------------------------------------------------------
@@ -360,13 +364,6 @@ namespace CRSC
         // Parallel-faced flanges (flat)
         // Doubly symmetrical
 
-        float m_fU, m_fA,
-                m_fS_y, m_fI_y, m_fW_y_el, m_fW_y_pl, m_ff_y_plel,
-                m_fS_z, m_fI_z, m_fW_z_el, m_fW_z_pl, m_ff_z_plel,
-                m_fW_t_el, m_fI_t, m_fi_t, m_fW_t_pl, m_ff_t_plel,
-                m_fEta_y_v, m_fA_y_v_el, m_fA_y_v_pl, m_ff_y_v_plel,
-                m_fEta_z_v, m_fA_z_v_el, m_fA_z_v_pl, m_ff_z_v_plel;
-
         float m_fh_i, // Web Depth (distance between flange faces)
               m_fd,   // Web Depth (straight part)
               m_fr,   // Radius between faces of web and flange
@@ -387,143 +384,146 @@ namespace CRSC
         // Perimeter of section
         void Calc_U()
         {
-            m_fU = 4 * m_fb + 2 * m_fh - 2 * m_ft_w + (2 * MathF.fPI - 8) * m_fr;
+            U = 4 * m_fb + 2 * m_fh - 2 * m_ft_w + (2 * MathF.fPI - 8) * m_fr;
         }
         // Section area
         void Calc_A()
         {
-            m_fA = 2 * m_ft_f * m_fb + (m_fh - 2 * m_ft_f) * m_ft_w + (4 - MathF.fPI) * m_fr * m_fr;
+            A_g = 2 * m_ft_f * m_fb + (m_fh - 2 * m_ft_f) * m_ft_w + (4 - MathF.fPI) * m_fr * m_fr;
         }
 
 
         // First moment o area
         void Calc_S_y()
         {
-            m_fS_y = m_ft_f * m_fb * (m_fh / 2 - m_ft_f / 2) + m_ft_w * (m_fh / 2 - m_ft_f) * (m_fh / 2 - m_ft_f) / 2 + (((4 - MathF.fPI) * m_fr * m_fr) / 2) * (m_fh / 2 - m_ft_f - 0.4468f * m_fr);
+            S_y = m_ft_f * m_fb * (m_fh / 2 - m_ft_f / 2) + m_ft_w * (m_fh / 2 - m_ft_f) * (m_fh / 2 - m_ft_f) / 2 + (((4 - MathF.fPI) * m_fr * m_fr) / 2) * (m_fh / 2 - m_ft_f - 0.4468f * m_fr);
         }
         // Second moment of area
         void Calc_I_y()
         {
-            m_fI_y = 1 / 12f * (m_fb * m_fh * m_fh * m_fh - (m_fb - m_ft_w) * MathF.Pow3(m_fh - 2 * m_ft_f) + 0.03f * MathF.Pow4(m_fr) + 0.2146f * m_fr * m_fr * MathF.Pow2(m_fh - 2 * m_ft_f - 0.4468f * m_fr));
+            I_y = 1 / 12f * (m_fb * m_fh * m_fh * m_fh - (m_fb - m_ft_w) * MathF.Pow3(m_fh - 2 * m_ft_f) + 0.03f * MathF.Pow4(m_fr) + 0.2146f * m_fr * m_fr * MathF.Pow2(m_fh - 2 * m_ft_f - 0.4468f * m_fr));
         }
         // Section modulus - elastic
         void Calc_W_y_el()
         {
-            m_fW_y_el = 2 * m_fI_y / m_fh;
+            W_y_el = 2 * I_y / m_fh;
         }
         // Section modulus - plastic
         void Calc_W_y_pl()
         {
-            m_fW_y_pl = (m_ft_w * m_fh * m_fh) / 4 + (m_fb - m_ft_w) * (m_fh - m_ft_f) * m_ft_f + ((4 - MathF.fPI) / 2) * m_fr * m_fr * (m_fh - 2 * m_ft_f) + (((3 * MathF.fPI - 10) / 3) * m_fr * m_fr * m_fr);
+            W_y_pl = (m_ft_w * m_fh * m_fh) / 4 + (m_fb - m_ft_w) * (m_fh - m_ft_f) * m_ft_f + ((4 - MathF.fPI) / 2) * m_fr * m_fr * (m_fh - 2 * m_ft_f) + (((3 * MathF.fPI - 10) / 3) * m_fr * m_fr * m_fr);
         }
         // Shape factor - plastic/elastic
         void Calc_f_y_plel()
         {
-            m_ff_y_plel = m_fW_y_pl / m_fW_y_el;
+            f_y_plel = W_y_pl / W_y_el;
         }
 
 
         // First moment o area
         void Calc_S_z()
         {
-            m_fS_z = 2 * ((m_fb / 2 * m_ft_f) * m_fb / 4) + 2 * ((((4 * m_fr * m_fr) - (MathF.fPI * m_fr * m_fr)) / 4) * (0.2146f * m_fr + m_ft_w / 2)) + ((m_fh_i * m_ft_w / 2) * m_ft_w / 4);
+            S_z = 2 * ((m_fb / 2 * m_ft_f) * m_fb / 4) + 2 * ((((4 * m_fr * m_fr) - (MathF.fPI * m_fr * m_fr)) / 4) * (0.2146f * m_fr + m_ft_w / 2)) + ((m_fh_i * m_ft_w / 2) * m_ft_w / 4);
         }
         // Second moment of area
         void Calc_I_z()
         {
-            m_fI_z = 1 / 12f * (2 * m_ft_f * m_fb * m_fb * m_fb + (m_fh - 2 * m_ft_f) * m_ft_w * m_ft_w * m_ft_w) + 0.03f * MathF.Pow4(m_fr) + 0.2146f * m_fr * m_fr * MathF.Pow2(m_ft_w + 0.4468f * m_fr);
+            I_z = 1 / 12f * (2 * m_ft_f * m_fb * m_fb * m_fb + (m_fh - 2 * m_ft_f) * m_ft_w * m_ft_w * m_ft_w) + 0.03f * MathF.Pow4(m_fr) + 0.2146f * m_fr * m_fr * MathF.Pow2(m_ft_w + 0.4468f * m_fr);
         }
         // Section modulus - elastic
         void Calc_W_z_el()
         {
-            m_fW_z_el = 2 * m_fI_z / m_fb;
+            W_z_el = 2 * I_z / m_fb;
         }
         // Section modulus - plastic
         void Calc_W_z_pl()
         {
-            m_fW_z_pl = 2 * (2 * (m_fb / 2 * m_ft_f * m_fb / 4) + ((m_fh - 2 * m_ft_f) * (m_ft_w / 2) * m_ft_w / 4) + 2 * ((((4 - MathF.fPI) * m_fr * m_fr) / 4) * 0.4468f * (m_fr + m_ft_w / 2)));
+            W_z_pl = 2 * (2 * (m_fb / 2 * m_ft_f * m_fb / 4) + ((m_fh - 2 * m_ft_f) * (m_ft_w / 2) * m_ft_w / 4) + 2 * ((((4 - MathF.fPI) * m_fr * m_fr) / 4) * 0.4468f * (m_fr + m_ft_w / 2)));
         }
         // Shape factor - plastic/elastic
         void Calc_f_z_plel()
         {
-            m_ff_z_plel = m_fW_z_pl / m_fW_z_el;
+            f_z_plel = W_z_pl / W_z_el;
         }
 
 
         // Torsional inertia constant
         void Calc_I_t()
         {
-            m_fI_t = 2 * (m_fb - 0.063f * m_ft_f) * MathF.Pow3(m_ft_f) / 3f + 2 * (m_ft_w / m_ft_f) * (0.145f * +0.1f * m_fr / m_ft_f) * MathF.Pow4((MathF.Pow2(m_fr + m_ft_w / 2) + MathF.Pow2(m_fr + m_ft_f) - MathF.Pow2(m_fr)) / (2 * m_fr + m_ft_f));
-            m_fI_t = 2 / 3 * (m_fb - 0.63f * m_ft_f) * MathF.Pow3(m_ft_f) + 1 / 3 * (m_fh - 2 * m_ft_f) * MathF.Pow3(m_ft_w) + 2 * m_ft_w / m_ft_f * (0.145f + 0.1f * m_fr / m_ft_f) * MathF.Pow4(((MathF.Pow2(m_fr + m_ft_w / 2) + (MathF.Pow2(m_fr + m_ft_f) - m_fr * m_fr) / (2 * m_fr + m_ft_f))));
+           I_t = 2 * (m_fb - 0.063f * m_ft_f) * MathF.Pow3(m_ft_f) / 3f + 2 * (m_ft_w / m_ft_f) * (0.145f * +0.1f * m_fr / m_ft_f) * MathF.Pow4((MathF.Pow2(m_fr + m_ft_w / 2) + MathF.Pow2(m_fr + m_ft_f) - MathF.Pow2(m_fr)) / (2 * m_fr + m_ft_f));
+           I_t = 2 / 3 * (m_fb - 0.63f * m_ft_f) * MathF.Pow3(m_ft_f) + 1 / 3 * (m_fh - 2 * m_ft_f) * MathF.Pow3(m_ft_w) + 2 * m_ft_w / m_ft_f * (0.145f + 0.1f * m_fr / m_ft_f) * MathF.Pow4(((MathF.Pow2(m_fr + m_ft_w / 2) + (MathF.Pow2(m_fr + m_ft_f) - m_fr * m_fr) / (2 * m_fr + m_ft_f))));
         }
         // Torsional radius of gyration
         void Calc_i_t()
         {
-            m_fi_t = MathF.Sqrt(m_fI_t / m_fA);
+            i_t = MathF.Sqrt(I_t / A_g);
         }
         // Torsional section modulus - elastic
         void Calc_W_t_el()
         {
-            m_fW_t_el = m_fI_t / Math.Max(m_ft_w, m_ft_f); // Min or Max Thickness
+            W_t_el = I_t / Math.Max(m_ft_w, m_ft_f); // Min or Max Thickness
         }
         // Torsional section modulus - plastic
         void Calc_W_t_pl()
         {
-            m_fW_t_pl = (m_fb - m_ft_w - 2 * m_fr - m_ft_f / 3.0f) * MathF.Pow2(m_ft_f) + m_fd * MathF.Pow2(m_ft_w) / 2.0f /*+   doplnit   */;  // Temp
+            W_t_pl = (m_fb - m_ft_w - 2 * m_fr - m_ft_f / 3.0f) * MathF.Pow2(m_ft_f) + m_fd * MathF.Pow2(m_ft_w) / 2.0f /*+   doplnit   */;  // Temp
         }
         // Torsional shape factor plastic/elastic
         void Calc_f_t_plel()
         {
-            m_ff_t_plel = m_fW_t_pl / m_fW_t_el;
+            f_t_plel = W_t_pl / W_t_el;
         }
         // Section warping constant
         void Calc_I_w()
         {
-            m_fI_w = m_ft_f * MathF.Pow3(m_fb) * MathF.Pow2(m_fh - m_ft_f) / 24.0f;
+            I_w = m_ft_f * MathF.Pow3(m_fb) * MathF.Pow2(m_fh - m_ft_f) / 24.0f;
         }
 
 
         // Shear factor
         void Calc_Eta_y_v()
         {
-            m_fEta_y_v = (m_fA / MathF.Pow2(m_fI_y)) /*  Syi^2 / byi *dz */ ;  // Temp
+            Eta_y_v = (A_g / MathF.Pow2(I_y)) /*  Syi^2 / byi *dz */ ;  // Temp
         }
         // Shear effective area - elastic
         void Calc_A_y_v_el()
         {
-            m_fA_y_v_el = 2 * m_ft_w / m_fW_y_pl;
+            A_y_v_el = 2 * m_ft_w / W_y_pl;
         }
         // Shape factor for shear - plastic/elastic
         void Calc_f_y_v_plel()
         {
-            m_ff_y_v_plel = 1.00f; // Temp
+            f_y_v_plel = 1.00f; // Temp
         }
         // Shear effective area - plastic
         void Calc_A_y_v_pl()
         {
-            m_fA_y_v_pl = m_ff_y_v_plel * m_fA_y_v_el; // Temp
+            A_y_v_pl = f_y_v_plel * A_y_v_el; // Temp
         }
 
 
         // Shear factor
         void Calc_Eta_z_v()
         {
-            m_fEta_z_v = (m_fA / MathF.Pow2(m_fI_z)) /*  Szi^2 / bzi *dy */ ;  // Temp
+            Eta_z_v = (A_g / MathF.Pow2(I_z)) /*  Szi^2 / bzi *dy */ ;  // Temp
         }
         // Shear effective area - elastic
         void Calc_A_z_v_el()
         {
-            m_fA_z_v_el = m_fI_z /* * Math.Min (bzi / Szi)*/;
+            // TODO
+            A_z_v_el = I_z /* * Math.Min (bzi / Szi)*/;
+
+            A_z_v_el = b * m_ft_f; // DOCASNA HODNOTA
         }
         // Shape factor for shear - plastic/elastic
         void Calc_f_z_v_plel()
         {
-            m_ff_z_v_plel = 1.00f; // Temp
+            f_z_v_plel = 1.00f; // Temp
         }
         // Shear effective area - plastic
         void Calc_A_z_v_pl()
         {
-            m_fA_z_v_pl = m_ff_z_v_plel * m_fA_z_v_el; // Temp
+            A_z_v_pl = f_z_v_plel * A_z_v_el; // Temp
         }
 
 
@@ -547,6 +547,19 @@ namespace CRSC
 
             if (m_fr_2 < 0.0f)
                 m_fr_2 = m_ft_w / 2f;
+        }
+
+        public void CalculatePropertiesForFEM_AgAyAzIyIzIt()
+        {
+            Calc_W_y_pl();
+            Calc_W_y_pl();
+
+            Calc_A();
+            Calc_A_y_v_el();
+            Calc_A_z_v_el();
+            Calc_I_y();
+            Calc_I_z();
+            Calc_I_t();
         }
 
 

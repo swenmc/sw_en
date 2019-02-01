@@ -8,7 +8,7 @@ namespace Examples
 {
     public class CExample_2D_13_PF : CExample
     {
-        public CExample_2D_13_PF(CMat material, CCrSc crscColumn, CCrSc crscRafter, float fB, float fH1, float fH2, float fLoad_q1, float fLoad_q2, float fLoad_q3, float fLoad_q4)
+        public CExample_2D_13_PF(CMat material, CCrSc crscColumn, CCrSc crscRafter, float fB, float fH1, float fH2, float fLoad_q1, float fLoad_q2_x, float fLoad_q2_z, float fLoad_q3, float fLoad_q4)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
@@ -19,7 +19,7 @@ namespace Examples
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[2];
             m_arrNSupports = new CNSupport[1];
-            m_arrMLoads = new CMLoad[4];
+            m_arrMLoads = new CMLoad[5];
             m_arrLoadCases = new CLoadCase[1];
             m_arrLoadCombs = new CLoadCombination[1];
 
@@ -36,9 +36,14 @@ namespace Examples
             m_arrCrSc[1] = crscRafter;
             m_arrCrSc[1].m_Mat = m_arrMat[0]; // Set CrSc Material
 
-            // TODO - Ondrej - asi by to malo byt v konstruktore prierezu (akonahle vieme meno prierezu v databaze)
-            for(int i = 0; i< m_arrCrSc.Length; i++)
-                DATABASE.CSectionManager.LoadCrossSectionProperties_meters((CCrSc_TW)m_arrCrSc[i], m_arrCrSc[i].NameDatabase);
+            // TODO - Ondrej - asi by to malo byt v konstruktore prierezu (akonahle vieme meno prierezu v databaze), skusal som to tam dat ale vznika tam cyklicka refernecia lebo DATABASE pouziva CRSC
+            for (int i = 0; i < m_arrCrSc.Length; i++)
+            {
+                if (m_arrCrSc[i].NameDatabase != null || (m_arrCrSc[i].NameDatabase != null && m_arrCrSc[i].NameDatabase != "")) // Database name must be defined
+                {
+                    DATABASE.CSectionManager.LoadCrossSectionProperties_meters((CCrSc_TW)m_arrCrSc[i], m_arrCrSc[i].NameDatabase);
+                }
+            }
 
             // Nodes
             // Nodes List - Nodes Array
@@ -131,40 +136,50 @@ namespace Examples
             MLoad_q1.ID = 1;
             MLoad_q1.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q1.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q1.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_q1.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
             MLoad_q1.IMemberCollection = new int[1];
             MLoad_q1.IMemberCollection[0] = 1;
             m_arrMLoads[0] = MLoad_q1;
 
             // Load 2 - MemberIDs: 2
-            CMLoad_21 MLoad_q2 = new CMLoad_21(fLoad_q2);
-            MLoad_q2.ID = 2;
-            MLoad_q2.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            MLoad_q2.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q2.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
-            MLoad_q2.IMemberCollection = new int[1];
-            MLoad_q2.IMemberCollection[0] = 2;
-            m_arrMLoads[1] = MLoad_q2;
+            CMLoad_21 MLoad_q2x = new CMLoad_21(fLoad_q2_x);
+            MLoad_q2x.ID = 2;
+            MLoad_q2x.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
+            MLoad_q2x.MLoadType = EMLoadType.eMLT_F;
+            MLoad_q2x.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FXX_MXX;
+            MLoad_q2x.IMemberCollection = new int[1];
+            MLoad_q2x.IMemberCollection[0] = 2;
+            m_arrMLoads[1] = MLoad_q2x;
+
+            // Load 2 - MemberIDs: 2
+            CMLoad_21 MLoad_q2z = new CMLoad_21(fLoad_q2_z);
+            MLoad_q2z.ID = 2;
+            MLoad_q2z.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
+            MLoad_q2z.MLoadType = EMLoadType.eMLT_F;
+            MLoad_q2z.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
+            MLoad_q2z.IMemberCollection = new int[1];
+            MLoad_q2z.IMemberCollection[0] = 2;
+            m_arrMLoads[2] = MLoad_q2z;
 
             // Load 3 - MemberIDs: 3
             CMLoad_21 MLoad_q3 = new CMLoad_21(fLoad_q3);
             MLoad_q3.ID = 3;
             MLoad_q3.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q3.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q3.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_q3.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
             MLoad_q3.IMemberCollection = new int[1];
             MLoad_q3.IMemberCollection[0] = 3;
-            m_arrMLoads[2] = MLoad_q3;
+            m_arrMLoads[3] = MLoad_q3;
 
             // Load 4 - MemberIDs: 4
             CMLoad_21 MLoad_q4 = new CMLoad_21(fLoad_q4);
             MLoad_q4.ID = 4;
             MLoad_q4.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q4.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q4.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_q4.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
             MLoad_q4.IMemberCollection = new int[1];
             MLoad_q4.IMemberCollection[0] = 4;
-            m_arrMLoads[3] = MLoad_q4;
+            m_arrMLoads[4] = MLoad_q4;
 
             // Load Cases
             // Load Case 1
