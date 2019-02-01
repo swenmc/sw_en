@@ -43,6 +43,8 @@ namespace Examples
             // Nodes
             // Nodes List - Nodes Array
 
+            // RAM DEFINOVANY V XZ
+
             // Node 1
             m_arrNodes[0] = new CNode();
             m_arrNodes[0].ID = 1;
@@ -54,22 +56,22 @@ namespace Examples
             m_arrNodes[1] = new CNode();
             m_arrNodes[1].ID = 2;
             m_arrNodes[1].X = 0f;
-            m_arrNodes[1].Y = fH1;
-            m_arrNodes[1].Z = 0f;
+            m_arrNodes[1].Y = 0f;
+            m_arrNodes[1].Z = fH1;
 
             // Node 3
             m_arrNodes[2] = new CNode();
             m_arrNodes[2].ID = 3;
             m_arrNodes[2].X = 0.5f * fB;
-            m_arrNodes[2].Y = fH2;
-            m_arrNodes[2].Z = 0f;
+            m_arrNodes[2].Y = 0;
+            m_arrNodes[2].Z = fH2;
 
             // Node 4
             m_arrNodes[3] = new CNode();
             m_arrNodes[3].ID = 4;
             m_arrNodes[3].X = fB;
-            m_arrNodes[3].Y = fH1;
-            m_arrNodes[3].Z = 0f;
+            m_arrNodes[3].Y = 0f;
+            m_arrNodes[3].Z = fH1;
 
             // Node 5
             m_arrNodes[4] = new CNode();
@@ -183,7 +185,7 @@ namespace Examples
             LoadCase0.Name = "lcomb1";
             LoadComb0.eLComType = ELSType.eLS_ULS;
             LoadComb0.LoadCasesList = new List<CLoadCase>() {LoadCase0};
-            LoadComb0.LoadCasesFactorsList = new List<float>() {1.35f};
+            LoadComb0.LoadCasesFactorsList = new List<float>() {1.00f};
 
             m_arrLoadCombs[0] = LoadComb0;
         }
