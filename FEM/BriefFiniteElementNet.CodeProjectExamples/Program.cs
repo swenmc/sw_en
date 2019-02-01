@@ -5,6 +5,7 @@ using System.Text;
 using BriefFiniteElementNet.Controls;
 using BriefFiniteElementNet.Elements;
 using BriefFiniteElementNet.MpcElements;
+using System.IO;
 
 namespace BriefFiniteElementNet.CodeProjectExamples
 {
@@ -17,7 +18,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            //Example2();
+            Example2();
             //DocSnippets.Test1();
 
 
@@ -28,7 +29,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.1f, -10000f, -10000f, 0.1f);
 
-            Example3(model);
+            //Example3(model);
 
             Console.ReadLine();
         }
@@ -544,6 +545,10 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
         private static void DisplayResultsinConsole(Model bfenet_model, List<LoadCombination> loadcombinations)
         {
+            bool bWriteResultsInTXTFile = true; // Vypise hodnoty do suboru Results.txt na disk D (oddelene tabulatorom, je mozne vlozit do stlpcov tabulky xls)
+
+            List<Force> outputresults = new List<Force>();
+
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
             {
                 // Reactions in nodes
@@ -594,16 +599,62 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 {
                     Console.WriteLine("Element No.: " + (j + 1).ToString());
 
-                    float[] xLocations = new float[5] { -1, -0.5f, 0, 0.5f, 1 };
+                    double elemLength = bfenet_model.Elements[j].GetElementLength();
+                    double[] xLocations = new double[5] { 0, 0.25 * elemLength, 0.5 * elemLength, 0.75 * elemLength, 1 * elemLength };
 
                     for (int k = 0; k < xLocations.Length; k++)
                     {
                         Console.WriteLine("Internal forces in location x = " + xLocations[k].ToString());
                         var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations[k], loadcombinations[i]);
                         Console.WriteLine(eForce);
+
+                        if (bWriteResultsInTXTFile)
+                            outputresults.Add(eForce);
                     }
                 }
             }
+
+            if (bWriteResultsInTXTFile)
+            {
+                try
+                {
+                    //Pass the filepath and filename to the StreamWriter Constructor
+                    StreamWriter sw = new StreamWriter("D:\\Results.txt");
+
+                    //Write a line of text
+                    sw.WriteLine("Results");
+
+                    sw.WriteLine("Fx [N]" + "\t" +
+                                 "Fy [N]" + "\t" +
+                                 "Fz [N]" + "\t" +
+                                 "Mx [Nm]" + "\t" +
+                                 "My [Nm]" + "\t" +
+                                 "Mz [Nm]");
+
+                    for (int i = 0; i < outputresults.Count; i++)
+                    {
+                        //sw.WriteLine(outputresults[i]);
+                        sw.WriteLine(outputresults[i].Fx + "\t" +
+                            outputresults[i].Fy + "\t" +
+                            outputresults[i].Fz + "\t" +
+                            outputresults[i].Mx + "\t" +
+                            outputresults[i].My + "\t" +
+                            outputresults[i].Mz);
+                    }
+
+                    //Close the file
+                    sw.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception: " + e.Message);
+                }
+                finally
+                {
+                    Console.WriteLine("Executing finally block.");
+                }
+            }
+
 
             // To Ondrej - neviem ako presne toto funguje a co to zobrazuje :) ... asi vysledky pre vsetky spocitane zatazovacie stavy
 
