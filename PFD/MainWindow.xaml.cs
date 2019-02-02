@@ -32,6 +32,7 @@ using M_BASE;
 using CRSC;
 using EXPIMP;
 using Examples;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -902,7 +903,9 @@ namespace PFD
                 63020s2
                 */
 
-                CSectionManager.LoadCrossSectionProperties_meters(crsc, crsc.NameDatabase);
+                //ak sa load presunie do konstruktora pre CrsC tak toto je mozno uz navyse
+                CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(crsc.NameDatabase);
+                crsc.SetParams(dto);
 
                 // Docasne hodnoty
                 crsc.A_vy = crsc.h * crsc.t_min; // TODO - len priblizne Temp

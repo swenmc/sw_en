@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Common;
 using System.Data.SQLite;
 using System.Globalization;
 using DATABASE.DTO;
-using CRSC;
 using MATERIAL;
 
 namespace DATABASE

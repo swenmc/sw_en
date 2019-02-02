@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Common;
 using System.Data.SQLite;
 using System.Globalization;
 using DATABASE.DTO;
-using CRSC;
+
 
 namespace DATABASE
 {
@@ -149,8 +148,9 @@ namespace DATABASE
             return properties;
         }
 
-        public static void LoadCrossSectionProperties_meters(CCrSc_TW crsc, string sectionNameDatabase)
+        public static CrScProperties LoadCrossSectionProperties_meters(string sectionNameDatabase)
         {
+            CrScProperties crsc = new CrScProperties();
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
 
@@ -165,7 +165,7 @@ namespace DATABASE
                     if (reader.Read())
                     {
                         crsc.ID = reader.GetInt32(reader.GetOrdinal("ID"));
-                        crsc.NameDatabase = sectionNameDatabase;
+                        crsc.SectionNameDatabase = sectionNameDatabase;
                         crsc.h = double.Parse(reader["h"].ToString(), nfi);
                         crsc.b = double.Parse(reader["b"].ToString(), nfi);
                         crsc.t_min = double.Parse(reader["t"].ToString(), nfi);
@@ -206,6 +206,7 @@ namespace DATABASE
                     }
                 }
             }
+            return crsc;
         }
 
         public static List<string> LoadSectionPropertiesStringList(int ID)

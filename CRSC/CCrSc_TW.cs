@@ -1,4 +1,5 @@
-﻿using MATERIAL;
+﻿using DATABASE.DTO;
+using MATERIAL;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -282,6 +283,39 @@ namespace CRSC
             this.z_suradnice = z_suradnice;
             this.t_hodnoty = t_hodnoty;
         }
+
+        public void SetParams(CrScProperties dto)
+        {
+            this.ID = dto.ID;
+            this.NameDatabase = dto.SectionNameDatabase;
+            this.h = dto.h;
+            this.b = dto.b;
+
+            this.t_min = dto.t_min;
+            this.t_max = dto.t_max;
+        this.A_g= dto.A_g;
+        this.I_y0 = dto.I_y0;
+        this.I_z0 = dto.I_z0;
+        this.I_y = dto.I_y;
+        this.I_z = dto.I_z;
+        this.W_y_el = dto.W_y_el;
+        this.W_z_el = dto.W_z_el;
+        this.I_t = dto.I_t;
+        this.I_w = dto.I_w;
+        this.D_y_gc = dto.D_y_gc; // Poloha taziska v povodnom suradnicovom systeme
+        this.D_z_gc = dto.D_z_gc;
+        this.D_y_sc = dto.D_y_sc;// Poloha stredu smyku v povodnom suradnicovom systeme
+        this.D_z_sc = dto.D_z_sc;
+        this.D_y_s = dto.D_y_s;// Vzdialenost medzi taziskom G a stredom smyku S
+        this.D_z_s = dto.D_z_s;
+        this.Beta_y = dto.Beta_y;
+        this.Beta_z = dto.Beta_z;
+        this.Alpha_rad = dto.Alpha_rad;
+        this.fol_b = dto.fol_b;
+        this.fod_b = dto.fod_b;
+        this.fol_c = dto.fol_c;
+        this.fod_c = dto.fod_c;
+    }
 
         // Calculate properties
         // CSO - open thin-walled cross-section
