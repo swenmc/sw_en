@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+using DATABASE;
 
 namespace CRSC
 {
@@ -481,6 +482,20 @@ namespace CRSC
                             
                             ); // Last Element
                 }
+            }
+        }
+
+        public void FillCrScPropertiesByTableData()
+        {
+            // Do not calculate but set table data from database
+            if (NameDatabase != null || NameDatabase != "") // Database name must be defined
+            {
+                CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(NameDatabase);
+                this.SetParams(dto);
+            }
+            else
+            {
+                throw new System.ArgumentNullException("Database name is" + NameDatabase + " This name is not defined in the cross-section database.");
             }
         }
     }

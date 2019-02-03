@@ -36,20 +36,6 @@ namespace Examples
             m_arrCrSc[1] = crscRafter;
             m_arrCrSc[1].m_Mat = m_arrMat[0]; // Set CrSc Material
 
-            // TODO - Ondrej - asi by to malo byt v konstruktore prierezu (akonahle vieme meno prierezu v databaze), skusal som to tam dat ale vznika tam cyklicka refernecia lebo DATABASE pouziva CRSC
-            // TODO Mato - mozes presunut volanie LoadCrossSectionProperties_meters do konstruktora Crsc a pouzi potom metodu SetParams
-            //takto:
-            //CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(crsc.NameDatabase);
-            //crsc.SetParams(dto);
-            //ak to bude fungovat tak tieto komenty mozes pomazat
-            for (int i = 0; i < m_arrCrSc.Length; i++)
-            {
-                if (m_arrCrSc[i].NameDatabase != null || (m_arrCrSc[i].NameDatabase != null && m_arrCrSc[i].NameDatabase != "")) // Database name must be defined
-                {
-                    //DATABASE.CSectionManager.LoadCrossSectionProperties_meters((CCrSc_TW)m_arrCrSc[i], m_arrCrSc[i].NameDatabase);
-                }
-            }
-
             // Nodes
             // Nodes List - Nodes Array
 

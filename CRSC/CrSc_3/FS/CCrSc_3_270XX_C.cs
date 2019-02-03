@@ -2,6 +2,8 @@
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows;
+using DATABASE;
+using DATABASE.DTO;
 
 namespace CRSC
 {
@@ -268,19 +270,6 @@ namespace CRSC
                 p.Y += D_z_gc;
                 CrScPointsOut[i] = p;
             }
-        }
-
-        public void FillCrScPropertiesByTableData()
-        {
-            // Do not calculate but set table data
-            if (MathF.d_equal(Ft_w, 0.00055))
-                A_g = 0.00055 / 0.00095 * 436.8 / 1e+6; // TODO Temp - zistit plochu
-            if (MathF.d_equal(Ft_w, 0.00095))
-                A_g = 436.8 / 1e+6;
-            else if (MathF.d_equal(Ft_w, 0.00115))
-                A_g = 527.0 / 1e+6; 
-            else
-                A_g = Ft_w / 0.00095 * 436.8 / 1e+6; // Priblizne - nespecifikovana hrubka
         }
     }
 }

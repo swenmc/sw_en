@@ -237,16 +237,5 @@ namespace CRSC
                 CrScPointsIn[i] = p;
             }
         }
-
-        public void FillCrScPropertiesByTableData()
-        {
-            // Do not calculate but set table data
-            if (MathF.d_equal(Ft_w, 0.00095))
-                A_g = 2 * 436.8 / 1e+6;
-            else if (MathF.d_equal(Ft_w, 0.00115))
-                A_g = 2 * 527.0 / 1e+6;
-            else
-            { }
-        }
     }
 }

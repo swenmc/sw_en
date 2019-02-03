@@ -51,11 +51,5 @@ namespace CRSC
 
             FillCrScPropertiesByTableData();
         }
-
-        public void FillCrScPropertiesByTableData()
-        {
-            // Do not calculate but set table data
-            A_g = 1057 / 1e+6;
-        }
     }
 }
