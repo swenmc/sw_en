@@ -543,6 +543,33 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             DisplayResultsinConsole(model, loadcombinations);
         }
 
+        private static void Example4()
+        {
+            Console.WriteLine("Example 4: Simple Beam - Trapezoidal load");
+
+            // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
+
+            var bar = new BarElement();                           //creating new instance of element
+
+            // TO ONDREJ - tu to nevyzera dobre - konstruktor pre PartialTrapezoidalLoad neexistuje
+            // Pozri \BriefFiniteElementNet\Loads\PartialTrapezoidalLoad.cs
+
+            /*
+            // Zakomentovane z dovodu nefunkcnosti
+            var load = new  PartialTrapezoidalLoad();             //creating new instance of load
+            load.StartMagnitudes = new double[] { 2000 };         //set Magnitude at start
+            load.EndMagnitudes = new double[] { 1000 };           //set Magnitude at end
+
+            load.StartLocations = new double[] { -1 + 2 / 6 };    //set locations of trapezoidal load
+            load.EndLocations = new double[] { 1 - 1 / 6 };       //set locations of trapezoidal load
+
+            load.Direction = Vector.K;                            //set direction
+            load.CoordinationSystem = CoordinationSystem.Global;  //set coordination system
+
+            bar.Loads.Add(load);                                  //apply load to element
+            */
+        }
+
         private static void LoadComb()
         {
             new BarIncliendFrameExample().Run();
