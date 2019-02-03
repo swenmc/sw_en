@@ -19,6 +19,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             //Example1();
             //Example2();
+            //Example4();
+            Example5();
+
             //DocSnippets.Test1();
 
 
@@ -33,7 +36,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
             // BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, secAA, secBB, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
 
-            Example3(model);
+            //Example3(model);
 
             Console.ReadLine();
         }
@@ -568,6 +571,87 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             bar.Loads.Add(load);                                  //apply load to element
             */
+        }
+
+        private static void Example5()
+        {
+            Console.WriteLine("Example 5: Simple Beam - Concentrated load on member");
+
+            // Pozri \BriefFiniteElementNet\Loads\ConcentratedLoad.cs
+            // TO Ondrej - Vyzera to tak ze zatazenie prutu koncentrovanou silou nefunguje ani pre Bar Element ani pre FrameElement2Node
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            /*
+            // Bar Element
+            var a = 0.1 * 0.1;//area, assume sections are 10cm*10cm rectangular
+            var iy = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Iy
+            var iz = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Iz
+            var j = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Polar
+            var e = 20e9;//young modulus, 20 [GPa]
+            var nu = 0.2;//poissons ratio
+
+            var sec = new Sections.UniformParametric1DSection(a, iy, iz, j);
+            var mat = Materials.UniformIsotropicMaterial.CreateFromYoungPoisson(e, nu);
+
+            var e1 = new BarElement(n1, n2);
+            e1.Section = sec;
+            e1.Material = mat;
+            */
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            var q = new Force(5000 * Vector.K, Vector.Zero);
+            var load = new ConcentratedLoad1D(q, 0.5 * e1.GetElementLength(), CoordinationSystem.Local, lc1);    //creating new instance of load
+            e1.Loads.Add(load);                                                                                   //apply load to element
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
         }
 
         private static void LoadComb()
