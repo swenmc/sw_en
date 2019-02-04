@@ -782,6 +782,11 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             var load = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
             e1.Loads.Add(load);                                  //apply load to element
 
+            // Display Global Equivalent Nodal Load
+            var eForce = e1.GetGlobalEquivalentNodalLoads(load);
+            Console.WriteLine("Global Equivalent Nodal Load" + eForce[0]); // Start
+            Console.WriteLine("Global Equivalent Nodal Load" + eForce[1]); // End
+
             // Model Check
             var wnd = WpfTraceListener.CreateModelTrace(model);
             new ModelWarningChecker().CheckModel(model);
@@ -839,7 +844,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             List<LoadCombination> loadcombinations = new List<LoadCombination>();
             loadcombinations.Add(lcomb1);
 
-            var load = new PartialUniformLoad1D(-10000, -1 + 0.5/* + 2 / 6*/, 1 - 0.5/* - 1 / 6*/, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            // Zatazenie by malo byt na 90% pruta ak rozumiem spravne start and end offset, resp. isolocation [-1,1]
+            var load = new PartialUniformLoad1D(-10000, -1 + 0.05/* + 2 / 6*/, 1 - 0.05/* - 1 / 6*/, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
 
             e1.Loads.Add(load);                                  //apply load to element
 
