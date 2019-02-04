@@ -288,6 +288,8 @@ namespace BriefFiniteElementNet
         {
             base.GetObjectData(info, context);
             info.AddValue("magnitude", magnitude);
+            info.AddValue("starOffset", StarIsoLocation);
+            info.AddValue("endOffset", EndIsoLocation);
         }
 
         /// <summary>
@@ -299,6 +301,8 @@ namespace BriefFiniteElementNet
             : base(info, context)
         {
             this.magnitude = info.GetDouble("magnitude");
+            this.startOffset = info.GetDouble("starOffset");
+            this.endOffset = info.GetDouble("endOffset");
         }
 
         #endregion

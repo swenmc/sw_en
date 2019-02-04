@@ -143,6 +143,7 @@ namespace BriefFiniteElementNet.Loads
 
             for (var i = 0; i < n; i++)
             {
+                // TODO - toto som prerobil ale asi sa to nepouziva, navyse neviem ci je to spravne
                 var startOffset = this.StarIsoLocation;
                 var endOffset = this.EndIsoLocation;
                 var Mag = this.Magnitude;
