@@ -308,8 +308,11 @@ namespace FEM_CALC_1Din2D
 
         public static void GetFunctionUniformDistributedLoad_x(double E, double I, double w, double b, double e, double x, out double Fvx, out double Fmx, out double FPhix, out double FDeltax)
         {
-            double wb = w * b;
-            double we = w * e;
+            double wb = w; // load value at start postion "b"
+            double we = w; // load value at end position "e"
+
+            // b - distance of load start from member start point
+            // e - distance of load end from member start point
 
             // Loading functions for each uniform or distributed load evaluated at distance = x from left end of member:
 

@@ -22,8 +22,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //Example4();
             //Example5();
             //Example6();
-            Example7();
-            //Example8();
+            //Example7();
+            Example8();
 
             //DocSnippets.Test1();
 
