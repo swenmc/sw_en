@@ -1072,7 +1072,9 @@ namespace BriefFiniteElementNet
         {
             if (load is UniformLoad1D)
                 return (load as UniformLoad1D).GetGlobalEquivalentNodalLoads(this);
-
+            else if(load is PartialUniformLoad1D)
+                return (load as PartialUniformLoad1D).GetGlobalEquivalentNodalLoads(this);
+            else
             throw new NotImplementedException();
         }
 

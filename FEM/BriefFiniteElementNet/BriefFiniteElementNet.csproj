@@ -51,6 +51,7 @@
     <Compile Include="ElementHelpers\Gt9Helper.cs" />
     <Compile Include="ElementHelpers\TriangleBasicDrillingDofHelper.cs" />
     <Compile Include="Elements\TriangleElementBehaviours.cs" />
+    <Compile Include="Loads\PartialUniformLoad.cs" />
     <Compile Include="Mathh\Polynomial.cs" />
     <Compile Include="MpcElements\VirtualSupport.cs" />
     <Compile Include="Loads\ConcentratedLoad.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Elements\TrussElement2Node.cs" />
     <Compile Include="Elements\TriangleFlatShellExtensions.cs" />
     <Compile Include="TransformManagerL2G.cs" />
+    <Compile Include="PartialUniformLoad1D.cs" />
     <Compile Include="UniformLoad1D.cs" />
     <Compile Include="UniformBodyLoad3D.cs" />
     <Compile Include="UniformLoadForPlanarElements.cs" />
