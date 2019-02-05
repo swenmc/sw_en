@@ -1434,26 +1434,25 @@ namespace PFD
         }
         private void chbDisplayGlobalAxis_Unchecked(object sender, RoutedEventArgs e)
         {
-            //if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            //{
-            //    int index = 0;
-            //    foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
-            //    {
-            //        if (visual is ScreenSpaceLines3D)
-            //        {
-            //            if(((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.Equals("AxisX")) break;
-            //        }
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                int index = 0;
+                foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
+                {
+                    if (visual is ScreenSpaceLines3D)
+                    {
+                        if(((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.Equals("AxisX")) break;
+                    }
 
-            //        index++;
-            //    }
-            //    // TODO - Ondrej - tu to spadne pre zmene nastavenia checkboxu pre zobrazenie globalnych os
-            //    ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-            //    ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-            //    ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                    index++;
+                }
+                // TODO - Ondrej - tu to spadne pre zmene nastavenia checkboxu pre zobrazenie globalnych os
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
                 
-            //    //UpdateAll();
-            //}
-            UpdateAll();
+                //UpdateAll();
+            }
         }
 
         private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
@@ -1511,26 +1510,6 @@ namespace PFD
         {
             PurlinDesigner win = new PurlinDesigner();
             win.Show();
-        }
-
-        private void ChbDisplayLoadsOnPurlinsAndGirts_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ChbDisplayLoadsOnPurlinsAndGirts_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ChbDisplayLoadsOnFrames_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ChbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

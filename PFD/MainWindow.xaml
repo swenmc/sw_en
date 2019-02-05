@@ -233,12 +233,7 @@
 
                         <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="16" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
 
-                        <CheckBox Name ="chbDisplayLoads" Grid.Row="18" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" 
-                                  Unchecked ="chbDisplayLoads_UnChecked" Checked="chbDisplayLoads_Checked">Display Loads</CheckBox>
-                        <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Grid.Row="18" Grid.Column="3" Margin="0 15 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="False" Unchecked ="ChbDisplayLoadsOnPurlinsAndGirts_Unchecked" Checked="ChbDisplayLoadsOnPurlinsAndGirts_Checked">Display member loads generated on purlins and girts</CheckBox>
-                        <CheckBox Name ="chbDisplayLoadsOnFrames" Grid.Row="18" Grid.Column="3" Margin="0 30 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                  IsChecked="False" Unchecked ="ChbDisplayLoadsOnFrames_Unchecked" Checked="ChbDisplayLoadsOnFrames_Checked">Display member loads generated on frames</CheckBox>
+                        <CheckBox Name ="chbDisplayLoads" Grid.Row="18" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked ="chbDisplayLoads_UnChecked" Checked="chbDisplayLoads_Checked">Display Loads</CheckBox>
                         <TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 
                         <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"
