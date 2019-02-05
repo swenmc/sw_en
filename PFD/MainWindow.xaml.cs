@@ -1422,9 +1422,9 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisX);
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisY);
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisZ);
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisX);
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisY);
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisZ);
 
 
                 //neviem refreshnut viewport
@@ -1432,30 +1432,30 @@ namespace PFD
                 //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.UpdateLayout();
                 //((Page3Dmodel)Frame1.Content)._trackport.SetupScene();
                 //Frame1.UpdateLayout();
-                //UpdateAll();
-            }
+                UpdateAll();
+            }            
         }
         private void chbDisplayGlobalAxis_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                int index = 0;
-                foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
-                {
-                    if (visual is ScreenSpaceLines3D)
-                    {
-                        if(((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.Equals("AxisX")) break;
-                    }
+                //int index = 0;
+                //foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
+                //{
+                //    if (visual is ScreenSpaceLines3D)
+                //    {
+                //        if (((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.Equals("AxisX")) break;
+                //    }
 
-                    index++;
-                }
-                // TODO - Ondrej - tu to spadne pre zmene nastavenia checkboxu pre zobrazenie globalnych os
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-                ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-                
-                //UpdateAll();
-            }
+                //    index++;
+                //}
+                //// TODO - Ondrej - tu to spadne pre zmene nastavenia checkboxu pre zobrazenie globalnych os
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
+
+                UpdateAll();
+            }            
         }
 
         private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
@@ -1513,6 +1513,26 @@ namespace PFD
         {
             PurlinDesigner win = new PurlinDesigner();
             win.Show();
+        }
+
+        private void chbDisplayLoadsOnPurlinsAndGirts_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chbDisplayLoadsOnPurlinsAndGirts_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chbDisplayLoadsOnFrames_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
