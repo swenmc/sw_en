@@ -1517,22 +1517,53 @@ namespace PFD
 
         private void chbDisplayLoadsOnPurlinsAndGirts_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                //UpdateAll();
+            }
         }
 
         private void chbDisplayLoadsOnPurlinsAndGirts_Checked(object sender, RoutedEventArgs e)
         {
-
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                chbDisplayLoadsOnFrames.IsChecked = false;
+                //UpdateAll();
+            }
         }
 
         private void chbDisplayLoadsOnFrames_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                //UpdateAll();
+            }
         }
 
         private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
         {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
 
+
+                CPFDViewModel vm = this.DataContext as CPFDViewModel;
+                CModel_PFD mod = vm.Model;
+                foreach (CLoadCase load in mod.m_arrLoadCases)
+                {
+                    System.Diagnostics.Trace.WriteLine(load.Name);
+                    List<CSLoad_Free> loadList = load.SurfaceLoadsList;
+                    foreach (CSLoad_Free l_free in load.SurfaceLoadsList)
+                    {
+                        if(l_free is CSLoad_FreeUniform)
+                            System.Diagnostics.Trace.WriteLine($"CSLoad_Free: {l_free.Name}, Points: {l_free.pSurfacePoints.ToString()}");
+                        
+                    }
+
+                }
+
+                //UpdateAll();
+            }
         }
     }
 }

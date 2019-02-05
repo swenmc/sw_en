@@ -46,6 +46,8 @@ namespace PFD
         private int MWallCladdingThicknessIndex;
         private int MLoadCaseIndex;
 
+
+
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
