@@ -24,7 +24,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //Example5();
             //Example6();
             //Example7();
-            Example8();
+            //Example8();
+            Example9();
 
             //DocSnippets.Test1();
 
@@ -809,7 +810,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
         private static void Example8()
         {
-            Console.WriteLine("Example 8: Simple Beam - Partial Uniform load");
+            Console.WriteLine("Example 8: Simple Beam - Partial uniform load");
 
             var model = new Model();
 
@@ -864,6 +865,82 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             var eForce = e1.GetGlobalEquivalentNodalLoads(load);
             Console.WriteLine("Global Equivalent Nodal Load " + eForce[0]); // Start
             Console.WriteLine("Global Equivalent Nodal Load " + eForce[1]); // End
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
+        }
+
+        private static void Example9()
+        {
+            Console.WriteLine("Example 9: Simple Beam - Partial uniform load");
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            // Simply supported
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Both Ends Fixed
+            //n1.Constraints = n1.Constraints & Constraints.FixedRY;
+            //n2.Constraints = n2.Constraints & Constraints.FixedRY;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            // Start and end offset, resp. isolocation [-1,1]
+            var load1 = new PartialUniformLoad1D(-10000, -1 + 0.05, 0 - 0.5, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            var load2 = new PartialUniformLoad1D(-10000, -1 + 0.5, 1 - 0.5, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            var load3 = new PartialUniformLoad1D(-10000, 1 - 0.5, 1 - 0.1, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+
+            e1.Loads.Add(load1);                                  //apply load to element
+            e1.Loads.Add(load2);                                  //apply load to element
+            e1.Loads.Add(load3);                                  //apply load to element
+
+            // Display Global Equivalent Nodal Load
+            //var eForce = e1.GetGlobalEquivalentNodalLoads(load1);
+            //Console.WriteLine("Global Equivalent Nodal Load " + eForce[0]); // Start
+            //Console.WriteLine("Global Equivalent Nodal Load " + eForce[1]); // End
 
             // Model Check
             var wnd = WpfTraceListener.CreateModelTrace(model);
