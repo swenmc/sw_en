@@ -6,6 +6,7 @@ using BriefFiniteElementNet.Controls;
 using BriefFiniteElementNet.Elements;
 using BriefFiniteElementNet.MpcElements;
 using System.IO;
+using System.Globalization;
 
 namespace BriefFiniteElementNet.CodeProjectExamples
 {
@@ -41,7 +42,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             //Example3(model);
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static void Example1()
@@ -766,8 +767,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 n2.Constraints =
                                 Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
 
+            // Simply supported
             n1.Constraints = n1.Constraints & Constraints.MovementFixed;
             n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Both Ends Fixed
+            //n1.Constraints = n1.Constraints & Constraints.FixedRY;
+            //n2.Constraints = n2.Constraints & Constraints.FixedRY;
 
             // Load Case
             LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
@@ -831,8 +837,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 n2.Constraints =
                                 Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
 
+            // Simply supported
             n1.Constraints = n1.Constraints & Constraints.MovementFixed;
             n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Both Ends Fixed
+            //n1.Constraints = n1.Constraints & Constraints.FixedRY;
+            //n2.Constraints = n2.Constraints & Constraints.FixedRY;
 
             // Load Case
             LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
@@ -844,15 +855,15 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             List<LoadCombination> loadcombinations = new List<LoadCombination>();
             loadcombinations.Add(lcomb1);
 
-            // Zatazenie by malo byt na 90% pruta ak rozumiem spravne start and end offset, resp. isolocation [-1,1]
-            var load = new PartialUniformLoad1D(-10000, -1 + 0.05/* + 2 / 6*/, 1 - 0.05/* - 1 / 6*/, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            // Start and end offset, resp. isolocation [-1,1]
+            var load = new PartialUniformLoad1D(-10000, -1 + 0.05, 1 - 0.1, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
 
             e1.Loads.Add(load);                                  //apply load to element
 
             // Display Global Equivalent Nodal Load
             var eForce = e1.GetGlobalEquivalentNodalLoads(load);
-            Console.WriteLine("Global Equivalent Nodal Load" + eForce[0]); // Start
-            Console.WriteLine("Global Equivalent Nodal Load" + eForce[1]); // End
+            Console.WriteLine("Global Equivalent Nodal Load " + eForce[0]); // Start
+            Console.WriteLine("Global Equivalent Nodal Load " + eForce[1]); // End
 
             // Model Check
             var wnd = WpfTraceListener.CreateModelTrace(model);
@@ -925,18 +936,25 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
                 // Internal forces
 
+                const int iNumberOfResultsSections = 11;
+                double[] xLocations_rel = new double[iNumberOfResultsSections];
+
+                // Fill relative coordinates (x_rel)
+                for (int s = 0; s < iNumberOfResultsSections; s++)
+                    xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
+
                 for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
                 {
                     Console.WriteLine("Element No.: " + (j + 1).ToString());
+                    Console.WriteLine("Internal forces in particular x positions");
 
                     double elemLength = bfenet_model.Elements[j].GetElementLength();
-                    double[] xLocations = new double[5] { 0, 0.25 * elemLength, 0.5 * elemLength, 0.75 * elemLength, 1 * elemLength };
 
-                    for (int k = 0; k < xLocations.Length; k++)
+                    for (int k = 0; k < xLocations_rel.Length; k++)
                     {
-                        Console.WriteLine("Internal forces in location x = " + xLocations[k].ToString());
-                        var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations[k], loadcombinations[i]);
-                        Console.WriteLine(eForce);
+                        string sMessage ="x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength,3)));
+                        var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                        Console.WriteLine(sMessage + "\t " + eForce);
 
                         if (bWriteResultsInTXTFile)
                             outputresults.Add(eForce);
@@ -987,28 +1005,34 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 }
             }
 
+            Console.ReadKey();
 
             // To Ondrej - neviem ako presne toto funguje a co to zobrazuje :) ... asi vysledky pre vsetky spocitane zatazovacie stavy
 
-            Console.WriteLine("\nmodel.LastResult.Forces:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.Forces)
+            bool bDisplayLastCalculated = false;
+
+            if (bDisplayLastCalculated)
             {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
-            Console.WriteLine("\nmodel.LastResult.ConcentratedForces:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.ConcentratedForces)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
-            Console.WriteLine("\nmodel.LastResult.Displacements:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.Displacements)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
-            Console.WriteLine("\nmodel.LastResult.ElementForces:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.ElementForces)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                Console.WriteLine("\nmodel.LastResult.Forces:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.Forces)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+                Console.WriteLine("\nmodel.LastResult.ConcentratedForces:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.ConcentratedForces)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+                Console.WriteLine("\nmodel.LastResult.Displacements:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.Displacements)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+                Console.WriteLine("\nmodel.LastResult.ElementForces:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.ElementForces)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
             }
         }
     }

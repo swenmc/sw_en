@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Text;
 using BriefFiniteElementNet.Elements;
+using MATH;
 
 namespace BriefFiniteElementNet
 {
@@ -219,15 +220,178 @@ namespace BriefFiniteElementNet
                 f1.Forces = frElm.TransformGlobalToLocal(gf1.Forces);
                 f1.Moments = frElm.TransformGlobalToLocal(gf1.Moments);
 
-                var f2 = new Force(new Vector(w.X*x, w.Y*x, w.Z*x), new Vector());
+                //Console.WriteLine("Start f1:\t" + f1);
 
+                var f2 = new Force(new Vector(w.X * x, w.Y * x, w.Z * x), new Vector());
+
+                /*
                 var buf = f1.Move(new Point(0, 0, 0), new Point(x, 0, 0)) +
                           f2.Move(new Point(x/2, 0, 0), new Point(x, 0, 0));
+                */
+
+                var gf3 = -GetGlobalEquivalentNodalLoads(elm)[1];
+                var f3 = new Force();
+
+                f3.Forces = frElm.TransformGlobalToLocal(gf3.Forces);
+                f3.Moments = frElm.TransformGlobalToLocal(gf3.Moments);
+
+                //Console.WriteLine("End f3:\t" + f3);
+
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                // POKUS 5.2.2019 - VYPOCET VNUTORNYCH SIL
+
+                var buf = new Force();
+
+                bool bPodla_XLS = false;
+                if (bPodla_XLS)
+                {
+                    // Absolute coordinate of load start and end point (b) and (e)
+                    // b - distance of load start from member start point
+                    // e - distance of load end from member start point
+                    double b = StarIsoLocation < 0 ? (StarIsoLocation - (-1)) * l / 2 : l / 2 + StarIsoLocation * l / 2;
+                    double e = EndIsoLocation < 0 ? (EndIsoLocation - (-1)) * l / 2 : l / 2 + EndIsoLocation * l / 2;
+
+                    // Loading functions for each uniform or distributed load evaluated at distance = x from left end of member:
+
+                    // TODO MI ZATIAL NEFUNGUJE
+                    buf.Fx = GetForceAt_x(x, b, e, w.X, w.X);
+                    buf.Fy = GetForceAt_x(x, b, e, w.Y, w.Y);
+                    buf.Fz = GetForceAt_x(x, b, e, w.Z, w.Z);
+
+                    buf.Mx = GetMomentAt_x(x, b, e, 0, 0); // ?? torzne zatazenie okolo osi x pruta na casti pruta (zavisi od podopretia v kruteni)
+                    buf.My = GetMomentAt_x(x, b, e, w.Z, w.Z);
+                    buf.Mz = GetMomentAt_x(x, b, e, w.Y, w.Y);
+                }
+                else
+                {
+                    var a = l / 2 + StarIsoLocation * l / 2;
+                    var c = (EndIsoLocation - StarIsoLocation) * l / 2;
+                    var b = a + c;
+                    var e = l - b;
+                    var d = l - a / 2 - b / 2;
+
+                    buf.Fx = -GetForceAt_x2(x, a, b, c, d, l, w.X, -f1.Fx, -f3.Fx);
+                    buf.Fy = -GetForceAt_x2(x, a, b, c, d, l, w.Y, -f1.Fy, -f3.Fy);
+                    buf.Fz = -GetForceAt_x2(x, a, b, c, d, l, w.Z, -f1.Fz, -f3.Fz);
+
+                    buf.Mx = -GetMomentAt_x2(x, a, b, c, d, l, 0, -f1.Fx, f1.Mx); // ?? torzne zatazenie okolo osi x pruta na casti pruta (zavisi od podopretia v kruteni)
+                    buf.My = -GetMomentAt_x2(x, a, b, c, d, l, w.Z, -f1.Fz, f1.My);
+                    buf.Mz = -GetMomentAt_x2(x, a, b, c, d, l, w.Y, -f1.Fy, f1.Mz);
+                }
+
+                //Console.WriteLine(buf);
 
                 return -buf;
             }
 
             throw new NotImplementedException();
+        }
+
+        // Podla XLS - frame
+        // Toto mi zatial velmi nefunguje - treba to konfrontovat s XLS vypoctom
+        private double GetForceAt_x(double x, double b, double e, double wb, double we)
+        {
+            double Fvx;
+
+            /*
+            if(x >= e)
+            -wb * (x - b - (x - e)) - 1 / 2 * (we - wb) / (e - b) * ((x - b) ^ 2 - (x - e) ^ 2) + (we - wb) * (x - e);
+            else
+            -wb * (x - b) + -1 / 2 * (we - wb) / (e - b) * (x - b) ^ 2;
+            */
+
+            if (x >= e)
+            {
+                Fvx = -wb * (x - b - (x - e)) + -1 / 2 * (we - wb) / (e - b) * (MathF.Pow2(x - b) - MathF.Pow2(x - e)) + (we - wb) * (x - e);
+                //Fmx = -wb / 2 * (MathF.Pow2(x - b) - MathF.Pow2(x - e)) + -1 / 6 * (we - wb) / (e - b) * (MathF.Pow3(x - b) - MathF.Pow3(x - e)) + (we - wb) / 2 * MathF.Pow2(x - e);
+                //FPhix = -wb / (6 * E * I) * (MathF.Pow3(x - b) - MathF.Pow3(x - e)) + -1 / (24 * E * I) * (we - wb) / (e - b) * (MathF.Pow4(x - b) - MathF.Pow4(x - e)) + (we - wb) / (6 * E * I) * MathF.Pow3(x - e);
+                //FDeltax = -wb / (24 * E * I) * (MathF.Pow4(x - b) - MathF.Pow4(x - e)) + -1 / (120 * E * I) * (we - wb) / (e - b) * (MathF.Pow5(x - b) - MathF.Pow5(x - e)) + (we - wb) / (24 * E * I) * MathF.Pow4(x - e);
+            }
+            else if (x >= b)
+            {
+                Fvx = -wb * (x - b) + -1 / 2 * (we - wb) / (e - b) * MathF.Pow2(x - b);
+                //Fmx = -wb / 2 * MathF.Pow2(x - b) + -1 / 6 * (we - wb) / (e - b) * MathF.Pow3(x - b) - MathF.Pow3(x - e);
+                //FPhix = -wb / (6 * E * I) * MathF.Pow3(x - b) + -1 / (24 * E * I) * (we - wb) / (e - b) * MathF.Pow4(x - b);
+                //FDeltax = -wb / (24 * E * I) * MathF.Pow4(x - b) + -1 / (120 * E * I) * (we - wb) / (e - b) * MathF.Pow5(x - b);
+            }
+            else
+            {
+                Fvx = 0;
+                //Fmx = 0;
+                //FPhix = 0;
+                //FDeltax = 0;
+            }
+
+            return Fvx;
+        }
+        private double GetMomentAt_x(double x, double b, double e, double wb, double we)
+        {
+            double Fmx;
+
+            /*
+            if (x >= e)
+            { -wb / 2 * ((x - b) ^ 2 - (x - e) ^ 2) + (-1 / 6 * (we - wb) / (e - b) * ((x - b) ^ 3 - (x - e) ^ 3) + (we - wb) / 2 * (x - e) ^ 2);
+            }
+            else
+            {
+                -wb / 2 * (x - b) ^ 2+(-1 / 6 * (we - wb) / (e - b) * (x - b) ^ 3; // Rozdiel v popise rovnice a v rovnici v xls
+            }
+            */
+
+            if (x >= e)
+            {
+                //Fvx = -wb * (x - b - (x - e)) + -1 / 2 * (we - wb) / (e - b) * (MathF.Pow2(x - b) - MathF.Pow2(x - e)) + (we - wb) * (x - e);
+                Fmx = -wb / 2 * (MathF.Pow2(x - b) - MathF.Pow2(x - e)) + -1 / 6 * (we - wb) / (e - b) * (MathF.Pow3(x - b) - MathF.Pow3(x - e)) + (we - wb) / 2 * MathF.Pow2(x - e);
+                //FPhix = -wb / (6 * E * I) * (MathF.Pow3(x - b) - MathF.Pow3(x - e)) + -1 / (24 * E * I) * (we - wb) / (e - b) * (MathF.Pow4(x - b) - MathF.Pow4(x - e)) + (we - wb) / (6 * E * I) * MathF.Pow3(x - e);
+                //FDeltax = -wb / (24 * E * I) * (MathF.Pow4(x - b) - MathF.Pow4(x - e)) + -1 / (120 * E * I) * (we - wb) / (e - b) * (MathF.Pow5(x - b) - MathF.Pow5(x - e)) + (we - wb) / (24 * E * I) * MathF.Pow4(x - e);
+            }
+            else if (x >= b)
+            {
+                //Fvx = -wb * (x - b) + -1 / 2 * (we - wb) / (e - b) * MathF.Pow2(x - b);
+                Fmx = -wb / 2 * MathF.Pow2(x - b) + -1 / 6 * (we - wb) / (e - b) * MathF.Pow3(x - b) /*- MathF.Pow3(x - e) ?????*/; // Rozdiel v popise rovnice a v rovnici v xls
+                //FPhix = -wb / (6 * E * I) * MathF.Pow3(x - b) + -1 / (24 * E * I) * (we - wb) / (e - b) * MathF.Pow4(x - b);
+                //FDeltax = -wb / (24 * E * I) * MathF.Pow4(x - b) + -1 / (120 * E * I) * (we - wb) / (e - b) * MathF.Pow5(x - b);
+            }
+            else
+            {
+                //Fvx = 0;
+                Fmx = 0;
+                //FPhix = 0;
+                //FDeltax = 0;
+            }
+
+            return Fmx;
+        }
+
+        // Podla webu - both end fixed beam
+        // https://www.engineersedge.com/beam_bending/beam_bending52.htm
+        private double GetForceAt_x2(double x, double a, double b, double c, double d, double l, double w, double Ra, double Rb)
+        {
+            /*
+            double Ra = Get_RA(w, a, b, c, d, l); // TODO - namiesto tychto hodnot by sa mali asi napojit zlozky vektora f1, pozor na znamienka
+            double Rb = Get_RB(w, a, b, c, d, l); // TODO - namiesto tychto hodnot by sa mali asi napojit zlozky vektora f1, pozor na znamienka
+            */
+
+            if (x <= a)
+                return Ra;
+            else if (x < b)
+                return Ra - w * (x - a);
+            else
+                return -Rb;
+        }
+        private double GetMomentAt_x2(double x, double a, double b, double c, double d, double l, double w , double Ra, double Ma)
+        {
+            /*
+            double Ra = Get_RA(w, a, b, c, d, l); // TODO - namiesto tychto hodnot by sa mali asi napojit zlozky vektora f1, pozor na znamienka
+            double Ma = -Get_MA(w, a, b, c, d, l); // TODO - namiesto tychto hodnot by sa mali asi napojit zlozky vektora f1, pozor na znamienka
+            */
+
+            if (x < a)
+                return -Ma + Ra * x;
+            else if (x < b)
+                return -Ma + Ra * x - w / 2 * MathF.Pow2(x - a);
+            else
+                return -Ma + Ra * x - w * c * (x - l + d);
         }
 
         #endregion
