@@ -17,7 +17,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //DocSnippets.Test2();
 
             //Example1();
-            //Example2();
+            Example2();
             //DocSnippets.Test1();
 
 
@@ -29,7 +29,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
 
             
-            Example3(model);
+            //Example3(model);
             
             Console.ReadLine();
         }
