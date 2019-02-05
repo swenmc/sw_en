@@ -274,7 +274,7 @@ namespace BriefFiniteElementNet
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UniformLoad1D"/> class.
+        /// Initializes a new instance of the <see cref="ConcentratedLoad1D"/> class.
         /// </summary>
         /// <param name="info">The information.</param>
         /// <param name="context">The context.</param>

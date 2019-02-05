@@ -120,6 +120,10 @@
     <Folder Include="CrSc_4\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DATABASE\DATABASE.csproj">
+      <Project>{84EC019C-BD16-4774-91D4-E50CFB2E62E3}</Project>
+      <Name>DATABASE</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GENERAL\MATH\MATH.csproj">
       <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>

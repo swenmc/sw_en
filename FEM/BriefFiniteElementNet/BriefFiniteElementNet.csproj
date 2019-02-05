@@ -51,6 +51,7 @@
     <Compile Include="ElementHelpers\Gt9Helper.cs" />
     <Compile Include="ElementHelpers\TriangleBasicDrillingDofHelper.cs" />
     <Compile Include="Elements\TriangleElementBehaviours.cs" />
+    <Compile Include="Loads\PartialUniformLoad.cs" />
     <Compile Include="Mathh\Polynomial.cs" />
     <Compile Include="MpcElements\VirtualSupport.cs" />
     <Compile Include="Loads\ConcentratedLoad.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Elements\TrussElement2Node.cs" />
     <Compile Include="Elements\TriangleFlatShellExtensions.cs" />
     <Compile Include="TransformManagerL2G.cs" />
+    <Compile Include="PartialUniformLoad1D.cs" />
     <Compile Include="UniformLoad1D.cs" />
     <Compile Include="UniformBodyLoad3D.cs" />
     <Compile Include="UniformLoadForPlanarElements.cs" />
@@ -248,6 +250,10 @@
     <None Include="UniformLoad1D.md" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
+      <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
+      <Name>MATH</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BriefFiniteElementNet.Common\BriefFiniteElementNet.Common.csproj">
       <Project>{82c63c6b-651a-4308-8b89-b4c643f3a7c2}</Project>
       <Name>BriefFiniteElementNet.Common</Name>

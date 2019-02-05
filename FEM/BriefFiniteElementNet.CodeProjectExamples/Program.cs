@@ -5,6 +5,8 @@ using System.Text;
 using BriefFiniteElementNet.Controls;
 using BriefFiniteElementNet.Elements;
 using BriefFiniteElementNet.MpcElements;
+using System.IO;
+using System.Globalization;
 
 namespace BriefFiniteElementNet.CodeProjectExamples
 {
@@ -18,20 +20,30 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             //Example1();
             //Example2();
+            //Example4();
+            //Example5();
+            //Example6();
+            //Example7();
+            //Example8();
+            Example9();
+
             //DocSnippets.Test1();
 
 
             // POKUS O NAPOJENIE SW_EN modelu
             MATERIAL.CMat mat = new MATERIAL.CMat();
             CRSC.CCrSc_3_63020_BOX crsc1 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00195f, System.Windows.Media.Colors.Coral);
-            CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(1, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan);
+            CRSC.CCrSc_3_63020_BOX crsc2 = new CRSC.CCrSc_3_63020_BOX(2, 0.63f, 0.18f, 0.00195f, 0.00295f, System.Windows.Media.Colors.Cyan); // TODO - skontrolovat ci sa nacitavaju pre prierezy s vn vyztuhou spravne hodnoty z databazy, zda sa mi ze nie
 
-            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 100f, 200f, -100f, 1f);
+            CRSC.CCrSc_0_50 secAA = new CRSC.CCrSc_0_50(0.67f, 0.24f, 0.01f, 0.006f);
+            CRSC.CCrSc_0_50 secBB = new CRSC.CCrSc_0_50(0.52f, 0.24f, 0.01f, 0.006f);
 
-            
-            Example3(model);
-            
-            Console.ReadLine();
+            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
+            // BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, secAA, secBB, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
+
+            //Example3(model);
+
+            //Console.ReadLine();
         }
 
         private static void Example1()
@@ -88,6 +100,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
         private static void Example2()
         {
+            // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
+
             Console.WriteLine("Example 2: Simple 3D Frame with distributed loads");
 
             var model = new Model();
@@ -124,7 +138,6 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             model.Elements.Add(e1, e2, e3, e4);
 
-
             n1.Constraints =
                 n2.Constraints =
                     n3.Constraints =
@@ -132,12 +145,21 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             n5.Constraints =
                                 Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
 
-
             n1.Constraints = n1.Constraints & Constraints.MovementFixed;
             n5.Constraints = n5.Constraints & Constraints.MovementFixed;
 
-            var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global);
-            var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local);
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);
+            var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local, lc1);
 
             e2.Loads.Add(ll);
             e3.Loads.Add(lr);
@@ -148,6 +170,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //wnd.Show();
 
             model.Solve();
+
+            DisplayResultsinConsole(model, loadcombinations);
         }
 
         // Pokus o napojenie SW_EN
@@ -176,21 +200,21 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             model.Nodes.Add(n1, n2, n3, n4, n5);
             */
 
+            
             // Nodes
             NodeCollection nodeCollection = new NodeCollection(model);
 
             for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
-                nodeCollection.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z));
+                nodeCollection.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z) { Label = "n"+ topomodel.m_arrNodes[i].ID });
             }
 
             model.Nodes = nodeCollection;
 
             // Cross-sections
             
-            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
-            var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
-
+            //var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+            //var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
 
             // To Ondrej - Pochopil som to tak, ze hodnoty pre prierez A,Iy,Iz je mozne zadat numericky alebo definovat Geometry,
             // ale Geometry ma len definiciou pre obdlznik a tvar I
@@ -225,19 +249,49 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             for (int i = 0; i < topomodel.m_arrMembers.Length; i++)
             {
-                var node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
-                node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
-                node.A = topomodel.m_arrMembers[i].CrScStart.A_g;
-                node.Iy = topomodel.m_arrMembers[i].CrScStart.I_y;
-                node.Iz = topomodel.m_arrMembers[i].CrScStart.I_z;  //tu su nastavene stale 0 hodnoty, tak zobrazuje tam nejaky warning
-                node.E = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE;
-                node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
+                var element_1D_2Node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
+                element_1D_2Node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
+
+                var sec = new Sections.UniformParametric1DSection(topomodel.m_arrMembers[i].CrScStart.A_g,
+                    topomodel.m_arrMembers[i].CrScStart.I_y,
+                    topomodel.m_arrMembers[i].CrScStart.I_z,
+                    topomodel.m_arrMembers[i].CrScStart.I_t);
+
+                // TO Ondrej: parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
+                var mat = new Materials.UniformIsotropicMaterial(topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE, topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fNu);
+                element_1D_2Node.E = mat.YoungModulus;
+                element_1D_2Node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
+                //element_1D_2Node.MassDensity = topomodel.m_arrMembers[i].m_Mat.m_fRho;
+
+                element_1D_2Node.A = sec.A;
+                element_1D_2Node.Ay = 0.00252f;
+                element_1D_2Node.Az = 0.00252f; // Todo - doplnit do databazy
+                element_1D_2Node.Iy = sec.Iy;
+                element_1D_2Node.Iz = sec.Iz;
+                element_1D_2Node.J = sec.J;
+                //element_1D_2Node.ConsiderShearDeformation = true;
+
+                if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
+                {
+                    if(topomodel.m_arrMembers[i].CnRelease1 != null)
+                      element_1D_2Node.HingedAtStart = !(bool)topomodel.m_arrMembers[i].CnRelease1.m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz];
+
+                    if (topomodel.m_arrMembers[i].CnRelease2 != null)
+                        element_1D_2Node.HingedAtEnd = !(bool)topomodel.m_arrMembers[i].CnRelease2.m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz];
+                }
+                else
+                {
+                    if (topomodel.m_arrMembers[i].CnRelease1 != null)
+                        element_1D_2Node.HingedAtStart = !(bool)topomodel.m_arrMembers[i].CnRelease1.m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
+                    if (topomodel.m_arrMembers[i].CnRelease2 != null)
+                        element_1D_2Node.HingedAtEnd = !(bool)topomodel.m_arrMembers[i].CnRelease2.m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
+                }
 
                 // Note: Elements with UseOverridedProperties = true are shown with square sections(dimension of section automatically tunes for better visualization of elements)
                 // but elements with UseOverridedProperties = false will be shown with their real section with real dimesion.
-                node.UseOverridedProperties = true;
+                element_1D_2Node.UseOverridedProperties = true;
 
-                elementCollection.Add(node);
+                elementCollection.Add(element_1D_2Node);
             }
 
             model.Elements = elementCollection;
@@ -258,6 +312,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
             // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
             //(Sorry ale ja nemam sajnu co sa tu deje :-) )
+            // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine XZ, ale pocitame ho 3D solverom ktory berie do uvahy ze sa to moze posunut aj mimo tejto roviny,
+            // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
+            // Preto sa na vsetky uzly nastavia tieto tri podmienky
 
             for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
             {
@@ -266,6 +323,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
             //(Sorry ale ja nemam sajnu co sa tu deje :-) )
+            // Tu by sa mali nastavit podpory v rovine ramu (posuny UX a UZ) a pototocenie RY
             for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
             {
                 for (int j = 0; j < topomodel.m_arrNSupports[i].m_iNodeCollection.Length; j++)
@@ -276,20 +334,40 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) 
                             // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
                         {
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+                            // Set restraints depending on the FEM DOF number
 
-                            //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
-                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                            if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
-                                model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
+                            if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
+                            {
+                                // 2D
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType_2D.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+                            }
+                            else if (topomodel.m_eSLN == BaseClasses.ESLN.e3DD_1D)
+                            {
+                                // 3D
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+
+                                //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
+                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
+                            }
+                            else
+                            {
+                                // Not implenented or not defined type
+                            }
                         }
                     }
                 }
@@ -304,6 +382,20 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             */
 
             // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat, ake su typy atd - load cases, load combinations
+
+            /*
+            var d_case = new LoadCase("d1", LoadType.Dead);
+            var l_case = new LoadCase("l1", LoadType.Dead);
+            var qx_case = new LoadCase("qx", LoadType.Dead);
+            var qy_case = new LoadCase("qy", LoadType.Dead);
+
+            var d1 = new Loads.UniformLoad(d_case, -1 * Vector.K, 2e3, CoordinationSystem.Global);
+            var l1 = new Loads.UniformLoad(l_case, -1 * Vector.K, 1e3, CoordinationSystem.Global);
+
+            var combination1 = new LoadCombination();// for D + 0.8 L
+            combination1[d_case] = 1.0;
+            combination1[l_case] = 0.8;
+            */
 
             // Load Cases
             List<LoadCase> loadcases = new List<LoadCase>();
@@ -340,7 +432,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 // Add specific load cases into the combination and set load factors
                 for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
                 {
-                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
+                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID-1], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
                 }
 
                 loadcombinations.Add(lcomb);
@@ -426,13 +518,16 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // Not implemented load type
                             // l = new UniformLoad1D();
                         }
-                        elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]].Loads.Add(l);
+                        elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]-1].Loads.Add(l);
                     }
                 }
             }
 
             var wnd = WpfTraceListener.CreateModelTrace(model);
             new ModelWarningChecker().CheckModel(model);
+            // TO - Ondrej  tu by sa mali podla prikladu zobrazovat nejake info hodnoty z vypoctu ale nezobrazuje sa nic
+            // Pripada mi to tak ze ta verzia podla ktorej su urobene priklady je nejaka lepsia :)))
+            // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
             wnd.ShowDialog();
 
             model.Solve();
@@ -449,34 +544,573 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             var e4Force = (model.Elements["e4"] as BarElement).GetInternalForceAt(0, combination1);
             Console.WriteLine(e4Force);
             */
+
             model.ShowInternalForce();
             model.Show();
 
-            Console.WriteLine("\nmodel.LastResult.Forces:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.Forces)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
-            Console.WriteLine("\nmodel.LastResult.ConcentratedForces:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.ConcentratedForces)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
-            Console.WriteLine("\nmodel.LastResult.Displacements:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.Displacements)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
-            Console.WriteLine("\nmodel.LastResult.ElementForces:");
-            foreach (KeyValuePair<LoadCase, double[]> kvp in model.LastResult.ElementForces)
-            {
-                Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
-            }
+            DisplayResultsinConsole(model, loadcombinations);
+        }
+
+        private static void Example4()
+        {
+            Console.WriteLine("Example 4: Simple Beam - Trapezoidal load");
+
+            // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
+
+            var bar = new BarElement();                           //creating new instance of element
+
+            // TO ONDREJ - tu to nevyzera dobre - konstruktor pre PartialTrapezoidalLoad neexistuje
+            // Pozri \BriefFiniteElementNet\Loads\PartialTrapezoidalLoad.cs
+
+            /*
+            // Zakomentovane z dovodu nefunkcnosti
+            var load = new  PartialTrapezoidalLoad();             //creating new instance of load
+            load.StartMagnitudes = new double[] { 2000 };         //set Magnitude at start
+            load.EndMagnitudes = new double[] { 1000 };           //set Magnitude at end
+
+            load.StartLocations = new double[] { -1 + 2 / 6 };    //set locations of trapezoidal load
+            load.EndLocations = new double[] { 1 - 1 / 6 };       //set locations of trapezoidal load
+
+            load.Direction = Vector.K;                            //set direction
+            load.CoordinationSystem = CoordinationSystem.Global;  //set coordination system
+
+            bar.Loads.Add(load);                                  //apply load to element
+            */
+        }
+
+        private static void Example5()
+        {
+            Console.WriteLine("Example 5: Simple Beam - Concentrated load on member");
+
+            // Pozri \BriefFiniteElementNet\Loads\ConcentratedLoad.cs
+            // TO Ondrej - Vyzera to tak ze zatazenie prutu koncentrovanou silou nefunguje ani pre Bar Element ani pre FrameElement2Node
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            /*
+            // Bar Element
+            var a = 0.1 * 0.1;//area, assume sections are 10cm*10cm rectangular
+            var iy = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Iy
+            var iz = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Iz
+            var j = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Polar
+            var e = 20e9;//young modulus, 20 [GPa]
+            var nu = 0.2;//poissons ratio
+
+            var sec = new Sections.UniformParametric1DSection(a, iy, iz, j);
+            var mat = Materials.UniformIsotropicMaterial.CreateFromYoungPoisson(e, nu);
+
+            var e1 = new BarElement(n1, n2);
+            e1.Section = sec;
+            e1.Material = mat;
+            */
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            var q = new Force(5000 * Vector.K, Vector.Zero);
+            var load = new ConcentratedLoad1D(q, 0.5 * e1.GetElementLength(), CoordinationSystem.Local, lc1);    //creating new instance of load
+            e1.Loads.Add(load);                                                                                   //apply load to element
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
+        }
+
+        private static void Example6()
+        {
+            Console.WriteLine("Example 6: Simple Beam - Two uniform loads on member");
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            /*
+            // Bar Element
+            var a = 0.1 * 0.1;//area, assume sections are 10cm*10cm rectangular
+            var iy = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Iy
+            var iz = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Iz
+            var j = 0.1 * 0.1 * 0.1 * 0.1 / 12.0;//Polar
+            var e = 20e9;//young modulus, 20 [GPa]
+            var nu = 0.2;//poissons ratio
+
+            var sec = new Sections.UniformParametric1DSection(a, iy, iz, j);
+            var mat = Materials.UniformIsotropicMaterial.CreateFromYoungPoisson(e, nu);
+
+            var e1 = new BarElement(n1, n2);
+            e1.Section = sec;
+            e1.Material = mat;
+            */
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            var load1 = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);
+            var load2 = new UniformLoad1D(-5000, LoadDirection.Z, CoordinationSystem.Local, lc1);
+            e1.Loads.Add(load1);                                                                                   //apply load to element
+            e1.Loads.Add(load2);
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
+        }
+
+        private static void Example7()
+        {
+            Console.WriteLine("Example 7: Simple Beam - Uniform load");
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            // Simply supported
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Both Ends Fixed
+            //n1.Constraints = n1.Constraints & Constraints.FixedRY;
+            //n2.Constraints = n2.Constraints & Constraints.FixedRY;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            var load = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            e1.Loads.Add(load);                                  //apply load to element
+
+            // Display Global Equivalent Nodal Load
+            var eForce = e1.GetGlobalEquivalentNodalLoads(load);
+            Console.WriteLine("Global Equivalent Nodal Load" + eForce[0]); // Start
+            Console.WriteLine("Global Equivalent Nodal Load" + eForce[1]); // End
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
+        }
+
+        private static void Example8()
+        {
+            Console.WriteLine("Example 8: Simple Beam - Partial uniform load");
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            // Simply supported
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Both Ends Fixed
+            //n1.Constraints = n1.Constraints & Constraints.FixedRY;
+            //n2.Constraints = n2.Constraints & Constraints.FixedRY;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            // Start and end offset, resp. isolocation [-1,1]
+            var load = new PartialUniformLoad1D(-10000, -1 + 0.05, 1 - 0.1, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+
+            e1.Loads.Add(load);                                  //apply load to element
+
+            // Display Global Equivalent Nodal Load
+            var eForce = e1.GetGlobalEquivalentNodalLoads(load);
+            Console.WriteLine("Global Equivalent Nodal Load " + eForce[0]); // Start
+            Console.WriteLine("Global Equivalent Nodal Load " + eForce[1]); // End
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
+        }
+
+        private static void Example9()
+        {
+            Console.WriteLine("Example 9: Simple Beam - Partial uniform load");
+
+            var model = new Model();
+
+            var n1 = new Node(0, 0, 0);
+            var n2 = new Node(5, 0, 0);
+
+            model.Nodes.Add(n1, n2);
+
+            var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+
+            // Frame Element
+            var e1 = new FrameElement2Node(n1, n2);
+            e1.Label = "e1";
+
+            e1.Geometry = secAA;
+
+            e1.E = 210e9;
+            e1.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+            e1.UseOverridedProperties = false;
+
+            model.Elements.Add(e1);
+
+            n1.Constraints =
+                n2.Constraints =
+                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+            // Simply supported
+            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+            n2.Constraints = n2.Constraints & Constraints.FixedDZ;
+
+            // Both Ends Fixed
+            //n1.Constraints = n1.Constraints & Constraints.FixedRY;
+            //n2.Constraints = n2.Constraints & Constraints.FixedRY;
+
+            // Load Case
+            LoadCase lc1 = new LoadCase("lc1", LoadType.Default);
+
+            // Load Combinations
+            LoadCombination lcomb1 = new LoadCombination();
+            lcomb1.Add(lc1, 1.00);
+
+            List<LoadCombination> loadcombinations = new List<LoadCombination>();
+            loadcombinations.Add(lcomb1);
+
+            // Start and end offset, resp. isolocation [-1,1]
+            var load1 = new PartialUniformLoad1D(-10000, -1 + 0.05, 0 - 0.5, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            var load2 = new PartialUniformLoad1D(-10000, -1 + 0.5, 1 - 0.5, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+            var load3 = new PartialUniformLoad1D(-10000, 1 - 0.5, 1 - 0.1, LoadDirection.Z, CoordinationSystem.Global, lc1);             //creating new instance of load
+
+            e1.Loads.Add(load1);                                  //apply load to element
+            e1.Loads.Add(load2);                                  //apply load to element
+            e1.Loads.Add(load3);                                  //apply load to element
+
+            // Display Global Equivalent Nodal Load
+            //var eForce = e1.GetGlobalEquivalentNodalLoads(load1);
+            //Console.WriteLine("Global Equivalent Nodal Load " + eForce[0]); // Start
+            //Console.WriteLine("Global Equivalent Nodal Load " + eForce[1]); // End
+
+            // Model Check
+            var wnd = WpfTraceListener.CreateModelTrace(model);
+            new ModelWarningChecker().CheckModel(model);
+            wnd.ShowDialog();
+
+            // Run Solver
+            model.Solve();
+            model.ShowInternalForce();
+            model.Show();
+
+            // Output
+            DisplayResultsinConsole(model, loadcombinations);
         }
 
         private static void LoadComb()
         {
             new BarIncliendFrameExample().Run();
+        }
+
+        private static void DisplayResultsinConsole(Model bfenet_model, List<LoadCombination> loadcombinations)
+        {
+            bool bWriteResultsInTXTFile = true; // Vypise hodnoty do suboru Results.txt na disk D (oddelene tabulatorom, je mozne vlozit do stlpcov tabulky xls)
+
+            List<Force> outputresults = new List<Force>();
+
+            for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
+            {
+                // Reactions in nodes
+
+                Console.WriteLine("Load Combination No." + (i + 1).ToString() + " Name: " + "1.00*LC1 + 1.50*LC2 - TODO"); // TODO Ondrej - zapracovat vypis kluca kombinacie 1.00*LC1 + 1.50*LC2 (ak je to mozne niekde vydolovat) a pripadne zaviest do BFENet aj property "Name" pre tuto triedu "LoadCombination"
+
+                // Total reactions
+                // Show sum of reactions
+
+                double fx = 0;
+                double fy = 0;
+                double fz = 0;
+                double mx = 0;
+                double my = 0;
+                double mz = 0;
+
+                for (int j = 0; j < bfenet_model.Nodes.Count; j++) // Each node in the model
+                {
+                    var rj = bfenet_model.Nodes[j].GetSupportReaction(loadcombinations[i]);
+                    Console.WriteLine("Total reactions SUM in Node No.: " + (j + 1).ToString() + " is: " + rj.ToString());
+
+                    fx += rj.Fx;
+                    fy += rj.Fy;
+                    fz += rj.Fz;
+
+                    mx += rj.Mx;
+                    my += rj.My;
+                    mz += rj.Mz;
+                }
+
+                // Total reactions
+                // Show sum of reactions
+
+                Force rtotalsum = new Force(); // Sum per all nodes
+
+                rtotalsum.Fx = fx;
+                rtotalsum.Fy = fy;
+                rtotalsum.Fz = fz;
+                rtotalsum.Mx = fx;
+                rtotalsum.My = fy;
+                rtotalsum.Mz = fz;
+
+                Console.WriteLine("Total reactions SUM :" + rtotalsum.ToString() + "\n");
+
+                // Internal forces
+
+                const int iNumberOfResultsSections = 11;
+                double[] xLocations_rel = new double[iNumberOfResultsSections];
+
+                // Fill relative coordinates (x_rel)
+                for (int s = 0; s < iNumberOfResultsSections; s++)
+                    xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
+
+                for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
+                {
+                    Console.WriteLine("Element No.: " + (j + 1).ToString());
+                    Console.WriteLine("Internal forces in particular x positions");
+
+                    double elemLength = bfenet_model.Elements[j].GetElementLength();
+
+                    for (int k = 0; k < xLocations_rel.Length; k++)
+                    {
+                        string sMessage ="x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength,3)));
+                        var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                        Console.WriteLine(sMessage + "\t " + eForce);
+
+                        if (bWriteResultsInTXTFile)
+                            outputresults.Add(eForce);
+                    }
+                }
+            }
+
+            if (bWriteResultsInTXTFile)
+            {
+                try
+                {
+                    Console.WriteLine("\nWritting results to the file D:\\Results.txt.");
+
+                    //Pass the filepath and filename to the StreamWriter Constructor
+                    StreamWriter sw = new StreamWriter("D:\\Results.txt");
+
+                    //Write a line of text
+                    sw.WriteLine("Results");
+
+                    sw.WriteLine("Fx [N]" + "\t" +
+                                 "Fy [N]" + "\t" +
+                                 "Fz [N]" + "\t" +
+                                 "Mx [Nm]" + "\t" +
+                                 "My [Nm]" + "\t" +
+                                 "Mz [Nm]");
+
+                    for (int i = 0; i < outputresults.Count; i++)
+                    {
+                        //sw.WriteLine(outputresults[i]);
+                        sw.WriteLine(outputresults[i].Fx + "\t" +
+                            outputresults[i].Fy + "\t" +
+                            outputresults[i].Fz + "\t" +
+                            outputresults[i].Mx + "\t" +
+                            outputresults[i].My + "\t" +
+                            outputresults[i].Mz);
+                    }
+
+                    //Close the file
+                    sw.Close();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception: " + e.Message);
+                }
+                finally
+                {
+                    Console.WriteLine("Executing finally block.");
+                }
+            }
+
+            Console.ReadKey();
+
+            // To Ondrej - neviem ako presne toto funguje a co to zobrazuje :) ... asi vysledky pre vsetky spocitane zatazovacie stavy
+
+            bool bDisplayLastCalculated = false;
+
+            if (bDisplayLastCalculated)
+            {
+                Console.WriteLine("\nmodel.LastResult.Forces:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.Forces)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+                Console.WriteLine("\nmodel.LastResult.ConcentratedForces:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.ConcentratedForces)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+                Console.WriteLine("\nmodel.LastResult.Displacements:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.Displacements)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+                Console.WriteLine("\nmodel.LastResult.ElementForces:");
+                foreach (KeyValuePair<LoadCase, double[]> kvp in bfenet_model.LastResult.ElementForces)
+                {
+                    Console.WriteLine($"{kvp.Key.CaseName} {kvp.Key.LoadType.ToString()} count: {kvp.Value.Length} values: {string.Join(";", kvp.Value)} ");
+                }
+            }
         }
     }
 }

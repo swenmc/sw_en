@@ -17,6 +17,7 @@ using BaseClasses;
 using CRSC;
 using DATABASE;
 using M_AS4600;
+using DATABASE.DTO;
 
 namespace PFD
 {
@@ -600,8 +601,12 @@ namespace PFD
                                                   "Cross-section with this name is not implemented");
             }
 
-            if(cs != null)
-                CSectionManager.LoadCrossSectionProperties_meters(cs, sSectionNameDatabase);
+            if (cs != null)
+            {
+                CrScProperties crscDTO = CSectionManager.LoadCrossSectionProperties_meters(sSectionNameDatabase);
+                cs.SetParams(crscDTO);
+            }
+                
         }
 
         private void WindPressureCalculator_Click(object sender, RoutedEventArgs e)

@@ -268,11 +268,5 @@ namespace CRSC
                 CrScPointsIn[i] = p;
             }
         }
-
-        public void FillCrScPropertiesByTableData()
-        {
-            // Do not calculate but set table data
-            A_g = 3343 / 1e+6;
-        }
     }
 }

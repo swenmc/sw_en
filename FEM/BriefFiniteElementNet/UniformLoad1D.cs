@@ -50,10 +50,8 @@ namespace BriefFiniteElementNet
 
                 var localEndForces = new Force[2];
 
-
                 localEndForces[0] = new Force(w.X*l/2, w.Y*l/2, w.Z*l/2, 0, -w.Z*l*l/12.0, w.Y*l*l/12.0);
                 localEndForces[1] = new Force(w.X*l/2, w.Y*l/2, w.Z*l/2, 0, w.Z*l*l/12.0, -w.Y*l*l/12.0);
-                
 
                 localEndForces = CalcUtil.ApplyReleaseMatrixToEndForces(frElm, localEndForces);//applying release matrix to end forces
 

@@ -771,7 +771,7 @@ namespace BriefFiniteElementNet.ElementHelpers
 
             #region uniform & trapezoid, uses integration method
 
-            if (load is UniformLoad || load is PartialTrapezoidalLoad)
+            if (load is UniformLoad || load is PartialUniformLoad || load is PartialTrapezoidalLoad)
             {
 
                 Func<double, double> magnitude;
@@ -794,6 +794,20 @@ namespace BriefFiniteElementNet.ElementHelpers
                     xi0 = -1;
                     xi1 = 1;
                     degree = 0;
+                }
+                else if (load is PartialUniformLoad)
+                {
+                    var tld = (load as PartialUniformLoad);
+
+                    magnitude = (xi => (load as PartialUniformLoad).GetMagnitudesAt(xi, 0, 0)[0]);
+                    localDir = tld.Direction;
+
+                    if (tld.CoordinationSystem == CoordinationSystem.Global)
+                        localDir = tr.TransformGlobalToLocal(localDir);
+
+                    xi0 = tld.StarIsoLocation;
+                    xi1 = tld.EndIsoLocation;
+                    degree = 1;
                 }
                 else
                 {
@@ -1128,7 +1142,7 @@ namespace BriefFiniteElementNet.ElementHelpers
 
             #region uniform & trapezoid
 
-            if (load is UniformLoad || load is PartialTrapezoidalLoad)
+            if (load is UniformLoad || load is PartialUniformLoad || load is PartialTrapezoidalLoad)
             {
 
                 Func<double, double> magnitude;
@@ -1152,6 +1166,20 @@ namespace BriefFiniteElementNet.ElementHelpers
                     xi1 = 1;
                     degree = 0;
                 }
+                else if (load is PartialUniformLoad)
+                {
+                    var tld = (load as PartialUniformLoad);
+
+                    magnitude = (xi => (load as PartialUniformLoad).GetMagnitudesAt(xi, 0, 0)[0]);
+                    localDir = tld.Direction;
+
+                    if (tld.CoordinationSystem == CoordinationSystem.Global)
+                        localDir = tr.TransformGlobalToLocal(localDir);
+
+                    xi0 = tld.StarIsoLocation;
+                    xi1 = tld.EndIsoLocation;
+                    degree = 1;
+                }
                 else
                 {
                     var tld = (load as PartialTrapezoidalLoad);
@@ -1171,7 +1199,6 @@ namespace BriefFiniteElementNet.ElementHelpers
                 #endregion
 
                 {
-
                     var nOrd = GetNMaxOrder(targetElement).Max();
 
                     var gpt = (nOrd + degree) / 2 + 1;//gauss point count
