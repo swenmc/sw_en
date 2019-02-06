@@ -1546,11 +1546,41 @@ namespace PFD
 
             // 1. nacitat objekt CModel_PFD_01_GR
 
+            CPFDViewModel vm = this.DataContext as CPFDViewModel;
+            CModel_PFD_01_GR model = vm.Model as CModel_PFD_01_GR;
+            double limit = 0.0000001;
+
             // 2. Najst pruty ramu
             // 2.(a) prva moznost - najst members v rovinach s Y = i * fL1_frame, ktore su typu Main Column (EMemberGroupNames.eMainColumn) alebo Rafter (EMemberGroupNames.eRafter) vid listOfModelMemberGroups
             // i je index ramu 0 - iFrameNo
             // 2.(b) druha moznost - pruty ramu sa generuju ako prve spolu s eaves purlins, vieme ze ram ma 2 stlpy a 2 raftery, ramy su spojene na konci dvomi eave purlins takze v jednom cykle je vyrobenych 6 prutov
             // vid CModel_PFD_01_GR line 338 - 354
+
+            List<List<CMember>> frames = new List<List<CMember>>();
+
+            for (int i = 0; i < model.iFrameNo; i++)
+            {
+                List<CMember> frameMembers = new List<CMember>();
+
+                foreach (CMemberGroup gr in model.listOfModelMemberGroups)
+                {
+                    foreach (CMember m in gr.ListOfMembers)
+                    {
+                        //it is not Main Column and it is not Main rafter
+                        if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR) continue;
+                        
+                        if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                        {
+                            frameMembers.Add(m);
+                            System.Diagnostics.Trace.WriteLine( $"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
+                        }
+                    }
+                }
+
+                frames.Add(frameMembers);
+            }
+
+            
 
             // Frame 1
             // Member ID 1 - Main Column
@@ -1586,20 +1616,20 @@ namespace PFD
                 chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
 
 
-                CPFDViewModel vm = this.DataContext as CPFDViewModel;
-                CModel_PFD mod = vm.Model;
-                foreach (CLoadCase load in mod.m_arrLoadCases)
-                {
-                    System.Diagnostics.Trace.WriteLine(load.Name);
-                    List<CSLoad_Free> loadList = load.SurfaceLoadsList;
-                    foreach (CSLoad_Free l_free in load.SurfaceLoadsList)
-                    {
-                        if(l_free is CSLoad_FreeUniform)
-                            System.Diagnostics.Trace.WriteLine($"CSLoad_Free: {l_free.Name}, Points: {l_free.pSurfacePoints.ToString()}");
+                
+                
+                //foreach (CLoadCase load in model.m_arrLoadCases)
+                //{
+                //    System.Diagnostics.Trace.WriteLine(load.Name);
+                //    List<CSLoad_Free> loadList = load.SurfaceLoadsList;
+                //    foreach (CSLoad_Free l_free in load.SurfaceLoadsList)
+                //    {
+                //        if(l_free is CSLoad_FreeUniform)
+                //            System.Diagnostics.Trace.WriteLine($"CSLoad_Free: {l_free.Name}, Points: {l_free.pSurfacePoints.ToString()}");
                         
-                    }
+                //    }
 
-                }
+                //}
 
                 //UpdateAll();
             }
