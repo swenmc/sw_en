@@ -42,7 +42,7 @@ namespace BriefFiniteElementNet
         /// Gets or sets the start of load range
         /// </summary>
         /// <value>
-        /// The offset from start node(s) regarding isoparametric coordination system (in rangle [-1,1])
+        /// The offset from start node(s) regarding isoparametric coordination system (in range [-1,1])
         /// </value>
         public double StarIsoLocation
         {
@@ -54,7 +54,7 @@ namespace BriefFiniteElementNet
         /// Gets or sets the end of load range
         /// </summary>
         /// <value>
-        /// The offset from end node(s) regarding isoparametric coordination system (in rangle [-1,1])
+        /// The offset from end node(s) regarding isoparametric coordination system (in range [-1,1])
         /// </value>
         public double EndIsoLocation
         {

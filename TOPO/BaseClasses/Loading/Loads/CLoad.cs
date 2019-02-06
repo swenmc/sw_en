@@ -30,11 +30,11 @@ namespace BaseClasses
         // Model of arrow or moment curve in LCS
         // Arrow in z-axis
         // Moment around y-axis
-        public Model3DGroup CreateM_3D_G_SimpleLoad(Point3D p, ENLoadType eLoadType, Color cColor, float fValue, float fOpacity, DiffuseMaterial material)
+        public Model3DGroup CreateM_3D_G_SimpleLoad(Point3D p, ENLoadType eLoadType, Color cColor, float fValue, float fOpacity, DiffuseMaterial material, float fDisplayin3D_ratio = 0.001f)
         {
-            Displayin3DRatio = 0.001f;
+            Displayin3DRatio = fDisplayin3D_ratio;
 
-            float fValueFor3D = fValue * Displayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m)
+            float fValueFor3D = fValue * Displayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
 
             Model3DGroup model_gr = new Model3DGroup();
 

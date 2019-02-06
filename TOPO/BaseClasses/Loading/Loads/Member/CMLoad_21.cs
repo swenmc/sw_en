@@ -56,6 +56,8 @@ namespace BaseClasses
 
         public override Model3DGroup CreateM_3D_G_Load()
         {
+            float fDisplayin3D_ratio = 0.001f; // (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
+
             Model3DGroup model_gr = new Model3DGroup();
 
             ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(EDirPPC, MLoadType);
@@ -70,7 +72,7 @@ namespace BaseClasses
             for (int i = 0; i <= floadarrowsgapcount; i++)
             {
                 Model3DGroup model_temp = new Model3DGroup();
-                model_temp = CreateM_3D_G_SimpleLoad(new Point3D(i / floadarrowsgapcount * Member.FLength, 0, 0), nLoadType, m_Color, Fq, m_fOpacity, m_Material3DGraphics); // Model of one Arrow
+                model_temp = CreateM_3D_G_SimpleLoad(new Point3D(i / floadarrowsgapcount * Member.FLength, 0, 0), nLoadType, m_Color, Fq, m_fOpacity, m_Material3DGraphics, fDisplayin3D_ratio); // Model of one Arrow
                 model_gr.Children.Add(model_temp);
             }
 
@@ -80,13 +82,13 @@ namespace BaseClasses
                 Point3D pPoint;
                 if (EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
                 {
-                    pPoint = new Point3D(0, 0, -Fq);
+                    pPoint = new Point3D(0, 0, -Fq * fDisplayin3D_ratio);
                 }
                 else
-                    pPoint = new Point3D(0, -Fq, 0);
+                    pPoint = new Point3D(0, -Fq * fDisplayin3D_ratio, 0);
 
-                Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(Fq), Member.FLength, m_Material3DGraphics);
-                model_gr.Children.Add(cConnectLine.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(Fq), Member.FLength, m_Material3DGraphics));
+                Cylinder cConnectLine = new Cylinder(0.005f * Math.Abs(Fq * fDisplayin3D_ratio), Member.FLength, m_Material3DGraphics);
+                model_gr.Children.Add(cConnectLine.CreateM_G_M_3D_Volume_Cylinder(pPoint, 0.005f * Math.Abs(Fq * fDisplayin3D_ratio), Member.FLength, m_Material3DGraphics));
             }
 
             // Trasnform position of load on member (consider eccentricity of load / member / cross-section dimensions)
