@@ -1542,6 +1542,45 @@ namespace PFD
 
         private void chbDisplayLoadsOnFrames_Checked(object sender, RoutedEventArgs e)
         {
+            // To Ondrej - popis
+
+            // 1. nacitat objekt CModel_PFD_01_GR
+
+            // 2. Najst pruty ramu
+            // 2.(a) prva moznost - najst members v rovinach s Y = i * fL1_frame, ktore su typu Main Column (EMemberGroupNames.eMainColumn) alebo Rafter (EMemberGroupNames.eRafter) vid listOfModelMemberGroups
+            // i je index ramu 0 - iFrameNo
+            // 2.(b) druha moznost - pruty ramu sa generuju ako prve spolu s eaves purlins, vieme ze ram ma 2 stlpy a 2 raftery, ramy su spojene na konci dvomi eave purlins takze v jednom cykle je vyrobenych 6 prutov
+            // vid CModel_PFD_01_GR line 338 - 354
+
+            // Frame 1
+            // Member ID 1 - Main Column
+            // Member ID 2 - Rafter
+            // Member ID 3 - Rafter
+            // Member ID 4 - Main Column
+            // Member ID 5 - Eave Purlin
+            // Member ID 6 - Eave Purlin
+            // Frame 2
+            // Member ID 1+6 - Main Column
+            // Member ID 2+6 - Rafter
+            // Member ID 3+6 - Rafter
+            // Member ID 4+6 - Main Column
+            // Member ID 5+6 - Eave Purlin
+            // Member ID 6+6 - Eave Purlin
+
+            // a takto sa to opakuje s tym ze posledne 2 eave purlin sa nevytvoria lebo ramov je o jeden viac nez bays
+
+            // 3. Ked mame uspesne identifikovane pruty ramu na ktore chceme generovat zatazenie
+            // tak pre kazdy load case a kazdy objekt SurfaceLoad zo zoznamu zatazeni v danom load case
+            // aplikujeme funkciu ktora zisti ci sa plocha zatazenia alebo jej cast nachadza v takzvanej zatazovacej ploche pruta L_member * fL1_frame (resp. 0.5 fL1_frame pre krajne ramy)
+            // Zistime ci je prut v danej ploche SurfaceLoad len z casti alebo cely
+            // Podla toho sa potom vygeneruje objekt CMLoad_21 alebo CMLoad_24
+            // Hodnota zatazenia sa urci zo zatazovacej sirky ramu fL1_frame, pripadne 0.5 * fL1_frame
+            // Do hodnoty zatazenia sa zohladnia vsetky objekty SurfaceLoad ktore sa nachadazaju v danej zatazovacej sirke pruta
+            // Je potrebne prepocitat smer a urcit znamienko zatazenia medzi SurfaceLoad a novym CM_Load. Zatazenie mozeme generovat v LCS pruta alebo v GCS.
+            // Asi bude lepsie pouzit vzdy LCS.
+
+
+
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
                 chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
