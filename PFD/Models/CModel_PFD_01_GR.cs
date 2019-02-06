@@ -509,6 +509,7 @@ namespace PFD
                 AddFrontOrBackGirtsMembers(iFrameNodesNo, iOneRafterBackColumnNo, iArrNumberOfNodesPerBackColumn, i_temp_numberofNodes, i_temp_numberofMembers, iBackIntermediateColumnNodesForGirtsOneRafterNo, iBackIntermediateColumnNodesForGirtsOneFrameNo, iGirtNoInOneFrame * (iFrameNo - 1), fDist_Girt, eccentricityGirtBack_YL, fBackGirtStart_MC, fBackGirtStart, fBackGirtEnd, m_arrCrSc[(int)EMemberGroupNames.eBackGirt], fColumnsRotation);
             }
 
+            #region Joints
             // Connection Joints
             m_arrConnectionJoints = new List<CConnectionJointTypes>();
 
@@ -691,6 +692,9 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                 }
             }
+            #endregion
+
+            #region Blocks
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Blocks
@@ -729,6 +733,9 @@ namespace PFD
 
             // End of blocks
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            #endregion
+
+            #region Supports
 
             //m_arrNSupports = new CNSupport[2 * iFrameNo];
 
@@ -764,7 +771,9 @@ namespace PFD
 
             // Setridit pole podle ID
             Array.Sort(m_arrNSupports, new CCompare_NSupportID());
+            #endregion
 
+            #region Member Releases
             // Member Releases / hinges - fill values
 
             // Set values
@@ -772,8 +781,17 @@ namespace PFD
 
             // Create Release / Hinge Objects
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
+            #endregion
 
             // Loading
+            #region POKUS TODO 186 - frames
+            // Komentar 7.2.2019
+            // To Ondrej
+            // Vytvorenie zatazenia priamo na frames
+            // Negeneruje sa z surface loads
+            // Toto zatazenie nie je priradene do load casesov takze vo vypocte sa nepouzije
+            // Pouzit len na inspiraciu, zatial nemazat
+
             // Loads
             float fValueLoadRafterDead1 = -0.2f;
             float fValueLoadRafterDead2 = -0.1f;
@@ -869,6 +887,9 @@ namespace PFD
             // - Y
             GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMax, fValueLoadColumnnWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, ref memberLoadWindFramesMinusY_CpeMax);
 
+            #endregion
+
+            #region Surface Loads
             // Surface Free Loads
             // Roof Surface Geometry
             // Control Points
@@ -1127,7 +1148,9 @@ namespace PFD
             out surfaceWindLoad_SLS_PlusY_Cpemax,
             out surfaceWindLoad_SLS_MinusY_Cpemax
             );
+            #endregion
 
+            #region Earthquake - nodal loads
             // Earthquake
             int iNumberOfLoadsInXDirection = iFrameNo;
             int iNumberOfLoadsInYDirection = 2;
@@ -1149,7 +1172,9 @@ namespace PFD
                 nodalLoadEQ_ULS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_ULS_stregnth, true, 0));
                 nodalLoadEQ_SLS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_SLS, true, 0));
             }
+            #endregion
 
+            #region Load Cases
             // Load Cases
             m_arrLoadCases = new CLoadCase[44];
             m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, surfaceDeadLoad);                                                          // 01
@@ -1200,6 +1225,14 @@ namespace PFD
             m_arrLoadCases[41] = new CLoadCase(42, "Wind load Ws - Cpe,max - Rear - Y-", ELCGTypeForLimitState.eSLSOnly, ELCType.eWind, ELCMainDirection.eMinusY, surfaceWindLoad_SLS_MinusY_Cpemax);                           // 42
             m_arrLoadCases[42] = new CLoadCase(43, "Earthquake load Es - X", ELCGTypeForLimitState.eSLSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusX, nodalLoadEQ_SLS_PlusX);                                              // 43
             m_arrLoadCases[43] = new CLoadCase(44, "Earthquake load Es - Y", ELCGTypeForLimitState.eSLSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusY, nodalLoadEQ_SLS_PlusY);                                              // 44
+            #endregion
+
+            #region POKUS TODO 186 - Generating of member load from surface load (girts and purlins)
+            // TO Ondrej - 7.2.2019
+            // Toto je pokus o generovanie prutoveho zatazenia z plosneho
+            // Jedna sa o zoznamy prutov typu girts a typu purlins
+            // Problem je v tom suradnice bodov rovin beriem z celej stavby, by sa mali preberat priamo z objektu CSLoad_FreeUniform.cs,
+            // Mozes sa tymto insprirovat ale treba to vyladit
 
             // TODO No. 54
             // tieto zoznamy sa maju nahradit funckiou v TODO 54 ktora ich vytvori pre jednotlive zatazovacie plochy zo suradnic ploch
@@ -1324,8 +1357,10 @@ namespace PFD
 
             // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
             // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
+            #endregion
 
-
+            #region Load Groups
+            // Create load groups and assigned load cases to the load group
             // Load Case Groups
             m_arrLoadCaseGroups = new CLoadCaseGroup[10];
 
@@ -1405,6 +1440,9 @@ namespace PFD
             m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[42]);
             m_arrLoadCaseGroups[9].MLoadCasesList.Add(m_arrLoadCases[43]);
 
+            #endregion
+
+            #region Load Combinations
             // Load Combinations
             CLoadCombinationsGenerator generator = new CLoadCombinationsGenerator(m_arrLoadCaseGroups);
             generator.GenerateAll();
@@ -1418,12 +1456,15 @@ namespace PFD
             //for (int i = 0; i < m_arrLoadCombs.Length; i++)
             //    m_arrLoadCombs[i] = generator.Combinations[i];
             m_arrLoadCombs = generator.Combinations.ToArray();
+            #endregion
 
+            #region Limit states
             // Limit States
             m_arrLimitStates = new CLimitState[3];
             m_arrLimitStates[0] = new CLimitState("Ultimate Limit State - Stability", ELSType.eLS_ULS);
             m_arrLimitStates[1] = new CLimitState("Ultimate Limit State - Strength" , ELSType.eLS_ULS);
             m_arrLimitStates[2] = new CLimitState("Serviceability Limit State"      , ELSType.eLS_SLS);
+            #endregion
 
             AddMembersToMemberGroupsLists();
         }
