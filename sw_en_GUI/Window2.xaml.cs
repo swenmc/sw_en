@@ -71,5 +71,15 @@ namespace sw_en_GUI
 
             Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, null);
         }
+
+        public Window2(CModel cmodel, DisplayOptions sDisplayOptions_temp, CLoadCase loadCaseToDisplay, bool bDebugging_temp)
+        {
+            sDisplayOptions = sDisplayOptions_temp;
+            bDebugging = bDebugging_temp;
+
+            InitializeComponent();
+
+            Drawing3D.DrawToTrackPort(_trackport, cmodel, sDisplayOptions, loadCaseToDisplay);
+        }
     }
 }

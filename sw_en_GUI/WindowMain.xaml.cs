@@ -1042,7 +1042,9 @@ namespace sw_en_GUI
             sDisplayOptions.bDisplayMembersCenterLines = true;
             sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
-            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
+            sDisplayOptions.bDisplayLoads = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, model.m_arrLoadCases[0], m_bDebugging);
             list_trackports.Add(win._trackport);
             Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 902 OM" + " - Window " + (Container.Children.Count + 1) });
             win.Close();
