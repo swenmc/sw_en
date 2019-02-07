@@ -246,9 +246,24 @@ namespace PFD
 
         private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
         {
+            // Spocita testovaci model ramu
             RunExample3 BFENet_testovaciModelRamu = new RunExample3();
 
+            // Nacitanie zoznamov vysledkov pre jednotlive load combinations, members, x-locations
             List<List<List<basicInternalForces>>> internalforces = BFENet_testovaciModelRamu.results;
+
+            // LCS of member (x,z) = (x,-y)
+            // Draw member
+
+            // Draw IF diagram on member
+
+            //Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
+
+            // GCS in XZ plane (X,Z) = (x,-y)
+            // Rotate and translate member and diagram
+
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D();
+            window_2D_diagram.ShowDialog();
         }
     }
 }
