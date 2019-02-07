@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="FrameInternalForces_2D" Height="450" Width="800">
     <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Intennal Forces [kN or kNm - TODO add combobox to select]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Internal Forces [kN or kNm - TODO add combobox to select IF type N, Vz, Vy, T, My, Mz]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <Canvas Grid.Row="0" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="415" VerticalAlignment="Top" Width="790" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>

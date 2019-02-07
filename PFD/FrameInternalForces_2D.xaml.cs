@@ -28,18 +28,36 @@ namespace PFD
             // LCS of member (x,z) = (x,-y)
             // Draw member
 
-            // Draw IF diagram on member
-
-            //Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
+            // Generate IF diagram on member
 
             // GCS in XZ plane (X,Z) = (x,-y)
             // Rotate and translate member and diagram
 
+            // Draw diagram in GCS
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
             double dMemberLengthScale = 70; // TODO - spocitat podla rozmerov canvas
             double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
-            double dInternalForceScale_user = 1;
+            double dInternalForceScale_user = 1; // Uzivatelske scalovanie zadane numericky alebo to moze to byt napriklad aj klavesova skratka napr. d + wheel button (zvacsi / zmensi sa diagram v smere kolmom na pruty)
 
-            double maximumOriginalYCoordinate = 8.0f + 1.0f;  // TODO - spocitat z modelu + nejaky odstup
+
+
+
+
+
+            // TO Ondrej
+            // Tento diagram by chcelo vylepsit a sprehladnit.
+            // TODO - doplnit texty, pre texty si odlozit povodne hodnoty IF separatne (grafika diagramu sa moze scalovat ale hodnoty zobrazenych sil v texte ostavaju rovnake)
+            // Texty by mali mat rozne moznosti, zobrazit hodnoty na vsetkych rezoch (kazdy, druhy, treti, ... rez), len na koncoch pruta, na koncoch pruta a v mieste extremu, len extremy atd
+            // Zobrazovat jednotky alebo bez nich
+            // Niekde by mohla byt legenda s popisom co sa vykresluje (cislo ramu, vybrana load combination, vybrany typ zobrazovanej IF)
+            // Je potrebne doplnit moznost prepinat medzi typmi IF (ja som spravil len M_yy)
+
+
+
+
+
+            double maximumOriginalYCoordinate = 8.0f + 0.5f;  // TODO - spocitat z geometrie modelu + nejaky odstup ??? (mozno to nie je nutne, pouzije sa top margin)
             double factorSwitchYAxis = -1;
             // Draw each member in the model and selected internal force diagram
             for (int i = 0; i < model.m_arrMembers.Length; i++)
@@ -109,7 +127,7 @@ namespace PFD
                 Drawing2D.DrawPolyLine(false, listMemberInternalForcePoints, 10, 10, 5, 5, 1, rotAngle_degrees, new Point(0, 0),
                 dMemberLengthScale * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x,
                 dMemberLengthScale * maximumOriginalYCoordinate + dMemberLengthScale * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z  + dAdditionalOffset_y,
-                Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 2, Canvas_InternalForceDiagram);
+                Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, Canvas_InternalForceDiagram);
             }
         }
     }

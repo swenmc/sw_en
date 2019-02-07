@@ -65,6 +65,7 @@
         <TextBlock Grid.Row="13" Grid.Column="0" Text="Bending Moment My [kNm]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <Canvas Grid.Row="14" Grid.Column="0" Name ="Canvas_BendingMomentDiagramMy" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="600" Grid.ColumnSpan="4"/>
 
-        <Button Name="Button_Frame_2D" Content="Display Internal Forces at Frame - Pokus " HorizontalAlignment="Left" VerticalAlignment="Top" Width="215" Grid.Column="2" Margin="15,2,0,0" Click="Button_Frame_2D_Click"/>
+        <!-- TO Ondrej - tu sa zatial pokusne otvara dialog pre zobrazenie vnutornych sil na ramoch -->
+        <Button Name="Button_Frame_2D" Content="Display Internal Forces at Frame - TODO " HorizontalAlignment="Left" VerticalAlignment="Top" Width="220" Grid.Column="2" Margin="10,2,0,0" Click="Button_Frame_2D_Click"/>
     </Grid>
 </UserControl>
