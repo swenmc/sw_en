@@ -49,7 +49,8 @@
     <Compile Include="EXAMPLES\2D\CExample_2D_04.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_11.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_12.cs" />
-    <Compile Include="EXAMPLES\2D\CExample_2D_14_KOSOUHLYRAM.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_14_PF.cs" />
+    <Compile Include="EXAMPLES\2D\CExample_2D_15_KOSOUHLYRAM.cs" />
     <Compile Include="EXAMPLES\2D\CExample_2D_13_PF.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_01.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_02.cs" />

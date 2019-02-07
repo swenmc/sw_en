@@ -53,7 +53,33 @@ namespace BaseClasses
             float fq,
             float faA,
             float fs,
+            ELoadCoordSystem mLoadCoordSystem,
+            EMLoadTypeDistr mLoadTypeDistr,
+            EMLoadType mLoadType,
+            EMLoadDirPCC1 eDirPPC,
+            bool bIsDislayed,
+            int fTime)
+        {
+            ID = id_temp;
+            Fq = fq;
+            FaA = faA; // Distance between load start point and member start
+            Fs = fs;
+            // Calculate Load Centre Position from Start of Member
+            m_fa = m_faA + m_fs / 2.0f;
+            ELoadCS = mLoadCoordSystem;
+            MLoadTypeDistr = mLoadTypeDistr;
+            MLoadType = mLoadType;
+            EDirPPC = eDirPPC;
+            BIsDisplayed = bIsDislayed;
+            FTime = fTime;
+        }
+
+        public CMLoad_24(int id_temp,
+            float fq,
+            float faA,
+            float fs,
             CMember member_aux,
+            ELoadCoordSystem mLoadCoordSystem,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
             EMLoadDirPCC1 eDirPPC,
@@ -67,6 +93,7 @@ namespace BaseClasses
             // Calculate Load Centre Position from Start of Member
             m_fa = m_faA + m_fs / 2.0f;
             Member = member_aux;
+            ELoadCS = mLoadCoordSystem;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
             EDirPPC = eDirPPC;

@@ -5,9 +5,9 @@ using System;
 
 namespace Examples
 {
-    public class CExample_2D_14_KOSOUHLYRAM : CExample
+    public class CExample_2D_15_KOSOUHLYRAM : CExample
     {
-        public CExample_2D_14_KOSOUHLYRAM()
+        public CExample_2D_15_KOSOUHLYRAM()
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D

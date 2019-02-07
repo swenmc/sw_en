@@ -25,7 +25,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             //Example6();
             //Example7();
             //Example8();
-            Example9();
+            //Example9();
 
             //DocSnippets.Test1();
 
@@ -38,10 +38,73 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             CRSC.CCrSc_0_50 secAA = new CRSC.CCrSc_0_50(0.67f, 0.24f, 0.01f, 0.006f);
             CRSC.CCrSc_0_50 secBB = new CRSC.CCrSc_0_50(0.52f, 0.24f, 0.01f, 0.006f);
 
-            BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
+            // Zakladny ram podla Example 2 - BriefFiniteElementNet
+            //BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, crsc1, crsc2, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
             // BaseClasses.CExample model = new Examples.CExample_2D_13_PF(mat, secAA, secBB, 20f, 6f, 8f, 0.01f, -1961f, -9085f, -10000f, 0.01f);
-
             //Example3(model);
+
+            // Ram s viacerymi zatazeniam partial uniform load na streche (member type: rafters)
+            List<BaseClasses.CMLoad> loadListRafter1 = new List<BaseClasses.CMLoad>();
+            List<BaseClasses.CMLoad> loadListRafter2 = new List<BaseClasses.CMLoad>();
+
+            bool bUsePartialUniformLoads = true;
+            if (bUsePartialUniformLoads) // CMLoad_24 on Rafters
+            {
+                float fRafterLength = 10.198008269899f;
+
+                // Member Loads - Rafter 1
+                BaseClasses.CMLoad_24 MLoad_q21 = new BaseClasses.CMLoad_24(2, 13000, 0, 0.4f * fRafterLength,
+                    BaseClasses.ELoadCoordSystem.eLCS,
+                    BaseClasses.EMLoadTypeDistr.eMLT_QUF_PG_24,
+                    BaseClasses.EMLoadType.eMLT_F,
+                    BaseClasses.EMLoadDirPCC1.eMLD_PCC_FZV_MYU,
+                    true, 0);
+
+                BaseClasses.CMLoad_24 MLoad_q22 = new BaseClasses.CMLoad_24(3, 5000, 0.4f * fRafterLength, 0.6f * fRafterLength,
+                    BaseClasses.ELoadCoordSystem.eLCS,
+                    BaseClasses.EMLoadTypeDistr.eMLT_QUF_PG_24,
+                    BaseClasses.EMLoadType.eMLT_F,
+                    BaseClasses.EMLoadDirPCC1.eMLD_PCC_FZV_MYU,
+                    true, 0);
+
+                loadListRafter1.Add(MLoad_q21);
+                loadListRafter1.Add(MLoad_q22);
+
+                // Member Loads - Rafter 2
+                BaseClasses.CMLoad_24 MLoad_q31 = new BaseClasses.CMLoad_24(4, -4000, 0.6f * fRafterLength, 0.4f * fRafterLength,
+                    BaseClasses.ELoadCoordSystem.eLCS,
+                    BaseClasses.EMLoadTypeDistr.eMLT_QUF_PG_24,
+                    BaseClasses.EMLoadType.eMLT_F,
+                    BaseClasses.EMLoadDirPCC1.eMLD_PCC_FZV_MYU,
+                    true, 0);
+
+                loadListRafter2.Add(MLoad_q31);
+            }
+            else // CMLoad_21 on rafters
+            {
+                // Member Loads - Rafter 1
+                BaseClasses.CMLoad_21 MLoad_q21 = new BaseClasses.CMLoad_21(2, 8200,
+                    BaseClasses.ELoadCoordSystem.eLCS,
+                    BaseClasses.EMLoadTypeDistr.eMLT_QUF_W_21,
+                    BaseClasses.EMLoadType.eMLT_F,
+                    BaseClasses.EMLoadDirPCC1.eMLD_PCC_FZV_MYU,
+                    true, 0);
+
+                loadListRafter1.Add(MLoad_q21);
+
+                // Member Loads - Rafter 2
+                BaseClasses.CMLoad_21 MLoad_q31 = new BaseClasses.CMLoad_21(4, -1600,
+                    BaseClasses.ELoadCoordSystem.eLCS,
+                    BaseClasses.EMLoadTypeDistr.eMLT_QUF_W_21,
+                    BaseClasses.EMLoadType.eMLT_F,
+                    BaseClasses.EMLoadDirPCC1.eMLD_PCC_FZV_MYU,
+                    true, 0);
+
+                loadListRafter2.Add(MLoad_q31);
+            }
+
+            BaseClasses.CExample model = new Examples.CExample_2D_14_PF(mat, crsc1, crsc2, 20f, 6f, 8f, -10000f, loadListRafter1, loadListRafter2, 7000f);
+            Example3(model);
 
             //Console.ReadLine();
         }
@@ -200,7 +263,6 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             model.Nodes.Add(n1, n2, n3, n4, n5);
             */
 
-            
             // Nodes
             NodeCollection nodeCollection = new NodeCollection(model);
 
@@ -450,10 +512,12 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                         // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
 
                         // load
-                        var l = new UniformLoad1D();
+                        var lu = new UniformLoad1D();
+                        var lpu = new PartialUniformLoad1D();
 
                         if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21) // Uniform load per whole member
                         {
+                            lu = new UniformLoad1D();
                             BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
                             // Create member load
                             if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
@@ -477,10 +541,11 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
                                 eLD = LoadDirection.Z;
 
-                            l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+                            lu = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
                         }
                         else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24) // Uniform load on segment
                         {
+                            lpu = new PartialUniformLoad1D();
                             BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
 
                             // Create member load
@@ -511,14 +576,38 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                             // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
                             // https://media.readthedocs.org/pdf/bfenet/latest/bfenet.pdf
 
-                            l = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+                            // Isolocation [-1,1]
+                            double dStartIsoLocation;
+                            double dEndIsoLocation;
+
+                            // Prevod z absolutnych suradnic [0,L] na relativne [-1,1]
+                            if (load.FaA < 0.5 * load.Member.FLength)
+                                dStartIsoLocation = -(0.5 * load.Member.FLength - load.FaA) / (0.5 * load.Member.FLength);
+                            else
+                                dStartIsoLocation = (load.FaA - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+
+                            if ((load.FaA + load.Fs) < 0.5 * load.Member.FLength)
+                                dEndIsoLocation = -(0.5 * load.Member.FLength - (load.FaA + load.Fs)) / (0.5 * load.Member.FLength);
+                            else
+                                dEndIsoLocation = ((load.FaA + load.Fs) - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+
+                            lpu = new PartialUniformLoad1D(load.Fq, dStartIsoLocation, dEndIsoLocation, eLD, eCS, loadcases[i]);
                         }
                         else
                         {
                             // Not implemented load type
                             // l = new UniformLoad1D();
                         }
-                        elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k]-1].Loads.Add(l);
+
+                        // Assign defined type of load the the BriefFiniteElement
+                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21 ||
+                            topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
+                        {
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
+                                elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu);
+                            else /*if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)*/
+                                elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
+                        }
                     }
                 }
             }

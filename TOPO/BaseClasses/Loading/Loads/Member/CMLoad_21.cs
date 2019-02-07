@@ -28,6 +28,25 @@ namespace BaseClasses
             m_fq = fqValue;
         }
 
+        public CMLoad_21(int id_temp,
+            float fq,
+            ELoadCoordSystem mLoadCoordSystem,
+            EMLoadTypeDistr mLoadTypeDistr,
+            EMLoadType mLoadType,
+            EMLoadDirPCC1 eDirPPC,
+            bool bIsDislayed,
+            int fTime)
+        {
+            ID = id_temp;
+            Fq = fq;
+            ELoadCS = mLoadCoordSystem;
+            MLoadTypeDistr = mLoadTypeDistr;
+            MLoadType = mLoadType;
+            EDirPPC = eDirPPC;
+            BIsDisplayed = bIsDislayed;
+            FTime = fTime;
+        }
+
         public CMLoad_21(int id_temp, 
             float fq,
             CMember member_aux,
