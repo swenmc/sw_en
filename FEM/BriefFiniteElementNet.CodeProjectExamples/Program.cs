@@ -736,6 +736,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
     // Docasna trieda - umoznuje spustit skusobny Example 3 z ineho projektu
     public class RunExample3
     {
+        // Model ramu
+        public BaseClasses.CExample model_SW_EN;
         // Zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
         public List<List<List<basicInternalForces>>> results = new List<List<List<basicInternalForces>>>();
 
@@ -815,9 +817,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 loadListRafter2.Add(MLoad_q31);
             }
 
-            BaseClasses.CExample model = new Examples.CExample_2D_14_PF(mat, crsc1, crsc2, 20f, 6f, 8f, -10000f, loadListRafter1, loadListRafter2, 7000f);
+            model_SW_EN = new Examples.CExample_2D_14_PF(mat, crsc1, crsc2, 20f, 6f, 8f, -10000f, loadListRafter1, loadListRafter2, 7000f);
 
-            Example3(model, out results);
+            Example3(model_SW_EN, out results);
         }
 
         // Pokus o napojenie SW_EN
