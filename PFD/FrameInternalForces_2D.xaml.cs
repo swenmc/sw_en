@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BaseClasses;
 using MATH;
+using System.ComponentModel;
 
 namespace PFD
 {
@@ -24,6 +25,10 @@ namespace PFD
         public FrameInternalForces_2D(CExample model, List<List<List<basicInternalForces>>> internalforces)
         {
             InitializeComponent();
+
+            //CFrameInternalForces_2DViewModel vm = new CFrameInternalForces_2DViewModel();
+            //vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+            //this.DataContext = vm;
 
             // LCS of member (x,z) = (x,-y)
             // Draw member
@@ -38,7 +43,7 @@ namespace PFD
             ////////////////////////////////////////////////////////////////////////////////////////////////
             double dMemberLengthScale = 70; // TODO - spocitat podla rozmerov canvas
             double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
-            double dInternalForceScale_user = 1; // Uzivatelske scalovanie zadane numericky alebo to moze to byt napriklad aj klavesova skratka napr. d + wheel button (zvacsi / zmensi sa diagram v smere kolmom na pruty)
+            double dInternalForceScale_user = 2; // Uzivatelske scalovanie zadane numericky alebo to moze to byt napriklad aj klavesova skratka napr. d + wheel button (zvacsi / zmensi sa diagram v smere kolmom na pruty)
 
 
 
@@ -126,9 +131,15 @@ namespace PFD
 
                 Drawing2D.DrawPolyLine(false, listMemberInternalForcePoints, 10, 10, 5, 5, 1, rotAngle_degrees, new Point(0, 0),
                 dMemberLengthScale * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x,
-                dMemberLengthScale * maximumOriginalYCoordinate + dMemberLengthScale * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z  + dAdditionalOffset_y,
+                dMemberLengthScale * maximumOriginalYCoordinate + dMemberLengthScale * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z + dAdditionalOffset_y,
                 Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, Canvas_InternalForceDiagram);
             }
+        }
+
+
+        protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null) return;
         }
     }
 }
