@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MATH;
 using BaseClasses;
 using FEM_CALC_BASE;
+using BriefFiniteElementNet.CodeProjectExamples;
 
 namespace PFD
 {
@@ -49,7 +50,7 @@ namespace PFD
 
             Model = model;
             ListMemberInternalForcesInLoadCases = listMemberInternalForcesInLoadCases;
-            
+
             // Internal forces
             CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             ifinput.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
@@ -241,6 +242,13 @@ namespace PFD
                 fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yu;
                 fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zv;
             }
+        }
+
+        private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
+        {
+            RunExample3 BFENet_testovaciModelRamu = new RunExample3();
+
+            List<List<List<basicInternalForces>>> internalforces = BFENet_testovaciModelRamu.results;
         }
     }
 }

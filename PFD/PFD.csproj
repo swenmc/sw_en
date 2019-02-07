@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>PFD</RootNamespace>
     <AssemblyName>PFD</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -323,6 +323,10 @@
     <ProjectReference Include="..\DATABASE\DATABASE.csproj">
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\BriefFiniteElementNet.CodeProjectExamples\BriefFiniteElementNet.CodeProjectExamples.csproj">
+      <Project>{24eba191-f9e3-47cf-b0fe-865b6243a354}</Project>
+      <Name>BriefFiniteElementNet.CodeProjectExamples</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
       <Project>{602c8862-99f4-4595-a033-84194ddfe00a}</Project>
