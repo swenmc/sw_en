@@ -311,7 +311,7 @@ namespace BaseClasses
 
             double dCanvasTop = (height - (fReal_Model_Zoom_Factor * screw.D_h_headdiameter)) / 2;
             double dCanvasLeft = (width - (fReal_Model_Zoom_Factor * 2 * a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
-            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor,0, new Point(0,0), 0,0, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             // Washer Circle
             DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, 1, canvasForImage);
@@ -1032,7 +1032,8 @@ namespace BaseClasses
         //    Canvas.SetLeft(myLine, dCanvasLeftTemp);
         //    imageCanvas.Children.Add(myLine);
         //}
-        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
+            double rotationAngle, Point rotationCenter, double translationOffxet_x, double translationOffset_y, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
             if (listPoints == null) return;
             if (listPoints.Count < 2) return;
@@ -1057,6 +1058,22 @@ namespace BaseClasses
             myLine.StrokeEndLineCap = endCap;
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
+
+            // Translation and rotation a rotaciu, ak sa maju realizovat sucasne musi sa vytvorit transformacna matica alebo group
+            RotateTransform rotateTransform = new RotateTransform(rotationAngle,rotationCenter.X, rotationCenter.Y); // + clockwise, - counter-clockwise
+            TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
+            TransformGroup transformGroup_RandT = new TransformGroup();
+            transformGroup_RandT.Children.Add(rotateTransform);
+            transformGroup_RandT.Children.Add(translateTransform);
+            myLine.RenderTransform = transformGroup_RandT;
+
+            // MATRIX
+            //Matrix m = Matrix.Identity;
+            //m.Scale(1, 1);
+            //m.Rotate(90);
+            //m.Translate(300, 0);
+            //myLine.RenderTransform = new MatrixTransform(m);
+
             Canvas.SetTop(myLine, dCanvasTopTemp);
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
