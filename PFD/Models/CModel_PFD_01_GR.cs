@@ -18,7 +18,7 @@ namespace PFD
         public float fW_frame;
         public float fL1_frame;
         public float fRoofPitch_rad;
-        int iFrameNo;
+        public int iFrameNo;
         public float fL_tot;
         public float fDist_Girt;
         public float fDist_Purlin;
