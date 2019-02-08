@@ -1039,13 +1039,13 @@ namespace BaseClasses
         //    Canvas.SetLeft(myLine, dCanvasLeftTemp);
         //    imageCanvas.Children.Add(myLine);
         //}
-        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
+        public static List<Point> DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
             double rotationAngle, Point rotationCenter, double translationOffxet_x, double translationOffset_y, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
-            if (listPoints == null) return;
-            if (listPoints.Count < 2) return;
+            if (listPoints == null) return null;
+            if (listPoints.Count < 2) return null;
 
-            PointCollection points = new PointCollection();
+            List<Point> points = new List<Point>();
             int iNumberOfLineSegments = listPoints.Count + (bIsClosed ? 1 : 0);
 
             for (int i = 0; i < iNumberOfLineSegments; i++)
@@ -1059,7 +1059,7 @@ namespace BaseClasses
             Polyline myLine = new Polyline();
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
-            myLine.Points = points;
+            myLine.Points = new PointCollection(points);
             myLine.StrokeThickness = thickness;
             myLine.StrokeStartLineCap = startCap;
             myLine.StrokeEndLineCap = endCap;
@@ -1084,6 +1084,18 @@ namespace BaseClasses
             Canvas.SetTop(myLine, dCanvasTopTemp);
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
+
+
+            List<Point> translatedPoints = new List<Point>();
+            foreach (Point p in points)
+            {
+                Point transP = transformGroup_RandT.Transform(p);
+                transP.X += dCanvasLeftTemp;
+                transP.Y += dCanvasTopTemp;
+                translatedPoints.Add(transP);
+            }
+
+            return translatedPoints;
         }
         public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
