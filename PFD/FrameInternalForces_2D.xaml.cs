@@ -11,9 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Globalization;
 using BaseClasses;
 using MATH;
-using System.ComponentModel;
 
 namespace PFD
 {
@@ -43,7 +44,7 @@ namespace PFD
             ////////////////////////////////////////////////////////////////////////////////////////////////
             double dMemberLengthScale = 70; // TODO - spocitat podla rozmerov canvas
             double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
-            double dInternalForceScale_user = 2; // Uzivatelske scalovanie zadane numericky alebo to moze to byt napriklad aj klavesova skratka napr. d + wheel button (zvacsi / zmensi sa diagram v smere kolmom na pruty)
+            double dInternalForceScale_user = 1; // Uzivatelske scalovanie zadane numericky alebo to moze to byt napriklad aj klavesova skratka napr. d + wheel button (zvacsi / zmensi sa diagram v smere kolmom na pruty)
 
 
 
@@ -62,7 +63,7 @@ namespace PFD
 
 
 
-            double maximumOriginalYCoordinate = 8.0f + 0.5f;  // TODO - spocitat z geometrie modelu + nejaky odstup ??? (mozno to nie je nutne, pouzije sa top margin)
+            double maximumOriginalYCoordinate = 8.0f + 1.5f;  // TODO - spocitat z geometrie modelu + nejaky odstup ??? (mozno to nie je nutne, pouzije sa top margin)
             double factorSwitchYAxis = -1;
             // Draw each member in the model and selected internal force diagram
             for (int i = 0; i < model.m_arrMembers.Length; i++)
@@ -133,6 +134,51 @@ namespace PFD
                 dMemberLengthScale * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x,
                 dMemberLengthScale * maximumOriginalYCoordinate + dMemberLengthScale * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z + dAdditionalOffset_y,
                 Brushes.Blue, PenLineCap.Flat, PenLineCap.Flat, 1, Canvas_InternalForceDiagram);
+
+
+                // TO Ondrej - tak trosku narychlo :)))
+                // POKUS O VYKRESLENIE TEXTU S HODNOTOU INTERNAL FORCE NA ZACIATKU A NA KONCI PRUTA
+
+                // Number of points
+                int iNumberOfPoints = listMemberInternalForcePoints.Count;
+                Point startPointText = listMemberInternalForcePoints[1]; // Pridali sme [0,0] preto zaciname az indexom 1
+                Point endPointText = listMemberInternalForcePoints[iNumberOfPoints - 1 - 1]; // Pridali sme [L,0] preto zaciname uz indexom (n-1-1)
+
+                string[] pointText = new string[2];
+                float fUnitFactor = 0.001f; // N to kN or Nm to kNm
+                string unitForce = "kN"; // N, Vy, Vz (resp. Fx, Fy, Fz)
+                string unitMoment = "kNm"; // T, My, Mz (resp. Mx My, Mz)
+
+                // TODO - napojit vybrany typ IF - teraz je pouzity natvrdo M_yy
+
+                pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * internalforces[0][i][0].fM_yy,2))) + " " + unitMoment;
+                pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * internalforces[0][i][iNumberOfPoints - 3].fM_yy, 2))) + " " + unitMoment;
+
+                // Transform text points from LCS of member to GCS of frame in 2D graphics
+                // Rotate and translate points - same as for polyline
+
+                float fx_start = Geom2D.GetRotatedPosition_x_CW_rad((float)startPointText.X, (float)startPointText.Y, rotAngle_radians);
+                float fy_start = Geom2D.GetRotatedPosition_y_CW_rad((float)startPointText.X, (float)startPointText.Y, rotAngle_radians);
+
+                float fx_end = Geom2D.GetRotatedPosition_x_CW_rad((float)endPointText.X, (float)endPointText.Y, rotAngle_radians);
+                float fy_end = Geom2D.GetRotatedPosition_y_CW_rad((float)endPointText.X, (float)endPointText.Y, rotAngle_radians);
+
+                Point startPointText_newRotated = new Point(fx_start, fy_start);
+                Point endPointText_newRotated = new Point(fx_end, fy_end);
+
+                // Translate text points
+
+                float[] textpointCoordinates_x = new float[2];
+                textpointCoordinates_x[0] = (float)(startPointText_newRotated.X);
+                textpointCoordinates_x[1] = (float)(endPointText_newRotated.X);
+
+                float[] textpointCoordinates_y = new float[2];
+                textpointCoordinates_y[0] = (float)(startPointText_newRotated.Y);
+                textpointCoordinates_y[1] = (float)(endPointText_newRotated.Y);
+
+                Drawing2D.DrawTexts(pointText, textpointCoordinates_x, textpointCoordinates_y, 
+                    (float)Canvas_InternalForceDiagram.Width, (float)Canvas_InternalForceDiagram.Height,
+                    10, 10, 5, 5, 400, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
             }
         }
 
