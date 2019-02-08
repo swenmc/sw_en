@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="FrameInternalForces_2D" Height="450" Width="800">
+        Title="FrameInternalForces_2D" Height="650" Width="1000">
     <Grid>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Internal Forces [kN or kNm - TODO add combobox to select IF type N, Vz, Vy, T, My, Mz]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Name ="Combobox_TypeIF" HorizontalAlignment="Left" VerticalAlignment="Top" 
                   SelectedIndex="{Binding Path=IFTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=IFTypes}"/>
-        <Canvas Grid.Row="0" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="415" VerticalAlignment="Top" Width="790" Grid.ColumnSpan="4"/>
+        <Canvas Grid.Row="0" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>

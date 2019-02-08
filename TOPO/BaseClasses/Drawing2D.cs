@@ -56,6 +56,7 @@ namespace BaseClasses
                     fTempMin_X,
                     fTempMax_Y,
                     fTempMin_Y,
+                    0.8f,
                     scale_unit,
                     width,
                     height,
@@ -148,6 +149,7 @@ namespace BaseClasses
                     fTempMin_X,
                     fTempMax_Y,
                     fTempMin_Y,
+                    0.8f,
                     scale_unit,
                     width,
                     height,
@@ -279,6 +281,7 @@ namespace BaseClasses
             double dFactor_y;
             float fReal_Model_Zoom_Factor;
             float fmodelMarginLeft_x;
+            float fmodelMarginTop_y;
             float fmodelMarginBottom_y;
 
             CalculateBasicValue(
@@ -294,6 +297,7 @@ namespace BaseClasses
                 out dFactor_y,
                 out fReal_Model_Zoom_Factor,
                 out fmodelMarginLeft_x,
+                out fmodelMarginTop_y,
                 out fmodelMarginBottom_y
                 );
 
@@ -501,6 +505,7 @@ namespace BaseClasses
             double fTempMin_X,
             double fTempMax_Y,
             double fTempMin_Y,
+            double fScale_Factor, // 0-1
             int scale_unit,
             double dPageWidth,
             double dPageHeight,
@@ -532,7 +537,7 @@ namespace BaseClasses
             dFactor_y = dModel_Length_y_page / dPageHeight;
 
             // Calculate new model dimensions (zoom of model size is 80%)
-            dReal_Model_Zoom_Factor = 0.8 / Math.Max(dFactor_x, dFactor_y) * scale_unit;
+            dReal_Model_Zoom_Factor = fScale_Factor / Math.Max(dFactor_x, dFactor_y) * scale_unit;
 
             // Set new size of model on the page
             dModel_Length_x_page = dReal_Model_Zoom_Factor * dModel_Length_x_real;
@@ -564,6 +569,7 @@ namespace BaseClasses
             out double dFactor_y,
             out float fReal_Model_Zoom_Factor,
             out float fmodelMarginLeft_x,
+            out float fmodelMarginTop_y,
             out float fmodelMarginBottom_y
             )
         {
@@ -583,6 +589,7 @@ namespace BaseClasses
             fModel_Length_y_page = fReal_Model_Zoom_Factor * fModel_Length_y_real;
 
             fmodelMarginLeft_x = (float)(0.5 * (dPageWidth - fModel_Length_x_page));
+            fmodelMarginTop_y = (float)(0.5 * (dPageHeight - fModel_Length_y_page));
 
             fmodelMarginBottom_y = (float)(fModel_Length_y_page + 0.5 * (dPageHeight - fModel_Length_y_page));
         }
@@ -1933,14 +1940,20 @@ namespace BaseClasses
             return new Size(formattedText.Width, formattedText.Height);
         }
 
-        public static void DrawTexts(string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
+        public static void DrawTexts(bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, SolidColorBrush color, Canvas canvas)
         {
-            float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
-            float fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
+            float fFactorX = 1.0f;
+            float fFactorY = 1.0f;
 
-            float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
-            float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+            if (bUseZoomFactor) 
+            {
+                float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
+                fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
+
+                float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
+                fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+            }
 
             for (int i = 0; i < array_text.Length; i++)
             {
