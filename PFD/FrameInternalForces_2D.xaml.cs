@@ -122,24 +122,16 @@ namespace PFD
             // TO Ondrej, malo by sa nejako rozhodnut v ci mam najprv vsetko pocitat v stutocnych jednotkach a potom to prenasobit alebo cim skor prejst na zobrazovacie jednotky
             // Teraz to mam pri niecom tak, pri niecom inak ... trosku som sa zamotal
 
-            double factorSwitchYAxis = -1;
+            int factorSwitchYAxis = -1;
             // Draw each member in the model and selected internal force diagram
             for (int i = 0; i < model.m_arrMembers.Length; i++)
             {
-                // Draw member
-                List<Point> listMemberPoints = new List<Point>(2);
-                listMemberPoints.Add(new Point(0, 0));
-                listMemberPoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[i].FLength, 0));
-
                 // Calculate Member Rotation angle (clockwise)
                 double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
                 double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
 
-                //Draw member
-                Drawing2D.DrawPolyLine(false, listMemberPoints, fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, 1, rotAngle_degrees, new Point(0, 0),
-                    fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X, fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z,
-                    Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, Canvas_InternalForceDiagram);
-
+                
+                
 
                 //get list of points from Dictionary, if not exist then calculate
                 List<Point> listMemberInternalForcePoints;
@@ -180,7 +172,7 @@ namespace PFD
                 double translationOffset_x = fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x;
                 double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z + dAdditionalOffset_y;
 
-                Drawing2D.DrawPolyLine(false,
+                Drawing2D.DrawPolygon(
                     listMemberInternalForcePoints,
                     fCanvasTop,
                     fCanvasLeft,
@@ -192,10 +184,17 @@ namespace PFD
                     translationOffset_x,
                     translationOffset_y,
                     Brushes.Blue,
+                    Brushes.Red,
                     PenLineCap.Flat,
                     PenLineCap.Flat,
                     1,
+                    0.5,
                     Canvas_InternalForceDiagram);
+
+                //Draw Member on the Internal forces polygon
+                DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
+                    fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fmodelBottomPosition_y);
+
 
                 // TO Ondrej - tak trosku narychlo :))) Treba sa pohrat s odsadeniami a dostat tie texty na okraj krivky
                 // POKUS O VYKRESLENIE TEXTU S HODNOTOU INTERNAL FORCE NA ZACIATKU A NA KONCI PRUTA
@@ -272,6 +271,19 @@ namespace PFD
             }
         }
 
+        private void DrawMember(int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
+            float fCanvasTop, float fCanvasLeft, float fmodelMarginLeft_x, float fmodelMarginBottom_y, float fmodelBottomPosition_y)
+        {
+            // Draw member
+            List<Point> listMemberPoints = new List<Point>(2);
+            listMemberPoints.Add(new Point(0, 0));
+            listMemberPoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+            
+            //Draw member
+            Drawing2D.DrawPolyLine(false, listMemberPoints, fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, 1, rotAngle_degrees, new Point(0, 0),
+                fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X, fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z,
+                Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
+        }
 
         private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
         {

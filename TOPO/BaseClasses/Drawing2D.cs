@@ -1055,7 +1055,7 @@ namespace BaseClasses
                 else
                     points.Add(new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * listPoints[0].X, modelMarginBottom_y - dReal_Model_Zoom_Factor * listPoints[0].Y)); // Last point is same as first one
             }
-
+            
             Polyline myLine = new Polyline();
             myLine.Stretch = Stretch.Fill;
             myLine.Stroke = color;
@@ -1106,6 +1106,44 @@ namespace BaseClasses
             Canvas.SetTop(myLine, canvasTop);
             Canvas.SetLeft(myLine, canvasLeft);
             imageCanvas.Children.Add(myLine);
+        }
+
+        public static void DrawPolygon(List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
+            double rotationAngle, Point rotationCenter, double translationOffxet_x, double translationOffset_y, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
+        {
+            if (listPoints == null) return;
+            if (listPoints.Count < 2) return;
+
+            PointCollection points = new PointCollection();
+            for (int i = 0; i < listPoints.Count; i++)
+            {
+                points.Add(new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * listPoints[i].X, modelMarginBottom_y - dReal_Model_Zoom_Factor * listPoints[i].Y));
+            }
+
+            Polygon polygon = new Polygon();
+            polygon.Stretch = Stretch.Fill;
+            polygon.Stroke = stroke_color;
+            polygon.Fill = fill_color;
+            polygon.Points = points;
+            polygon.StrokeThickness = thickness;
+            polygon.StrokeStartLineCap = startCap;
+            polygon.StrokeEndLineCap = endCap;
+            polygon.Opacity = opacity;
+            
+            //To Mato: Toto tu je fakt nutne???
+
+            // Translation and rotation a rotaciu, ak sa maju realizovat sucasne musi sa vytvorit transformacna matica alebo group
+            RotateTransform rotateTransform = new RotateTransform(rotationAngle, rotationCenter.X, rotationCenter.Y); // + clockwise, - counter-clockwise
+            TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
+            TransformGroup transformGroup_RandT = new TransformGroup();
+            transformGroup_RandT.Children.Add(rotateTransform);
+            transformGroup_RandT.Children.Add(translateTransform);
+            polygon.RenderTransform = transformGroup_RandT;
+            
+
+            Canvas.SetTop(polygon, dCanvasTopTemp);
+            Canvas.SetLeft(polygon, dCanvasLeftTemp);
+            imageCanvas.Children.Add(polygon);
         }
 
         public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
