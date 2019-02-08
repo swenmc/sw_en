@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Globalization;
 using BaseClasses;
 using MATH;
+using PFD.ViewModels;
 
 namespace PFD
 {
@@ -23,14 +24,24 @@ namespace PFD
     /// </summary>
     public partial class FrameInternalForces_2D : Window
     {
-        public FrameInternalForces_2D(CExample model, List<List<List<basicInternalForces>>> internalforces)
+        private CModel model;
+        List<List<List<basicInternalForces>>> internalforces;
+        public FrameInternalForces_2D(CExample example_model, List<List<List<basicInternalForces>>> list_internalforces)
         {
+            model = example_model;
+            internalforces = list_internalforces;
+
             InitializeComponent();
 
-            //CFrameInternalForces_2DViewModel vm = new CFrameInternalForces_2DViewModel();
-            //vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
-            //this.DataContext = vm;
+            FrameInternalForces_2DViewModel vm = new FrameInternalForces_2DViewModel();
+            vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
+            this.DataContext = vm;
 
+            DrawDiagram();
+        }
+
+        private void DrawDiagram()
+        {
             // LCS of member (x,z) = (x,-y)
             // Draw member
 
@@ -48,7 +59,7 @@ namespace PFD
 
             List<Point> modelNodesCoordinatesInGCS = new List<Point>();
 
-            for(int i = 0; i< model.m_arrNodes.Length; i++) // Naplnime pole bodov s globanymi suradnicami modelu
+            for (int i = 0; i < model.m_arrNodes.Length; i++) // Naplnime pole bodov s globanymi suradnicami modelu
             {
                 modelNodesCoordinatesInGCS.Add(new Point(model.m_arrNodes[i].X, model.m_arrNodes[i].Z));
             }
@@ -145,7 +156,10 @@ namespace PFD
                 for (int j = 0; j < internalforces[0][i].Count; j++) // For each member create list of points [x, IF value]
                 {
                     double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[i].FLength;
-                    double xlocationValue = dInternalForceScale * dInternalForceScale_user * internalforces[0][i][j].fM_yy; // TODO - vytvorit enum pre internal force a nacitat vybrany typ
+
+
+                    float IF_Value = GetInternalForcesValue(internalforces[0][i][j]);
+                    double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value; 
 
                     // TODO - pozicie x by sa mohli ulozit spolu s vysledkami, aby sa nemuseli pocitat znova
                     listMemberInternalForcePoints.Add(new Point(xlocationCoordinate, xlocationValue));
@@ -195,7 +209,7 @@ namespace PFD
                     PenLineCap.Flat,
                     1,
                     Canvas_InternalForceDiagram);
-                
+
                 // TO Ondrej - tak trosku narychlo :))) Treba sa pohrat s odsadeniami a dostat tie texty na okraj krivky
                 // POKUS O VYKRESLENIE TEXTU S HODNOTOU INTERNAL FORCE NA ZACIATKU A NA KONCI PRUTA
 
@@ -209,10 +223,10 @@ namespace PFD
                 string unitForce = "kN"; // N, Vy, Vz (resp. Fx, Fy, Fz)
                 string unitMoment = "kNm"; // T, My, Mz (resp. Mx My, Mz)
 
-                // TODO - napojit vybrany typ IF - teraz je pouzity natvrdo M_yy
-
-                pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * internalforces[0][i][0].fM_yy,2))) + " " + unitMoment;
-                pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * internalforces[0][i][iNumberOfPoints - 3].fM_yy, 2))) + " " + unitMoment;
+                float IF_Value1 = GetInternalForcesValue(internalforces[0][i][0]);                
+                pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value1, 2))) + " " + unitMoment;
+                float IF_Value2 = GetInternalForcesValue(internalforces[0][i][iNumberOfPoints - 3]);
+                pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value2, 2))) + " " + unitMoment;
 
                 // Transform text points from LCS of member to GCS of frame in 2D graphics
                 // Rotate and translate points - same as for polyline
@@ -251,13 +265,37 @@ namespace PFD
                 Drawing2D.DrawTexts(false, pointText, textpointCoordinates_x, textpointCoordinates_y,
                     fCanvasWidth, fCanvasHeight,
                     fmodelMarginLeft_x, fmodelMarginRight_x, fmodelMarginTop_y, fmodelMarginBottom_y, fmodelBottomPosition_y, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
+
             }
         }
 
 
+        private float GetInternalForcesValue(basicInternalForces bif)
+        {
+            FrameInternalForces_2DViewModel vm = this.DataContext as FrameInternalForces_2DViewModel;
+            //"N", "Vz", "Vy", "T", "My", "Mz"
+            switch (vm.IFTypeIndex)
+            {
+                case 0: return bif.fN;
+                case 1: return bif.fV_zz; //bif.fV_zv???
+                case 2: return bif.fV_yy; //bif.fV_yu???
+                case 3: return bif.fT;
+                case 4: return bif.fM_yy;
+                case 5: return bif.fM_zz;
+                default: throw new Exception($"Not known internal force; IFTypeIndex: {vm.IFTypeIndex}");
+
+            }
+        }
+
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
+            if (e.PropertyName == "IFTypeIndex")
+            {
+                
+                DrawDiagram();
+                
+            }
         }
     }
 }

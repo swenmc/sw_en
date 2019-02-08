@@ -114,6 +114,7 @@
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextBoxEnterKeyUpdateBehavior.cs" />
+    <Compile Include="ViewModels\FrameInternalForces_2DViewModel.cs" />
     <Compile Include="WaitWindow.xaml.cs">
       <DependentUpon>WaitWindow.xaml</DependentUpon>
     </Compile>

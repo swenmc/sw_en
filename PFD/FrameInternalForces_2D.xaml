@@ -7,9 +7,20 @@
         mc:Ignorable="d"
         Title="FrameInternalForces_2D" Height="650" Width="1000">
     <Grid>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Internal Forces [kN or kNm - TODO add combobox to select IF type N, Vz, Vy, T, My, Mz]" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <ComboBox Name ="Combobox_TypeIF" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                  SelectedIndex="{Binding Path=IFTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=IFTypes}"/>
-        <Canvas Grid.Row="0" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
+        <Grid.ColumnDefinitions>            
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10 0 0 0" Orientation="Horizontal">
+            <TextBlock  Text="Internal Forces [kN or kNm]: " />
+            <ComboBox Name ="Combobox_TypeIF" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 0 0 0"
+                  SelectedIndex="{Binding Path=IFTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=List_IFTypes}"/>
+        </StackPanel>
+        
+        <Canvas Grid.Row="1" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>
