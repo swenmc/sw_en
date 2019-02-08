@@ -1108,13 +1108,13 @@ namespace BaseClasses
             imageCanvas.Children.Add(myLine);
         }
 
-        public static void DrawPolygon(List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
+        public static List<Point> DrawPolygon(List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
             double rotationAngle, Point rotationCenter, double translationOffxet_x, double translationOffset_y, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
         {
-            if (listPoints == null) return;
-            if (listPoints.Count < 2) return;
+            if (listPoints == null) return null;
+            if (listPoints.Count < 2) return null;
 
-            PointCollection points = new PointCollection();
+            List<Point> points = new List<Point>();
             for (int i = 0; i < listPoints.Count; i++)
             {
                 points.Add(new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * listPoints[i].X, modelMarginBottom_y - dReal_Model_Zoom_Factor * listPoints[i].Y));
@@ -1124,12 +1124,12 @@ namespace BaseClasses
             polygon.Stretch = Stretch.Fill;
             polygon.Stroke = stroke_color;
             polygon.Fill = fill_color;
-            polygon.Points = points;
+            polygon.Points = new PointCollection(points);
             polygon.StrokeThickness = thickness;
             polygon.StrokeStartLineCap = startCap;
             polygon.StrokeEndLineCap = endCap;
             polygon.Opacity = opacity;
-            
+
             //To Mato: Toto tu je fakt nutne???
 
             // Translation and rotation a rotaciu, ak sa maju realizovat sucasne musi sa vytvorit transformacna matica alebo group
@@ -1140,10 +1140,20 @@ namespace BaseClasses
             transformGroup_RandT.Children.Add(translateTransform);
             polygon.RenderTransform = transformGroup_RandT;
             
-
             Canvas.SetTop(polygon, dCanvasTopTemp);
             Canvas.SetLeft(polygon, dCanvasLeftTemp);
             imageCanvas.Children.Add(polygon);
+            
+            List<Point> translatedPoints = new List<Point>();
+            foreach (Point p in points)
+            {
+                Point transP = transformGroup_RandT.Transform(p);
+                //transP.X += dCanvasLeftTemp;
+                //transP.Y += dCanvasTopTemp;
+                translatedPoints.Add(transP);
+            }
+                
+            return translatedPoints;
         }
 
         public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
@@ -1979,7 +1989,7 @@ namespace BaseClasses
         }
 
         public static void DrawTexts(bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
-            float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, SolidColorBrush color, Canvas canvas)
+            float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, bool isTextAboveCtrlPoint, SolidColorBrush color, Canvas canvas)
         {
             float fFactorX = 1.0f;
             float fFactorY = 1.0f;
@@ -1995,7 +2005,7 @@ namespace BaseClasses
 
             for (int i = 0; i < array_text.Length; i++)
             {
-                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 0, 12, false, color, canvas);
+                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 0, 12, isTextAboveCtrlPoint, color, canvas);
             }
         }
         public static float CalculateZoomFactor(float[] arrPointsCoord, float fCanvasDimension, float fMarginValue1, float fMarginValue2, out float fValueMin, out float fValueMax, out float fRangeOfValues, out float fAxisLength)

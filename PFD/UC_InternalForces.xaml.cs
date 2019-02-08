@@ -196,7 +196,7 @@ namespace PFD
         public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
         {
             Drawing2D.DrawTexts(true, ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y,
-                modelBottomPosition_y, color, canvasForImage);
+                modelBottomPosition_y, false, color, canvasForImage);
         }
 
         public string[] ConvertArrayFloatToString(float[] array_float, int iDecimalPlaces = 3)
