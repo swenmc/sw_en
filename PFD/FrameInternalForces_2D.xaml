@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="FrameInternalForces_2D" Height="650" Width="1000">
+        Title="FrameInternalForces_2D" Height="650" Width="1000" MouseWheel="Window_MouseWheel">
     <Grid>
         <Grid.ColumnDefinitions>            
             <ColumnDefinition Width="*"/>
@@ -19,6 +19,7 @@
             <TextBlock  Text="Internal Forces [kN or kNm]: " />
             <ComboBox Name ="Combobox_TypeIF" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 0 0 0"
                   SelectedIndex="{Binding Path=IFTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=List_IFTypes}"/>
+            <TextBlock Margin="25 0 0 0"  Text="Use mouse wheel to zoom in and zoom out" />
         </StackPanel>
         
         <Canvas Grid.Row="1" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>

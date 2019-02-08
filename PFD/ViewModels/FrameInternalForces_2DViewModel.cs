@@ -12,6 +12,8 @@ namespace PFD.ViewModels
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         private int MIFTypeIndex;
+        private string MIFTypeUnit;
+        private double MInternalForceScale_user;
 
         List<string> list_IFTypes;
        
@@ -26,6 +28,9 @@ namespace PFD.ViewModels
             set
             {
                 MIFTypeIndex = value;
+                //"N", "Vz", "Vy", "T", "My", "Mz"
+                if (MIFTypeIndex <= 2) MIFTypeUnit = "kN";
+                else MIFTypeUnit = "kNm";
                 NotifyPropertyChanged("IFTypeIndex");
             }
         }
@@ -42,10 +47,43 @@ namespace PFD.ViewModels
                 list_IFTypes = value;
             }
         }
+                
+
+        public string IFTypeUnit
+        {
+            get
+            {
+                return MIFTypeUnit;
+            }
+
+            set
+            {
+                MIFTypeUnit = value;
+            }
+        }
+
+        public double InternalForceScale_user
+        {
+            get
+            {
+                return MInternalForceScale_user;
+            }
+
+            set
+            {
+                MInternalForceScale_user = value;
+                //do not allow negative zoom
+                if (MInternalForceScale_user < 0) MInternalForceScale_user = 0;
+
+                NotifyPropertyChanged("InternalForceScale_user");
+            }
+        }
 
         public FrameInternalForces_2DViewModel()
         {
-            IFTypeIndex = 0;
+            IFTypeIndex = 4;
+            InternalForceScale_user = 1;
+
             list_IFTypes = new List<string>() { "N", "Vz", "Vy", "T", "My", "Mz" };            
         }
 

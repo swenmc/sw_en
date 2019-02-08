@@ -26,10 +26,15 @@ namespace PFD
     {
         private CModel model;
         List<List<List<basicInternalForces>>> internalforces;
+
+        Dictionary<string, List<Point>> DictMemberInternalForcePoints;
+        
         public FrameInternalForces_2D(CExample example_model, List<List<List<basicInternalForces>>> list_internalforces)
         {
             model = example_model;
             internalforces = list_internalforces;
+
+            DictMemberInternalForcePoints = new Dictionary<string, List<Point>>();
 
             InitializeComponent();
 
@@ -42,6 +47,7 @@ namespace PFD
 
         private void DrawDiagram()
         {
+            FrameInternalForces_2DViewModel vm = this.DataContext as FrameInternalForces_2DViewModel;
             // LCS of member (x,z) = (x,-y)
             // Draw member
 
@@ -104,12 +110,7 @@ namespace PFD
             // To Ondrej - tu som to asi prekombinoval s tym je mam aj canvas aj margin a uz som schaoseny co a ako pouzit
             float fCanvasTop = 10f;
             float fCanvasLeft = fmodelMarginLeft_x;
-
-            double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
-            double dInternalForceScale_user = 1; // Uzivatelske scalovanie zadane numericky alebo to moze to byt napriklad aj klavesova skratka napr. d + wheel button (zvacsi / zmensi sa diagram v smere kolmom na pruty)
-
-
-
+            
             // TO Ondrej
             // Tento diagram by chcelo vylepsit a sprehladnit.
             // TODO - doplnit texty, pre texty si odlozit povodne hodnoty IF separatne (grafika diagramu sa moze scalovat ale hodnoty zobrazenych sil v texte ostavaju rovnake)
@@ -134,40 +135,26 @@ namespace PFD
                 double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
                 double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
 
+                //Draw member
                 Drawing2D.DrawPolyLine(false, listMemberPoints, fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, 1, rotAngle_degrees, new Point(0, 0),
                     fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X, fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z,
                     Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 2, Canvas_InternalForceDiagram);
 
-                // Draw diagram curve
 
-                List<Point> listMemberInternalForcePoints = new List<Point>();
-
-                const int iNumberOfResultsSections = 11;
-                double[] xLocations_rel = new double[iNumberOfResultsSections];
-
-                // Fill relative coordinates (x_rel)
-                for (int s = 0; s < iNumberOfResultsSections; s++)
-                    xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
-
-                // First point (start at [0,0])
-                listMemberInternalForcePoints.Add(new Point(0, 0));
-
-                // Internal force diagram points
-                for (int j = 0; j < internalforces[0][i].Count; j++) // For each member create list of points [x, IF value]
+                //get list of points from Dictionary, if not exist then calculate
+                List<Point> listMemberInternalForcePoints;
+                string key = $"{vm.IFTypeIndex}_{i}_{vm.InternalForceScale_user.ToString("F3")}";
+                if (DictMemberInternalForcePoints.ContainsKey(key))
                 {
-                    double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[i].FLength;
-
-
-                    float IF_Value = GetInternalForcesValue(internalforces[0][i][j]);
-                    double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value; 
-
-                    // TODO - pozicie x by sa mohli ulozit spolu s vysledkami, aby sa nemuseli pocitat znova
-                    listMemberInternalForcePoints.Add(new Point(xlocationCoordinate, xlocationValue));
+                    listMemberInternalForcePoints = DictMemberInternalForcePoints[key];
                 }
-
-                // Last point (end at [L,0])
-                listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[i].FLength, 0));
-
+                else
+                {
+                    listMemberInternalForcePoints = GetMemberInternalForcePoints(i, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
+                }
+                
+                
+                // Draw diagram curve
                 double MinValue = Double.MaxValue;
                 double MaxValue = Double.MinValue;
 
@@ -220,13 +207,11 @@ namespace PFD
 
                 string[] pointText = new string[2];
                 float fUnitFactor = 0.001f; // N to kN or Nm to kNm
-                string unitForce = "kN"; // N, Vy, Vz (resp. Fx, Fy, Fz)
-                string unitMoment = "kNm"; // T, My, Mz (resp. Mx My, Mz)
-
+                
                 float IF_Value1 = GetInternalForcesValue(internalforces[0][i][0]);                
-                pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value1, 2))) + " " + unitMoment;
+                pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value1, 2))) + " " + vm.IFTypeUnit;
                 float IF_Value2 = GetInternalForcesValue(internalforces[0][i][iNumberOfPoints - 3]);
-                pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value2, 2))) + " " + unitMoment;
+                pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value2, 2))) + " " + vm.IFTypeUnit;
 
                 // Transform text points from LCS of member to GCS of frame in 2D graphics
                 // Rotate and translate points - same as for polyline
@@ -287,15 +272,76 @@ namespace PFD
             }
         }
 
+
+        private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
+        {
+            double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
+            
+            List<Point> listMemberInternalForcePoints = new List<Point>();
+
+            const int iNumberOfResultsSections = 11;
+            double[] xLocations_rel = new double[iNumberOfResultsSections];
+
+            // Fill relative coordinates (x_rel)
+            for (int s = 0; s < iNumberOfResultsSections; s++)
+                xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
+
+            // First point (start at [0,0])
+            listMemberInternalForcePoints.Add(new Point(0, 0));
+
+            // Internal force diagram points
+            for (int j = 0; j < internalforces[0][memberIndex].Count; j++) // For each member create list of points [x, IF value]
+            {
+                double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
+
+
+                float IF_Value = GetInternalForcesValue(internalforces[0][memberIndex][j]);
+                double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
+
+                //pozicie x sa ulozia, aby sa nemuseli pocitat znova
+                listMemberInternalForcePoints.Add(new Point(xlocationCoordinate, xlocationValue));
+            }
+
+            // Last point (end at [L,0])
+            listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+
+            DictMemberInternalForcePoints.Add(key, listMemberInternalForcePoints);
+
+            return listMemberInternalForcePoints;
+        }
+
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
             if (e.PropertyName == "IFTypeIndex")
             {
-                
-                DrawDiagram();
-                
+                RedrawDiagram();               
             }
+            if (e.PropertyName == "InternalForceScale_user")
+            {
+                RedrawDiagram();
+            }
+        }
+        private void RedrawDiagram()
+        {
+            ClearCanvas();
+            DrawDiagram();
+        }
+
+        private void ClearCanvas()
+        {
+            Canvas_InternalForceDiagram.Children.Clear();
+        }
+
+        private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            FrameInternalForces_2DViewModel vm = this.DataContext as FrameInternalForces_2DViewModel;
+
+            //u mna je e.Delta 120/-120
+            vm.InternalForceScale_user = vm.InternalForceScale_user + (e.Delta / 120 * 0.1);
+            
+
+
         }
     }
 }
