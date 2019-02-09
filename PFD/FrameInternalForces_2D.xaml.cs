@@ -135,7 +135,7 @@ namespace PFD
                 {
                     listMemberInternalForcePoints = GetMemberInternalForcePoints(i, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
                 }
-                                
+
                 double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
                 double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z; 
 
@@ -150,12 +150,12 @@ namespace PFD
                     points.Add(transformGroup_RandT.Transform(p));
 
                 float fUnitFactor = 0.001f; // N to kN or Nm to kNm
-                // Este by to chcelo pridat aj texty s hodnotami
+
                 for (int c = 0; c < internalforces[0][i].Count; c++)
                 {
                     float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
                     string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
-                    Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);                    
+                    Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);
                 }
                    
                 Drawing2D.DrawPolygon(
@@ -168,7 +168,7 @@ namespace PFD
                     0.5,
                     Canvas_InternalForceDiagram);
 
-                //Draw Member on the Internal forces polygon
+                // Draw Member on the Internal forces polygon
                 DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
                     fmodelMarginLeft_x, fmodelBottomPosition_y);
             }
