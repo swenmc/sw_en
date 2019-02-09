@@ -151,11 +151,11 @@ namespace PFD
 
                 float fUnitFactor = 0.001f; // N to kN or Nm to kNm
                 // Este by to chcelo pridat aj texty s hodnotami
-                for (int c = 0; c < points.Count - 3; c++)
+                for (int c = 0; c < internalforces[0][i].Count; c++)
                 {
                     float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
                     string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
-                    Drawing2D.DrawText(txt, points[c].X, points[c].Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);                    
+                    Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);                    
                 }
                    
                 Drawing2D.DrawPolygon(
