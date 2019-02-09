@@ -1151,20 +1151,50 @@ namespace BaseClasses
             transformGroup_RandT.Children.Add(rotateTransform);
             transformGroup_RandT.Children.Add(translateTransform);
             polygon.RenderTransform = transformGroup_RandT;
-            
+
             Canvas.SetTop(polygon, dCanvasTopTemp);
             Canvas.SetLeft(polygon, dCanvasLeftTemp);
             imageCanvas.Children.Add(polygon);
-            
+
+            // TESTY - urcit suradnice bodov ktore sedia s tym ako sa vykresli v skutocnosti polyline /////////////////////////////////////////////////////////////
+            PointCollection translatedPoints_test = new PointCollection();
+            translatedPoints_test = polygon.Points;
+
+            Point a = Geom2D.RotatePoint(new Point(dCanvasLeftTemp, dCanvasTopTemp), rotationAngle);
+
+            foreach (Point p in translatedPoints_test)
+            {
+                Point transP = transformGroup_RandT.Transform(p);
+                //transP.X += dCanvasLeftTemp;
+                //transP.Y += dCanvasTopTemp;
+
+                transP.X -= 20;
+                transP.Y += 158;
+                // TO Ondrej
+                // Problem je, ze po transformacii transformGroup_RandT este prebehne Canvas.SetTop a Canvas.SetLeft, lenze tieto posuny sa do translatedPoints neprevadzaju
+                // ak pre tieto body chceme len pripocitat konstantne hodnoty dCanvasLeftTemp a dCanvasTopTemp, tak to nesedi lebo pootocenim objektu sa menia aj parametre ktore treba nastavit do canvas
+
+                // Skusal som tieto hodnoty urcit vid "Point a", ale este je tam problem s tym ze prut nezacina v [0,0] ale v modelMarginLeft_x .... a kedze sa otaca okolo [0,0] tak tam vznikaju dalsie rozdiely
+                // Tu su natvrdo vyznacene hodnoty, ktore by platili pre prvy prut, aby text sedel na polyline
+
+                // Najjednoduchsie by asi bolo vytiahnut cele toto otacanie a prevadzanie z suradnic bodov listPoints z LCS do GCS mimo tuto funkciu a kreslit potom polyline / polygon uz z pripravenych globalnych suradnic
+                // a na tej istej sade uz transformovanych bodov potom zobrazovat texty
+
+                // NOTE - docasne vykreslujeme body na ktore sa viaze text - nesedia na bodoch polyline
+                DrawPoint(transP, Brushes.DarkRed, Brushes.DarkRed, 2, imageCanvas);
+            }
+            ///////////////////////////////////////////////////////////////////////
+
             List<Point> translatedPoints = new List<Point>();
             foreach (Point p in points)
             {
                 Point transP = transformGroup_RandT.Transform(p);
                 //transP.X += dCanvasLeftTemp;
                 //transP.Y += dCanvasTopTemp;
+
                 translatedPoints.Add(transP);
             }
-                
+
             return translatedPoints;
         }
 
@@ -1887,6 +1917,9 @@ namespace BaseClasses
             //textBlock.Background = new SolidColorBrush(Colors.Red);
             textBlock.FontSize = fontSize;
             Size txtSize = MeasureString(textBlock, text);
+
+            // NOTE - docasne vykreslujeme body na ktore sa viaze text
+            DrawPoint(new Point(posx, posy), Brushes.DarkCyan, Brushes.DarkCyan, 2, canvas);
 
             Canvas.SetLeft(textBlock, posx - txtSize.Width / 2);
             Canvas.SetTop(textBlock, posy - txtSize.Height / 2);

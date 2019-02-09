@@ -195,7 +195,6 @@ namespace PFD
                 DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
                     fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fmodelBottomPosition_y);
 
-
                 // TO Ondrej - tak trosku narychlo :))) Treba sa pohrat s odsadeniami a dostat tie texty na okraj krivky
                 // POKUS O VYKRESLENIE TEXTU S HODNOTOU INTERNAL FORCE NA ZACIATKU A NA KONCI PRUTA
 
@@ -249,17 +248,14 @@ namespace PFD
                 //Drawing2D.DrawText(pointText[0], startPointText.X + translationOffset_x, startPointText.Y + translationOffset_y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
                 // Drawing2D.DrawText(pointText[1], endPointText_newRotated.X, endPointText_newRotated.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
 
-
                 foreach (Point p in translatedPoints)
                 {
                     Drawing2D.DrawText($"[{p.X.ToString("F1")};{p.Y.ToString("F1")}]", p.X, p.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
                 }
-                    
 
                 //Drawing2D.DrawTexts(false, pointText, textpointCoordinates_x, textpointCoordinates_y,
                 //            fCanvasWidth, fCanvasHeight,
                 //            fmodelMarginLeft_x, fmodelMarginRight_x, fmodelMarginTop_y, fmodelMarginBottom_y, fmodelBottomPosition_y, false, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
-
             }
         }
 
