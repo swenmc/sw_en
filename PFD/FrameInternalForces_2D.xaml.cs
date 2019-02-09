@@ -169,20 +169,24 @@ namespace PFD
                 double dAdditionalOffset_x = MaxValue * Math.Sin(rotAngle_radians);
                 double dAdditionalOffset_y = -MaxValue * Math.Cos(rotAngle_radians);
 
-                double translationOffset_x = fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x;
-                double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z + dAdditionalOffset_y;
+                double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x;
+                double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z + dAdditionalOffset_y; 
 
-                List<Point> translatedPoints = Drawing2D.DrawPolygon(
-                    listMemberInternalForcePoints,
-                    fCanvasTop,
-                    fCanvasLeft,
-                    fmodelMarginLeft_x,
-                    fmodelMarginBottom_y,
-                    1,
-                    rotAngle_degrees,
-                    new Point(0, 0),
-                    translationOffset_x,
-                    translationOffset_y,
+                RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
+                TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
+                TransformGroup transformGroup_RandT = new TransformGroup();
+                transformGroup_RandT.Children.Add(rotateTransform);
+                transformGroup_RandT.Children.Add(translateTransform);
+
+                List<Point> points = new List<Point>();
+                foreach (Point p in listMemberInternalForcePoints)
+                    points.Add(transformGroup_RandT.Transform(p));
+
+                foreach (Point p in points)
+                    Drawing2D.DrawText($"[{p.X};{p.Y}]", p.X, p.Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);
+
+                Drawing2D.DrawPolygon(
+                    points,   
                     Brushes.Blue,
                     Brushes.Red,
                     PenLineCap.Flat,
@@ -219,22 +223,22 @@ namespace PFD
                 // Malo by to byt analogicky k tomu ako sa pracuje s bodmi polyline, polyline otacam a posuvam celu az potom co sa vytvori
                 // navyse funkcia DrawText ktora sa vola v DrawTexts bola nejako modifikovana aby kreslila texty kot a uz to asi velmi nefunguje pre tieto potreby
 
-                float fx_start = Geom2D.GetRotatedPosition_x_CW_rad((float)(startPointText.X), (float)(factorSwitchYAxis * startPointText.Y), rotAngle_radians);
-                float fy_start = Geom2D.GetRotatedPosition_y_CW_rad((float)(startPointText.X), (float)(factorSwitchYAxis * startPointText.Y), rotAngle_radians);
+                //float fx_start = Geom2D.GetRotatedPosition_x_CW_rad((float)(startPointText.X), (float)(factorSwitchYAxis * startPointText.Y), rotAngle_radians);
+                //float fy_start = Geom2D.GetRotatedPosition_y_CW_rad((float)(startPointText.X), (float)(factorSwitchYAxis * startPointText.Y), rotAngle_radians);
 
-                float fx_end = Geom2D.GetRotatedPosition_x_CW_rad((float)(endPointText.X), (float)(factorSwitchYAxis * endPointText.Y), rotAngle_radians);
-                float fy_end = Geom2D.GetRotatedPosition_y_CW_rad((float)(endPointText.X), (float)(factorSwitchYAxis * endPointText.Y), rotAngle_radians);
+                //float fx_end = Geom2D.GetRotatedPosition_x_CW_rad((float)(endPointText.X), (float)(factorSwitchYAxis * endPointText.Y), rotAngle_radians);
+                //float fy_end = Geom2D.GetRotatedPosition_y_CW_rad((float)(endPointText.X), (float)(factorSwitchYAxis * endPointText.Y), rotAngle_radians);
 
-                // Translate text points
-                fx_start += (float)translationOffset_x;
-                fy_start += (float)translationOffset_y;
+                //// Translate text points
+                ////fx_start += (float)translationOffset_x;
+                ////fy_start += (float)translationOffset_y;
 
-                fx_end += (float)translationOffset_x;
-                fy_end += (float)translationOffset_y;
+                ////fx_end += (float)translationOffset_x;
+                ////fy_end += (float)translationOffset_y;
 
-                // Create new points
-                Point startPointText_newRotated = new Point(fx_start, fy_start);
-                Point endPointText_newRotated = new Point(fx_end, fy_end);
+                //// Create new points
+                //Point startPointText_newRotated = new Point(fx_start, fy_start);
+                //Point endPointText_newRotated = new Point(fx_end, fy_end);
 
                 //// Create array (To Ondrej - toto je asi zbytocne, preklapam to z Point na polia float a podobne, neviem co je vhodnejsie ak chcem vykreslovat nejaku sadu kriviek XY alebo texty v bodoch, ale malo by to byt len jedno)
                 //float[] textpointCoordinates_x = new float[2];
@@ -244,14 +248,14 @@ namespace PFD
                 //float[] textpointCoordinates_y = new float[2];
                 //textpointCoordinates_y[0] = (float)(startPointText_newRotated.Y);
                 //textpointCoordinates_y[1] = (float)(endPointText_newRotated.Y);
-                pointText[0] += $" [{startPointText_newRotated.X}; {startPointText_newRotated.Y}]";
+                //pointText[0] += $" [{startPointText_newRotated.X}; {startPointText_newRotated.Y}]";
                 //Drawing2D.DrawText(pointText[0], startPointText.X + translationOffset_x, startPointText.Y + translationOffset_y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
                 // Drawing2D.DrawText(pointText[1], endPointText_newRotated.X, endPointText_newRotated.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
 
-                foreach (Point p in translatedPoints)
-                {
-                    Drawing2D.DrawText($"[{p.X.ToString("F1")};{p.Y.ToString("F1")}]", p.X, p.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
-                }
+                //foreach (Point p in translatedPoints)
+                //{
+                //    Drawing2D.DrawText($"[{p.X.ToString("F1")};{p.Y.ToString("F1")}]", p.X, p.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
+                //}
 
                 //Drawing2D.DrawTexts(false, pointText, textpointCoordinates_x, textpointCoordinates_y,
                 //            fCanvasWidth, fCanvasHeight,
@@ -283,12 +287,29 @@ namespace PFD
             List<Point> listMemberPoints = new List<Point>(2);
             listMemberPoints.Add(new Point(0, 0));
             listMemberPoints.Add(new Point(fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].FLength, 0));
+
+            double translationOffxet_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X;
+            double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z;
+
+            RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
+            TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
+            TransformGroup transformGroup_RandT = new TransformGroup();
+            transformGroup_RandT.Children.Add(rotateTransform);
+            transformGroup_RandT.Children.Add(translateTransform);
+
+            List<Point> points = new List<Point>();
+            foreach (Point p in listMemberPoints)
+                points.Add(transformGroup_RandT.Transform(p));
+
             
+            Drawing2D.DrawPolyLine(false, points, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
+
+
             //Draw member
-            List<Point> linePoints = Drawing2D.DrawPolyLine(false, listMemberPoints, fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, 1, rotAngle_degrees, new Point(0, 0),
-                fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X, fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z,
-                Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
-            Drawing2D.DrawText($"[{memberIndex}]", linePoints[1].X, linePoints[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
+            //List<Point> linePoints = Drawing2D.DrawPolyLine(false, listMemberPoints, fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, 1, rotAngle_degrees, new Point(0, 0),
+            //    fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X, fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z,
+            //    Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
+            Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
         }
 
         private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
@@ -311,8 +332,7 @@ namespace PFD
             for (int j = 0; j < internalforces[0][memberIndex].Count; j++) // For each member create list of points [x, IF value]
             {
                 double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
-
-
+                
                 float IF_Value = GetInternalForcesValue(internalforces[0][memberIndex][j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
 

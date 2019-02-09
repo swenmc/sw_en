@@ -1067,12 +1067,12 @@ namespace BaseClasses
             //myLine.VerticalAlignment = VerticalAlignment.Center;
 
             // Translation and rotation a rotaciu, ak sa maju realizovat sucasne musi sa vytvorit transformacna matica alebo group
-            RotateTransform rotateTransform = new RotateTransform(rotationAngle,rotationCenter.X, rotationCenter.Y); // + clockwise, - counter-clockwise
-            TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
-            TransformGroup transformGroup_RandT = new TransformGroup();
-            transformGroup_RandT.Children.Add(rotateTransform);
-            transformGroup_RandT.Children.Add(translateTransform);
-            myLine.RenderTransform = transformGroup_RandT;
+            //RotateTransform rotateTransform = new RotateTransform(rotationAngle,rotationCenter.X, rotationCenter.Y); // + clockwise, - counter-clockwise
+            //TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
+            //TransformGroup transformGroup_RandT = new TransformGroup();
+            //transformGroup_RandT.Children.Add(rotateTransform);
+            //transformGroup_RandT.Children.Add(translateTransform);
+            //myLine.RenderTransform = transformGroup_RandT;
 
             // MATRIX
             //Matrix m = Matrix.Identity;
@@ -1086,16 +1086,17 @@ namespace BaseClasses
             imageCanvas.Children.Add(myLine);
 
 
-            List<Point> translatedPoints = new List<Point>();
-            foreach (Point p in points)
-            {
-                Point transP = transformGroup_RandT.Transform(p);
-                transP.X += dCanvasLeftTemp;
-                transP.Y += dCanvasTopTemp;
-                translatedPoints.Add(transP);
-            }
+            //List<Point> translatedPoints = new List<Point>();
+            //foreach (Point p in points)
+            //{
+            //    //Point transP = transformGroup_RandT.Transform(p);
+            //    transP.X += dCanvasLeftTemp;
+            //    transP.Y += dCanvasTopTemp;
+            //    translatedPoints.Add(transP);
+            //}
 
-            return translatedPoints;
+            //return translatedPoints;
+            return points;
         }
         public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
@@ -1120,11 +1121,14 @@ namespace BaseClasses
             imageCanvas.Children.Add(myLine);
         }
 
-        public static List<Point> DrawPolygon(List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
-            double rotationAngle, Point rotationCenter, double translationOffxet_x, double translationOffset_y, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
+        public static void DrawPolygon(List<Point> listPoints, double dCanvasTop, double dCanvasLeft, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
+            SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
         {
-            if (listPoints == null) return null;
-            if (listPoints.Count < 2) return null;
+            if (listPoints == null) return;
+            if (listPoints.Count < 2) return;
+
+            double canvasLeft = listPoints.Min(p => p.X);
+            double canvasTop = listPoints.Min(p => p.Y);
 
             List<Point> points = new List<Point>();
             for (int i = 0; i < listPoints.Count; i++)
@@ -1141,63 +1145,76 @@ namespace BaseClasses
             polygon.StrokeStartLineCap = startCap;
             polygon.StrokeEndLineCap = endCap;
             polygon.Opacity = opacity;
-
-            //To Mato: Toto tu je fakt nutne???
-
-            // Translation and rotation a rotaciu, ak sa maju realizovat sucasne musi sa vytvorit transformacna matica alebo group
-            RotateTransform rotateTransform = new RotateTransform(rotationAngle, rotationCenter.X, rotationCenter.Y); // + clockwise, - counter-clockwise
-            TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
-            TransformGroup transformGroup_RandT = new TransformGroup();
-            transformGroup_RandT.Children.Add(rotateTransform);
-            transformGroup_RandT.Children.Add(translateTransform);
-            polygon.RenderTransform = transformGroup_RandT;
-
-            Canvas.SetTop(polygon, dCanvasTopTemp);
-            Canvas.SetLeft(polygon, dCanvasLeftTemp);
+            
+            Canvas.SetTop(polygon, dCanvasTop);
+            Canvas.SetLeft(polygon, dCanvasLeft);
             imageCanvas.Children.Add(polygon);
 
-            // TESTY - urcit suradnice bodov ktore sedia s tym ako sa vykresli v skutocnosti polyline /////////////////////////////////////////////////////////////
-            PointCollection translatedPoints_test = new PointCollection();
-            translatedPoints_test = polygon.Points;
+            //// TESTY - urcit suradnice bodov ktore sedia s tym ako sa vykresli v skutocnosti polyline /////////////////////////////////////////////////////////////
+            //PointCollection translatedPoints_test = new PointCollection();
+            //translatedPoints_test = polygon.Points;
 
-            Point a = Geom2D.RotatePoint(new Point(dCanvasLeftTemp, dCanvasTopTemp), rotationAngle);
+            //Point a = Geom2D.RotatePoint(new Point(dCanvasLeftTemp, dCanvasTopTemp), rotationAngle);
 
-            foreach (Point p in translatedPoints_test)
-            {
-                Point transP = transformGroup_RandT.Transform(p);
-                //transP.X += dCanvasLeftTemp;
-                //transP.Y += dCanvasTopTemp;
+            //foreach (Point p in translatedPoints_test)
+            //{
+            //    Point transP = transformGroup_RandT.Transform(p);
+            //    //transP.X += dCanvasLeftTemp;
+            //    //transP.Y += dCanvasTopTemp;
 
-                transP.X -= 20;
-                transP.Y += 158;
-                // TO Ondrej
-                // Problem je, ze po transformacii transformGroup_RandT este prebehne Canvas.SetTop a Canvas.SetLeft, lenze tieto posuny sa do translatedPoints neprevadzaju
-                // ak pre tieto body chceme len pripocitat konstantne hodnoty dCanvasLeftTemp a dCanvasTopTemp, tak to nesedi lebo pootocenim objektu sa menia aj parametre ktore treba nastavit do canvas
+            //    transP.X -= 20;
+            //    transP.Y += 158;
+            //    // TO Ondrej
+            //    // Problem je, ze po transformacii transformGroup_RandT este prebehne Canvas.SetTop a Canvas.SetLeft, lenze tieto posuny sa do translatedPoints neprevadzaju
+            //    // ak pre tieto body chceme len pripocitat konstantne hodnoty dCanvasLeftTemp a dCanvasTopTemp, tak to nesedi lebo pootocenim objektu sa menia aj parametre ktore treba nastavit do canvas
 
-                // Skusal som tieto hodnoty urcit vid "Point a", ale este je tam problem s tym ze prut nezacina v [0,0] ale v modelMarginLeft_x .... a kedze sa otaca okolo [0,0] tak tam vznikaju dalsie rozdiely
-                // Tu su natvrdo vyznacene hodnoty, ktore by platili pre prvy prut, aby text sedel na polyline
+            //    // Skusal som tieto hodnoty urcit vid "Point a", ale este je tam problem s tym ze prut nezacina v [0,0] ale v modelMarginLeft_x .... a kedze sa otaca okolo [0,0] tak tam vznikaju dalsie rozdiely
+            //    // Tu su natvrdo vyznacene hodnoty, ktore by platili pre prvy prut, aby text sedel na polyline
 
-                // Najjednoduchsie by asi bolo vytiahnut cele toto otacanie a prevadzanie z suradnic bodov listPoints z LCS do GCS mimo tuto funkciu a kreslit potom polyline / polygon uz z pripravenych globalnych suradnic
-                // a na tej istej sade uz transformovanych bodov potom zobrazovat texty
+            //    // Najjednoduchsie by asi bolo vytiahnut cele toto otacanie a prevadzanie z suradnic bodov listPoints z LCS do GCS mimo tuto funkciu a kreslit potom polyline / polygon uz z pripravenych globalnych suradnic
+            //    // a na tej istej sade uz transformovanych bodov potom zobrazovat texty
 
-                // NOTE - docasne vykreslujeme body na ktore sa viaze text - nesedia na bodoch polyline
-                DrawPoint(transP, Brushes.DarkRed, Brushes.DarkRed, 2, imageCanvas);
-            }
-            ///////////////////////////////////////////////////////////////////////
+            //    // NOTE - docasne vykreslujeme body na ktore sa viaze text - nesedia na bodoch polyline
+            //    DrawPoint(transP, Brushes.DarkRed, Brushes.DarkRed, 2, imageCanvas);
+            //}
+            /////////////////////////////////////////////////////////////////////////
 
-            List<Point> translatedPoints = new List<Point>();
-            foreach (Point p in points)
-            {
-                Point transP = transformGroup_RandT.Transform(p);
-                //transP.X += dCanvasLeftTemp;
-                //transP.Y += dCanvasTopTemp;
+            //List<Point> translatedPoints = new List<Point>();
+            //foreach (Point p in points)
+            //{
+            //    Point transP = transformGroup_RandT.Transform(p);
+            //    //transP.X += dCanvasLeftTemp;
+            //    //transP.Y += dCanvasTopTemp;
 
-                translatedPoints.Add(transP);
-            }
+            //    translatedPoints.Add(transP);
+            //}
 
-            return translatedPoints;
+            //return translatedPoints;
         }
 
+
+        public static void DrawPolygon(List<Point> listPoints, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
+        {
+            if (listPoints == null) return;
+            if (listPoints.Count < 2) return;
+
+            double canvasLeft = listPoints.Min(p => p.X);
+            double canvasTop = listPoints.Min(p => p.Y);
+            
+            Polygon polygon = new Polygon();
+            polygon.Stretch = Stretch.Fill;
+            polygon.Stroke = stroke_color;
+            polygon.Fill = fill_color;
+            polygon.Points = new PointCollection(listPoints);
+            polygon.StrokeThickness = thickness;
+            polygon.StrokeStartLineCap = startCap;
+            polygon.StrokeEndLineCap = endCap;
+            polygon.Opacity = opacity;
+
+            Canvas.SetTop(polygon, canvasTop);
+            Canvas.SetLeft(polygon, canvasLeft);
+            imageCanvas.Children.Add(polygon);
+        }
         public static void DrawCircle(Point center, double diameter, SolidColorBrush color, double thickness, Canvas imageCanvas)
         {
             if (!Double.IsNaN(center.X))
