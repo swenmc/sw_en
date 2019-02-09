@@ -315,7 +315,7 @@ namespace BaseClasses
 
             double dCanvasTop = (height - (fReal_Model_Zoom_Factor * screw.D_h_headdiameter)) / 2;
             double dCanvasLeft = (width - (fReal_Model_Zoom_Factor * 2 * a/* fInsideDiameterFactor * screw.D_h_headdiameter*/)) / 2;
-            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor,0, new Point(0,0), 0,0, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
+            DrawPolyLine(true, headpoints, dCanvasTop, dCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fReal_Model_Zoom_Factor, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 1, canvasForImage);
 
             // Washer Circle
             DrawCircle(pCenterPoint, fReal_Model_Zoom_Factor * screw.D_w_washerdiameter, Brushes.Black, 1, canvasForImage);
@@ -1039,11 +1039,11 @@ namespace BaseClasses
         //    Canvas.SetLeft(myLine, dCanvasLeftTemp);
         //    imageCanvas.Children.Add(myLine);
         //}
-        public static List<Point> DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
-            double rotationAngle, Point rotationCenter, double translationOffxet_x, double translationOffset_y, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
+        public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, double dCanvasTopTemp, double dCanvasLeftTemp, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
+            SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
-            if (listPoints == null) return null;
-            if (listPoints.Count < 2) return null;
+            if (listPoints == null) return;
+            if (listPoints.Count < 2) return;
 
             List<Point> points = new List<Point>();
             int iNumberOfLineSegments = listPoints.Count + (bIsClosed ? 1 : 0);
@@ -1065,38 +1065,10 @@ namespace BaseClasses
             myLine.StrokeEndLineCap = endCap;
             //myLine.HorizontalAlignment = HorizontalAlignment.Left;
             //myLine.VerticalAlignment = VerticalAlignment.Center;
-
-            // Translation and rotation a rotaciu, ak sa maju realizovat sucasne musi sa vytvorit transformacna matica alebo group
-            //RotateTransform rotateTransform = new RotateTransform(rotationAngle,rotationCenter.X, rotationCenter.Y); // + clockwise, - counter-clockwise
-            //TranslateTransform translateTransform = new TranslateTransform(translationOffxet_x, translationOffset_y);
-            //TransformGroup transformGroup_RandT = new TransformGroup();
-            //transformGroup_RandT.Children.Add(rotateTransform);
-            //transformGroup_RandT.Children.Add(translateTransform);
-            //myLine.RenderTransform = transformGroup_RandT;
-
-            // MATRIX
-            //Matrix m = Matrix.Identity;
-            //m.Scale(1, 1);
-            //m.Rotate(90);
-            //m.Translate(300, 0);
-            //myLine.RenderTransform = new MatrixTransform(m);
-
+            
             Canvas.SetTop(myLine, dCanvasTopTemp);
             Canvas.SetLeft(myLine, dCanvasLeftTemp);
             imageCanvas.Children.Add(myLine);
-
-
-            //List<Point> translatedPoints = new List<Point>();
-            //foreach (Point p in points)
-            //{
-            //    //Point transP = transformGroup_RandT.Transform(p);
-            //    transP.X += dCanvasLeftTemp;
-            //    transP.Y += dCanvasTopTemp;
-            //    translatedPoints.Add(transP);
-            //}
-
-            //return translatedPoints;
-            return points;
         }
         public static void DrawPolyLine(bool bIsClosed, List<Point> listPoints, SolidColorBrush color, PenLineCap startCap, PenLineCap endCap, double thickness, Canvas imageCanvas)
         {
@@ -1120,79 +1092,7 @@ namespace BaseClasses
             Canvas.SetLeft(myLine, canvasLeft);
             imageCanvas.Children.Add(myLine);
         }
-
-        public static void DrawPolygon(List<Point> listPoints, double dCanvasTop, double dCanvasLeft, float modelMarginLeft_x, float modelMarginBottom_y, double dReal_Model_Zoom_Factor,
-            SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
-        {
-            if (listPoints == null) return;
-            if (listPoints.Count < 2) return;
-
-            double canvasLeft = listPoints.Min(p => p.X);
-            double canvasTop = listPoints.Min(p => p.Y);
-
-            List<Point> points = new List<Point>();
-            for (int i = 0; i < listPoints.Count; i++)
-            {
-                points.Add(new Point(modelMarginLeft_x + dReal_Model_Zoom_Factor * listPoints[i].X, modelMarginBottom_y - dReal_Model_Zoom_Factor * listPoints[i].Y));
-            }
-
-            Polygon polygon = new Polygon();
-            polygon.Stretch = Stretch.Fill;
-            polygon.Stroke = stroke_color;
-            polygon.Fill = fill_color;
-            polygon.Points = new PointCollection(points);
-            polygon.StrokeThickness = thickness;
-            polygon.StrokeStartLineCap = startCap;
-            polygon.StrokeEndLineCap = endCap;
-            polygon.Opacity = opacity;
-            
-            Canvas.SetTop(polygon, dCanvasTop);
-            Canvas.SetLeft(polygon, dCanvasLeft);
-            imageCanvas.Children.Add(polygon);
-
-            //// TESTY - urcit suradnice bodov ktore sedia s tym ako sa vykresli v skutocnosti polyline /////////////////////////////////////////////////////////////
-            //PointCollection translatedPoints_test = new PointCollection();
-            //translatedPoints_test = polygon.Points;
-
-            //Point a = Geom2D.RotatePoint(new Point(dCanvasLeftTemp, dCanvasTopTemp), rotationAngle);
-
-            //foreach (Point p in translatedPoints_test)
-            //{
-            //    Point transP = transformGroup_RandT.Transform(p);
-            //    //transP.X += dCanvasLeftTemp;
-            //    //transP.Y += dCanvasTopTemp;
-
-            //    transP.X -= 20;
-            //    transP.Y += 158;
-            //    // TO Ondrej
-            //    // Problem je, ze po transformacii transformGroup_RandT este prebehne Canvas.SetTop a Canvas.SetLeft, lenze tieto posuny sa do translatedPoints neprevadzaju
-            //    // ak pre tieto body chceme len pripocitat konstantne hodnoty dCanvasLeftTemp a dCanvasTopTemp, tak to nesedi lebo pootocenim objektu sa menia aj parametre ktore treba nastavit do canvas
-
-            //    // Skusal som tieto hodnoty urcit vid "Point a", ale este je tam problem s tym ze prut nezacina v [0,0] ale v modelMarginLeft_x .... a kedze sa otaca okolo [0,0] tak tam vznikaju dalsie rozdiely
-            //    // Tu su natvrdo vyznacene hodnoty, ktore by platili pre prvy prut, aby text sedel na polyline
-
-            //    // Najjednoduchsie by asi bolo vytiahnut cele toto otacanie a prevadzanie z suradnic bodov listPoints z LCS do GCS mimo tuto funkciu a kreslit potom polyline / polygon uz z pripravenych globalnych suradnic
-            //    // a na tej istej sade uz transformovanych bodov potom zobrazovat texty
-
-            //    // NOTE - docasne vykreslujeme body na ktore sa viaze text - nesedia na bodoch polyline
-            //    DrawPoint(transP, Brushes.DarkRed, Brushes.DarkRed, 2, imageCanvas);
-            //}
-            /////////////////////////////////////////////////////////////////////////
-
-            //List<Point> translatedPoints = new List<Point>();
-            //foreach (Point p in points)
-            //{
-            //    Point transP = transformGroup_RandT.Transform(p);
-            //    //transP.X += dCanvasLeftTemp;
-            //    //transP.Y += dCanvasTopTemp;
-
-            //    translatedPoints.Add(transP);
-            //}
-
-            //return translatedPoints;
-        }
-
-
+        
         public static void DrawPolygon(List<Point> listPoints, SolidColorBrush fill_color, SolidColorBrush stroke_color, PenLineCap startCap, PenLineCap endCap, double thickness, double opacity, Canvas imageCanvas)
         {
             if (listPoints == null) return;

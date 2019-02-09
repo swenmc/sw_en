@@ -171,23 +171,6 @@ namespace PFD
                 //Draw Member on the Internal forces polygon
                 DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
                     fmodelMarginLeft_x, fmodelBottomPosition_y);
-
-                
-                
-                // Number of points
-                int iNumberOfPoints = listMemberInternalForcePoints.Count;
-                Point startPointText = listMemberInternalForcePoints[1]; // Pridali sme [0,0] preto zaciname az indexom 1
-                Point endPointText = listMemberInternalForcePoints[iNumberOfPoints - 1 - 1]; // Pridali sme [L,0] preto zaciname uz indexom (n-1-1)
-
-                string[] pointText = new string[2];
-                
-                
-                float IF_Value1 = GetInternalForcesValue(internalforces[0][i][0]);                
-                pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value1, 2))) + " " + vm.IFTypeUnit;
-                float IF_Value2 = GetInternalForcesValue(internalforces[0][i][listMemberInternalForcePoints.Count - 3]);
-                pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value2, 2))) + " " + vm.IFTypeUnit;
-
-                
             }
         }
 
@@ -231,7 +214,7 @@ namespace PFD
                         
             Drawing2D.DrawPolyLine(false, points, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
             
-            Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
+            //Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
         }
 
         private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
