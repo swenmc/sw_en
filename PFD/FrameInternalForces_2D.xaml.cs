@@ -104,12 +104,9 @@ namespace PFD
             out fmodelBottomPosition_y
             );
 
-            float fmodelMarginRight_x = fCanvasWidth - fmodelMarginLeft_x - fModel_Length_x_page;
+            //float fmodelMarginRight_x = fCanvasWidth - fmodelMarginLeft_x - fModel_Length_x_page;
             float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
 
-            // To Ondrej - tu som to asi prekombinoval s tym je mam aj canvas aj margin a uz som schaoseny co a ako pouzit
-            float fCanvasTop = 10f;
-            float fCanvasLeft = fmodelMarginLeft_x;
             
             // TO Ondrej
             // Tento diagram by chcelo vylepsit a sprehladnit.
@@ -117,12 +114,7 @@ namespace PFD
             // Texty by mali mat rozne moznosti, zobrazit hodnoty na vsetkych rezoch (kazdy, druhy, treti, ... rez), len na koncoch pruta, na koncoch pruta a v mieste extremu, len extremy atd
             // Zobrazovat jednotky alebo bez nich
             // Niekde by mohla byt legenda s popisom co sa vykresluje (cislo ramu, vybrana load combination, vybrany typ zobrazovanej IF)
-            // Je potrebne doplnit moznost prepinat medzi typmi IF (ja som spravil len M_yy)
-
-            // TO Ondrej, malo by sa nejako rozhodnut v ci mam najprv vsetko pocitat v stutocnych jednotkach a potom to prenasobit alebo cim skor prejst na zobrazovacie jednotky
-            // Teraz to mam pri niecom tak, pri niecom inak ... trosku som sa zamotal
             
-            // TO MATA: no ja som zamotany este viac, ono to rozdielne funguje, takze ja som este viac schaoseny
 
             int factorSwitchYAxis = -1;
             // Draw each member in the model and selected internal force diagram
@@ -132,7 +124,6 @@ namespace PFD
                 double rotAngle_radians = Math.Atan(((dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeEnd.Z) - (dTempMax_Y + factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z)) / (model.m_arrMembers[i].NodeEnd.X - model.m_arrMembers[i].NodeStart.X));
                 double rotAngle_degrees = Geom2D.RadiansToDegrees(rotAngle_radians);
                 
-
                 //get list of points from Dictionary, if not exist then calculate
                 List<Point> listMemberInternalForcePoints;
                 string key = $"{vm.IFTypeIndex}_{i}_{vm.InternalForceScale_user.ToString("F3")}";
@@ -144,33 +135,9 @@ namespace PFD
                 {
                     listMemberInternalForcePoints = GetMemberInternalForcePoints(i, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
                 }
-                
-                
-                // Draw diagram curve
-                double MinValue = Double.MaxValue;
-                double MaxValue = Double.MinValue;
-
-                for (int k = 0; k < listMemberInternalForcePoints.Count; k++)
-                {
-                    double xlocationValue = listMemberInternalForcePoints[k].Y;
-
-                    if (xlocationValue < MinValue)
-                        MinValue = xlocationValue;
-
-                    if (xlocationValue > MaxValue)
-                        MaxValue = xlocationValue;
-                }
-
-                // TO Ondrej - bojujem tu s odsadenim a stredom pootocenia, potrebujem aby konce modrej krivky (vnutorne sily) "dosadli" na cierne usecky (pruty)
-                // Nejako som to tam dal ale vobec nerozumiem tej logike preco to tak je :)))) pokus / omyl
-                // Ak by sa Ti to podarilo vylepsit, sprehladnit a zjednodusit bol by som rad :)
-                // Este by to chcelo pridat aj texty s hodnotami :)
-
-                double dAdditionalOffset_x = MaxValue * Math.Sin(rotAngle_radians);
-                double dAdditionalOffset_y = -MaxValue * Math.Cos(rotAngle_radians);
-
-                double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X + dAdditionalOffset_x;
-                double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z + dAdditionalOffset_y; 
+                                
+                double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
+                double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z; 
 
                 RotateTransform rotateTransform = new RotateTransform(rotAngle_degrees, 0, 0); // + clockwise, - counter-clockwise
                 TranslateTransform translateTransform = new TranslateTransform(translationOffset_x, translationOffset_y);
@@ -182,9 +149,15 @@ namespace PFD
                 foreach (Point p in listMemberInternalForcePoints)
                     points.Add(transformGroup_RandT.Transform(p));
 
-                foreach (Point p in points)
-                    Drawing2D.DrawText($"[{p.X};{p.Y}]", p.X, p.Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);
-
+                float fUnitFactor = 0.001f; // N to kN or Nm to kNm
+                // Este by to chcelo pridat aj texty s hodnotami
+                for (int c = 0; c < points.Count - 3; c++)
+                {
+                    float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
+                    string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
+                    Drawing2D.DrawText(txt, points[c].X, points[c].Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);                    
+                }
+                   
                 Drawing2D.DrawPolygon(
                     points,   
                     Brushes.Blue,
@@ -197,69 +170,24 @@ namespace PFD
 
                 //Draw Member on the Internal forces polygon
                 DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
-                    fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, fmodelBottomPosition_y);
+                    fmodelMarginLeft_x, fmodelBottomPosition_y);
 
-                // TO Ondrej - tak trosku narychlo :))) Treba sa pohrat s odsadeniami a dostat tie texty na okraj krivky
-                // POKUS O VYKRESLENIE TEXTU S HODNOTOU INTERNAL FORCE NA ZACIATKU A NA KONCI PRUTA
-
+                
+                
                 // Number of points
                 int iNumberOfPoints = listMemberInternalForcePoints.Count;
                 Point startPointText = listMemberInternalForcePoints[1]; // Pridali sme [0,0] preto zaciname az indexom 1
                 Point endPointText = listMemberInternalForcePoints[iNumberOfPoints - 1 - 1]; // Pridali sme [L,0] preto zaciname uz indexom (n-1-1)
 
                 string[] pointText = new string[2];
-                float fUnitFactor = 0.001f; // N to kN or Nm to kNm
+                
                 
                 float IF_Value1 = GetInternalForcesValue(internalforces[0][i][0]);                
                 pointText[0] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value1, 2))) + " " + vm.IFTypeUnit;
-                float IF_Value2 = GetInternalForcesValue(internalforces[0][i][iNumberOfPoints - 3]);
+                float IF_Value2 = GetInternalForcesValue(internalforces[0][i][listMemberInternalForcePoints.Count - 3]);
                 pointText[1] = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value2, 2))) + " " + vm.IFTypeUnit;
 
-                // Transform text points from LCS of member to GCS of frame in 2D graphics
-                // Rotate and translate points - same as for polyline
-
-                // TO Ondrej
-                // Tu niekde som v mojom snazeni skoncil, mam suradnice pre text otacat pred tym ako vygenerujem text alebo az potom,
-                // Malo by to byt analogicky k tomu ako sa pracuje s bodmi polyline, polyline otacam a posuvam celu az potom co sa vytvori
-                // navyse funkcia DrawText ktora sa vola v DrawTexts bola nejako modifikovana aby kreslila texty kot a uz to asi velmi nefunguje pre tieto potreby
-
-                //float fx_start = Geom2D.GetRotatedPosition_x_CW_rad((float)(startPointText.X), (float)(factorSwitchYAxis * startPointText.Y), rotAngle_radians);
-                //float fy_start = Geom2D.GetRotatedPosition_y_CW_rad((float)(startPointText.X), (float)(factorSwitchYAxis * startPointText.Y), rotAngle_radians);
-
-                //float fx_end = Geom2D.GetRotatedPosition_x_CW_rad((float)(endPointText.X), (float)(factorSwitchYAxis * endPointText.Y), rotAngle_radians);
-                //float fy_end = Geom2D.GetRotatedPosition_y_CW_rad((float)(endPointText.X), (float)(factorSwitchYAxis * endPointText.Y), rotAngle_radians);
-
-                //// Translate text points
-                ////fx_start += (float)translationOffset_x;
-                ////fy_start += (float)translationOffset_y;
-
-                ////fx_end += (float)translationOffset_x;
-                ////fy_end += (float)translationOffset_y;
-
-                //// Create new points
-                //Point startPointText_newRotated = new Point(fx_start, fy_start);
-                //Point endPointText_newRotated = new Point(fx_end, fy_end);
-
-                //// Create array (To Ondrej - toto je asi zbytocne, preklapam to z Point na polia float a podobne, neviem co je vhodnejsie ak chcem vykreslovat nejaku sadu kriviek XY alebo texty v bodoch, ale malo by to byt len jedno)
-                //float[] textpointCoordinates_x = new float[2];
-                //textpointCoordinates_x[0] = (float)(startPointText_newRotated.X);
-                //textpointCoordinates_x[1] = (float)(endPointText_newRotated.X);
-
-                //float[] textpointCoordinates_y = new float[2];
-                //textpointCoordinates_y[0] = (float)(startPointText_newRotated.Y);
-                //textpointCoordinates_y[1] = (float)(endPointText_newRotated.Y);
-                //pointText[0] += $" [{startPointText_newRotated.X}; {startPointText_newRotated.Y}]";
-                //Drawing2D.DrawText(pointText[0], startPointText.X + translationOffset_x, startPointText.Y + translationOffset_y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
-                // Drawing2D.DrawText(pointText[1], endPointText_newRotated.X, endPointText_newRotated.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
-
-                //foreach (Point p in translatedPoints)
-                //{
-                //    Drawing2D.DrawText($"[{p.X.ToString("F1")};{p.Y.ToString("F1")}]", p.X, p.Y, 0, 12, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
-                //}
-
-                //Drawing2D.DrawTexts(false, pointText, textpointCoordinates_x, textpointCoordinates_y,
-                //            fCanvasWidth, fCanvasHeight,
-                //            fmodelMarginLeft_x, fmodelMarginRight_x, fmodelMarginTop_y, fmodelMarginBottom_y, fmodelBottomPosition_y, false, Brushes.DarkSeaGreen, Canvas_InternalForceDiagram);
+                
             }
         }
 
@@ -281,7 +209,7 @@ namespace PFD
         }
 
         private void DrawMember(int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
-            float fCanvasTop, float fCanvasLeft, float fmodelMarginLeft_x, float fmodelMarginBottom_y, float fmodelBottomPosition_y)
+            float fmodelMarginLeft_x, float fmodelBottomPosition_y)
         {
             // Draw member
             List<Point> listMemberPoints = new List<Point>(2);
@@ -300,15 +228,9 @@ namespace PFD
             List<Point> points = new List<Point>();
             foreach (Point p in listMemberPoints)
                 points.Add(transformGroup_RandT.Transform(p));
-
-            
+                        
             Drawing2D.DrawPolyLine(false, points, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
-
-
-            //Draw member
-            //List<Point> linePoints = Drawing2D.DrawPolyLine(false, listMemberPoints, fCanvasTop, fCanvasLeft, fmodelMarginLeft_x, fmodelMarginBottom_y, 1, rotAngle_degrees, new Point(0, 0),
-            //    fReal_Model_Zoom_Factor * model.m_arrMembers[memberIndex].NodeStart.X, fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[memberIndex].NodeStart.Z,
-            //    Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
+            
             Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
         }
 
