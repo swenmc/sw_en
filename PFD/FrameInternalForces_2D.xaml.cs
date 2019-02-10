@@ -107,14 +107,12 @@ namespace PFD
             //float fmodelMarginRight_x = fCanvasWidth - fmodelMarginLeft_x - fModel_Length_x_page;
             float fmodelMarginBottom_y = fCanvasHeight - fmodelMarginTop_y - fModel_Length_y_page;
 
-            
             // TO Ondrej
             // Tento diagram by chcelo vylepsit a sprehladnit.
             // TODO - doplnit texty, pre texty si odlozit povodne hodnoty IF separatne (grafika diagramu sa moze scalovat ale hodnoty zobrazenych sil v texte ostavaju rovnake)
             // Texty by mali mat rozne moznosti, zobrazit hodnoty na vsetkych rezoch (kazdy, druhy, treti, ... rez), len na koncoch pruta, na koncoch pruta a v mieste extremu, len extremy atd
             // Zobrazovat jednotky alebo bez nich
             // Niekde by mohla byt legenda s popisom co sa vykresluje (cislo ramu, vybrana load combination, vybrany typ zobrazovanej IF)
-            
 
             int factorSwitchYAxis = -1;
             // Draw each member in the model and selected internal force diagram
@@ -136,6 +134,27 @@ namespace PFD
                     listMemberInternalForcePoints = GetMemberInternalForcePoints(i, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
                 }
 
+                // Draw positive forces on + side, positive moments on -side (positive values are on the side with tension fibre)
+                // TO Ondrej, existuje este taka vec - strana tahaneho vlakna, na tu stranu sa vykresluju ohybove momenty kladnou hodnotou
+                // Da sa prutu prednastavit ako strana -z (LCS) alebo zmenit a potom sa vnutorne sily kreslia prevratene */-
+
+                // Temporary
+                // Nastavime zmenu znamienka pre momenty
+                // TODO Ondrej - toto sa moze vyriesit ovela skor, uz pri nacitani hodnot s vysledkami z BFENet
+                // Komentujem to pretoze pri scalovani sa to prepocitava stale a potom preskakuje znamienko +/-
+
+                /*
+                if(vm.IFTypeIndex > 2)
+                {
+                    for(int d = 0; d<listMemberInternalForcePoints.Count; d++)
+                    {
+                        double y_new = listMemberInternalForcePoints[d].Y * -1;
+                        Point p_new = new Point(listMemberInternalForcePoints[d].X, y_new);
+
+                        listMemberInternalForcePoints[d] = p_new;
+                    }
+                }*/
+
                 double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
                 double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z; 
 
@@ -155,25 +174,24 @@ namespace PFD
                 {
                     float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
                     string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
-                    Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, 12, Brushes.Black, Canvas_InternalForceDiagram);
+                    Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, 12, Brushes.SlateGray, Canvas_InternalForceDiagram);
                 }
                    
                 Drawing2D.DrawPolygon(
-                    points,   
-                    Brushes.Blue,
-                    Brushes.Red,
+                    points,
+                    Brushes.LightSlateGray,
+                    Brushes.SlateGray,
                     PenLineCap.Flat,
                     PenLineCap.Flat,
                     1,
-                    0.5,
+                    0.3,
                     Canvas_InternalForceDiagram);
 
                 // Draw Member on the Internal forces polygon
                 DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
-                    fmodelMarginLeft_x, fmodelBottomPosition_y);
+                    fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
             }
         }
-
 
         private float GetInternalForcesValue(basicInternalForces bif)
         {
@@ -192,7 +210,7 @@ namespace PFD
         }
 
         private void DrawMember(int memberIndex, float fReal_Model_Zoom_Factor, int factorSwitchYAxis, double rotAngle_degrees,
-            float fmodelMarginLeft_x, float fmodelBottomPosition_y)
+            float fmodelMarginLeft_x, float fmodelBottomPosition_y, SolidColorBrush color, double thickness)
         {
             // Draw member
             List<Point> listMemberPoints = new List<Point>(2);
@@ -211,9 +229,9 @@ namespace PFD
             List<Point> points = new List<Point>();
             foreach (Point p in listMemberPoints)
                 points.Add(transformGroup_RandT.Transform(p));
-                        
-            Drawing2D.DrawPolyLine(false, points, Brushes.Black, PenLineCap.Flat, PenLineCap.Flat, 3, Canvas_InternalForceDiagram);
-            
+
+            Drawing2D.DrawPolyLine(false, points, color, PenLineCap.Flat, PenLineCap.Flat, thickness, Canvas_InternalForceDiagram);
+
             //Drawing2D.DrawText($"[{memberIndex}]", points[1].X, points[1].Y, 0, 20, Brushes.Red, Canvas_InternalForceDiagram);
         }
 
@@ -258,7 +276,7 @@ namespace PFD
             if (sender == null) return;
             if (e.PropertyName == "IFTypeIndex")
             {
-                RedrawDiagram();               
+                RedrawDiagram();
             }
             if (e.PropertyName == "InternalForceScale_user")
             {
