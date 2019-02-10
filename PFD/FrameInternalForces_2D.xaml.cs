@@ -90,7 +90,7 @@ namespace PFD
             Drawing2D.CalculateBasicValue(
             fModel_Length_x_real,
             fModel_Length_y_real,
-            0.7f, // zoom ratio 0-1 (zoom of 2D view), zobrazime model vo velkosti 50% z canvas aby bol dostatok priestoru pre vykreslenie vn sil
+            0.6f, // zoom ratio 0-1 (zoom of 2D view), zobrazime model vo velkosti 50% z canvas aby bol dostatok priestoru pre vykreslenie vn sil
             scale_unit,
             fCanvasWidth,
             fCanvasHeight,
@@ -133,27 +133,6 @@ namespace PFD
                 {
                     listMemberInternalForcePoints = GetMemberInternalForcePoints(i, vm.InternalForceScale_user, fReal_Model_Zoom_Factor, key);
                 }
-
-                // Draw positive forces on + side, positive moments on -side (positive values are on the side with tension fibre)
-                // TO Ondrej, existuje este taka vec - strana tahaneho vlakna, na tu stranu sa vykresluju ohybove momenty kladnou hodnotou
-                // Da sa prutu prednastavit ako strana -z (LCS) alebo zmenit a potom sa vnutorne sily kreslia prevratene */-
-
-                // Temporary
-                // Nastavime zmenu znamienka pre momenty
-                // TODO Ondrej - toto sa moze vyriesit ovela skor, uz pri nacitani hodnot s vysledkami z BFENet
-                // Komentujem to pretoze pri scalovani sa to prepocitava stale a potom preskakuje znamienko +/-
-
-                /*
-                if(vm.IFTypeIndex > 2)
-                {
-                    for(int d = 0; d<listMemberInternalForcePoints.Count; d++)
-                    {
-                        double y_new = listMemberInternalForcePoints[d].Y * -1;
-                        Point p_new = new Point(listMemberInternalForcePoints[d].X, y_new);
-
-                        listMemberInternalForcePoints[d] = p_new;
-                    }
-                }*/
 
                 double translationOffset_x = fmodelMarginLeft_x + fReal_Model_Zoom_Factor * model.m_arrMembers[i].NodeStart.X ;
                 double translationOffset_y = fmodelBottomPosition_y + fReal_Model_Zoom_Factor * factorSwitchYAxis * model.m_arrMembers[i].NodeStart.Z; 
@@ -238,7 +217,13 @@ namespace PFD
         private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
         {
             double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
-            
+
+            // Draw positive forces on + side, positive moments on -side (positive values are on the side with tension fibre)
+            // TO Ondrej, existuje este taka vec - strana tahaneho vlakna, na tu stranu sa vykresluju ohybove momenty s kladnou hodnotou
+            // Da sa prutu prednastavit ako strana kde ma prut zapornu zvislu os v LCS, teda -z alebo zmenit a potom sa vnutorne sily kreslia prevratene +/-
+
+            float fInternalForceSignFactor = -1; // Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit
+
             List<Point> listMemberInternalForcePoints = new List<Point>();
 
             const int iNumberOfResultsSections = 11;
@@ -256,7 +241,7 @@ namespace PFD
             {
                 double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
                 
-                float IF_Value = GetInternalForcesValue(internalforces[0][memberIndex][j]);
+                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(internalforces[0][memberIndex][j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
 
                 //pozicie x sa ulozia, aby sa nemuseli pocitat znova
