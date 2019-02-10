@@ -222,7 +222,7 @@ namespace PFD
             // TO Ondrej, existuje este taka vec - strana tahaneho vlakna, na tu stranu sa vykresluju ohybove momenty s kladnou hodnotou
             // Da sa prutu prednastavit ako strana kde ma prut zapornu zvislu os v LCS, teda -z alebo zmenit a potom sa vnutorne sily kreslia prevratene +/-
 
-            float fInternalForceSignFactor = -1; // Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit
+            float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
 
             List<Point> listMemberInternalForcePoints = new List<Point>();
 
