@@ -151,6 +151,20 @@
         eMLD_PCC_FYU_MZV = 1,
         eMLD_PCC_FZV_MYU = 2
     }
+
+    //----------------------------------------------------------------------------
+    // Intermediate Transverse Support Type (upper flange, bottom flange, both flanges, etc.)
+    //----------------------------------------------------------------------------
+    public enum EITSType
+    {
+        eBothFlanges,
+        eUpperFlangeOnly,
+        eBottomFlangeOnly,
+        eNone,
+        eRigid,
+        eDefinedByValue
+    }
+
     //----------------------------------------------------------------------------
     // Types of single member loading
     // Typy zatazenia jednoducheho pruta - podla druhu zatazenia, polohy a koncoveho podopretia prvku

@@ -151,6 +151,11 @@ namespace PFD
             CMemberEccentricity eccentricityGirtFront_Y0 = new CMemberEccentricity(0, 0);
             CMemberEccentricity eccentricityGirtBack_YL = new CMemberEccentricity(0, 0);
 
+            // Member Intermediate Supports
+            m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[1];
+            m_arrIntermediateTransverseSupports[0].ID = 1;
+            m_arrIntermediateTransverseSupports[0].Type = EITSType.eBothFlanges;
+
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
             fUpperGirtLimit = (float)(m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].h + m_arrCrSc[(int)EMemberGroupNames.eGirtWall].b);
 

@@ -43,6 +43,8 @@ namespace BaseClasses
         public CNSupport[] m_arrNSupports;
         // Member Releases
         public CNRelease[] m_arrNReleases;
+        // Member Releases
+        public CIntermediateTransverseSupport[] m_arrIntermediateTransverseSupports;
         // Connections
         public List<CConnectionJointTypes> m_arrConnectionJoints;
         // Loading
@@ -99,7 +101,7 @@ namespace BaseClasses
         // Alokuje velkost poli zoznamov, malo by to byt dymamicke
         public CModel(string sFileName, ESLN eSLN, int eNDOF, EGCS eGCS,
             int iMatNum, int iCrScNum, int iNodeNum,
-            int iMemNum, int iNSupNum, int iNRelNum, int iNLoadNum,
+            int iMemNum, int iNSupNum, int iNRelNum, int iITSNum, int iNLoadNum,
             int iMLoadNum, int iLoadCaseNum, int iLoadComNum)
         {
             m_eSLN = eSLN;
@@ -111,6 +113,7 @@ namespace BaseClasses
             m_arrMembers = new CMember[iMemNum];
             m_arrNSupports = new CNSupport[iNSupNum];
             m_arrNReleases = new CNRelease[iNRelNum];
+            m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[iITSNum];
             m_arrNLoads = new CNLoadAll[iNLoadNum];
             m_arrMLoads = new CMLoad[iMLoadNum];
             m_arrLoadCases = new CLoadCase[iLoadCaseNum];

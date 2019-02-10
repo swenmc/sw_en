@@ -107,6 +107,7 @@
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniform.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_Free.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniformGroup.cs" />
+    <Compile Include="Model\CIntermediateTransverseSupport.cs" />
     <Compile Include="Model\CMemberGroup.cs" />
     <Compile Include="Model\CEntityGroup.cs" />
     <Compile Include="Model\CExample.cs" />
