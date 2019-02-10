@@ -73,6 +73,7 @@ namespace PFD
             {
                 MComponentTypeIndex = value;
                 //TODO No. 68
+
                 NotifyPropertyChanged("ComponentTypeIndex");
             }
         }

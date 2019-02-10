@@ -64,9 +64,15 @@ namespace PFD
             CPFDMemberInternalForces memberIF = sender as CPFDMemberInternalForces;
             if (memberIF == null) return;
             if (memberIF != null && memberIF.IsSetFromCode) return;
-            
+
+            // Frame internal forces enabled only for type of members Main Columns and Rafters
+            if (memberIF.ComponentTypeIndex == 0 || memberIF.ComponentTypeIndex == 1)
+                Button_Frame_2D.IsEnabled = true;
+            else
+                Button_Frame_2D.IsEnabled = false;
+
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
-            
+
             CMember member = Model.listOfModelMemberGroups[memberIF.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
             if (member == null) throw new Exception("No member in List of Members");
             fMemberLength_xMax = member.FLength;
