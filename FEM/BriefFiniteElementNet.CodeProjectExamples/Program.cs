@@ -1202,7 +1202,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             // TO - Ondrej  tu by sa mali podla prikladu zobrazovat nejake info hodnoty z vypoctu ale nezobrazuje sa nic
             // Pripada mi to tak ze ta verzia podla ktorej su urobene priklady je nejaka lepsia :)))
             // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
-            wnd.ShowDialog();
+
+            bool bRunFromBFENet = false;
+
+            if (bRunFromBFENet)
+            {
+                wnd.ShowDialog(); // Neotvarat dialog ak sa pusta z PFD
+            }
 
             model.Solve();
             // model.Solve_MPC(); //no different with Model.Solve() - toto su asi identicke prikazy
@@ -1218,8 +1224,6 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             var e4Force = (model.Elements["e4"] as BarElement).GetInternalForceAt(0, combination1);
             Console.WriteLine(e4Force);
             */
-
-            bool bRunFromBFENet = false;
 
             if (bRunFromBFENet) // To Ondrej - Zobrazenie dialogov s 3D funguje len ak sa to spusta z BFENet, ked to spustam z projektu PFD, tak to pada
             {
