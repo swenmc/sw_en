@@ -493,6 +493,33 @@ namespace PFD
 
             vm.Run();
 
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            // TODO 187- popis - tu by sme mali napojit vypocet a nacitanie vysledkov z BFENet
+
+            // 1. Mozeme pocitat vnutorne sily na single members (purlins, girts, columns, ....) vid vyssie alebo na Frame model pre MainColumns a Rafters
+            // 2. Podla typu pruta vygenerujeme vypoctovy model simple beam alebo frame, otazka je ci budeme pre simple beam pouzivat tiez BFENet alebo pouzijeme tiredu SimpleBeamCalculation vid vyssie
+            // 3. V ramci generovania modelu musime previest prutove zatazenie CMLoads ulozene v load cases na zatazenia BFENet
+            // 4. Musime previest ramove podpory (CNSupport) podla typu akym je podoprety stlp ramu v spodnom uzle
+            // 5. Na vygenerovanom modeli BFENet spocitame vnutorne sily a ulozime vysledky pre jednotlive pruty PFD, resp. maxima pre jednotlive typy prutov
+            // 6. Spustime member design a ulozime vysledky
+            // 7. Spustime joint design a ulozime vysledky
+            // 8. Spristupnime vysledky pre zobrazenie v UC_InternalForces, UC_MemberDesign, UC_JointDesign
+
+            // Pozn. Otazka je ci treba vsetky vysledky pocitat a ukladat alebo to urobit tak ze sa na dotaz spocita to co je potrebne pre dany typ pruta, spoj a podobne...
+
+            // TODO - spresnit a rozpisat postup, aby to bolo co najviac zrozumitelne a jasne pre Ondreja
+
+
+
+
+
+
+
+
+
+
+
+
             //// Temporary solution
             //// Purlin
 
