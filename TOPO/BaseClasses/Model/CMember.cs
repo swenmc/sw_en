@@ -212,6 +212,21 @@ namespace BaseClasses
         }
 
         
+
+        private List<CLoad> MLoads;
+        public List<CLoad> Loads
+        {
+            get
+            {
+                if (MLoads == null) MLoads = new List<CLoad>();
+                return MLoads;
+            }
+
+            set
+            {
+                MLoads = value;
+            }
+        }
         //public List<Point3D> WireFramePoints;
 
         //----------------------------------------------------------------------------

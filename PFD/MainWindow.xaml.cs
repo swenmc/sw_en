@@ -1580,7 +1580,7 @@ namespace PFD
                 frames.Add(frameMembers);
             }
 
-            
+
 
             // Frame 1
             // Member ID 1 - Main Column
@@ -1609,6 +1609,41 @@ namespace PFD
             // Je potrebne prepocitat smer a urcit znamienko zatazenia medzi SurfaceLoad a novym CM_Load. Zatazenie mozeme generovat v LCS pruta alebo v GCS.
             // Asi bude lepsie pouzit vzdy LCS.
 
+            //Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001)
+
+            int frameCount = 0;
+            foreach (List<CMember> frame in frames)
+            {
+                foreach (CMember m in frame)
+                {
+                    frameCount++;
+                    bool isOuterFrame = (frameCount == 1 || frameCount == frames.Count);
+                    foreach (CLoadCase loadCase in model.m_arrLoadCases)
+                    {
+                        foreach (CSLoad_Free load in loadCase.SurfaceLoadsList)
+                        {
+                            //musis najst CSLoad_Free ktorych niektory bod ma suradnicu Y do v intervale < i * Y - 0.5L1, i* Y +0.5L1 >
+                            if (load is CSLoad_FreeUniformGroup)
+                            {
+                                foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
+                                {
+                                    if(IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(l, m, model.fL1_frame, isOuterFrame);
+                                }
+                            }
+                            else if (load is CSLoad_FreeUniform)
+                            {
+                                if(IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember((CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
+                            }
+                            else throw new Exception("Load type not known.");
+                                
+                            
+
+                        }
+                    }
+                }
+            }
+            
+
 
 
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
@@ -1634,5 +1669,25 @@ namespace PFD
                 //UpdateAll();
             }
         }
+
+        private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            foreach (Point3D p in load.pSurfacePoints) //load.pSurfacePoints to su 4 body ktorymi je dany nejaky kvader
+            {
+                if (m.PointStart.Y - 0.5 * fL1_frame <= p.Y && m.PointStart.Y + 0.5 * fL1_frame >= p.Y
+                    || m.PointEnd.Y - 0.5 * fL1_frame <= p.Y && m.PointEnd.Y + 0.5 * fL1_frame >= p.Y)
+                {
+                    System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.SLoadType} for member {m.Name} ID: {m.ID}");
+                    return true;
+                }
+            }
+            return false;
+        }
+        private void CreateLoadOnMember(CSLoad_FreeUniform load, CMember m, float fL1_frame, bool isOuterFrame)
+        {
+            if (isOuterFrame) m.Loads.Add(new CMLoad_21(load.fValue * fL1_frame * 0.5f));
+            else m.Loads.Add(new CMLoad_24());
+        }
+
     }
 }
