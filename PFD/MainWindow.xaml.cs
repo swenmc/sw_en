@@ -1678,8 +1678,8 @@ namespace PFD
         {
             foreach (Point3D p in load.pSurfacePoints) //load.pSurfacePoints to su 4 body ktorymi je dany nejaky kvader
             {
-                if (m.PointStart.Y - 0.5 * fL1_frame <= p.Y && m.PointStart.Y + 0.5 * fL1_frame >= p.Y
-                    || m.PointEnd.Y - 0.5 * fL1_frame <= p.Y && m.PointEnd.Y + 0.5 * fL1_frame >= p.Y)
+                if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
+                    || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
                 {
                     System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.SLoadType} for member {m.Name} ID: {m.ID}");
                     return true;
