@@ -778,6 +778,12 @@ namespace PFD
                                 CConnectionJointTypes jointEnd;
                                 jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sJointDIF_x);
 
+                                // Validation - Main member of joint must be defined
+                                if (jointStart.m_MainMember == null)
+                                    throw new ArgumentNullException("Error" + "Joint No: " + jointStart.ID + " Main member is not defined.");
+                                if (jointEnd.m_MainMember == null)
+                                    throw new ArgumentNullException("Error" + "Joint No: " + jointEnd.ID + " Main member is not defined.");
+
                                 // Start Joint
                                 JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointStart, lcomb, jointDesignModel.fDesignRatio_Start, sJointDIF_x[jointDesignModel.fDesignRatioLocationID_Start]));
 

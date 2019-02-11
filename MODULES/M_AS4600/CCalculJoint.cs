@@ -65,6 +65,11 @@ namespace M_AS4600
                 pull - over(pull - through) of connected parts 5.4.3.2      0.50
             */
 
+            // Validation
+            // Check that main member is defined
+            if (joint_temp.m_MainMember == null)
+                throw new ArgumentNullException("Error " + "Joint No: " + joint_temp.ID + " Main member is not defined.");
+
             // Check that some screws exist in the connection
             if (joint_temp.m_arrPlates[0].ScrewArrangement == null || joint_temp.m_arrPlates[0].ScrewArrangement.Screws == null)
                 return; // Invalid data, joint without connectors
