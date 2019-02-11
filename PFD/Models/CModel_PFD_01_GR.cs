@@ -153,8 +153,8 @@ namespace PFD
 
             // Member Intermediate Supports
             m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[1];
-            m_arrIntermediateTransverseSupports[0].ID = 1;
-            m_arrIntermediateTransverseSupports[0].Type = EITSType.eBothFlanges;
+            CIntermediateTransverseSupport forkSupport = new CIntermediateTransverseSupport(1, EITSType.eBothFlanges,0);
+            m_arrIntermediateTransverseSupports[0] = forkSupport;
 
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
             fUpperGirtLimit = (float)(m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].h + m_arrCrSc[(int)EMemberGroupNames.eGirtWall].b);
