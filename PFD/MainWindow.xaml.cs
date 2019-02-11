@@ -1580,7 +1580,7 @@ namespace PFD
                 frames.Add(frameMembers);
             }
 
-            
+
 
             // Frame 1
             // Member ID 1 - Main Column
@@ -1602,10 +1602,14 @@ namespace PFD
             // 3. Ked mame uspesne identifikovane pruty ramu na ktore chceme generovat zatazenie
             // tak pre kazdy load case a kazdy objekt SurfaceLoad zo zoznamu zatazeni v danom load case
             // aplikujeme funkciu ktora zisti ci sa plocha zatazenia alebo jej cast nachadza v takzvanej zatazovacej ploche pruta L_member * fL1_frame (resp. 0.5 fL1_frame pre krajne ramy)
-            // Zistime ci je prut v danej ploche SurfaceLoad len z casti alebo cely
+            // To znamena ze niektory z definicnych bodov Surface Load ma globalnu suradnicu Y z intervalu <i*Y - 0.5 * L1; i*Y + 0.5 * L1>
+
+            // Zistime ci je prut ramu v danej ploche SurfaceLoad len z casti alebo cely (podla suradnice x pruta)
             // Podla toho sa potom vygeneruje objekt CMLoad_21 alebo CMLoad_24
-            // Hodnota zatazenia sa urci zo zatazovacej sirky ramu fL1_frame, pripadne 0.5 * fL1_frame
-            // Do hodnoty zatazenia sa zohladnia vsetky objekty SurfaceLoad ktore sa nachadazaju v danej zatazovacej sirke pruta
+            // 4. Hodnota zatazenia sa urci zo zatazovacej sirky ramu fL1_frame, pripadne 0.5 * fL1_frame ak sa v oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta nachadza len jedna plocha (vid obrazok 10)
+            // 5. Hodnota zatazenia sa urci zo sumy zatazovacich sirok * SurfaceLoad fValue, pre vsetky surface loads, ktore spadaju do oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta (vid obrazok 11)
+            
+            // Do hodnoty zatazenia sa zohladnia vsetky objekty SurfaceLoad ktore sa nachadzaju v danej zatazovacej sirke pruta
             // Je potrebne prepocitat smer a urcit znamienko zatazenia medzi SurfaceLoad a novym CM_Load. Zatazenie mozeme generovat v LCS pruta alebo v GCS.
             // Asi bude lepsie pouzit vzdy LCS.
 
