@@ -183,11 +183,11 @@ namespace PFD
                         if (!vm.ShowAll && !vm.ShowEndValues && !vm.ShowExtremeValues && !vm.ShowEverySecondSection && !vm.ShowEveryThirdSection) continue;
                         else if (!vm.ShowAll && vm.ShowEndValues && !(c == 0 || c == (internalforces[0][i].Count - 1))) continue; // First and last value
                         else if (!vm.ShowAll && vm.ShowExtremeValues && !(c == iIndexMinValue || c == iIndexMaxValue)) continue; // ??? TODO - tu potrebujeme prejst vsetky hodnoty, najst min a max a tie zobrazit, pripadne ak vieme najst aj lokalne minima a maxima, ignorovat nuly - Local extreme - min or max in absolute value
-                        else if (!vm.ShowAll && vm.ShowEndValues && vm.ShowExtremeValues && !(c == 0 || c == (internalforces[0][i].Count - 1) || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO - Pre extremy a konce zobrazit "zjednotenie" tychto hodnot, tj. najdene extremy aj koncove hodnoty
+                        else if (!vm.ShowAll && vm.ShowEndValues && vm.ShowExtremeValues && !(c == 0 || c == (internalforces[0][i].Count - 1) || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Pre extremy a konce zobrazit "zjednotenie" tychto hodnot, tj. najdene extremy aj koncove hodnoty - upravit podmienku
                         else if (!vm.ShowAll && vm.ShowEverySecondSection && c % 2 == 1) continue;
-                        else if (!vm.ShowAll && vm.ShowEverySecondSection && vm.ShowExtremeValues && !(c % 2 != 1 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot
+                        else if (!vm.ShowAll && vm.ShowEverySecondSection && vm.ShowExtremeValues && !(c % 2 != 1 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && c % 3 != 0) continue;
-                        else if (!vm.ShowAll && vm.ShowEveryThirdSection && vm.ShowExtremeValues && !(c % 3 == 0 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot
+                        else if (!vm.ShowAll && vm.ShowEveryThirdSection && vm.ShowExtremeValues && !(c % 3 == 0 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
 
                         float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
 
