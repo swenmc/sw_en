@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="FrameInternalForces_2D" Height="685" Width="1200" MouseWheel="Window_MouseWheel">
     <Grid>
-        <Grid.ColumnDefinitions>            
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
@@ -24,29 +24,29 @@
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
-            <CheckBox Name="CheckBoxShowLabels" IsChecked="{Binding Path=ShowLabels}">Show Labels</CheckBox>
-            <CheckBox Name="CheckBoxShowExtremeValues" IsChecked="{Binding Path=ShowExtremeValues}">Show Extreme Values</CheckBox>
-            <CheckBox Name="CheckBoxShowEverySecondSection" IsChecked="{Binding Path=ShowEverySecondSection}">Show Every Second Section</CheckBox>
-            <CheckBox Name="CheckBoxShowEveryThirdSection" IsChecked="{Binding Path=ShowEveryThirdSection}">Show Every Third Section</CheckBox>
-            <CheckBox Name="CheckBoxShowMemberQuarters" IsChecked="{Binding Path=ShowMemberQuarters}">Show Member Quarters</CheckBox>
-            <CheckBox Name="CheckBoxShowAll" IsChecked="{Binding Path=ShowAll}">Show All</CheckBox>
-            <CheckBox Name="CheckBoxShowUnits" IsChecked="{Binding Path=ShowUnits}">Show Units</CheckBox>
-
+            <TextBlock Text="Show labels in"/>
+            <CheckBox Name="CheckBoxShowExtremeValues" IsChecked="{Binding Path=ShowExtremeValues}">Extreme</CheckBox>
+            <CheckBox Name="CheckBoxShowEndValues" IsChecked="{Binding Path=ShowEndValues}">Start and End</CheckBox>
+            <CheckBox Name="CheckBoxShowEverySecondSection" IsChecked="{Binding Path=ShowEverySecondSection}">Every Second Section</CheckBox>
+            <CheckBox Name="CheckBoxShowEveryThirdSection" IsChecked="{Binding Path=ShowEveryThirdSection}">Every Third Section</CheckBox>
+            <CheckBox Name="CheckBoxShowAll" IsChecked="{Binding Path=ShowAll}">All Sections</CheckBox>
+            <TextBlock Text=""/> <!-- empty row -->
+            <TextBlock Text="Display"/>
+            <CheckBox Name="CheckBoxDisplayMembers" IsChecked="{Binding Path=ShowMembers}">Members</CheckBox>
+            <CheckBox Name="CheckBoxShowLabels" IsChecked="{Binding Path=ShowLabels}">Labels</CheckBox>
+            <CheckBox Name="CheckBoxShowUnits" IsChecked="{Binding Path=ShowUnits}">Units</CheckBox>
+            <TextBlock Text=""/> <!-- empty row -->
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Decimal places: "/>
+                <TextBlock Text="Decimal places:    "/>
                 <ComboBox Name ="ComboboxDecimalPlaces" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                  SelectedIndex="{Binding Path=NumberOfDecimalPlacesIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=ListDecimalPlaces}"/>
+                  SelectedIndex="{Binding Path=NumberOfDecimalPlacesIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=ListDecimalPlaces}" Height="22" Width="50"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Font Sizes: "/>
-                <ComboBox Name ="ComboboxFontSizes" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                  SelectedIndex="{Binding Path=FontSizeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=ListFontSizes}"/>
+                <TextBlock Text="Font Sizes:            "/>
+                <ComboBox x:Name ="ComboboxFontSizes" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                  SelectedIndex="{Binding FontSizeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding ListFontSizes}" Height="22" Width="50"/>
             </StackPanel>
-            
-            
         </StackPanel>
-
-
         <Canvas Grid.Row="1" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>

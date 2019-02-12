@@ -16,10 +16,11 @@ namespace PFD.ViewModels
         private double MInternalForceScale_user;
 
         private bool MShowLabels;
+        private bool MShowEndValues;
         private bool MShowExtremeValues;
         private bool MShowEverySecondSection;
         private bool MShowEveryThirdSection;
-        private bool MShowMemberQuarters;
+        private bool MShowMembers;
         private bool MShowAll;
         private bool MShowUnits;
         private int MNumberOfDecimalPlacesIndex;
@@ -94,20 +95,6 @@ namespace PFD.ViewModels
             }
         }
 
-        public bool ShowLabels
-        {
-            get
-            {
-                return MShowLabels;
-            }
-
-            set
-            {
-                MShowLabels = value;
-                NotifyPropertyChanged("ShowLabels");
-            }
-        }
-
         public bool ShowExtremeValues
         {
             get
@@ -119,6 +106,20 @@ namespace PFD.ViewModels
             {
                 MShowExtremeValues = value;
                 NotifyPropertyChanged("ShowExtremeValues");
+            }
+        }
+
+        public bool ShowEndValues
+        {
+            get
+            {
+                return MShowEndValues;
+            }
+
+            set
+            {
+                MShowEndValues = value;
+                NotifyPropertyChanged("ShowEndValues");
             }
         }
 
@@ -150,20 +151,6 @@ namespace PFD.ViewModels
             }
         }
 
-        public bool ShowMemberQuarters
-        {
-            get
-            {
-                return MShowMemberQuarters;
-            }
-
-            set
-            {
-                MShowMemberQuarters = value;
-                NotifyPropertyChanged("ShowMemberQuarters");
-            }
-        }
-
         public bool ShowAll
         {
             get
@@ -175,6 +162,34 @@ namespace PFD.ViewModels
             {
                 MShowAll = value;
                 NotifyPropertyChanged("ShowAll");
+            }
+        }
+
+        public bool ShowMembers
+        {
+            get
+            {
+                return MShowMembers;
+            }
+
+            set
+            {
+                MShowMembers = value;
+                NotifyPropertyChanged("ShowMembers");
+            }
+        }
+
+        public bool ShowLabels
+        {
+            get
+            {
+                return MShowLabels;
+            }
+
+            set
+            {
+                MShowLabels = value;
+                NotifyPropertyChanged("ShowLabels");
             }
         }
 
@@ -215,7 +230,7 @@ namespace PFD.ViewModels
 
             set
             {
-                MNumberOfDecimalPlaces = value;                
+                MNumberOfDecimalPlaces = value;
             }
         }
 
@@ -255,7 +270,7 @@ namespace PFD.ViewModels
 
             set
             {
-                MFontSize = value;                
+                MFontSize = value;
             }
         }
 
@@ -283,12 +298,12 @@ namespace PFD.ViewModels
             NumberOfDecimalPlacesIndex = 2;
             MListFontSize = new List<int>() {10, 12, 14, 16, 20 };
             FontSizeIndex = 1;
-            ShowLabels = true;
-            ShowExtremeValues = true;
-            ShowUnits = true;
-            ShowMemberQuarters = true;
-        }
 
+            ShowExtremeValues = true;
+            ShowMembers = true;
+            ShowLabels = true;
+            ShowUnits = true;
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
