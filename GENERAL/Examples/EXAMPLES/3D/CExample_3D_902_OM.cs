@@ -37,8 +37,8 @@ namespace Examples
             //m_arrCrSc[0] = new CCrSc_3_50020_C(0, 0.5f, 0.20f, 0.008f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_50020_C_NESTED(0, 0.5f, 0.20f, 0.008f, Colors.Orange);
             //m_arrCrSc[0] = new CCrSc_3_63020_BOX(0, 0.63f, 0.20f, 0.01f, 0.01f, Colors.Orange);
-            //m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
-            m_arrCrSc[0] = new CCrSc_3_Z(0, 0.5f, 0.2f, 0.05f, 0.02f, Colors.DarkCyan);
+            m_arrCrSc[0] = new CCrSc_3_270XX_C(0, 0.27f, 0.10f, 0.01f, Colors.Orange);
+            //m_arrCrSc[0] = new CCrSc_3_Z(0, 0.5f, 0.2f, 0.05f, 0.02f, Colors.DarkCyan);
 
             // Pokusy
             //m_arrCrSc[0] = new CCrSc_3_51_C_TEMP(0,0.27f, 0.1f, 0.02f, Colors.DarkGreen);
@@ -107,10 +107,11 @@ namespace Examples
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
 
             // Connection Joints
-            //m_arrConnectionJoints = new List<CConnectionJointTypes>();
+            m_arrConnectionJoints = new List<CConnectionJointTypes>();
             // Joints
             //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeStart, null, m_arrMembers[0], true, true));
             //m_arrConnectionJoints.Add(new CConnectionJoint_S001(m_arrMembers[000].NodeEnd, null, m_arrMembers[0], false, true));
+            m_arrConnectionJoints.Add(new CConnectionJoint_T001("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
 
             m_arrMLoads = new CMLoad[1];
             //m_arrMLoads[0] = new CMLoad_21(1, -250, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);

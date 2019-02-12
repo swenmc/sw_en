@@ -8,11 +8,11 @@ using System.Windows;
 namespace BaseClasses
 {
     [Serializable]
-    public class CScrewArrangement_F_or_L:CScrewArrangement
+    public class CScrewArrangement_L:CScrewArrangement
     {
-        public CScrewArrangement_F_or_L() { }
+        public CScrewArrangement_L() { }
 
-        public CScrewArrangement_F_or_L(int iScrewsNumber_temp, CScrew referenceScrew_temp)
+        public CScrewArrangement_L(int iScrewsNumber_temp, CScrew referenceScrew_temp)
         {
             IHolesNumber = iScrewsNumber_temp;
             referenceScrew = referenceScrew_temp;
@@ -91,7 +91,7 @@ namespace BaseClasses
                 }
                 else
                 {
-                    // Not defined expected number of holes for L or F plate
+                    // Not defined expected number of holes for L plate
                 }
             }
         }

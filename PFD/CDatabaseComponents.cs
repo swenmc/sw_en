@@ -18,7 +18,7 @@ namespace PFD
         public float flZ_mm; // Not used in 2D model
         public float flZ2_mm;
         public float ft_mm; // Not used in 2D model
-        public int iHolesNoumber;
+        public int iHolesNumber;
 
         public CDatabaseComponents()
         { }
@@ -35,7 +35,7 @@ namespace PFD
                         fhY_mm = arr_Serie_B_Dimension[iComponentIndex, 1];
                         flZ_mm = arr_Serie_B_Dimension[iComponentIndex, 2];
                         ft_mm = arr_Serie_B_Dimension[iComponentIndex, 3];
-                        iHolesNoumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
+                        iHolesNumber = (int)arr_Serie_B_Dimension[iComponentIndex, 4];
 
                         break;
                     }
@@ -46,7 +46,7 @@ namespace PFD
                         fhY_mm = arr_Serie_F_Dimension[iComponentIndex, 2];
                         flZ_mm = arr_Serie_F_Dimension[iComponentIndex, 3];
                         ft_mm = arr_Serie_F_Dimension[iComponentIndex, 4];
-                        iHolesNoumber = (int)arr_Serie_L_Dimension[iComponentIndex, 5];
+                        iHolesNumber = (int)arr_Serie_F_Dimension[iComponentIndex, 5];
 
                         break;
                     }
@@ -56,7 +56,7 @@ namespace PFD
                         fhY_mm = arr_Serie_L_Dimension[iComponentIndex, 1];
                         flZ_mm = arr_Serie_L_Dimension[iComponentIndex, 2];
                         ft_mm = arr_Serie_L_Dimension[iComponentIndex, 3];
-                        iHolesNoumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
+                        iHolesNumber = (int)arr_Serie_L_Dimension[iComponentIndex, 4];
 
                         break;
                     }
@@ -66,7 +66,7 @@ namespace PFD
                         fhY_mm = arr_Serie_Q_Dimension[iComponentIndex, 1];
                         flZ_mm = arr_Serie_Q_Dimension[iComponentIndex, 2];
                         ft_mm = arr_Serie_Q_Dimension[iComponentIndex, 3];
-                        iHolesNoumber = (int)arr_Serie_Q_Dimension[iComponentIndex, 4];
+                        iHolesNumber = (int)arr_Serie_Q_Dimension[iComponentIndex, 4];
 
                         break;
                     }
@@ -76,7 +76,7 @@ namespace PFD
                         fhY_mm = arr_Serie_T_Dimension[iComponentIndex, 1];
                         flZ_mm = arr_Serie_T_Dimension[iComponentIndex, 2];
                         ft_mm = arr_Serie_T_Dimension[iComponentIndex, 3];
-                        iHolesNoumber = (int)arr_Serie_T_Dimension[iComponentIndex, 4];
+                        iHolesNumber = (int)arr_Serie_T_Dimension[iComponentIndex, 4];
 
                         break;
                     }
@@ -87,7 +87,7 @@ namespace PFD
                         flZ_mm = arr_Serie_Y_Dimension[iComponentIndex, 2];
                         flZ2_mm = arr_Serie_Y_Dimension[iComponentIndex, 3];
                         ft_mm = arr_Serie_Y_Dimension[iComponentIndex, 4];
-                        iHolesNoumber = (int)arr_Serie_Y_Dimension[iComponentIndex, 5];
+                        iHolesNumber = (int)arr_Serie_Y_Dimension[iComponentIndex, 5];
 
                         break;
                     }
@@ -98,7 +98,7 @@ namespace PFD
                         fhY2_mm = arr_Serie_J_Dimension[iComponentIndex, 2];
                         flZ_mm = arr_Serie_J_Dimension[iComponentIndex, 3];
                         ft_mm = arr_Serie_J_Dimension[iComponentIndex, 4];
-                        iHolesNoumber = (int)arr_Serie_J_Dimension[iComponentIndex, 5];
+                        iHolesNumber = (int)arr_Serie_J_Dimension[iComponentIndex, 5];
 
                         break;
                     }
@@ -110,7 +110,7 @@ namespace PFD
                         fbX2_mm = arr_Serie_K_Dimension[iComponentIndex, 3];
                         fhY2_mm = arr_Serie_K_Dimension[iComponentIndex, 4];
                         ft_mm = arr_Serie_K_Dimension[iComponentIndex, 5];
-                        iHolesNoumber = (int)arr_Serie_K_Dimension[iComponentIndex, 6];
+                        iHolesNumber = (int)arr_Serie_K_Dimension[iComponentIndex, 6];
 
                         break;
                     }
@@ -121,7 +121,7 @@ namespace PFD
                         fhY_mm = arr_Serie_O_Dimension[iComponentIndex, 2];
                         fhY2_mm = arr_Serie_O_Dimension[iComponentIndex, 3];
                         ft_mm = arr_Serie_O_Dimension[iComponentIndex, 4];
-                        iHolesNoumber = (int)arr_Serie_O_Dimension[iComponentIndex, 5];
+                        iHolesNumber = (int)arr_Serie_O_Dimension[iComponentIndex, 5];
 
                         break;
                     }
@@ -188,6 +188,10 @@ namespace PFD
          {"Undefined",
           "Arrangement LH/LI/LK",
           "Arrangement LJ"};
+
+        public string[] arr_Serie_F_ScrewArrangement_Names = new string[2]
+         {"Undefined",
+          "Arrangement F"};
 
         public string[] arr_Serie_LL_Names = new string[2]
             {"LLH",
@@ -280,23 +284,23 @@ namespace PFD
             };
 
         public float[,] arr_Serie_LL_Dimension = new float[2, 6]
-    {
+            {
                 {050, 072, 268, 050, 2, 32},
                 {050, 072, 288, 050, 2, 32}
-    };
+            };
 
         public float[,] arr_Serie_F_Dimension = new float[10, 6]
             {
-                {120, 035, 600, 065, 2, 0},
-                {120, 035, 600, 065, 2, 0},
-                {110, 035, 545, 065, 2, 0},
-                {110, 035, 545, 065, 2, 0},
-                {110, 035, 490, 065, 2, 0},
-                {110, 035, 490, 065, 2, 0},
-                {200, 035, 545, 050, 2, 0},
-                {200, 035, 545, 050, 2, 0},
-                {200, 035, 490, 050, 2, 0},
-                {200, 035, 490, 050, 2, 0}
+                {035, 120, 600, 065, 2, 14},
+                {035, 120, 600, 065, 2, 14},
+                {035, 110, 545, 065, 2, 14},
+                {035, 110, 545, 065, 2, 14},
+                {035, 110, 490, 065, 2, 14},
+                {035, 110, 490, 065, 2, 14},
+                {035, 200, 545, 050, 2, 14},
+                {035, 200, 545, 050, 2, 14},
+                {035, 200, 490, 050, 2, 14},
+                {035, 200, 490, 050, 2, 14}
             };
 
         public float[,] arr_Serie_Q_Dimension = new float[1, 5]

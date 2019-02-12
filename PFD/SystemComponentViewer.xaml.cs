@@ -205,7 +205,8 @@ namespace PFD
 
             CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
             CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-            CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+            CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+            CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
             CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
             CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
 
@@ -1051,7 +1052,8 @@ namespace PFD
 
                 CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
                 CScrewArrangement_BB_BG screwArrangement_BB_BG = new CScrewArrangement_BB_BG(referenceScrew, 0.63f, 0.63f - 2 * 0.025f - 2 * 0.002f, 0.18f, 3, 5, 0.05f, 0.029f, 0.05f, 0.05f, 3, 5, 0.05f, 0.401f, 0.05f, 0.05f);
-                CScrewArrangement_F_or_L screwArrangement_ForL = new CScrewArrangement_F_or_L(iNumberofHoles, referenceScrew);
+                CScrewArrangement_L screwArrangement_L = new CScrewArrangement_L(iNumberofHoles, referenceScrew);
+                CScrewArrangement_F screwArrangement_F = new CScrewArrangement_F(iNumberofHoles, referenceScrew);
                 CScrewArrangement_LL screwArrangement_LL = new CScrewArrangement_LL(iNumberofHoles, referenceScrew);
                 CScrewArrangement_N screwArrangement_N = new CScrewArrangement_N(iNumberofHoles, referenceScrew);
                 CScrewArrangement_O screwArrangement_O = new CScrewArrangement_O(referenceScrew, 1, 10, 0.02f, 0.02f, 0.05f, 0.05f, 1, 10, 0.18f, 0.02f, 0.05f, 0.05f);
@@ -1090,7 +1092,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_L:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement_ForL, true); // L
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_L_Names[0], controlpoint, fb, fh, fl, ft, 0, 0, 0, screwArrangement_L, true); // L
                             break;
                         }
                     case ESerieTypePlate.eSerie_LL:
@@ -1100,7 +1102,7 @@ namespace PFD
                         }
                     case ESerieTypePlate.eSerie_F:
                         {
-                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft, 0f, 0f, 0f, true); // F
+                            plate = new CConCom_Plate_F_or_L(dcomponents.arr_Serie_F_Names[0], controlpoint, vm.ComponentIndex, fb, fb2, fh, fl, ft, 0f, 0f, 0f, screwArrangement_F, true); // F
                             break;
                         }
                     case ESerieTypePlate.eSerie_Q:

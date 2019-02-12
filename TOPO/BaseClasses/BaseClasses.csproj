@@ -119,6 +119,7 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement_BB_BG.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_BB_BG.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_F_or_L.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_O.cs" />
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CScrewArrangement_N.cs" />

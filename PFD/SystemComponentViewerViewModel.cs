@@ -693,7 +693,7 @@ namespace PFD
                     case ESerieTypePlate.eSerie_F:
                         {
                             Components = databaseComponents.arr_Serie_F_Names;
-                            ScrewArrangements = new string[] { "Undefined" };
+                            ScrewArrangements = databaseComponents.arr_Serie_F_ScrewArrangement_Names;
                             ScrewArrangementIndex = 0;
                             break;
                         }
