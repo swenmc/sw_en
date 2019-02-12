@@ -145,7 +145,7 @@ namespace BaseClasses
         // F - with or without holes
         public CConCom_Plate_F_or_L(string sName_temp,
             CPoint controlpoint,
-            int iLeftRightIndex,
+            int iLeftRightIndex, // 0 - left (original), 1 - right
             float fbX1_temp,
             float fbX2_temp,
             float fhY_temp,
@@ -234,10 +234,10 @@ namespace BaseClasses
             fMass = GetMassIgnoringHoles();
 
             fA_g = Get_A_rect(Ft, m_fhY);
-            int iNumberOfScrewsInSection = 4; // TODO, temporary - zavisi na rozmiestneni skrutiek
-            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft; // - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+            int iNumberOfScrewsInSection = 8; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            fA_n = fA_g - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fA_v_zv = Get_A_rect(Ft, m_fhY);
-            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;// - iNumberOfScrewsInSection * referenceScrew.Diameter_thread;
+            fA_vn_zv = fA_v_zv - iNumberOfScrewsInSection * screwArrangement_temp.referenceScrew.Diameter_thread * Ft;
             fI_yu = Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
