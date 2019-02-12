@@ -15,6 +15,21 @@ namespace PFD.ViewModels
         private string MIFTypeUnit;
         private double MInternalForceScale_user;
 
+        private bool MShowLabels;
+        private bool MShowExtremeValues;
+        private bool MShowEverySecondSection;
+        private bool MShowEveryThirdSection;
+        private bool MShowMemberQuarters;
+        private bool MShowAll;
+        private bool MShowUnits;
+        private int MNumberOfDecimalPlacesIndex;
+        private int MNumberOfDecimalPlaces;
+        private List<int> MListDecimalPlaces;
+        private int MFontSizeIndex;
+        private int MFontSize;
+        private List<int> MListFontSize;
+        
+
         List<string> list_IFTypes;
        
 
@@ -79,12 +94,199 @@ namespace PFD.ViewModels
             }
         }
 
+        public bool ShowLabels
+        {
+            get
+            {
+                return MShowLabels;
+            }
+
+            set
+            {
+                MShowLabels = value;
+                NotifyPropertyChanged("ShowLabels");
+            }
+        }
+
+        public bool ShowExtremeValues
+        {
+            get
+            {
+                return MShowExtremeValues;
+            }
+
+            set
+            {
+                MShowExtremeValues = value;
+                NotifyPropertyChanged("ShowExtremeValues");
+            }
+        }
+
+        public bool ShowEverySecondSection
+        {
+            get
+            {
+                return MShowEverySecondSection;
+            }
+
+            set
+            {
+                MShowEverySecondSection = value;
+                NotifyPropertyChanged("ShowEverySecondSection");
+            }
+        }
+
+        public bool ShowEveryThirdSection
+        {
+            get
+            {
+                return MShowEveryThirdSection;
+            }
+
+            set
+            {
+                MShowEveryThirdSection = value;
+                NotifyPropertyChanged("ShowEveryThirdSection");
+            }
+        }
+
+        public bool ShowMemberQuarters
+        {
+            get
+            {
+                return MShowMemberQuarters;
+            }
+
+            set
+            {
+                MShowMemberQuarters = value;
+                NotifyPropertyChanged("ShowMemberQuarters");
+            }
+        }
+
+        public bool ShowAll
+        {
+            get
+            {
+                return MShowAll;
+            }
+
+            set
+            {
+                MShowAll = value;
+                NotifyPropertyChanged("ShowAll");
+            }
+        }
+
+        public bool ShowUnits
+        {
+            get
+            {
+                return MShowUnits;
+            }
+
+            set
+            {
+                MShowUnits = value;
+                NotifyPropertyChanged("ShowUnits");
+            }
+        }
+
+        public int NumberOfDecimalPlacesIndex
+        {
+            get
+            {
+                return MNumberOfDecimalPlacesIndex;
+            }
+
+            set
+            {
+                MNumberOfDecimalPlacesIndex = value;
+                NumberOfDecimalPlaces = ListDecimalPlaces[MNumberOfDecimalPlacesIndex];
+                NotifyPropertyChanged("NumberOfDecimalPlacesIndex");
+            }
+        }
+        public int NumberOfDecimalPlaces
+        {
+            get
+            {
+                return MNumberOfDecimalPlaces;
+            }
+
+            set
+            {
+                MNumberOfDecimalPlaces = value;                
+            }
+        }
+
+        public List<int> ListDecimalPlaces
+        {
+            get
+            {
+                return MListDecimalPlaces;
+            }
+
+            set
+            {
+                MListDecimalPlaces = value;
+            }
+        }
+
+        public int FontSizeIndex
+        {
+            get
+            {
+                return MFontSizeIndex;
+            }
+
+            set
+            {
+                MFontSizeIndex = value;
+                FontSize = ListFontSizes[MFontSizeIndex];
+                NotifyPropertyChanged("FontSizeIndex");
+            }
+        }
+        public int FontSize
+        {
+            get
+            {
+                return MFontSize;
+            }
+
+            set
+            {
+                MFontSize = value;                
+            }
+        }
+
+        public List<int> ListFontSizes
+        {
+            get
+            {
+                return MListFontSize;
+            }
+
+            set
+            {
+                MListFontSize = value;
+            }
+        }
+
         public FrameInternalForces_2DViewModel()
         {
             IFTypeIndex = 4;
             InternalForceScale_user = 1;
 
-            list_IFTypes = new List<string>() { "N", "Vz", "Vy", "T", "My", "Mz" };            
+            list_IFTypes = new List<string>() { "N", "Vz", "Vy", "T", "My", "Mz" };
+
+            MListDecimalPlaces = new List<int>() { 0, 1, 2, 3 };
+            NumberOfDecimalPlacesIndex = 2;
+            MListFontSize = new List<int>() {10, 12, 14, 16, 20 };
+            FontSizeIndex = 1;
+            ShowLabels = true;
+            ShowExtremeValues = true;
+            ShowUnits = true;
+            ShowMemberQuarters = true;
         }
 
 

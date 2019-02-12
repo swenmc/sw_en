@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="FrameInternalForces_2D" Height="650" Width="1000" MouseWheel="Window_MouseWheel">
+        Title="FrameInternalForces_2D" Height="685" Width="1200" MouseWheel="Window_MouseWheel">
     <Grid>
         <Grid.ColumnDefinitions>            
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -21,7 +22,31 @@
                   SelectedIndex="{Binding Path=IFTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=List_IFTypes}"/>
             <TextBlock Margin="25 0 0 0"  Text="Use mouse wheel to zoom in and zoom out" />
         </StackPanel>
-        
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical">
+            <CheckBox Name="CheckBoxShowLabels" IsChecked="{Binding Path=ShowLabels}">Show Labels</CheckBox>
+            <CheckBox Name="CheckBoxShowExtremeValues" IsChecked="{Binding Path=ShowExtremeValues}">Show Extreme Values</CheckBox>
+            <CheckBox Name="CheckBoxShowEverySecondSection" IsChecked="{Binding Path=ShowEverySecondSection}">Show Every Second Section</CheckBox>
+            <CheckBox Name="CheckBoxShowEveryThirdSection" IsChecked="{Binding Path=ShowEveryThirdSection}">Show Every Third Section</CheckBox>
+            <CheckBox Name="CheckBoxShowMemberQuarters" IsChecked="{Binding Path=ShowMemberQuarters}">Show Member Quarters</CheckBox>
+            <CheckBox Name="CheckBoxShowAll" IsChecked="{Binding Path=ShowAll}">Show All</CheckBox>
+            <CheckBox Name="CheckBoxShowUnits" IsChecked="{Binding Path=ShowUnits}">Show Units</CheckBox>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Decimal places: "/>
+                <ComboBox Name ="ComboboxDecimalPlaces" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                  SelectedIndex="{Binding Path=NumberOfDecimalPlacesIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=ListDecimalPlaces}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Font Sizes: "/>
+                <ComboBox Name ="ComboboxFontSizes" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                  SelectedIndex="{Binding Path=FontSizeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" ItemsSource="{Binding Path=ListFontSizes}"/>
+            </StackPanel>
+            
+            
+        </StackPanel>
+
+
         <Canvas Grid.Row="1" Grid.Column="0" Name ="Canvas_InternalForceDiagram" HorizontalAlignment="Left" Height="615" VerticalAlignment="Top" Width="990" Grid.ColumnSpan="4"/>
     </Grid>
 </Window>

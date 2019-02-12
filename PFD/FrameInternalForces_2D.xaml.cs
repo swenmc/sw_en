@@ -149,12 +149,22 @@ namespace PFD
 
                 float fUnitFactor = 0.001f; // N to kN or Nm to kNm
 
-                for (int c = 0; c < internalforces[0][i].Count; c++)
+                if (vm.ShowLabels)
                 {
-                    float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
-                    string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
-                    Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, 12, Brushes.SlateGray, Canvas_InternalForceDiagram);
-                }
+                    for (int c = 0; c < internalforces[0][i].Count; c++)
+                    {
+                        if (!vm.ShowAll && !vm.ShowExtremeValues && !vm.ShowEverySecondSection && !vm.ShowEveryThirdSection) continue;
+                        else if (!vm.ShowAll && vm.ShowExtremeValues && c != 0) continue;
+                        else if (!vm.ShowAll && vm.ShowEverySecondSection && c % 2 == 1) continue;
+                        else if (!vm.ShowAll && vm.ShowEveryThirdSection && c % 3 != 0) continue;
+                                                
+                        float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
+                        string txt = (fUnitFactor * IF_Value).ToString($"F{vm.NumberOfDecimalPlaces}");
+                        if (vm.ShowUnits) txt += " " + vm.IFTypeUnit;
+                        //string txt = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", (Math.Round(fUnitFactor * IF_Value, 2))) + " " + vm.IFTypeUnit;
+                        Drawing2D.DrawText(txt, points[c + 1].X, points[c + 1].Y, 0, vm.FontSize, Brushes.SlateGray, Canvas_InternalForceDiagram);
+                    }
+                }                
                    
                 Drawing2D.DrawPolygon(
                     points,
@@ -166,9 +176,9 @@ namespace PFD
                     0.3,
                     Canvas_InternalForceDiagram);
 
-                // Draw Member on the Internal forces polygon
-                DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees,
-                    fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
+                if(vm.ShowMemberQuarters)
+                    // Draw Member on the Internal forces polygon
+                    DrawMember(i, fReal_Model_Zoom_Factor, factorSwitchYAxis, rotAngle_degrees, fmodelMarginLeft_x, fmodelBottomPosition_y, Brushes.Black, 1);
             }
         }
 
@@ -259,14 +269,16 @@ namespace PFD
         protected void HandleViewModelPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            if (e.PropertyName == "IFTypeIndex")
-            {
-                RedrawDiagram();
-            }
-            if (e.PropertyName == "InternalForceScale_user")
-            {
-                RedrawDiagram();
-            }
+
+            RedrawDiagram();
+            //if (e.PropertyName == "IFTypeIndex")
+            //{
+                
+            //}
+            //if (e.PropertyName == "InternalForceScale_user")
+            //{
+            //    RedrawDiagram();
+            //}
         }
         private void RedrawDiagram()
         {
