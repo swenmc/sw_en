@@ -90,6 +90,20 @@ namespace BaseClasses
             set { m_EccentricityEnd = value; }
         }
 
+        private List<CIntermediateTransverseSupport> m_IntermediateTransverseSupportGroup;
+        public List<CIntermediateTransverseSupport> IntermediateTransverseSupportGroup
+        {
+            get
+            {
+                return m_IntermediateTransverseSupportGroup;
+            }
+
+            set
+            {
+                m_IntermediateTransverseSupportGroup = value;
+            }
+        }
+
         private EMemberType_FormSteel eMemberType_FS;
 
         public EMemberType_FormSteel EMemberType
@@ -210,8 +224,6 @@ namespace BaseClasses
                 MWireFramePoints = value;
             }
         }
-
-        
 
         private List<CLoad> MLoads;
         public List<CLoad> Loads

@@ -158,7 +158,7 @@ namespace PFD
 
             // Fly bracing
             bool bUseFlyBracingPlates = true; // Use fly bracing plates in purlin to rafter joint
-            int iEveryXXPurlin = 4; // Index of purlin 1 - every, 2 - every second purlin, 3 - every third purlin
+            int iEveryXXPurlin = 3; // Index of purlin 1 - every, 2 - every second purlin, 3 - every third purlin
 
             // Limit pre poziciu horneho nosnika, mala by to byt polovica suctu vysky edge (eave) purlin h a sirky nosnika b (neberie sa h pretoze nosnik je otoceny o 90 stupnov)
             fUpperGirtLimit = (float)(m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin].h + m_arrCrSc[(int)EMemberGroupNames.eGirtWall].b);
@@ -432,6 +432,34 @@ namespace PFD
             i_temp_numberofMembers += bGenerateGirts ? (iGirtNoInOneFrame * (iFrameNo - 1)) : 0;
             if (bGeneratePurlins)
             {
+                // Define fly bracing position on rafter // Tento kod moze byt vyssie
+                if (bUseFlyBracingPlates && iEveryXXPurlin > 0)
+                {
+                    for (int i = 0; i < iFrameNo; i++) // Each frame
+                    {
+                        List<CIntermediateTransverseSupport> lTransverseSupportGroup_Rafter = new List<CIntermediateTransverseSupport>();
+                        float fFirstFlyBracePosition = fFirstPurlinPosition + (iEveryXXPurlin - 1) * fDist_Purlin;
+                        int iNumberOfFlyBracesOnRafter = fFirstFlyBracePosition < fRafterLength ? (int)((fRafterLength - fFirstFlyBracePosition) / (iEveryXXPurlin * fDist_Purlin)) + 1 : 0;
+
+                        for (int j = 0; j < iNumberOfFlyBracesOnRafter; j++) // Each fly brace
+                        {
+                            float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iEveryXXPurlin) * fDist_Purlin;
+
+                            if(fxLocationOfFlyBrace < fRafterLength)
+                             lTransverseSupportGroup_Rafter.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fRafterLength, fxLocationOfFlyBrace, 0));
+                            // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
+                        }
+
+                        if (lTransverseSupportGroup_Rafter.Count > 0)
+                        {
+                            // Left Rafter
+                            m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter;
+                            // Right Rafter
+                            m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter;
+                        }
+                    }
+                }
+
                 for (int i = 0; i < (iFrameNo - 1); i++)
                 {
                     for (int j = 0; j < iOneRafterPurlinNo; j++)

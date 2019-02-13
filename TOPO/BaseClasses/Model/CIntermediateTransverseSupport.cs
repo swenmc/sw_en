@@ -9,7 +9,6 @@ namespace BaseClasses
     [Serializable]
     public class CIntermediateTransverseSupport:CEntity3D
     {
-        /*
         private float m_fx_position_rel;
         public float Fx_position_rel
         {
@@ -23,7 +22,6 @@ namespace BaseClasses
             get { return m_fx_position_abs; }
             set { m_fx_position_abs = value; }
         }
-        */
 
         EITSType m_eType;
         public EITSType Type
@@ -40,5 +38,13 @@ namespace BaseClasses
             FTime = fTime;
         }
 
+        public CIntermediateTransverseSupport(int id, EITSType etype, float fx_rel, float fx_abs, int fTime = 0)
+        {
+            ID = id;
+            Type = etype;
+            Fx_position_rel = fx_rel;
+            Fx_position_abs = fx_abs;
+            FTime = fTime;
+        }
     }
 }
