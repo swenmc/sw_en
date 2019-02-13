@@ -280,7 +280,7 @@ namespace PFD
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
-            
+
             DeleteCalculationResults();
             UpdateAll();
 
@@ -298,7 +298,7 @@ namespace PFD
         {
             //while (waiting) { Thread.Sleep(1000); }
         }
-        
+
         public void bckWrk_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //hide the popup
@@ -848,8 +848,8 @@ namespace PFD
         public void CalculateSnowLoad()
         {
             sSnowInputData.eCountry = ECountry.eNewZealand; // Temporary - zatial nie je implementovana Australia
-            sSnowInputData.eSnowRegion = (ESnowRegion) loadinput.SnowRegionIndex; // indexovane od 0, takze postacuje len previest na enum
-            sSnowInputData.eExposureCategory = (ERoofExposureCategory) loadinput.ExposureCategoryIndex;
+            sSnowInputData.eSnowRegion = (ESnowRegion)loadinput.SnowRegionIndex; // indexovane od 0, takze postacuje len previest na enum
+            sSnowInputData.eExposureCategory = (ERoofExposureCategory)loadinput.ExposureCategoryIndex;
             sSnowInputData.fh_0_SiteElevation_meters = loadinput.SiteElevation;
             snow = new CCalcul_1170_3(sBuildingInputData, sGeometryInputData, sSnowInputData);
         }
@@ -905,7 +905,7 @@ namespace PFD
         {
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", sTableName, "name", combobox);
         }
-        
+
         public void SetMaterialValuesFromDatabase()
         {
             CMaterialManager.SetMaterialValuesFromDatabase(vm.Model.m_arrMat);
@@ -1069,7 +1069,7 @@ namespace PFD
 
         private void Clear3DModel_Click(object sender, RoutedEventArgs e)
         {
-            Page3Dmodel page3D = (Page3Dmodel) Frame1.Content;
+            Page3Dmodel page3D = (Page3Dmodel)Frame1.Content;
             ClearViewPort(page3D._trackport.ViewPort);
         }
 
@@ -1090,7 +1090,7 @@ namespace PFD
             }
             viewPort.Children.Clear();
         }
-        
+
         private void SystemComponentViewer_Click(object sender, RoutedEventArgs e)
         {
             SystemComponentViewer win = new SystemComponentViewer();
@@ -1362,7 +1362,7 @@ namespace PFD
                 //}
                 //else
                 //{
-                    
+
                 //}
             }
         }
@@ -1460,7 +1460,7 @@ namespace PFD
                 //((Page3Dmodel)Frame1.Content)._trackport.SetupScene();
                 //Frame1.UpdateLayout();
                 UpdateAll();
-            }            
+            }
         }
         private void chbDisplayGlobalAxis_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -1482,7 +1482,7 @@ namespace PFD
                 //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
 
                 UpdateAll();
-            }            
+            }
         }
 
         private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
@@ -1595,11 +1595,11 @@ namespace PFD
                     {
                         //it is not Main Column and it is not Main rafter
                         if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR) continue;
-                        
+
                         if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
                         {
                             frameMembers.Add(m);
-                            System.Diagnostics.Trace.WriteLine( $"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
+                            System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
                         }
                     }
                 }
@@ -1635,7 +1635,7 @@ namespace PFD
             // Podla toho sa potom vygeneruje objekt CMLoad_21 alebo CMLoad_24
             // 4. Hodnota zatazenia sa urci zo zatazovacej sirky ramu fL1_frame, pripadne 0.5 * fL1_frame ak sa v oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta nachadza len jedna plocha (vid obrazok 10)
             // 5. Hodnota zatazenia sa urci zo sumy zatazovacich sirok * SurfaceLoad fValue, pre vsetky surface loads, ktore spadaju do oblasti <i*Y - 0.5 * L1; i*Y + 0.5 * L1> v lokacii x pruta (vid obrazok 11)
-            
+
             // Do hodnoty zatazenia sa zohladnia vsetky objekty SurfaceLoad ktore sa nachadzaju v danej zatazovacej sirke pruta
             // Je potrebne prepocitat smer a urcit znamienko zatazenia medzi SurfaceLoad a novym CM_Load. Zatazenie mozeme generovat v LCS pruta alebo v GCS.
             // Asi bude lepsie pouzit vzdy LCS.
@@ -1658,22 +1658,26 @@ namespace PFD
                             {
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
                                 {
-                                    if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(l, m, model.fL1_frame, isOuterFrame);
+                                    SetLoadGCSCoordinates(l);
+                                    GetB(l, m, model.fL1_frame);
+                                    
+                                    //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
                                 }
                             }
                             else if (load is CSLoad_FreeUniform)
                             {
-                                if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember((CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
+                                SetLoadGCSCoordinates((CSLoad_FreeUniform)load);
+                                GetB((CSLoad_FreeUniform)load, m, model.fL1_frame);
+                                //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
-
                             
 
                         }
                     }
                 }
             }
-            
+
 
 
 
@@ -1682,8 +1686,8 @@ namespace PFD
                 chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
 
 
-                
-                
+
+
                 //foreach (CLoadCase load in model.m_arrLoadCases)
                 //{
                 //    System.Diagnostics.Trace.WriteLine(load.Name);
@@ -1692,7 +1696,7 @@ namespace PFD
                 //    {
                 //        if(l_free is CSLoad_FreeUniform)
                 //            System.Diagnostics.Trace.WriteLine($"CSLoad_Free: {l_free.Name}, Points: {l_free.pSurfacePoints.ToString()}");
-                        
+
                 //    }
 
                 //}
@@ -1701,10 +1705,14 @@ namespace PFD
             }
         }
 
+        private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
+        {
+            load.PointsGCS = GetLoadCoordinates_GCS(load);
+        }
+
         private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
         {
-            List<Point3D> loadGCSPoints = GetLoadCoordinates_GCS(load);
-            foreach (Point3D p in loadGCSPoints) 
+            foreach (Point3D p in load.PointsGCS)
             {
                 if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
                     || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
@@ -1715,10 +1723,72 @@ namespace PFD
             }
             return false;
         }
-        private void CreateLoadOnMember(CSLoad_FreeUniform load, CMember m, float fL1_frame, bool isOuterFrame)
+
+        //ja ani neviem nazvat tuto metodu,ze co sa hlada
+        private double GetB(CSLoad_FreeUniform load, CMember m, float fL1_frame)
         {
-            if (isOuterFrame) m.Loads.Add(new CMLoad_21(load.fValue * fL1_frame * 0.5f));
-            else m.Loads.Add(new CMLoad_24());
+            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane
+
+            double MinLoadY = load.PointsGCS.Min(p => p.Y);
+            double MaxLoadY = load.PointsGCS.Max(p => p.Y);
+
+            double minY = m.NodeStart.Y - 0.5 * fL1_frame;
+            double maxY = m.NodeStart.Y + 0.5 * fL1_frame;
+
+            if (MaxLoadY < minY) return 0;
+            else if (MinLoadY > maxY) return 0;
+            
+            if (MinLoadY < minY) MinLoadY = minY;
+            if (MaxLoadY > maxY) MaxLoadY = maxY;
+
+            double b = (MaxLoadY - MinLoadY) / (maxY - minY);
+
+            System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.SLoadType} for member {m.Name} ID: {m.ID} b: {b}");
+            return b;
+        }
+
+        private List<double> GetMemberX1X2(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        {
+            double x1 = 0;
+            double x2 = 0;
+
+            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane
+
+            if (load.ELoadDirection == ELoadDir.eLD_Z)
+            {
+                if (m.EMemberType == EMemberType_FormSteel.eMR)
+                {
+                    //urcit x1,x2 pre member v LCS
+                    
+                    //double minLoadY = load.PointsGCS
+                    //m.NodeStart.Y
+                    
+                }
+            }
+            else
+            {
+                //todo
+            }
+            
+            return new List<double> { x1, x2 };
+        }
+
+        private void CreateLoadOnMember(CLoadCase loadCase, CSLoad_FreeUniform load, CMember m, float fL1_frame, bool isOuterFrame)
+        {
+            if (isOuterFrame)
+            {
+                CMLoad_21 l_21 = new CMLoad_21();
+                l_21.Fq = load.fValue * fL1_frame * 0.5f;
+                l_21.Member = m;
+                //loadCase.MemberLoadsList.Add(l_21);
+            }
+            else
+            {
+                CMLoad_24 l_24 = new CMLoad_24();
+                l_24.Fq = load.fValue * fL1_frame * 0.5f;
+                l_24.Member = m;
+                //loadCase.MemberLoadsList.Add(l_24);
+            }
         }
 
         private List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load)

@@ -20,6 +20,8 @@ namespace BaseClasses
         private List<FreeSurfaceLoadsMemberData> m_listOfMemberData;
         private List<FreeSurfaceLoadsMemberTypeData> m_listOfLoadedMemberTypeData;
 
+        private List<Point3D> m_PointsGCS;
+
         //----------------------------------------------------------------------------
         /*public int[] ISurfaceCollection
         {
@@ -76,6 +78,19 @@ namespace BaseClasses
         {
             get { return m_listOfLoadedMemberTypeData; }
             set { m_listOfLoadedMemberTypeData = value; }
+        }
+
+        public List<Point3D> PointsGCS
+        {
+            get
+            {
+                return m_PointsGCS;
+            }
+
+            set
+            {
+                m_PointsGCS = value;
+            }
         }
 
         public float m_fOpacity;
