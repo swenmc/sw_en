@@ -1658,15 +1658,15 @@ namespace PFD
                             {
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
                                 {
-                                    if(IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(l, m, model.fL1_frame, isOuterFrame);
+                                    if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(l, m, model.fL1_frame, isOuterFrame);
                                 }
                             }
                             else if (load is CSLoad_FreeUniform)
                             {
-                                if(IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember((CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
+                                if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember((CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
-                                
+
                             
 
                         }
@@ -1703,7 +1703,8 @@ namespace PFD
 
         private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
         {
-            foreach (Point3D p in load.pSurfacePoints) //load.pSurfacePoints to su 4 body ktorymi je dany nejaky kvader
+            List<Point3D> loadGCSPoints = GetLoadCoordinates_GCS(load);
+            foreach (Point3D p in loadGCSPoints) 
             {
                 if (m.NodeStart.Y - 0.5 * fL1_frame <= p.Y && m.NodeStart.Y + 0.5 * fL1_frame >= p.Y
                     || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
@@ -1719,6 +1720,23 @@ namespace PFD
             if (isOuterFrame) m.Loads.Add(new CMLoad_21(load.fValue * fL1_frame * 0.5f));
             else m.Loads.Add(new CMLoad_24());
         }
+
+        private List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load)
+        {
+            Model3DGroup gr = load.CreateM_3D_G_Load();
+            if (gr.Children.Count < 1) return new List<Point3D>();
+
+            GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
+            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
+
+            List<Point3D> transPoints = new List<Point3D>();
+            foreach (Point3D p in mesh.Positions)
+                transPoints.Add(model3D.Transform.Transform(p));
+
+            return transPoints;
+        }
+
+
 
     }
 }
