@@ -186,11 +186,16 @@ namespace PFD
             // Calculate loading values as an input to draw loads in 3D
             CalculateLoadingValues();
 
+            // TODO No. 199 - Ondrej - tu potrebujeme vyriesit zavislosti, pocitame zatazenie, ale to zavisi na geometrii modelu, takze sa to pocita s nulovymi rozmermi
+            // Najprv by sme mali vyrobit len geometricky model a potom pocitat zatazenia, problem je ze tie sa teraz vyrabaju v spolocnej triede spolu s modelom
+            // Takze v CModel_PFD_01_GR by trebalo oddelit fyzicku konstrukciu a load cases, load combinations, loads ....
+
             vm.GeneralLoad = generalLoad;
             vm.Wind = wind;
             vm.Snow = snow;
             vm.Eq = eq;
             vm.Loadinput = loadinput;
+
             vm.CreateModel();
 
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);

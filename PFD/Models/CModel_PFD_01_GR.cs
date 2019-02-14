@@ -984,6 +984,7 @@ namespace PFD
 
             List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Left = new List<CMLoad>();
             List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Right = new List<CMLoad>();
+            List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Front = new List<CMLoad>();
             List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Left = new List<CMLoad>();
             List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Right = new List<CMLoad>();
 
@@ -1493,6 +1494,7 @@ namespace PFD
 
                     out memberLoadExternalPressure_Frames_ULS_Cpemin_Left,
                     out memberLoadExternalPressure_Frames_ULS_Cpemin_Right,
+                    out memberLoadExternalPressure_Frames_ULS_Cpemin_Front,
                     out memberLoadExternalPressure_Frames_ULS_Cpemax_Left,
                     out memberLoadExternalPressure_Frames_ULS_Cpemax_Right
                     );
@@ -1522,6 +1524,8 @@ namespace PFD
 
                 m_arrLoadCases[13].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemin_Left;
                 m_arrLoadCases[14].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemin_Right;
+                m_arrLoadCases[15].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemin_Front;
+
                 m_arrLoadCases[17].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemax_Left;
                 m_arrLoadCases[18].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemax_Right;
                 // SLS
@@ -2230,6 +2234,7 @@ namespace PFD
 
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Right,
+            out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Front,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Right
             )
@@ -2252,6 +2257,8 @@ namespace PFD
 
             memberLoadExternalPressure_ULS_Cpemin_Left = new List<CMLoad>();
             memberLoadExternalPressure_ULS_Cpemin_Right = new List<CMLoad>();
+            memberLoadExternalPressure_ULS_Cpemin_Front = new List<CMLoad>();
+
             memberLoadExternalPressure_ULS_Cpemax_Left = new List<CMLoad>();
             memberLoadExternalPressure_ULS_Cpemax_Right = new List<CMLoad>();
 
@@ -2276,6 +2283,8 @@ namespace PFD
 
                 List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemin_Left;
                 List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemin_Right;
+                List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemin_Front;
+
                 List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemax_Left;
                 List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemax_Right;
 
@@ -2307,6 +2316,8 @@ namespace PFD
 
                 out memberLoadExternalPressure_Frame_ULS_Cpemin_Left,
                 out memberLoadExternalPressure_Frame_ULS_Cpemin_Right,
+                out memberLoadExternalPressure_Frame_ULS_Cpemin_Front,
+
                 out memberLoadExternalPressure_Frame_ULS_Cpemax_Left,
                 out memberLoadExternalPressure_Frame_ULS_Cpemax_Right
                 );
@@ -2352,6 +2363,12 @@ namespace PFD
                 foreach (CMLoad l in memberLoadExternalPressure_Frame_ULS_Cpemin_Right)
                     memberLoadExternalPressure_ULS_Cpemin_Right.Add(l);
 
+                foreach (CMLoad l in memberLoadExternalPressure_Frame_ULS_Cpemin_Front)
+                    memberLoadExternalPressure_ULS_Cpemin_Front.Add(l);
+
+
+
+
                 foreach (CMLoad l in memberLoadExternalPressure_Frame_ULS_Cpemax_Left)
                     memberLoadExternalPressure_ULS_Cpemax_Left.Add(l);
 
@@ -2390,6 +2407,8 @@ namespace PFD
 
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Right,
+            out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Front,
+
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Right
             )
@@ -2472,6 +2491,7 @@ namespace PFD
             memberLoadInternalPressure_ULS_Cpimin_Left.Add(loadRafterRight_WindLoad_Cpimin_ULS);
 
             // External Pressure
+            // Cpe,min
             memberLoadExternalPressure_ULS_Cpemin_Left = new List<CMLoad>();
             SetFrameMembersWindLoads_LeftOrRight(iFrameIndex,
                         indexColumn1Left,
@@ -2498,6 +2518,21 @@ namespace PFD
                         wind,
                         out memberLoadExternalPressure_ULS_Cpemin_Right);
 
+
+            memberLoadExternalPressure_ULS_Cpemin_Front = new List<CMLoad>();
+            SetFrameMembersWindLoads_FrontOrRear(iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        (int)ELCMainDirection.ePlusY,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        0,
+                        wind,
+                        out memberLoadExternalPressure_ULS_Cpemin_Front);
+
+            // Cpe,max
             memberLoadExternalPressure_ULS_Cpemax_Left = new List<CMLoad>();
             SetFrameMembersWindLoads_LeftOrRight(iFrameIndex,
                         indexColumn1Left,
@@ -2537,6 +2572,12 @@ namespace PFD
             CCalcul_1170_2 wind,
             out List<CMLoad> listOfMemberLoads)
         {
+            // External Pressure
+            listOfMemberLoads = new List<CMLoad>();
+
+            if (iDirectionIndex != (int)ELCMainDirection.ePlusX && iDirectionIndex != (int)ELCMainDirection.eMinusX)
+                return; // Invalid direction - return empty list of loads
+
             // Left or Right Main Direction
             float fColumnLeftLoadValue;
             float fColumnRightLoadValue;
@@ -2552,8 +2593,6 @@ namespace PFD
                 fColumnRightLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
             }
 
-            // External Pressure
-            listOfMemberLoads = new List<CMLoad>();
             // Columns
             CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, fColumnLeftLoadValue, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             CMLoad loadColumnRight_WindLoad = new CMLoad_21(iFrameIndex * 4 + 2, fColumnRightLoadValue, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
@@ -2664,6 +2703,106 @@ namespace PFD
                 iIndexOfMemberLoad++;
             }
             while (fRoof_dimensions[iIndexOfMemberLoad] < fMemberProjectedLength_X);
+        }
+
+        private void SetFrameMembersWindLoads_FrontOrRear(int iFrameIndex,
+            int indexColumn1Left,
+            int indexColumn2Right,
+            int indexRafter1Left,
+            int indexRafter2Right,
+            int iDirectionIndex,
+            float fFrameTributaryWidth,
+            ELSType eLSType,
+            int iCodeForCpeMinMaxValue,
+            CCalcul_1170_2 wind,
+            out List<CMLoad> listOfMemberLoads)
+        {
+            // External pressure
+            listOfMemberLoads = new List<CMLoad>(); // Generate 4 loads - type uniform per whole length (CMLoad_21)
+
+            if (false) // Under Development - in work
+            {
+                if (iDirectionIndex != (int)ELCMainDirection.ePlusY && iDirectionIndex != (int)ELCMainDirection.eMinusY)
+                    return; // Invalid direction - return empty list of loads
+
+                float fFrameCoordinate_GCS_Y = iFrameIndex * fL1_frame; // Expected equal distance between frames (bay width)
+
+                // Set minimum and maximum coordinate of tributary area
+                float fTributaryWidth_Y_Coordinate_Min = fFrameCoordinate_GCS_Y - 0.5f * fL1_frame;
+                float fTributaryWidth_Y_Coordinate_Max = fFrameCoordinate_GCS_Y + 0.5f * fL1_frame;
+
+                if (iFrameIndex == 0) // First Frame
+                    fTributaryWidth_Y_Coordinate_Min = 0;
+
+                if (iFrameIndex == iFrameNo - 1) // Last Frame
+                    fTributaryWidth_Y_Coordinate_Max = (iFrameNo - 1) * fL1_frame;
+
+                // Find all x-coordinates of wind load zones that start within interval < fTributaryWidth_Y_Coordinate_Min; fTributaryWidth_Y_Coordinate_Max>
+
+                float[,] fLoadValues = wind.fp_e_min_R_roof_ULS_Theta_4;
+                float[] fx_dimensions = wind.fC_pe_R_roof_dimensions; // Roof Rafters
+
+                List<int> x_dimensionsInTributaryAreaIndices = new List<int>();
+
+                int iIndex = 0;
+
+                do
+                {
+                    if (fx_dimensions[iIndex] >= fTributaryWidth_Y_Coordinate_Min &&
+                       fx_dimensions[iIndex] <= fTributaryWidth_Y_Coordinate_Max)
+                        x_dimensionsInTributaryAreaIndices.Add(iIndex);
+
+                    iIndex++;
+                }
+                while (fx_dimensions[iIndex] < fTributaryWidth_Y_Coordinate_Max);
+
+                int iNumberOfParticularZonesInTributaryArea;
+
+                // Determinate number of contributing zones (number of particular widths)
+                if (MathF.d_equal(fx_dimensions[x_dimensionsInTributaryAreaIndices[0]], fTributaryWidth_Y_Coordinate_Min)) // First zone starts in the coordinate of tributary width
+                    iNumberOfParticularZonesInTributaryArea = x_dimensionsInTributaryAreaIndices.Count;
+                else if (MathF.d_equal(fx_dimensions[x_dimensionsInTributaryAreaIndices[x_dimensionsInTributaryAreaIndices.Count - 1]], fTributaryWidth_Y_Coordinate_Max)) // Last zone ends in the coordinate of tributary width
+                    iNumberOfParticularZonesInTributaryArea = x_dimensionsInTributaryAreaIndices.Count;
+                else
+                    iNumberOfParticularZonesInTributaryArea = x_dimensionsInTributaryAreaIndices.Count + 1;
+
+                // Calculate load value
+                float fValue_q = 0;
+                for (int i = 0; i < iNumberOfParticularZonesInTributaryArea; i++)
+                {
+                    float fParticularContributingWidth;
+
+                    if (MathF.d_equal(fx_dimensions[x_dimensionsInTributaryAreaIndices[0]], fTributaryWidth_Y_Coordinate_Min)) // First zone starts in the coordinate of tributary width
+                    {
+                        fParticularContributingWidth = Math.Min(x_dimensionsInTributaryAreaIndices[i + 1], fTributaryWidth_Y_Coordinate_Max) - x_dimensionsInTributaryAreaIndices[i];
+                        fValue_q += fLoadValues[iDirectionIndex, x_dimensionsInTributaryAreaIndices[i]] * fParticularContributingWidth;
+                    }
+                    else // First zone starts before the coordinate of tributary width
+                    {
+                        if (i == 0) // First zone
+                        {
+                            fParticularContributingWidth = x_dimensionsInTributaryAreaIndices[i] - fTributaryWidth_Y_Coordinate_Min;
+                        }
+                        else if (i < iNumberOfParticularZonesInTributaryArea - 1)
+                        {
+                            fParticularContributingWidth = x_dimensionsInTributaryAreaIndices[i] - x_dimensionsInTributaryAreaIndices[i - 1];
+                        }
+                        else // Last zone
+                        {
+                            fParticularContributingWidth = fTributaryWidth_Y_Coordinate_Max - x_dimensionsInTributaryAreaIndices[i - 1];
+                        }
+
+                        fValue_q += fLoadValues[iDirectionIndex, x_dimensionsInTributaryAreaIndices[i] - 1] * fParticularContributingWidth;
+                    }
+                }
+
+                // Create Member Load - Left and Right Rafter
+                CMLoad loadRafter1 = new CMLoad_21(2, fValue_q, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadRafter2 = new CMLoad_21(3, fValue_q, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+
+                listOfMemberLoads.Add(loadRafter1);
+                listOfMemberLoads.Add(loadRafter2);
+            }
         }
 
         private void SetSurfaceWindLoads_Cpi(
