@@ -973,14 +973,17 @@ namespace PFD
             List<CMLoad> memberMaxLoadSnowLeft_Frames_ULS = new List<CMLoad>();
             List<CMLoad> memberMaxLoadSnowRight_Frames_ULS = new List<CMLoad>();
 
-            List<CMLoad> memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimin_Left = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimin_Right = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimin_Front = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimin_Rear = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimax_Left = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimax_Right = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimax_Front = new List<CMLoad>();
-            List<CMLoad> memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimax_Rear = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Left = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Right = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Front = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Rear = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Left = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Right = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Front = new List<CMLoad>();
+            List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Rear = new List<CMLoad>();
+
+            List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Left = new List<CMLoad>();
+            List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Left = new List<CMLoad>();
 
             #endregion
 
@@ -1458,7 +1461,7 @@ namespace PFD
             if(bGenerateLoadsOnPurlinsAndGirts)
             CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
 
-            bool bGenerateLoadsOnFrameMembers = true;
+            bool bGenerateLoadsOnFrameMembers = false; // TODO - dopracovat funkciu GenerateLoadsOnFrames, bool zavisi na checkboxe v GUI
             if (bGenerateLoadsOnFrameMembers)
             {
                 GenerateLoadsOnFrames(
@@ -1475,16 +1478,19 @@ namespace PFD
                     out memberMaxLoadSnowAll_Frames_ULS,
                     out memberMaxLoadSnowLeft_Frames_ULS,
                     out memberMaxLoadSnowRight_Frames_ULS,
-                    out memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimin_Left
+                    out memberLoadInternalPressure_Frames_ULS_Cpimin_Left,
                     /*
-                    out memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimin_Right,
-                    out memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimin_Front,
-                    out memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimin_Rear,
-                    out memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimax_Left,
-                    out memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimax_Right,
-                    out memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimax_Front,
-                    out memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimax_Rear
+                    out memberLoadInternalPressure_Frames_ULS_Cpimin_Right,
+                    out memberLoadInternalPressure_Frames_ULS_Cpimin_Front,
+                    out memberLoadInternalPressure_Frames_ULS_Cpimin_Rear,
+                    out memberLoadInternalPressure_Frames_ULS_Cpimax_Left,
+                    out memberLoadInternalPressure_Frames_ULS_Cpimax_Right,
+                    out memberLoadInternalPressure_Frames_ULS_Cpimax_Front,
+                    out memberLoadInternalPressure_Frames_ULS_Cpimax_Rear
                     */
+
+                    out memberLoadExternalPressure_Frames_ULS_Cpemin_Left,
+                    out memberLoadExternalPressure_Frames_ULS_Cpemax_Left
                     );
 
                 // Assign generated member loads to the load cases
@@ -1498,18 +1504,20 @@ namespace PFD
                 m_arrLoadCases[03].MemberLoadsList = memberMaxLoadSnowLeft_Frames_ULS;
                 m_arrLoadCases[04].MemberLoadsList = memberMaxLoadSnowRight_Frames_ULS;
 
-                m_arrLoadCases[05].MemberLoadsList = memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimin_Left;
+                m_arrLoadCases[05].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Left;
 
                 /*
-                m_arrLoadCases[06].MemberLoadsList = memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimin_Right;
-                m_arrLoadCases[07].MemberLoadsList = memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimin_Front;
-                m_arrLoadCases[08].MemberLoadsList = memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimin_Rear;
-                m_arrLoadCases[09].MemberLoadsList = memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimax_Left;
-                m_arrLoadCases[10].MemberLoadsList = memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimax_Right;
-                m_arrLoadCases[11].MemberLoadsList = memberLoadInternalPressure_Cpimin_Frames_ULS_Cpimax_Front;
-                m_arrLoadCases[12].MemberLoadsList = memberLoadInternalPressure_Cpimax_Frames_ULS_Cpimax_Rear;
+                m_arrLoadCases[06].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Right;
+                m_arrLoadCases[07].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Front;
+                m_arrLoadCases[08].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Rear;
+                m_arrLoadCases[09].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Left;
+                m_arrLoadCases[10].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Right;
+                m_arrLoadCases[11].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Front;
+                m_arrLoadCases[12].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Rear;
                 */
 
+                m_arrLoadCases[13].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemin_Left;
+                m_arrLoadCases[17].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemax_Left;
                 // SLS
             }
 
@@ -2203,7 +2211,7 @@ namespace PFD
             out List<CMLoad> memberMaxLoadSnowAll_ULS,
             out List<CMLoad> memberMaxLoadSnowLeft_ULS,
             out List<CMLoad> memberMaxLoadSnowRight_ULS,
-            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Left
+            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Left,
             /*
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Right,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Front,
@@ -2213,6 +2221,9 @@ namespace PFD
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Front,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Rear
             */
+
+            out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Left,
+            out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Left
             )
         {
             memberLoadDead = new List<CMLoad>();
@@ -2230,6 +2241,9 @@ namespace PFD
             memberLoadInternalPressure_ULS_Cpimax_Front = new List<CMLoad>();
             memberLoadInternalPressure_ULS_Cpimax_Rear = new List<CMLoad>();
             */
+
+            memberLoadExternalPressure_ULS_Cpemin_Left = new List<CMLoad>();
+            memberLoadExternalPressure_ULS_Cpemax_Left = new List<CMLoad>();
 
             for (int i = 0; i < iFrameNo; i++)
             {
@@ -2250,6 +2264,9 @@ namespace PFD
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimax_Rear;
                 */
 
+                List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemin_Left;
+                List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemax_Left;
+
                 // Generate loads on member of particular frame
                 GenerateLoadsOnFrame(i,
                 fValueLoadColumnDead,
@@ -2265,7 +2282,7 @@ namespace PFD
                 out memberMaxLoadSnowAll_ULSFrame,
                 out memberMaxLoadSnowLeft_ULSFrame,
                 out memberMaxLoadSnowRight_ULSFrame,
-                out memberLoadInternalPressure_Frame_ULS_Cpimin_Left
+                out memberLoadInternalPressure_Frame_ULS_Cpimin_Left,
                 /*
                 out memberLoadInternalPressure_Frame_ULS_Cpimin_Right,
                 out memberLoadInternalPressure_Frame_ULS_Cpimin_Front,
@@ -2275,6 +2292,9 @@ namespace PFD
                 out memberLoadInternalPressure_Frame_ULS_Cpimax_Front,
                 out memberLoadInternalPressure_Frame_ULS_Cpimax_Rear
                 */
+
+                out memberLoadExternalPressure_Frame_ULS_Cpemin_Left,
+                out memberLoadExternalPressure_Frame_ULS_Cpemax_Left
                 );
 
                 // Fill output list - loads on members of all frames
@@ -2311,6 +2331,12 @@ namespace PFD
                 foreach (CMLoad l in memberLoadInternalPressure_Frame_ULS_Cpimax_Rear)
                     memberLoadInternalPressure_ULS_Cpimax_Rear.Add(l);
                 */
+
+                foreach (CMLoad l in memberLoadExternalPressure_Frame_ULS_Cpemin_Left)
+                    memberLoadExternalPressure_ULS_Cpemin_Left.Add(l);
+
+                foreach (CMLoad l in memberLoadExternalPressure_Frame_ULS_Cpemax_Left)
+                    memberLoadExternalPressure_ULS_Cpemax_Left.Add(l);
             }
         }
 
@@ -2331,7 +2357,7 @@ namespace PFD
             //out List<CMLoad> memberMaxLoadSnowAll_SLS, TODO
             //out List<CMLoad> memberMaxLoadSnowLeft_SLS,
             //out List<CMLoad> memberMaxLoadSnowRight_SLS,
-            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Left
+            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Left,
             /*
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Right,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Front,
@@ -2341,6 +2367,9 @@ namespace PFD
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Front,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Rear
             */
+
+            out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Left,
+            out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Left
             )
         {
             int iEavesPurlinNoInOneFrame = 2;
@@ -2405,19 +2434,143 @@ namespace PFD
 
             // Wind Loads
             // Internal Pressure
+            int iWindDirectionIndex = (int)ELCMainDirection.ePlusX;
             // ULS
             // Cpi,min
             memberLoadInternalPressure_ULS_Cpimin_Left = new List<CMLoad>(4);
             // Columns
-            CMLoad loadColumnLeft_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 1, wind.fp_i_min_ULS_Theta_4[0] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumnRight_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 2, wind.fp_i_min_ULS_Theta_4[0] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnLeft_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 1, wind.fp_i_min_ULS_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnRight_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 2, wind.fp_i_min_ULS_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             memberLoadInternalPressure_ULS_Cpimin_Left.Add(loadColumnLeft_WindLoad_Cpimin_ULS);
             memberLoadInternalPressure_ULS_Cpimin_Left.Add(loadColumnRight_WindLoad_Cpimin_ULS);
             // Rafters
-            CMLoad loadRafterLeft_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 3, wind.fp_i_min_ULS_Theta_4[0] * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 4, wind.fp_i_min_ULS_Theta_4[0] * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 3, wind.fp_i_min_ULS_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_WindLoad_Cpimin_ULS = new CMLoad_21(iFrameIndex * 4 + 4, wind.fp_i_min_ULS_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             memberLoadInternalPressure_ULS_Cpimin_Left.Add(loadRafterLeft_WindLoad_Cpimin_ULS);
             memberLoadInternalPressure_ULS_Cpimin_Left.Add(loadRafterRight_WindLoad_Cpimin_ULS);
+
+            // External Pressure
+            memberLoadExternalPressure_ULS_Cpemin_Left = new List<CMLoad>();
+            SetFrameMembersWindLoads_LeftOrRight(iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        iWindDirectionIndex,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        0,
+                        wind,
+                        out memberLoadExternalPressure_ULS_Cpemin_Left);
+
+            memberLoadExternalPressure_ULS_Cpemax_Left = new List<CMLoad>();
+            SetFrameMembersWindLoads_LeftOrRight(iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        iWindDirectionIndex,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        1,
+                        wind,
+                        out memberLoadExternalPressure_ULS_Cpemax_Left);
+        }
+
+        private void SetFrameMembersWindLoads_LeftOrRight(int iFrameIndex,
+            int indexColumn1Left,
+            int indexColumn2Right,
+            int indexRafter1Left,
+            int indexRafter2Right,
+            int iDirectionIndex, // 0-4 Left, .....
+            float fFrameTributaryWidth,
+            ELSType eLSType,
+            int iCodeForCpeMinMaxValue,
+            CCalcul_1170_2 wind,
+            out List<CMLoad> listOfMemberLoads)
+        {
+            // External Pressure
+            listOfMemberLoads = new List<CMLoad>();
+            // Columns
+            CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnRight_WindLoad = new CMLoad_21(iFrameIndex * 4 + 2, -wind.fp_e_L_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            listOfMemberLoads.Add(loadColumnLeft_WindLoad);
+            listOfMemberLoads.Add(loadColumnRight_WindLoad);
+
+            // Rafters - generate loads depending on win pressure zone on the roof
+            int iIndexOfMemberLoad = 0;
+            float fMemberProjectedLength_X = (float)m_arrMembers[indexRafter1Left].Delta_X;
+
+            int iLastLoadIndex = iFrameIndex * 4 + 2;
+
+            float[,] fp_e_U_roof_Theta_4;
+            float[,] fp_e_D_roof_Theta_4;
+
+            if (eLSType == ELSType.eLS_ULS)
+            {
+                if (iCodeForCpeMinMaxValue == 0) // ULS - Cpe,min
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_ULS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_ULS_Theta_4;
+                }
+                else // ULS - Cpe,max
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_ULS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_ULS_Theta_4;
+                }
+            }
+            else
+            {
+                if (iCodeForCpeMinMaxValue == 0) // ULS - Cpe,min
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_SLS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_SLS_Theta_4;
+                }
+                else // ULS - Cpe,max
+                {
+                    fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_SLS_Theta_4;
+                    fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_SLS_Theta_4;
+                }
+            }
+
+            // Left Rafter
+            do
+            {
+                // TODO - zapracovat identifikaciu polohy pruta voci jednotlivym oblastiam zatazenia ak nezacina v X = 0
+
+                float fq = -fp_e_U_roof_Theta_4[iDirectionIndex, iIndexOfMemberLoad] * fFrameTributaryWidth;
+                float fstart_abs = wind.fC_pe_U_roof_dimensions[iIndexOfMemberLoad];
+                float floadsegmentlengthProjected = Math.Min(wind.fC_pe_U_roof_dimensions[iIndexOfMemberLoad + 1], fMemberProjectedLength_X) - wind.fC_pe_U_roof_dimensions[iIndexOfMemberLoad];
+                float floadsegmentlength = floadsegmentlengthProjected * m_arrMembers[indexRafter1Left].FLength / fMemberProjectedLength_X;
+
+                CMLoad loadRafterSegment = new CMLoad_24(iLastLoadIndex + 1, fq, fstart_abs, floadsegmentlength, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                listOfMemberLoads.Add(loadRafterSegment);
+
+                iLastLoadIndex++;
+                iIndexOfMemberLoad++;
+            }
+            while (wind.fC_pe_U_roof_dimensions[iIndexOfMemberLoad] < fMemberProjectedLength_X);
+
+            // Right Rafter
+
+            iIndexOfMemberLoad = 0;
+            fMemberProjectedLength_X = (float)m_arrMembers[indexRafter2Right].Delta_X;
+            do
+            {
+                // TODO - zapracovat identifikaciu polohy pruta voci jednotlivym oblastiam zatazenia ak nezacina v X = 0
+
+                float fq = -fp_e_D_roof_Theta_4[iDirectionIndex, iIndexOfMemberLoad] * fFrameTributaryWidth;
+                float fstart_abs = wind.fC_pe_D_roof_dimensions[iIndexOfMemberLoad];
+                float floadsegmentlengthProjected = Math.Min(wind.fC_pe_D_roof_dimensions[iIndexOfMemberLoad + 1], fMemberProjectedLength_X) - wind.fC_pe_D_roof_dimensions[iIndexOfMemberLoad];
+                float floadsegmentlength = floadsegmentlengthProjected * m_arrMembers[indexRafter2Right].FLength / fMemberProjectedLength_X;
+
+                CMLoad loadRafterSegment = new CMLoad_24(iLastLoadIndex + 1, fq, fstart_abs, floadsegmentlength, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                listOfMemberLoads.Add(loadRafterSegment);
+
+                iLastLoadIndex++;
+                iIndexOfMemberLoad++;
+            }
+            while (wind.fC_pe_D_roof_dimensions[iIndexOfMemberLoad] < fMemberProjectedLength_X);
         }
 
         private void SetSurfaceWindLoads_Cpi(
