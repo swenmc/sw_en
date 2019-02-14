@@ -30,7 +30,7 @@ namespace BaseClasses
                         float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
                         foreach (CMember m in members)
                         {
-                            lc.MemberLoadsList.Add(new CMLoad_21(iLoadID_Temp, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                            lc.MemberLoadsList.Add(new CMLoad_21(iLoadID_Temp, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                             iLoadID_Temp += 1;
                         }
                     }
@@ -42,7 +42,7 @@ namespace BaseClasses
                             float fMemberLoadValue = csloadFree.fValue * fDist;
                             foreach (CMember m in members)
                             {
-                                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID_Temp, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID_Temp, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                                 iLoadID_Temp += 1;
                             }
                         }

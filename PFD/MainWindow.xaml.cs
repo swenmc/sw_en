@@ -1659,15 +1659,15 @@ namespace PFD
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
                                 {
                                     SetLoadGCSCoordinates(l);
-                                    GetB(l, m, model.fL1_frame);
-                                    
+                                    GetTributaryWidth_B(l, m, model.fL1_frame);
+
                                     //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
                                 }
                             }
                             else if (load is CSLoad_FreeUniform)
                             {
                                 SetLoadGCSCoordinates((CSLoad_FreeUniform)load);
-                                GetB((CSLoad_FreeUniform)load, m, model.fL1_frame);
+                                GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
                                 //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
                             else throw new Exception("Load type not known.");
@@ -1725,9 +1725,13 @@ namespace PFD
         }
 
         //ja ani neviem nazvat tuto metodu,ze co sa hlada
-        private double GetB(CSLoad_FreeUniform load, CMember m, float fL1_frame)
+        //  :))) To bude dobre :)))
+
+        // Returns tributary width "b" which is representing a portion of surface load area transferred to the member
+        // "b" is a dimension perpendicular to the member local x-axis
+        private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
         {
-            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane
+            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - to je asi nejaka chyba, vygeneruje sa asi prazdny Surface Load, ak mi odchytis, v ktorom to je load case a cislo toho surface load v zozname, mozem sa tomu povenovat
 
             double MinLoadY = load.PointsGCS.Min(p => p.Y);
             double MaxLoadY = load.PointsGCS.Max(p => p.Y);
@@ -1752,7 +1756,7 @@ namespace PFD
             double x1 = 0;
             double x2 = 0;
 
-            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane
+            if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane // To Ondrej - vid komentar vyssie GetTributaryWidth_B
 
             if (load.ELoadDirection == ELoadDir.eLD_Z)
             {

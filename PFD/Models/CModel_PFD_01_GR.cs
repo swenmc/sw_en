@@ -862,12 +862,18 @@ namespace PFD
             // Toto zatazenie nie je priradene do load casesov takze vo vypocte sa nepouzije
             // Pouzit len na inspiraciu, zatial nemazat
 
+            // Snow load factor - projection on roof
+            float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+
             // Loads
-            float fValueLoadRafterDead1 = -0.2f;
-            float fValueLoadRafterDead2 = -0.1f;
-            float fValueLoadRafterImposed = -0.1f;
-            float fValueLoadRafterSnow1 = -0.8f;
-            float fValueLoadRafterSnow2 = -0.4f;
+            float fValueLoadRafterDead1 = -generalLoad.fDeadLoadTotal_Roof * fL1_frame;
+            float fValueLoadRafterDead2 = -generalLoad.fDeadLoadTotal_Roof * fL1_frame;
+            float fValueLoadRafterImposed = -generalLoad.fImposedLoadTotal_Roof * fL1_frame;
+
+            float fValueLoadRafterSnowULS_Nu_1 = -snow.fs_ULS_Nu_1 * fSlopeFactor * fL1_frame; // Design value (projection on roof)
+            float fValueLoadRafterSnowULS_Nu_2 = -snow.fs_ULS_Nu_2 * fSlopeFactor * fL1_frame;
+            float fValueLoadRafterSnowSLS_Nu_1 = -snow.fs_SLS_Nu_1 * fSlopeFactor * fL1_frame;
+            float fValueLoadRafterSnowSLS_Nu_2 = -snow.fs_SLS_Nu_2 * fSlopeFactor * fL1_frame;
 
             // Wind load
 
@@ -922,40 +928,51 @@ namespace PFD
             List<CMLoad> memberLoadWindFramesPlusY_CpeMax = new List<CMLoad>();
             List<CMLoad> memberLoadWindFramesMinusY_CpeMax = new List<CMLoad>();
 
-            GenerateLoadOnRafters(fValueLoadRafterDead1, fValueLoadRafterDead1, ref memberLoadDead1Rafters);
-            GenerateLoadOnRafters(fValueLoadRafterDead2, fValueLoadRafterDead2, ref memberLoadDead2Rafters);
-            GenerateLoadOnRafters(fValueLoadRafterImposed, fValueLoadRafterImposed, ref memberLoadImposedRafters);
-            GenerateLoadOnRafters(fValueLoadRafterSnow1, fValueLoadRafterSnow1, ref memberMaxLoadSnowAllRafters);
-            GenerateLoadOnRafters(fValueLoadRafterSnow1, fValueLoadRafterSnow2, ref memberMaxLoadSnowLeftRafters);
-            GenerateLoadOnRafters(fValueLoadRafterSnow2, fValueLoadRafterSnow1, ref memberMaxLoadSnowRightRafters);
+            GenerateLoadOnRafters_Old(fValueLoadRafterDead1, fValueLoadRafterDead1, ref memberLoadDead1Rafters);
+            GenerateLoadOnRafters_Old(fValueLoadRafterDead2, fValueLoadRafterDead2, ref memberLoadDead2Rafters);
+            GenerateLoadOnRafters_Old(fValueLoadRafterImposed, fValueLoadRafterImposed, ref memberLoadImposedRafters);
+            GenerateLoadOnRafters_Old(fValueLoadRafterSnowULS_Nu_1, fValueLoadRafterSnowULS_Nu_1, ref memberMaxLoadSnowAllRafters);
+            GenerateLoadOnRafters_Old(fValueLoadRafterSnowULS_Nu_2, 0, ref memberMaxLoadSnowLeftRafters);
+            GenerateLoadOnRafters_Old(0, fValueLoadRafterSnowULS_Nu_2, ref memberMaxLoadSnowRightRafters);
 
             // Wind
 
             // Cpe,min
             // + X
-            GenerateLoadOnFrames(fValueLoadColumnWind1PlusX_CpeMin, fValueLoadColumnWind2PlusX_CpeMin, fValueLoadRafterWind1PlusX_CpeMin, fValueLoadRafterWind2PlusX_CpeMin, ref memberLoadWindFramesPlusX_CpeMin);
+            GenerateLoadOnFrames_Old(fValueLoadColumnWind1PlusX_CpeMin, fValueLoadColumnWind2PlusX_CpeMin, fValueLoadRafterWind1PlusX_CpeMin, fValueLoadRafterWind2PlusX_CpeMin, ref memberLoadWindFramesPlusX_CpeMin);
 
             // - X
-            GenerateLoadOnFrames(fValueLoadColumnWind1MinusX_CpeMin, fValueLoadColumnWind2MinusX_CpeMin, fValueLoadRafterWind1MinusX_CpeMin, fValueLoadRafterWind2MinusX_CpeMin, ref memberLoadWindFramesMinusX_CpeMin);
+            GenerateLoadOnFrames_Old(fValueLoadColumnWind1MinusX_CpeMin, fValueLoadColumnWind2MinusX_CpeMin, fValueLoadRafterWind1MinusX_CpeMin, fValueLoadRafterWind2MinusX_CpeMin, ref memberLoadWindFramesMinusX_CpeMin);
 
             // + Y
-            GenerateLoadOnFrames(fValueLoadColumnnWindPlusY_CpeMin, fValueLoadColumnnWindPlusY_CpeMin, fValueLoadRafterWindPlusY_CpeMin, fValueLoadRafterWindPlusY_CpeMin, ref memberLoadWindFramesPlusY_CpeMin);
+            GenerateLoadOnFrames_Old(fValueLoadColumnnWindPlusY_CpeMin, fValueLoadColumnnWindPlusY_CpeMin, fValueLoadRafterWindPlusY_CpeMin, fValueLoadRafterWindPlusY_CpeMin, ref memberLoadWindFramesPlusY_CpeMin);
 
             // - Y
-            GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMin, fValueLoadColumnnWindMinusY_CpeMin, fValueLoadRafterWindMinusY_CpeMin, fValueLoadRafterWindMinusY_CpeMin, ref memberLoadWindFramesMinusY_CpeMin);
+            GenerateLoadOnFrames_Old(fValueLoadColumnnWindMinusY_CpeMin, fValueLoadColumnnWindMinusY_CpeMin, fValueLoadRafterWindMinusY_CpeMin, fValueLoadRafterWindMinusY_CpeMin, ref memberLoadWindFramesMinusY_CpeMin);
 
             // Cpe,max
             // + X
-            GenerateLoadOnFrames(fValueLoadColumnWind1PlusX_CpeMax, fValueLoadColumnWind2PlusX_CpeMax, fValueLoadRafterWind1PlusX_CpeMax, fValueLoadRafterWind2PlusX_CpeMax, ref memberLoadWindFramesPlusX_CpeMax);
+            GenerateLoadOnFrames_Old(fValueLoadColumnWind1PlusX_CpeMax, fValueLoadColumnWind2PlusX_CpeMax, fValueLoadRafterWind1PlusX_CpeMax, fValueLoadRafterWind2PlusX_CpeMax, ref memberLoadWindFramesPlusX_CpeMax);
 
             // - X
-            GenerateLoadOnFrames(fValueLoadColumnWind1MinusX_CpeMax, fValueLoadColumnWind2MinusX_CpeMax, fValueLoadRafterWind1MinusX_CpeMax, fValueLoadRafterWind2MinusX_CpeMax, ref memberLoadWindFramesMinusX_CpeMax);
+            GenerateLoadOnFrames_Old(fValueLoadColumnWind1MinusX_CpeMax, fValueLoadColumnWind2MinusX_CpeMax, fValueLoadRafterWind1MinusX_CpeMax, fValueLoadRafterWind2MinusX_CpeMax, ref memberLoadWindFramesMinusX_CpeMax);
 
             // + Y
-            GenerateLoadOnFrames(fValueLoadColumnnWindPlusY_CpeMax, fValueLoadColumnnWindPlusY_CpeMax, fValueLoadRafterWindPlusY_CpeMax, fValueLoadRafterWindPlusY_CpeMax, ref memberLoadWindFramesPlusY_CpeMax);
+            GenerateLoadOnFrames_Old(fValueLoadColumnnWindPlusY_CpeMax, fValueLoadColumnnWindPlusY_CpeMax, fValueLoadRafterWindPlusY_CpeMax, fValueLoadRafterWindPlusY_CpeMax, ref memberLoadWindFramesPlusY_CpeMax);
 
             // - Y
-            GenerateLoadOnFrames(fValueLoadColumnnWindMinusY_CpeMax, fValueLoadColumnnWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, ref memberLoadWindFramesMinusY_CpeMax);
+            GenerateLoadOnFrames_Old(fValueLoadColumnnWindMinusY_CpeMax, fValueLoadColumnnWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, fValueLoadRafterWindMinusY_CpeMax, ref memberLoadWindFramesMinusY_CpeMax);
+
+            // FRAMES
+            // Pokus 14.2.2019
+
+            List<CMLoad> memberLoadDead_Frames = new List<CMLoad>();
+            List<CMLoad> memberLoadImposed_Frames = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadSnowAll_Frames = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadSnowLeft_Frames = new List<CMLoad>();
+            List<CMLoad> memberMaxLoadSnowRight_Frames = new List<CMLoad>();
+
+
 
             #endregion
 
@@ -1018,7 +1035,6 @@ namespace PFD
             surfaceRoofImposedLoad.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeDataRoof, ELoadCoordSystem.eGCS, ELoadDir.eLD_Z, pRoofFrontRight, fRoof_X, fRoof_Y, -generalLoad.fImposedLoadTotal_Roof, fRoofPitch_rad / (float)Math.PI * 180f, 0, 90, Colors.Red, false, true, true, 0));
 
             // Snow Load - Roof
-            float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
             float fsnowULS_Nu_1 = -snow.fs_ULS_Nu_1 * fSlopeFactor; // Design value (projection on roof)
             float fsnowULS_Nu_2 = -snow.fs_ULS_Nu_2 * fSlopeFactor;
             float fsnowSLS_Nu_1 = -snow.fs_SLS_Nu_1 * fSlopeFactor;
@@ -1421,13 +1437,44 @@ namespace PFD
             // Ukazka - purlin - imposed load
             // Preorganizovat properties v triedach surface load tak, aby sa dalo dostat k hodnote zatazenia a prenasobit vzdialenostou medzi vaznicami
             // Vypocitane zatazenie priradit prutom zo zoznamu listOfPurlins v Load Case v m_arrLoadCases[01]
+            #endregion
 
             // TODO - Ondrej, pripravit staticku triedu a metody pre generovanie member load zo surface load v zlozke Loading
-            CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+            // TODO 186 - To Ondrej - Tu je trieda v ktorej by mohlo byt zapracovane generovanie zatazenia
 
             // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
             // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
-            #endregion
+
+            bool bGenerateLoadsOnPurlinsAndGirts = false;
+
+            if(bGenerateLoadsOnPurlinsAndGirts)
+            CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+
+            bool bGenerateLoadsOnFrameMembers = true;
+            if (bGenerateLoadsOnFrameMembers)
+            {
+                GenerateLoadsOnFrames(
+                    -generalLoad.fDeadLoadTotal_Wall,
+                    -generalLoad.fDeadLoadTotal_Roof,
+                    -generalLoad.fImposedLoadTotal_Roof,
+                    fsnowULS_Nu_1,
+                    fsnowULS_Nu_2,
+                    fsnowSLS_Nu_1,
+                    fsnowSLS_Nu_2,
+                    out memberLoadDead_Frames,
+                    out memberLoadImposed_Frames,
+                    out memberMaxLoadSnowAll_Frames,
+                    out memberMaxLoadSnowLeft_Frames,
+                    out memberMaxLoadSnowRight_Frames);
+
+                // Assign generated member loads to the load cases
+
+                m_arrLoadCases[00].MemberLoadsList = memberLoadDead_Frames;
+                m_arrLoadCases[01].MemberLoadsList = memberLoadImposed_Frames;
+                m_arrLoadCases[02].MemberLoadsList = memberMaxLoadSnowAll_Frames;
+                m_arrLoadCases[03].MemberLoadsList = memberMaxLoadSnowLeft_Frames;
+                m_arrLoadCases[04].MemberLoadsList = memberMaxLoadSnowRight_Frames;
+            }
 
             #region Load Groups
             // Create load groups and assigned load cases to the load group
@@ -2075,34 +2122,167 @@ namespace PFD
         // Loading
 
         // Main Columns
-        public void GenerateLoadOnMainColumns(float fValue1, float fValue2, ref List<CMLoad> list)
+        public void GenerateLoadOnMainColumns_Old(float fValue1, float fValue2, ref List<CMLoad> list)
         {
             for (int i = 0; i < iFrameNo; i++)
             {
-                CMLoad loadleft = new CMLoad_21(i *2 + 1, fValue1, m_arrMembers[i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-                CMLoad loadright = new CMLoad_21(i * 2 + 2, fValue2, m_arrMembers[3 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadleft = new CMLoad_21(i *2 + 1, fValue1, m_arrMembers[i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadright = new CMLoad_21(i * 2 + 2, fValue2, m_arrMembers[3 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
                 list.Add(loadleft);
                 list.Add(loadright);
             }
         }
 
         // Rafters
-        public void GenerateLoadOnRafters(float fValue1, float fValue2, ref List<CMLoad> list)
+        public void GenerateLoadOnRafters_Old(float fValue1, float fValue2, ref List<CMLoad> list)
         {
             for (int i = 0; i < iFrameNo; i++)
             {
-                CMLoad loadleft = new CMLoad_21(i * 2 + 1, fValue1, m_arrMembers[1 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-                CMLoad loadright = new CMLoad_21(i * 2 + 2, fValue2, m_arrMembers[1 + i * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadleft = new CMLoad_21(i * 2 + 1, fValue1, m_arrMembers[1 + i * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadright = new CMLoad_21(i * 2 + 2, fValue2, m_arrMembers[1 + i * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
                 list.Add(loadleft);
                 list.Add(loadright);
             }
         }
 
         // Frames
-        public void GenerateLoadOnFrames(float fValueColumn1, float fValueColumn2, float fValueRafter1, float fValueRafter2, ref List<CMLoad> list)
+        public void GenerateLoadOnFrames_Old(float fValueColumn1, float fValueColumn2, float fValueRafter1, float fValueRafter2, ref List<CMLoad> list)
         {
-            GenerateLoadOnMainColumns(fValueColumn1, fValueColumn2, ref list);
-            GenerateLoadOnRafters(fValueRafter1, fValueRafter2, ref list);
+            GenerateLoadOnMainColumns_Old(fValueColumn1, fValueColumn2, ref list);
+            GenerateLoadOnRafters_Old(fValueRafter1, fValueRafter2, ref list);
+        }
+
+        public void GenerateLoadsOnFrames(
+            float fValueLoadColumnDead,
+            float fValueLoadRafterDead,
+            float fValueLoadRafterImposed,
+            float fValueLoadRafterSnowULS_Nu_1,
+            float fValueLoadRafterSnowULS_Nu_2,
+            float fValueLoadRafterSnowSLS_Nu_1,
+            float fValueLoadRafterSnowSLS_Nu_2,
+
+            out List<CMLoad> memberLoadDead,
+            out List<CMLoad> memberLoadImposed,
+            out List<CMLoad> memberMaxLoadSnowAll_ULS,
+            out List<CMLoad> memberMaxLoadSnowLeft_ULS,
+            out List<CMLoad> memberMaxLoadSnowRight_ULS
+            )
+        {
+            memberLoadDead = new List<CMLoad>();
+            memberLoadImposed = new List<CMLoad>();
+            memberMaxLoadSnowAll_ULS = new List<CMLoad>();
+            memberMaxLoadSnowLeft_ULS = new List<CMLoad>();
+            memberMaxLoadSnowRight_ULS = new List<CMLoad>();
+
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                // Create lists of loads on frame members
+                List<CMLoad> memberLoadDeadFrame;
+                List<CMLoad> memberLoadImposedFrame;
+                List<CMLoad> memberMaxLoadSnowAll_ULSFrame;
+                List<CMLoad> memberMaxLoadSnowLeft_ULSFrame;
+                List<CMLoad> memberMaxLoadSnowRight_ULSFrame;
+
+                // Generate loads on member of particular frame
+                GenerateLoadsOnFrame(i,
+                fValueLoadColumnDead,
+                fValueLoadRafterDead,
+                fValueLoadRafterImposed,
+                fValueLoadRafterSnowULS_Nu_1,
+                fValueLoadRafterSnowULS_Nu_2,
+                fValueLoadRafterSnowSLS_Nu_1,
+                fValueLoadRafterSnowSLS_Nu_2,
+                out memberLoadDeadFrame,
+                out memberLoadImposedFrame,
+                out memberMaxLoadSnowAll_ULSFrame,
+                out memberMaxLoadSnowLeft_ULSFrame,
+                out memberMaxLoadSnowRight_ULSFrame);
+
+                // Fill output list - loads on members of all frames
+                foreach (CMLoad l in memberLoadDeadFrame)
+                    memberLoadDead.Add(l);
+
+                foreach (CMLoad l in memberLoadImposedFrame)
+                    memberLoadImposed.Add(l);
+
+                foreach (CMLoad l in memberMaxLoadSnowAll_ULSFrame)
+                    memberMaxLoadSnowAll_ULS.Add(l);
+
+                foreach (CMLoad l in memberMaxLoadSnowLeft_ULSFrame)
+                    memberMaxLoadSnowLeft_ULS.Add(l);
+
+                foreach (CMLoad l in memberMaxLoadSnowRight_ULSFrame)
+                    memberMaxLoadSnowRight_ULS.Add(l);
+            }
+        }
+
+        public void GenerateLoadsOnFrame(int iFrameIndex,
+            float fValueLoadColumnDead,
+            float fValueLoadRafterDead,
+            float fValueLoadRafterImposed,
+            float fValueLoadRafterSnowULS_Nu_1,
+            float fValueLoadRafterSnowULS_Nu_2,
+            float fValueLoadRafterSnowSLS_Nu_1,
+            float fValueLoadRafterSnowSLS_Nu_2,
+
+            out List<CMLoad> memberLoadDead,
+            out List<CMLoad> memberLoadImposed,
+            out List<CMLoad> memberMaxLoadSnowAll_ULS,
+            out List<CMLoad> memberMaxLoadSnowLeft_ULS,
+            out List<CMLoad> memberMaxLoadSnowRight_ULS
+            )
+        {
+            float fFrameTributaryWidth = fL1_frame;
+            float fFrameGCSCoordinate_Y = iFrameIndex * fL1_frame;
+
+            // Half tributary width - first and last frame
+            if (iFrameIndex == 0 || iFrameIndex == iFrameNo-1)
+                fFrameTributaryWidth *= 0.5f;
+
+            // Dead Loads
+            memberLoadDead = new List<CMLoad>(4);
+            // Columns
+            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadColumnDead * fFrameTributaryWidth, m_arrMembers[iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
+            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadColumnDead * fFrameTributaryWidth, m_arrMembers[3 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
+            memberLoadDead.Add(loadColumnLeft_DL);
+            memberLoadDead.Add(loadColumnRight_DL);
+
+            // Rafters
+            // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
+            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterDead * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterDead * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            memberLoadDead.Add(loadRafterLeft_DL);
+            memberLoadDead.Add(loadRafterRight_DL);
+
+            // Imposed Loads - roof
+            // Rafters
+            // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
+            CMLoad loadRafterLeft_IL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_IL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            memberLoadImposed = new List<CMLoad>(2);
+            memberLoadImposed.Add(loadRafterLeft_IL);
+            memberLoadImposed.Add(loadRafterRight_IL);
+
+            // Snow Loads - roof
+            // Rafters
+            // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
+            CMLoad loadRafterLeft_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            memberMaxLoadSnowAll_ULS = new List<CMLoad>(2);
+            memberMaxLoadSnowAll_ULS.Add(loadRafterLeft_SL1_All_ULS);
+            memberMaxLoadSnowAll_ULS.Add(loadRafterRight_SL1_All_ULS);
+
+            // Rafters
+            // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
+            CMLoad loadRafterLeft_SL2_Left_ULS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            memberMaxLoadSnowLeft_ULS = new List<CMLoad>(1);
+            memberMaxLoadSnowLeft_ULS.Add(loadRafterLeft_SL2_Left_ULS);
+
+            // Rafters
+            // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
+            CMLoad loadRafterRight_SL3_Right_ULS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            memberMaxLoadSnowRight_ULS = new List<CMLoad>(1);
+            memberMaxLoadSnowRight_ULS.Add(loadRafterRight_SL3_Right_ULS);
         }
 
         private void SetSurfaceWindLoads_Cpi(
