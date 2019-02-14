@@ -1663,8 +1663,11 @@ namespace PFD
                                     if (l.pSurfacePoints == null || l.pSurfacePoints.Count == 0 ||
                                         l.PointsGCS == null || l.PointsGCS.Count == 0)
                                     {
+                                        // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
+                                        Model3DGroup gr = load.CreateM_3D_G_Load();
                                         // Catch null or empty list of definition points
-                                        throw new ArgumentNullException("Load Case Name: " + loadCase.Name);
+                                        throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
+                                           "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
                                     }
 
                                     GetTributaryWidth_B(l, m, model.fL1_frame);
@@ -1679,8 +1682,11 @@ namespace PFD
                                 if (load.pSurfacePoints == null || load.pSurfacePoints.Count == 0 ||
                                     load.PointsGCS == null || load.PointsGCS.Count == 0)
                                 {
+                                    // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
+                                    Model3DGroup gr = load.CreateM_3D_G_Load();
                                     // Catch null or empty list of definition points
-                                    throw new ArgumentNullException("Load Case Name: " + loadCase.Name);
+                                    throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
+                                       "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
                                 }
 
                                 GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
@@ -1747,6 +1753,9 @@ namespace PFD
         // "b" is a dimension perpendicular to the member local x-axis
         private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
         {
+            // TO Ondrej, odpoved na tento problem je v podmienke if (Math.Abs(fValue) > 0) public class CSLoad_FreeUniform, line 257
+            // Ak je hodnota zatazenia nulova tak sa ModelGroup nevyrobi a vracia to ModelGroup = null;
+
             if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - to je asi nejaka chyba, vygeneruje sa asi prazdny Surface Load, ak mi odchytis, v ktorom to je load case a cislo toho surface load v zozname, mozem sa tomu povenovat
 
             double MinLoadY = load.PointsGCS.Min(p => p.Y);

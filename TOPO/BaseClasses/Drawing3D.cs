@@ -444,7 +444,7 @@ namespace BaseClasses
                     {
                         if (selectedLoadCase.NodeLoadsList[i] != null && selectedLoadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load()); // Add to model group
+                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load()); // Add to the model group
 
                             // Set load for all assigned nodes
 
@@ -464,7 +464,7 @@ namespace BaseClasses
                             // Transform modelgroup from LCS to GCS
                             model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member);
 
-                            model3D_group.Children.Add(model_gr); // Add Release to model group
+                            model3D_group.Children.Add(model_gr); // Add member load to the model group
 
                             // Set load for all assigned member
 
@@ -482,7 +482,7 @@ namespace BaseClasses
                             Model3DGroup model_gr = new Model3DGroup();
                             model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load();
 
-                            model3D_group.Children.Add(model_gr); // Add Release to model group
+                            model3D_group.Children.Add(model_gr); // Add surface load to the model group
 
                             // Set load for all assigned surfaces
 
