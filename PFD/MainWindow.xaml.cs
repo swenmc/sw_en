@@ -1659,6 +1659,14 @@ namespace PFD
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)load).LoadList)
                                 {
                                     SetLoadGCSCoordinates(l);
+
+                                    if (l.pSurfacePoints == null || l.pSurfacePoints.Count == 0 ||
+                                        l.PointsGCS == null || l.PointsGCS.Count == 0)
+                                    {
+                                        // Catch null or empty list of definition points
+                                        throw new ArgumentNullException("Load Case Name: " + loadCase.Name);
+                                    }
+
                                     GetTributaryWidth_B(l, m, model.fL1_frame);
 
                                     //if (IsLoadForMember(l, m, model.fL1_frame)) CreateLoadOnMember(loadCase, l, m, model.fL1_frame, isOuterFrame);
@@ -1667,6 +1675,14 @@ namespace PFD
                             else if (load is CSLoad_FreeUniform)
                             {
                                 SetLoadGCSCoordinates((CSLoad_FreeUniform)load);
+
+                                if (load.pSurfacePoints == null || load.pSurfacePoints.Count == 0 ||
+                                    load.PointsGCS == null || load.PointsGCS.Count == 0)
+                                {
+                                    // Catch null or empty list of definition points
+                                    throw new ArgumentNullException("Load Case Name: " + loadCase.Name);
+                                }
+
                                 GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
                                 //if (IsLoadForMember((CSLoad_FreeUniform)load, m, model.fL1_frame)) CreateLoadOnMember(loadCase, (CSLoad_FreeUniform)load, m, model.fL1_frame, isOuterFrame);
                             }
