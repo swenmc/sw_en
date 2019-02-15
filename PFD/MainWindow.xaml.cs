@@ -274,14 +274,7 @@ namespace PFD
             {
                 FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[viewModel.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
             }
-
-
-            //waiting = true;
-            //BackgroundWorker bckWrk = new BackgroundWorker();
-            //bckWrk.DoWork += new DoWorkEventHandler(bckWrk_DoWork);
-            //bckWrk.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bckWrk_RunWorkerCompleted);
-            //bckWrk.RunWorkerAsync();
-
+            
             //load the popup
             SplashScreen splashScreen = new SplashScreen("loading2.gif");
             splashScreen.Show(false);
@@ -291,10 +284,7 @@ namespace PFD
 
             splashScreen.Close(TimeSpan.FromSeconds(0.1));
 
-            //waiting = false;
-            //Thread.Sleep(2000);
-            //bckWrk.Dispose();
-            //MessageBox.Show("OK");
+            
         }
 
         //SplashScreen splashScreen = null;
@@ -1018,7 +1008,8 @@ namespace PFD
                 generalLoad,
                 wind,
                 snow,
-                eq);
+                eq,
+                vm.ShowLoadsOnFrameMembers);
 
             // Create 3D window
             UpdateDisplayOptions();

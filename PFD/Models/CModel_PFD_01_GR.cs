@@ -67,7 +67,8 @@ namespace PFD
                 CCalcul_1170_1 generalLoad,
                 CCalcul_1170_2 wind,
                 CCalcul_1170_3 snow,
-                CCalcul_1170_5 eq
+                CCalcul_1170_5 eq,
+                bool bGenerateLoadsOnFrameMembers
             )
         {
             fH1_frame = fH1_temp;
@@ -1371,8 +1372,7 @@ namespace PFD
 
             if(bGenerateLoadsOnPurlinsAndGirts)
             CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
-
-            bool bGenerateLoadsOnFrameMembers = true; // TODO 186 - dopracovat funkciu GenerateLoadsOnFrames, bool zavisi na checkboxe v GUI
+                        
             if (bGenerateLoadsOnFrameMembers)
             {
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(iFrameNo, fL1_frame, fL_tot, m_arrLoadCases, m_arrMembers);
