@@ -101,6 +101,7 @@
     <Compile Include="ImportanceLevels.xaml.cs">
       <DependentUpon>ImportanceLevels.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CMemberLoadGenerator.cs" />
     <Compile Include="MemberDesignDetails.xaml.cs">
       <DependentUpon>MemberDesignDetails.xaml</DependentUpon>
     </Compile>
