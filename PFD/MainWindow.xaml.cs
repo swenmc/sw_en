@@ -1668,11 +1668,13 @@ namespace PFD
                                     if (l.pSurfacePoints == null || l.pSurfacePoints.Count == 0 ||
                                         l.PointsGCS == null || l.PointsGCS.Count == 0)
                                     {
+                                        /*
                                         // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
                                         Model3DGroup gr = load.CreateM_3D_G_Load();
                                         // Catch null or empty list of definition points
                                         throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
                                            "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
+                                        */
                                     }
 
                                     GetTributaryWidth_B(l, m, model.fL1_frame);
@@ -1687,11 +1689,13 @@ namespace PFD
                                 if (load.pSurfacePoints == null || load.pSurfacePoints.Count == 0 ||
                                     load.PointsGCS == null || load.PointsGCS.Count == 0)
                                 {
+                                    /*
                                     // Model group sa nevyrobi ak je hodnota zatazenia nulova, mali by sme to vsetko preskakovat ak zatazenie neexistuje alebo je zatazenie nulove
                                     Model3DGroup gr = load.CreateM_3D_G_Load();
                                     // Catch null or empty list of definition points
                                     throw new ArgumentNullException("Load Case Name: " + loadCase.Name + "\n" +
                                        "Load Geometry 3D Model Items: " + gr.Children.Count.ToString());
+                                    */
                                 }
 
                                 GetTributaryWidth_B((CSLoad_FreeUniform)load, m, model.fL1_frame);
@@ -1840,7 +1844,24 @@ namespace PFD
             return transPoints;
         }
 
+        private void chbDisplayMemberLoads_Checked(object sender, RoutedEventArgs e)
+        {
 
+        }
 
+        private void chbDisplaySurfaceLoads_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chbDisplayMemberLoads_UnChecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chbDisplaySurfaceLoads_UnChecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

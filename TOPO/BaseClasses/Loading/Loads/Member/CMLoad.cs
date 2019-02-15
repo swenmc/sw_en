@@ -102,7 +102,7 @@ namespace BaseClasses
             return nLoadType;
         }
 
-        public Model3DGroup CreateUniformLoadSequence(float fq_value, float fstartPosition, float floadsequencelength)
+        public Model3DGroup CreateUniformLoadSequence(float fq_value, float fstartPosition, float floadsequencelength, bool bConsiderCrossSectionDimensions)
         {
             float fDisplayin3D_ratio = 0.001f; // (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
 
@@ -144,9 +144,17 @@ namespace BaseClasses
             }
 
             // Trasnform position of load on member (consider eccentricity of load / member / cross-section dimensions)
-            TranslateTransform3D translate = new TranslateTransform3D(fstartPosition,
-                EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? (fq_value > 0 ? -0.5 * Member.CrScStart.b : 0.5 * Member.CrScStart.b) : 0,
-                EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? (fq_value > 0 ? -0.5 * Member.CrScStart.h : 0.5 * Member.CrScStart.h) : 0);
+
+            double dOffset_y = 0f;
+            double dOffset_z = 0f;
+
+            if(bConsiderCrossSectionDimensions)
+            {
+                dOffset_y = EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? (fq_value > 0 ? -0.5 * Member.CrScStart.b : 0.5 * Member.CrScStart.b) : 0;
+                dOffset_z = EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? (fq_value > 0 ? -0.5 * Member.CrScStart.h : 0.5 * Member.CrScStart.h) : 0;
+            }
+
+            TranslateTransform3D translate = new TranslateTransform3D(fstartPosition, dOffset_y, dOffset_z);
 
             // Add the transform to a Transform3DGroup
             Transform3DGroup loadTransform3DGroup = new Transform3DGroup();

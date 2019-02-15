@@ -46,7 +46,7 @@ namespace BaseClasses
                 //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
                 Model3DGroup loadsModel3DGroup = null;
-                if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase);
+                if (sDisplayOptions.bDisplayLoads) loadsModel3DGroup = Drawing3D.CreateModelLoadObjectsModel3DGroup(loadcase, sDisplayOptions);
                 if (loadsModel3DGroup != null) gr.Children.Add(loadsModel3DGroup);
                 //System.Diagnostics.Trace.WriteLine("After CreateModelLoadObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -431,7 +431,7 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Loading objects model 3d group
-        public static Model3DGroup CreateModelLoadObjectsModel3DGroup(CLoadCase selectedLoadCase)
+        public static Model3DGroup CreateModelLoadObjectsModel3DGroup(CLoadCase selectedLoadCase, DisplayOptions sDisplayOptions)
         {
             Model3DGroup model3D_group = new Model3DGroup();
 
@@ -460,7 +460,7 @@ namespace BaseClasses
                         if (selectedLoadCase.MemberLoadsList[i] != null && selectedLoadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load();
+                            model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel);
                             // Transform modelgroup from LCS to GCS
                             model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member);
 

@@ -208,5 +208,11 @@ namespace BaseClasses
             Model3DGroup model_gr = new Model3DGroup();
             return model_gr;
         }
+
+        virtual public Model3DGroup CreateM_3D_G_Load(bool bConsiderCrossSectionDimensions)
+        {
+            Model3DGroup model_gr = new Model3DGroup();
+            return model_gr;
+        }
     }
 }

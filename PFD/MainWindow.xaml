@@ -222,25 +222,28 @@
                         <CheckBox Name="chbDisplayPlates" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayPlates_Unchecked" Checked="chbDisplayPlates_Checked">Display Plates</CheckBox>
                         <CheckBox Name="chbDisplayConnectors" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayConnectors_Unchecked" Checked="chbDisplayConnectors_Checked">Display Connectors</CheckBox>
 
-                        <CheckBox Name="chbDisplayMemberDescription" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked ="chbDisplayMemberDescription_Unchecked" Checked="chbDisplayMemberDescription_Checked">Display Member Description</CheckBox>
+                        <CheckBox Name="chbDisplayMemberDescription" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked ="chbDisplayMemberDescription_Unchecked" Checked="chbDisplayMemberDescription_Checked">Display Member Description</CheckBox>
 
                         <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembersCenterLines_UnChecked" Checked="chbDisplayMembersCenterLines_Checked">Display Members Centerlines</CheckBox>
                         <CheckBox Name="chbDisplaySolidModel" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplaySolidModel_Unchecked" Checked="chbDisplaySolidModel_Checked">Display Solid Model</CheckBox>
                         <CheckBox Name="chbDisplayWireFrameModel" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayWireFrameModel_Unchecked" Checked="chbDisplayWireFrameModel_Checked" >Display Wireframe Model</CheckBox>
 
-                        <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayDistinguishedColorMember_Checked">Distinguished Color Members</CheckBox>
-                        <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="15" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayTransparentModelMember_Checked">Transparent Members</CheckBox>
+                        <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="10" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayDistinguishedColorMember_Checked">Distinguished Color Members</CheckBox>
+                        <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="11" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayTransparentModelMember_Checked">Transparent Members</CheckBox>
 
-                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="16" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
+                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="12" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
 
-                        <StackPanel Orientation="Vertical" Grid.Row="17" Grid.Column="3" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Vertical" Grid.Row="16" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="2">
                             <CheckBox Name ="chbDisplayLoads" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked ="chbDisplayLoads_UnChecked" Checked="chbDisplayLoads_Checked">Display Loads</CheckBox>
-                            <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="0 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="False" Unchecked ="chbDisplayLoadsOnPurlinsAndGirts_Unchecked" Checked="chbDisplayLoadsOnPurlinsAndGirts_Checked">Display member loads generated on purlins and girts</CheckBox>
-                            <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="0 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                  IsChecked="False" Unchecked ="chbDisplayLoadsOnFrames_Unchecked" Checked="chbDisplayLoadsOnFrames_Checked">Display member loads generated on frames</CheckBox>
+                            <CheckBox Name ="chbDisplayMemberLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked="chbDisplayMemberLoads_UnChecked" Checked="chbDisplayMemberLoads_Checked">Member Loads</CheckBox>
+                            
+                            <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="False" Unchecked ="chbDisplayLoadsOnPurlinsAndGirts_Unchecked" Checked="chbDisplayLoadsOnPurlinsAndGirts_Checked">Generated on purlins and girts</CheckBox>
+                            <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                  IsChecked="False" Unchecked ="chbDisplayLoadsOnFrames_Unchecked" Checked="chbDisplayLoadsOnFrames_Checked">Generated on frames</CheckBox>
+                            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked="chbDisplaySurfaceLoads_UnChecked" Checked="chbDisplaySurfaceLoads_Checked" >Surface Loads</CheckBox>
                         </StackPanel>
-                        
+
                         <TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 
                         <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"

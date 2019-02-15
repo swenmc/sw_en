@@ -522,6 +522,9 @@
         public bool bDisplayGlobalAxis;
         public bool bDisplayMemberDescription;
         public bool bDisplayLoads;
+
+        public bool bDisplayMemberLoads;
+        public bool bDisplaySurfaceLoads;
     }
 
     public struct BuildingDataInput
