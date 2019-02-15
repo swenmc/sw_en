@@ -1394,12 +1394,11 @@ namespace PFD
                     out memberLoadInternalPressure_Frames_ULS_Cpimin_Right,
                     out memberLoadInternalPressure_Frames_ULS_Cpimin_Front,
                     out memberLoadInternalPressure_Frames_ULS_Cpimin_Rear,
-                    /*
+
                     out memberLoadInternalPressure_Frames_ULS_Cpimax_Left,
                     out memberLoadInternalPressure_Frames_ULS_Cpimax_Right,
                     out memberLoadInternalPressure_Frames_ULS_Cpimax_Front,
-                    out memberLoadInternalPressure_Frames_ULS_Cpimax_Rear
-                    */
+                    out memberLoadInternalPressure_Frames_ULS_Cpimax_Rear,
 
                     out memberLoadExternalPressure_Frames_ULS_Cpemin_Left,
                     out memberLoadExternalPressure_Frames_ULS_Cpemin_Right,
@@ -1427,12 +1426,11 @@ namespace PFD
                 m_arrLoadCases[06].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Right;
                 m_arrLoadCases[07].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Front;
                 m_arrLoadCases[08].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimin_Rear;
-                /*
+
                 m_arrLoadCases[09].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Left;
                 m_arrLoadCases[10].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Right;
                 m_arrLoadCases[11].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Front;
                 m_arrLoadCases[12].MemberLoadsList = memberLoadInternalPressure_Frames_ULS_Cpimax_Rear;
-                */
 
                 m_arrLoadCases[13].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemin_Left;
                 m_arrLoadCases[14].MemberLoadsList = memberLoadExternalPressure_Frames_ULS_Cpemin_Right;
@@ -2110,12 +2108,11 @@ namespace PFD
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Right,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Front,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Rear,
-            /*
+
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Left,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Right,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Front,
-            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Rear
-            */
+            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Rear,
 
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Right,
@@ -2137,12 +2134,11 @@ namespace PFD
             memberLoadInternalPressure_ULS_Cpimin_Right = new List<CMLoad>();
             memberLoadInternalPressure_ULS_Cpimin_Front = new List<CMLoad>();
             memberLoadInternalPressure_ULS_Cpimin_Rear = new List<CMLoad>();
-            /*
+
             memberLoadInternalPressure_ULS_Cpimax_Left = new List<CMLoad>();
             memberLoadInternalPressure_ULS_Cpimax_Right = new List<CMLoad>();
             memberLoadInternalPressure_ULS_Cpimax_Front = new List<CMLoad>();
             memberLoadInternalPressure_ULS_Cpimax_Rear = new List<CMLoad>();
-            */
 
             memberLoadExternalPressure_ULS_Cpemin_Left = new List<CMLoad>();
             memberLoadExternalPressure_ULS_Cpemin_Right = new List<CMLoad>();
@@ -2162,16 +2158,16 @@ namespace PFD
                 List<CMLoad> memberMaxLoadSnowAll_ULSFrame;
                 List<CMLoad> memberMaxLoadSnowLeft_ULSFrame;
                 List<CMLoad> memberMaxLoadSnowRight_ULSFrame;
+
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimin_Left;
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimin_Right;
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimin_Front;
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimin_Rear;
-                /*
+
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimax_Left;
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimax_Right;
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimax_Front;
                 List<CMLoad> memberLoadInternalPressure_Frame_ULS_Cpimax_Rear;
-                */
 
                 List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemin_Left;
                 List<CMLoad> memberLoadExternalPressure_Frame_ULS_Cpemin_Right;
@@ -2198,21 +2194,22 @@ namespace PFD
                 out memberMaxLoadSnowAll_ULSFrame,
                 out memberMaxLoadSnowLeft_ULSFrame,
                 out memberMaxLoadSnowRight_ULSFrame,
+
                 out memberLoadInternalPressure_Frame_ULS_Cpimin_Left,
                 out memberLoadInternalPressure_Frame_ULS_Cpimin_Right,
                 out memberLoadInternalPressure_Frame_ULS_Cpimin_Front,
                 out memberLoadInternalPressure_Frame_ULS_Cpimin_Rear,
-                /*
+
                 out memberLoadInternalPressure_Frame_ULS_Cpimax_Left,
                 out memberLoadInternalPressure_Frame_ULS_Cpimax_Right,
                 out memberLoadInternalPressure_Frame_ULS_Cpimax_Front,
-                out memberLoadInternalPressure_Frame_ULS_Cpimax_Rear
-                */
+                out memberLoadInternalPressure_Frame_ULS_Cpimax_Rear,
 
                 out memberLoadExternalPressure_Frame_ULS_Cpemin_Left,
                 out memberLoadExternalPressure_Frame_ULS_Cpemin_Right,
                 out memberLoadExternalPressure_Frame_ULS_Cpemin_Front,
                 out memberLoadExternalPressure_Frame_ULS_Cpemin_Rear,
+
                 out memberLoadExternalPressure_Frame_ULS_Cpemax_Left,
                 out memberLoadExternalPressure_Frame_ULS_Cpemax_Right,
                 out memberLoadExternalPressure_Frame_ULS_Cpemax_Front,
@@ -2246,16 +2243,18 @@ namespace PFD
 
                 foreach (CMLoad l in memberLoadInternalPressure_Frame_ULS_Cpimin_Rear)
                     memberLoadInternalPressure_ULS_Cpimin_Rear.Add(l);
-                /*
+
                 foreach (CMLoad l in memberLoadInternalPressure_Frame_ULS_Cpimax_Left)
                     memberLoadInternalPressure_ULS_Cpimax_Left.Add(l);
+
                 foreach (CMLoad l in memberLoadInternalPressure_Frame_ULS_Cpimax_Right)
                     memberLoadInternalPressure_ULS_Cpimax_Right.Add(l);
+
                 foreach (CMLoad l in memberLoadInternalPressure_Frame_ULS_Cpimax_Front)
                     memberLoadInternalPressure_ULS_Cpimax_Front.Add(l);
+
                 foreach (CMLoad l in memberLoadInternalPressure_Frame_ULS_Cpimax_Rear)
                     memberLoadInternalPressure_ULS_Cpimax_Rear.Add(l);
-                */
 
                 foreach (CMLoad l in memberLoadExternalPressure_Frame_ULS_Cpemin_Left)
                     memberLoadExternalPressure_ULS_Cpemin_Left.Add(l);
@@ -2305,17 +2304,17 @@ namespace PFD
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Right,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Front,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimin_Rear,
-            /*
+
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Left,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Right,
             out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Front,
-            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Rear
-            */
+            out List<CMLoad> memberLoadInternalPressure_ULS_Cpimax_Rear,
 
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Right,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Front,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemin_Rear,
+
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Left,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Right,
             out List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Front,
@@ -2441,6 +2440,63 @@ namespace PFD
                         0,
                         wind,
                 out memberLoadInternalPressure_ULS_Cpimin_Rear);
+
+            // Cpi,max
+            memberLoadInternalPressure_ULS_Cpimax_Left = new List<CMLoad>();
+            SetFrameMembersWindLoads_InternalPressure(
+                        iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        (int)ELCMainDirection.ePlusX,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        1,
+                        wind,
+                out memberLoadInternalPressure_ULS_Cpimax_Left);
+
+            memberLoadInternalPressure_ULS_Cpimax_Right = new List<CMLoad>();
+            SetFrameMembersWindLoads_InternalPressure(
+                        iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        (int)ELCMainDirection.eMinusX,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        1,
+                        wind,
+                out memberLoadInternalPressure_ULS_Cpimax_Right);
+
+            memberLoadInternalPressure_ULS_Cpimax_Front = new List<CMLoad>();
+            SetFrameMembersWindLoads_InternalPressure(
+                        iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        (int)ELCMainDirection.ePlusY,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        1,
+                        wind,
+                out memberLoadInternalPressure_ULS_Cpimax_Front);
+
+            memberLoadInternalPressure_ULS_Cpimax_Rear = new List<CMLoad>();
+            SetFrameMembersWindLoads_InternalPressure(
+                        iFrameIndex,
+                        indexColumn1Left,
+                        indexColumn2Right,
+                        indexRafter1Left,
+                        indexRafter2Right,
+                        (int)ELCMainDirection.eMinusY,
+                        fFrameTributaryWidth,
+                        ELSType.eLS_ULS,
+                        1,
+                        wind,
+                out memberLoadInternalPressure_ULS_Cpimax_Rear);
 
             // External Pressure
             // ULS
