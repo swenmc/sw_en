@@ -101,7 +101,10 @@
     <Compile Include="ImportanceLevels.xaml.cs">
       <DependentUpon>ImportanceLevels.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\CLoadCaseGenerator.cs" />
     <Compile Include="Infrastructure\CMemberLoadGenerator.cs" />
+    <Compile Include="Infrastructure\CNodalLoadGenerator.cs" />
+    <Compile Include="Infrastructure\CSurfaceLoadGenerator.cs" />
     <Compile Include="MemberDesignDetails.xaml.cs">
       <DependentUpon>MemberDesignDetails.xaml</DependentUpon>
     </Compile>

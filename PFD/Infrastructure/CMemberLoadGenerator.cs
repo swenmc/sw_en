@@ -17,27 +17,41 @@ namespace PFD
         private CLoadCase[] m_arrLoadCases;
         private CMember[] m_arrMembers;
 
-        public CMemberLoadGenerator(int frameNo, float L1_frame, float L_tot, CLoadCase[] arrLoadCases, CMember[] arrMembers)
+        float fValueLoadColumnDead;
+        float fValueLoadRafterDead;
+        float fValueLoadRafterImposed;
+        float fValueLoadRafterSnowULS_Nu_1;
+        float fValueLoadRafterSnowULS_Nu_2;
+        float fValueLoadRafterSnowSLS_Nu_1;
+        float fValueLoadRafterSnowSLS_Nu_2;
+        CCalcul_1170_2 wind;
+
+        public CMemberLoadGenerator(int frameNo, float L1_frame, float L_tot, float fSlopeFactor, CLoadCase[] arrLoadCases, CMember[] arrMembers,
+            CCalcul_1170_1 generalLoad, CCalcul_1170_3 snow, CCalcul_1170_2 calc_wind)
         {
             iFrameNo = frameNo;
             fL1_frame = L1_frame;
             fL_tot = L_tot;
             m_arrLoadCases = arrLoadCases;
             m_arrMembers = arrMembers;
+
+            fValueLoadColumnDead = -generalLoad.fDeadLoadTotal_Wall;
+            fValueLoadRafterDead = -generalLoad.fDeadLoadTotal_Roof;
+            fValueLoadRafterImposed = -generalLoad.fImposedLoadTotal_Roof;
+
+            // Snow Load - Roof
+            fValueLoadRafterSnowULS_Nu_1 = -snow.fs_ULS_Nu_1 * fSlopeFactor; // Design value (projection on roof)
+            fValueLoadRafterSnowULS_Nu_2 = -snow.fs_ULS_Nu_2 * fSlopeFactor;
+            fValueLoadRafterSnowSLS_Nu_1 = -snow.fs_SLS_Nu_1 * fSlopeFactor;
+            fValueLoadRafterSnowSLS_Nu_2 = -snow.fs_SLS_Nu_2 * fSlopeFactor;
+
+            wind = calc_wind;
         }
 
         // Loading
 
         // Frame member loads
-        public void GenerateLoadsOnFrames(
-            float fValueLoadColumnDead,
-            float fValueLoadRafterDead,
-            float fValueLoadRafterImposed,
-            float fValueLoadRafterSnowULS_Nu_1,
-            float fValueLoadRafterSnowULS_Nu_2,
-            float fValueLoadRafterSnowSLS_Nu_1,
-            float fValueLoadRafterSnowSLS_Nu_2,
-            CCalcul_1170_2 wind)
+        public void GenerateLoadsOnFrames()
         {
             List<CMLoad> memberLoadDead = new List<CMLoad>();
             List<CMLoad> memberLoadImposed = new List<CMLoad>();
