@@ -697,14 +697,14 @@ namespace PFD
 
             //List<CModel> frameModels = new List<CModel>(); // Zoznam vsetkych frames - este neviem ci bude potrebny
 
-            List<CFrame> frames = CModelHelper.GetFramesFromModel((CModel_PFD_01_GR)Model);
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
+            List<CFrame> frames = model.GetFramesFromModel();
             foreach (CFrame frame in frames)
-            {
-                
+            {                
                 // 1. Create SW_EN Model of frame (Extract data from 3D model)
                 CModel frameModel_i = new Examples.CExample_2D_15_PF(
                             frame.Members,
-                            Model.m_arrNSupports, // TODO - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
+                            model.GetFrameCNSupports(frame), // TODO - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
                             Model.m_arrLoadCases, // TODO Ondrej - prevziat aj loads on members (MMemberLoadsList priradeny v Load case) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
                             Model.m_arrLoadCombs);
 

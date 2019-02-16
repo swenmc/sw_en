@@ -10,7 +10,7 @@ namespace Examples
     {
         public CExample_2D_15_PF(
             List<CMember> members,
-            CNSupport[] supports,
+            List<CNSupport> supports,
             CLoadCase[] loadcases,
             CLoadCombination[] loadcombinations)
         {
@@ -22,7 +22,7 @@ namespace Examples
             m_arrMembers = new CMember[4];
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[2];
-            m_arrNSupports = supports;
+            m_arrNSupports = supports.ToArray();
             m_arrLoadCases = loadcases;
             m_arrLoadCombs = loadcombinations;
 
