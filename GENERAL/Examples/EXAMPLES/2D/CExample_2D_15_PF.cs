@@ -9,7 +9,7 @@ namespace Examples
     public class CExample_2D_15_PF : CExample
     {
         public CExample_2D_15_PF(
-            CMember[] members,
+            List<CMember> members,
             CNSupport[] supports,
             CLoadCase[] loadcases,
             CLoadCombination[] loadcombinations)
@@ -79,7 +79,7 @@ namespace Examples
             m_arrNodes[4].Y = 0f;
             m_arrNodes[4].Z = 0f;
 
-            for (int i = 0; i < members.Length; i++)
+            for (int i = 0; i < members.Count; i++)
             {
                 m_arrMembers[i] = members[i];
                 m_arrMembers[i].NodeStart = m_arrNodes[i];

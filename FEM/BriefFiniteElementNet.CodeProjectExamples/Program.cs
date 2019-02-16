@@ -1197,8 +1197,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                 }
             }
 
-            var wnd = WpfTraceListener.CreateModelTrace(model);
-            new ModelWarningChecker().CheckModel(model);
+            
             // TO - Ondrej  tu by sa mali podla prikladu zobrazovat nejake info hodnoty z vypoctu ale nezobrazuje sa nic
             // Pripada mi to tak ze ta verzia podla ktorej su urobene priklady je nejaka lepsia :)))
             // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
@@ -1207,6 +1206,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             if (bRunFromBFENet)
             {
+                var wnd = WpfTraceListener.CreateModelTrace(model);
+                new ModelWarningChecker().CheckModel(model);
                 wnd.ShowDialog(); // Neotvarat dialog ak sa pusta z PFD
             }
 
