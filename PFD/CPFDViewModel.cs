@@ -12,6 +12,7 @@ using System.Data;
 using MATH;
 using M_BASE;
 using M_EC1.AS_NZS;
+using BriefFiniteElementNet.CodeProjectExamples;
 
 namespace PFD
 {
@@ -127,7 +128,7 @@ namespace PFD
                 if (value < 3 || value > 100)
                     throw new ArgumentException("Gable Width must be between 3 and 100 [m]");
                 MGableWidth = value;
-                
+
                 if (MModelIndex != 0)
                 {
                     // Recalculate roof pitch
@@ -153,9 +154,9 @@ namespace PFD
                 if (value < 3 || value > 150)
                     throw new ArgumentException("Length must be between 3 and 150 [m]");
                 MLength = value;
-                
+
                 if (MModelIndex != 0)
-                {                    
+                {
                     // Recalculate fL1
                     fL1 = MLength / (MFrames - 1);
                 }
@@ -328,7 +329,7 @@ namespace PFD
             set
             {
                 if (value < 0.2 || value > 0.8 * MWallHeight) // Limit is 80% of main column height, could be more but it is 
-                    throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) +" [m]");
+                    throw new ArgumentException("Bottom Girt Position between 0.2 and " + Math.Round(0.8 * MWallHeight, 3) + " [m]");
                 MBottomGirtPosition = value;
                 NotifyPropertyChanged("BottomGirtPosition");
             }
@@ -524,20 +525,20 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, List<PropertiesToInsertOpening> doorBlocksToInsertProperties, List<PropertiesToInsertOpening> windowBlocksToInsertProperties, 
+        public CPFDViewModel(int modelIndex, List<PropertiesToInsertOpening> doorBlocksToInsertProperties, List<PropertiesToInsertOpening> windowBlocksToInsertProperties,
             List<DoorProperties> doorBlocksProperties, List<WindowProperties> windowBlocksProperties)
         {
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksToInsertProperties = windowBlocksToInsertProperties;
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
-            
+
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
 
             IsSetFromCode = false;
-            
+
             _worker.DoWork += CalculateInternalForces;
             _worker.WorkerSupportsCancellation = true;
         }
@@ -679,8 +680,69 @@ namespace PFD
             basicInternalForces[] sBIF_x = null;
             basicDeflections[] sBDeflections_x = null;
 
-            // Tu by sa mal napojit FEM vypocet
+            // Tu by sa mal napojit 3D FEM vypocet
             //RunFEMSOlver();
+
+            ////////////////////////////////////////////////////////////////////////
+            // TODO 201 - TO Ondrej - tu som nieco zacal tvorit ale po napojeni BFENet mi to nefunguje, lebo je tam nejaka vynimka s WPF
+            // Calculation of frame model
+
+            // Extract 2D frames from complex 3D model and create frame models
+
+            CModel_PFD_01_GR model_temp = null;
+
+            if (Model is CModel_PFD_01_GR)
+                model_temp = (CModel_PFD_01_GR)Model; // TODO - ziskat pristup na data 3D modelu, zatial som to urobil takto
+
+            //List<CModel> frameModels = new List<CModel>(); // Zoznam vsetkych frames - este neviem ci bude potrebny
+
+            for (int iFrameIndex = 0; iFrameIndex < model_temp.iFrameNo; iFrameIndex++)
+            {
+                // Determinate particular frame member indices
+                int iEavesPurlinNoInOneFrame = 2;
+                int iFrameNodesNo = 5;
+
+                // TO Ondrej - obecnejsie by bolo nacitat podla hodnoty Y vsetky pruty v reze, tento kod plati len ak je ram zo 4 prutov, ale do buducna moze byt ich pocet iny
+                // Pripadne mozeme prutom dat nejaky priznak ci sa nachadzaju v nejakom rame alebo vytvorit "skupinu/list" ramov (objekt Frame ktory bude v sebe obsahovat zoznam prutov) uz v CModel_PFD_01_GR a podobne a s touto identifikaciou potom pracovat v celom vypocte
+                int indexColumn1Left  = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 0;
+                int indexRafter1Left  = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 1;
+                int indexRafter2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 2;
+                int indexColumn2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 3;
+
+                // Create array of frame members (extracted from 3D model)
+                CMember[] members = new CMember[4];
+                members[0] = model_temp.m_arrMembers[indexColumn1Left];
+                members[1] = model_temp.m_arrMembers[indexRafter1Left];
+                members[2] = model_temp.m_arrMembers[indexRafter2Right];
+                members[3] = model_temp.m_arrMembers[indexColumn2Right];
+
+                // 1. Create SW_EN Model of frame (Extract data from 3D model)
+                CModel frameModel_i = new Examples.CExample_2D_15_PF(
+                            members,
+                            model_temp.m_arrNSupports, // TODO - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
+                            model_temp.m_arrLoadCases, // TODO Ondrej - prevziat aj loads on members (MMemberLoadsList priradeny v Load case) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
+                            model_temp.m_arrLoadCombs);
+
+                //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
+
+                // 2. Create BFENet model of frame and calculate internal forces on frame
+                RunExample3 bfenetModel = new RunExample3();
+
+                List<List<List<basicInternalForces>>> internalforces;
+                bfenetModel.Example3(frameModel_i, out internalforces); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dam do nejakeho wrappera
+                // TO Ondrej - Ak teraz spustim Calculate tak to nefunguje, je tam nejaka vynimka neviem ci to nesuvisi s tym ze som to static zakomentoval
+
+
+                // 3. Assign results to the original members from 3D model
+                // TO Ondrej - vytvorit zoznamy CMemberInternalForcesInLoadCases
+
+                // 4. Run design of frame members
+
+                // 5. Run design of joints
+
+            }
+
+            // Calculation of simple beam model
             float fMaximumDesignRatioWholeStructure = 0;
             float fMaximumDesignRatioGirts = 0;
             float fMaximumDesignRatioPurlins = 0;

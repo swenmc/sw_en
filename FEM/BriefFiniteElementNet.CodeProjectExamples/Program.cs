@@ -823,7 +823,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
         }
 
         // Pokus o napojenie SW_EN
-        public static void Example3(BaseClasses.CModel topomodel, out List<List<List<basicInternalForces>>> resultsoutput)
+        public /*static*/ void Example3(BaseClasses.CModel topomodel, out List<List<List<basicInternalForces>>> resultsoutput)
         {
             // Dokumentacia a priklady
             // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
