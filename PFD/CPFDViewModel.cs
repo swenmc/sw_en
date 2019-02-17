@@ -714,11 +714,14 @@ namespace PFD
                 //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
 
                 // 2. Create BFENet model of frame and calculate internal forces on frame
-                RunExample3 bfenetModel = new RunExample3();
+                RunExample3 bfenetModel = new RunExample3(); // TO Ondrej - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
 
                 List<List<List<basicInternalForces>>> internalforces;
+                // TO Ondrej - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
                 bfenetModel.Example3(frameModel_i, out internalforces); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dam do nejakeho wrappera
                                                                         // TO Ondrej - Ak teraz spustim Calculate tak to nefunguje, je tam nejaka vynimka neviem ci to nesuvisi s tym ze som to static zakomentoval
+
+                // TODO  201 - To Ondrej  - potrebujeme do ramu dostat aj prvky spojov, resp upravit to tak ze vnutorne sily sa nastavia prutom v hlavnom modeli a potom prebehne posudzovanie na prutoch hlavneho modelu, teraz to pada na spojoch, predpokladam ze preto lebo to posudzuje members z modelu samostatneho ramu kde nie su ziadne spoje
 
 
                 // 3. Assign results to the original members from 3D model

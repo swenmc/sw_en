@@ -209,6 +209,12 @@ namespace BaseClasses
                 }
             }
 
+            // TODO 201- TO Ondrej - tu to pada, predpokladam ze preto ze do modelu ramu je potrebne pridat aj spoje medzi frame members, moze tam byt problem s tym ze jeden spoj je zaroven na konci stlpa a ten isty na na zaciatku raftera
+            // takze neviem co vsetko tu bude potrebne pomenit
+
+            // Otazka je ci by to vobec malo posudzovat pruty a spoje z modelu samostatneho ramu, spravnejsie by bolo asi nastavit vysledky prutom Main Columns a Main Rafters v 3D modeli
+            // a members a joints posudzovat az potom
+
             if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
         }
 

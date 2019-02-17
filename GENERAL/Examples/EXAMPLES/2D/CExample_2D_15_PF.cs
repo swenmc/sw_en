@@ -106,6 +106,11 @@ namespace Examples
 
             // Set Load Combinations
             m_arrLoadCombs = loadcombinations;
+
+            // TODO 201 - Ondrej
+            // ???? Doplnit objekty joints z hlavneho modelu medzi prvkami ramu a zaistit spravne priradenie joints
+            // Alebo je potrebne upravit posudky prutov a spojov tak aby sa posudzovali objekty z 3D modelu a nie z modelov samostatnych ramov
+
         }
     }
 }
