@@ -32,7 +32,8 @@ namespace PFD
         public float fz_UpperLimitForBackGirts;
         public float fFrontFrameRakeAngle_temp_rad;
         public float fBackFrameRakeAngle_temp_rad;
-
+        public float fSlopeFactor;
+        
         int iMainColumnNo;
         int iRafterNo;
         int iEavesPurlinNo;
@@ -868,7 +869,7 @@ namespace PFD
 
             // Snow load factor - projection on roof
             // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
-            float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
+            fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
 
             #region Surface Loads
             // Surface Loads
