@@ -1010,6 +1010,7 @@ namespace PFD
                 snow,
                 eq,
                 vm.ShowSurfaceLoads,
+                vm.ShowNodalLoads,
                 vm.ShowLoadsOnFrameMembers);
 
             // Create 3D window

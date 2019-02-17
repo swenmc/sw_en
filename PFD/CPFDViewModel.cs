@@ -47,6 +47,7 @@ namespace PFD
         private int MWallCladdingThicknessIndex;
         private int MLoadCaseIndex;
 
+        private bool MShowNodalLoads;
         private bool MShowSurfaceLoads;
         private bool MShowLoadsOnFrameMembers;
 
@@ -509,6 +510,20 @@ namespace PFD
             }
         }
 
+        public bool ShowNodalLoads
+        {
+            get
+            {
+                return MShowNodalLoads;
+            }
+
+            set
+            {
+                MShowNodalLoads = value;
+                NotifyPropertyChanged("ShowNodalLoads");
+            }
+        }
+
         public bool ShowSurfaceLoads
         {
             get
@@ -581,6 +596,7 @@ namespace PFD
                     Snow,
                     Eq,
                     MShowSurfaceLoads,
+                    MShowNodalLoads,
                     MShowLoadsOnFrameMembers);
         }
 

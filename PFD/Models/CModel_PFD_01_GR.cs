@@ -69,6 +69,7 @@ namespace PFD
                 CCalcul_1170_3 snow,
                 CCalcul_1170_5 eq,
                 bool bGenerateSurfaceLoads,
+                bool bGenerateNodalLoads,
                 bool bGenerateLoadsOnFrameMembers
             )
         {
@@ -900,20 +901,9 @@ namespace PFD
             //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Rear = new List<CMLoad>();
             #endregion
 
-            #region Earthquake - nodal loads
-            // Earthquake
-            int iNumberOfLoadsInXDirection = iFrameNo;
-            int iNumberOfLoadsInYDirection = 2;
-
-            CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, m_arrNodes, eq);
-            nodalLoadGenerator.GenerateNodalLoads();
-
-            
-            #endregion
-
             #region Load Cases
             // Load Cases
-            CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator(nodalLoadGenerator);
+            CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator();
 
             m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
             #endregion
@@ -928,6 +918,19 @@ namespace PFD
                 surfaceLoadGenerator.GenerateSurfaceLoads();
             }
 
+            #endregion
+
+            #region Earthquake - nodal loads
+            // Earthquake
+
+            if (bGenerateNodalLoads)
+            {
+                int iNumberOfLoadsInXDirection = iFrameNo;
+                int iNumberOfLoadsInYDirection = 2;
+
+                CNodalLoadGenerator nodalLoadGenerator = new CNodalLoadGenerator(iNumberOfLoadsInXDirection, iNumberOfLoadsInYDirection, m_arrLoadCases, m_arrNodes, eq);
+                nodalLoadGenerator.GenerateNodalLoads();
+            }
             #endregion
 
             #region POKUS TODO 186 - Generating of member load from surface load (girts and purlins)

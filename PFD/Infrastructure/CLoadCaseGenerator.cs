@@ -9,10 +9,8 @@ namespace PFD
 {
     public class CLoadCaseGenerator
     {
-        CNodalLoadGenerator nlg;
-        public CLoadCaseGenerator(CNodalLoadGenerator nodalLoadGenerator)
+        public CLoadCaseGenerator()
         {
-            nlg = nodalLoadGenerator;
         }
 
         public CLoadCase[] GenerateLoadCases()
@@ -42,8 +40,8 @@ namespace PFD
             m_arrLoadCases[18] = new CLoadCase(19, "Wind load Wu - Cpe,max - Right - X-", ELCGTypeForLimitState.eULSOnly, ELCType.eWind, ELCMainDirection.eMinusX);                       // 19
             m_arrLoadCases[19] = new CLoadCase(20, "Wind load Wu - Cpe,max - Front - Y+", ELCGTypeForLimitState.eULSOnly, ELCType.eWind, ELCMainDirection.ePlusY);                        // 20
             m_arrLoadCases[20] = new CLoadCase(21, "Wind load Wu - Cpe,max - Rear - Y-", ELCGTypeForLimitState.eULSOnly, ELCType.eWind, ELCMainDirection.eMinusY);                        // 21
-            m_arrLoadCases[21] = new CLoadCase(22, "Earthquake load Eu - X", ELCGTypeForLimitState.eULSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusX, nlg.nodalLoadEQ_ULS_PlusX);    // 22
-            m_arrLoadCases[22] = new CLoadCase(23, "Earthquake load Eu - Y", ELCGTypeForLimitState.eULSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusY, nlg.nodalLoadEQ_ULS_PlusY);    // 23
+            m_arrLoadCases[21] = new CLoadCase(22, "Earthquake load Eu - X", ELCGTypeForLimitState.eULSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusX);                               // 22
+            m_arrLoadCases[22] = new CLoadCase(23, "Earthquake load Eu - Y", ELCGTypeForLimitState.eULSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusY);                               // 23
 
             // SLS - Load Case
             m_arrLoadCases[23] = new CLoadCase(24, "Snow load Ss - full", ELCGTypeForLimitState.eSLSOnly, ELCType.eSnow, ELCMainDirection.ePlusZ);                                        // 24
@@ -65,8 +63,8 @@ namespace PFD
             m_arrLoadCases[39] = new CLoadCase(40, "Wind load Ws - Cpe,max - Right - X-", ELCGTypeForLimitState.eSLSOnly, ELCType.eWind, ELCMainDirection.eMinusX);                       // 40
             m_arrLoadCases[40] = new CLoadCase(41, "Wind load Ws - Cpe,max - Front - Y+", ELCGTypeForLimitState.eSLSOnly, ELCType.eWind, ELCMainDirection.ePlusY);                        // 41
             m_arrLoadCases[41] = new CLoadCase(42, "Wind load Ws - Cpe,max - Rear - Y-", ELCGTypeForLimitState.eSLSOnly, ELCType.eWind, ELCMainDirection.eMinusY);                        // 42
-            m_arrLoadCases[42] = new CLoadCase(43, "Earthquake load Es - X", ELCGTypeForLimitState.eSLSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusX, nlg.nodalLoadEQ_SLS_PlusX);    // 43
-            m_arrLoadCases[43] = new CLoadCase(44, "Earthquake load Es - Y", ELCGTypeForLimitState.eSLSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusY, nlg.nodalLoadEQ_SLS_PlusY);    // 44
+            m_arrLoadCases[42] = new CLoadCase(43, "Earthquake load Es - X", ELCGTypeForLimitState.eSLSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusX);                               // 43
+            m_arrLoadCases[43] = new CLoadCase(44, "Earthquake load Es - Y", ELCGTypeForLimitState.eSLSOnly, ELCType.eEarthquake, ELCMainDirection.ePlusY);                               // 44
 
             return m_arrLoadCases;
         }
