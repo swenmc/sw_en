@@ -95,6 +95,27 @@ namespace PFD
             
         }
 
+        public static List<CLoadCase> GetLoadCasesForMembers(List<CMember> members, CLoadCase[] allLoadCases)
+        {
+            List<CLoadCase> membersLoadCases = new List<CLoadCase>();
+            foreach (CLoadCase lc in allLoadCases.ToList())
+            {
+                List<CMLoad> loads = new List<CMLoad>();
+                foreach (CMLoad load in lc.MemberLoadsList)
+                {
+                    if (members.Exists(m => m.ID == load.Member.ID)) loads.Add(load);
+                }
+
+                if (loads.Count > 0)
+                {
+                    lc.NodeLoadsList = null;
+                    lc.SurfaceLoadsList = null;
+                    lc.MemberLoadsList = loads;
+                    membersLoadCases.Add(lc);
+                }
+            }
+            return membersLoadCases;
+        }
 
         
 
