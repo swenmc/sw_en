@@ -708,28 +708,38 @@ namespace PFD
                             Model.m_arrLoadCases, // TODO Ondrej - prevziat aj loads on members (MMemberLoadsList priradeny v Load case, ale zozname ponechat len zatazenia prutov ktore sa nachadzaju v rame) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
                             Model.m_arrLoadCombs);
 
-                // TO Ondrej - potrebujeme dogenerovat do load cases jednotlive zatazenia na rame, kedze je to option v GUI, tak sa v CModel_PFD_01_GR nevyrobili a nie je co pocitat
-
+                // TO Ondrej - TODO 201 - Potrebujeme dogenerovat do load cases jednotlive zatazenia na rame, kedze je to option v GUI, tak sa v CModel_PFD_01_GR nevyrobili a nie je co pocitat
+                // aK ich nevyrobime priamo pre 3D CModel_PFD_01_GR, tak by sme ich mohli dogenerovat podla cisla indexu ramu, resp. jeho suradnice Y len pre konkretny ram ktory v tomto cykle pocitame
 
                 //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
 
                 // 2. Create BFENet model of frame and calculate internal forces on frame
-                RunExample3 bfenetModel = new RunExample3(); // TO Ondrej - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
+
+                // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit,
+                // to co robi Example3 dat niekam kde to bude pekne pristupne a mozne volat z PFD,
+                // ta trieda RunExample3 to je len skarede docasne riesenie, najprv sa tam totiz spusta vypocet prikladu pre CExample_2D_14_PF
+                // a az potom pri volani bfenetModel.Example3 sa vytvara model z "frameModel_i"
+                // Example3 treba niekam presunut a vhodne pomenovat ako Convertor PFD modelu do BFENet modelu
+
+                RunExample3 bfenetModel = new RunExample3();
 
                 List<List<List<basicInternalForces>>> internalforces;
-                // TO Ondrej - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
-                bfenetModel.Example3(frameModel_i, out internalforces); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dam do nejakeho wrappera
-                                                                        // TO Ondrej - Ak teraz spustim Calculate tak to nefunguje, je tam nejaka vynimka neviem ci to nesuvisi s tym ze som to static zakomentoval
+                // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
+                bfenetModel.Example3(frameModel_i, out internalforces); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
 
-                // TODO  201 - To Ondrej  - potrebujeme do ramu dostat aj prvky spojov, resp upravit to tak ze vnutorne sily sa nastavia prutom v hlavnom modeli a potom prebehne posudzovanie na prutoch hlavneho modelu, teraz to pada na spojoch, predpokladam ze preto lebo to posudzuje members z modelu samostatneho ramu kde nie su ziadne spoje
+                // TODO  201 - To Ondrej  - potrebujeme do ramu dostat aj prvky spojov, resp je asi spravnejsie upravit sled vypoctu tak
+                // ze vnutorne sily vypocitane na jednotlivych ramoch sa nastavia prutom v hlavnom modeli (vid nasledujuci bod)
+                // a potom prebehne posudzovanie na prutoch hlavneho modelu, teraz to pada na tom ze sa nenasli spoje na konci a na zaciatku,
+                // predpokladam ze preto lebo to posudzuje members z modelu samostatneho ramu kde nie su ziadne spoje
 
 
                 // 3. Assign results to the original members from 3D model
-                // TO Ondrej - vytvorit zoznamy CMemberInternalForcesInLoadCases
+                // TO Ondrej - TODO 201 - vytvorit zoznamy CMemberInternalForcesInLoadCases
 
                 // 4. Run design of frame members
+                // TO Ondrej - TODO 201 - spustit pre kazdy prut proceduru posudenia - vid CMemberDesign na riadku 887
 
-                // 5. Run design of joints
+                // 5. Run design of frame members joints
             }
 
             //for (int iFrameIndex = 0; iFrameIndex < Frames; iFrameIndex++)
