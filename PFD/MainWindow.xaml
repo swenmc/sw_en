@@ -241,7 +241,8 @@
                                   IsChecked="False" Unchecked ="chbDisplayLoadsOnPurlinsAndGirts_Unchecked" Checked="chbDisplayLoadsOnPurlinsAndGirts_Checked">Generated on purlins and girts</CheckBox>
                             <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                                   IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
-                            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked="chbDisplaySurfaceLoads_UnChecked" Checked="chbDisplaySurfaceLoads_Checked" >Surface Loads</CheckBox>
+                            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowSurfaceLoads}">Surface Loads</CheckBox>
                         </StackPanel>
 
                         <TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>

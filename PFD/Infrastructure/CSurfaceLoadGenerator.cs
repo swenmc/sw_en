@@ -21,10 +21,10 @@ namespace PFD
         float fDist_Girt;
         float fDist_FrontGirts;
         float fSlopeFactor;
+        private CLoadCase[] m_arrLoadCases;
         CCalcul_1170_1 generalLoad;
         CCalcul_1170_2 wind;
         CCalcul_1170_3 snow;
-
 
         #region public List Properties
         public List<CSLoad_Free> surfaceDeadLoad;                                             
@@ -73,7 +73,7 @@ namespace PFD
         #endregion
 
         public CSurfaceLoadGenerator(float H1_frame, float H2_frame, float W_frame, float L_tot, float RoofPitch_rad, 
-            float Dist_Purlin, float Dist_Girt, float Dist_FrontGirts, float SlopeFactor, 
+            float Dist_Purlin, float Dist_Girt, float Dist_FrontGirts, float SlopeFactor, CLoadCase[] arrLoadCases,
             CCalcul_1170_1 calc_generalLoad, CCalcul_1170_2 calc_wind, CCalcul_1170_3 calc_snow)
         {
             fH1_frame = H1_frame;
@@ -85,6 +85,7 @@ namespace PFD
             fDist_Girt = Dist_Girt;
             fDist_FrontGirts = Dist_FrontGirts;
             fSlopeFactor = SlopeFactor;
+            m_arrLoadCases = arrLoadCases;
             wind = calc_wind;
             snow = calc_snow;
             generalLoad = calc_generalLoad;
@@ -349,6 +350,52 @@ namespace PFD
                 out surfaceWindLoad_SLS_PlusY_Cpemax,
                 out surfaceWindLoad_SLS_MinusY_Cpemax
             );
+
+            // Assign generated member loads to the load cases
+            // Universal
+            m_arrLoadCases[00].SurfaceLoadsList = surfaceDeadLoad;
+            m_arrLoadCases[01].SurfaceLoadsList = surfaceRoofImposedLoad;
+
+            // ULS
+            m_arrLoadCases[02].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_1;
+            m_arrLoadCases[03].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_2_Left;
+            m_arrLoadCases[04].SurfaceLoadsList = surfaceRoofSnowLoad_ULS_Nu_2_Right;
+            m_arrLoadCases[05].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpimin;
+            m_arrLoadCases[06].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpimin;
+            m_arrLoadCases[07].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpimin;
+            m_arrLoadCases[08].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpimin;
+            m_arrLoadCases[09].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpimax;
+            m_arrLoadCases[10].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpimax;
+            m_arrLoadCases[11].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpimax;
+            m_arrLoadCases[12].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpimax;
+            m_arrLoadCases[13].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpemin; 
+            m_arrLoadCases[14].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpemin;
+            m_arrLoadCases[15].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpemin;
+            m_arrLoadCases[16].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpemin;
+            m_arrLoadCases[17].SurfaceLoadsList = surfaceWindLoad_ULS_PlusX_Cpemax; 
+            m_arrLoadCases[18].SurfaceLoadsList = surfaceWindLoad_ULS_MinusX_Cpemax;
+            m_arrLoadCases[19].SurfaceLoadsList = surfaceWindLoad_ULS_PlusY_Cpemax;
+            m_arrLoadCases[20].SurfaceLoadsList = surfaceWindLoad_ULS_MinusY_Cpemax;
+            // SLS
+            m_arrLoadCases[23].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_1;
+            m_arrLoadCases[24].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_2_Left;
+            m_arrLoadCases[25].SurfaceLoadsList = surfaceRoofSnowLoad_SLS_Nu_2_Right;
+            m_arrLoadCases[26].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpimin;
+            m_arrLoadCases[27].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpimin;
+            m_arrLoadCases[28].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpimin;
+            m_arrLoadCases[29].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpimin;
+            m_arrLoadCases[30].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpimax;
+            m_arrLoadCases[31].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpimax;
+            m_arrLoadCases[32].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpimax;
+            m_arrLoadCases[33].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpimax;
+            m_arrLoadCases[34].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpemin; 
+            m_arrLoadCases[35].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpemin;
+            m_arrLoadCases[36].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpemin;
+            m_arrLoadCases[37].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpemin;
+            m_arrLoadCases[38].SurfaceLoadsList = surfaceWindLoad_SLS_PlusX_Cpemax; 
+            m_arrLoadCases[39].SurfaceLoadsList = surfaceWindLoad_SLS_MinusX_Cpemax;
+            m_arrLoadCases[40].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpemax;
+            m_arrLoadCases[41].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpemax;
         }
 
 

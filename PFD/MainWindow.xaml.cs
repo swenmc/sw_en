@@ -1009,6 +1009,7 @@ namespace PFD
                 wind,
                 snow,
                 eq,
+                vm.ShowSurfaceLoads,
                 vm.ShowLoadsOnFrameMembers);
 
             // Create 3D window
@@ -1746,9 +1747,6 @@ namespace PFD
             return false;
         }
 
-        //ja ani neviem nazvat tuto metodu,ze co sa hlada
-        //  :))) To bude dobre :)))
-
         // Returns tributary width "b" which is representing a portion of surface load area transferred to the member
         // "b" is a dimension perpendicular to the member local x-axis
         private double GetTributaryWidth_B(CSLoad_FreeUniform load, CMember m, float fL1_frame)
@@ -1756,7 +1754,7 @@ namespace PFD
             // TO Ondrej, odpoved na tento problem je v podmienke if (Math.Abs(fValue) > 0) public class CSLoad_FreeUniform, line 257
             // Ak je hodnota zatazenia nulova tak sa ModelGroup nevyrobi a vracia to ModelGroup = null;
 
-            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - to je asi nejaka chyba, vygeneruje sa asi prazdny Surface Load, ak mi odchytis, v ktorom to je load case a cislo toho surface load v zozname, mozem sa tomu povenovat
+            if (load.PointsGCS.Count == 0) return 0; //toto by podla mna nemalo nastavat a just nastane // TO Ondrej - nastava pre nulovu hodnotu zatazenia, nevyrobi sa ModelGroup3D
 
             double MinLoadY = load.PointsGCS.Min(p => p.Y);
             double MaxLoadY = load.PointsGCS.Max(p => p.Y);
@@ -1840,17 +1838,7 @@ namespace PFD
 
         }
 
-        private void chbDisplaySurfaceLoads_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void chbDisplayMemberLoads_UnChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void chbDisplaySurfaceLoads_UnChecked(object sender, RoutedEventArgs e)
         {
 
         }

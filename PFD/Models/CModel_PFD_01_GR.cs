@@ -68,6 +68,7 @@ namespace PFD
                 CCalcul_1170_2 wind,
                 CCalcul_1170_3 snow,
                 CCalcul_1170_5 eq,
+                bool bGenerateSurfaceLoads,
                 bool bGenerateLoadsOnFrameMembers
             )
         {
@@ -899,14 +900,6 @@ namespace PFD
             //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Rear = new List<CMLoad>();
             #endregion
 
-            #region Surface Loads
-
-            CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame, fH2_frame, fW_frame, fL_tot, fRoofPitch_rad,
-                fDist_Purlin, fDist_Girt, fDist_FrontGirts, fSlopeFactor, generalLoad, wind, snow);
-            surfaceLoadGenerator.GenerateSurfaceLoads();
-            
-            #endregion
-
             #region Earthquake - nodal loads
             // Earthquake
             int iNumberOfLoadsInXDirection = iFrameNo;
@@ -920,9 +913,20 @@ namespace PFD
 
             #region Load Cases
             // Load Cases
-            CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator(surfaceLoadGenerator, nodalLoadGenerator);
+            CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator(nodalLoadGenerator);
 
             m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
+            #endregion
+
+            #region Surface Loads
+            // Surface Loads
+
+            if (bGenerateSurfaceLoads)
+            {
+                CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame, fH2_frame, fW_frame, fL_tot, fRoofPitch_rad,
+                    fDist_Purlin, fDist_Girt, fDist_FrontGirts, fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
+                surfaceLoadGenerator.GenerateSurfaceLoads();
+            }
 
             #endregion
 
@@ -1077,13 +1081,13 @@ namespace PFD
 
             if(bGenerateLoadsOnPurlinsAndGirts)
             CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
-                        
+
             if (bGenerateLoadsOnFrameMembers)
-            {                
+            {
                 CMemberLoadGenerator loadGenerator = 
                     new CMemberLoadGenerator(iFrameNo, fL1_frame, fL_tot, fSlopeFactor, m_arrLoadCases, m_arrMembers, generalLoad, snow, wind);
 
-                loadGenerator.GenerateLoadsOnFrames();                
+                loadGenerator.GenerateLoadsOnFrames();
             }
 
             #region Load Groups
