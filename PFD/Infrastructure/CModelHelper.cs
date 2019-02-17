@@ -106,6 +106,16 @@ namespace PFD
                     if (members.Exists(m => m.ID == load.Member.ID)) loads.Add(load);
                 }
 
+                // TO Ondrej
+                // if (loads.Count > 0) - Tu si nie som isty ci je dobre vyrabat len load case ktory obsahuje nejake zatazenie, je to sice v istom zmysle optimalizacia
+                // ale mozu s tym byt problemy v tom ze load case ktory existuje v 3D modeli nebude existovat v 2D modeli
+                // a potom v kombinaciach napriklad CO1 = 1.5 * LC1 + 1.4 * LC2 budeme musiet osetrit ze ak v LC2 nebolo zatazenie pruta
+                // tak sme tento LC2 nevyrobili a nepocitali a vysledok kombinacie je CO1 = 1.5 * LC1
+                // Osetrit to a zosynchronizovat to v BFENet a vo vystupe vysledkov moze byt dost pracne
+
+                // Ja by som to zatial urobil tak ze sa budu vyrabat a pocitat aj "prazdne" load cases, aby sa z BFENet dali tahat vysledky pre kombinacie
+                // ktore taketo LC obsahuju
+
                 if (loads.Count > 0)
                 {
                     lc.NodeLoadsList = null;
