@@ -63,7 +63,6 @@ namespace BriefFiniteElementNet.Solver
 
             cholesky =
                 SparseCholesky.Create(matrix, ColumnOrdering.MinimumDegreeAtPlusA);
-                
 
             IsInitialized = true;
 

@@ -49,16 +49,39 @@ namespace PFD
             {
                 foreach (CMember m in frame.Members)
                 {
-                    if (support.m_iNodeCollection.Contains(m.NodeStart.ID) || support.m_iNodeCollection.Contains(m.NodeEnd.ID))
+                    // TO Ondrej
+                    // Povodna predstava bola taka ze bude existovat tzv typovy objekt CNSupport, ktory bude mat definovane nejake parametre
+                    // a v kolekcii m_iNodeCollection bude zoznam uzlov ktorym je priradeny
+                    // Potom som to vsak nevedel vykreslit na viacerych uzloch naraz a tak som vytvaral objekt CNSupport pre kazdy uzol
+                    // Je to priradene v CNSupport -> Node
+                    // Do buducna by to chcelo urobit tak ako sa programatorsky patri :-)
+                    if (support.m_iNodeCollection != null && (support.m_iNodeCollection.Contains(m.NodeStart.ID) || support.m_iNodeCollection.Contains(m.NodeEnd.ID)))
                         frameSupports.Add(support);
-                    
+
+                    // Aktualne plati toto
+                    if(support.Node == m.NodeStart || support.Node == m.NodeEnd) // Add support to the list
+                    {
+                        // TO Ondrej - Este by sa malo osetrit ze podpora, ktora je na konci nejakeho pruta a zaroven na zaciatku ineho pruta (je teda priradena End Node nejakeho pruta ktory je zaroven Start Node ineho), ktory je k nemu pripojeny bola pridana len raz
+
+                        // Docasne - naplnime aj kolekciu
+                        if (support.Node == m.NodeStart)
+                        {
+                            support.m_iNodeCollection = new int[1];
+                            support.m_iNodeCollection[0] = m.NodeStart.ID;
+                        }
+
+                        if (support.Node == m.NodeEnd)
+                        {
+                            support.m_iNodeCollection = new int[1];
+                            support.m_iNodeCollection[0] = m.NodeEnd.ID;
+                        }
+
+                        frameSupports.Add(support);
+                    }
                 }
             }
             return frameSupports;
             
         }
-
-
-
     }
 }
