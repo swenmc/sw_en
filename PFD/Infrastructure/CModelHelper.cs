@@ -116,13 +116,16 @@ namespace PFD
                 // Ja by som to zatial urobil tak ze sa budu vyrabat a pocitat aj "prazdne" load cases, aby sa z BFENet dali tahat vysledky pre kombinacie
                 // ktore taketo LC obsahuju
 
-                if (loads.Count > 0)
-                {
-                    lc.NodeLoadsList = null;
+                // Padalo to pri vytvarani load combinations, zatial som to zakomentoval.
+                // Pre ram sa teda vytvaraju sa vsetky Load Cases aj ked su prazdne
+
+                //if (loads.Count > 0)
+                //{
+                lc.NodeLoadsList = null;
                     lc.SurfaceLoadsList = null;
                     lc.MemberLoadsList = loads;
                     membersLoadCases.Add(lc);
-                }
+                //}
             }
             return membersLoadCases;
         }
