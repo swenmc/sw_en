@@ -48,8 +48,10 @@ namespace PFD
         private int MLoadCaseIndex;
 
         private bool MShowNodalLoads;
-        private bool MShowSurfaceLoads;
+        private bool MShowLoadsOnMembers;
+        private bool MShowLoadsOnPurlinsAndGirts;
         private bool MShowLoadsOnFrameMembers;
+        private bool MShowSurfaceLoads;
 
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
@@ -524,17 +526,31 @@ namespace PFD
             }
         }
 
-        public bool ShowSurfaceLoads
+        public bool ShowLoadsOnMembers
         {
             get
             {
-                return MShowSurfaceLoads;
+                return MShowLoadsOnMembers;
             }
 
             set
             {
-                MShowSurfaceLoads = value;
-                NotifyPropertyChanged("ShowSurfaceLoads");
+                MShowLoadsOnMembers = value;
+                NotifyPropertyChanged("ShowLoadsOnMembers");
+            }
+        }
+
+        public bool ShowLoadsOnPurlinsAndGirts
+        {
+            get
+            {
+                return MShowLoadsOnPurlinsAndGirts;
+            }
+
+            set
+            {
+                MShowLoadsOnPurlinsAndGirts = value;
+                NotifyPropertyChanged("ShowLoadsOnPurlinsAndGirts");
             }
         }
 
@@ -549,6 +565,20 @@ namespace PFD
             {
                 MShowLoadsOnFrameMembers = value;
                 NotifyPropertyChanged("ShowLoadsOnFrameMembers");
+            }
+        }
+
+        public bool ShowSurfaceLoads
+        {
+            get
+            {
+                return MShowSurfaceLoads;
+            }
+
+            set
+            {
+                MShowSurfaceLoads = value;
+                NotifyPropertyChanged("ShowSurfaceLoads");
             }
         }
 
@@ -595,9 +625,11 @@ namespace PFD
                     Wind,
                     Snow,
                     Eq,
-                    MShowSurfaceLoads,
                     MShowNodalLoads,
-                    MShowLoadsOnFrameMembers);
+                    MShowLoadsOnMembers,
+                    MShowLoadsOnPurlinsAndGirts,
+                    MShowLoadsOnFrameMembers,
+                    MShowSurfaceLoads);
         }
 
         public void Run()

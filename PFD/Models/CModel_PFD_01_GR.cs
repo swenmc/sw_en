@@ -68,9 +68,11 @@ namespace PFD
                 CCalcul_1170_2 wind,
                 CCalcul_1170_3 snow,
                 CCalcul_1170_5 eq,
-                bool bGenerateSurfaceLoads,
                 bool bGenerateNodalLoads,
-                bool bGenerateLoadsOnFrameMembers
+                bool bGenerateLoadsOnMembers,
+                bool bGenerateLoadsOnPurlinsAndGirts,
+                bool bGenerateLoadsOnFrameMembers,
+                bool bGenerateSurfaceLoads
             )
         {
             fH1_frame = fH1_temp;
@@ -857,56 +859,16 @@ namespace PFD
             #endregion
 
             // Loading
-            #region Frame Member Loads
-            // TODO 186 - algoritmus generovania prutoveho zatazenia na frame members nezavisly na objektoch surface loads
-            // TODO - je potrebne dopracovat vsetky Load Cases, funguje nezavisle na generovani surface loads
-            // Snow load factor - projection on roof
-            float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
-
-            // Loads
-            float fValueLoadRafterDead1 = -generalLoad.fDeadLoadTotal_Roof * fL1_frame;
-            float fValueLoadRafterDead2 = -generalLoad.fDeadLoadTotal_Roof * fL1_frame;
-            float fValueLoadRafterImposed = -generalLoad.fImposedLoadTotal_Roof * fL1_frame;
-
-            float fValueLoadRafterSnowULS_Nu_1 = -snow.fs_ULS_Nu_1 * fSlopeFactor * fL1_frame; // Design value (projection on roof)
-            float fValueLoadRafterSnowULS_Nu_2 = -snow.fs_ULS_Nu_2 * fSlopeFactor * fL1_frame;
-            float fValueLoadRafterSnowSLS_Nu_1 = -snow.fs_SLS_Nu_1 * fSlopeFactor * fL1_frame;
-            float fValueLoadRafterSnowSLS_Nu_2 = -snow.fs_SLS_Nu_2 * fSlopeFactor * fL1_frame;
-
-            // LOAD GENERATED ON FRAME MEMBERS
-            //List<CMLoad> memberLoadDead_Frames = new List<CMLoad>();
-            //List<CMLoad> memberLoadImposed_Frames = new List<CMLoad>();
-
-            //List<CMLoad> memberMaxLoadSnowAll_Frames_ULS = new List<CMLoad>();
-            //List<CMLoad> memberMaxLoadSnowLeft_Frames_ULS = new List<CMLoad>();
-            //List<CMLoad> memberMaxLoadSnowRight_Frames_ULS = new List<CMLoad>();
-
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Left = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Right = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Front = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimin_Rear = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Left = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Right = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Front = new List<CMLoad>();
-            //List<CMLoad> memberLoadInternalPressure_Frames_ULS_Cpimax_Rear = new List<CMLoad>();
-
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Left = new List<CMLoad>();
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Right = new List<CMLoad>();
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Front = new List<CMLoad>();
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemin_Rear = new List<CMLoad>();
-
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Left = new List<CMLoad>();
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Right = new List<CMLoad>();
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Front = new List<CMLoad>();
-            //List<CMLoad> memberLoadExternalPressure_Frames_ULS_Cpemax_Rear = new List<CMLoad>();
-            #endregion
-
             #region Load Cases
             // Load Cases
             CLoadCaseGenerator loadCaseGenerator = new CLoadCaseGenerator();
 
             m_arrLoadCases = loadCaseGenerator.GenerateLoadCases();
             #endregion
+
+            // Snow load factor - projection on roof
+            // Faktor ktory prepocita zatazenie z podorysneho rozmeru premietnute na stresnu rovinu
+            float fSlopeFactor = ((0.5f * fW_frame) / ((0.5f * fW_frame) / (float)Math.Cos(fRoofPitch_rad))); // Consider projection acc. to Figure 4.1
 
             #region Surface Loads
             // Surface Loads
@@ -933,7 +895,9 @@ namespace PFD
             }
             #endregion
 
-            #region POKUS TODO 186 - Generating of member load from surface load (girts and purlins)
+            // POKUS TODO 186
+            #region Member Loads (girts, purlins, wind posts, door trimmers)
+            // Generated from surface load (on girts and purlins)
             // TO Ondrej - 7.2.2019
             // Toto je pokus o generovanie prutoveho zatazenia z plosneho
             // Jedna sa o zoznamy prutov typu girts a typu purlins
@@ -1072,7 +1036,6 @@ namespace PFD
             // Ukazka - purlin - imposed load
             // Preorganizovat properties v triedach surface load tak, aby sa dalo dostat k hodnote zatazenia a prenasobit vzdialenostou medzi vaznicami
             // Vypocitane zatazenie priradit prutom zo zoznamu listOfPurlins v Load Case v m_arrLoadCases[01]
-            #endregion
 
             // TODO - Ondrej, pripravit staticku triedu a metody pre generovanie member load zo surface load v zlozke Loading
             // TODO 186 - To Ondrej - Tu je trieda CLoadGenerator, v ktorej by mohlo byt zapracovane generovanie zatazenia
@@ -1080,18 +1043,21 @@ namespace PFD
             // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
             // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
 
-            bool bGenerateLoadsOnPurlinsAndGirts = false;
-
-            if(bGenerateLoadsOnPurlinsAndGirts)
+            if(bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts)
             CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
 
-            if (bGenerateLoadsOnFrameMembers)
+            #endregion
+
+            #region Frame Member Loads
+            // Surface Loads
+            if (bGenerateLoadsOnMembers && bGenerateLoadsOnFrameMembers)
             {
                 CMemberLoadGenerator loadGenerator = 
                     new CMemberLoadGenerator(iFrameNo, fL1_frame, fL_tot, fSlopeFactor, m_arrLoadCases, m_arrMembers, generalLoad, snow, wind);
 
                 loadGenerator.GenerateLoadsOnFrames();
             }
+            #endregion
 
             #region Load Groups
             // Create load groups and assigned load cases to the load group

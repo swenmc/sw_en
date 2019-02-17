@@ -1009,9 +1009,12 @@ namespace PFD
                 wind,
                 snow,
                 eq,
-                vm.ShowSurfaceLoads,
                 vm.ShowNodalLoads,
-                vm.ShowLoadsOnFrameMembers);
+                vm.ShowLoadsOnMembers,
+                vm.ShowLoadsOnPurlinsAndGirts,
+                vm.ShowLoadsOnFrameMembers,
+                vm.ShowSurfaceLoads
+                );
 
             // Create 3D window
             UpdateDisplayOptions();

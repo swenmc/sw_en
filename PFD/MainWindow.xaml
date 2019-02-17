@@ -237,10 +237,10 @@
                             <CheckBox Name ="chbDisplayLoads" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked ="chbDisplayLoads_UnChecked" Checked="chbDisplayLoads_Checked">Display Loads</CheckBox>
                             <CheckBox Name ="chbDisplayNodalLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowNodalLoads}">Nodal Loads</CheckBox>
-                            <CheckBox Name ="chbDisplayMemberLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked="chbDisplayMemberLoads_UnChecked" Checked="chbDisplayMemberLoads_Checked">Member Loads</CheckBox>
-                            
+                            <CheckBox Name ="chbDisplayMemberLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnMembers}">Member Loads</CheckBox>
                             <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="False" Unchecked ="chbDisplayLoadsOnPurlinsAndGirts_Unchecked" Checked="chbDisplayLoadsOnPurlinsAndGirts_Checked">Generated on purlins and girts</CheckBox>
+                                  IsChecked="{Binding Path=ShowLoadsOnPurlinsAndGirts}">Generated on purlins and girts</CheckBox>
                             <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
                                   IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
                             <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
