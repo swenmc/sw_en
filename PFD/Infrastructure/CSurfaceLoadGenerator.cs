@@ -351,6 +351,11 @@ namespace PFD
                 out surfaceWindLoad_SLS_MinusY_Cpemax
             );
 
+            // TODO 203
+            // TO Ondrej - vymysliet ako prehladnejsie indexovat load case, aby sme mali istotu ze sa priradi zoznam zatazeni
+            // do spravneho LC, napr. zaviest nejaky enum, navyse je to zduplikovane v CMemberLoadGenerator,
+            // rozdiel je len v tom ze nastavujeme do load case zoznam ineho typu objektu
+
             // Assign generated member loads to the load cases
             // Universal
             m_arrLoadCases[00].SurfaceLoadsList = surfaceDeadLoad;
@@ -397,10 +402,6 @@ namespace PFD
             m_arrLoadCases[40].SurfaceLoadsList = surfaceWindLoad_SLS_PlusY_Cpemax;
             m_arrLoadCases[41].SurfaceLoadsList = surfaceWindLoad_SLS_MinusY_Cpemax;
         }
-
-
-
-
 
         // Surface Loads
         private void SetSurfaceWindLoads_Cpi(

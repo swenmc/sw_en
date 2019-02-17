@@ -15,10 +15,10 @@ namespace PFD
             nlg = nodalLoadGenerator;
         }
 
-
         public CLoadCase[] GenerateLoadCases()
         {
             CLoadCase[] m_arrLoadCases = new CLoadCase[44];
+            // TODO 203
             m_arrLoadCases[00] = new CLoadCase(01, "Dead load G", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral);                                   // 01
             m_arrLoadCases[01] = new CLoadCase(02, "Imposed load Q", ELCGTypeForLimitState.eUniversal, ELCType.eImposedLoad_ST, ELCMainDirection.eGeneral);                               // 02
 
@@ -70,6 +70,5 @@ namespace PFD
 
             return m_arrLoadCases;
         }
-
     }
 }

@@ -1091,107 +1091,110 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             {
                 for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
                 {
-                    for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
+                    if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null)
                     {
-                        // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
-                        // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
-
-                        // load
-                        var lu = new UniformLoad1D();
-                        var lpu = new PartialUniformLoad1D();
-
-                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21) // Uniform load per whole member
+                        for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
                         {
-                            lu = new UniformLoad1D();
-                            BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
-                            // Create member load
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
-                                load = (BaseClasses.CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+                            // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
+                            // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
 
-                            // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
-                            // Skontrolovat zadanie v GCS a LCS
+                            // load
+                            var lu = new UniformLoad1D();
+                            var lpu = new PartialUniformLoad1D();
 
-                            CoordinationSystem eCS;
-                            if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
-                                eCS = CoordinationSystem.Global;
-                            else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
-                                eCS = CoordinationSystem.Local;
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21) // Uniform load per whole member
+                            {
+                                lu = new UniformLoad1D();
+                                BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
+                                // Create member load
+                                if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
+                                    load = (BaseClasses.CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
 
-                            LoadDirection eLD;
+                                // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+                                // Skontrolovat zadanie v GCS a LCS
 
-                            if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
-                                eLD = LoadDirection.X;
-                            else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
-                                eLD = LoadDirection.Y;
-                            else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
-                                eLD = LoadDirection.Z;
+                                CoordinationSystem eCS;
+                                if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
+                                    eCS = CoordinationSystem.Global;
+                                else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+                                    eCS = CoordinationSystem.Local;
 
-                            lu = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
-                        }
-                        else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24) // Uniform load on segment
-                        {
-                            lpu = new PartialUniformLoad1D();
-                            BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
+                                LoadDirection eLD;
 
-                            // Create member load
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
-                                load = (BaseClasses.CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+                                if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                                    eLD = LoadDirection.X;
+                                else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                                    eLD = LoadDirection.Y;
+                                else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                                    eLD = LoadDirection.Z;
 
-                            // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
-                            // Skontrolovat zadanie v GCS a LCS
+                                lu = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+                            }
+                            else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24) // Uniform load on segment
+                            {
+                                lpu = new PartialUniformLoad1D();
+                                BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
 
-                            CoordinationSystem eCS;
-                            if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
-                                eCS = CoordinationSystem.Global;
-                            else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
-                                eCS = CoordinationSystem.Local;
+                                // Create member load
+                                if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
+                                    load = (BaseClasses.CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
 
-                            LoadDirection eLD;
+                                // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+                                // Skontrolovat zadanie v GCS a LCS
 
-                            if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
-                                eLD = LoadDirection.X;
-                            else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
-                                eLD = LoadDirection.Y;
-                            else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
-                                eLD = LoadDirection.Z;
+                                CoordinationSystem eCS;
+                                if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
+                                    eCS = CoordinationSystem.Global;
+                                else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+                                    eCS = CoordinationSystem.Local;
 
-                            // PartialTrapezoidalLoad
-                            // TODO - toto by sme potrebovali, pisu tam ze je to obsolete ale na internete je uz priklad
-                            // Urcite mame najnovsie zdroje?, resp. to mozno mali v starsej verzii a skryli to
-                            // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
-                            // https://media.readthedocs.org/pdf/bfenet/latest/bfenet.pdf
+                                LoadDirection eLD;
 
-                            // Isolocation [-1,1]
-                            double dStartIsoLocation;
-                            double dEndIsoLocation;
+                                if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                                    eLD = LoadDirection.X;
+                                else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                                    eLD = LoadDirection.Y;
+                                else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                                    eLD = LoadDirection.Z;
 
-                            // Prevod z absolutnych suradnic [0,L] na relativne [-1,1]
-                            if (load.FaA < 0.5 * load.Member.FLength)
-                                dStartIsoLocation = -(0.5 * load.Member.FLength - load.FaA) / (0.5 * load.Member.FLength);
+                                // PartialTrapezoidalLoad
+                                // TODO - toto by sme potrebovali, pisu tam ze je to obsolete ale na internete je uz priklad
+                                // Urcite mame najnovsie zdroje?, resp. to mozno mali v starsej verzii a skryli to
+                                // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
+                                // https://media.readthedocs.org/pdf/bfenet/latest/bfenet.pdf
+
+                                // Isolocation [-1,1]
+                                double dStartIsoLocation;
+                                double dEndIsoLocation;
+
+                                // Prevod z absolutnych suradnic [0,L] na relativne [-1,1]
+                                if (load.FaA < 0.5 * load.Member.FLength)
+                                    dStartIsoLocation = -(0.5 * load.Member.FLength - load.FaA) / (0.5 * load.Member.FLength);
+                                else
+                                    dStartIsoLocation = (load.FaA - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+
+                                if ((load.FaA + load.Fs) < 0.5 * load.Member.FLength)
+                                    dEndIsoLocation = -(0.5 * load.Member.FLength - (load.FaA + load.Fs)) / (0.5 * load.Member.FLength);
+                                else
+                                    dEndIsoLocation = ((load.FaA + load.Fs) - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+
+                                lpu = new PartialUniformLoad1D(load.Fq, dStartIsoLocation, dEndIsoLocation, eLD, eCS, loadcases[i]);
+                            }
                             else
-                                dStartIsoLocation = (load.FaA - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+                            {
+                                // Not implemented load type
+                                // l = new UniformLoad1D();
+                            }
 
-                            if ((load.FaA + load.Fs) < 0.5 * load.Member.FLength)
-                                dEndIsoLocation = -(0.5 * load.Member.FLength - (load.FaA + load.Fs)) / (0.5 * load.Member.FLength);
-                            else
-                                dEndIsoLocation = ((load.FaA + load.Fs) - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
-
-                            lpu = new PartialUniformLoad1D(load.Fq, dStartIsoLocation, dEndIsoLocation, eLD, eCS, loadcases[i]);
-                        }
-                        else
-                        {
-                            // Not implemented load type
-                            // l = new UniformLoad1D();
-                        }
-
-                        // Assign defined type of load the the BriefFiniteElement
-                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21 ||
-                            topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
-                        {
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
-                                elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu);
-                            else /*if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)*/
-                                elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
+                            // Assign defined type of load the the BriefFiniteElement
+                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21 ||
+                                topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
+                            {
+                                if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
+                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu);
+                                else /*if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)*/
+                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
+                            }
                         }
                     }
                 }
