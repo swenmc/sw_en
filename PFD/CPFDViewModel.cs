@@ -763,6 +763,13 @@ namespace PFD
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
             List<CFrame> frames = model.GetFramesFromModel();
+
+            if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) //generate loads if they are not generated
+            {
+                CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
+                loadGenerator.GenerateLoadsOnFrames();
+            }
+
             foreach (CFrame frame in frames)
             {                
                 // 1. Create SW_EN Model of frame (Extract data from 3D model)

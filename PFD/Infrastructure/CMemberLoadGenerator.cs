@@ -48,6 +48,28 @@ namespace PFD
             wind = calc_wind;
         }
 
+        public CMemberLoadGenerator(CModel_PFD_01_GR model, CCalcul_1170_1 generalLoad, CCalcul_1170_3 snow, CCalcul_1170_2 calc_wind)
+        {
+            iFrameNo = model.iFrameNo;
+            fL1_frame = model.fL1_frame;
+            fL_tot = model.fL_tot;
+            m_arrLoadCases = model.m_arrLoadCases;
+            m_arrMembers = model.m_arrMembers;
+            
+            fValueLoadColumnDead = -generalLoad.fDeadLoadTotal_Wall;
+            fValueLoadRafterDead = -generalLoad.fDeadLoadTotal_Roof;
+            fValueLoadRafterImposed = -generalLoad.fImposedLoadTotal_Roof;
+
+            // Snow Load - Roof
+            fValueLoadRafterSnowULS_Nu_1 = -snow.fs_ULS_Nu_1 * model.fSlopeFactor; // Design value (projection on roof)
+            fValueLoadRafterSnowULS_Nu_2 = -snow.fs_ULS_Nu_2 * model.fSlopeFactor;
+            fValueLoadRafterSnowSLS_Nu_1 = -snow.fs_SLS_Nu_1 * model.fSlopeFactor;
+            fValueLoadRafterSnowSLS_Nu_2 = -snow.fs_SLS_Nu_2 * model.fSlopeFactor;
+
+            wind = calc_wind;
+        }
+
+
         // Loading
 
         // Frame member loads

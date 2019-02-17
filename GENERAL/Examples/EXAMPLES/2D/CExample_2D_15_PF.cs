@@ -104,6 +104,15 @@ namespace Examples
             // TO Ondrej - TODO 201 - tu sa pridaju load cases ale nie su vygenerovane zatazenia na prutoch ramov, lebo to je na option v GUI,
             // zaroven treba mysliet na to ze sa maju generovat len zatazenia pre tento konkretny ram
 
+            List<CLoad> loads = new List<CLoad>();
+            foreach (CLoadCase lc in m_arrLoadCases)
+            {
+                foreach (CMLoad load in lc.MemberLoadsList)
+                {
+                    if (members.Exists(m => m.ID == load.Member.ID)) loads.Add(load);
+                }
+            }
+
             // Set Load Combinations
             m_arrLoadCombs = loadcombinations;
 
