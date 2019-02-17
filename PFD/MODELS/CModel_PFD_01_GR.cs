@@ -907,6 +907,9 @@ namespace PFD
 
             // TODO No. 54
             // tieto zoznamy sa maju nahradit funckiou v TODO 54 ktora ich vytvori pre jednotlive zatazovacie plochy zo suradnic ploch
+            // Uvedomil som si ze to ma jeden nedostatok, member (napr. purlin) moze byt jednou castou pod jednou plochou a druhou castou pod druhou plochou
+            // takze nie je spravne mat v ploche zoznam prutov ktore zatazuje
+            // Member moze byt pod roznymi plochami, takze to nie je jednoznacne, musi to fungovat tak ze je zatazovacie plochy neobsahuju takyto zoznam, ale algoritmus vygeneruje CMLoad_21 alebo skupinu CMLoad_24 na jednom prute, pre pruty ktore su pod jednou plochou alebo pod viacerymi plochami
             // Generate linear Loads
             List<CMember> listOfPurlins = new List<CMember>(0);
             List<CMember> listOfEavePurlins = new List<CMember>(0);
@@ -941,6 +944,8 @@ namespace PFD
             CPoint pWallBackLeft = new CPoint(0, 0, fL_tot, 0, 0);
 
             // TODO No 49 and 50 - in work, naplnit zoznamy prutov ktore lezia v rovine definujucej zatazenie, presnost 1 mm
+            // Uvedomil som si ze to ma jeden nedostatok, member (napr. purlin) moze byt jednou castou pod jednou plochou a druhou castou pod druhou plochou
+            // takze nie je spravne mat v ploche zoznam prutov ktore zatazuje
 
             // Loading width of member (Zatazovacia sirka pruta)
             float fLoadingWidthPurlin = fDist_Purlin;
@@ -948,7 +953,9 @@ namespace PFD
             float fLoadingWidthEdgePurlin_Wall = 0.5f * fDist_Girt;
             float fLoadingWidthGirt = fDist_Girt;
 
-            // TODO No. 54 - po implementacii tento cyklus odstranit a napojit metodu 
+            // TODO No. 54 - po implementacii tento cyklus odstranit a napojit metodu
+            // Uvedomil som si ze to ma jeden nedostatok, member (napr. purlin) moze byt jednou castou pod jednou plochou a druhou castou pod druhou plochou
+            // takze nie je spravne mat v ploche zoznam prutov ktore zatazuje
             // FillListOfMemberData z CSLoad_Free.cs
 
             foreach (CMember m in m_arrMembers)
