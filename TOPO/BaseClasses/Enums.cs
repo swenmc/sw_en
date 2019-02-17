@@ -323,6 +323,59 @@
     }
 
     //----------------------------------------------------------------------------
+    // Define load case name
+    //----------------------------------------------------------------------------
+    public enum ELCName
+    {
+    eDL_G,                                  // "Dead load G"
+    eIL_Q,                                  // "Imposed load Q"
+    
+    eSL_Su_Full,                            // "Snow load Su - full"
+    eSL_Su_Left,                            // "Snow load Su - left"
+    eSL_Su_Right,                           // "Snow load Su - right"
+    eWL_Wu_Cpi_min_Left_X_Plus,             // "Wind load Wu - Cpi,min - Left - X+"
+    eWL_Wu_Cpi_min_Right_X_Minus,           // "Wind load Wu - Cpi,min - Right - X-"
+    eWL_Wu_Cpi_min_Front_Y_Plus,            // "Wind load Wu - Cpi,min - Front - Y+"
+    eWL_Wu_Cpi_min_Rear_Y_Minus,            // "Wind load Wu - Cpi,min - Rear - Y-"
+    eWL_Wu_Cpi_max_Left_X_Plus,             // "Wind load Wu - Cpi,max - Left - X+"
+    eWL_Wu_Cpi_max_Right_X_Minus,           // "Wind load Wu - Cpi,max - Right - X-"
+    eWL_Wu_Cpi_max_Front_Y_Plus,            // "Wind load Wu - Cpi,max - Front - Y+"
+    eWL_Wu_Cpi_max_Rear_Y_Minus,            // "Wind load Wu - Cpi,max - Rear - Y-"
+    eWL_Wu_Cpe_min_Left_X_Plus,             // "Wind load Wu - Cpe,min - Left - X+"
+    eWL_Wu_Cpe_min_Right_X_Minus,           // "Wind load Wu - Cpe,min - Right - X-"
+    eWL_Wu_Cpe_min_Front_Y_Plus,            // "Wind load Wu - Cpe,min - Front - Y+"
+    eWL_Wu_Cpe_min_Rear_Y_Minus,            // "Wind load Wu - Cpe,min - Rear - Y-"
+    eWL_Wu_Cpe_max_Left_X_Plus,             // "Wind load Wu - Cpe,max - Left - X+"
+    eWL_Wu_Cpe_max_Right_X_Minus,           // "Wind load Wu - Cpe,max - Right - X-"
+    eWL_Wu_Cpe_max_Front_Y_Plus,            // "Wind load Wu - Cpe,max - Front - Y+"
+    eWL_Wu_Cpe_max_Rear_Y_Minus,            // "Wind load Wu - Cpe,max - Rear - Y-"
+    eEQ_Eu_Left_X_Plus,                     // "Earthquake load Eu - X"
+    eEQ_Eu_Front_Y_Plus,                    // "Earthquake load Eu - Y"
+
+    eSL_Ss_Full,                            // "Snow load Ss - full"
+    eSL_Ss_Left,                            // "Snow load Ss - left"
+    eSL_Ss_Right,                           // "Snow load Ss - right"
+    eWL_Ws_Cpi_min_Left_X_Plus,             // "Wind load Ws - Cpi,min - Left - X+"
+    eWL_Ws_Cpi_min_Right_X_Minus,           // "Wind load Ws - Cpi,min - Right - X-"
+    eWL_Ws_Cpi_min_Front_Y_Plus,            // "Wind load Ws - Cpi,min - Front - Y+"
+    eWL_Ws_Cpi_min_Rear_Y_Minus,            // "Wind load Ws - Cpi,min - Rear - Y-"
+    eWL_Ws_Cpi_max_Left_X_Plus,             // "Wind load Ws - Cpi,max - Left - X+"
+    eWL_Ws_Cpi_max_Right_X_Minus,           // "Wind load Ws - Cpi,max - Right - X-"
+    eWL_Ws_Cpi_max_Front_Y_Plus,            // "Wind load Ws - Cpi,max - Front - Y+"
+    eWL_Ws_Cpi_max_Rear_Y_Minus,            // "Wind load Ws - Cpi,max - Rear - Y-"
+    eWL_Ws_Cpe_min_Left_X_Plus,             // "Wind load Ws - Cpe,min - Left - X+"
+    eWL_Ws_Cpe_min_Right_X_Minus,           // "Wind load Ws - Cpe,min - Right - X-"
+    eWL_Ws_Cpe_min_Front_Y_Plus,            // "Wind load Ws - Cpe,min - Front - Y+"
+    eWL_Ws_Cpe_min_Rear_Y_Minus,            // "Wind load Ws - Cpe,min - Rear - Y-"
+    eWL_Ws_Cpe_max_Left_X_Plus,             // "Wind load Ws - Cpe,max - Left - X+"
+    eWL_Ws_Cpe_max_Right_X_Minus,           // "Wind load Ws - Cpe,max - Right - X-"
+    eWL_Ws_Cpe_max_Front_Y_Plus,            // "Wind load Ws - Cpe,max - Front - Y+"
+    eWL_Ws_Cpe_max_Rear_Y_Minus,            // "Wind load Ws - Cpe,max - Rear - Y-"
+    eEQ_Es_Left_X_Plus,                     // "Earthquake load Es - X"
+    eEQ_Es_Front_Y_Plus                     // "Earthquake load Es - Y"
+    }
+
+    //----------------------------------------------------------------------------
     // Define window shape type (3D)
     //----------------------------------------------------------------------------
     public enum EWindowShapeType

@@ -902,7 +902,7 @@ namespace PFD
             // Toto je pokus o generovanie prutoveho zatazenia z plosneho
             // Jedna sa o zoznamy prutov typu girts a typu purlins
             // Problem je v tom suradnice bodov rovin beriem z celej stavby, by sa mali preberat priamo z objektu CSLoad_FreeUniform.cs,
-            // Mozes sa tymto insprirovat ale treba to vyladit
+            // Mozes sa tymto insprirovat ale treba to vyladit tak aby sa CMLoad generovali vzdy len pre pruty ktore su pod CSurfaceLoad, pripadne generovat viacero CMLoad_24, ak je prut pod viacerymi CSurfaceLoads
 
             // TODO No. 54
             // tieto zoznamy sa maju nahradit funckiou v TODO 54 ktora ich vytvori pre jednotlive zatazovacie plochy zo suradnic ploch
@@ -1043,7 +1043,7 @@ namespace PFD
             // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
             // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
 
-            if(bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts)
+            if(bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts) // TODO - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
             CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
 
             #endregion
