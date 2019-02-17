@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace BaseClasses
 {
+    // TODO 201
+    // TO Ondrej - tato trieda by mohla dedit od CModel alebo CExample a obsahovat to co je teraz v CExample_2D_15_PF
     public class CFrame
     {
         List<CMember> m_Members;

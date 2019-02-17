@@ -88,14 +88,24 @@ namespace Examples
 
             // Nodal Supports - fill values
             // Support 1 - NodeIDs: 1,5
+            /*
             m_arrNSupports[0] = new CNSupport(m_eNDOF);
             m_arrNSupports[0].ID = 1;
             m_arrNSupports[0].m_iNodeCollection = new int[2];
             m_arrNSupports[0].m_iNodeCollection[0] = 1;
             m_arrNSupports[0].m_iNodeCollection[1] = 5;
+            */
 
             // Sort by ID
-            Array.Sort(m_arrNSupports, new BaseClasses.CCompare_NSupportID());
+            //Array.Sort(m_arrNSupports, new BaseClasses.CCompare_NSupportID());
+
+            // Set Load Cases
+            m_arrLoadCases = loadcases;
+            // TO Ondrej - TODO 201 - tu sa pridaju load cases ale nie su vygenerovane zatazenia na prutoch ramov, lebo to je na option v GUI,
+            // zaroven treba mysliet na to ze sa maju generovat len zatazenia pre tento konkretny ram
+
+            // Set Load Combinations
+            m_arrLoadCombs = loadcombinations;
         }
     }
 }

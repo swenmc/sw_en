@@ -705,8 +705,11 @@ namespace PFD
                 CModel frameModel_i = new Examples.CExample_2D_15_PF(
                             frame.Members,
                             model.GetFrameCNSupports(frame), // TODO - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
-                            Model.m_arrLoadCases, // TODO Ondrej - prevziat aj loads on members (MMemberLoadsList priradeny v Load case) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
+                            Model.m_arrLoadCases, // TODO Ondrej - prevziat aj loads on members (MMemberLoadsList priradeny v Load case, ale zozname ponechat len zatazenia prutov ktore sa nachadzaju v rame) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
                             Model.m_arrLoadCombs);
+
+                // TO Ondrej - potrebujeme dogenerovat do load cases jednotlive zatazenia na rame, kedze je to option v GUI, tak sa v CModel_PFD_01_GR nevyrobili a nie je co pocitat
+
 
                 //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
 

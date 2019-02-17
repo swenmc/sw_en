@@ -45,6 +45,7 @@ namespace PFD
         public static List<CNSupport> GetFrameCNSupports(this CModel_PFD_01_GR model, CFrame frame)
         {
             List<CNSupport> frameSupports = new List<CNSupport>();
+            /*
             foreach (CNSupport support in model.m_arrNSupports)
             {
                 foreach (CMember m in frame.Members)
@@ -55,15 +56,16 @@ namespace PFD
                     // Potom som to vsak nevedel vykreslit na viacerych uzloch naraz a tak som vytvaral objekt CNSupport pre kazdy uzol
                     // Je to priradene v CNSupport -> Node
                     // Do buducna by to chcelo urobit tak ako sa programatorsky patri :-)
-                    if (support.m_iNodeCollection != null && (support.m_iNodeCollection.Contains(m.NodeStart.ID) || support.m_iNodeCollection.Contains(m.NodeEnd.ID)))
-                        frameSupports.Add(support);
+                    //if (support.m_iNodeCollection != null && (support.m_iNodeCollection.Contains(m.NodeStart.ID) || support.m_iNodeCollection.Contains(m.NodeEnd.ID)))
+                    //    frameSupports.Add(support);
 
-                    // Aktualne plati toto
+                    // Aktualne plati zhruba toto
                     if(support.Node == m.NodeStart || support.Node == m.NodeEnd) // Add support to the list
                     {
                         // TO Ondrej - Este by sa malo osetrit ze podpora, ktora je na konci nejakeho pruta a zaroven na zaciatku ineho pruta (je teda priradena End Node nejakeho pruta ktory je zaroven Start Node ineho), ktory je k nemu pripojeny bola pridana len raz
 
                         // Docasne - naplnime aj kolekciu
+
                         if (support.Node == m.NodeStart)
                         {
                             support.m_iNodeCollection = new int[1];
@@ -75,11 +77,20 @@ namespace PFD
                             support.m_iNodeCollection = new int[1];
                             support.m_iNodeCollection[0] = m.NodeEnd.ID;
                         }
-
-                        frameSupports.Add(support);
+                        
                     }
                 }
             }
+            */
+
+            // TODO - TEMPORARY - natvrdo vyrobena podpora a pridany do kolekcie prvy a posledny uzol ramu
+            CNSupport support = model.m_arrNSupports[0];
+            support.m_iNodeCollection = new int[2];
+            support.m_iNodeCollection[0] = 1;
+            support.m_iNodeCollection[1] = 5;
+
+            frameSupports.Add(support);
+
             return frameSupports;
             
         }
