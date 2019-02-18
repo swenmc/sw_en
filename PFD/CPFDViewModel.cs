@@ -987,7 +987,7 @@ namespace PFD
                             designMomentValuesForCb sMomentValuesforCb_design;
                             basicInternalForces[] sBIF_x_design;
 
-                            // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
+                            // TODO 201 - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
                             // Todo je dost skareda vec, asi by sa Example3 v BFENet malo prerobit len na vypocet load cases tu s tym pracovat uz podobne pre pruty ramu a jednotlive samostatne pruty ako su purlins a girts
                             // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
 
@@ -1001,7 +1001,7 @@ namespace PFD
                                 sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
 
-                                // Temporary
+                                // TODO 201 - Temporary
                                 int iFrameIndex = 0; // TODO Ondrej - podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iLoadCombinationIndex = lcomb.ID - 1; // TODO nastavit index podla ID combinacie
                                 int iMemberIndex = 0; // TODO Ondrej - podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
@@ -1189,6 +1189,10 @@ namespace PFD
             string txt = "Calculation Results \n" +
                     "Maximum design ratio \n" +
                     "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - main columns\n" +
+                    "Member ID: " + MaximumDesignRatioMainColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioMainColumn, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - rafters\n" +
+                    "Member ID: " + MaximumDesignRatioMainRafter.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioMainRafter, 3).ToString() + "\n\n" +
                     "Maximum design ratio - girts\n" +
                     "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
                     "Maximum design ratio - purlins\n" +
