@@ -163,10 +163,29 @@ namespace PFD
         }
 
 
+        //podla ID pruta treba identifikovat do ktoreho ramu patri
+        public static int GetFrameIndexForMember(CMember m, List<CFrame> frames)
+        {
+            for (int i = 0; i < frames.Count; i++)
+            {
+                if (frames[i].Members.Exists(mem => mem.ID == m.ID)) return i;
+            }
+
+            return -1; //not found
+        }
+
+        //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+        public static int GetMemberIndexInFrame(CMember m, CFrame frame)
+        {
+            for (int i = 0; i < frame.Members.Count; i++)
+            {
+                if (frame.Members[i].ID == m.ID) return i;                
+            }
+
+            return -1; //not found
+        }
 
 
-
-        
 
 
 

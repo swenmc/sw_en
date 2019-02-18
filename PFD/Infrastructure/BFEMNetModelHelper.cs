@@ -19,7 +19,7 @@ namespace PFD
             resultsoutput = new List<List<List<basicInternalForces>>>();
 
             resultsoutput_deflections = new List<List<List<basicDeflections>>>();
-
+            
             // Load Cases - results
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
             {

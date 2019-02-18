@@ -992,15 +992,13 @@ namespace PFD
                                 sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
-
-                                // TODO 201 - Temporary
-                                int iFrameIndex = 0; // TODO Ondrej - podla ID pruta treba identifikovat do ktoreho ramu patri
-                                int iLoadCombinationIndex = lcomb.ID - 1; // TODO nastavit index podla ID combinacie
-                                int iMemberIndex = 0; // TODO Ondrej - podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
-
+                                
+                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                                int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
+                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
-
                                 sMomentValuesforCb_design.fM_14 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][2].fM_yy;
                                 sMomentValuesforCb_design.fM_24 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][5].fM_yy;
                                 sMomentValuesforCb_design.fM_34 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][7].fM_yy;
