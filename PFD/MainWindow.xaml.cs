@@ -1856,6 +1856,7 @@ namespace PFD
             //tu by som chcel zobrazit BFEMNEt model
             // stiahol som do projektu PFD HelixToolkit aj DynamicDataDisplay nuget packages...ale aj tak sa to nerozbehlo
 
+            /*
             Dispatcher.Invoke(() =>
             {
                 var wnd = new Window();
@@ -1866,7 +1867,7 @@ namespace PFD
 
                 wnd.ShowDialog();
 
-            });            
+            });*/
         }
     }
 }
