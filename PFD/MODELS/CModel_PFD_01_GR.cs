@@ -779,6 +779,16 @@ namespace PFD
                     throw new ArgumentNullException("Main member is not assigned to the joint No.:"+ m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
             }
 
+            // Validation - duplicity of node ID
+            for (int i = 0; i < m_arrNodes.Length; i++)
+            {
+                for (int j = 0; j < m_arrNodes.Length; j++)
+                {
+                    if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
+                        throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
+                }
+            }
+
             #endregion
 
             #region Blocks
@@ -839,6 +849,16 @@ namespace PFD
             {
                 if (m_arrConnectionJoints[i].m_MainMember == null)
                     throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+            }
+
+            // Validation - duplicity of node ID
+            for (int i = 0; i < m_arrNodes.Length; i++)
+            {
+                for (int j = 0; j < m_arrNodes.Length; j++)
+                {
+                    if ((m_arrNodes[i] != m_arrNodes[j]) && (m_arrNodes[i].ID == m_arrNodes[j].ID))
+                        throw new ArgumentNullException("Duplicity in Node ID.\nNode index: " + i + " and Node index: " + j);
+                }
             }
 
             // End of blocks
