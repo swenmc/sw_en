@@ -1091,6 +1091,10 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             {
                 for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
                 {
+                    // TODO - prepracovat system pre priradzovanie typovych objektov Loads, Supports a podobne,
+                    // nemusel by existovat vzdy samostatny objekt pre kazdu realnu poziciu v konstrukcii ale stacil by jeden typovy,
+                    // ktory by obsahoval zoznam objektov, ku ktorym je priradeny, je potrebne vyriesit ako by sa tento jeden objekt opakovane vykreslil na roznych miestach (objektoch) kam je priradeny
+
                     if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] != null) //if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null) // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
                     {
                         for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; k++)// for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
