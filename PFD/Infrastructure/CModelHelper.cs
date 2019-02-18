@@ -130,7 +130,42 @@ namespace PFD
             return membersLoadCases;
         }
 
-        
+        public static List<CLoadCombination> GetLoadCombinationsForMembers(CLoadCase[] framememberLoadCases, CLoadCombination[] allLoadCombinations)
+        {
+            List<CLoadCase> memberLoadCases = framememberLoadCases.ToList();
+            List<CLoadCombination> membersLoadCombinations = new List<CLoadCombination>();
+            foreach (CLoadCombination lcomb in allLoadCombinations.ToList())
+            {
+                CLoadCombination newloadcombination = new CLoadCombination();
+
+                // Do novej kombinacie nastavime vsetky parametre povodnej, asi by sa to dalo krajsie :)
+                // Iny bude len zoznam load cases (load cases z 3D modelu su nahradene load cases z modelu ramu)
+                newloadcombination.ID = lcomb.ID;
+                newloadcombination.Name = lcomb.Name;
+                newloadcombination.Prefix = lcomb.Prefix;
+                newloadcombination.eLComType = lcomb.eLComType;
+                newloadcombination.CombinationKey = lcomb.CombinationKey;
+                newloadcombination.Formula = lcomb.Formula;
+
+                for (int i = 0; i < lcomb.LoadCasesList.Count; i++) // Asi sa to da zapisat jednoduchsie, najst vsetky load cases ktorych ID je v kombinacii a nastavit namiesto nich zatazovaci stav z allLoadCases, load factor by mal zostat rovnaky
+                {
+                    for(int j = 0; j < memberLoadCases.Count; j++)
+                    {
+                        if (lcomb.LoadCasesList[i].Name == memberLoadCases[j].Name) // Dany load case v originalnej kombinacii je rovnaky ako load case v memberLoadCases
+                        {
+                            // Set Factor and Frame Model Load Case
+                            newloadcombination.LoadCasesFactorsList.Add(lcomb.LoadCasesFactorsList[i]);
+                            newloadcombination.LoadCasesList.Add(memberLoadCases[i]);
+                        }
+                    }
+                }
+
+                membersLoadCombinations.Add(newloadcombination);
+            }
+            return membersLoadCombinations;
+        }
+
+
 
     }
 }

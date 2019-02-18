@@ -213,7 +213,7 @@ namespace BaseClasses
             // takze neviem co vsetko tu bude potrebne pomenit
 
             // Otazka je ci by to vobec malo posudzovat pruty a spoje z modelu samostatneho ramu, spravnejsie by bolo asi nastavit vysledky prutom Main Columns a Main Rafters v 3D modeli
-            // a members a joints posudzovat az potom
+            // a members a joints posudzovat az potom v ramci globalneho modelu
 
             if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
         }

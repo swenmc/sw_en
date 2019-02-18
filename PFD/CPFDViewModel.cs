@@ -757,7 +757,9 @@ namespace PFD
 
             //if (Model is CModel_PFD_01_GR)
             //    model_temp = (CModel_PFD_01_GR)Model; // TODO - ziskat pristup na data 3D modelu, zatial som to urobil takto
-            // j eurcite nejaky dovod to pretypovavat?
+            // je urcite nejaky dovod to pretypovavat? 
+            // TO Ondrej - moja predstava je taka ze CModel_PFD_01_GR je len jeden z moznych tvarov budovy a predok tychto preddefinovanych tvarov je CModel_PFD
+            // nasledujuce postupy by mali byt obecne pre rozne tvary budovy - teda potomkov triedy CModel_PFD
 
             //List<CModel> frameModels = new List<CModel>(); // Zoznam vsetkych frames - este neviem ci bude potrebny
 
@@ -772,14 +774,14 @@ namespace PFD
 
             foreach (CFrame frame in frames)
             {
-
                 List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForMembers(frame.Members, model.m_arrLoadCases);
+                List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
                 // 1. Create SW_EN Model of frame (Extract data from 3D model)
                 CModel frameModel_i = new Examples.CExample_2D_15_PF(
                             frame.Members,
                             model.GetFrameCNSupports(frame), // DONE - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
                             frameLoadCases.ToArray(), // DONE - prevziat aj loads on members (MMemberLoadsList priradeny v Load case, ale zozname ponechat len zatazenia prutov ktore sa nachadzaju v rame) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
-                            Model.m_arrLoadCombs);
+                            frameLoadCombinations.ToArray());
 
                 // TO Ondrej - TODO 201 - Potrebujeme dogenerovat do load cases jednotlive zatazenia na rame, kedze je to option v GUI, tak sa v CModel_PFD_01_GR nevyrobili a nie je co pocitat
                 // aK ich nevyrobime priamo pre 3D CModel_PFD_01_GR, tak by sme ich mohli dogenerovat podla cisla indexu ramu, resp. jeho suradnice Y len pre konkretny ram ktory v tomto cykle pocitame

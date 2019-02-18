@@ -1091,9 +1091,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             {
                 for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
                 {
-                    if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null)
+                    if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] != null) //if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null) // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
                     {
-                        for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
+                        for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; k++)// for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
                         {
                             // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
                             // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
@@ -1191,9 +1191,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                                 topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
                             {
                                 if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
-                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu);
+                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(lu); // elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu); // // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
                                 else /*if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)*/
-                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
+                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(lpu); // elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
                             }
                         }
                     }
