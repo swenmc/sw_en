@@ -13,6 +13,7 @@ using MATH;
 using M_BASE;
 using M_EC1.AS_NZS;
 using BriefFiniteElementNet.CodeProjectExamples;
+using BriefFiniteElementNet;
 
 namespace PFD
 {
@@ -747,22 +748,13 @@ namespace PFD
             // Tu by sa mal napojit 3D FEM vypocet
             //RunFEMSOlver();
 
-            ////////////////////////////////////////////////////////////////////////
-            // TODO 201 - TO Ondrej - tu som nieco zacal tvorit ale po napojeni BFENet mi to nefunguje, lebo je tam nejaka vynimka s WPF
+            ////////////////////////////////////////////////////////////////////////            
             // Calculation of frame model
-
             // Extract 2D frames from complex 3D model and create frame models
-
-            //CModel_PFD model_temp = Model;
-
-            //if (Model is CModel_PFD_01_GR)
-            //    model_temp = (CModel_PFD_01_GR)Model; // TODO - ziskat pristup na data 3D modelu, zatial som to urobil takto
-            // je urcite nejaky dovod to pretypovavat? 
+            
             // TO Ondrej - moja predstava je taka ze CModel_PFD_01_GR je len jeden z moznych tvarov budovy a predok tychto preddefinovanych tvarov je CModel_PFD
             // nasledujuce postupy by mali byt obecne pre rozne tvary budovy - teda potomkov triedy CModel_PFD
-
-            //List<CModel> frameModels = new List<CModel>(); // Zoznam vsetkych frames - este neviem ci bude potrebny
-
+            
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
             List<CFrame> frames = model.GetFramesFromModel();
             List<List<List<List<basicInternalForces>>>> internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
@@ -781,13 +773,9 @@ namespace PFD
                 // 1. Create SW_EN Model of frame (Extract data from 3D model)
                 CModel frameModel_i = new Examples.CExample_2D_15_PF(
                             frame.Members,
-                            model.GetFrameCNSupports(frame), // DONE - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
-                            frameLoadCases.ToArray(), // DONE - prevziat aj loads on members (MMemberLoadsList priradeny v Load case, ale zozname ponechat len zatazenia prutov ktore sa nachadzaju v rame) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
+                            model.GetFrameCNSupports(frame), 
+                            frameLoadCases.ToArray(), 
                             frameLoadCombinations.ToArray());
-
-                // TO Ondrej - TODO 201 - Potrebujeme dogenerovat do load cases jednotlive zatazenia na rame, kedze je to option v GUI, tak sa v CModel_PFD_01_GR nevyrobili a nie je co pocitat
-                // aK ich nevyrobime priamo pre 3D CModel_PFD_01_GR, tak by sme ich mohli dogenerovat podla cisla indexu ramu, resp. jeho suradnice Y len pre konkretny ram ktory v tomto cykle pocitame
-
                 //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
 
                 // 2. Create BFENet model of frame and calculate internal forces on frame
@@ -798,13 +786,17 @@ namespace PFD
                 // a az potom pri volani bfenetModel.Example3 sa vytvara model z "frameModel_i"
                 // Example3 treba niekam presunut a vhodne pomenovat ako Convertor PFD modelu do BFENet modelu
 
-                RunExample3 bfenetModel = new RunExample3();
+                //RunExample3 bfenetModel = new RunExample3();
 
                 List<List<List<basicInternalForces>>> internalforces;
                 List<List<List<basicDeflections>>> deflections;
                 // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
-                bfenetModel.Example3(frameModel_i, out internalforces, out deflections); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
+                //bfenetModel.Example3(frameModel_i, out internalforces, out deflections); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
 
+                CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
+                Model bfemNetModel = converter.Convert(frameModel_i, out internalforces, out deflections);
+                PFDMainWindow.ShowBFEMNetModel(bfemNetModel);
+                
                 internalforcesframes.Add(internalforces); // Add Frame results
                 deflectionsframes.Add(deflections);
 

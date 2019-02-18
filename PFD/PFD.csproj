@@ -37,6 +37,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DynamicDataDisplay, Version=0.3.0.1, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicDataDisplay.0.3.0.1\lib\net45\DynamicDataDisplay.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HelixToolkit, Version=2.6.1.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.2.6.1\lib\netstandard1.1\HelixToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=2.6.1.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.Wpf.2.6.1\lib\net45\HelixToolkit.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Blend.Interactivity.Wpf.1.0.1340.0\lib\net\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -103,7 +115,9 @@
     </Compile>
     <Compile Include="Infrastructure\CLoadCaseGenerator.cs" />
     <Compile Include="Infrastructure\CMemberLoadGenerator.cs" />
+    <Compile Include="Infrastructure\BFEMNetModelHelper.cs" />
     <Compile Include="Infrastructure\CModelHelper.cs" />
+    <Compile Include="Infrastructure\CModelToBFEMNetConverter.cs" />
     <Compile Include="Infrastructure\CNodalLoadGenerator.cs" />
     <Compile Include="Infrastructure\CSurfaceLoadGenerator.cs" />
     <Compile Include="MemberDesignDetails.xaml.cs">
@@ -340,6 +354,14 @@
     <ProjectReference Include="..\FEM\BriefFiniteElementNet.CodeProjectExamples\BriefFiniteElementNet.CodeProjectExamples.csproj">
       <Project>{24eba191-f9e3-47cf-b0fe-865b6243a354}</Project>
       <Name>BriefFiniteElementNet.CodeProjectExamples</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\BriefFiniteElementNet.Controls\BriefFiniteElementNet.Controls.csproj">
+      <Project>{8DABDE62-8A8E-4153-B753-3A62015A9C16}</Project>
+      <Name>BriefFiniteElementNet.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FEM\BriefFiniteElementNet\BriefFiniteElementNet.csproj">
+      <Project>{7CDA20D4-9BC8-4BC3-9F22-CB86CD4DC3E1}</Project>
+      <Name>BriefFiniteElementNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\FEM\FEM_CALC_1Din2D\FEM_CALC_1Din2D.csproj">
       <Project>{602c8862-99f4-4595-a033-84194ddfe00a}</Project>

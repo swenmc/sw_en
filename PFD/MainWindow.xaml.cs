@@ -33,6 +33,8 @@ using CRSC;
 using EXPIMP;
 using Examples;
 using DATABASE.DTO;
+using BriefFiniteElementNet;
+using BriefFiniteElementNet.Controls;
 
 namespace PFD
 {
@@ -1845,6 +1847,26 @@ namespace PFD
         private void chbDisplayMemberLoads_UnChecked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        
+
+        public void ShowBFEMNetModel(Model model)
+        {
+            //tu by som chcel zobrazit BFEMNEt model
+            // stiahol som do projektu PFD HelixToolkit aj DynamicDataDisplay nuget packages...ale aj tak sa to nerozbehlo
+
+            Dispatcher.Invoke(() =>
+            {
+                var wnd = new Window();
+                var ctrl = new ModelVisualizerControl();
+                ctrl.ModelToVisualize = model;
+
+                wnd.Content = ctrl;
+
+                wnd.ShowDialog();
+
+            });            
         }
     }
 }

@@ -733,7 +733,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
         }
     }
 
+
     // Docasna trieda - umoznuje spustit skusobny Example 3 z ineho projektu
+    // Poprosim ju zmazat
     public class RunExample3
     {
         // Model ramu
@@ -821,527 +823,434 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             model_SW_EN = new Examples.CExample_2D_14_PF(mat, crsc1, crsc2, 20f, 6f, 8f, -10000f, loadListRafter1, loadListRafter2, 7000f);
 
-            Example3(model_SW_EN, out results, out resultsDeflections);
+            //Example3(model_SW_EN, out results, out resultsDeflections);
         }
 
         // Pokus o napojenie SW_EN
-        public /*static*/ void Example3(BaseClasses.CModel topomodel,
-            out List<List<List<basicInternalForces>>> resultsoutput,
-            out List<List<List<basicDeflections>>> resultsoutputDeflections)
-        {
-            // Dokumentacia a priklady
-            // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
-            // https://bfenet.readthedocs.io/en/latest/example/inclinedframe/index.html
-            // BarIncliendFrameExample.cs file
-
-            // TO Ondrej - pointa je v tom ze potrebujeme preklopit nase datove objekty a zatazenia do objektov BFEMNet, vytvorit model, spustit vypocet, nacitat vysledky a tie pouzit v nasom hlavnom programe
-            // Skopiroval som priklad 2, Nieco som skusil napojit a zakomentoval som to co sa nepouzije, ale ked som pridal referencie na nase projekty tak to neide prelozit
-            // Ten DebugerVisualizer, ktory sa mal otvorit cez ikonku lupy ked spustim Example 2 som v VS nenasiel takze to okno s 3D sa mi nepodarilo zobrazit
-
-            Console.WriteLine("Example 3: Simple 3D Frame with distributed loads");
-
-            var model = new Model();
-
-            /*
-            var n1 = new Node(-10, 0, 0);
-            var n2 = new Node(-10, 0, 6);
-            var n3 = new Node(0, 0, 8);
-            var n4 = new Node(10, 0, 6);
-            var n5 = new Node(10, 0, 0);
-
-            model.Nodes.Add(n1, n2, n3, n4, n5);
-            */
-
-            // Nodes
-            NodeCollection nodeCollection = new NodeCollection(model);
-
-            for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
-            {
-                nodeCollection.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z) { Label = "n" + topomodel.m_arrNodes[i].ID });
-            }
-
-            model.Nodes = nodeCollection;
-
-            // Cross-sections
-
-            //var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
-            //var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
-
-            // To Ondrej - Pochopil som to tak, ze hodnoty pre prierez A,Iy,Iz je mozne zadat numericky alebo definovat Geometry,
-            // ale Geometry ma len definiciou pre obdlznik a tvar I
-            // do buducna by sme mohli geometry rozsirit alebo mozeme predavat hodnoty z nasich prierezov do solvera len ciselne
-
-            //Mato: Podla mna by sa malo dat rozsirit SectionGenerator a to tak ze vstupom bude nas Crsc a vygeneruje to len to pole bodov
-
-            /*
-            var e1 = new FrameElement2Node(n1, n2);
-            e1.Label = "e1";
-            var e2 = new FrameElement2Node(n2, n3);
-            e2.Label = "e2";
-            var e3 = new FrameElement2Node(n3, n4);
-            e3.Label = "e3";
-            var e4 = new FrameElement2Node(n4, n5);
-            e4.Label = "e4";
-
-            e1.Geometry = e4.Geometry = secAA;
-            e2.Geometry = e3.Geometry = secBB;
-
-            e1.E = e2.E = e3.E = e4.E = 210e9;
-            e1.G = e2.G = e3.G = e4.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
-
-            e1.UseOverridedProperties =
-                e2.UseOverridedProperties = e3.UseOverridedProperties = e4.UseOverridedProperties = false;
-
-            model.Elements.Add(e1, e2, e3, e4);
-            */
-
-            // Elements (Members)
-            ElementCollection elementCollection = new ElementCollection(model);
-
-            for (int i = 0; i < topomodel.m_arrMembers.Length; i++)
-            {
-                var element_1D_2Node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
-                element_1D_2Node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
-
-                var sec = new Sections.UniformParametric1DSection(topomodel.m_arrMembers[i].CrScStart.A_g,
-                    topomodel.m_arrMembers[i].CrScStart.I_y,
-                    topomodel.m_arrMembers[i].CrScStart.I_z,
-                    topomodel.m_arrMembers[i].CrScStart.I_t);
-
-                // TO Ondrej: parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
-                var mat = new Materials.UniformIsotropicMaterial(topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE, topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fNu);
-                element_1D_2Node.E = mat.YoungModulus;
-                element_1D_2Node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
-                //element_1D_2Node.MassDensity = topomodel.m_arrMembers[i].m_Mat.m_fRho;
-
-                element_1D_2Node.A = sec.A;
-                element_1D_2Node.Ay = 0.00252f;
-                element_1D_2Node.Az = 0.00252f; // Todo - doplnit do databazy
-                element_1D_2Node.Iy = sec.Iy;
-                element_1D_2Node.Iz = sec.Iz;
-                element_1D_2Node.J = sec.J;
-                //element_1D_2Node.ConsiderShearDeformation = true;
-
-                if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
-                {
-                    if (topomodel.m_arrMembers[i].CnRelease1 != null)
-                        element_1D_2Node.HingedAtStart = !(bool)topomodel.m_arrMembers[i].CnRelease1.m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz];
-
-                    if (topomodel.m_arrMembers[i].CnRelease2 != null)
-                        element_1D_2Node.HingedAtEnd = !(bool)topomodel.m_arrMembers[i].CnRelease2.m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz];
-                }
-                else
-                {
-                    if (topomodel.m_arrMembers[i].CnRelease1 != null)
-                        element_1D_2Node.HingedAtStart = !(bool)topomodel.m_arrMembers[i].CnRelease1.m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
-                    if (topomodel.m_arrMembers[i].CnRelease2 != null)
-                        element_1D_2Node.HingedAtEnd = !(bool)topomodel.m_arrMembers[i].CnRelease2.m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
-                }
-
-                // Note: Elements with UseOverridedProperties = true are shown with square sections(dimension of section automatically tunes for better visualization of elements)
-                // but elements with UseOverridedProperties = false will be shown with their real section with real dimesion.
-                element_1D_2Node.UseOverridedProperties = true;
-
-                elementCollection.Add(element_1D_2Node);
-            }
-
-            model.Elements = elementCollection;
-
-            // Supports
-            /*
-            n1.Constraints =
-                n2.Constraints =
-                    n3.Constraints =
-                        n4.Constraints =
-                            n5.Constraints =
-                                Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
-
-            n1.Constraints = n1.Constraints & Constraints.MovementFixed;
-            n5.Constraints = n5.Constraints & Constraints.MovementFixed;
-            */
-
-            // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
-            // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
-            //(Sorry ale ja nemam sajnu co sa tu deje :-) )
-            // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine XZ, ale pocitame ho 3D solverom ktory berie do uvahy ze sa to moze posunut aj mimo tejto roviny,
-            // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
-            // Preto sa na vsetky uzly nastavia tieto tri podmienky
-
-            for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
-            {
-                model.Nodes[i].Constraints = Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;
-            }
-
-            // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
-            //(Sorry ale ja nemam sajnu co sa tu deje :-) )
-            // Tu by sa mali nastavit podpory v rovine ramu (posuny UX a UZ) a pototocenie RY
-            for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
-            {
-                for (int j = 0; j < topomodel.m_arrNSupports[i].m_iNodeCollection.Length; j++)
-                {
-                    for (int k = 0; k < model.Nodes.Count; k++)
-                    {
-                        if (k == (topomodel.m_arrNSupports[i].m_iNodeCollection[j] - 1))
-                        // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) 
-                        // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
-                        {
-                            // Set restraints depending on the FEM DOF number
-
-                            if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
-                            {
-                                // 2D
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType_2D.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                            }
-                            else if (topomodel.m_eSLN == BaseClasses.ESLN.e3DD_1D)
-                            {
-                                // 3D
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
-
-                                //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
-                                    model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
-                            }
-                            else
-                            {
-                                // Not implenented or not defined type
-                            }
-                        }
-                    }
-                }
-            }
-
-            /*
-            var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global);
-            var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local);
-
-            e2.Loads.Add(ll);
-            e3.Loads.Add(lr);
-            */
-
-            // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat, ake su typy atd - load cases, load combinations
-
-            /*
-            var d_case = new LoadCase("d1", LoadType.Dead);
-            var l_case = new LoadCase("l1", LoadType.Dead);
-            var qx_case = new LoadCase("qx", LoadType.Dead);
-            var qy_case = new LoadCase("qy", LoadType.Dead);
-
-            var d1 = new Loads.UniformLoad(d_case, -1 * Vector.K, 2e3, CoordinationSystem.Global);
-            var l1 = new Loads.UniformLoad(l_case, -1 * Vector.K, 1e3, CoordinationSystem.Global);
-
-            var combination1 = new LoadCombination();// for D + 0.8 L
-            combination1[d_case] = 1.0;
-            combination1[l_case] = 0.8;
-            */
-
-            // Load Cases
-            List<LoadCase> loadcases = new List<LoadCase>();
-
-            for (int i = 0; i < topomodel.m_arrLoadCases.Length; i++)
-            {
-                LoadType loadtype;
-
-                if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.ePermanentLoad)
-                    loadtype = LoadType.Dead;
-                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eImposedLoad_LT || topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eImposedLoad_ST)
-                    loadtype = LoadType.Live;
-                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eSnow)
-                    loadtype = LoadType.Snow;
-                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eWind)
-                    loadtype = LoadType.Wind;
-                else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eEarthquake)
-                    loadtype = LoadType.Quake;
-                else
-                    loadtype = LoadType.Other;
-
-                loadcases.Add(new LoadCase(topomodel.m_arrLoadCases[i].Name, loadtype));
-            }
-
-            // Load Combinations
-            List<LoadCombination> loadcombinations = new List<LoadCombination>();
-
-            for (int i = 0; i < topomodel.m_arrLoadCombs.Length; i++)
-            {
-                // LoadCombination dedi od Dictionary<LoadCase, double>, tj. load case a faktor
-
-                LoadCombination lcomb = new LoadCombination();
-
-                // Add specific load cases into the combination and set load factors
-                for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
-                {
-                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID - 1], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
-                }
-
-                loadcombinations.Add(lcomb);
-            }
-
-            // Loads
-
-            for (int i = 0; i < loadcases.Count; i++) // Each load case
-            {
-                for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
-                {
-                    // TODO - prepracovat system pre priradzovanie typovych objektov Loads, Supports a podobne,
-                    // nemusel by existovat vzdy samostatny objekt pre kazdu realnu poziciu v konstrukcii ale stacil by jeden typovy,
-                    // ktory by obsahoval zoznam objektov, ku ktorym je priradeny, je potrebne vyriesit ako by sa tento jeden objekt opakovane vykreslil na roznych miestach (objektoch) kam je priradeny
-
-                    if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] != null) //if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null) // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
-                    {
-                        for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; k++)// for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
-                        {
-                            // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
-                            // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
-
-                            // load
-                            var lu = new UniformLoad1D();
-                            var lpu = new PartialUniformLoad1D();
-
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21) // Uniform load per whole member
-                            {
-                                lu = new UniformLoad1D();
-                                BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
-                                // Create member load
-                                if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
-                                    load = (BaseClasses.CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
-
-                                // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
-                                // Skontrolovat zadanie v GCS a LCS
-
-                                CoordinationSystem eCS;
-                                if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
-                                    eCS = CoordinationSystem.Global;
-                                else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
-                                    eCS = CoordinationSystem.Local;
-
-                                LoadDirection eLD;
-
-                                if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
-                                    eLD = LoadDirection.X;
-                                else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
-                                    eLD = LoadDirection.Y;
-                                else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
-                                    eLD = LoadDirection.Z;
-
-                                lu = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
-                            }
-                            else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24) // Uniform load on segment
-                            {
-                                lpu = new PartialUniformLoad1D();
-                                BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
-
-                                // Create member load
-                                if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
-                                    load = (BaseClasses.CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
-
-                                // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
-                                // Skontrolovat zadanie v GCS a LCS
-
-                                CoordinationSystem eCS;
-                                if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
-                                    eCS = CoordinationSystem.Global;
-                                else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
-                                    eCS = CoordinationSystem.Local;
-
-                                LoadDirection eLD;
-
-                                if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
-                                    eLD = LoadDirection.X;
-                                else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
-                                    eLD = LoadDirection.Y;
-                                else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
-                                    eLD = LoadDirection.Z;
-
-                                // PartialTrapezoidalLoad
-                                // TODO - toto by sme potrebovali, pisu tam ze je to obsolete ale na internete je uz priklad
-                                // Urcite mame najnovsie zdroje?, resp. to mozno mali v starsej verzii a skryli to
-                                // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
-                                // https://media.readthedocs.org/pdf/bfenet/latest/bfenet.pdf
-
-                                // Isolocation [-1,1]
-                                double dStartIsoLocation;
-                                double dEndIsoLocation;
-
-                                // Prevod z absolutnych suradnic [0,L] na relativne [-1,1]
-                                if (load.FaA < 0.5 * load.Member.FLength)
-                                    dStartIsoLocation = -(0.5 * load.Member.FLength - load.FaA) / (0.5 * load.Member.FLength);
-                                else
-                                    dStartIsoLocation = (load.FaA - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
-
-                                if ((load.FaA + load.Fs) < 0.5 * load.Member.FLength)
-                                    dEndIsoLocation = -(0.5 * load.Member.FLength - (load.FaA + load.Fs)) / (0.5 * load.Member.FLength);
-                                else
-                                    dEndIsoLocation = ((load.FaA + load.Fs) - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
-
-                                lpu = new PartialUniformLoad1D(load.Fq, dStartIsoLocation, dEndIsoLocation, eLD, eCS, loadcases[i]);
-                            }
-                            else
-                            {
-                                // Not implemented load type
-                                // l = new UniformLoad1D();
-                            }
-
-                            // Assign defined type of load the the BriefFiniteElement
-                            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21 ||
-                                topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
-                            {
-                                if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
-                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(lu); // elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu); // // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
-                                else /*if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)*/
-                                    elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(lpu); // elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
-                            }
-                        }
-                    }
-                }
-            }
+        //public /*static*/ void Example3(BaseClasses.CModel topomodel,
+        //    out List<List<List<basicInternalForces>>> resultsoutput,
+        //    out List<List<List<basicDeflections>>> resultsoutputDeflections)
+        //{
+        //    // Dokumentacia a priklady
+        //    // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
+        //    // https://bfenet.readthedocs.io/en/latest/example/inclinedframe/index.html
+        //    // BarIncliendFrameExample.cs file
+
+        //    // TO Ondrej - pointa je v tom ze potrebujeme preklopit nase datove objekty a zatazenia do objektov BFEMNet, vytvorit model, spustit vypocet, nacitat vysledky a tie pouzit v nasom hlavnom programe
+        //    // Skopiroval som priklad 2, Nieco som skusil napojit a zakomentoval som to co sa nepouzije, ale ked som pridal referencie na nase projekty tak to neide prelozit
+        //    // Ten DebugerVisualizer, ktory sa mal otvorit cez ikonku lupy ked spustim Example 2 som v VS nenasiel takze to okno s 3D sa mi nepodarilo zobrazit
+
+        //    Console.WriteLine("Example 3: Simple 3D Frame with distributed loads");
+
+        //    var model = new Model();
+
+        //    /*
+        //    var n1 = new Node(-10, 0, 0);
+        //    var n2 = new Node(-10, 0, 6);
+        //    var n3 = new Node(0, 0, 8);
+        //    var n4 = new Node(10, 0, 6);
+        //    var n5 = new Node(10, 0, 0);
+
+        //    model.Nodes.Add(n1, n2, n3, n4, n5);
+        //    */
+
+        //    // Nodes
+        //    NodeCollection nodeCollection = new NodeCollection(model);
+
+        //    for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
+        //    {
+        //        nodeCollection.Add(new Node(topomodel.m_arrNodes[i].X, topomodel.m_arrNodes[i].Y, topomodel.m_arrNodes[i].Z) { Label = "n" + topomodel.m_arrNodes[i].ID });
+        //    }
+
+        //    model.Nodes = nodeCollection;
+
+        //    // Cross-sections
+
+        //    //var secAA = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.67, 0.01, 0.006));
+        //    //var secBB = new PolygonYz(SectionGenerator.GetISetion(0.24, 0.52, 0.01, 0.006));
+
+        //    // To Ondrej - Pochopil som to tak, ze hodnoty pre prierez A,Iy,Iz je mozne zadat numericky alebo definovat Geometry,
+        //    // ale Geometry ma len definiciou pre obdlznik a tvar I
+        //    // do buducna by sme mohli geometry rozsirit alebo mozeme predavat hodnoty z nasich prierezov do solvera len ciselne
+
+        //    //Mato: Podla mna by sa malo dat rozsirit SectionGenerator a to tak ze vstupom bude nas Crsc a vygeneruje to len to pole bodov
+
+        //    /*
+        //    var e1 = new FrameElement2Node(n1, n2);
+        //    e1.Label = "e1";
+        //    var e2 = new FrameElement2Node(n2, n3);
+        //    e2.Label = "e2";
+        //    var e3 = new FrameElement2Node(n3, n4);
+        //    e3.Label = "e3";
+        //    var e4 = new FrameElement2Node(n4, n5);
+        //    e4.Label = "e4";
+
+        //    e1.Geometry = e4.Geometry = secAA;
+        //    e2.Geometry = e3.Geometry = secBB;
+
+        //    e1.E = e2.E = e3.E = e4.E = 210e9;
+        //    e1.G = e2.G = e3.G = e4.G = 210e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+
+        //    e1.UseOverridedProperties =
+        //        e2.UseOverridedProperties = e3.UseOverridedProperties = e4.UseOverridedProperties = false;
+
+        //    model.Elements.Add(e1, e2, e3, e4);
+        //    */
+
+        //    // Elements (Members)
+        //    ElementCollection elementCollection = new ElementCollection(model);
+
+        //    for (int i = 0; i < topomodel.m_arrMembers.Length; i++)
+        //    {
+        //        var element_1D_2Node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
+        //        element_1D_2Node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
+
+        //        var sec = new Sections.UniformParametric1DSection(topomodel.m_arrMembers[i].CrScStart.A_g,
+        //            topomodel.m_arrMembers[i].CrScStart.I_y,
+        //            topomodel.m_arrMembers[i].CrScStart.I_z,
+        //            topomodel.m_arrMembers[i].CrScStart.I_t);
+
+        //        // TO Ondrej: parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
+        //        var mat = new Materials.UniformIsotropicMaterial(topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE, topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fNu);
+        //        element_1D_2Node.E = mat.YoungModulus;
+        //        element_1D_2Node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
+        //        //element_1D_2Node.MassDensity = topomodel.m_arrMembers[i].m_Mat.m_fRho;
+
+        //        element_1D_2Node.A = sec.A;
+        //        element_1D_2Node.Ay = 0.00252f;
+        //        element_1D_2Node.Az = 0.00252f; // Todo - doplnit do databazy
+        //        element_1D_2Node.Iy = sec.Iy;
+        //        element_1D_2Node.Iz = sec.Iz;
+        //        element_1D_2Node.J = sec.J;
+        //        //element_1D_2Node.ConsiderShearDeformation = true;
+
+        //        if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
+        //        {
+        //            if (topomodel.m_arrMembers[i].CnRelease1 != null)
+        //                element_1D_2Node.HingedAtStart = !(bool)topomodel.m_arrMembers[i].CnRelease1.m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz];
+
+        //            if (topomodel.m_arrMembers[i].CnRelease2 != null)
+        //                element_1D_2Node.HingedAtEnd = !(bool)topomodel.m_arrMembers[i].CnRelease2.m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz];
+        //        }
+        //        else
+        //        {
+        //            if (topomodel.m_arrMembers[i].CnRelease1 != null)
+        //                element_1D_2Node.HingedAtStart = !(bool)topomodel.m_arrMembers[i].CnRelease1.m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
+        //            if (topomodel.m_arrMembers[i].CnRelease2 != null)
+        //                element_1D_2Node.HingedAtEnd = !(bool)topomodel.m_arrMembers[i].CnRelease2.m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
+        //        }
+
+        //        // Note: Elements with UseOverridedProperties = true are shown with square sections(dimension of section automatically tunes for better visualization of elements)
+        //        // but elements with UseOverridedProperties = false will be shown with their real section with real dimesion.
+        //        element_1D_2Node.UseOverridedProperties = true;
+
+        //        elementCollection.Add(element_1D_2Node);
+        //    }
+
+        //    model.Elements = elementCollection;
+
+        //    // Supports
+        //    /*
+        //    n1.Constraints =
+        //        n2.Constraints =
+        //            n3.Constraints =
+        //                n4.Constraints =
+        //                    n5.Constraints =
+        //                        Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;//DY fixed and RX fixed and RZ fixed
+
+        //    n1.Constraints = n1.Constraints & Constraints.MovementFixed;
+        //    n5.Constraints = n5.Constraints & Constraints.MovementFixed;
+        //    */
+
+        //    // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
+        //    // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
+        //    //(Sorry ale ja nemam sajnu co sa tu deje :-) )
+        //    // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine XZ, ale pocitame ho 3D solverom ktory berie do uvahy ze sa to moze posunut aj mimo tejto roviny,
+        //    // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
+        //    // Preto sa na vsetky uzly nastavia tieto tri podmienky
+
+        //    for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
+        //    {
+        //        model.Nodes[i].Constraints = Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;
+        //    }
+
+        //    // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia
+        //    //(Sorry ale ja nemam sajnu co sa tu deje :-) )
+        //    // Tu by sa mali nastavit podpory v rovine ramu (posuny UX a UZ) a pototocenie RY
+        //    for (int i = 0; i < topomodel.m_arrNSupports.Length; i++)
+        //    {
+        //        for (int j = 0; j < topomodel.m_arrNSupports[i].m_iNodeCollection.Length; j++)
+        //        {
+        //            for (int k = 0; k < model.Nodes.Count; k++)
+        //            {
+        //                if (k == (topomodel.m_arrNSupports[i].m_iNodeCollection[j] - 1))
+        //                // porovnat index v poli (pripadne ID, ale je treba zistit ako sa urcuju ID objektu node v BFEMNet) 
+        //                // TO Ondrej, chcelo by to rozhodnut ci budeme pouzivat pri porovnavani indexy z pola alebo ID objektov (ID objektov mozu nemusia byt kontinualne 1,2,3,6,7,8,9
+        //                {
+        //                    // Set restraints depending on the FEM DOF number
+
+        //                    if (topomodel.m_eSLN == BaseClasses.ESLN.e2DD_1D)
+        //                    {
+        //                        // 2D
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType_2D.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+        //                    }
+        //                    else if (topomodel.m_eSLN == BaseClasses.ESLN.e3DD_1D)
+        //                    {
+        //                        // 3D
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDX;
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uy] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
+
+        //                        //tu to zlyhava lebo m_bRestrain ma len 3 prvky v poli
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
+        //                        if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
+        //                            model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
+        //                    }
+        //                    else
+        //                    {
+        //                        // Not implenented or not defined type
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    /*
+        //    var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global);
+        //    var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local);
+
+        //    e2.Loads.Add(ll);
+        //    e3.Loads.Add(lr);
+        //    */
+
+        //    // TODO - dopracovat load cases, je potrebne nastudovat ako sa to v BFEMNet da nastavovat, ake su typy atd - load cases, load combinations
+
+        //    /*
+        //    var d_case = new LoadCase("d1", LoadType.Dead);
+        //    var l_case = new LoadCase("l1", LoadType.Dead);
+        //    var qx_case = new LoadCase("qx", LoadType.Dead);
+        //    var qy_case = new LoadCase("qy", LoadType.Dead);
+
+        //    var d1 = new Loads.UniformLoad(d_case, -1 * Vector.K, 2e3, CoordinationSystem.Global);
+        //    var l1 = new Loads.UniformLoad(l_case, -1 * Vector.K, 1e3, CoordinationSystem.Global);
+
+        //    var combination1 = new LoadCombination();// for D + 0.8 L
+        //    combination1[d_case] = 1.0;
+        //    combination1[l_case] = 0.8;
+        //    */
+
+        //    // Load Cases
+        //    List<LoadCase> loadcases = new List<LoadCase>();
+
+        //    for (int i = 0; i < topomodel.m_arrLoadCases.Length; i++)
+        //    {
+        //        LoadType loadtype;
+
+        //        if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.ePermanentLoad)
+        //            loadtype = LoadType.Dead;
+        //        else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eImposedLoad_LT || topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eImposedLoad_ST)
+        //            loadtype = LoadType.Live;
+        //        else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eSnow)
+        //            loadtype = LoadType.Snow;
+        //        else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eWind)
+        //            loadtype = LoadType.Wind;
+        //        else if (topomodel.m_arrLoadCases[i].Type == BaseClasses.ELCType.eEarthquake)
+        //            loadtype = LoadType.Quake;
+        //        else
+        //            loadtype = LoadType.Other;
+
+        //        loadcases.Add(new LoadCase(topomodel.m_arrLoadCases[i].Name, loadtype));
+        //    }
+
+        //    // Load Combinations
+        //    List<LoadCombination> loadcombinations = new List<LoadCombination>();
+
+        //    for (int i = 0; i < topomodel.m_arrLoadCombs.Length; i++)
+        //    {
+        //        // LoadCombination dedi od Dictionary<LoadCase, double>, tj. load case a faktor
+
+        //        LoadCombination lcomb = new LoadCombination();
+
+        //        // Add specific load cases into the combination and set load factors
+        //        for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
+        //        {
+        //            lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID - 1], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
+        //        }
+
+        //        loadcombinations.Add(lcomb);
+        //    }
+
+        //    // Loads
+
+        //    for (int i = 0; i < loadcases.Count; i++) // Each load case
+        //    {
+        //        for (int j = 0; j < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; j++) // Each member load
+        //        {
+        //            // TODO - prepracovat system pre priradzovanie typovych objektov Loads, Supports a podobne,
+        //            // nemusel by existovat vzdy samostatny objekt pre kazdu realnu poziciu v konstrukcii ale stacil by jeden typovy,
+        //            // ktory by obsahoval zoznam objektov, ku ktorym je priradeny, je potrebne vyriesit ako by sa tento jeden objekt opakovane vykreslil na roznych miestach (objektoch) kam je priradeny
+
+        //            if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] != null) //if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null) // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
+        //            {
+        //                for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; k++)// for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection.Length; k++) // Each loaded member
+        //                {
+        //                    // TODO - zistit ake ma BFEMNet typy zatazeni vypracovat kluc ako to konvertovat
+        //                    // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
+
+        //                    // load
+        //                    var lu = new UniformLoad1D();
+        //                    var lpu = new PartialUniformLoad1D();
+
+        //                    if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21) // Uniform load per whole member
+        //                    {
+        //                        lu = new UniformLoad1D();
+        //                        BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
+        //                        // Create member load
+        //                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
+        //                            load = (BaseClasses.CMLoad_21)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+
+        //                        // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+        //                        // Skontrolovat zadanie v GCS a LCS
+
+        //                        CoordinationSystem eCS;
+        //                        if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
+        //                            eCS = CoordinationSystem.Global;
+        //                        else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+        //                            eCS = CoordinationSystem.Local;
+
+        //                        LoadDirection eLD;
+
+        //                        if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+        //                            eLD = LoadDirection.X;
+        //                        else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+        //                            eLD = LoadDirection.Y;
+        //                        else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+        //                            eLD = LoadDirection.Z;
+
+        //                        lu = new UniformLoad1D(load.Fq, eLD, eCS, loadcases[i]);
+        //                    }
+        //                    else if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24) // Uniform load on segment
+        //                    {
+        //                        lpu = new PartialUniformLoad1D();
+        //                        BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
+
+        //                        // Create member load
+        //                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].MLoadType == BaseClasses.EMLoadType.eMLT_F && topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
+        //                            load = (BaseClasses.CMLoad_24)topomodel.m_arrLoadCases[i].MemberLoadsList[j];
+
+        //                        // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
+        //                        // Skontrolovat zadanie v GCS a LCS
+
+        //                        CoordinationSystem eCS;
+        //                        if (load.ELoadCS == BaseClasses.ELoadCoordSystem.eGCS)
+        //                            eCS = CoordinationSystem.Global;
+        //                        else // if (load.ELoadCS == ELoadCoordSystem.eLCS || load.ELoadCS == ELoadCoordSystem.ePCS)
+        //                            eCS = CoordinationSystem.Local;
+
+        //                        LoadDirection eLD;
+
+        //                        if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+        //                            eLD = LoadDirection.X;
+        //                        else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+        //                            eLD = LoadDirection.Y;
+        //                        else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+        //                            eLD = LoadDirection.Z;
+
+        //                        // PartialTrapezoidalLoad
+        //                        // TODO - toto by sme potrebovali, pisu tam ze je to obsolete ale na internete je uz priklad
+        //                        // Urcite mame najnovsie zdroje?, resp. to mozno mali v starsej verzii a skryli to
+        //                        // https://bfenet.readthedocs.io/en/latest/loads/elementLoads/trapezoidalload.html
+        //                        // https://media.readthedocs.org/pdf/bfenet/latest/bfenet.pdf
+
+        //                        // Isolocation [-1,1]
+        //                        double dStartIsoLocation;
+        //                        double dEndIsoLocation;
+
+        //                        // Prevod z absolutnych suradnic [0,L] na relativne [-1,1]
+        //                        if (load.FaA < 0.5 * load.Member.FLength)
+        //                            dStartIsoLocation = -(0.5 * load.Member.FLength - load.FaA) / (0.5 * load.Member.FLength);
+        //                        else
+        //                            dStartIsoLocation = (load.FaA - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+
+        //                        if ((load.FaA + load.Fs) < 0.5 * load.Member.FLength)
+        //                            dEndIsoLocation = -(0.5 * load.Member.FLength - (load.FaA + load.Fs)) / (0.5 * load.Member.FLength);
+        //                        else
+        //                            dEndIsoLocation = ((load.FaA + load.Fs) - 0.5 * load.Member.FLength) / (0.5 * load.Member.FLength);
+
+        //                        lpu = new PartialUniformLoad1D(load.Fq, dStartIsoLocation, dEndIsoLocation, eLD, eCS, loadcases[i]);
+        //                    }
+        //                    else
+        //                    {
+        //                        // Not implemented load type
+        //                        // l = new UniformLoad1D();
+        //                    }
+
+        //                    // Assign defined type of load the the BriefFiniteElement
+        //                    if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21 ||
+        //                        topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)
+        //                    {
+        //                        if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_21)
+        //                            elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(lu); // elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lu); // // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
+        //                        else /*if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] is BaseClasses.CMLoad_24)*/
+        //                            elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(lpu); // elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection[k] - 1].Loads.Add(lpu);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
 
             
-            // TO - Ondrej  tu by sa mali podla prikladu zobrazovat nejake info hodnoty z vypoctu ale nezobrazuje sa nic
-            // Pripada mi to tak ze ta verzia podla ktorej su urobene priklady je nejaka lepsia :)))
-            // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
+        //    // TO - Ondrej  tu by sa mali podla prikladu zobrazovat nejake info hodnoty z vypoctu ale nezobrazuje sa nic
+        //    // Pripada mi to tak ze ta verzia podla ktorej su urobene priklady je nejaka lepsia :)))
+        //    // https://www.codeproject.com/articles/794983/finite-element-method-programming-in-csharp#ex1
 
-            bool bRunFromBFENet = false;
+        //    bool bRunFromBFENet = false;
 
-            if (bRunFromBFENet)
-            {
-                var wnd = WpfTraceListener.CreateModelTrace(model);
-                new ModelWarningChecker().CheckModel(model);
-                wnd.ShowDialog(); // Neotvarat dialog ak sa pusta z PFD
-            }
+        //    if (bRunFromBFENet)
+        //    {
+        //        var wnd = WpfTraceListener.CreateModelTrace(model);
+        //        new ModelWarningChecker().CheckModel(model);
+        //        wnd.ShowDialog(); // Neotvarat dialog ak sa pusta z PFD
+        //    }
 
-            model.Solve();
-            // model.Solve_MPC(); //no different with Model.Solve() - toto su asi identicke prikazy
+        //    model.Solve();
+        //    // model.Solve_MPC(); //no different with Model.Solve() - toto su asi identicke prikazy
 
-            // Ako ziskat reakcie a vnutrne sily pre kombinacie
-            // identifikator uzla (nazov "N3") + pozadovana kombinacia
-            // indetifikator elementu (nazov "e4") + pozicia x na prute (0 je asi stred pruta ???) a kombinacia
+        //    // Ako ziskat reakcie a vnutrne sily pre kombinacie
+        //    // identifikator uzla (nazov "N3") + pozadovana kombinacia
+        //    // indetifikator elementu (nazov "e4") + pozicia x na prute (0 je asi stred pruta ???) a kombinacia
 
-            /*
-            var n3Force = model.Nodes["N3"].GetSupportReaction(combination1);
-            Console.WriteLine(n3Force);
-            //or for finding internal force of e4 element with combination D + 0.8 L at it’s centre:
-            var e4Force = (model.Elements["e4"] as BarElement).GetInternalForceAt(0, combination1);
-            Console.WriteLine(e4Force);
-            */
+        //    /*
+        //    var n3Force = model.Nodes["N3"].GetSupportReaction(combination1);
+        //    Console.WriteLine(n3Force);
+        //    //or for finding internal force of e4 element with combination D + 0.8 L at it’s centre:
+        //    var e4Force = (model.Elements["e4"] as BarElement).GetInternalForceAt(0, combination1);
+        //    Console.WriteLine(e4Force);
+        //    */
 
-            if (bRunFromBFENet) // To Ondrej - Zobrazenie dialogov s 3D funguje len ak sa to spusta z BFENet, ked to spustam z projektu PFD, tak to pada
-            {
-                model.ShowInternalForce();
-                model.Show();
-            }
+        //    if (bRunFromBFENet) // To Ondrej - Zobrazenie dialogov s 3D funguje len ak sa to spusta z BFENet, ked to spustam z projektu PFD, tak to pada
+        //    {
+        //        model.ShowInternalForce();
+        //        model.Show();
+        //    }
 
-            Program.DisplayResultsinConsole(model, loadcombinations, false);
+        //    Program.DisplayResultsinConsole(model, loadcombinations, false);
 
-            // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
-            GetResultsList(model, loadcombinations, out resultsoutput, out resultsoutputDeflections);
-        }
-
-        public static void GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations,
-            out List<List<List<basicInternalForces>>> resultsoutput,
-            out List<List<List<basicDeflections>>> resultsoutput_deflections)
-        {
-            resultsoutput = new List<List<List<basicInternalForces>>>();
-
-            resultsoutput_deflections = new List<List< List <basicDeflections>>> ();
-
-            // Load Cases - results
-            for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
-            {
-                // TODO - mozno by bolo lepsie nacitavat z BFENet len vysledky loadcases, ktorych je menej nez kombinacii a vysledky kombinovat az pri zobrazeni
-
-                // Internal forces
-                List<List<basicInternalForces>> resultsoutput_loadcases = new List<List<basicInternalForces>>();
-                // Deflections
-                List<List<basicDeflections>> resultsoutput_loadcases_def = new List<List<basicDeflections>>();
+        //    // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
+        //    //BFEMNetModelHelper.GetResultsList(model, loadcombinations, out resultsoutput, out resultsoutputDeflections);
+        //}
 
 
-                //throw new NotImplementedException();
-
-
-
-            }
-
-            // Load Combinations - results
-            for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
-            {
-                // Internal forces
-                List<List<basicInternalForces>> resultsoutput_combination = new List<List<basicInternalForces>>();
-                // Deflections
-                List<List<basicDeflections>> resultsoutput_combination_def = new List<List<basicDeflections>>();
-
-                const int iNumberOfResultsSections = 11;
-                double[] xLocations_rel = new double[iNumberOfResultsSections];
-
-                // Fill relative coordinates (x_rel)
-                for (int s = 0; s < iNumberOfResultsSections; s++)
-                    xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
-
-                for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
-                {
-                    Console.WriteLine("Element No.: " + (j + 1).ToString());
-                    Console.WriteLine("Internal forces in particular x positions");
-
-                    double elemLength = bfenet_model.Elements[j].GetElementLength();
-
-                    List <basicInternalForces> resultsoutput_member = new List<basicInternalForces>();
-
-                    for (int k = 0; k < xLocations_rel.Length; k++)
-                    {
-                        string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
-                        var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
-                        Console.WriteLine(sMessage + "\t " + eForce);
-
-                        basicInternalForces temp_x_results = new basicInternalForces();
-                        temp_x_results.fN    = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fx;
-                        temp_x_results.fV_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fy;
-                        temp_x_results.fV_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fz;
-                        temp_x_results.fT    = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mx;
-                        temp_x_results.fM_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).My;
-                        temp_x_results.fM_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mz;
-
-                        resultsoutput_member.Add(temp_x_results);
-                    }
-
-                    resultsoutput_combination.Add(resultsoutput_member);
-
-                    // Deformations
-                    // TODO - dopracovat do BFENEt aby to vracalo aspon nejake rozumne hodnoty :-)
-                    // Pripadne updatovat kniznicu a pozriet sa ci taketo funkcie nepridali
-                    List<basicDeflections> resultsoutput_member_deflections = new List<basicDeflections>();
-
-                    for (int k = 0; k < xLocations_rel.Length; k++)
-                    {
-                        string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
-                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]);
-                        Console.WriteLine(sMessage + "\t " + eDisplacement);
-
-                        basicDeflections temp_x_results = new basicDeflections();
-                        temp_x_results.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
-                        temp_x_results.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DZ;
-
-                        resultsoutput_member_deflections.Add(temp_x_results);
-                    }
-
-                    resultsoutput_combination_def.Add(resultsoutput_member_deflections);
-                }
-
-                resultsoutput.Add(resultsoutput_combination);
-
-                resultsoutput_deflections.Add(resultsoutput_combination_def);
-            }
-        }
     }
 }
