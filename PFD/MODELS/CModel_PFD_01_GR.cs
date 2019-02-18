@@ -334,6 +334,7 @@ namespace PFD
             for (int i = 0; i < iFrameNo; i++)
             {
                 m_arrNodes[i * iFrameNodesNo + 0] = new CNode(i * iFrameNodesNo + 1, 000000, i * fL1_frame, 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 0].Name = "Main Column Base Node - left";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 0]);
 
                 m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, i * fL1_frame, fH1_frame, 0);
@@ -346,6 +347,7 @@ namespace PFD
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 3]);
 
                 m_arrNodes[i * iFrameNodesNo + 4] = new CNode(i * iFrameNodesNo + 5, fW_frame, i * fL1_frame, 00000, 0);
+                m_arrNodes[i * iFrameNodesNo + 4].Name = "Main Column Base Node - right";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 4]);
             }
 
@@ -768,6 +770,15 @@ namespace PFD
                     m_arrConnectionJoints.Add(new CConnectionJoint_T001("LH", current_member.NodeEnd, m_arrMembers[iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + (iFrameNo - 1) * iPurlinNoInOneFrame + iFrontColumnNoInOneFrame], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                 }
             }
+
+            // Validation - check that all created joints have assigned Main Member
+            // Check all joints before definition of doors and windows members and joints
+            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+            {
+                if (m_arrConnectionJoints[i].m_MainMember == null)
+                    throw new ArgumentNullException("Main member is not assigned to the joint No.:"+ m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+            }
+
             #endregion
 
             #region Blocks
@@ -805,6 +816,29 @@ namespace PFD
                 {
                     // Exception
                 }
+            }
+
+            // Validation - check that all created joints have assigned Main Member
+            // Check all joints after definition of doors and windows members and joints
+            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+            {
+                if (m_arrConnectionJoints[i].m_MainMember == null)
+                {
+                    //throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+
+                    // TODO BUG 46 - TO Ondrej // Odstranenie spojov ktore patria k deaktivovanym prutom (pruty boli deaktivovane, pretoze sa nachadazju na miest vlozeneho bloku)
+                    // Odstranenie by malo nastavat uz vo funckii ktora generuje bloky okien a dveri
+
+                    // Toto je docasne riesenie - vymazeme spoj zo zoznamu
+                    m_arrConnectionJoints.RemoveAt(i); // Remove joint from the list
+                }
+            }
+
+            // Opakovana kontrola po odstraneni spojov s MainMember = null
+            for (int i = 0; i < m_arrConnectionJoints.Count; i++)
+            {
+                if (m_arrConnectionJoints[i].m_MainMember == null)
+                    throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
             }
 
             // End of blocks

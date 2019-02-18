@@ -22,6 +22,8 @@ namespace BaseClasses
 
             BIsDisplayed = bIsDisplayed_temp;
 
+            Name = "Column Base Joint";
+
             // Plate properties
             // Todo - set correct dimensions of plate acc. to column cross-section size
             m_ft = 0.003f;

@@ -202,6 +202,9 @@ namespace BaseClasses
 
             foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
             {
+                if (cj.m_MainMember == null)
+                    throw new ArgumentNullException("Main member is not assigned to the joint No.:"+ cj.ID.ToString());
+
                 if (cj.m_MainMember != null && cj.m_MainMember.ID == m.ID)
                 {
                     if (cj.m_MainMember.NodeStart == cj.m_Node) jStart = cj;
@@ -209,14 +212,9 @@ namespace BaseClasses
                 }
             }
 
-            // TODO 201- TO Ondrej - tu to pada, predpokladam ze preto ze do modelu ramu je potrebne pridat aj spoje medzi frame members, moze tam byt problem s tym ze jeden spoj je zaroven na konci stlpa a ten isty na na zaciatku raftera
-            // takze neviem co vsetko tu bude potrebne pomenit
-
-            // Otazka je ci by to vobec malo posudzovat pruty a spoje z modelu samostatneho ramu, spravnejsie by bolo asi nastavit vysledky prutom Main Columns a Main Rafters v 3D modeli
-            // a members a joints posudzovat az potom v ramci globalneho modelu
-
-            // Mozne aj to je spoje knee plates a apex (CConnectionJoint_A001, CConnectionJoint_B001) nie su priradene vzdy na konce oboch prutov ktore spajaju
-
+            // To Ondrej
+            // Tu vyskoci vynimka lebo sem teraz asi lezu aj pruty z modelu samostatnych ramov
+            // cj.m_MainMember.NodeStart == cj.m_Node objekty maju rovnake ID = 1, ale tomu v hlavnom modeli som naplnil aj Name a cj.m_MainMember.NodeStart ho vyplnene nema, takze je to iny node
             if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
         }
 

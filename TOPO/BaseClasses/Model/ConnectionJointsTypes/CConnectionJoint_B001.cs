@@ -44,6 +44,8 @@ namespace BaseClasses
 
             BIsDisplayed = bIsDisplayed_temp;
 
+            Name = "Column to Rafter Knee Joint";
+
             // Find left top edge intersection between column and rafter
             // Todo prepracovat a pokial mozno zjednodusit, potrebujeme len ziskat polohu plechu v globalnom smere Z
 
