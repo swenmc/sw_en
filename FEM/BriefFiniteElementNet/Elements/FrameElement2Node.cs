@@ -522,6 +522,27 @@ namespace BriefFiniteElementNet
             return GetInternalForceAt(x, cmb);
         }
 
+        // MC - docasne pridane
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb)
+        {
+            var gStartDisp = StartNode.GetNodalDisplacement(cmb);
+            var gEndDisp = EndNode.GetNodalDisplacement(cmb);
+
+            var lStartDisp = new Displacement(
+                TransformGlobalToLocal(gStartDisp.Displacements),
+                TransformGlobalToLocal(gStartDisp.Rotations));
+
+            var lEndDisp = new Displacement(
+                TransformGlobalToLocal(gEndDisp.Displacements),
+                TransformGlobalToLocal(gEndDisp.Rotations));
+
+            // TODO - implementovat vypocet lokalnej deformacie
+
+            var deformationAtX = Math.Abs(lStartDisp.DZ) > Math.Abs(lEndDisp.DZ) ? lStartDisp : lEndDisp; // Docasne vrati hodnotu s vacsim maximom pre posun v smere z
+
+            return deformationAtX;
+        }
+
         #region transformations
 
 

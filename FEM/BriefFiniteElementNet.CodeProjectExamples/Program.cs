@@ -741,6 +741,8 @@ namespace BriefFiniteElementNet.CodeProjectExamples
         // Zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
         public List<List<List<basicInternalForces>>> results = new List<List<List<basicInternalForces>>>();
 
+        public List<List<List<basicDeflections>>> resultsDeflections = new List<List<List<basicDeflections>>>();
+
         // Spristupnenie skusobneho vypoctu pre projekt PFD
         public RunExample3()
         {
@@ -819,11 +821,13 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             model_SW_EN = new Examples.CExample_2D_14_PF(mat, crsc1, crsc2, 20f, 6f, 8f, -10000f, loadListRafter1, loadListRafter2, 7000f);
 
-            Example3(model_SW_EN, out results);
+            Example3(model_SW_EN, out results, out resultsDeflections);
         }
 
         // Pokus o napojenie SW_EN
-        public /*static*/ void Example3(BaseClasses.CModel topomodel, out List<List<List<basicInternalForces>>> resultsoutput)
+        public /*static*/ void Example3(BaseClasses.CModel topomodel,
+            out List<List<List<basicInternalForces>>> resultsoutput,
+            out List<List<List<basicDeflections>>> resultsoutputDeflections)
         {
             // Dokumentacia a priklady
             // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
@@ -1242,19 +1246,23 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             Program.DisplayResultsinConsole(model, loadcombinations, false);
 
             // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
-            GetResultsList(model, loadcombinations, out resultsoutput);
+            GetResultsList(model, loadcombinations, out resultsoutput, out resultsoutputDeflections);
         }
 
-        public static void GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations, out List<List<List<basicInternalForces>>> resultsoutput)
+        public static void GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations,
+            out List<List<List<basicInternalForces>>> resultsoutput,
+            out List<List<List<basicDeflections>>> resultsoutput_deflections)
         {
-            List<Force> outputresults = new List<Force>();
-
             resultsoutput = new List<List<List<basicInternalForces>>>();
+
+            resultsoutput_deflections = new List<List< List <basicDeflections>>> ();
 
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
             {
                 // Internal forces
                 List<List<basicInternalForces>> resultsoutput_combination = new List<List<basicInternalForces>>();
+                // Deflections
+                List<List<basicDeflections>> resultsoutput_combination_def = new List<List<basicDeflections>>();
 
                 const int iNumberOfResultsSections = 11;
                 double[] xLocations_rel = new double[iNumberOfResultsSections];
@@ -1270,7 +1278,7 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
                     double elemLength = bfenet_model.Elements[j].GetElementLength();
 
-                    List<basicInternalForces> resultsoutput_member = new List<basicInternalForces>();
+                    List <basicInternalForces> resultsoutput_member = new List<basicInternalForces>();
 
                     for (int k = 0; k < xLocations_rel.Length; k++)
                     {
@@ -1290,9 +1298,31 @@ namespace BriefFiniteElementNet.CodeProjectExamples
                     }
 
                     resultsoutput_combination.Add(resultsoutput_member);
+
+                    // Deformations
+                    // TODO - dopracovat do BFENEt aby to vracalo aspon nejake rozumne hodnoty :-)
+                    // Pripadne updatovat kniznicu a pozriet sa ci taketo funkcie nepridali
+                    List<basicDeflections> resultsoutput_member_deflections = new List<basicDeflections>();
+
+                    for (int k = 0; k < xLocations_rel.Length; k++)
+                    {
+                        string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
+                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                        Console.WriteLine(sMessage + "\t " + eDisplacement);
+
+                        basicDeflections temp_x_results = new basicDeflections();
+                        temp_x_results.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
+                        temp_x_results.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DZ;
+
+                        resultsoutput_member_deflections.Add(temp_x_results);
+                    }
+
+                    resultsoutput_combination_def.Add(resultsoutput_member_deflections);
                 }
 
                 resultsoutput.Add(resultsoutput_combination);
+
+                resultsoutput_deflections.Add(resultsoutput_combination_def);
             }
         }
     }

@@ -159,6 +159,10 @@ namespace BriefFiniteElementNet
             throw new NotImplementedException();
         }
 
+        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x)
+        {
+            throw new NotImplementedException();
+        }
 
         public Force[] GetGlobalEquivalentNodalLoads(Element element)
         {

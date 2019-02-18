@@ -394,6 +394,10 @@ namespace BriefFiniteElementNet
                 return -Ma + Ra * x - w * c * (x - l + d);
         }
 
+        public override Displacement GetLocalDeformationAt_MC(Element1D elm, double x)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         #region Constructors

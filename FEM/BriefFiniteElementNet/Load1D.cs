@@ -49,9 +49,9 @@ namespace BriefFiniteElementNet
 
 
         public abstract Force GetInternalForceAt(Element1D elm, double x);
+        public abstract Displacement GetLocalDeformationAt_MC(Element1D elm, double x);
 
-
-         #region Serialization stuff
+        #region Serialization stuff
 
         /// <summary>
         /// Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.

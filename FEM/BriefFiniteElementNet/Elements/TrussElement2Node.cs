@@ -149,6 +149,11 @@ namespace BriefFiniteElementNet.Elements
             return GetInternalForceAt(x, LoadCombination.DefaultLoadCombination);
         }
 
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the stiffness matrix of member in global coordination system.
         /// </summary>

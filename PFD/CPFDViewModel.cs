@@ -799,14 +799,14 @@ namespace PFD
                 RunExample3 bfenetModel = new RunExample3();
 
                 List<List<List<basicInternalForces>>> internalforces;
+                List<List<List<basicDeflections>>> deflections;
                 // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
-                bfenetModel.Example3(frameModel_i, out internalforces); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
+                bfenetModel.Example3(frameModel_i, out internalforces, out deflections); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
 
                 // TODO  201 - To Ondrej  - potrebujeme do ramu dostat aj prvky spojov, resp je asi spravnejsie upravit sled vypoctu tak
                 // ze vnutorne sily vypocitane na jednotlivych ramoch sa nastavia prutom v hlavnom modeli (vid nasledujuci bod)
                 // a potom prebehne posudzovanie na prutoch hlavneho modelu, teraz to pada na tom ze sa nenasli spoje na konci a na zaciatku,
                 // predpokladam ze preto lebo to posudzuje members z modelu samostatneho ramu kde nie su ziadne spoje
-
 
                 // 3. Assign results to the original members from 3D model
                 // TO Ondrej - TODO 201 - vytvorit zoznamy CMemberInternalForcesInLoadCases

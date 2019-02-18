@@ -981,13 +981,11 @@ namespace BriefFiniteElementNet.Elements
             throw new NotImplementedException();
         }
 
-        
         public Displacement GetExactInternalDisplacementAt(double xi, LoadCombination combination)
         {
             throw new NotImplementedException();
         }
 
-        
         public Displacement GetInternalDisplacementAt(double xi, LoadCase loadCase)
         {
             var buf = Displacement.Zero;
@@ -1013,7 +1011,17 @@ namespace BriefFiniteElementNet.Elements
             throw new NotImplementedException();
         }
 
-        
+        // MC
+        public Displacement GetInternalDisplacementAt_MC(double xi, LoadCombination combination)
+        {
+            var buf = Displacement.Zero;
+
+            foreach (var lc in combination.Keys)
+                buf += this.GetInternalDisplacementAt(xi, lc);
+
+            return buf;
+        }
+
         public Displacement GetExactInternalDisplacementAt(double xi, LoadCase loadCase)
         {
             throw new NotImplementedException();

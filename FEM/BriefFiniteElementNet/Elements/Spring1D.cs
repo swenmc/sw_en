@@ -57,16 +57,17 @@ namespace BriefFiniteElementNet.Elements
             set { nodes[1] = value; }
         }
 
-
-        
-
-
         public override Force GetInternalForceAt(double x, LoadCombination cmb)
         {
             throw new NotImplementedException();
         }
 
         public override Force GetInternalForceAt(double x)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Displacement GetLocalDeformationAt_MC(double x, LoadCombination cmb)
         {
             throw new NotImplementedException();
         }
