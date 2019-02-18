@@ -215,6 +215,8 @@ namespace BaseClasses
             // Otazka je ci by to vobec malo posudzovat pruty a spoje z modelu samostatneho ramu, spravnejsie by bolo asi nastavit vysledky prutom Main Columns a Main Rafters v 3D modeli
             // a members a joints posudzovat az potom v ramci globalneho modelu
 
+            // Mozne aj to je spoje knee plates a apex (CConnectionJoint_A001, CConnectionJoint_B001) nie su priradene vzdy na konce oboch prutov ktore spajaju
+
             if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
         }
 
