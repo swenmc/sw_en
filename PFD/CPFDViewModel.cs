@@ -765,6 +765,8 @@ namespace PFD
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
             List<CFrame> frames = model.GetFramesFromModel();
+            List<List<List<List<basicInternalForces>>>> internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
+            List<List<List<List<basicDeflections>>>> deflectionsframes = new List<List<List<List<basicDeflections>>>>();
 
             if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) //generate loads if they are not generated
             {
@@ -802,6 +804,9 @@ namespace PFD
                 List<List<List<basicDeflections>>> deflections;
                 // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
                 bfenetModel.Example3(frameModel_i, out internalforces, out deflections); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
+
+                internalforcesframes.Add(internalforces); // Add Frame results
+                deflectionsframes.Add(deflections);
 
                 // TODO  201 - To Ondrej  - potrebujeme do ramu dostat aj prvky spojov, resp je asi spravnejsie upravit sled vypoctu tak
                 // ze vnutorne sily vypocitane na jednotlivych ramoch sa nastavia prutom v hlavnom modeli (vid nasledujuci bod)
@@ -867,11 +872,15 @@ namespace PFD
 
             // Calculation of simple beam model
             float fMaximumDesignRatioWholeStructure = 0;
+            float fMaximumDesignRatioMainColumn = 0;
+            float fMaximumDesignRatioMainRafter = 0;
             float fMaximumDesignRatioGirts = 0;
             float fMaximumDesignRatioPurlins = 0;
             float fMaximumDesignRatioColumns = 0;
 
             CMember MaximumDesignRatioWholeStructureMember = new CMember();
+            CMember MaximumDesignRatioMainColumn = new CMember();
+            CMember MaximumDesignRatioMainRafter = new CMember();
             CMember MaximumDesignRatioGirt = new CMember();
             CMember MaximumDesignRatioPurlin = new CMember();
             CMember MaximumDesignRatioColumn = new CMember();
@@ -891,37 +900,63 @@ namespace PFD
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
-                    for (int i = 0; i < iNumberOfDesignSections; i++)
-                        fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
-
-                    m.MBucklingLengthFactors = new List<designBucklingLengthFactors>();
-                    m.MMomentValuesforCb = new List<designMomentValuesForCb>();
-                    m.MBIF_x = new List<basicInternalForces[]>();
-                    m.MBDef_x = new List<basicDeflections[]>();
-
-                    foreach (CLoadCase lc in Model.m_arrLoadCases)
+                    // Frame member
+                    if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
                     {
-                        // Calculate Internal forces just for Load Cases that are included in ULS
-                        if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
-                        {
-                            foreach (CMLoad cmload in lc.MemberLoadsList)
-                            {
-                                if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
-                                {
-                                    // ULS - internal forces
-                                    calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
+                        // Zatial pocitame v BFENet vysledky kombinacii a nie load cases
+                    }
+                    else // Single member
+                    {
+                        for (int i = 0; i < iNumberOfDesignSections; i++)
+                            fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
 
-                                    // SLS - deflections
-                                    calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
+                        m.MBucklingLengthFactors = new List<designBucklingLengthFactors>();
+                        m.MMomentValuesforCb = new List<designMomentValuesForCb>();
+                        m.MBIF_x = new List<basicInternalForces[]>();
+                        m.MBDef_x = new List<basicDeflections[]>();
+
+                        foreach (CLoadCase lc in Model.m_arrLoadCases)
+                        {
+                            // Frame member
+                            if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
+                            {
+                                // TODO - ak by sme v BEFENet pocitali len vysledky load cases - tak sa tu naplnia zoznamy pre jednotlive member a load cases
+                                throw new NotImplementedException();
+                            }
+                            else // Single member
+                            {
+                                // Calculate Internal forces just for Load Cases that are included in ULS
+                                if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
+                                {
+                                    foreach (CMLoad cmload in lc.MemberLoadsList)
+                                    {
+                                        if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                        {
+                                            // ULS - internal forces
+                                            calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
+                                        }
+                                    }
                                 }
+
+                                if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
+                                {
+                                    foreach (CMLoad cmload in lc.MemberLoadsList)
+                                    {
+                                        if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                        {
+                                            // SLS - deflections
+                                            calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
+                                        }
+                                    }
+                                }
+
+                                if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                if (sBDeflections_x != null) MemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+
+                                //m.MMomentValuesforCb.Add(sMomentValuesforCb);
+                                //m.MBIF_x.Add(sBIF_x);
                             }
                         }
-
-                        if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
-                        if (sBDeflections_x != null) MemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
-
-                        //m.MMomentValuesforCb.Add(sMomentValuesforCb);
-                        //m.MBIF_x.Add(sBIF_x);
                     }
                 }
                 progressValue += step;
@@ -951,7 +986,40 @@ namespace PFD
                             designBucklingLengthFactors sBucklingLengthFactors_design;
                             designMomentValuesForCb sMomentValuesforCb_design;
                             basicInternalForces[] sBIF_x_design;
-                            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
+
+                            // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
+                            // Todo je dost skareda vec, asi by sa Example3 v BFENet malo prerobit len na vypocet load cases tu s tym pracovat uz podobne pre pruty ramu a jednotlive samostatne pruty ako su purlins a girts
+                            // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
+
+                            // Frame member - vysledky pocitane pre load combinations
+                            if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
+                            {
+                                // Nastavit vysledky pre prut ramu
+
+                                sBucklingLengthFactors_design.fBeta_x_FB_fl_ex = 1.0f;
+                                sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 1.0f;
+                                sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
+                                sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
+
+                                // Temporary
+                                int iFrameIndex = 0; // TODO Ondrej - podla ID pruta treba identifikovat do ktoreho ramu patri
+                                int iLoadCombinationIndex = lcomb.ID - 1; // TODO nastavit index podla ID combinacie
+                                int iMemberIndex = 0; // TODO Ondrej - podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+
+                                // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
+                                // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
+
+                                sMomentValuesforCb_design.fM_14 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][2].fM_yy;
+                                sMomentValuesforCb_design.fM_24 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][5].fM_yy;
+                                sMomentValuesforCb_design.fM_34 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][7].fM_yy;
+                                sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
+
+                                sBIF_x_design = (internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
+                            }
+                            else // Single Member - vysledky pocitane pre load cases
+                            {
+                                CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
+                            }
 
                             // Member design internal forces
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
@@ -1013,6 +1081,24 @@ namespace PFD
                                 // Output - set maximum design ratio by component Type
                                 switch (m.EMemberType)
                                 {
+                                    case EMemberType_FormSteel.eMC: // Main Column
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainColumn)
+                                            {
+                                                fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioMainColumn = m;
+                                            }
+                                            break;
+                                        }
+                                    case EMemberType_FormSteel.eMR: // Main Rafter
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainRafter)
+                                            {
+                                                fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioMainRafter = m;
+                                            }
+                                            break;
+                                        }
                                     case EMemberType_FormSteel.eG: // Girt
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
@@ -1058,7 +1144,17 @@ namespace PFD
                                 designDeflections[] sDDeflection_x;
                                 CMemberDesign memberDesignModel = new CMemberDesign();
                                 memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
-                                MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
+
+                                // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
+                                // Frame member - vysledky pocitane pre load combinations
+                                if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
+                                {
+
+                                }
+                                else // Single Member - vysledky pocitane pre load cases
+                                {
+                                    MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
+                                }
 
                                 // Set maximum design ratio of whole structure
                                 if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
