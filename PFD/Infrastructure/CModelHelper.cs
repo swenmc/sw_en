@@ -29,18 +29,15 @@ namespace PFD
                 frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
 
                 // Add members to the frame
-                foreach (CMemberGroup gr in model.listOfModelMemberGroups)
+                foreach (CMember m in model.m_arrMembers)
                 {
-                    foreach (CMember m in gr.ListOfMembers)
-                    {
-                        //it is not Main Column and it is not Main rafter
-                        if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR) continue;
+                    // It is not Main Column and it is not Main rafter
+                    if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR) continue;
 
-                        if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
-                        {
-                            frameMembers.Add(m);
-                            //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
-                        }
+                    if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
+                    {
+                        frameMembers.Add(m);
+                        //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
                     }
                 }
 
