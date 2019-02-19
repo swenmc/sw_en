@@ -1,5 +1,6 @@
 ﻿using BaseClasses;
 using MATH;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,15 +17,16 @@ namespace PFD
 
             for (int i = 0; i < model.iFrameNo; i++)
             {
-                CFrame frame = new CFrame();
+                List<CMember> frameMembers = new List<CMember>();
+                List<CNode> frameNodes = new List<CNode>();
 
                 // Add nodes to the frame
                 int iFrameNodesNo = model.iFrameNodesNo; // Number of nodes in frame
-                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 0]);
-                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 1]);
-                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 2]);
-                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 3]);
-                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
+                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 0]);
+                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 1]);
+                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 2]);
+                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 3]);
+                frameNodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
 
                 // Add members to the frame
                 foreach (CMemberGroup gr in model.listOfModelMemberGroups)
@@ -36,11 +38,16 @@ namespace PFD
 
                         if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
                         {
-                            frame.Members.Add(m);
+                            frameMembers.Add(m);
                             //System.Diagnostics.Trace.WriteLine($"ID: {m.ID}, Name: {m.Name}, {m.PointStart.Y}");
                         }
                     }
                 }
+
+                List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForMembers(frameMembers, model.m_arrLoadCases);
+                List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
+                List<CNSupport> frameSupports = model.GetFrameCNSupports();
+                CFrame frame = new CFrame(frameMembers.ToArray(), frameNodes.ToArray(), frameLoadCases.ToArray(), frameLoadCombinations.ToArray(), frameSupports.ToArray());
 
                 frames.Add(frame);
             }
@@ -48,7 +55,7 @@ namespace PFD
         }
 
 
-        public static List<CNSupport> GetFrameCNSupports(this CModel_PFD_01_GR model, CFrame frame)
+        public static List<CNSupport> GetFrameCNSupports(this CModel_PFD_01_GR model)
         {
             List<CNSupport> frameSupports = new List<CNSupport>();
             /*
@@ -177,7 +184,7 @@ namespace PFD
         {
             for (int i = 0; i < frames.Count; i++)
             {
-                if (frames[i].Members.Exists(mem => mem.ID == m.ID)) return i;
+                if (Array.Exists(frames[i].m_arrMembers, mem => mem.ID == m.ID)) return i;
             }
 
             return -1; //not found
@@ -186,9 +193,9 @@ namespace PFD
         //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
         public static int GetMemberIndexInFrame(CMember m, CFrame frame)
         {
-            for (int i = 0; i < frame.Members.Count; i++)
+            for (int i = 0; i < frame.m_arrMembers.Length; i++)
             {
-                if (frame.Members[i].ID == m.ID) return i;                
+                if (frame.m_arrMembers[i].ID == m.ID) return i;                
             }
 
             return -1; //not found

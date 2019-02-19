@@ -67,6 +67,12 @@ namespace BaseClasses
             return this.ID - ((CNode)obj).ID;
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is CNode) return this.ID.Equals(((CNode)obj).ID);
+            else return false;
+        }
+
         #endregion
     } // End of Class CNode
 

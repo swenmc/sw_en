@@ -29,7 +29,7 @@ namespace PFD
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
         
-        public FrameInternalForces_2D(CExample example_model, List<List<List<basicInternalForces>>> list_internalforces)
+        public FrameInternalForces_2D(CModel example_model, List<List<List<basicInternalForces>>> list_internalforces)
         {
             model = example_model;
             internalforces = list_internalforces;

@@ -683,23 +683,13 @@ namespace PFD
 
             foreach (CFrame frame in frameModels)
             {
-                List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForMembers(frame.Members, model.m_arrLoadCases);
-                List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
-                // Create SW_EN model of frame (Extracted data from 3D model)
-                CModel frameModel_i = new Examples.CExample_2D_15_PF(
-                            frame.Nodes,
-                            frame.Members,
-                            model.GetFrameCNSupports(frame), 
-                            frameLoadCases.ToArray(), 
-                            frameLoadCombinations.ToArray());
-
                 List<List<List<basicInternalForces>>> internalforces;
                 List<List<List<basicDeflections>>> deflections;
 
                 // Convert SW_EN model to BFENet model
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
                 // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(frameModel_i, bCalculateLoadCasesOnly, out internalforces, out deflections);
+                Model bfemNetModel = converter.Convert(frame, bCalculateLoadCasesOnly, out internalforces, out deflections);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
 
                 internalforcesframes.Add(internalforces); // Add particular frame results

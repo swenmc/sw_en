@@ -277,12 +277,13 @@ namespace PFD
 
             int iFrameIndex = 0; // TODO Ondrej - urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
 
-            CExample model = new CExample_2D_15_PF(frameModels[iFrameIndex].Nodes,
-                frameModels[iFrameIndex].Members,
-                null, // ???
-                null, // ???
-                null  // ???
-                );
+            CModel model = frameModels[iFrameIndex];
+            //CExample model = new CExample_2D_15_PF(frameModels[iFrameIndex].Nodes,
+            //    frameModels[iFrameIndex].Members,
+            //    null, // ???
+            //    null, // ???
+            //    null  // ???
+            //    );
 
             // Nacitanie zoznamov vysledkov pre jednotlive load combinations, members, x-locations
             List<List<List<basicInternalForces>>> internalforces = internalforcesframes[iFrameIndex]; // Vysledky na konkretnom rame
