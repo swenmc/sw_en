@@ -42,7 +42,8 @@ namespace PFD
             DesignResults_SLS = designResults_SLS;
 
             // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a 
-            //tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
+            // tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
+            // teraz je tam nejaka chyba ze pri prepinani comboboxov sa vzdy pridavaju nove stlpce s vysledkami
 
             // Member Design
             CPFDMemberDesign mdinput = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
@@ -76,7 +77,7 @@ namespace PFD
                 float fMaximumDesignRatio = 0;
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
-                    //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
+                    // Select member with identical ID from the list of results
                     CMemberLoadCombinationRatio_ULS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
                     CCalculMember c = new CCalculMember(false, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
@@ -102,7 +103,6 @@ namespace PFD
             {
                 CalculateForMemberLoadCase(GroupOfMembersWithSelectedType);
             }
-
         }
 
         private void CalculateForMemberLoadCase(CMemberGroup GroupOfMembersWithSelectedType)
@@ -460,7 +460,5 @@ namespace PFD
         //    //Results_GridView.Columns[2].Width = Results_GridView.Columns[5].Width = Results_GridView.Columns[8].Width = 90;            
 
         //}
-
-       
     }
 }
