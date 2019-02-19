@@ -11,31 +11,12 @@ namespace PFD
 {
     public static class BFEMNetModelHelper
     {
-        
         public static void GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations,
             out List<List<List<basicInternalForces>>> resultsoutput,
             out List<List<List<basicDeflections>>> resultsoutput_deflections)
         {
             resultsoutput = new List<List<List<basicInternalForces>>>();
-
             resultsoutput_deflections = new List<List<List<basicDeflections>>>();
-            
-            // Load Cases - results
-            for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
-            {
-                // TODO - mozno by bolo lepsie nacitavat z BFENet len vysledky loadcases, ktorych je menej nez kombinacii a vysledky kombinovat az pri zobrazeni
-
-                // Internal forces
-                List<List<basicInternalForces>> resultsoutput_loadcases = new List<List<basicInternalForces>>();
-                // Deflections
-                List<List<basicDeflections>> resultsoutput_loadcases_def = new List<List<basicDeflections>>();
-
-
-                //throw new NotImplementedException();
-
-
-
-            }
 
             // Load Combinations - results
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
@@ -106,7 +87,6 @@ namespace PFD
                 resultsoutput_deflections.Add(resultsoutput_combination_def);
             }
         }
-
 
         public static void DisplayResultsinConsole(Model bfenet_model, List<LoadCombination> loadcombinations, bool bWriteResultsInTXTFile)
         {
@@ -229,9 +209,6 @@ namespace PFD
                     Trace.WriteLine("Executing finally block.");
                 }
             }
-
-            
-            
         }
 
         public static double GetElementLength(this Element elm)
@@ -241,7 +218,6 @@ namespace PFD
 
             return 0.0;
         }
-
 
         public static string GetLoadCombinationString(LoadCombination lc)
         {
