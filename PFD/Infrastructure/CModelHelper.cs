@@ -107,13 +107,28 @@ namespace PFD
 
         public static List<CLoadCase> GetLoadCasesForMembers(List<CMember> members, CLoadCase[] allLoadCases)
         {
-            List<CLoadCase> membersLoadCases = new List<CLoadCase>();
-            foreach (CLoadCase lc in allLoadCases.ToList())
+            List<CLoadCase> listOfOriginalLoadCases = allLoadCases.ToList();
+            List<CLoadCase> listOfNewLoadCases = new List<CLoadCase>();
+            foreach (CLoadCase lc in listOfOriginalLoadCases)
             {
-                List<CMLoad> loads = new List<CMLoad>();
-                foreach (CMLoad load in lc.MemberLoadsList)
+                // Create Copy of Load Case
+                CLoadCase lc_new = new CLoadCase();
+                lc_new.ID = lc.ID;
+                lc_new.Prefix = lc.Prefix;
+                lc_new.Name = lc.Name;
+                lc_new.MType_LS = lc.MType_LS;
+                lc_new.MainDirection = lc.MainDirection;
+                lc_new.Factor = lc.Factor;
+                lc_new.NodeLoadsList = lc.NodeLoadsList;
+                lc_new.MemberLoadsList = lc.MemberLoadsList;
+                lc_new.SurfaceLoadsList = lc.SurfaceLoadsList;
+
+                List<CMLoad> listOfOriginalMemberLoads = lc.MemberLoadsList;
+                List<CMLoad> listOfNewMemberLoads = new List<CMLoad>();
+
+                foreach (CMLoad load in listOfOriginalMemberLoads)
                 {
-                    if (members.Exists(m => m.ID == load.Member.ID)) loads.Add(load);
+                    if (members.Exists(m => m.ID == load.Member.ID)) listOfNewMemberLoads.Add(load);
                 }
 
                 // TO Ondrej
@@ -131,13 +146,13 @@ namespace PFD
 
                 //if (loads.Count > 0)
                 //{
-                    lc.NodeLoadsList = null;
-                    lc.SurfaceLoadsList = null;
-                    lc.MemberLoadsList = loads;
-                    membersLoadCases.Add(lc);
+                    lc_new.NodeLoadsList = null;
+                    lc_new.SurfaceLoadsList = null;
+                    lc_new.MemberLoadsList = listOfNewMemberLoads;
+                    listOfNewLoadCases.Add(lc_new);
                 //}
             }
-            return membersLoadCases;
+            return listOfNewLoadCases;
         }
 
         public static List<CLoadCombination> GetLoadCombinationsForMembers(CLoadCase[] framememberLoadCases, CLoadCombination[] allLoadCombinations)
@@ -174,7 +189,6 @@ namespace PFD
             }
             return membersLoadCombinations;
         }
-
 
         //podla ID pruta treba identifikovat do ktoreho ramu patri
         public static int GetFrameIndexForMember(CMember m, List<CFrame> frames)
