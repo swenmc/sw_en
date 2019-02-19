@@ -44,7 +44,6 @@ namespace PFD
             // TODO - Ondrej zobrazit vysledky pre dany vyber v comboboxe, UC_MemberDesign a 
             //tabItem Member Design sa zobrazuje len ak su vysledky k dispozicii
 
-            
             // Member Design
             CPFDMemberDesign mdinput = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             mdinput.PropertyChanged += HandleLoadInputPropertyChangedEvent;
@@ -108,6 +107,10 @@ namespace PFD
 
         private void CalculateForMemberLoadCase(CMemberGroup GroupOfMembersWithSelectedType)
         {
+            // TODO Ondrej - tento kod (108-331) je asi zhodny alebo velmi podobny s CPFDViewModel.cs
+            // Novsi je CPFDViewModel.cs
+            // Asi by sa to malo zrefaktorovat
+
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
@@ -336,29 +339,8 @@ namespace PFD
             {
                 float fMaximumDesignRatio = 0;
 
-                //Mato mam otazku: Preco tu neprejdeme zoznam DesignResults a vypocet spravime pre vsetky Members z DesignResults, ktore maju dany typ vybraty v kombe ComponentType???
-                // To Ondrej GroupOfMembers maju rovnake typy ako ComponentType (napriklad Girts - Front Side) ale Member ma ine typy (napr. len Girt)
-                // Mena GroupOfMembers alebo ComponentType kombinuju polohu v konstrukcii a zakladny typ
-
-                // Ak tomu rozumiem spravne podla toho co navrhujes by sme presli vsetky Girts ktore su na stene vpredu, vzadu a tak dalej
-                // Member moze mat zakladny typ girt a mozeme mu pridat este jeden girt-front side alebo nejaky odkaz na structure part (napr. Front Side) cim by sme sa k tomu dostali
-                // Ide o to ze girt je vseobecny nazov a v component je kombinacia nazvu a polohy
-
-                // Nieco ako stolicka (ta sama o sebe nevie kde je, vie len ze je stolicka), stoly, obrazy
-                // preto som do stolicky nechcel davat informaciu, patrim do obyvacky
-
-                // a potom su stolicky v obyvacke, stolicky v kuchyni, stolicky v jedalni
-                // Myslel som ze CEntityGroup alebo CMemberGroup bude nieco ako obyvacka, kuchyna, jedalen a ta bude vediet ze je obyvacka a ktore stolicky, stoly, obrazy v nej su
-
-                // Ak to vidis logicky inak a jednoduchsie, nebranim sa
-                // Mozno ma stolicka vediet nielen to ze je stolicka, ale aj kde je:)
-
                 foreach (CMember m in GroupOfMembersWithSelectedType.ListOfMembers)
                 {
-                    // TODO - Ondrej, vieme member ale potrebujeme sa dostat v zozname DesignResults na riadok ktory odpoveda uvedenemu member
-                    // hodnota ID - 1 je nespolahlive pretoze pocet zaznamov v DesignResults nemusi byt rovnaky ako pocet prutov v modeli, nemusia sa pocitat vsetky
-
-                    //tu sa vyberie zo zoznamu taky prvok ktory ma zhodne Member.ID
                     CMemberLoadCombinationRatio_SLS res = DesignResults.Find(i => i.Member.ID == m.ID);
                     if (res == null) continue;
                     CCalculMember c = new CCalculMember(false, res.DesignDeflections, m);
