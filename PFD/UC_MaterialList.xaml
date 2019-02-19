@@ -27,7 +27,7 @@
             IsReadOnly="True">
         </DataGrid>
 
-        <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,2,0,0" FontSize="16"><Run Text="Connectors (Anchors,Bolts, Screws, Rivets)"/></TextBlock>
+        <TextBlock Grid.Row="4" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="307" Margin="10,2,0,0" FontSize="16"><Run Text="Connectors (Anchors, Bolts, Screws, Rivets)"/></TextBlock>
         <DataGrid Name ="Datagrid_Screws" Grid.Row="5"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
             IsReadOnly="True">
