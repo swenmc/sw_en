@@ -282,12 +282,14 @@ namespace PFD
             // First point (start at [0,0])
             listMemberInternalForcePoints.Add(new Point(0, 0));
 
+            int iLoadCombinationIndex = 0; // Temporary - TODO Ondrej - napojit index load combination vybranej v comboboxe
+
             // Internal force diagram points
-            for (int j = 0; j < internalforces[0][memberIndex].Count; j++) // For each member create list of points [x, IF value]
+            for (int j = 0; j < internalforces[iLoadCombinationIndex][memberIndex].Count; j++) // For each member create list of points [x, IF value]
             {
                 double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
                 
-                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(internalforces[0][memberIndex][j]);
+                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(internalforces[iLoadCombinationIndex][memberIndex][j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
 
                 //pozicie x sa ulozia, aby sa nemuseli pocitat znova
