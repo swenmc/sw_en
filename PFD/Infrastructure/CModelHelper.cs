@@ -131,7 +131,7 @@ namespace PFD
 
                 //if (loads.Count > 0)
                 //{
-                lc.NodeLoadsList = null;
+                    lc.NodeLoadsList = null;
                     lc.SurfaceLoadsList = null;
                     lc.MemberLoadsList = loads;
                     membersLoadCases.Add(lc);

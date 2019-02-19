@@ -669,15 +669,16 @@ namespace PFD
             // Calculation of frame model
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
-            frameModels = model.GetFramesFromModel();
-            internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
-            deflectionsframes = new List<List<List<List<basicDeflections>>>>();
 
-            if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) //generate loads if they are not generated
+            if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) // Generate loads if they are not generated
             {
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
                 loadGenerator.GenerateLoadsOnFrames();
             }
+
+            frameModels = model.GetFramesFromModel(); // Create models of particular frames
+            internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
+            deflectionsframes = new List<List<List<List<basicDeflections>>>>();
 
             bool bCalculateLoadCasesOnly = true;
 
