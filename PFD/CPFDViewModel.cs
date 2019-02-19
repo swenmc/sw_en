@@ -647,95 +647,6 @@ namespace PFD
         {
             DateTime start = DateTime.Now;
 
-            // Ukazkovy vypocet pre jednu vaznicu, po kompletnom dokonceni vypoctu zmazat ak sa nic z toho nepouzije
-            if (false) // Ukazkovy vypocet, zatial nemazat
-            {
-                float fA_g = (float)Model.m_arrCrSc[4].A_g;
-                float fPurlinSelfWeight = fA_g * fMaterial_density * GlobalConstants.fg_acceleration;
-                float fPurlinDeadLoadLinear = GeneralLoad.fDeadLoadTotal_Roof * PurlinDistance + fPurlinSelfWeight;
-                float fPurlinImposedLoadLinear = Loadinput.ImposedActionRoof * 1000 * PurlinDistance;
-                float fsnowValue = Snow.fs_ULS_Nu_1 * ((0.5f * GableWidth) / ((0.5f * GableWidth) / (float)Math.Cos(fRoofPitch_radians))); // Consider projection acc. to Figure 4.1
-                float fPurlinSnowLoadLinear = fsnowValue * PurlinDistance;
-
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // TEMPORARY - vypocet na modeli jedneho pruta
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                float fPurlinWindLoadLinear = Wind.fp_e_max_D_roof_ULS_Theta_4[0, 0];
-
-                float fp_i_min_min;
-                float fp_i_min_max;
-                float fp_i_max_min;
-                float fp_i_max_max;
-
-                GetMinAndMaxValueInTheArray(Wind.fp_i_min_ULS_Theta_4, out fp_i_min_min, out fp_i_min_max);
-                GetMinAndMaxValueInTheArray(Wind.fp_i_max_ULS_Theta_4, out fp_i_max_min, out fp_i_max_max);
-
-                float[] fp_e_min_min = new float[3];
-                float[] fp_e_min_max = new float[3];
-                float[] fp_e_max_min = new float[3];
-                float[] fp_e_max_max = new float[3];
-
-                GetMinAndMaxValueInTheArray(Wind.fp_e_min_D_roof_ULS_Theta_4, out fp_e_min_min[0], out fp_e_min_max[0]);
-                GetMinAndMaxValueInTheArray(Wind.fp_e_min_U_roof_ULS_Theta_4, out fp_e_min_min[1], out fp_e_min_max[1]);
-                GetMinAndMaxValueInTheArray(Wind.fp_e_min_R_roof_ULS_Theta_4, out fp_e_min_min[2], out fp_e_min_max[2]);
-
-                GetMinAndMaxValueInTheArray(Wind.fp_e_max_D_roof_ULS_Theta_4, out fp_e_max_min[0], out fp_e_max_max[0]);
-                GetMinAndMaxValueInTheArray(Wind.fp_e_max_U_roof_ULS_Theta_4, out fp_e_max_min[1], out fp_e_max_max[1]);
-                GetMinAndMaxValueInTheArray(Wind.fp_e_max_R_roof_ULS_Theta_4, out fp_e_max_min[2], out fp_e_max_max[2]);
-
-                float fp_e_min_min_value;
-                float fp_e_min_max_value;
-                float fp_e_max_min_value;
-                float fp_e_max_max_value;
-
-                GetMinAndMaxValueInTheArray(fp_e_min_min, out fp_e_min_min_value, out fp_e_min_max_value);
-                GetMinAndMaxValueInTheArray(fp_e_max_max, out fp_e_max_min_value, out fp_e_max_max_value);
-
-                float fp_min = fp_i_min_min + fp_e_min_min_value;
-                float fp_max = fp_i_max_max + fp_e_max_max_value;
-
-                float fWu_min_linear = fp_min * PurlinDistance;
-                float fWu_max_linear = fp_max * PurlinDistance;
-
-                // Transform loads from global coordinate system to the purlin coordinate system
-                float fSinAlpha = (float)Math.Sin((RoofPitch_deg / 180f) * MathF.fPI);
-                float fCosAlpha = (float)Math.Cos((RoofPitch_deg / 180f) * MathF.fPI);
-
-                float fPurlinDeadLoadLinear_LCS_y = fPurlinDeadLoadLinear * fSinAlpha;
-                float fPurlinDeadLoadLinear_LCS_z = fPurlinDeadLoadLinear * fCosAlpha;
-
-                float fPurlinImposedLoadLinear_LCS_y = fPurlinImposedLoadLinear * fSinAlpha;
-                float fPurlinImposedLoadLinear_LCS_z = fPurlinImposedLoadLinear * fCosAlpha;
-
-                float fPurlinSnowLoadLinear_LCS_y = fPurlinSnowLoadLinear * fSinAlpha;
-                float fPurlinSnowLoadLinear_LCS_z = fPurlinSnowLoadLinear * fCosAlpha;
-
-                // Combinations of action
-                // 4.2.2 Strength
-                // Purlin (a) (b) (d) (e) (g)
-                /*
-                int iNumberOfLoadCombinations = 5;
-                float[] fE_d_load_values_LCS_y = new float[iNumberOfLoadCombinations];
-
-                // Ukazka generovania kombinacii
-
-                fE_d_load_values_LCS_y[0] = 1.35f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (a)
-                fE_d_load_values_LCS_y[1] = 1.20f * fPurlinDeadLoadLinear_LCS_y + 1.50f * fPurlinImposedLoadLinear_LCS_y;     // 4.2.2 (b)
-                fE_d_load_values_LCS_y[2] = 1.20f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (d)
-                fE_d_load_values_LCS_y[3] = 0.90f * fPurlinDeadLoadLinear_LCS_y;                                              // 4.2.2 (e)
-                fE_d_load_values_LCS_y[4] = 1.20f * fPurlinDeadLoadLinear_LCS_y + fPurlinSnowLoadLinear_LCS_y;                // 4.2.2 (g)
-
-                float[] fE_d_load_values_LCS_z = new float[iNumberOfLoadCombinations];
-
-                fE_d_load_values_LCS_z[0] = 1.35f * fPurlinDeadLoadLinear_LCS_z;                                              // 4.2.2 (a)
-                fE_d_load_values_LCS_z[1] = 1.20f * fPurlinDeadLoadLinear_LCS_z + 1.50f * fPurlinImposedLoadLinear_LCS_z;     // 4.2.2 (b)
-                fE_d_load_values_LCS_z[2] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fWu_max_linear;                             // 4.2.2 (d)
-                fE_d_load_values_LCS_z[3] = 0.90f * fPurlinDeadLoadLinear_LCS_z + Math.Abs(fWu_min_linear);                   // 4.2.2 (e)
-                fE_d_load_values_LCS_z[4] = 1.20f * fPurlinDeadLoadLinear_LCS_z + fPurlinSnowLoadLinear_LCS_z;                // 4.2.2 (g)
-                */
-            }
-
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
@@ -750,11 +661,7 @@ namespace PFD
 
             ////////////////////////////////////////////////////////////////////////
             // Calculation of frame model
-            // Extract 2D frames from complex 3D model and create frame models
-            
-            // TO Ondrej - moja predstava je taka ze CModel_PFD_01_GR je len jeden z moznych tvarov budovy a predok tychto preddefinovanych tvarov je CModel_PFD
-            // nasledujuce postupy by mali byt obecne pre rozne tvary budovy - teda potomkov triedy CModel_PFD
-            
+
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
             List<CFrame> frames = model.GetFramesFromModel();
             List<List<List<List<basicInternalForces>>>> internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
@@ -772,98 +679,26 @@ namespace PFD
             {
                 List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForMembers(frame.Members, model.m_arrLoadCases);
                 List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
-                // 1. Create SW_EN Model of frame (Extract data from 3D model)
+                // Create SW_EN model of frame (Extracted data from 3D model)
                 CModel frameModel_i = new Examples.CExample_2D_15_PF(
                             frame.Nodes,
                             frame.Members,
                             model.GetFrameCNSupports(frame), 
                             frameLoadCases.ToArray(), 
                             frameLoadCombinations.ToArray());
-                //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
-
-                // 2. Create BFENet model of frame and calculate internal forces on frame
-
-                // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit,
-                // to co robi Example3 dat niekam kde to bude pekne pristupne a mozne volat z PFD,
-                // ta trieda RunExample3 to je len skarede docasne riesenie, najprv sa tam totiz spusta vypocet prikladu pre CExample_2D_14_PF
-                // a az potom pri volani bfenetModel.Example3 sa vytvara model z "frameModel_i"
-                // Example3 treba niekam presunut a vhodne pomenovat ako Convertor PFD modelu do BFENet modelu
-
-                //RunExample3 bfenetModel = new RunExample3();
 
                 List<List<List<basicInternalForces>>> internalforces;
                 List<List<List<basicDeflections>>> deflections;
-                // TO Ondrej - TODO 201 - Toto prepojenie na BFENet a komunikaciu v ramci BFENet by chcelo nejako skulturnit
-                //bfenetModel.Example3(frameModel_i, out internalforces, out deflections); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
 
+                // Convert SW_EN model to BFENet model
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
+                // Convert model and calculate results
                 Model bfemNetModel = converter.Convert(frameModel_i, bCalculateLoadCasesOnly, out internalforces, out deflections);
-                PFDMainWindow.ShowBFEMNetModel(bfemNetModel);
+                //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
 
-                internalforcesframes.Add(internalforces); // Add Frame results
+                internalforcesframes.Add(internalforces); // Add particular frame results
                 deflectionsframes.Add(deflections);
-
-                // TODO  201 - To Ondrej  - potrebujeme do ramu dostat aj prvky spojov, resp je asi spravnejsie upravit sled vypoctu tak
-                // ze vnutorne sily vypocitane na jednotlivych ramoch sa nastavia prutom v hlavnom modeli (vid nasledujuci bod)
-                // a potom prebehne posudzovanie na prutoch hlavneho modelu, teraz to pada na tom ze sa nenasli spoje na konci a na zaciatku,
-                // predpokladam ze preto lebo to posudzuje members z modelu samostatneho ramu kde nie su ziadne spoje
-
-                // 3. Assign results to the original members from 3D model
-                // TO Ondrej - TODO 201 - vytvorit zoznamy CMemberInternalForcesInLoadCases
-
-                // 4. Run design of frame members
-                // TO Ondrej - TODO 201 - spustit pre kazdy prut proceduru posudenia - vid CMemberDesign na riadku 887
-
-                // 5. Run design of frame members joints
             }
-
-            //for (int iFrameIndex = 0; iFrameIndex < Frames; iFrameIndex++)
-            //{
-            //    // Determinate particular frame member indices
-            //    int iEavesPurlinNoInOneFrame = 2;
-            //    int iFrameNodesNo = 5;
-
-            //    // TO Ondrej - obecnejsie by bolo nacitat podla hodnoty Y vsetky pruty v reze, tento kod plati len ak je ram zo 4 prutov, 
-            //    //ale do buducna moze byt ich pocet iny
-            //    // Pripadne mozeme prutom dat nejaky priznak ci sa nachadzaju v nejakom rame alebo vytvorit "skupinu/list" ramov 
-            //    //(objekt Frame ktory bude v sebe obsahovat zoznam prutov) uz v CModel_PFD_01_GR a podobne a s touto identifikaciou potom pracovat v celom vypocte
-            //    int indexColumn1Left  = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 0;
-            //    int indexRafter1Left  = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 1;
-            //    int indexRafter2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 2;
-            //    int indexColumn2Right = (iFrameIndex * iEavesPurlinNoInOneFrame) + iFrameIndex * (iFrameNodesNo - 1) + 3;
-
-            //    // Create array of frame members (extracted from 3D model)
-            //    CMember[] members = new CMember[4];
-            //    members[0] = Model.m_arrMembers[indexColumn1Left];
-            //    members[1] = Model.m_arrMembers[indexRafter1Left];
-            //    members[2] = Model.m_arrMembers[indexRafter2Right];
-            //    members[3] = Model.m_arrMembers[indexColumn2Right];
-
-            //    // 1. Create SW_EN Model of frame (Extract data from 3D model)
-            //    CModel frameModel_i = new Examples.CExample_2D_15_PF(
-            //                members,
-            //                Model.m_arrNSupports, // TODO - mali by sme prebrat len typ podpory na stlpoch konkretneho ramu a nie vsetky z 3D modelu
-            //                Model.m_arrLoadCases, // TODO Ondrej - prevziat aj loads on members (MMemberLoadsList priradeny v Load case) alebo ich dogenerovat podla polohy frame Y = i * L1_frame
-            //                Model.m_arrLoadCombs);
-
-            //    //frameModels.Add(frameModel_i); // Add particular frame to the list of frames // // Zoznam vsetkych frames - este neviem ci bude potrebny
-
-            //    // 2. Create BFENet model of frame and calculate internal forces on frame
-            //    RunExample3 bfenetModel = new RunExample3();
-
-            //    List<List<List<basicInternalForces>>> internalforces;
-            //    bfenetModel.Example3(frameModel_i, out internalforces); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dam do nejakeho wrappera
-            //    // TO Ondrej - Ak teraz spustim Calculate tak to nefunguje, je tam nejaka vynimka neviem ci to nesuvisi s tym ze som to static zakomentoval
-
-
-            //    // 3. Assign results to the original members from 3D model
-            //    // TO Ondrej - vytvorit zoznamy CMemberInternalForcesInLoadCases
-
-            //    // 4. Run design of frame members
-
-            //    // 5. Run design of joints
-
-            //}
 
             // Calculation of simple beam model
             float fMaximumDesignRatioWholeStructure = 0;
@@ -911,8 +746,7 @@ namespace PFD
                             // Frame member
                             if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
                             {
-                                // TODO
-                                // Pocitame v BEFENet len vysledky load cases - tu naplnia zoznamy pre jednotlive member a load cases
+                                // BEFENet - calculate load cases only
 
                                 // Set indices to search in results
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
@@ -1174,23 +1008,29 @@ namespace PFD
                         {
                             // Member basic deflections
                             basicDeflections[] sBDeflection_x_design;
-                            CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
 
                             // Member design deflections
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
                             {
                                 designDeflections[] sDDeflection_x;
                                 CMemberDesign memberDesignModel = new CMemberDesign();
-                                memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
 
                                 // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
                                 // Frame member - vysledky pocitane pre load combinations
-                                if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
+                                if (!bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
                                 {
+                                    int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                                    int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
+                                    int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
+                                    sBDeflection_x_design = (deflectionsframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
+                                    memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                    MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }
-                                else // Single Member - vysledky pocitane pre load cases
+                                else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                                 {
+                                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
+                                    memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
                                     MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }
 
@@ -1239,7 +1079,6 @@ namespace PFD
                     "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n";
 
             PFDMainWindow.ShowMessageBoxInPFDWindow(txt);
-
         }
 
         private void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)
