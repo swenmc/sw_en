@@ -164,7 +164,7 @@ namespace DATABASE
                 {
                     if (reader.Read())
                     {
-                        crsc.ID = reader.GetInt32(reader.GetOrdinal("ID"));
+                        crsc.DatabaseID = reader.GetInt32(reader.GetOrdinal("ID"));
                         crsc.SectionNameDatabase = sectionNameDatabase;
                         crsc.h = double.Parse(reader["h"].ToString(), nfi);
                         crsc.b = double.Parse(reader["b"].ToString(), nfi);

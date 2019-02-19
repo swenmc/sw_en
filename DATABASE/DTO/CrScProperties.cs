@@ -8,7 +8,7 @@ namespace DATABASE.DTO
 {
     public class CrScProperties
     {
-        public int ID;
+        public int DatabaseID;
         public string SectionNameDatabase;
         public double h;
         public double b;

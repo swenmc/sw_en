@@ -63,6 +63,15 @@ namespace CRSC
             set { m_ID = value; }
         }
 
+        // Cross-section object ID
+        private int m_databaseID;
+
+        public int DatabaseID
+        {
+            get { return m_databaseID; }
+            set { m_databaseID = value; }
+        }
+
         // Name of cross-section
         private string m_sName;
 

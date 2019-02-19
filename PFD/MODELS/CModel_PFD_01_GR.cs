@@ -1799,7 +1799,7 @@ namespace PFD
         {
             int i = 0;
 
-            // To Ondrej - tu sa deje nieco cudne, mam pocit ze je to cele nejake prehadzane oproti tomu co sa ocakava. group s indexom 1 pre prvky rafter sa vobec nenaplni, do group s indexom 0 sa naplnia aj main columns aj rafters
+            // Opravene ID prierezu sa bralo z poradia v databaze a prepisovalo ID prierezu z modelu
             foreach (CMember member in m_arrMembers)
             {
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
