@@ -117,7 +117,7 @@ namespace M_AS4600
                 CalculateDesignRatioApexOrKneeJoint(joint_temp, sDIF_temp); // Apex or Knee Joint
             else if (joint_temp.m_SecondaryMembers != null)
             {
-                if(joint_temp is CConnectionJoint_T001 || joint_temp is CConnectionJoint_T002)
+                if(joint_temp is CConnectionJoint_T001 || joint_temp is CConnectionJoint_T002 || joint_temp is CConnectionJoint_T003)
                 CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp); // purlin, girt or eave purlin
                 else if(joint_temp is CConnectionJoint_S001) // Front / back column connection to the main rafter
                     CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_temp);

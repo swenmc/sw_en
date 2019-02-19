@@ -772,6 +772,7 @@ namespace PFD
                 List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
                 // 1. Create SW_EN Model of frame (Extract data from 3D model)
                 CModel frameModel_i = new Examples.CExample_2D_15_PF(
+                            frame.Nodes,
                             frame.Members,
                             model.GetFrameCNSupports(frame), 
                             frameLoadCases.ToArray(), 
@@ -796,7 +797,7 @@ namespace PFD
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
                 Model bfemNetModel = converter.Convert(frameModel_i, out internalforces, out deflections);
                 PFDMainWindow.ShowBFEMNetModel(bfemNetModel);
-                
+
                 internalforcesframes.Add(internalforces); // Add Frame results
                 deflectionsframes.Add(deflections);
 

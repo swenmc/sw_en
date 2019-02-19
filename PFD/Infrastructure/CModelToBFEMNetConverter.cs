@@ -42,7 +42,23 @@ namespace PFD
 
             for (int i = 0; i < topomodel.m_arrMembers.Length; i++)
             {
-                var element_1D_2Node = new FrameElement2Node(nodeCollection[topomodel.m_arrMembers[i].NodeStart.ID - 1], nodeCollection[topomodel.m_arrMembers[i].NodeEnd.ID - 1]);
+                // Find index of start and end node of member
+                int iStartNodeIndex = int.MinValue;
+                int iEndNodeIndex = int.MinValue;
+
+                for (int j = 0; j< topomodel.m_arrNodes.Length; j ++)
+                {
+                    if (topomodel.m_arrMembers[i].NodeStart == topomodel.m_arrNodes[j]) iStartNodeIndex = j;
+                    if (topomodel.m_arrMembers[i].NodeEnd == topomodel.m_arrNodes[j]) iEndNodeIndex = j;
+                }
+
+                // Validation
+                if(iStartNodeIndex == int.MinValue || iEndNodeIndex == int.MinValue)
+                {
+                    throw new ArgumentNullException("Start or end index of member definiton nodes wasn't found.");
+                }
+
+                var element_1D_2Node = new FrameElement2Node(nodeCollection[iStartNodeIndex], nodeCollection[iEndNodeIndex]);
                 element_1D_2Node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
 
                 var sec = new BriefFiniteElementNet.Sections.UniformParametric1DSection(topomodel.m_arrMembers[i].CrScStart.A_g,

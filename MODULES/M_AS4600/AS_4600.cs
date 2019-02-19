@@ -128,7 +128,10 @@ namespace M_AS4600
         }
         public float Eq_5432_2__(float ft_2, float fd_f, float ff_u2)
         {
-            if(ft_2 > 0.0009f) // 0.9 mm
+            // TODO - zatial menim limit na 0.74 mm pretoze najtensi prierez ma len 0.75
+            //float fLimit = 0.0009f;
+            float fLimit = 0.00074f;
+            if (ft_2 > fLimit) // 0.9 mm
               return 0.85f * ft_2 * fd_f * ff_u2; // Eq. (5.4.3.2(1)) // fN_ou
             else
             {

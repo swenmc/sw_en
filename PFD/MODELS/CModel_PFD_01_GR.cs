@@ -33,7 +33,9 @@ namespace PFD
         public float fFrontFrameRakeAngle_temp_rad;
         public float fBackFrameRakeAngle_temp_rad;
         public float fSlopeFactor;
-        
+
+        public int iFrameNodesNo = 5;
+
         int iMainColumnNo;
         int iRafterNo;
         int iEavesPurlinNo;
@@ -99,7 +101,6 @@ namespace PFD
 
             fRoofPitch_rad = (float)Math.Atan((fH2_frame - fH1_frame) / (0.5f * fW_frame));
 
-            const int iFrameNodesNo = 5;
             const int iEavesPurlinNoInOneFrame = 2;
             iEavesPurlinNo = iEavesPurlinNoInOneFrame * (iFrameNo - 1);
             iMainColumnNo = iFrameNo * 2;
@@ -338,12 +339,15 @@ namespace PFD
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 0]);
 
                 m_arrNodes[i * iFrameNodesNo + 1] = new CNode(i * iFrameNodesNo + 2, 000000, i * fL1_frame, fH1_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 1].Name = "Main Column Top Node - left";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 1]);
 
                 m_arrNodes[i * iFrameNodesNo + 2] = new CNode(i * iFrameNodesNo + 3, 0.5f * fW_frame, i * fL1_frame, fH2_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 2].Name = "Apex Node";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 2]);
 
                 m_arrNodes[i * iFrameNodesNo + 3] = new CNode(i * iFrameNodesNo + 4, fW_frame, i * fL1_frame, fH1_frame, 0);
+                m_arrNodes[i * iFrameNodesNo + 3].Name = "Main Column Top Node - right";
                 RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i * iFrameNodesNo + 3]);
 
                 m_arrNodes[i * iFrameNodesNo + 4] = new CNode(i * iFrameNodesNo + 5, fW_frame, i * fL1_frame, 00000, 0);

@@ -18,6 +18,15 @@ namespace PFD
             {
                 CFrame frame = new CFrame();
 
+                // Add nodes to the frame
+                int iFrameNodesNo = model.iFrameNodesNo; // Number of nodes in frame
+                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 0]);
+                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 1]);
+                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 2]);
+                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 3]);
+                frame.Nodes.Add(model.m_arrNodes[i * iFrameNodesNo + 4]);
+
+                // Add members to the frame
                 foreach (CMemberGroup gr in model.listOfModelMemberGroups)
                 {
                     foreach (CMember m in gr.ListOfMembers)
