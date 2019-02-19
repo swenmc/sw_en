@@ -990,10 +990,18 @@ namespace PFD
                                 // Nastavit vysledky pre prut ramu
 
                                 sBucklingLengthFactors_design.fBeta_x_FB_fl_ex = 1.0f;
+
                                 sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
-                                
+
+                                if (m.EMemberType == EMemberType_FormSteel.eMR)
+                                {
+                                    sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 0.5f;
+                                    sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 0.5f;
+                                    sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 0.5f;
+                                }
+
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
                                 int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
