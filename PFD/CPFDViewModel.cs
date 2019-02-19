@@ -748,7 +748,7 @@ namespace PFD
             // Tu by sa mal napojit 3D FEM vypocet
             //RunFEMSOlver();
 
-            ////////////////////////////////////////////////////////////////////////            
+            ////////////////////////////////////////////////////////////////////////
             // Calculation of frame model
             // Extract 2D frames from complex 3D model and create frame models
             
@@ -765,6 +765,8 @@ namespace PFD
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
                 loadGenerator.GenerateLoadsOnFrames();
             }
+
+            bool bCalculateLoadCasesOnly = true;
 
             foreach (CFrame frame in frames)
             {
@@ -795,7 +797,7 @@ namespace PFD
                 //bfenetModel.Example3(frameModel_i, out internalforces, out deflections); // TO Ondrej - Example3 bola staticka metoda, zmenil som ju - je to urobene v tom duchu ako su priklady v BriefFiniteElementNet.CodeProjectExamples trieda Program.cs ale treba to dat do nejakeho wrappera
 
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
-                Model bfemNetModel = converter.Convert(frameModel_i, out internalforces, out deflections);
+                Model bfemNetModel = converter.Convert(frameModel_i, bCalculateLoadCasesOnly, out internalforces, out deflections);
                 PFDMainWindow.ShowBFEMNetModel(bfemNetModel);
 
                 internalforcesframes.Add(internalforces); // Add Frame results
@@ -893,12 +895,8 @@ namespace PFD
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
-                    // Frame member
-                    if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
-                    {
-                        // Zatial pocitame v BFENet vysledky kombinacii a nie load cases
-                    }
-                    else // Single member
+                    if((bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)) ||
+                    (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR))
                     {
                         for (int i = 0; i < iNumberOfDesignSections; i++)
                             fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -913,8 +911,49 @@ namespace PFD
                             // Frame member
                             if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
                             {
-                                // TODO - ak by sme v BEFENet pocitali len vysledky load cases - tak sa tu naplnia zoznamy pre jednotlive member a load cases
-                                throw new NotImplementedException();
+                                // TODO
+                                // Pocitame v BEFENet len vysledky load cases - tu naplnia zoznamy pre jednotlive member a load cases
+
+                                // Set indices to search in results
+                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                                int iLoadCaseIndex = lc.ID - 1; // nastavit index podla ID load casu
+                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+
+                                // Calculate Internal forces just for Load Cases that are included in ULS
+                                if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
+                                {
+                                    // Nastavit vysledky pre prut ramu
+
+                                    sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1.0f;
+
+                                    sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1.0f;
+                                    sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
+                                    sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
+
+                                    if (m.EMemberType == EMemberType_FormSteel.eMR)
+                                    {
+                                        sBucklingLengthFactors.fBeta_y_FB_fl_ey = 0.5f;
+                                        sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 0.5f;
+                                        sBucklingLengthFactors.fBeta_LTB_fl_LTB = 0.5f;
+                                    }
+
+                                    // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
+                                    // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
+                                    sMomentValuesforCb.fM_14 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][2].fM_yy;
+                                    sMomentValuesforCb.fM_24 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][5].fM_yy;
+                                    sMomentValuesforCb.fM_34 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][7].fM_yy;
+                                    sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
+
+                                    sBIF_x = (internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
+                                }
+
+                                if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
+                                {
+                                    sBDeflections_x = (deflectionsframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
+                                }
+
+                                if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                if (sBDeflections_x != null) MemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
                             }
                             else // Single member
                             {
@@ -985,7 +1024,7 @@ namespace PFD
                             // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
 
                             // Frame member - vysledky pocitane pre load combinations
-                            if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
+                            if (!bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
                             {
                                 // Nastavit vysledky pre prut ramu
 
@@ -1015,7 +1054,7 @@ namespace PFD
 
                                 sBIF_x_design = (internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
                             }
-                            else // Single Member - vysledky pocitane pre load cases
+                            else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
                                 CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                             }

@@ -8,7 +8,7 @@ namespace PFD
     public class CModelToBFEMNetConverter
     {
 
-        public Model Convert(CModel topomodel,
+        public Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly,
             out List<List<List<basicInternalForces>>> resultsoutput,
             out List<List<List<basicDeflections>>> resultsoutputDeflections)
         {
@@ -182,15 +182,30 @@ namespace PFD
             // Load Combinations
             List<LoadCombination> loadcombinations = new List<LoadCombination>();
 
-            for (int i = 0; i < topomodel.m_arrLoadCombs.Length; i++)
+            int iNumberOFCycles;
+
+            if (bCalculateLoadCasesOnly)
+                iNumberOFCycles = topomodel.m_arrLoadCases.Length;
+            else
+                iNumberOFCycles = topomodel.m_arrLoadCombs.Length;
+
+            for (int i = 0; i < iNumberOFCycles; i++)
             {
                 // LoadCombination dedi od Dictionary<LoadCase, double>, tj. load case a faktor
                 LoadCombination lcomb = new LoadCombination();
 
-                // Add specific load cases into the combination and set load factors
-                for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
+                if (bCalculateLoadCasesOnly)
                 {
-                    lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID - 1], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
+                    // Add one specific load case into the combination and set load factor to 1.00
+                    lcomb.Add(loadcases[topomodel.m_arrLoadCases[i].ID - 1], 1f);
+                }
+                else
+                {
+                    // Add specific load cases into the combination and set load factors
+                    for (int j = 0; j < topomodel.m_arrLoadCombs[i].LoadCasesList.Count; j++)
+                    {
+                        lcomb.Add(loadcases[topomodel.m_arrLoadCombs[i].LoadCasesList[j].ID - 1], topomodel.m_arrLoadCombs[i].LoadCasesFactorsList[j]);
+                    }
                 }
 
                 loadcombinations.Add(lcomb);
@@ -204,7 +219,7 @@ namespace PFD
                     // TODO - prepracovat system pre priradzovanie typovych objektov Loads, Supports a podobne,
                     // nemusel by existovat vzdy samostatny objekt pre kazdu realnu poziciu v konstrukcii ale stacil by jeden typovy,
                     // ktory by obsahoval zoznam objektov, ku ktorym je priradeny, je potrebne vyriesit ako by sa tento jeden objekt opakovane vykreslil na roznych miestach (objektoch) kam je priradeny
-                                        
+
                     if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] == null) continue;
                     //if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null) // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
 
