@@ -23,7 +23,7 @@ namespace Examples
             m_arrMembers = new CMember[4];
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[2];
-            m_arrNSupports = supports.ToArray();
+            m_arrNSupports = (supports!= null) ? supports.ToArray() : null;
             m_arrLoadCases = loadcases;
             m_arrLoadCombs = loadcombinations;
 
@@ -44,38 +44,9 @@ namespace Examples
             // Nodes List - Nodes Array
 
             // RAM DEFINOVANY V XZ
-
             m_arrNodes = nodes.ToArray();
             m_arrMembers = members.ToArray();
-
-            // Nodal Supports - fill values
-            // Support 1 - NodeIDs: 1,5
-            /*
-            m_arrNSupports[0] = new CNSupport(m_eNDOF);
-            m_arrNSupports[0].ID = 1;
-            m_arrNSupports[0].m_iNodeCollection = new int[2];
-            m_arrNSupports[0].m_iNodeCollection[0] = 1;
-            m_arrNSupports[0].m_iNodeCollection[1] = 5;
-            */
-
-            // Sort by ID
-            //Array.Sort(m_arrNSupports, new BaseClasses.CCompare_NSupportID());
-
-            // Set Load Cases
             m_arrLoadCases = loadcases;
-            // TO Ondrej - TODO 201 - tu sa pridaju load cases ale nie su vygenerovane zatazenia na prutoch ramov, lebo to je na option v GUI,
-            // zaroven treba mysliet na to ze sa maju generovat len zatazenia pre tento konkretny ram
-
-            //List<CLoad> loads = new List<CLoad>();
-            //foreach (CLoadCase lc in m_arrLoadCases)
-            //{
-            //    foreach (CMLoad load in lc.MemberLoadsList)
-            //    {
-            //        if (members.Exists(m => m.ID == load.Member.ID)) loads.Add(load);
-            //    }
-            //}
-
-            // Set Load Combinations
             m_arrLoadCombs = loadcombinations;
 
             // TODO 201 - Ondrej

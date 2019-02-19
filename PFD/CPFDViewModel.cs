@@ -78,6 +78,12 @@ namespace PFD
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
 
+        // TODO - Ondrej - zoznamy modelov frames a vysledkov na frames - pre komunikaciu s UC_InternalForces a zobrazenie diagramov v FrameInternalForces_2D
+        // TO Ondrej - nerobil som z toho properties lebo este neviem ci to nemalo byt cele nejako inak, cakam ci mi to schvalis :-)
+        public List<CFrame> frameModels;
+        public List<List<List<List<basicInternalForces>>>> internalforcesframes;
+        public List<List<List<List<basicDeflections>>>> deflectionsframes;
+
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -663,9 +669,9 @@ namespace PFD
             // Calculation of frame model
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
-            List<CFrame> frames = model.GetFramesFromModel();
-            List<List<List<List<basicInternalForces>>>> internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
-            List<List<List<List<basicDeflections>>>> deflectionsframes = new List<List<List<List<basicDeflections>>>>();
+            frameModels = model.GetFramesFromModel();
+            internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
+            deflectionsframes = new List<List<List<List<basicDeflections>>>>();
 
             if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) //generate loads if they are not generated
             {
@@ -675,7 +681,7 @@ namespace PFD
 
             bool bCalculateLoadCasesOnly = true;
 
-            foreach (CFrame frame in frames)
+            foreach (CFrame frame in frameModels)
             {
                 List<CLoadCase> frameLoadCases = CModelHelper.GetLoadCasesForMembers(frame.Members, model.m_arrLoadCases);
                 List<CLoadCombination> frameLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(frameLoadCases.ToArray(), model.m_arrLoadCombs);
@@ -749,9 +755,9 @@ namespace PFD
                                 // BEFENet - calculate load cases only
 
                                 // Set indices to search in results
-                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iLoadCaseIndex = lc.ID - 1; // nastavit index podla ID load casu
-                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frameModels[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
                                 // Calculate Internal forces just for Load Cases that are included in ULS
                                 if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
@@ -875,9 +881,9 @@ namespace PFD
                                     sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 0.5f;
                                 }
 
-                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                                int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
-                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frameModels[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
                                 
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
@@ -1019,9 +1025,9 @@ namespace PFD
                                 // Frame member - vysledky pocitane pre load combinations
                                 if (!bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
                                 {
-                                    int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frames);  //podla ID pruta treba identifikovat do ktoreho ramu patri
+                                    int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                     int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
-                                    int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frames[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                    int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frameModels[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
                                     sBDeflection_x_design = (deflectionsframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
                                     memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);

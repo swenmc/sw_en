@@ -17,6 +17,7 @@ using MATH;
 using BaseClasses;
 using FEM_CALC_BASE;
 using BriefFiniteElementNet.CodeProjectExamples;
+using Examples;
 
 namespace PFD
 {
@@ -44,19 +45,34 @@ namespace PFD
         CModel_PFD Model;
         List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases;
 
-        public UC_InternalForces(CModel_PFD model, CComponentListVM compList, List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases)
+        // TODO - Ondrej
+        // Potrebujeme do UC_InternalForces dostat nejakym sposobom geometriu ramov a vysledky na ramoch aby sme to mohli pre prislusny rozhodujuci MainColumn alebo Rafter zobrazit v FrameInternalForces_2D
+        List<CFrame> frameModels;
+        List<List<List<List<basicInternalForces>>>> internalforcesframes;
+        List<List<List<List<basicDeflections>>>> deflectionsframes;
+
+        public UC_InternalForces(CModel_PFD model, CComponentListVM compList,
+            List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases,
+            List<CFrame> frameModels_temp,
+            List<List<List<List<basicInternalForces>>>> internalforcesframes_temp,
+            List<List<List<List<basicDeflections>>>> deflectionsframes_temp
+            )
         {
             InitializeComponent();
 
             Model = model;
             ListMemberInternalForcesInLoadCases = listMemberInternalForcesInLoadCases;
 
+            // TODO Ondrej - prenos modelov a vyslekov frames do UC_InternalForces
+            frameModels = frameModels_temp;
+            internalforcesframes = internalforcesframes_temp; // TO Ondrej - tu je potrebne zohladnit ci boli pocitane v BFENet load cases alebo load combinations, ak load cases tak tento zoznam vysledkov treba nahradit zoznamom pre load combinations
+            deflectionsframes = deflectionsframes_temp;
+
             // Internal forces
             CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             ifinput.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
             this.DataContext = ifinput;
         }
-
 
         protected void HandleMemberInternalForcesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
@@ -253,11 +269,23 @@ namespace PFD
         private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
         {
             // Spocita testovaci model ramu
-            RunExample3 BFENet_testovaciModelRamu = new RunExample3();
+            //RunExample3 BFENet_testovaciModelRamu = new RunExample3();
+            //CExample model = BFENet_testovaciModelRamu.model_SW_EN;
 
-            CExample model = BFENet_testovaciModelRamu.model_SW_EN;
+            // TODO - Ondrej - tu by sa hodilo aby bol CFrame potomok CExample, resp. CModel
+            // Takto sa to musi znova vytvarat navyse sa to vytvara len pre geometriu lebo support, load cases a load combinations tam nie su
+
+            int iFrameIndex = 0; // TODO Ondrej - urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
+
+            CExample model = new CExample_2D_15_PF(frameModels[iFrameIndex].Nodes,
+                frameModels[iFrameIndex].Members,
+                null, // ???
+                null, // ???
+                null  // ???
+                );
+
             // Nacitanie zoznamov vysledkov pre jednotlive load combinations, members, x-locations
-            List<List<List<basicInternalForces>>> internalforces = BFENet_testovaciModelRamu.results;
+            List<List<List<basicInternalForces>>> internalforces = internalforcesframes[iFrameIndex]; // Vysledky na konkretnom rame
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
 
