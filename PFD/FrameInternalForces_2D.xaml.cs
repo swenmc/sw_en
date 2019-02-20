@@ -28,10 +28,13 @@ namespace PFD
         List<List<List<basicInternalForces>>> internalforces;
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
-        
-        public FrameInternalForces_2D(CModel example_model, List<List<List<basicInternalForces>>> list_internalforces)
+
+        int iLoadCombinationIndex; // Temporary - TODO Ondrej - napojit index load combination vybranej v comboboxe, zohladnit pripad ked budu kombinacie nejako filtrovane alebo sa nespocitaju vsetky, aby idnex z comboboxu odpovedal skutocne tej istej kombinacii (index zapisany vo vysledkoch a index v comboboxe nemusia byt pre tu istu kombinaciu rovnake)
+
+        public FrameInternalForces_2D(CModel example_model, int iLoadCombinationIndex_temp, List<List<List<basicInternalForces>>> list_internalforces)
         {
             model = example_model;
+            iLoadCombinationIndex = iLoadCombinationIndex_temp;
             internalforces = list_internalforces;
 
             DictMemberInternalForcePoints = new Dictionary<string, List<Point>>();
@@ -160,9 +163,9 @@ namespace PFD
                     int iIndexMinValue = 0;
                     int iIndexMaxValue = 0;
 
-                    for (int c = 0; c < internalforces[0][i].Count; c++)
+                    for (int c = 0; c < internalforces[iLoadCombinationIndex][i].Count; c++)
                     {
-                        float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
+                        float IF_Value = GetInternalForcesValue(internalforces[iLoadCombinationIndex][i][c]);
 
                         if(IF_Value < dMinValue)
                         {
@@ -178,18 +181,18 @@ namespace PFD
                     }
 
                     // Display text depending on GUI options
-                    for (int c = 0; c < internalforces[0][i].Count; c++)
+                    for (int c = 0; c < internalforces[iLoadCombinationIndex][i].Count; c++)
                     {
                         if (!vm.ShowAll && !vm.ShowEndValues && !vm.ShowExtremeValues && !vm.ShowEverySecondSection && !vm.ShowEveryThirdSection) continue;
-                        else if (!vm.ShowAll && vm.ShowEndValues && !(c == 0 || c == (internalforces[0][i].Count - 1))) continue; // First and last value
+                        else if (!vm.ShowAll && vm.ShowEndValues && !(c == 0 || c == (internalforces[iLoadCombinationIndex][i].Count - 1))) continue; // First and last value
                         else if (!vm.ShowAll && vm.ShowExtremeValues && !(c == iIndexMinValue || c == iIndexMaxValue)) continue; // ??? TODO - tu potrebujeme prejst vsetky hodnoty, najst min a max a tie zobrazit, pripadne ak vieme najst aj lokalne minima a maxima, ignorovat nuly - Local extreme - min or max in absolute value
-                        else if (!vm.ShowAll && vm.ShowEndValues && vm.ShowExtremeValues && !(c == 0 || c == (internalforces[0][i].Count - 1) || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Pre extremy a konce zobrazit "zjednotenie" tychto hodnot, tj. najdene extremy aj koncove hodnoty - upravit podmienku
+                        else if (!vm.ShowAll && vm.ShowEndValues && vm.ShowExtremeValues && !(c == 0 || c == (internalforces[iLoadCombinationIndex][i].Count - 1) || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Pre extremy a konce zobrazit "zjednotenie" tychto hodnot, tj. najdene extremy aj koncove hodnoty - upravit podmienku
                         else if (!vm.ShowAll && vm.ShowEverySecondSection && c % 2 == 1) continue;
                         else if (!vm.ShowAll && vm.ShowEverySecondSection && vm.ShowExtremeValues && !(c % 2 != 1 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && c % 3 != 0) continue;
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && vm.ShowExtremeValues && !(c % 3 == 0 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
 
-                        float IF_Value = GetInternalForcesValue(internalforces[0][i][c]);
+                        float IF_Value = GetInternalForcesValue(internalforces[iLoadCombinationIndex][i][c]);
 
                         // Ignore and do not display zero value label
                         if (MathF.d_equal(IF_Value, 0))
@@ -281,8 +284,6 @@ namespace PFD
 
             // First point (start at [0,0])
             listMemberInternalForcePoints.Add(new Point(0, 0));
-
-            int iLoadCombinationIndex = 0; // Temporary - TODO Ondrej - napojit index load combination vybranej v comboboxe
 
             // Internal force diagram points
             for (int j = 0; j < internalforces[iLoadCombinationIndex][memberIndex].Count; j++) // For each member create list of points [x, IF value]

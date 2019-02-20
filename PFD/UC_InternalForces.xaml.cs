@@ -43,6 +43,7 @@ namespace PFD
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
 
         CModel_PFD Model;
+        CPFDMemberInternalForces ifinput;
         List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases;
 
         // TODO - Ondrej
@@ -69,7 +70,7 @@ namespace PFD
             deflectionsframes = deflectionsframes_temp;
 
             // Internal forces
-            CPFDMemberInternalForces ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
+            ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             ifinput.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
             this.DataContext = ifinput;
         }
@@ -268,24 +269,11 @@ namespace PFD
 
         private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
         {
-            // Spocita testovaci model ramu
-            //RunExample3 BFENet_testovaciModelRamu = new RunExample3();
-            //CExample model = BFENet_testovaciModelRamu.model_SW_EN;
-
-            // TODO - Ondrej - tu by sa hodilo aby bol CFrame potomok CExample, resp. CModel
-            // Takto sa to musi znova vytvarat navyse sa to vytvara len pre geometriu lebo support, load cases a load combinations tam nie su
-
             int iFrameIndex = 0; // TODO Ondrej - urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
-
             CModel model = frameModels[iFrameIndex];
-            //CExample model = new CExample_2D_15_PF(frameModels[iFrameIndex].Nodes,
-            //    frameModels[iFrameIndex].Members,
-            //    null, // ???
-            //    null, // ???
-            //    null  // ???
-            //    );
 
             // Nacitanie zoznamov vysledkov pre jednotlive load combinations, members, x-locations
+            // TODO Ondrej - je potrebne zakomponovat ci sa v BFENet pocitaju load cases alebo load combinations, ak sa pocitaju len load cases musime load combinations vyrobit sami superpoziciou pre kazdy prut, miesto x a vnutornu silu na tom mieste ... podla zoznamu LC v kombinacii, tj. faktorLC1 * vysledok v mieste "x" z LC1 + faktorLC2 * vysledkok v mieste z "x" LC2 + ....
             List<List<List<basicInternalForces>>> internalforces = internalforcesframes[iFrameIndex]; // Vysledky na konkretnom rame
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
@@ -324,7 +312,8 @@ namespace PFD
                 model.m_arrMembers[0].FLength, // Heigth - column
                 fN_om_column);
 
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(model, internalforces);
+            // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(model, ifinput.LoadCombinationIndex, internalforces);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();
