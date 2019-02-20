@@ -174,53 +174,53 @@ namespace PFD
                 ref memberLoadExternalPressure_SLS_Cpemax_Rear
                 );
             }
-
-            // TODO 203
+            
             // Assign generated member loads to the load cases
             // Universal
-            m_arrLoadCases[00].MemberLoadsList = memberLoadDead;
-            m_arrLoadCases[01].MemberLoadsList = memberLoadImposed;
-
+            m_arrLoadCases[(int)ELCName.eDL_G].MemberLoadsList = memberLoadDead;
+            m_arrLoadCases[(int)ELCName.eIL_Q].MemberLoadsList = memberLoadImposed;
+            
             // ULS
-            m_arrLoadCases[02].MemberLoadsList = memberMaxLoadSnowAll_ULS;
-            m_arrLoadCases[03].MemberLoadsList = memberMaxLoadSnowLeft_ULS;
-            m_arrLoadCases[04].MemberLoadsList = memberMaxLoadSnowRight_ULS;
-            m_arrLoadCases[05].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Left;
-            m_arrLoadCases[06].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Right;
-            m_arrLoadCases[07].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Front;
-            m_arrLoadCases[08].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Rear;
-            m_arrLoadCases[09].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Left;
-            m_arrLoadCases[10].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Right;
-            m_arrLoadCases[11].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Front;
-            m_arrLoadCases[12].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Rear;
-            m_arrLoadCases[13].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Left;
-            m_arrLoadCases[14].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Right;
-            m_arrLoadCases[15].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Front;
-            m_arrLoadCases[16].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Rear;
-            m_arrLoadCases[17].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Left;
-            m_arrLoadCases[18].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Right;
-            m_arrLoadCases[19].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Front;
-            m_arrLoadCases[20].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Rear;
+            m_arrLoadCases[(int)ELCName.eSL_Su_Full].MemberLoadsList = memberMaxLoadSnowAll_ULS;
+            m_arrLoadCases[(int)ELCName.eSL_Su_Left].MemberLoadsList = memberMaxLoadSnowLeft_ULS;
+            m_arrLoadCases[(int)ELCName.eSL_Su_Right].MemberLoadsList = memberMaxLoadSnowRight_ULS;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Left_X_Plus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Right_X_Minus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Front_Y_Plus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_min_Rear_Y_Minus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimin_Rear;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Left_X_Plus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Right_X_Minus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Front_Y_Plus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpi_max_Rear_Y_Minus].MemberLoadsList = memberLoadInternalPressure_ULS_Cpimax_Rear;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Left_X_Plus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Right_X_Minus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Front_Y_Plus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_min_Rear_Y_Minus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemin_Rear;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Left_X_Plus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Right_X_Minus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Front_Y_Plus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus].MemberLoadsList = memberLoadExternalPressure_ULS_Cpemax_Rear;            
+
             // SLS
-            m_arrLoadCases[23].MemberLoadsList = memberMaxLoadSnowAll_SLS;
-            m_arrLoadCases[24].MemberLoadsList = memberMaxLoadSnowLeft_SLS;
-            m_arrLoadCases[25].MemberLoadsList = memberMaxLoadSnowRight_SLS;
-            m_arrLoadCases[26].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Left;
-            m_arrLoadCases[27].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Right;
-            m_arrLoadCases[28].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Front;
-            m_arrLoadCases[29].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Rear;
-            m_arrLoadCases[30].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Left;
-            m_arrLoadCases[31].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Right;
-            m_arrLoadCases[32].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Front;
-            m_arrLoadCases[33].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Rear;
-            m_arrLoadCases[34].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Left;
-            m_arrLoadCases[35].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Right;
-            m_arrLoadCases[36].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Front;
-            m_arrLoadCases[37].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Rear;
-            m_arrLoadCases[38].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Left;
-            m_arrLoadCases[39].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Right;
-            m_arrLoadCases[40].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Front;
-            m_arrLoadCases[41].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Rear;
+            m_arrLoadCases[(int)ELCName.eSL_Ss_Full].MemberLoadsList = memberMaxLoadSnowAll_SLS;
+            m_arrLoadCases[(int)ELCName.eSL_Ss_Left].MemberLoadsList = memberMaxLoadSnowLeft_SLS;
+            m_arrLoadCases[(int)ELCName.eSL_Ss_Right].MemberLoadsList = memberMaxLoadSnowRight_SLS;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Left_X_Plus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Right_X_Minus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Front_Y_Plus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_min_Rear_Y_Minus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimin_Rear;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Left_X_Plus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Right_X_Minus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Front_Y_Plus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpi_max_Rear_Y_Minus].MemberLoadsList = memberLoadInternalPressure_SLS_Cpimax_Rear;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Left_X_Plus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Right_X_Minus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Front_Y_Plus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_min_Rear_Y_Minus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemin_Rear;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Left_X_Plus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Left;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Right_X_Minus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Right;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Front_Y_Plus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Front;
+            m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Rear_Y_Minus].MemberLoadsList = memberLoadExternalPressure_SLS_Cpemax_Rear;
         }
 
         public void GenerateLoadsOnFrame(

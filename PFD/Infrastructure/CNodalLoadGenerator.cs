@@ -50,16 +50,14 @@ namespace PFD
                 nodalLoadEQ_ULS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_ULS_stregnth, true, 0));
                 nodalLoadEQ_SLS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_SLS, true, 0));
             }
-
-            // TODO 203 - indexovanie load casov
-
+                        
             // ULS
-            m_arrLoadCases[21].NodeLoadsList = nodalLoadEQ_ULS_PlusX;    // 22
-            m_arrLoadCases[22].NodeLoadsList = nodalLoadEQ_ULS_PlusY;    // 23
+            m_arrLoadCases[(int)ELCName.eEQ_Eu_Left_X_Plus].NodeLoadsList = nodalLoadEQ_ULS_PlusX;    // 22
+            m_arrLoadCases[(int)ELCName.eEQ_Eu_Front_Y_Plus].NodeLoadsList = nodalLoadEQ_ULS_PlusY;    // 23
 
             // SLS
-            m_arrLoadCases[42].NodeLoadsList = nodalLoadEQ_SLS_PlusX;    // 43
-            m_arrLoadCases[43].NodeLoadsList = nodalLoadEQ_SLS_PlusY;    // 44
+            m_arrLoadCases[(int)ELCName.eEQ_Es_Left_X_Plus].NodeLoadsList = nodalLoadEQ_SLS_PlusX;    // 43
+            m_arrLoadCases[(int)ELCName.eEQ_Es_Front_Y_Plus].NodeLoadsList = nodalLoadEQ_SLS_PlusY;    // 44
         }
     }
 }
