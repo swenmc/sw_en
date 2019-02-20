@@ -168,7 +168,6 @@ namespace PFD
                 }
             }
 
-
             // Load Cases
             List<LoadCase> loadcases = new List<LoadCase>();
 
@@ -243,10 +242,9 @@ namespace PFD
 
             // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
             BFEMNetModelHelper.GetResultsList(model, loadcombinations, out resultsoutput, out resultsoutputDeflections);
-            
+
             return model;
         }
-
 
         private LoadType GetBFEMLoadType(ELCType LoadCaseType)
         {

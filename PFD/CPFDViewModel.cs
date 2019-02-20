@@ -676,6 +676,13 @@ namespace PFD
                 loadGenerator.GenerateLoadsOnFrames();
             }
 
+            // TO Ondrej - zhrnul by som to asi tak ze Praca chvatna malo platna :)
+            // Tou upravovou ze CFrame dedi CModel sa pokazil vypocet
+            // V mojej naivnej snahe opravit to som to asi odplalil uplne, tipujem ze problem je v tom ze tam lietaju ID z globalneho modelu a ID v modeli ramu
+            // takze by to chcelo ujasnit ci chceme v modeli ramu vsetko cislovat od 0 alebo zachovame ID z globalneho modelu
+            // Ak budeme cislovat od 0 je potrebne do modelu ramu prevadzat globalne ID tak aby bolo od 0
+            // Zachovame ID z globalneho modelu je potrebne upravit convertor aby pocital s tym ze ID v modeli ramu nezacinaju vzdy od 0
+
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
             internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
             deflectionsframes = new List<List<List<List<basicDeflections>>>>();
