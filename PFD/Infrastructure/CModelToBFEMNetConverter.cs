@@ -226,7 +226,7 @@ namespace PFD
                     {
                         Load BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].MemberLoadsList[j], loadcases[i]);
                         if(BFEMLoad != null)
-                            elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(BFEMLoad);
+                            elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(BFEMLoad); // TU je bug kedze Member.ID - 1 ma byt od 0-3 ale Member.ID je z globalneho modelu
                     } 
                 }
             }

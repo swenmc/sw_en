@@ -683,6 +683,9 @@ namespace PFD
             // Ak budeme cislovat od 0 je potrebne do modelu ramu prevadzat globalne ID tak aby bolo od 0
             // Zachovame ID z globalneho modelu je potrebne upravit convertor aby pocital s tym ze ID v modeli ramu nezacinaju vzdy od 0
 
+            // Problem je asi v tom, ze v metode Convert su v zatazovacich stavov zoznamy member load s ID members z globalneho modelu a
+            // vytvaraju sa tam zatazenia na 4 pruty ramu z BFENet takze polozky s ID - 1 neexistuju
+
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
             internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
             deflectionsframes = new List<List<List<List<basicDeflections>>>>();
