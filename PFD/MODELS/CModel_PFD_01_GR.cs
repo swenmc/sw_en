@@ -363,12 +363,12 @@ namespace PFD
             for (int i = 0; i < iFrameNo; i++)
             {
                 // Main Column
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember(i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
                 // Rafters
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember(i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterStart, fRafterEnd, 0f, 0);
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember(i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterEnd, fRafterStart, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterStart, fRafterEnd, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterEnd, fRafterStart, 0f, 0);
                 // Main Column
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember(i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
 
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))

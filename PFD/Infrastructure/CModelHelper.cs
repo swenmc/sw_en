@@ -102,7 +102,6 @@ namespace PFD
             frameSupports.Add(support);
 
             return frameSupports;
-            
         }
 
         public static List<CLoadCase> GetLoadCasesForMembers(List<CMember> members, CLoadCase[] allLoadCases)
