@@ -135,6 +135,14 @@ namespace PFD
             out fArr_BendingMomentValuesMy
             );
 
+            //clear canvases
+            Canvas_AxialForceDiagram.Children.Clear();
+            Canvas_ShearForceDiagramVx.Children.Clear();
+            Canvas_ShearForceDiagramVy.Children.Clear();
+            Canvas_TorsionMomentDiagram.Children.Clear();
+            Canvas_BendingMomentDiagramMx.Children.Clear();
+            Canvas_BendingMomentDiagramMy.Children.Clear();
+
             // Draw axis (x, y)
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
