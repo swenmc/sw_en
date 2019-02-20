@@ -8,9 +8,14 @@
         Height="1300" Width="750">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="1260"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true"/>
+        <DataGrid Name ="Datagrid_LoadCombinations" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <TextBlock Text="Options" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+            <CheckBox Name ="chbDeterminateCombinationResultsByFEMSolver_BFENet" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=DeterminateCombinationResultsByFEMSolver}">Determinate combination results by solver</CheckBox>
+        </StackPanel>
     </Grid>
 </UserControl>

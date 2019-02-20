@@ -57,7 +57,5 @@ namespace PFD
             LoadCaseName = lcName;
             LoadCaseType = lcType;
         }
-
-        
     }
 }

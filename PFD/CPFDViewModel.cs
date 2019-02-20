@@ -48,13 +48,16 @@ namespace PFD
         private int MWallCladdingThicknessIndex;
         private int MLoadCaseIndex;
 
-
+        // Load Case - display options
         private bool MShowLoads;
         private bool MShowNodalLoads;
         private bool MShowLoadsOnMembers;
         private bool MShowLoadsOnPurlinsAndGirts;
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
+
+        // Load Combination - options
+        private bool MDeterminateCombinationResultsByFEMSolver;
 
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
@@ -605,7 +608,19 @@ namespace PFD
             }
         }
 
-        
+        public bool DeterminateCombinationResultsByFEMSolver
+        {
+            get
+            {
+                return MDeterminateCombinationResultsByFEMSolver;
+            }
+
+            set
+            {
+                MDeterminateCombinationResultsByFEMSolver = value;
+                NotifyPropertyChanged("DeterminateCombinationResultsByFEMSolver");
+            }
+        }
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
