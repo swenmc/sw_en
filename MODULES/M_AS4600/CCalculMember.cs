@@ -788,7 +788,7 @@ namespace M_AS4600
         public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid)
         {
             DeleteLists();
-
+            
             if (eCombinationType == ELSType.eLS_ULS)
                 SetResultsDetailsFor_ULS(this);
             else
@@ -840,7 +840,8 @@ namespace M_AS4600
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
             }
-            
+
+            dataGrid.Columns.Clear();
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Symbol", Binding = new Binding("Symbol") });
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Value", Binding = new Binding("Value") });
             dataGrid.Columns.Add(new DataGridTextColumn { Header = "Unit", Binding = new Binding("Unit") });

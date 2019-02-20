@@ -15,6 +15,7 @@ namespace PFD
             out List<List<List<basicInternalForces>>> resultsoutput,
             out List<List<List<basicDeflections>>> resultsoutput_deflections)
         {
+            bool debugging = false;
             resultsoutput = new List<List<List<basicInternalForces>>>();
             resultsoutput_deflections = new List<List<List<basicDeflections>>>();
 
@@ -35,8 +36,8 @@ namespace PFD
 
                 for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
                 {
-                    Trace.WriteLine("Element No.: " + (j + 1).ToString());
-                    Trace.WriteLine("Internal forces in particular x positions");
+                    if(debugging) Trace.WriteLine("Element No.: " + (j + 1).ToString());
+                    if (debugging) Trace.WriteLine("Internal forces in particular x positions");
 
                     double elemLength = bfenet_model.Elements[j].GetElementLength();
 
@@ -44,9 +45,12 @@ namespace PFD
 
                     for (int k = 0; k < xLocations_rel.Length; k++)
                     {
-                        string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
-                        var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
-                        Trace.WriteLine(sMessage + "\t " + eForce);
+                        if (debugging)
+                        {
+                            string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
+                            var eForce = (bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                            Trace.WriteLine(sMessage + "\t " + eForce);
+                        }
 
                         basicInternalForces temp_x_results = new basicInternalForces();
                         temp_x_results.fN = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fx;
@@ -68,9 +72,12 @@ namespace PFD
 
                     for (int k = 0; k < xLocations_rel.Length; k++)
                     {
-                        string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
-                        var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]);
-                        Trace.WriteLine(sMessage + "\t " + eDisplacement);
+                        if (debugging)
+                        {
+                            string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
+                            var eDisplacement = (bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]);
+                            Trace.WriteLine(sMessage + "\t " + eDisplacement);
+                        }
 
                         basicDeflections temp_x_results = new basicDeflections();
                         temp_x_results.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
