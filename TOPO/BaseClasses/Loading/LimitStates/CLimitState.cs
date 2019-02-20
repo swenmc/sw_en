@@ -7,7 +7,7 @@ namespace BaseClasses
     public class CLimitState : CObject
     {
         //----------------------------------------------------------------------------
-        ELSType eLS_Type;
+        public ELSType eLS_Type;
 
         List<CLoadCombination> LoadCombinationsList;
         //----------------------------------------------------------------------------

@@ -78,19 +78,26 @@ namespace PFD
         protected void HandleMemberInternalForcesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {
             if (sender == null) return;
-            CPFDMemberInternalForces memberIF = sender as CPFDMemberInternalForces;
-            if (memberIF == null) return;
-            if (memberIF != null && memberIF.IsSetFromCode) return;
+            CPFDMemberInternalForces vm = sender as CPFDMemberInternalForces;
+            if (vm == null) return;
+            if (vm != null && vm.IsSetFromCode) return;
+
+            if (e.PropertyName == "LimitStateIndex") return;
+            if (e.PropertyName == "LoadCombinations")
+            {
+                vm.LoadCombinationIndex = 0;
+                return;
+            }
 
             // Frame internal forces enabled only for type of members Main Columns and Rafters
-            if (memberIF.ComponentTypeIndex == 0 || memberIF.ComponentTypeIndex == 1)
+            if (vm.ComponentTypeIndex == 0 || vm.ComponentTypeIndex == 1)
                 Button_Frame_2D.IsEnabled = true;
             else
                 Button_Frame_2D.IsEnabled = false;
 
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
-            CMember member = Model.listOfModelMemberGroups[memberIF.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
+            CMember member = Model.listOfModelMemberGroups[vm.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
             if (member == null) throw new Exception("No member in List of Members");
             fMemberLength_xMax = member.FLength;
 
@@ -103,9 +110,10 @@ namespace PFD
             designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
             basicInternalForces[] sBIF_x;
 
-            // TODO - kombinacia ktorej vysledky chceme zobrazit
-            CLoadCombination lcomb = Model.m_arrLoadCombs[memberIF.LoadCombinationIndex];
-            // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
+            //kombinacia ktorej vysledky chceme zobrazit
+            CLoadCombination lcomb = vm.LoadCombinations[vm.LoadCombinationIndex];
+
+            //TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
 
             float[] fArr_AxialForceValuesN;
@@ -176,14 +184,6 @@ namespace PFD
                 }
             }
         }
-        public void FillComboboxValues(ComboBox combobox, List<string> values)
-        {
-            foreach (string s in values)
-            {
-                combobox.Items.Add(s);
-            }
-        }
-
 
         // Funkcie su rovnake ako u windspeed, len je pridany parameter pre canvas a vypocet FactorX a FactorY
         //public void DrawTexts(string[] array_text, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
@@ -313,6 +313,9 @@ namespace PFD
                 fN_om_column);
 
             // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
+            //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
+
+
             FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(model, ifinput.LoadCombinationIndex, internalforces);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design

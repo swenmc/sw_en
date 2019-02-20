@@ -25,7 +25,7 @@ namespace PFD
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private CLimitState[] MLimitStates;
-        private CLoadCombination[] MLoadCombinations;
+        private ObservableCollection<CLoadCombination> MLoadCombinations;
 
         public bool IsSetFromCode = false;
 
@@ -40,6 +40,9 @@ namespace PFD
             set
             {
                 MLimitStateIndex = value;
+
+                SetLoadCombinations();
+
                 //TODO No. 68
                 NotifyPropertyChanged("LimitStateIndex");
             }
@@ -55,9 +58,9 @@ namespace PFD
 
             set
             {
-                MLoadCombinationIndex = value;
+                if(value != -1) MLoadCombinationIndex = value;
                 //TODO No. 68
-                NotifyPropertyChanged("LoadCombinationIndex");
+                NotifyPropertyChanged("LoadCombinationIndex");                                
             }
         }
 
@@ -73,7 +76,6 @@ namespace PFD
             {
                 MComponentTypeIndex = value;
                 //TODO No. 68
-
                 NotifyPropertyChanged("ComponentTypeIndex");
             }
         }
@@ -106,7 +108,7 @@ namespace PFD
             }
         }
 
-        public CLoadCombination[] LoadCombinations
+        public ObservableCollection<CLoadCombination> LoadCombinations
         {
             get
             {
@@ -115,26 +117,40 @@ namespace PFD
 
             set
             {
-                MLoadCombinations = value;
-                NotifyPropertyChanged("LoadCombinations");
+                MLoadCombinations = value;                
+                NotifyPropertyChanged("LoadCombinations");                
             }
         }
 
+        private CLoadCombination[] m_allLoadCombinations;
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] loadCombinations, ObservableCollection<CComponentInfo> componentList)
+        public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
-            MLimitStates = limitStates;
-            MLoadCombinations = loadCombinations;
+            MLimitStates = limitStates;            
             MComponentList = componentList;
+            m_allLoadCombinations = allLoadCombinations;
+
 
             // Set default
-            LimitStateIndex = 0;
-            LoadCombinationIndex = 0;
+            LimitStateIndex = 0;            
             ComponentTypeIndex = 0;
 
             IsSetFromCode = false;
+        }
+
+        private void SetLoadCombinations()
+        {
+            CLimitState limitState = LimitStates[LimitStateIndex];
+
+            ObservableCollection<CLoadCombination> loadCombinations = new ObservableCollection<CLoadCombination>();
+            foreach (CLoadCombination lc in m_allLoadCombinations)
+            {
+                if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(lc);
+            }
+            LoadCombinations = loadCombinations;
+            LoadCombinationIndex = 0;       
         }
 
         //-------------------------------------------------------------------------------------------------------------
