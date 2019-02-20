@@ -233,24 +233,12 @@
 
                         <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="12" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
 
-                        <StackPanel Orientation="Vertical" Grid.Row="15" Grid.Column="3" Grid.RowSpan="4" Grid.ColumnSpan="2">
-                            <CheckBox Name ="chbDisplayLoads" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="False" Unchecked ="chbDisplayLoads_UnChecked" Checked="chbDisplayLoads_Checked">Display Loads</CheckBox>
-                            <CheckBox Name ="chbDisplayNodalLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="{Binding Path=ShowNodalLoads}">Nodal Loads</CheckBox>
-                            <CheckBox Name ="chbDisplayMemberLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="{Binding Path=ShowLoadsOnMembers}">Member Loads</CheckBox>
-                            <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="{Binding Path=ShowLoadsOnPurlinsAndGirts}">Generated on purlins and girts</CheckBox>
-                            <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                                  IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
-                            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="{Binding Path=ShowSurfaceLoads}">Surface Loads</CheckBox>
-                        </StackPanel>
+                        
 
-                        <TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
+                        <!--<TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 
                         <ComboBox Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="2" Name ="Combobox_LoadCase" HorizontalAlignment="Left" Width="259"
-                         VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>
+                         VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
                         <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="395" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
@@ -262,7 +250,9 @@
             </TabItem>
             <TabItem Name ="Model_Component" Header="Model Components"/>
             <TabItem Name ="Loads" Header="Loads"/>
-            <TabItem Name ="Load_Cases" Header="Load Cases"/>
+            <TabItem Name ="Load_Cases" Header="Load Cases">
+                
+            </TabItem>
             <TabItem Name ="Load_Combinations" Header="Load Combinations"/>
             <TabItem Name ="Internal_Forces" Header="Internal Forces"/>
             <TabItem Name ="Member_Design" Header="Member Design"/>

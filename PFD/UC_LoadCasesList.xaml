@@ -8,14 +8,27 @@
         Height="1300" Width="750">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="1260"/>
-        </Grid.RowDefinitions>
-        <!--
-        <CheckBox Name ="chbDisplayLoads" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Unchecked="chbLightAmbient_Unchecked" Checked="chbLightAmbient_Checked">Display Loads</CheckBox>
-        <TextBlock Grid.Row="1" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
-        <ComboBox Name ="loadCases_Combobox" Grid.Row="1" HorizontalAlignment="Left" Margin="130,0,0,0" VerticalAlignment="Top" Width="130" SelectionChanged="loadCases_Combobox_SelectionChanged"/>
-        -->
-        <DataGrid Name ="Datagrid_LoadCases" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="true"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>        
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+            <CheckBox Name ="chbDisplayLoads" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoads}">Display Loads</CheckBox>
+            <CheckBox Name ="chbDisplayNodalLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowNodalLoads}">Nodal Loads</CheckBox>
+            <CheckBox Name ="chbDisplayMemberLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnMembers}">Member Loads</CheckBox>
+            <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnPurlinsAndGirts}">Generated on purlins and girts</CheckBox>
+            <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                  IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
+            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowSurfaceLoads}">Surface Loads</CheckBox>
+
+        </StackPanel>
+
+        <DataGrid Name ="Datagrid_LoadCases" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  IsReadOnly="true" SelectedCellsChanged="Datagrid_LoadCases_SelectedCellsChanged"
+                  SelectionMode="Single" />
     </Grid>
 </UserControl>

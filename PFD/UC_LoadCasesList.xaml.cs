@@ -23,60 +23,20 @@ namespace PFD
     /// </summary>
     public partial class UC_LoadCaseList : UserControl
     {
-        DataSet ds;
-
-        List<int> listLoadCaseID = new List<int>();
-        List<string> listLoadCaseName = new List<string>();
-        List<string> listLoadCaseType = new List<string>();
-
-        public UC_LoadCaseList(CModel_PFD model)
+        CPFDViewModel _pfdViewModel;
+        public UC_LoadCaseList(CPFDViewModel vm)
         {
+            _pfdViewModel = vm;
             InitializeComponent();
-
-            // Clear all lists
-            DeleteAllLists();
-
+            
+            List<CLoadCaseView> loadCases = new List<CLoadCaseView>();
             // For each load case add one row
-            for (int i = 0; i < model.m_arrLoadCases.Length; i++)
+            for (int i = 0; i < vm.Model.m_arrLoadCases.Length; i++)
             {
-                listLoadCaseID.Add(model.m_arrLoadCases[i].ID);
-                listLoadCaseName.Add(model.m_arrLoadCases[i].Name);
-                listLoadCaseType.Add(arrLoadCaseTypes[(int)model.m_arrLoadCases[i].Type]);
+                loadCases.Add(new CLoadCaseView(vm.Model.m_arrLoadCases[i].ID, vm.Model.m_arrLoadCases[i].Name, vm.Model.m_arrLoadCases[i].Type.GetFriendlyName()));                
             }
-
-            // Create Table
-            DataTable table = new DataTable("Table");
-
-            // Create Table Rows
-            table.Columns.Add("ID", typeof(Int32));
-            table.Columns.Add("Name", typeof(String));
-            table.Columns.Add("Type", typeof(String));
-
-            // Set Column Caption
-            table.Columns["ID"].Caption = "ID";
-            table.Columns["Name"].Caption = "Name";
-            table.Columns["Type"].Caption = "Type";
-
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
-
-            for (int i = 0; i < listLoadCaseID.Count; i++)
-            {
-                DataRow row = table.NewRow();
-
-                try
-                {
-                    row["ID"] = listLoadCaseID[i];
-                    row["Name"] = listLoadCaseName[i];
-                    row["Type"] = listLoadCaseType[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
-
-            Datagrid_LoadCases.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            
+            Datagrid_LoadCases.ItemsSource = loadCases;
 
             // Set Column Header
             /*
@@ -93,38 +53,31 @@ namespace PFD
             */
         }
 
-
-        private string[] arrLoadCaseTypes = new string[6]
+        private void Datagrid_LoadCases_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-        "Permanent load",
-        "Imposed load - short-term",
-        "Imposed load - long-term",
-        "Snow",
-        "Wind",
-        "Earthquake"
-        };
-
-        private void DeleteAllLists()
-        {
-            //Todo - asi sa to da jednoduchsie
-            DeleteLists();
-
-            Datagrid_LoadCases.ItemsSource = null;
-            Datagrid_LoadCases.Items.Clear();
-            Datagrid_LoadCases.Items.Refresh();
+            DataGridCellInfo row = e.AddedCells.FirstOrDefault();
+            if (row != null)
+            {
+                if (row.Item == null) return;
+                if (row.Item is CLoadCaseView)
+                {
+                    CLoadCaseView lcw = (CLoadCaseView)row.Item;
+                    int index = GetLoadCaseIndex(lcw);
+                    if (index != -1) _pfdViewModel.LoadCaseIndex = index;
+                }
+            } 
         }
 
-        // Deleting lists for updating actual values
-        private void DeleteLists()
+        private int GetLoadCaseIndex(CLoadCaseView lcw)
         {
-            listLoadCaseID.Clear();
-            listLoadCaseName.Clear();
-            listLoadCaseType.Clear();
+            if (lcw == null) return -1;
+            for (int i = 0; i < _pfdViewModel.Model.m_arrLoadCases.Length; i++)
+            {
+                if (lcw.LoadCaseID == _pfdViewModel.Model.m_arrLoadCases[i].ID) return i;
+            }
+
+            return -1;
         }
 
-        private void loadCases_Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

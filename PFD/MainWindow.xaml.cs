@@ -225,8 +225,8 @@ namespace PFD
 
             // Load cases
             // Fill combobox items
-            foreach (CLoadCase loadcase in vm.Model.m_arrLoadCases)
-                Combobox_LoadCase.Items.Add(loadcase.Name);
+            //foreach (CLoadCase loadcase in vm.Model.m_arrLoadCases)
+            //    Combobox_LoadCase.Items.Add(loadcase.Name);
 
             //Combobox_LoadCase.SelectedIndex = 0; // Selected load case  - TOto spusti UpdateAll a model sa vytvara znovu
 
@@ -972,7 +972,7 @@ namespace PFD
 
             sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
 
-            sDisplayOptions.bDisplayLoads = chbDisplayLoads.IsChecked == true;
+            sDisplayOptions.bDisplayLoads = vm.ShowLoads;
         }
 
         private void UpdateAll()
@@ -1021,12 +1021,14 @@ namespace PFD
             // Create 3D window
             UpdateDisplayOptions();
 
-            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[Combobox_LoadCase.SelectedIndex]);
+            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[vm.LoadCaseIndex]);
 
             // Display model in 3D preview frame
             Frame1.Content = page1;
             Frame1.UpdateLayout();
         }
+
+
 
         private void GetMinAndMaxValueInTheArray(float[,] array, out float min, out float max)
         {
@@ -1124,8 +1126,8 @@ namespace PFD
             {
                 if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
             }
-            else if (MainTabControl.SelectedIndex == 3)
-                Load_Cases.Content = new UC_LoadCaseList(vm.Model);
+            else if (MainTabControl.SelectedIndex == 3)                
+                Load_Cases.Content = new UC_LoadCaseList(vm);
             else if (MainTabControl.SelectedIndex == 4)
                 Load_Combinations.Content = new UC_LoadCombinationList(vm.Model);
             else if (MainTabControl.SelectedIndex == 5)
@@ -1494,25 +1496,25 @@ namespace PFD
             }
         }
 
-        private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
-        private void chbDisplayLoads_UnChecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
+        //private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+        //    {
+        //        UpdateAll();
+        //    }
+        //}
+        //private void chbDisplayLoads_UnChecked(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+        //    {
+        //        UpdateAll();
+        //    }
+        //}
 
-        private void Combobox_LoadCase_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateAll();
-        }
+        //private void Combobox_LoadCase_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    UpdateAll();
+        //}
 
         //private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
         //{
@@ -1563,7 +1565,7 @@ namespace PFD
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                chbDisplayLoadsOnFrames.IsChecked = false;
+                //chbDisplayLoadsOnFrames.IsChecked = false;
                 //UpdateAll();
             }
         }
@@ -1718,7 +1720,7 @@ namespace PFD
 
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {
-                chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
+                //chbDisplayLoadsOnPurlinsAndGirts.IsChecked = false;
 
 
 
