@@ -8,7 +8,7 @@ namespace PFD
     public class CModelToBFEMNetConverter
     {
 
-        public Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly,
+        public Model Convert(int iFrameIndexTemp, CModel topomodel, bool bCalculateLoadCasesOnly,
             out List<List<List<basicInternalForces>>> resultsoutput,
             out List<List<List<basicDeflections>>> resultsoutputDeflections)
         {
@@ -225,9 +225,20 @@ namespace PFD
                     for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; k++)
                     {
                         Load BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].MemberLoadsList[j], loadcases[i]);
-                        if(BFEMLoad != null)
-                            elementCollection[topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID - 1].Loads.Add(BFEMLoad); // TU je bug kedze Member.ID - 1 ma byt od 0-3 ale Member.ID je z globalneho modelu
-                    } 
+                        if (BFEMLoad != null)
+                        {
+                            // Docasna oprava - pouziva sa globalne ID pruta ale tu sa zmeni na ID elementu v BFENet
+                            int iMemberID_GM = topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID; // ID of Member in Global 3D Model
+                            int iMemberID_FM = iMemberID_GM - iFrameIndexTemp * (4 + 2); // ID of Member in Frame Model
+
+                            if(iMemberID_FM < 1) // Validation
+                            {
+                                throw new ArgumentException("Invalid ID of member assigned to the member load");
+                            }
+
+                            elementCollection[iMemberID_FM - 1].Loads.Add(BFEMLoad); // Tu je bug kedze Member.ID - 1 ma byt od 0-3 ale Member.ID je z globalneho modelu
+                        }
+                    }
                 }
             }
             

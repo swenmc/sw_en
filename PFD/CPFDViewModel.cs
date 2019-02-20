@@ -691,6 +691,7 @@ namespace PFD
             deflectionsframes = new List<List<List<List<basicDeflections>>>>();
 
             bool bCalculateLoadCasesOnly = true;
+            int iFrameIndexTEMP = 0;
 
             foreach (CFrame frame in frameModels)
             {
@@ -700,11 +701,13 @@ namespace PFD
                 // Convert SW_EN model to BFENet model
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
                 // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(frame, bCalculateLoadCasesOnly, out internalforces, out deflections);
+                Model bfemNetModel = converter.Convert(iFrameIndexTEMP, frame, bCalculateLoadCasesOnly, out internalforces, out deflections);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
 
                 internalforcesframes.Add(internalforces); // Add particular frame results
                 deflectionsframes.Add(deflections);
+
+                iFrameIndexTEMP++;
             }
 
             // Calculation of simple beam model
