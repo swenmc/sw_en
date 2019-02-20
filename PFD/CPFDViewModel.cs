@@ -733,7 +733,7 @@ namespace PFD
                 // Convert SW_EN model to BFENet model
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
                 // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(iFrameIndexTEMP, frame,  !DeterminateCombinationResultsByFEMSolver, out internalforces, out deflections);
+                Model bfemNetModel = converter.Convert(iFrameIndexTEMP, frame, !DeterminateCombinationResultsByFEMSolver, out internalforces, out deflections);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
 
                 internalforcesframes.Add(internalforces); // Add particular frame results
@@ -1059,7 +1059,7 @@ namespace PFD
 
                                 // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
                                 // Frame member - vysledky pocitane pre load combinations
-                                if (!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
+                                if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
                                 {
                                     int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                     int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
