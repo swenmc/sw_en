@@ -723,7 +723,6 @@ namespace PFD
             internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
             deflectionsframes = new List<List<List<List<basicDeflections>>>>();
 
-            bool bCalculateLoadCasesOnly = true;
             int iFrameIndexTEMP = 0;
 
             foreach (CFrame frame in frameModels)
@@ -734,7 +733,7 @@ namespace PFD
                 // Convert SW_EN model to BFENet model
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
                 // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(iFrameIndexTEMP, frame, bCalculateLoadCasesOnly, out internalforces, out deflections);
+                Model bfemNetModel = converter.Convert(iFrameIndexTEMP, frame,  !DeterminateCombinationResultsByFEMSolver, out internalforces, out deflections);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
 
                 internalforcesframes.Add(internalforces); // Add particular frame results
@@ -773,7 +772,7 @@ namespace PFD
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
-                    if((bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)) ||
+                    if((!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)) ||
                     (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR))
                     {
                         for (int i = 0; i < iNumberOfDesignSections; i++)
@@ -901,7 +900,7 @@ namespace PFD
                             // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
 
                             // Frame member - vysledky pocitane pre load combinations
-                            if (!bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
+                            if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
                             {
                                 // Nastavit vysledky pre prut ramu
 
@@ -1060,7 +1059,7 @@ namespace PFD
 
                                 // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
                                 // Frame member - vysledky pocitane pre load combinations
-                                if (!bCalculateLoadCasesOnly && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
+                                if (!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
                                 {
                                     int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                     int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie

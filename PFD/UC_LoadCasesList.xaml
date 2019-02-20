@@ -5,28 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Height="1300" Width="750">
+        d:DesignHeight="1270" d:DesignWidth="600">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DataGrid Name ="Datagrid_LoadCases" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <DataGrid Name ="Datagrid_LoadCases" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0"
                   IsReadOnly="true" SelectedCellsChanged="Datagrid_LoadCases_SelectedCellsChanged"
                   SelectionMode="Single" />
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-            <TextBlock Text="Display Options" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
-            <CheckBox Name ="chbDisplayLoads" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <TextBlock Text="Display Options" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Margin="5,0,0,0"/>
+            <CheckBox Name ="chbDisplayLoads" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"
                                   IsChecked="{Binding Path=ShowLoads}">Display Loads</CheckBox>
-            <CheckBox Name ="chbDisplayNodalLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <CheckBox Name ="chbDisplayNodalLoads" Margin="25 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowNodalLoads}">Nodal Loads</CheckBox>
-            <CheckBox Name ="chbDisplayMemberLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <CheckBox Name ="chbDisplayMemberLoads" Margin="25 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnMembers}">Member Loads</CheckBox>
-            <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnPurlinsAndGirts}">Generated on purlins and girts</CheckBox>
-            <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="40 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
-            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <CheckBox Name ="chbDisplaySurfaceLoads" Margin="25 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowSurfaceLoads}">Surface Loads</CheckBox>
         </StackPanel>
     </Grid>
