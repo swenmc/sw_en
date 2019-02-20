@@ -61,7 +61,7 @@ namespace PFD
             // Calculate governing member design ratio in member group
             CCalculMember cGoverningMemberResults;
 
-            if (Model.m_arrLoadCombs[mdinput.LoadCombinationIndex].eLComType == ELSType.eLS_ULS)
+            if (Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(mdinput.SelectedLoadCombinationID)].eLComType == ELSType.eLS_ULS)
                 CalculateGoverningMemberDesignDetails(DesignResults_ULS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             else
                 CalculateGoverningMemberDesignDetails(DesignResults_SLS, GroupOfMembersWithSelectedType, out cGoverningMemberResults);

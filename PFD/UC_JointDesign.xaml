@@ -35,7 +35,8 @@
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Load Combination:" HorizontalAlignment="Left" Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" />
         <ComboBox Grid.Row="1" Grid.Column="1" Name ="Combobox_LoadCombination" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
-                         VerticalAlignment="Top" ItemsSource="{Binding Path=LoadCombinations}" DisplayMemberPath="Name" SelectedIndex="{Binding Path=LoadCombinationIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+                  VerticalAlignment="Top" ItemsSource="{Binding Path=LoadCombinations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                  DisplayMemberPath="Name" SelectedValuePath="ID" SelectedValue="{Binding Path=SelectedLoadCombinationID, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnExceptions=True}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"

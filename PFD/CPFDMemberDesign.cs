@@ -19,13 +19,13 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        private int MLimitStateIndex;
-        private int MLoadCombinationIndex;
+        private int MLimitStateIndex;        
         private int MComponentTypeIndex;
+        private int MSelectedLoadCombinationID;
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private CLimitState[] MLimitStates;
-        private CLoadCombination[] MLoadCombinations;
+        private List<CLoadCombination> MLoadCombinations;
 
         public bool IsSetFromCode = false;
 
@@ -40,6 +40,7 @@ namespace PFD
             set
             {
                 MLimitStateIndex = value;
+                SetLoadCombinations();
 
                 // TODO No. 68 - Pri zmene LimitState nacitat load combinations, ktora patria k danemu limit state a maju spocitane vysledky
                 // PODOBNE PRE INTERNAL FORCES
@@ -49,22 +50,22 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LoadCombinationIndex
-        {
-            get
-            {
-                return MLoadCombinationIndex;
-            }
+        //public int LoadCombinationIndex
+        //{
+        //    get
+        //    {
+        //        return MLoadCombinationIndex;
+        //    }
 
-            set
-            {
-                MLoadCombinationIndex = value;
+        //    set
+        //    {
+        //        MLoadCombinationIndex = value;
 
-                // TODO No. 68 - Pri zmene load combination, spustit vypocet pre vsetky pruty vybraneho typu v component type a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
+        //        // TODO No. 68 - Pri zmene load combination, spustit vypocet pre vsetky pruty vybraneho typu v component type a zobrazit vysledky pre najnevyhodnejsi z nich, max design ratio
 
-                NotifyPropertyChanged("LoadCombinationIndex");
-            }
-        }
+        //        NotifyPropertyChanged("LoadCombinationIndex");
+        //    }
+        //}
 
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
@@ -98,7 +99,7 @@ namespace PFD
             }
         }
 
-        public CLoadCombination[] LoadCombinations
+        public List<CLoadCombination> LoadCombinations
         {
             get
             {
@@ -109,6 +110,8 @@ namespace PFD
             {
                 MLoadCombinations = value;
                 NotifyPropertyChanged("LoadCombinations");
+                SelectedLoadCombinationID = MLoadCombinations[0].ID;
+
             }
         }
 
@@ -125,24 +128,49 @@ namespace PFD
                 NotifyPropertyChanged("ComponentList");
             }
         }
+        public int SelectedLoadCombinationID
+        {
+            get
+            {
+                return MSelectedLoadCombinationID;
+            }
+
+            set
+            {
+                MSelectedLoadCombinationID = value;
+                NotifyPropertyChanged("SelectedLoadCombinationID");
+            }
+        }
+
+        private CLoadCombination[] m_allLoadCombinations;
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDMemberDesign(CLimitState[] limitStates, CLoadCombination[] loadCombinations, ObservableCollection<CComponentInfo> componentList)
+        public CPFDMemberDesign(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
             MLimitStates = limitStates;
-            MLoadCombinations = loadCombinations;
             MComponentList = componentList;
+            m_allLoadCombinations = allLoadCombinations;
+
 
             // Set default
             LimitStateIndex = 0;
-            LoadCombinationIndex = 0;
             ComponentTypeIndex = 0;
-            
+
             IsSetFromCode = false;
         }
+        private void SetLoadCombinations()
+        {
+            CLimitState limitState = LimitStates[LimitStateIndex];
 
+            List<CLoadCombination> loadCombinations = new List<CLoadCombination>();
+            foreach (CLoadCombination lc in m_allLoadCombinations)
+            {
+                if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(lc);
+            }
+            LoadCombinations = loadCombinations;
+        }
         //-------------------------------------------------------------------------------------------------------------
         protected void NotifyPropertyChanged(string propertyName)
         {

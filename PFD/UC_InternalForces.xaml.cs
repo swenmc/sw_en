@@ -85,7 +85,6 @@ namespace PFD
             if (e.PropertyName == "LimitStateIndex") return;
             if (e.PropertyName == "LoadCombinations")
             {
-                vm.LoadCombinationIndex = 0;
                 return;
             }
 
@@ -110,8 +109,8 @@ namespace PFD
             designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
             basicInternalForces[] sBIF_x;
 
-            //kombinacia ktorej vysledky chceme zobrazit
-            CLoadCombination lcomb = vm.LoadCombinations[vm.LoadCombinationIndex];
+            //kombinacia ktorej vysledky chceme zobrazit            
+            CLoadCombination lcomb = Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID)];
 
             //TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
@@ -315,8 +314,8 @@ namespace PFD
             // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
-
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(model, ifinput.LoadCombinationIndex, internalforces);
+            int lcIndex = model.GetLoadCombinationIndex(ifinput.SelectedLoadCombinationID);
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(model, lcIndex, internalforces);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();

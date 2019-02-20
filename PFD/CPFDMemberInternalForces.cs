@@ -19,13 +19,13 @@ namespace PFD
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        private int MLimitStateIndex;
-        private int MLoadCombinationIndex;
+        private int MLimitStateIndex;        
         private int MComponentTypeIndex;
+        private int MSelectedLoadCombinationID;
 
         private ObservableCollection<CComponentInfo> MComponentList;
         private CLimitState[] MLimitStates;
-        private ObservableCollection<CLoadCombination> MLoadCombinations;
+        private List<CLoadCombination> MLoadCombinations;
 
         public bool IsSetFromCode = false;
 
@@ -49,20 +49,21 @@ namespace PFD
         }
 
         //-------------------------------------------------------------------------------------------------------------
-        public int LoadCombinationIndex
-        {
-            get
-            {
-                return MLoadCombinationIndex;
-            }
+        //public int LoadCombinationIndex
+        //{
+        //    get
+        //    {
+        //        return MLoadCombinationIndex;
+        //    }
 
-            set
-            {
-                if(value != -1) MLoadCombinationIndex = value;
-                //TODO No. 68
-                NotifyPropertyChanged("LoadCombinationIndex");                                
-            }
-        }
+        //    set
+        //    {
+        //        if(value != -1) MLoadCombinationIndex = value;
+        //        //TODO No. 68
+        //        NotifyPropertyChanged("LoadCombinationIndex");                                
+        //    }
+        //}
+        
 
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
@@ -108,7 +109,7 @@ namespace PFD
             }
         }
 
-        public ObservableCollection<CLoadCombination> LoadCombinations
+        public List<CLoadCombination> LoadCombinations
         {
             get
             {
@@ -118,7 +119,21 @@ namespace PFD
             set
             {
                 MLoadCombinations = value;                
-                NotifyPropertyChanged("LoadCombinations");                
+                NotifyPropertyChanged("LoadCombinations");
+                SelectedLoadCombinationID = MLoadCombinations[0].ID;
+            }
+        }
+        public int SelectedLoadCombinationID
+        {
+            get
+            {
+                return MSelectedLoadCombinationID;
+            }
+
+            set
+            {
+                MSelectedLoadCombinationID = value;                
+                NotifyPropertyChanged("SelectedLoadCombinationID");
             }
         }
 
@@ -144,13 +159,12 @@ namespace PFD
         {
             CLimitState limitState = LimitStates[LimitStateIndex];
 
-            ObservableCollection<CLoadCombination> loadCombinations = new ObservableCollection<CLoadCombination>();
+            List<CLoadCombination> loadCombinations = new List<CLoadCombination>();
             foreach (CLoadCombination lc in m_allLoadCombinations)
             {
                 if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(lc);
             }
-            LoadCombinations = loadCombinations;
-            LoadCombinationIndex = 0;       
+            LoadCombinations = loadCombinations;            
         }
 
         //-------------------------------------------------------------------------------------------------------------

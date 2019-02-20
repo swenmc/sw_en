@@ -28,9 +28,8 @@ namespace PFD
         List<List<List<basicInternalForces>>> internalforces;
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
-
-        int iLoadCombinationIndex; // Temporary - TODO Ondrej - napojit index load combination vybranej v comboboxe, zohladnit pripad ked budu kombinacie nejako filtrovane alebo sa nespocitaju vsetky, aby idnex z comboboxu odpovedal skutocne tej istej kombinacii (index zapisany vo vysledkoch a index v comboboxe nemusia byt pre tu istu kombinaciu rovnake)
-
+        int iLoadCombinationIndex;
+        
         public FrameInternalForces_2D(CModel example_model, int iLoadCombinationIndex_temp, List<List<List<basicInternalForces>>> list_internalforces)
         {
             model = example_model;

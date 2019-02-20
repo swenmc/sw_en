@@ -211,6 +211,16 @@ namespace PFD
             return -1; //not found
         }
 
+        public static int GetLoadCombinationIndex(this CModel model, int id)
+        {
+            for (int i = 0; i < model.m_arrLoadCombs.Length; i++)
+            {
+                if (model.m_arrLoadCombs[i].ID == id) return i;
+            }
+
+            return -1; //not found
+        }
+
 
 
 
