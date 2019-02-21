@@ -265,6 +265,17 @@
     }
 
     //----------------------------------------------------------------------------
+    // Define foundation type
+    //----------------------------------------------------------------------------
+    public enum EFoundationType
+    {
+       eStrip = 0, // Strip footings / Wall footings
+       eRaft = 1,  // Raft foundations
+       ePad = 2,   // Spread footings / Footing pads
+       ePile = 2,  // Deep foundation - pile foundations
+    }
+
+    //----------------------------------------------------------------------------
     // Define limit state type
     //----------------------------------------------------------------------------
     public enum ELSType
@@ -564,6 +575,8 @@
         public bool bDisplayJoints;
         public bool bDisplayPlates;
         public bool bDisplayConnectors;
+        public bool bDisplayFoundations;
+        public bool bDisplayNodalSupports;
 
         public bool bDisplayMembersCenterLines;
         public bool bDisplaySolidModel;

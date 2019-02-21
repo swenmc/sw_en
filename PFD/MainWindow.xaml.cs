@@ -1126,7 +1126,7 @@ namespace PFD
             {
                 if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
             }
-            else if (MainTabControl.SelectedIndex == 3)                
+            else if (MainTabControl.SelectedIndex == 3)
                 Load_Cases.Content = new UC_LoadCaseList(vm);
             else if (MainTabControl.SelectedIndex == 4)
                 Load_Combinations.Content = new UC_LoadCombinationList(vm.Model);
@@ -1164,6 +1164,9 @@ namespace PFD
                 // Not implemented like UC;
             };
         }
+
+
+        // TO Ondrej - TODO - nemali by sme tieto metody pre checkboxy tiez prerobit na ViewModel properties ???
 
         private void chbLightDirectional_Checked(object sender, RoutedEventArgs e)
         {
@@ -1295,6 +1298,26 @@ namespace PFD
                 UpdateAll();
             }
         }
+        private void chbDisplayFoundations_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                if (chbDisplayFoundations.IsChecked == false)
+                    chbDisplayFoundations.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
+                UpdateAll();
+            }
+        }
+        private void chbDisplayNodalSupports_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                if (chbDisplayNodalSupports.IsChecked == false)
+                    chbDisplayNodalSupports.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
+                UpdateAll();
+            }
+        }
 
         private void chbDisplayMembers_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -1318,6 +1341,22 @@ namespace PFD
             }
         }
         private void chbDisplayConnectors_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayFoundations_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayNodalSupports_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {

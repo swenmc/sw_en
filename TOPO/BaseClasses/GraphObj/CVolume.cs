@@ -391,7 +391,6 @@ namespace BaseClasses.GraphObj
         }
         public GeometryModel3D CreateGM_3D_Volume_8Edges(CVolume volume)
         {
-
             Point3D solidControlEdge = new Point3D(volume.m_pControlPoint.X, volume.m_pControlPoint.Y, volume.m_pControlPoint.Z);
 
             /*
@@ -406,7 +405,6 @@ namespace BaseClasses.GraphObj
             */
 
             return CreateGM_3D_Volume_8EdgesOld(solidControlEdge, volume.m_fDim1, volume.m_fDim2, volume.m_fDim3, volume.m_Material_1);
-
         }
 
         //--------------------------------------------------------------------------------------------

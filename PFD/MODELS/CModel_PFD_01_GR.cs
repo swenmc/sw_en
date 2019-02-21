@@ -924,7 +924,7 @@ namespace PFD
             #region Foundations
             // Foundations
             // Footings
-            m_arrGOVolumes = new CVolume[iFrameNo * 2];
+            m_arrFoundations = new CFoundation[iFrameNo * 2];
 
             // Main Column - Footings
             // TODO - Predbezne doporucene hodnoty vypocitane z rozmerov budovy
@@ -936,10 +936,10 @@ namespace PFD
             {
                 // Left
                 CPoint controlPoint_left = new CPoint(i * 2 + 1, m_arrNodes[i * iFrameNodesNo + 0].X - 0.5f * fFooting_aX, m_arrNodes[i * iFrameNodesNo + 0].Y - 0.5f * fFooting_bY, m_arrNodes[i * iFrameNodesNo + 0].Z - fFooting_h, 0);
-                m_arrGOVolumes[i * 2] = new CVolume(i * 2 + 1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_left, fFooting_aX, fFooting_bY, fFooting_h, new DiffuseMaterial(Brushes.Beige), true, 0);
+                m_arrFoundations[i * 2] = new CFoundation(i * 2 + 1, EFoundationType.ePad, controlPoint_left, fFooting_aX, fFooting_bY, fFooting_h, Colors.Beige, 0.5f, true, 0);
                 // Right
                 CPoint controlPoint_right = new CPoint(i * 2 + 2, m_arrNodes[i * iFrameNodesNo + 4].X - 0.5f * fFooting_aX, m_arrNodes[i * iFrameNodesNo + 4].Y - 0.5f * fFooting_bY, m_arrNodes[i * iFrameNodesNo + 4].Z - fFooting_h, 0);
-                m_arrGOVolumes[i * 2 + 1] = new CVolume(i * 2 + 2, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_right, fFooting_aX, fFooting_bY, fFooting_h, new DiffuseMaterial(Brushes.Beige), true, 0);
+                m_arrFoundations[i * 2 + 1] = new CFoundation(i * 2 + 2, EFoundationType.ePad, controlPoint_right, fFooting_aX, fFooting_bY, fFooting_h, Colors.Beige, 0.5f, true, 0);
             }
 
             #endregion

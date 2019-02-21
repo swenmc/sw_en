@@ -222,16 +222,19 @@
                         <CheckBox Name="chbDisplayPlates" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayPlates_Unchecked" Checked="chbDisplayPlates_Checked">Display Plates</CheckBox>
                         <CheckBox Name="chbDisplayConnectors" Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayConnectors_Unchecked" Checked="chbDisplayConnectors_Checked">Display Connectors</CheckBox>
 
+                        <CheckBox Name="chbDisplayFoundations" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayFoundations_Unchecked" Checked="chbDisplayFoundations_Checked">Display Foundations</CheckBox>
+                        <CheckBox Name="chbDisplayNodalSupports" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayNodalSupports_Unchecked" Checked="chbDisplayNodalSupports_Checked">Nodal Supports</CheckBox>
+
                         <CheckBox Name="chbDisplayMemberDescription" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked ="chbDisplayMemberDescription_Unchecked" Checked="chbDisplayMemberDescription_Checked">Display Member Description</CheckBox>
 
-                        <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembersCenterLines_UnChecked" Checked="chbDisplayMembersCenterLines_Checked">Display Members Centerlines</CheckBox>
-                        <CheckBox Name="chbDisplaySolidModel" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplaySolidModel_Unchecked" Checked="chbDisplaySolidModel_Checked">Display Solid Model</CheckBox>
-                        <CheckBox Name="chbDisplayWireFrameModel" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayWireFrameModel_Unchecked" Checked="chbDisplayWireFrameModel_Checked" >Display Wireframe Model</CheckBox>
+                        <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="15" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembersCenterLines_UnChecked" Checked="chbDisplayMembersCenterLines_Checked">Display Members Centerlines</CheckBox>
+                        <CheckBox Name="chbDisplaySolidModel" Grid.Row="16" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplaySolidModel_Unchecked" Checked="chbDisplaySolidModel_Checked">Display Solid Model</CheckBox>
+                        <CheckBox Name="chbDisplayWireFrameModel" Grid.Row="17" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayWireFrameModel_Unchecked" Checked="chbDisplayWireFrameModel_Checked" >Display Wireframe Model</CheckBox>
 
-                        <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="10" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayDistinguishedColorMember_Checked">Distinguished Color Members</CheckBox>
-                        <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="11" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayTransparentModelMember_Checked">Transparent Members</CheckBox>
+                        <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayDistinguishedColorMember_Checked">Distinguished Color Members</CheckBox>
+                        <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayTransparentModelMember_Checked">Transparent Members</CheckBox>
 
-                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="12" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
+                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
 
                         
 

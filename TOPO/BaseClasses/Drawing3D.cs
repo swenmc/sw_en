@@ -507,6 +507,23 @@ namespace BaseClasses
 
             }
 
+            if(cmodel.m_arrFoundations != null)
+            {
+               SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
+
+                // Model Groups of Volumes
+                for (int i = 0; i < cmodel.m_arrFoundations.Length; i++)
+                {
+                    if (cmodel.m_arrFoundations[i] != null &&
+                        cmodel.m_arrFoundations[i].m_pControlPoint != null &&
+                        cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                    {
+                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(brushFoundations);
+                        model3D_group.Children.Add(model); // Add foundation to the model group
+                    }
+                }
+            }
+
             if (cmodel.m_arrGOVolumes != null) // Some volumes exist
             {
                 // Model Groups of Volumes
