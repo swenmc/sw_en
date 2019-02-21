@@ -14,7 +14,7 @@
     <Grid x:Name="LayoutRoot" Background="White">
         <d3:Chart Name="plotter" >
             <d3:Chart.Title>
-                <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,5">Line graph legend sample</TextBlock>
+                <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,5">Line graph title</TextBlock>
             </d3:Chart.Title>
             <d3:Chart.LegendContent>
                 <d3:LegendItemsPanel>
@@ -29,7 +29,14 @@
                     </d3:LegendItemsPanel.Resources>
                 </d3:LegendItemsPanel>
             </d3:Chart.LegendContent>
-            <Grid Name="lines"/>
+            <Grid Name="lines">
+                <d3:LineGraph x:Name="linegraph1" Description="Axial Force N [kN]" Stroke="Blue" StrokeThickness="2" />
+                <d3:LineGraph x:Name="linegraph2" Description="Shear Force Vx [kN]" Stroke="Green" StrokeThickness="2" />
+                <d3:LineGraph x:Name="linegraph3" Description="Shear Force Vy [kN]" Stroke="Orange" StrokeThickness="2" />
+                <d3:LineGraph x:Name="linegraph4" Description="Torsion Moment T [kNm]" Stroke="Pink" StrokeThickness="2" />
+                <d3:LineGraph x:Name="linegraph5" Description="Bending Moment Mx [kNm]" Stroke="Yellow" StrokeThickness="2" />
+                <d3:LineGraph x:Name="linegraph6" Description="Bending Moment My [kNm]" Stroke="Brown" StrokeThickness="2" />
+            </Grid>
         </d3:Chart>
     </Grid>
     <!--<Grid>

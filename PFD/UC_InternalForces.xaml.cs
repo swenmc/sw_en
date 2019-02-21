@@ -42,6 +42,11 @@ namespace PFD
 
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
         float[] fArr_AxialForceValuesN;
+        float[] fArr_ShearForceValuesVx;
+        float[] fArr_ShearForceValuesVy;
+        float[] fArr_TorsionMomentValuesT;
+        float[] fArr_BendingMomentValuesMx;
+        float[] fArr_BendingMomentValuesMy;
 
         CModel_PFD Model;
         CPFDMemberInternalForces ifinput;
@@ -119,11 +124,7 @@ namespace PFD
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
 
             
-            float[] fArr_ShearForceValuesVx;
-            float[] fArr_ShearForceValuesVy;
-            float[] fArr_TorsionMomentValuesT;
-            float[] fArr_BendingMomentValuesMx;
-            float[] fArr_BendingMomentValuesMy;
+            
 
             //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkych struktur
             //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case alebo load combination rovnaky ale nemusi byt, je potrebne dopracovat
@@ -526,13 +527,13 @@ namespace PFD
 
         private void GraphButton_Click(object sender, RoutedEventArgs e)
         {
-            graph = new GraphWindow(arrPointsCoordX, fArr_AxialForceValuesN);
+            graph = new GraphWindow(arrPointsCoordX, fArr_AxialForceValuesN, fArr_ShearForceValuesVx, fArr_ShearForceValuesVy, fArr_TorsionMomentValuesT, fArr_BendingMomentValuesMx, fArr_BendingMomentValuesMy);
             graph.Show();
         }
-        private void ShowGraph(float[] x_values, float[] y_values)
-        {
-            if(graph == null) graph = new GraphWindow(x_values, y_values);
-            graph.Show();
-        }
+        //private void ShowGraph(float[] x_values, float[] y_values)
+        //{
+        //    //if(graph == null) graph = new GraphWindow(x_values, y_values);
+        //    //graph.Show();
+        //}
     }
 }
