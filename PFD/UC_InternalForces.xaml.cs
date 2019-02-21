@@ -149,9 +149,11 @@ namespace PFD
 
             // BUG 211 - pokusy
             //fArr_AxialForceValuesN = new float[11]{2000,1000,1000,3000,1000,1000,1000,2000,1000,1000,1000};
-            //fArr_AxialForceValuesN = new float[11] { -2000, -1000, -1000, -3000, -1000, -1000, -1000, -2000, -1000, -1000, -1000 };
-            fArr_AxialForceValuesN = new float[11] { 3000, 1000, 1000, 500, -1000, -1000, -1000, -2000, -1000, -1000, -2000 };
-            fArr_BendingMomentValuesMx = new float[11] { 3000, 1000, 1000, 500, -1000, -1000, -1000, -2000, -1000, -1000, -2000 };
+            fArr_AxialForceValuesN = new float[11] { -2000, -1000, -1000, -3000, -1000, -1000, -1000, -2000, -1000, -1000, -1000 };
+            //fArr_BendingMomentValuesMx = new float[11] { 2000, 1000, 1000, 3000, 1000, 1000, 1000, 2000, 1000, 1000, 1000 };
+            fArr_BendingMomentValuesMx = new float[11] { -2000, -1000, -1000, -3000, -1000, -1000, -1000, -2000, -1000, -1000, -1000 };
+            //fArr_AxialForceValuesN = new float[11] { 3000, 1000, 1000, 500, -1000, -1000, -1000, -2000, -1000, -1000, -4000 };
+            //fArr_BendingMomentValuesMx = new float[11] { 3000, 1000, 1000, 500, -1000, -1000, -1000, -2000, -1000, -1000, -4000 };
 
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);

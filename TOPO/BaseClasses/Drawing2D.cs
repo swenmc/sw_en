@@ -1998,18 +1998,24 @@ namespace BaseClasses
 
             // Bug 211 - pokus - upravit suradnice y pre text tak ze sa posunu o tolko aky je posun polyline
 
-            if (fMinValue > 0) // Ak su vsetky hodnoty kladne nastavit povodne suradnice
+            if (fMinValue > 0) // Ak su vsetky hodnoty kladne
             {
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
                 {
-                    arrPointsCoordYTemp[i] = arrPointsCoordY[i];
+                    if (!bYOrientationIsUp)
+                        arrPointsCoordYTemp[i] = -arrPointsCoordY[i] + fPosun;
+                    else
+                        arrPointsCoordYTemp[i] = arrPointsCoordY[i];
                 }
             }
-            else if (fMaxValue < 0) // Ak su vsetky hodnoty zaporne posunut hodnoty
+            else if (fMaxValue < 0) // Ak su vsetky hodnoty zaporne
             {
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
                 {
-                    arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fPosun;
+                    if (!bYOrientationIsUp)
+                        arrPointsCoordYTemp[i] = -arrPointsCoordY[i];
+                    else
+                        arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fPosun;
                 }
             }
             else
@@ -2017,7 +2023,7 @@ namespace BaseClasses
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
                 {
                     if (!bYOrientationIsUp)
-                        arrPointsCoordYTemp[i] = arrPointsCoordY[i] + fMinValue; // TODO
+                        arrPointsCoordYTemp[i] = -arrPointsCoordY[i] + fMaxValue;
                     else
                         arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fMinValue;
                 }
