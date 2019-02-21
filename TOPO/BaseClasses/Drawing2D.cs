@@ -2050,12 +2050,12 @@ namespace BaseClasses
 
                 if (arrPointsCoordYTemp[i] < 0)
                 {
-                    fAdditionalPositionOffset_x = -100;
-                    fAdditionalPositionOffset_y = -50;
+                    fAdditionalPositionOffset_x = -150;
+                    fAdditionalPositionOffset_y = -100;
                 }
                 else
                 {
-                    fAdditionalPositionOffset_x = 5;
+                    fAdditionalPositionOffset_x = 10;
                     fAdditionalPositionOffset_y = 5;
                 }
 

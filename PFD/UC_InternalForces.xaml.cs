@@ -126,8 +126,9 @@ namespace PFD
             //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case alebo load combination rovnaky ale nemusi byt, je potrebne dopracovat
 
             bool bUseResultsForGeometricalCRSCAxis = true; // TODO - toto budem musiet nejako elegantne vyriesit LCS vs PCS pruta, problem sa tiahne uz od zadavaneho zatazenie, vypoctu vn. sil az do posudkov
-
+            int iUnitConversionFactor = 1000; // N to kN, Nm to kNm
             TransformIFStructureOnMemberToFloatArrays(bUseResultsForGeometricalCRSCAxis,
+            iUnitConversionFactor,
             sBIF_x,
             out fArr_AxialForceValuesN,
             out fArr_ShearForceValuesVx,
@@ -222,6 +223,7 @@ namespace PFD
         // TODO - !nastavuje sa tu ci brat vysledky v LCS alebo PCS pruta / resp prierezu
         public void TransformIFStructureOnMemberToFloatArrays(
             bool bUseResultsForGeometricalCRSCAxis, // Use cross-section geometrical axis IF or principal axis IF
+            int iUnitConversionFactor,
             basicInternalForces[] sBIF_x,
             out float[] fArr_AxialForceValuesN,
             out float[] fArr_ShearForceValuesVx,
@@ -241,22 +243,22 @@ namespace PFD
             for (int i = 0; i < iNumberOfDesignSections; i++)
             {
                 // TODO indexy pre cross-section principal axes vs indexy pre local axes
-                fArr_AxialForceValuesN[i] = sBIF_x[i].fN;
-                fArr_TorsionMomentValuesT[i] = sBIF_x[i].fT;
+                fArr_AxialForceValuesN[i] = sBIF_x[i].fN / iUnitConversionFactor;
+                fArr_TorsionMomentValuesT[i] = sBIF_x[i].fT / iUnitConversionFactor;
 
                 if (bUseResultsForGeometricalCRSCAxis)
                 {
-                    fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yy;
-                    fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zz;
-                    fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yy;
-                    fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zz;
+                    fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yy / iUnitConversionFactor;
+                    fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zz / iUnitConversionFactor;
+                    fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yy / iUnitConversionFactor;
+                    fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zz / iUnitConversionFactor;
                 }
                 else
                 {
-                    fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yu;
-                    fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zv;
-                    fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yu;
-                    fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zv;
+                    fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yu / iUnitConversionFactor;
+                    fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zv / iUnitConversionFactor;
+                    fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yu / iUnitConversionFactor;
+                    fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zv / iUnitConversionFactor;
                 }
             }
         }
