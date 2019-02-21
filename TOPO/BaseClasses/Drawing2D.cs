@@ -2051,12 +2051,12 @@ namespace BaseClasses
                 if (arrPointsCoordYTemp[i] < 0)
                 {
                     fAdditionalPositionOffset_x = -150;
-                    fAdditionalPositionOffset_y = -100;
+                    fAdditionalPositionOffset_y = -80;
                 }
                 else
                 {
                     fAdditionalPositionOffset_x = 10;
-                    fAdditionalPositionOffset_y = 5;
+                    fAdditionalPositionOffset_y = 10;
                 }
 
                 DrawText(array_text[i], (modelMarginLeft_x + fFactorX * arrPointsCoordX[i]) + fAdditionalPositionOffset_x,
@@ -2140,7 +2140,7 @@ namespace BaseClasses
                         arrPointsCoordY[i] *= -1f;
                 }
 
-                Drawing2D.DrawPolyLine(arrPointsCoordX, arrPointsCoordY, modelMarginTop_y, modelMarginLeft_x, fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.Blue, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
+                Drawing2D.DrawPolyLine(arrPointsCoordX, arrPointsCoordY, modelMarginTop_y, modelMarginLeft_x, fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.SlateGray, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
         }
     }
