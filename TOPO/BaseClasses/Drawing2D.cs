@@ -1851,7 +1851,7 @@ namespace BaseClasses
             textBlock.Text = text;
             textBlock.Foreground = color;
             //textBlock.Background = new SolidColorBrush(Colors.Red);
-            textBlock.FontSize = fontSize;            
+            textBlock.FontSize = fontSize;
             Size txtSize = MeasureString(textBlock, text);
             
             if (bIsTextOutSide)
@@ -1955,7 +1955,7 @@ namespace BaseClasses
             float fFactorX = 1.0f;
             float fFactorY = 1.0f;
 
-            if (bUseZoomFactor) 
+            if (bUseZoomFactor)
             {
                 float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
                 fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
@@ -1970,9 +1970,56 @@ namespace BaseClasses
             }
         }
 
-        public static void DrawTexts(bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
+        public static void DrawTexts(bool bYOrientationIsUp, bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
             float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, SolidColorBrush color, Canvas canvas)
         {
+            if (!bYOrientationIsUp) // Draw positive values below x-axis
+            {
+                for (int i = 0; i < arrPointsCoordY.Length; i++)
+                    arrPointsCoordY[i] *= -1f;
+            }
+
+            // BUG 211 - pokusy
+            float fMinValue = float.MaxValue;
+            float fMaxValue = float.MinValue;
+
+            for (int i = 0; i < arrPointsCoordY.Length; i++)
+            {
+                if(arrPointsCoordY[i] < fMinValue)
+                   fMinValue = arrPointsCoordY[i];
+
+                if (arrPointsCoordY[i] > fMaxValue)
+                   fMaxValue = arrPointsCoordY[i];
+            }
+
+            float fPosun = fMinValue + fMaxValue;
+
+            float[] arrPointsCoordYTemp = new float[arrPointsCoordY.Length];
+
+            // Bug 211 - pokus - upravit suradnice y pre text tak ze sa posunu o tolko aky je posun polyline
+
+            if (fMinValue > 0) // Ak su vsetky hodnoty kladne nastavit povodne suradnice
+            {
+                for (int i = 0; i < arrPointsCoordY.Length; i++)
+                {
+                    arrPointsCoordYTemp[i] = arrPointsCoordY[i];
+                }
+            }
+            else if (fMaxValue < 0) // Ak su vsetky hodnoty zaporne posunut hodnoty
+            {
+                for (int i = 0; i < arrPointsCoordY.Length; i++)
+                {
+                    arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fPosun;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < arrPointsCoordY.Length; i++)
+                {
+                    arrPointsCoordYTemp[i] = arrPointsCoordY[i] + fMinValue;
+                }
+            }
+
             float fFactorX = 1.0f;
             float fFactorY = 1.0f;
 
@@ -1987,7 +2034,7 @@ namespace BaseClasses
 
             for (int i = 0; i < array_text.Length; i++)
             {
-                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 0, 12, color, canvas);
+                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordYTemp[i], 0, 12, color, canvas);
             }
         }
 
@@ -2060,7 +2107,7 @@ namespace BaseClasses
 
             if (arrPointsCoordY != null)
             {
-                if (!bYOrientationIsUp) // Draw positive values bellow x-axis
+                if (!bYOrientationIsUp) // Draw positive values below x-axis
                 {
                     for (int i = 0; i < arrPointsCoordY.Length; i++)
                         arrPointsCoordY[i] *= -1f;

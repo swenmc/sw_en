@@ -377,7 +377,7 @@ namespace netDxf.Entities
         /// This property is only applicable if leader annotation is a text.
         /// The default option is Above. If this property is set to Centered the text annotation alignment will be used as the hook
         /// point,
-        /// the other three options Outside, JIS, and Bellow doesn't seem to affect the way the text is placed.
+        /// the other three options Outside, JIS, and below doesn't seem to affect the way the text is placed.
         /// </remarks>
         public LeaderTextVerticalPosition TextVerticalPosition
         {

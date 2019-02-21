@@ -50,6 +50,6 @@ namespace netDxf.Entities
         /// <summary>
         /// This options seems to have no effect.
         /// </summary>
-        Bellow = 4
+        Below = 4
     }
 }

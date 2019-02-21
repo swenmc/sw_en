@@ -32,9 +32,9 @@ namespace EC5
     ///          
     ///  "_3_CH" - namespace where are defined checks "final functions and ratio", output variables are inicialized here, final ratio should be saved separately
     ///          - need to use functions from "_1_EQ" and "_2_CL"
-    ///          - subsystem of folders is created for simplier orientation, each "check" (as defined in enum bellow) has its own input and output data,
+    ///          - subsystem of folders is created for simplier orientation, each "check" (as defined in enum below) has its own input and output data,
     ///            which we need to load and save separately (in addittion is effective to save just final ratio
-    ///            Theredore is created separate class for each check (named and numbered as bellow)
+    ///            Theredore is created separate class for each check (named and numbered as below)
     ///            Numbers 8000-10000 are for Stability design
     ///            these function return final ratio and many other auxiliary vaules which we would like to display on screen
     ///      
