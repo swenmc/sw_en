@@ -146,6 +146,11 @@ namespace PFD
             Canvas_BendingMomentDiagramMy.Children.Clear();
 
             // Draw axis (x, y)
+
+            // BUG 211 - pokusy
+            fArr_AxialForceValuesN = new float[11]{2000,1000,1000,3000,1000,1000,1000,2000,1000,1000,1000};
+            fArr_AxialForceValuesN = new float[11] { -2000, -1000, -1000, -3000, -1000, -1000, -1000, -2000, -1000, -1000, -1000 };
+
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
             Drawing2D.DrawAxisInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
@@ -167,14 +172,13 @@ namespace PFD
             Drawing2D.DrawYValuesCurveInCanvas(false, arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_BendingMomentDiagramMy);
 
             // Draw values description
-            DrawTexts(fArr_AxialForceValuesN, arrPointsCoordX, fArr_AxialForceValuesN, Brushes.BlueViolet, Canvas_AxialForceDiagram);
-            DrawTexts(fArr_ShearForceValuesVx, arrPointsCoordX, fArr_ShearForceValuesVx, Brushes.BlueViolet, Canvas_ShearForceDiagramVx);
-            DrawTexts(fArr_ShearForceValuesVy, arrPointsCoordX, fArr_ShearForceValuesVy, Brushes.BlueViolet, Canvas_ShearForceDiagramVy);
+            DrawTexts(true, fArr_AxialForceValuesN, arrPointsCoordX, fArr_AxialForceValuesN, Brushes.BlueViolet, Canvas_AxialForceDiagram);
+            DrawTexts(true, fArr_ShearForceValuesVx, arrPointsCoordX, fArr_ShearForceValuesVx, Brushes.BlueViolet, Canvas_ShearForceDiagramVx);
+            DrawTexts(true, fArr_ShearForceValuesVy, arrPointsCoordX, fArr_ShearForceValuesVy, Brushes.BlueViolet, Canvas_ShearForceDiagramVy);
 
-            DrawTexts(fArr_TorsionMomentValuesT, arrPointsCoordX, fArr_TorsionMomentValuesT, Brushes.BlueViolet, Canvas_TorsionMomentDiagram);
-            DrawTexts(fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_BendingMomentDiagramMx);
-            DrawTexts(fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_BendingMomentDiagramMy);
-
+            DrawTexts(false, fArr_TorsionMomentValuesT, arrPointsCoordX, fArr_TorsionMomentValuesT, Brushes.BlueViolet, Canvas_TorsionMomentDiagram);
+            DrawTexts(false, fArr_BendingMomentValuesMx, arrPointsCoordX, fArr_BendingMomentValuesMx, Brushes.BlueViolet, Canvas_BendingMomentDiagramMx);
+            DrawTexts(false, fArr_BendingMomentValuesMy, arrPointsCoordX, fArr_BendingMomentValuesMy, Brushes.BlueViolet, Canvas_BendingMomentDiagramMy);
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)
@@ -194,41 +198,16 @@ namespace PFD
             }
         }
 
-        // Funkcie su rovnake ako u windspeed, len je pridany parameter pre canvas a vypocet FactorX a FactorY
-        //public void DrawTexts(string[] array_text, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
-        //{
-        //    float[] arrPointsCoordY = new float[arrPointsCoordX.Length];
-        //    for (int i = 0; i < arrPointsCoordY.Length; i++)
-        //        arrPointsCoordY[i] = fPointsCoordY; // Fill array Items with same value
-
-        //    Drawing2D.DrawTexts(array_text, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y,
-        //        modelBottomPosition_y, color, canvasForImage);
-        //}
-
-        //public void DrawTexts(string[] array_text, float fPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
-        //{
-        //    float[] arrPointsCoordX = new float[arrPointsCoordY.Length];
-        //    for (int i = 0; i < arrPointsCoordX.Length; i++)
-        //        arrPointsCoordX[i] = fPointsCoordX; // Fill array Items with same value
-
-        //    Drawing2D.DrawTexts(array_text, arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y,
-        //        modelBottomPosition_y, color, canvasForImage);
-        //}
-
-        //public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float fPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
-        //{
-        //    DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, fPointsCoordY, color, canvasForImage);
-        //}
-
-        //public void DrawTexts(float[] array_ValuesToDisplay, float fPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
-        //{
-        //    DrawTexts(ConvertArrayFloatToString(array_ValuesToDisplay), fPointsCoordX, arrPointsCoordY, color, canvasForImage);
-        //}
-
-        public void DrawTexts(float[] array_ValuesToDisplay, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
+        public void DrawTexts(bool bYOrientationIsUp, float[] array_ValuesToDisplay, float[] arrPointsCoordX, float[] arrPointsCoordY, SolidColorBrush color, Canvas canvasForImage)
         {
+            if (!bYOrientationIsUp) // Draw positive values bellow x-axis
+            {
+                for (int i = 0; i < arrPointsCoordY.Length; i++)
+                    arrPointsCoordY[i] *= -1f;
+            }
+
             Drawing2D.DrawTexts(true, ConvertArrayFloatToString(array_ValuesToDisplay), arrPointsCoordX, arrPointsCoordY, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y,
-                modelBottomPosition_y, false, color, canvasForImage);
+                modelBottomPosition_y, color, canvasForImage);
         }
 
         public string[] ConvertArrayFloatToString(float[] array_float, int iDecimalPlaces = 3)

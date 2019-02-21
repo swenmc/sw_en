@@ -1935,7 +1935,6 @@ namespace BaseClasses
             canvas.Children.Add(textBlock);
         }
 
-
         private static Size MeasureString(TextBlock textBlock, string text)
         {
             var formattedText = new FormattedText(
@@ -1970,6 +1969,28 @@ namespace BaseClasses
                 DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 0, 12, isTextAboveCtrlPoint, color, canvas);
             }
         }
+
+        public static void DrawTexts(bool bUseZoomFactor, string[] array_text, float[] arrPointsCoordX, float[] arrPointsCoordY, float fCanvasWidth, float fCanvasHeight,
+            float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, SolidColorBrush color, Canvas canvas)
+        {
+            float fFactorX = 1.0f;
+            float fFactorY = 1.0f;
+
+            if (bUseZoomFactor)
+            {
+                float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
+                fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
+
+                float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
+                fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+            }
+
+            for (int i = 0; i < array_text.Length; i++)
+            {
+                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordY[i], 0, 12, color, canvas);
+            }
+        }
+
         public static float CalculateZoomFactor(float[] arrPointsCoord, float fCanvasDimension, float fMarginValue1, float fMarginValue2, out float fValueMin, out float fValueMax, out float fRangeOfValues, out float fAxisLength)
         {
             fValueMin = arrPointsCoord.Min();
