@@ -513,5 +513,11 @@ namespace PFD
             // 4.4.3.3 Moment amplification for a sway member
             return fMomentAmplificationFactorDelta_m;
         }
+
+        private void GraphButton_Click(object sender, RoutedEventArgs e)
+        {
+            GraphWindow graph = new GraphWindow();
+            graph.Show();
+        }
     }
 }

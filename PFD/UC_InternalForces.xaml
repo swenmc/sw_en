@@ -71,5 +71,8 @@
                 <Image Source="Resources/frame_if_icon.png"/>
             </StackPanel>
         </Button>
+        <Button Grid.Row="0" Grid.Column="3" Name="GraphButton" Click="GraphButton_Click">
+            Show Graph
+        </Button>
     </Grid>
 </UserControl>
