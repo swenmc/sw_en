@@ -218,6 +218,7 @@
     <Compile Include="Model\ConnectionJointsTypes\CConnectionJoint_A001.cs" />
     <Compile Include="Model\CSystemComponent.cs" />
     <Compile Include="Model\CSegment.cs" />
+    <Compile Include="Model\Foundations\Foundation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\MembersInternalForces.cs" />
     <Compile Include="Results\LoadCombinationsInternalForces.cs" />

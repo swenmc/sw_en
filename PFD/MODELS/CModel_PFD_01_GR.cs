@@ -921,6 +921,29 @@ namespace PFD
             //m_arrMembers[02].CnRelease1 = new CNRelease(6, m_arrMembers[02].NodeStart, bMembRelase1, 0);
             #endregion
 
+            #region Foundations
+            // Foundations
+            // Footings
+            m_arrFoundations = new CFoundation[iFrameNo * 2];
+
+            // Main Column - Footings
+            // TODO - Predbezne doporucene hodnoty vypocitane z rozmerov budovy
+            float fFooting_aX = (float)Math.Round(MathF.Max(0.7f, fW_frame * 0.08f, fL1_frame * 0.40f), 1);
+            float fFooting_bY = (float)Math.Round(MathF.Max(0.6f, fW_frame * 0.07f, fL1_frame * 0.35f), 1);
+            float fFooting_h = 0.4f;
+
+            for (int i = 0; i < iFrameNo; i++)
+            {
+                // Left
+                CPoint controlPoint_left = new CPoint(i * 2 + 1, m_arrNodes[i * iFrameNodesNo + 0].X - 0.5f * fFooting_aX, m_arrNodes[i * iFrameNodesNo + 0].Y - 0.5f * fFooting_bY, m_arrNodes[i * iFrameNodesNo + 0].Z - fFooting_h, 0);
+                m_arrFoundations[i * 2] = new CFoundation(i * 2 + 1, EFoundationType.ePad, controlPoint_left, fFooting_aX, fFooting_bY, fFooting_h, Colors.Beige, 0.5f, true, 0);
+                // Right
+                CPoint controlPoint_right = new CPoint(i * 2 + 2, m_arrNodes[i * iFrameNodesNo + 4].X - 0.5f * fFooting_aX, m_arrNodes[i * iFrameNodesNo + 4].Y - 0.5f * fFooting_bY, m_arrNodes[i * iFrameNodesNo + 4].Z - fFooting_h, 0);
+                m_arrFoundations[i * 2 + 1] = new CFoundation(i * 2 + 2, EFoundationType.ePad, controlPoint_right, fFooting_aX, fFooting_bY, fFooting_h, Colors.Beige, 0.5f, true, 0);
+            }
+
+            #endregion
+
             // Loading
             #region Load Cases
             // Load Cases

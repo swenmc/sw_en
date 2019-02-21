@@ -47,6 +47,9 @@ namespace BaseClasses
         public CIntermediateTransverseSupport[] m_arrIntermediateTransverseSupports;
         // Connections
         public List<CConnectionJointTypes> m_arrConnectionJoints;
+        // Foundations
+        public CFoundation[] m_arrFoundations;
+
         // Loading
         // Nodal Loads
         public CNLoad[] m_arrNLoads;
