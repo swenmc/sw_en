@@ -11,22 +11,15 @@ namespace PFD
 {
     public static class BFEMNetModelHelper
     {
-        public static void GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations,
-            out List<List<List<basicInternalForces>>> resultsoutput,
-            out List<List<List<basicDeflections>>> resultsoutput_deflections)
+        public static LoadCombinationsInternalForces GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations)
         {
-            bool debugging = false;
-            resultsoutput = new List<List<List<basicInternalForces>>>();
-            resultsoutput_deflections = new List<List<List<basicDeflections>>>();
+            bool debugging = false;            
+            LoadCombinationsInternalForces lcIF = new LoadCombinationsInternalForces();
 
             // Load Combinations - results
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
             {
-                // Internal forces
-                List<List<basicInternalForces>> resultsoutput_combination = new List<List<basicInternalForces>>();
-                // Deflections
-                List<List<basicDeflections>> resultsoutput_combination_def = new List<List<basicDeflections>>();
-
+                int loadCombinationID = loadcombinations[i].LcID;                
                 const int iNumberOfResultsSections = 11;
                 double[] xLocations_rel = new double[iNumberOfResultsSections];
 
@@ -34,15 +27,15 @@ namespace PFD
                 for (int s = 0; s < iNumberOfResultsSections; s++)
                     xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
 
+                MembersInternalForces membersResults = new MembersInternalForces();
                 for (int j = 0; j < bfenet_model.Elements.Count; j++) // Each element in the model
                 {
-                    if(debugging) Trace.WriteLine("Element No.: " + (j + 1).ToString());
+                    if (debugging) Trace.WriteLine("Element No.: " + (j + 1).ToString());
                     if (debugging) Trace.WriteLine("Internal forces in particular x positions");
 
                     double elemLength = bfenet_model.Elements[j].GetElementLength();
 
-                    List<basicInternalForces> resultsoutput_member = new List<basicInternalForces>();
-
+                    MemberInternalForces mResult = new MemberInternalForces(bfenet_model.Elements[j].MID);
                     for (int k = 0; k < xLocations_rel.Length; k++)
                     {
                         if (debugging)
@@ -52,26 +45,19 @@ namespace PFD
                             Trace.WriteLine(sMessage + "\t " + eForce);
                         }
 
-                        basicInternalForces temp_x_results = new basicInternalForces();
-                        temp_x_results.fN = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fx;
-                        temp_x_results.fV_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fy;
-                        temp_x_results.fV_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fz;
-                        temp_x_results.fT = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mx;
-                        temp_x_results.fM_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).My;
-                        temp_x_results.fM_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mz;
+                        basicInternalForces x_resultsIF = new basicInternalForces();
+                        x_resultsIF.fN = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fx;
+                        x_resultsIF.fV_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fy;
+                        x_resultsIF.fV_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Fz;
+                        x_resultsIF.fT = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mx;
+                        x_resultsIF.fM_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).My;
+                        x_resultsIF.fM_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetInternalForceAt(xLocations_rel[k] * elemLength, loadcombinations[i]).Mz;
 
-                        resultsoutput_member.Add(temp_x_results);
-                    }
-
-                    resultsoutput_combination.Add(resultsoutput_member);
-
-                    // Deformations
-                    // TODO - dopracovat do BFENEt aby to vracalo aspon nejake rozumne hodnoty :-)
-                    // Pripadne updatovat kniznicu a pozriet sa ci taketo funkcie nepridali
-                    List<basicDeflections> resultsoutput_member_deflections = new List<basicDeflections>();
-
-                    for (int k = 0; k < xLocations_rel.Length; k++)
-                    {
+                        mResult.InternalForces.Add(x_resultsIF);
+                        
+                        // Deformations
+                        // TODO - dopracovat do BFENEt aby to vracalo aspon nejake rozumne hodnoty :-)
+                        // Pripadne updatovat kniznicu a pozriet sa ci taketo funkcie nepridali
                         if (debugging)
                         {
                             string sMessage = "x = " + String.Format(CultureInfo.InvariantCulture, "{0:0.000}", (Math.Round(xLocations_rel[k] * elemLength, 3)));
@@ -79,20 +65,17 @@ namespace PFD
                             Trace.WriteLine(sMessage + "\t " + eDisplacement);
                         }
 
-                        basicDeflections temp_x_results = new basicDeflections();
-                        temp_x_results.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
-                        temp_x_results.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DZ;
+                        basicDeflections x_resultsDeflections = new basicDeflections();
+                        x_resultsDeflections.fDelta_yy = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DY;
+                        x_resultsDeflections.fDelta_zz = (float)(bfenet_model.Elements[j] as FrameElement2Node).GetLocalDeformationAt_MC(xLocations_rel[k] * elemLength, loadcombinations[i]).DZ;
 
-                        resultsoutput_member_deflections.Add(temp_x_results);
+                        mResult.Deflections.Add(x_resultsDeflections);
                     }
-
-                    resultsoutput_combination_def.Add(resultsoutput_member_deflections);
+                    membersResults.Add(mResult.MemberID, mResult);
                 }
-
-                resultsoutput.Add(resultsoutput_combination);
-
-                resultsoutput_deflections.Add(resultsoutput_combination_def);
+                lcIF.Add(loadCombinationID, membersResults);
             }
+            return lcIF;
         }
 
         public static void DisplayResultsinConsole(Model bfenet_model, List<LoadCombination> loadcombinations, bool bWriteResultsInTXTFile)

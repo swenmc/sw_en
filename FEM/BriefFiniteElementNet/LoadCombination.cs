@@ -12,6 +12,7 @@ namespace BriefFiniteElementNet
     [Serializable]
     public sealed class LoadCombination : Dictionary<LoadCase, double>
     {
+        public int LcID;
         /// <summary>
         /// Gets a load combination which have load factor of 1.0 for <see cref="LoadCase.DefaultLoadCase"/> 
         /// </summary>

@@ -8,9 +8,7 @@ namespace PFD
     public class CModelToBFEMNetConverter
     {
 
-        public Model Convert(int iFrameIndexTemp, CModel topomodel, bool bCalculateLoadCasesOnly,
-            out List<List<List<basicInternalForces>>> resultsoutput,
-            out List<List<List<basicDeflections>>> resultsoutputDeflections)
+        public Model Convert(CFrame topomodel, bool bCalculateLoadCasesOnly)
         {
             // Dokumentacia a priklady
             // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
@@ -60,6 +58,7 @@ namespace PFD
 
                 var element_1D_2Node = new FrameElement2Node(nodeCollection[iStartNodeIndex], nodeCollection[iEndNodeIndex]);
                 element_1D_2Node.Label = "e" + topomodel.m_arrMembers[i].ID.ToString();
+                element_1D_2Node.MID = topomodel.m_arrMembers[i].ID;
 
                 var sec = new BriefFiniteElementNet.Sections.UniformParametric1DSection(topomodel.m_arrMembers[i].CrScStart.A_g,
                     topomodel.m_arrMembers[i].CrScStart.I_y,
@@ -100,7 +99,7 @@ namespace PFD
                 // Note: Elements with UseOverridedProperties = true are shown with square sections(dimension of section automatically tunes for better visualization of elements)
                 // but elements with UseOverridedProperties = false will be shown with their real section with real dimesion.
                 element_1D_2Node.UseOverridedProperties = true;
-
+                
                 elementCollection.Add(element_1D_2Node);
             }
 
@@ -192,6 +191,7 @@ namespace PFD
             {
                 // LoadCombination dedi od Dictionary<LoadCase, double>, tj. load case a faktor
                 LoadCombination lcomb = new LoadCombination();
+                lcomb.LcID = topomodel.m_arrLoadCombs[i].ID;
 
                 if (bCalculateLoadCasesOnly)
                 {
@@ -229,9 +229,10 @@ namespace PFD
                         {
                             // Docasna oprava - pouziva sa globalne ID pruta ale tu sa zmeni na ID elementu v BFENet
                             int iMemberID_GM = topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID; // ID of Member in Global 3D Model
-                            int iMemberID_FM = iMemberID_GM - iFrameIndexTemp * (4 + 2); // ID of Member in Frame Model
+                            //int iMemberID_FM = iMemberID_GM - iFrameIndexTemp * (4 + 2); // ID of Member in Frame Model
+                            int iMemberID_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
 
-                            if(iMemberID_FM < 1) // Validation
+                            if (iMemberID_FM < 1) // Validation
                             {
                                 throw new ArgumentException("Invalid ID of member assigned to the member load");
                             }
@@ -244,16 +245,16 @@ namespace PFD
             
             model.Solve();
             // model.Solve_MPC(); //no difference with Model.Solve() - toto su asi identicke prikazy
-            
+
             //model.ShowInternalForce();  //toto tu nebude fungovat pokial to chceme pocitat v Background THREAD
             //model.Show(); //toto tu nebude fungovat pokial to chceme pocitat v Background THREAD
-            
+
             //temporary off
             //BFEMNetModelHelper.DisplayResultsinConsole(model, loadcombinations, false);
 
             // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
-            BFEMNetModelHelper.GetResultsList(model, loadcombinations, out resultsoutput, out resultsoutputDeflections);
-
+            topomodel.LoadCombInternalForcesResults = BFEMNetModelHelper.GetResultsList(model, loadcombinations);
+            
             return model;
         }
 

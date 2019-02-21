@@ -55,16 +55,14 @@ namespace PFD
         // TODO - Ondrej
         // Potrebujeme do UC_InternalForces dostat nejakym sposobom geometriu ramov a vysledky na ramoch aby sme to mohli pre prislusny rozhodujuci MainColumn alebo Rafter zobrazit v FrameInternalForces_2D
         List<CFrame> frameModels;
-        List<List<List<List<basicInternalForces>>>> internalforcesframes;
-        List<List<List<List<basicDeflections>>>> deflectionsframes;
+        //List<List<List<List<basicInternalForces>>>> internalforcesframes;
+        //List<List<List<List<basicDeflections>>>> deflectionsframes;
 
         GraphWindow graph;
 
         public UC_InternalForces(CModel_PFD model, CComponentListVM compList,
             List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases,
-            List<CFrame> frameModels_temp,
-            List<List<List<List<basicInternalForces>>>> internalforcesframes_temp,
-            List<List<List<List<basicDeflections>>>> deflectionsframes_temp
+            List<CFrame> frameModels_temp
             )
         {
             InitializeComponent();
@@ -74,8 +72,8 @@ namespace PFD
 
             // TODO Ondrej - prenos modelov a vyslekov frames do UC_InternalForces
             frameModels = frameModels_temp;
-            internalforcesframes = internalforcesframes_temp; // TO Ondrej - tu je potrebne zohladnit ci boli pocitane v BFENet load cases alebo load combinations, ak load cases tak tento zoznam vysledkov treba nahradit zoznamom pre load combinations
-            deflectionsframes = deflectionsframes_temp;
+            //internalforcesframes = internalforcesframes_temp; // TO Ondrej - tu je potrebne zohladnit ci boli pocitane v BFENet load cases alebo load combinations, ak load cases tak tento zoznam vysledkov treba nahradit zoznamom pre load combinations
+            //deflectionsframes = deflectionsframes_temp;
 
             // Internal forces
             ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
@@ -122,8 +120,6 @@ namespace PFD
 
             //TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
-
-            
             
 
             //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkych struktur
@@ -284,7 +280,7 @@ namespace PFD
 
             // Nacitanie zoznamov vysledkov pre jednotlive load combinations, members, x-locations
             // TODO Ondrej - je potrebne zakomponovat ci sa v BFENet pocitaju load cases alebo load combinations, ak sa pocitaju len load cases musime load combinations vyrobit sami superpoziciou pre kazdy prut, miesto x a vnutornu silu na tom mieste ... podla zoznamu LC v kombinacii, tj. faktorLC1 * vysledok v mieste "x" z LC1 + faktorLC2 * vysledkok v mieste z "x" LC2 + ....
-            List<List<List<basicInternalForces>>> internalforces = internalforcesframes[iFrameIndex]; // Vysledky na konkretnom rame
+            List<List<List<basicInternalForces>>> internalforces = null; // Vysledky na konkretnom rame
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
 

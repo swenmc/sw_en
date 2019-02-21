@@ -45,8 +45,7 @@ namespace BriefFiniteElementNet
             elementType = ElementType.FrameElement2Node;
         }
 
-        #region Field & Properties
-
+        #region Field & Properties        
         private double _webRotation;
         private double _a;
         private double _ay;
@@ -61,6 +60,7 @@ namespace BriefFiniteElementNet
         private bool _hingedAtEnd;
         private double _massDensity;
 
+        
         /// <summary>
         /// Gets or sets a.
         /// </summary>
