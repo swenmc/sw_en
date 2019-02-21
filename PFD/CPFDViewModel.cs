@@ -820,6 +820,7 @@ namespace PFD
                                     sMomentValuesforCb.fM_34 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][7].fM_yy;
                                     sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
 
+                                    // BUG 212 - tu sa nacitaju vysledky pre ram a load case v pripade ze BFENet pocita len Load Cases
                                     sBIF_x = (internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
                                 }
 
@@ -928,10 +929,12 @@ namespace PFD
                                 sMomentValuesforCb_design.fM_34 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][7].fM_yy;
                                 sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
 
+                                // BUG 212 - tu sa nacitaju vysledky pre ram a load combinations v pripade ze BFENet pocita Load Combinations
                                 sBIF_x_design = (internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
                             }
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
+                                // BUG 212 - tu sa nakombinuju vysledky pre load cases podla predpisu v kombinacii
                                 CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                             }
 
