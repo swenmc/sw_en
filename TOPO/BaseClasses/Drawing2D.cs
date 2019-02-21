@@ -2016,7 +2016,10 @@ namespace BaseClasses
             {
                 for (int i = 0; i < arrPointsCoordY.Length; i++)
                 {
-                    arrPointsCoordYTemp[i] = arrPointsCoordY[i] + fMinValue;
+                    if (!bYOrientationIsUp)
+                        arrPointsCoordYTemp[i] = arrPointsCoordY[i] + fMinValue; // TODO
+                    else
+                        arrPointsCoordYTemp[i] = arrPointsCoordY[i] - fMinValue;
                 }
             }
 
