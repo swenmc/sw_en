@@ -29,6 +29,11 @@ namespace BaseClasses
             FTime = fTime;
         }
 
+        public /*override*/ GeometryModel3D CreateGeomModel3D()
+        {
+            return CreateGeomModel3D(new SolidColorBrush(m_volColor_2));
+        }
+
         public /*override*/ GeometryModel3D CreateGeomModel3D(Color colorBrush)
         {
             return CreateGeomModel3D(new SolidColorBrush(colorBrush));

@@ -518,7 +518,7 @@ namespace BaseClasses
                         cmodel.m_arrFoundations[i].m_pControlPoint != null &&
                         cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
                     {
-                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(brushFoundations);
+                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/);
                         model3D_group.Children.Add(model); // Add foundation to the model group
                     }
                 }
