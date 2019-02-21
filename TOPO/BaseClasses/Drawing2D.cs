@@ -2043,7 +2043,25 @@ namespace BaseClasses
 
             for (int i = 0; i < array_text.Length; i++)
             {
-                DrawText(array_text[i], modelMarginLeft_x + fFactorX * arrPointsCoordX[i], modelBottomPosition_y - fFactorY * arrPointsCoordYTemp[i], 0, 12, color, canvas);
+                // Pridavne hodnoty, aby texty nelezali na krivke, mali by sa pocitat z hodnot a sklonu krivky
+
+                float fAdditionalPositionOffset_x;
+                float fAdditionalPositionOffset_y;
+
+                if (arrPointsCoordYTemp[i] < 0)
+                {
+                    fAdditionalPositionOffset_x = -100;
+                    fAdditionalPositionOffset_y = -50;
+                }
+                else
+                {
+                    fAdditionalPositionOffset_x = 5;
+                    fAdditionalPositionOffset_y = 5;
+                }
+
+                DrawText(array_text[i], (modelMarginLeft_x + fFactorX * arrPointsCoordX[i]) + fAdditionalPositionOffset_x,
+                                        (modelBottomPosition_y - fFactorY * arrPointsCoordYTemp[i]) + fAdditionalPositionOffset_y,
+                                        0, 12, color, canvas);
             }
         }
 
