@@ -10,6 +10,8 @@ namespace BaseClasses
 {
     public class CFrame : CModel
     {
+        public LoadCombinationsInternalForces LoadCombInternalForcesResults { get; set; }
+        
         public CFrame(CMember[] members, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model

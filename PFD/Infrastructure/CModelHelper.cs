@@ -201,7 +201,7 @@ namespace PFD
         }
 
         //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
-        public static int GetMemberIndexInFrame(CMember m, CFrame frame)
+        public static int GetMemberIndexInFrame(this CFrame frame, CMember m)
         {
             for (int i = 0; i < frame.m_arrMembers.Length; i++)
             {

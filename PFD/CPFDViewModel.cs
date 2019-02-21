@@ -86,8 +86,8 @@ namespace PFD
         // TODO - Ondrej - zoznamy modelov frames a vysledkov na frames - pre komunikaciu s UC_InternalForces a zobrazenie diagramov v FrameInternalForces_2D
         // TO Ondrej - nerobil som z toho properties lebo este neviem ci to nemalo byt cele nejako inak, cakam ci mi to schvalis :-)
         public List<CFrame> frameModels;
-        public List<List<List<List<basicInternalForces>>>> internalforcesframes;
-        public List<List<List<List<basicDeflections>>>> deflectionsframes;
+        //public List<List<List<List<basicInternalForces>>>> internalforcesframes;
+        //public List<List<List<List<basicDeflections>>>> deflectionsframes;
 
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
@@ -720,26 +720,14 @@ namespace PFD
             // vytvaraju sa tam zatazenia na 4 pruty ramu z BFENet takze polozky s ID - 1 neexistuju
 
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
-            internalforcesframes = new List<List<List<List<basicInternalForces>>>>();
-            deflectionsframes = new List<List<List<List<basicDeflections>>>>();
-
-            int iFrameIndexTEMP = 0;
 
             foreach (CFrame frame in frameModels)
             {
-                List<List<List<basicInternalForces>>> internalforces;
-                List<List<List<basicDeflections>>> deflections;
-
                 // Convert SW_EN model to BFENet model
                 CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
                 // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(iFrameIndexTEMP, frame, !DeterminateCombinationResultsByFEMSolver, out internalforces, out deflections);
+                Model bfemNetModel = converter.Convert(frame, !DeterminateCombinationResultsByFEMSolver);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
-
-                internalforcesframes.Add(internalforces); // Add particular frame results
-                deflectionsframes.Add(deflections);
-
-                iFrameIndexTEMP++;
             }
 
             // Calculation of simple beam model
@@ -793,7 +781,7 @@ namespace PFD
                                 // Set indices to search in results
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iLoadCaseIndex = lc.ID - 1; // nastavit index podla ID load casu
-                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frameModels[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
                                 // Calculate Internal forces just for Load Cases that are included in ULS
                                 if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
@@ -815,18 +803,26 @@ namespace PFD
 
                                     // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                     // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
-                                    sMomentValuesforCb.fM_14 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][2].fM_yy;
-                                    sMomentValuesforCb.fM_24 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][5].fM_yy;
-                                    sMomentValuesforCb.fM_34 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][7].fM_yy;
+                                    //sMomentValuesforCb.fM_14 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][2].fM_yy;
+                                    //sMomentValuesforCb.fM_24 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][5].fM_yy;
+                                    //sMomentValuesforCb.fM_34 = internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex][7].fM_yy;
+
+                                    //tu hore je vidiet ako sa to zmenilo
+                                    sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yy;
+                                    sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yy;
+                                    sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yy;
+
                                     sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                     // BUG 212 - tu sa nacitaju vysledky pre ram a load case v pripade ze BFENet pocita len Load Cases
-                                    sBIF_x = (internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
+                                    //sBIF_x = (internalforcesframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
+                                    sBIF_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
                                 }
 
                                 if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
                                 {
-                                    sBDeflections_x = (deflectionsframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
+                                    //sBDeflections_x = (deflectionsframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
+                                    sBDeflections_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
                                 }
 
                                 if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
@@ -920,17 +916,23 @@ namespace PFD
 
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
-                                int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frameModels[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
                                 
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
-                                sMomentValuesforCb_design.fM_14 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][2].fM_yy;
-                                sMomentValuesforCb_design.fM_24 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][5].fM_yy;
-                                sMomentValuesforCb_design.fM_34 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][7].fM_yy;
+                                //sMomentValuesforCb_design.fM_14 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][2].fM_yy;
+                                //sMomentValuesforCb_design.fM_24 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][5].fM_yy;
+                                //sMomentValuesforCb_design.fM_34 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][7].fM_yy;
+
+                                sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yy;
+                                sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yy;
+                                sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yy;
+                                
                                 sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                 // BUG 212 - tu sa nacitaju vysledky pre ram a load combinations v pripade ze BFENet pocita Load Combinations
-                                sBIF_x_design = (internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
+                                //sBIF_x_design = (internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
+                                sBIF_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
                             }
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
@@ -1066,9 +1068,11 @@ namespace PFD
                                 {
                                     int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                     int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
-                                    int iMemberIndex = CModelHelper.GetMemberIndexInFrame(m, frameModels[iFrameIndex]); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                    int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
-                                    sBDeflection_x_design = (deflectionsframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
+                                    //sBDeflection_x_design = (deflectionsframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
+                                    sBDeflection_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
+
                                     memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
                                     MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }

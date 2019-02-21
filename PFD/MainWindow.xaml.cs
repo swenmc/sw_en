@@ -1138,9 +1138,7 @@ namespace PFD
                 Internal_Forces.Content = new UC_InternalForces(vm.Model,
                     compList,
                     vm.MemberInternalForces,
-                    vm.frameModels,
-                    vm.internalforcesframes,
-                    vm.deflectionsframes
+                    vm.frameModels
                     );
             }
             else if (MainTabControl.SelectedIndex == 6)

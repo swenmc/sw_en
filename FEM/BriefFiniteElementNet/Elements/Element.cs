@@ -16,6 +16,9 @@ namespace BriefFiniteElementNet.Elements
     public abstract class Element : StructurePart
     {
         [NonSerialized]
+        public int MID;
+
+        [NonSerialized]
         internal int Index;
 
         [Obsolete]
