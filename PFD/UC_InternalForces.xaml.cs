@@ -41,6 +41,7 @@ namespace PFD
         const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
         float[] arrPointsCoordX = new float[iNumberOfDesignSections]; // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
+        float[] fArr_AxialForceValuesN;
 
         CModel_PFD Model;
         CPFDMemberInternalForces ifinput;
@@ -51,6 +52,8 @@ namespace PFD
         List<CFrame> frameModels;
         List<List<List<List<basicInternalForces>>>> internalforcesframes;
         List<List<List<List<basicDeflections>>>> deflectionsframes;
+
+        GraphWindow graph;
 
         public UC_InternalForces(CModel_PFD model, CComponentListVM compList,
             List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases,
@@ -115,7 +118,7 @@ namespace PFD
             //TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
 
-            float[] fArr_AxialForceValuesN;
+            
             float[] fArr_ShearForceValuesVx;
             float[] fArr_ShearForceValuesVy;
             float[] fArr_TorsionMomentValuesT;
@@ -185,6 +188,8 @@ namespace PFD
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_TorsionMomentValuesT, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_TorsionMomentDiagram);
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_BendingMomentValuesMx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMx);
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_BendingMomentValuesMy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMy);
+
+            
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)
@@ -521,7 +526,12 @@ namespace PFD
 
         private void GraphButton_Click(object sender, RoutedEventArgs e)
         {
-            GraphWindow graph = new GraphWindow();
+            graph = new GraphWindow(arrPointsCoordX, fArr_AxialForceValuesN);
+            graph.Show();
+        }
+        private void ShowGraph(float[] x_values, float[] y_values)
+        {
+            if(graph == null) graph = new GraphWindow(x_values, y_values);
             graph.Show();
         }
     }

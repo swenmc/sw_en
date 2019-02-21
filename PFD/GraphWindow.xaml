@@ -6,18 +6,35 @@
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"        
-        Title="GraphWindow" Height="300" Width="300">
-    
-    <Grid>
-        <d3:Chart BottomTitle="X" LeftTitle="y">
-            <d3:LineGraph x:Name="linegraph2" Description="Internal forces" Stroke="Red" StrokeThickness="2"/>
+        Title="GraphWindow" Height="700" Width="600">
+    <Window.Resources>
+        <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <d3:Chart Name="plotter" >
+            <d3:Chart.Title>
+                <TextBlock HorizontalAlignment="Center" FontSize="18" Margin="0,5,0,5">Line graph legend sample</TextBlock>
+            </d3:Chart.Title>
+            <d3:Chart.LegendContent>
+                <d3:LegendItemsPanel>
+                    <d3:LegendItemsPanel.Resources>
+                        <DataTemplate x:Key="InteractiveDataDisplay.WPF.LineGraph">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding Path=Visibility, Converter={StaticResource VisibilityToCheckedConverter}, Mode=TwoWay}"/>
+                                <Line Width="15" Height="15" X1="0" Y1="0" X2="15" Y2="15" Stroke="{Binding Path=Stroke}" StrokeThickness="2"/>
+                                <TextBlock Margin="5,0,0,0" Text="{Binding Path=Description}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </d3:LegendItemsPanel.Resources>
+                </d3:LegendItemsPanel>
+            </d3:Chart.LegendContent>
+            <Grid Name="lines"/>
         </d3:Chart>
-        <!--<StackPanel Orientation="Vertical">
-            --><!--<d3:Chart BottomTitle="Argument" LeftTitle="Function">
-                <d3:LineGraph x:Name="linegraph" Description="Simple linegraph" Stroke="Blue" StrokeThickness="3"/>
-            </d3:Chart>--><!--
-            
-        </StackPanel>-->
-        
     </Grid>
+    <!--<Grid>
+        <d3:Chart BottomTitle="X" LeftTitle="y" >
+            <d3:LineGraph x:Name="linegraph" Description="Internal forces" Stroke="Blue" StrokeThickness="2"/>
+        </d3:Chart>
+    </Grid>-->
 </Window>
