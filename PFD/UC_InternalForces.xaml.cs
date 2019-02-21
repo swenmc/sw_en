@@ -109,7 +109,7 @@ namespace PFD
             designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
             basicInternalForces[] sBIF_x;
 
-            //kombinacia ktorej vysledky chceme zobrazit            
+            // Kombinacia ktorej vysledky chceme zobrazit
             CLoadCombination lcomb = Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID)];
 
             //TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
@@ -125,7 +125,9 @@ namespace PFD
             //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkych struktur
             //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case alebo load combination rovnaky ale nemusi byt, je potrebne dopracovat
 
-            TransformIFStructureOnMemberToFloatArrays(
+            bool bUseResultsForGeometricalCRSCAxis = true; // TODO - toto budem musiet nejako elegantne vyriesit LCS vs PCS pruta, problem sa tiahne uz od zadavaneho zatazenie, vypoctu vn. sil az do posudkov
+
+            TransformIFStructureOnMemberToFloatArrays(bUseResultsForGeometricalCRSCAxis,
             sBIF_x,
             out fArr_AxialForceValuesN,
             out fArr_ShearForceValuesVx,
@@ -135,7 +137,7 @@ namespace PFD
             out fArr_BendingMomentValuesMy
             );
 
-            //clear canvases
+            // Clear canvases
             Canvas_AxialForceDiagram.Children.Clear();
             Canvas_ShearForceDiagramVx.Children.Clear();
             Canvas_ShearForceDiagramVy.Children.Clear();
@@ -245,7 +247,9 @@ namespace PFD
         }
 
         // TODO - tato transformacia je zbytocna ak prepracujeme zobrazovanie priamo na vykreslovanie poloziek struktury
+        // TODO - !nastavuje sa tu ci brat vysledky v LCS alebo PCS pruta / resp prierezu
         public void TransformIFStructureOnMemberToFloatArrays(
+            bool bUseResultsForGeometricalCRSCAxis, // Use cross-section geometrical axis IF or principal axis IF
             basicInternalForces[] sBIF_x,
             out float[] fArr_AxialForceValuesN,
             out float[] fArr_ShearForceValuesVx,
@@ -266,11 +270,22 @@ namespace PFD
             {
                 // TODO indexy pre cross-section principal axes vs indexy pre local axes
                 fArr_AxialForceValuesN[i] = sBIF_x[i].fN;
-                fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yu;
-                fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zv;
                 fArr_TorsionMomentValuesT[i] = sBIF_x[i].fT;
-                fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yu;
-                fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zv;
+
+                if (bUseResultsForGeometricalCRSCAxis)
+                {
+                    fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yy;
+                    fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zz;
+                    fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yy;
+                    fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zz;
+                }
+                else
+                {
+                    fArr_ShearForceValuesVx[i] = sBIF_x[i].fV_yu;
+                    fArr_ShearForceValuesVy[i] = sBIF_x[i].fV_zv;
+                    fArr_BendingMomentValuesMx[i] = sBIF_x[i].fM_yu;
+                    fArr_BendingMomentValuesMy[i] = sBIF_x[i].fM_zv;
+                }
             }
         }
 
