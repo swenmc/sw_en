@@ -709,16 +709,6 @@ namespace PFD
                 loadGenerator.GenerateLoadsOnFrames();
             }
 
-            // TO Ondrej - zhrnul by som to asi tak ze Praca chvatna malo platna :)
-            // Tou upravovou ze CFrame dedi CModel sa pokazil vypocet
-            // V mojej naivnej snahe opravit to som to asi odplalil uplne, tipujem ze problem je v tom ze tam lietaju ID z globalneho modelu a ID v modeli ramu
-            // takze by to chcelo ujasnit ci chceme v modeli ramu vsetko cislovat od 0 alebo zachovame ID z globalneho modelu
-            // Ak budeme cislovat od 0 je potrebne do modelu ramu prevadzat globalne ID tak aby bolo od 0
-            // Zachovame ID z globalneho modelu je potrebne upravit convertor aby pocital s tym ze ID v modeli ramu nezacinaju vzdy od 0
-
-            // Problem je asi v tom, ze v metode Convert su v zatazovacich stavov zoznamy member load s ID members z globalneho modelu a
-            // vytvaraju sa tam zatazenia na 4 pruty ramu z BFENet takze polozky s ID - 1 neexistuju
-
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
 
             foreach (CFrame frame in frameModels)
@@ -939,6 +929,11 @@ namespace PFD
                                 // BUG 212 - tu sa nakombinuju vysledky pre load cases podla predpisu v kombinacii
                                 CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                             }
+
+                            float fNS = sBIF_x_design[1].fN;
+                            float fNE = sBIF_x_design[9].fN;
+                            float fMyS = sBIF_x_design[1].fM_yy;
+                            float fMyE = sBIF_x_design[9].fM_yy;
 
                             // Member design internal forces
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)

@@ -19,9 +19,9 @@ namespace FEM_CALC_BASE
 
             if (listMemberLoadForces != null) // If some results data exist
             {
-                foreach (CLoadCase lc in lcomb.LoadCasesList)
+                for(int lcIndex = 0; lcIndex < lcomb.LoadCasesList.Count; lcIndex++)
                 {
-                    CMemberInternalForcesInLoadCases mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
+                    CMemberInternalForcesInLoadCases mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lcomb.LoadCasesList[lcIndex].ID);
                     if (mlf != null)
                     {
                         // TODO - malo by sa nastavovat u pruta ale moze zavisiet od zatazenia
@@ -30,24 +30,26 @@ namespace FEM_CALC_BASE
                         sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1f;
                         sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1f;
 
-                        sMomentValuesforCb_output.fM_14 += lc.Factor * mlf.BendingMomentValues.fM_14;
-                        sMomentValuesforCb_output.fM_24 += lc.Factor * mlf.BendingMomentValues.fM_24;
-                        sMomentValuesforCb_output.fM_34 += lc.Factor * mlf.BendingMomentValues.fM_34;
-                        sMomentValuesforCb_output.fM_max += lc.Factor * mlf.BendingMomentValues.fM_max;
+                        float fcurrentLoadCaseFactor = lcomb.LoadCasesFactorsList[lcIndex];
+
+                        sMomentValuesforCb_output.fM_14 += fcurrentLoadCaseFactor * mlf.BendingMomentValues.fM_14;
+                        sMomentValuesforCb_output.fM_24 += fcurrentLoadCaseFactor * mlf.BendingMomentValues.fM_24;
+                        sMomentValuesforCb_output.fM_34 += fcurrentLoadCaseFactor * mlf.BendingMomentValues.fM_34;
+                        sMomentValuesforCb_output.fM_max += fcurrentLoadCaseFactor * mlf.BendingMomentValues.fM_max;
 
                         int j = 0;
                         foreach (basicInternalForces bif in mlf.InternalForces)
                         {
-                            sBIF_x_output[j].fN += lc.Factor * bif.fN;
-                            sBIF_x_output[j].fV_yu += lc.Factor * bif.fV_yu;
-                            sBIF_x_output[j].fV_yy += lc.Factor * bif.fV_yy;
-                            sBIF_x_output[j].fV_zv += lc.Factor * bif.fV_zv;
-                            sBIF_x_output[j].fV_zz += lc.Factor * bif.fV_zz;
-                            sBIF_x_output[j].fT += lc.Factor * bif.fT;
-                            sBIF_x_output[j].fM_yu += lc.Factor * bif.fM_yu;
-                            sBIF_x_output[j].fM_yy += lc.Factor * bif.fM_yy;
-                            sBIF_x_output[j].fM_zv += lc.Factor * bif.fM_zv;
-                            sBIF_x_output[j].fM_zz += lc.Factor * bif.fM_zz;
+                            sBIF_x_output[j].fN += fcurrentLoadCaseFactor * bif.fN;
+                            sBIF_x_output[j].fV_yu += fcurrentLoadCaseFactor * bif.fV_yu;
+                            sBIF_x_output[j].fV_yy += fcurrentLoadCaseFactor * bif.fV_yy;
+                            sBIF_x_output[j].fV_zv += fcurrentLoadCaseFactor * bif.fV_zv;
+                            sBIF_x_output[j].fV_zz += fcurrentLoadCaseFactor * bif.fV_zz;
+                            sBIF_x_output[j].fT += fcurrentLoadCaseFactor * bif.fT;
+                            sBIF_x_output[j].fM_yu += fcurrentLoadCaseFactor * bif.fM_yu;
+                            sBIF_x_output[j].fM_yy += fcurrentLoadCaseFactor * bif.fM_yy;
+                            sBIF_x_output[j].fM_zv += fcurrentLoadCaseFactor * bif.fM_zv;
+                            sBIF_x_output[j].fM_zz += fcurrentLoadCaseFactor * bif.fM_zz;
 
                             j++;
                         }
@@ -63,19 +65,21 @@ namespace FEM_CALC_BASE
 
             if (listMemberDeflections != null) // If some results data exist
             {
-                foreach (CLoadCase lc in lcomb.LoadCasesList)
+                for(int lcIndex = 0; lcIndex < lcomb.LoadCasesList.Count; lcIndex++)
                 {
-                    CMemberDeflectionsInLoadCases mdefl = listMemberDeflections.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lc.ID);
+                    CMemberDeflectionsInLoadCases mdefl = listMemberDeflections.Find(i => i.Member.ID == m.ID && i.LoadCase.ID == lcomb.LoadCasesList[lcIndex].ID);
                     if (mdefl != null)
                     {
+                        float fcurrentLoadCaseFactor = lcomb.LoadCasesFactorsList[lcIndex];
+
                         int j = 0;
                         foreach (basicDeflections bdef in mdefl.Deflections)
                         {
-                            sBDeflections_x_output[j].fDelta_yu += lc.Factor * bdef.fDelta_yu;
-                            sBDeflections_x_output[j].fDelta_yy += lc.Factor * bdef.fDelta_yy;
-                            sBDeflections_x_output[j].fDelta_zv += lc.Factor * bdef.fDelta_zv;
-                            sBDeflections_x_output[j].fDelta_zz += lc.Factor * bdef.fDelta_zz;
-                            sBDeflections_x_output[j].fDelta_tot += (float)Math.Sqrt(MathF.Pow2(lc.Factor * bdef.fDelta_yu) + MathF.Pow2(lc.Factor * bdef.fDelta_zv));
+                            sBDeflections_x_output[j].fDelta_yu += fcurrentLoadCaseFactor * bdef.fDelta_yu;
+                            sBDeflections_x_output[j].fDelta_yy += fcurrentLoadCaseFactor * bdef.fDelta_yy;
+                            sBDeflections_x_output[j].fDelta_zv += fcurrentLoadCaseFactor * bdef.fDelta_zv;
+                            sBDeflections_x_output[j].fDelta_zz += fcurrentLoadCaseFactor * bdef.fDelta_zz;
+                            sBDeflections_x_output[j].fDelta_tot += (float)Math.Sqrt(MathF.Pow2(fcurrentLoadCaseFactor * bdef.fDelta_yu) + MathF.Pow2(fcurrentLoadCaseFactor * bdef.fDelta_zv));
 
                             j++;
                         }
