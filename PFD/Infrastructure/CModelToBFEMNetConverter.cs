@@ -230,7 +230,7 @@ namespace PFD
                             // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
                             int iMemberIndex_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
 
-                            if (iMemberIndex_FM < 0 && iMemberIndex_FM > elementCollection.Count-1) // Validation
+                            if (iMemberIndex_FM < 0 || iMemberIndex_FM > elementCollection.Count-1) // Validation
                             {
                                 // Index pruta ma byt od 0 - 3, ale odkaz v zatazeni je Member.ID je z globalneho modelu
                                 throw new ArgumentException("Invalid ID of member assigned to the member load");

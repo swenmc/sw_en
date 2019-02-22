@@ -222,6 +222,45 @@ namespace PFD
         }
 
 
+        /// <summary>
+        /// Method for model validation. Tries to find IDs duplicates...
+        /// </summary>
+        /// <param name="model">Main model</param>
+        public static void ValidateModel(this CModel_PFD_01_GR model)
+        {
+            //find duplicate Member IDs
+            var duplicateMembers = model.m_arrMembers.GroupBy(m => m.ID).Select(g => new { Count = g.Count(), ID = g.Key }).Where(g => g.Count > 1);
+            foreach (var duplicateM in duplicateMembers)
+            {
+                List<CMember> errorMembers = model.m_arrMembers.Where(m => m.ID == duplicateM.ID).ToList();
+                string s = "";
+                foreach (CMember m in errorMembers)
+                {
+                    for (int i = 0; i < model.m_arrMembers.Length; i++)
+                    {
+                        s += i + ", ";
+                    }                        
+                }
+                throw new Exception($"Member With same ID [{duplicateM.ID}] are at indexes: {s}");
+            }
+
+            //find duplicate Nodes IDs
+            var duplicateNodes = model.m_arrNodes.GroupBy(m => m.ID).Select(g => new { Count = g.Count(), ID = g.Key }).Where(g => g.Count > 1);
+            foreach (var duplicateNode in duplicateNodes)
+            {
+                List<CNode> errorNodes = model.m_arrNodes.Where(m => m.ID == duplicateNode.ID).ToList();
+                string s = "";
+                foreach (CNode m in errorNodes)
+                {
+                    for (int i = 0; i < model.m_arrNodes.Length; i++)
+                    {
+                        s += i + ", ";
+                    }
+                }
+                throw new Exception($"Nodes With same ID [{duplicateNode.ID}] are at indexes: {s}");
+            }
+
+        }
 
 
 
