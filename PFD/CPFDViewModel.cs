@@ -77,8 +77,12 @@ namespace PFD
         public CCalcul_1170_5 Eq;
         public CPFDLoadInput Loadinput;
 
-        public List<CMemberInternalForcesInLoadCases> MemberInternalForces;
-        public List<CMemberDeflectionsInLoadCases> MemberDeflections;
+        public List<CMemberInternalForcesInLoadCases> MemberInternalForcesInLoadCases;
+        public List<CMemberDeflectionsInLoadCases> MemberDeflectionsInLoadCases;
+
+        public List<CMemberInternalForcesInLoadCombinations> MemberInternalForcesInLoadCombinations;
+        public List<CMemberDeflectionsInLoadCombinations> MemberDeflectionsInLoadCombinations;
+
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
@@ -736,8 +740,11 @@ namespace PFD
             CMember MaximumDesignRatioColumn = new CMember();
 
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            MemberInternalForces = new List<CMemberInternalForcesInLoadCases>();
-            MemberDeflections = new List<CMemberDeflectionsInLoadCases>();
+            MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
+            MemberDeflectionsInLoadCases = new List<CMemberDeflectionsInLoadCases>();
+
+            MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
+            MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
 
             System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -815,8 +822,8 @@ namespace PFD
                                     sBDeflections_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
                                 }
 
-                                if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
-                                if (sBDeflections_x != null) MemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                                if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
                             }
                             else // Single member
                             {
@@ -845,8 +852,8 @@ namespace PFD
                                     }
                                 }
 
-                                if (sBIF_x != null) MemberInternalForces.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
-                                if (sBDeflections_x != null) MemberDeflections.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                                if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
 
                                 //m.MMomentValuesforCb.Add(sMomentValuesforCb);
                                 //m.MBIF_x.Add(sBIF_x);
@@ -927,13 +934,11 @@ namespace PFD
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
                                 // BUG 212 - tu sa nakombinuju vysledky pre load cases podla predpisu v kombinacii
-                                CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForces, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
+                                CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
                             }
 
-                            float fNS = sBIF_x_design[1].fN;
-                            float fNE = sBIF_x_design[9].fN;
-                            float fMyS = sBIF_x_design[1].fM_yy;
-                            float fMyE = sBIF_x_design[9].fM_yy;
+                            // 22.2.2019 - Ulozime vnutorne sily v kombinacii - pre zobrazenie v Internal forces
+                            if (sBIF_x_design != null) MemberInternalForcesInLoadCombinations.Add(new CMemberInternalForcesInLoadCombinations(m, lcomb, sBIF_x_design, sMomentValuesforCb_design));
 
                             // Member design internal forces
                             if (m.BIsDSelectedForDesign) // Only structural members (not auxiliary members or members with deactivated design)
@@ -1073,10 +1078,13 @@ namespace PFD
                                 }
                                 else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                                 {
-                                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflections, iNumberOfDesignSections, out sBDeflection_x_design);
+                                    CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
                                     memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
                                     MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }
+
+                                // 22.2.2019 - Ulozime priehyby v kombinacii - pre zobrazenie v Internal forces
+                                if (sBDeflection_x_design != null) MemberDeflectionsInLoadCombinations.Add(new CMemberDeflectionsInLoadCombinations(m, lcomb, sBDeflection_x_design));
 
                                 // Set maximum design ratio of whole structure
                                 if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
@@ -1093,6 +1101,11 @@ namespace PFD
                                                       "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString());
                             }
                         }
+
+                        float fNS = MemberInternalForcesInLoadCombinations[0].InternalForces[1].fN;
+                        float fNE = MemberInternalForcesInLoadCombinations[0].InternalForces[9].fN;
+                        float fMyS = MemberInternalForcesInLoadCombinations[0].InternalForces[1].fM_yy;
+                        float fMyE = MemberInternalForcesInLoadCombinations[0].InternalForces[9].fM_yy;
                     }
                 }
                 progressValue += step;

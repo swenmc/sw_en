@@ -10,7 +10,7 @@ namespace BaseClasses
     {
         public MembersInternalForces()
         {
-            
+
         }
     }
 }

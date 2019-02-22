@@ -29,8 +29,8 @@ namespace PFD
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
         int iLoadCombinationIndex;
-        
-        public FrameInternalForces_2D(CModel example_model, int iLoadCombinationIndex_temp, List<List<List<basicInternalForces>>> list_internalforces)
+
+        public FrameInternalForces_2D(bool bDeterminateCombinationResultsByFEMSolver, CModel example_model, int iLoadCombinationIndex_temp, List<List<List<basicInternalForces>>> list_internalforces)
         {
             model = example_model;
             iLoadCombinationIndex = iLoadCombinationIndex_temp;

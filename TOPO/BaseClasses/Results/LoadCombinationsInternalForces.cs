@@ -10,7 +10,6 @@ namespace BaseClasses
     {
         public LoadCombinationsInternalForces()
         {
-            
         }
     }
 }

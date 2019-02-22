@@ -12,7 +12,6 @@ namespace BaseClasses
         double[] _xLocations;
         List<basicInternalForces> _internalForces;
         List<basicDeflections> _deflections;
-        
 
         public int MemberID
         {
@@ -68,7 +67,7 @@ namespace BaseClasses
 
         public MemberInternalForces(int memberID)
         {
-            MemberID = memberID;            
+            MemberID = memberID;
             InternalForces = new List<basicInternalForces>();
             Deflections = new List<basicDeflections>();
         }

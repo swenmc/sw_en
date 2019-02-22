@@ -11,6 +11,48 @@ namespace FEM_CALC_BASE
     public static class CMemberResultsManager
     {
         // Internal forces - ULS
+        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, int iNumberOfMemberResultsSections, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
+        {
+            sBucklingLengthFactors = new designBucklingLengthFactors();
+            sMomentValuesforCb_output = new designMomentValuesForCb();
+            sBIF_x_output = new basicInternalForces[iNumberOfMemberResultsSections];
+
+            if (listMemberLoadForces != null) // If some results data exist
+            {
+                CMemberInternalForcesInLoadCombinations mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
+                if (mlf != null)
+                {
+                    // TODO - malo by sa nastavovat u pruta ale moze zavisiet od zatazenia
+                    sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1f;
+                    sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1f;
+                    sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1f;
+                    sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1f;
+
+                    sMomentValuesforCb_output.fM_14 = mlf.BendingMomentValues.fM_14;
+                    sMomentValuesforCb_output.fM_24 = mlf.BendingMomentValues.fM_24;
+                    sMomentValuesforCb_output.fM_34 = mlf.BendingMomentValues.fM_34;
+                    sMomentValuesforCb_output.fM_max = mlf.BendingMomentValues.fM_max;
+
+                    int j = 0;
+                    foreach (basicInternalForces bif in mlf.InternalForces)
+                    {
+                        sBIF_x_output[j].fN = bif.fN;
+                        sBIF_x_output[j].fV_yu = bif.fV_yu;
+                        sBIF_x_output[j].fV_yy = bif.fV_yy;
+                        sBIF_x_output[j].fV_zv = bif.fV_zv;
+                        sBIF_x_output[j].fV_zz = bif.fV_zz;
+                        sBIF_x_output[j].fT = bif.fT;
+                        sBIF_x_output[j].fM_yu = bif.fM_yu;
+                        sBIF_x_output[j].fM_yy = bif.fM_yy;
+                        sBIF_x_output[j].fM_zv = bif.fM_zv;
+                        sBIF_x_output[j].fM_zz = bif.fM_zz;
+
+                        j++;
+                    }
+                }
+            }
+        }
+
         public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, int iNumberOfMemberResultsSections, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
             sBucklingLengthFactors = new designBucklingLengthFactors();

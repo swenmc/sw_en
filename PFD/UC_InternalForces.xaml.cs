@@ -48,9 +48,10 @@ namespace PFD
         float[] fArr_BendingMomentValuesMx;
         float[] fArr_BendingMomentValuesMy;
 
+        bool DeterminateCombinationResultsByFEMSolver;
         CModel_PFD Model;
         CPFDMemberInternalForces ifinput;
-        List<CMemberInternalForcesInLoadCases> ListMemberInternalForcesInLoadCases;
+        List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
 
         // TODO - Ondrej
         // Potrebujeme do UC_InternalForces dostat nejakym sposobom geometriu ramov a vysledky na ramoch aby sme to mohli pre prislusny rozhodujuci MainColumn alebo Rafter zobrazit v FrameInternalForces_2D
@@ -60,15 +61,16 @@ namespace PFD
 
         GraphWindow graph;
 
-        public UC_InternalForces(CModel_PFD model, CComponentListVM compList,
-            List<CMemberInternalForcesInLoadCases> listMemberInternalForcesInLoadCases,
+        public UC_InternalForces(bool bDeterminateCombinationResultsByFEMSolver, CModel_PFD model, CComponentListVM compList,
+            List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations,
             List<CFrame> frameModels_temp
             )
         {
             InitializeComponent();
 
+            DeterminateCombinationResultsByFEMSolver = bDeterminateCombinationResultsByFEMSolver;
             Model = model;
-            ListMemberInternalForcesInLoadCases = listMemberInternalForcesInLoadCases;
+            ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
 
             // TODO Ondrej - prenos modelov a vyslekov frames do UC_InternalForces
             frameModels = frameModels_temp;
@@ -109,7 +111,7 @@ namespace PFD
             for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
                 arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * fMemberLength_xMax; // Int must be converted to the float to get decimal numbers
 
-            // Perform displayin of internal foces just for ULS combinations
+            // Perform display in of internal foces just for ULS combinations
             // Member basic internal forces
             designBucklingLengthFactors sBucklingLengthFactors;
             designMomentValuesForCb sMomentValuesforCb; // Nepouziva sa
@@ -119,8 +121,10 @@ namespace PFD
             CLoadCombination lcomb = Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID)];
 
             //TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
-            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
-            
+            //CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
+
+            // Zmena 22.02.20019 - Potrebujeme pracovat s LoadCombinations, pretoze BFENet moze vracat vysledky v Load Cases aj Load Combinations
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(member, lcomb, ListMemberInternalForcesInLoadCombinations, iNumberOfDesignSections, out sBucklingLengthFactors, out sMomentValuesforCb, out sBIF_x);
 
             //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkych struktur
             //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case alebo load combination rovnaky ale nemusi byt, je potrebne dopracovat
@@ -137,7 +141,7 @@ namespace PFD
             out fArr_BendingMomentValuesMx,
             out fArr_BendingMomentValuesMy
             );
-                        
+
             if (arrPointsCoordX == null) return;
             if (fArr_AxialForceValuesN == null) return;
             if (fArr_ShearForceValuesVx == null) return;
@@ -145,7 +149,7 @@ namespace PFD
             if (fArr_TorsionMomentValuesT == null) return;
             if (fArr_BendingMomentValuesMx == null) return;
             if (fArr_BendingMomentValuesMy == null) return;
-            
+
             // Clear canvases
             Canvas_AxialForceDiagram.Children.Clear();
             Canvas_ShearForceDiagramVx.Children.Clear();
@@ -193,8 +197,6 @@ namespace PFD
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_TorsionMomentValuesT, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_TorsionMomentDiagram);
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_BendingMomentValuesMx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMx);
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_BendingMomentValuesMy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMy);
-
-
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)
@@ -321,8 +323,8 @@ namespace PFD
             // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
-            int lcIndex = model.GetLoadCombinationIndex(ifinput.SelectedLoadCombinationID);
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(model, lcIndex, internalforces);
+            int lcombIndex = model.GetLoadCombinationIndex(ifinput.SelectedLoadCombinationID);
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, model, lcombIndex, internalforces);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();

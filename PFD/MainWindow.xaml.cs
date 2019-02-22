@@ -1138,9 +1138,11 @@ namespace PFD
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Internal_Forces.Content = new UC_InternalForces(vm.Model,
+                Internal_Forces.Content = new UC_InternalForces(
+                    vm.DeterminateCombinationResultsByFEMSolver,
+                    vm.Model,
                     compList,
-                    vm.MemberInternalForces,
+                    vm.MemberInternalForcesInLoadCombinations,
                     vm.frameModels
                     );
             }
