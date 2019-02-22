@@ -961,6 +961,9 @@ namespace PFD
             sDisplayOptions.bDisplayPlates = chbDisplayPlates.IsChecked == true;
             sDisplayOptions.bDisplayConnectors = chbDisplayConnectors.IsChecked == true;
 
+            sDisplayOptions.bDisplayFoundations = chbDisplayFoundations.IsChecked == true;
+            sDisplayOptions.bDisplayNodalSupports = chbDisplayNodalSupports.IsChecked == true;
+
             sDisplayOptions.bDisplayMemberDescription = chbDisplayMemberDescription.IsChecked == true;
 
             sDisplayOptions.bDisplayMembersCenterLines = chbDisplayMembersCenterLines.IsChecked == true;

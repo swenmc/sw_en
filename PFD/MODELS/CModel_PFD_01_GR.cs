@@ -971,7 +971,7 @@ namespace PFD
                     for (int i = 0; i < listOfControlPoints.Count; i++)
                     {
                         CPoint controlPoint = new CPoint(iLastFoundationIndex + i + 1, listOfControlPoints[i].X - 0.5f * fFrontColumnFooting_aX, listOfControlPoints[i].Y - 0.5f * fFrontColumnFooting_bY, listOfControlPoints[i].Z - fFrontColumnFooting_h, 0);
-                        m_arrFoundations[iLastFoundationIndex + i] = new CFoundation(iLastFoundationIndex + i + 1, EFoundationType.ePad, controlPoint, fFrontColumnFooting_aX, fFrontColumnFooting_bY, fFrontColumnFooting_h, Colors.LightBlue, 0.5f, true, 0);
+                        m_arrFoundations[iLastFoundationIndex + i] = new CFoundation(iLastFoundationIndex + i + 1, EFoundationType.ePad, controlPoint, fFrontColumnFooting_aX, fFrontColumnFooting_bY, fFrontColumnFooting_h, Colors.LightSeaGreen, 0.5f, true, 0);
                     }
 
                     iLastFoundationIndex += listOfControlPoints.Count;

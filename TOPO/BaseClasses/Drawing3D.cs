@@ -41,7 +41,7 @@ namespace BaseClasses
 
                 bool displayOtherObjects3D = true;
                 Model3DGroup othersModel3DGroup = null;
-                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
                 //System.Diagnostics.Trace.WriteLine("After CreateModelOtherObjectsModel3DGroup: " + (DateTime.Now - start).TotalMilliseconds);
 
@@ -164,7 +164,7 @@ namespace BaseClasses
 
                 Model3DGroup othersModel3DGroup = null;
                 bool displayOtherObjects3D = true; // Temporary TODO
-                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model);
+                if (displayOtherObjects3D) othersModel3DGroup = Drawing3D.CreateModelOtherObjectsModel3DGroup(model, sDisplayOptions);
                 if (othersModel3DGroup != null) gr.Children.Add(othersModel3DGroup);
 
                 Drawing3D.AddLightsToModel3D(gr, sDisplayOptions);
@@ -495,9 +495,11 @@ namespace BaseClasses
 
         //-------------------------------------------------------------------------------------------------------------
         // Create Other model objects model 3d group
-        public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel)
+        public static Model3DGroup CreateModelOtherObjectsModel3DGroup(CModel cmodel, DisplayOptions sDisplayOptions)
         {
             Model3DGroup model3D_group = new Model3DGroup();
+
+            // Physical 3D Model
 
             if (cmodel.m_arrGOAreas != null) // Some areas exist
             {
@@ -505,23 +507,6 @@ namespace BaseClasses
 
 
 
-            }
-
-            if(cmodel.m_arrFoundations != null)
-            {
-               SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
-
-                // Model Groups of Volumes
-                for (int i = 0; i < cmodel.m_arrFoundations.Length; i++)
-                {
-                    if (cmodel.m_arrFoundations[i] != null &&
-                        cmodel.m_arrFoundations[i].m_pControlPoint != null &&
-                        cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
-                    {
-                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/);
-                        model3D_group.Children.Add(model); // Add foundation to the model group
-                    }
-                }
             }
 
             if (cmodel.m_arrGOVolumes != null) // Some volumes exist
@@ -571,7 +556,26 @@ namespace BaseClasses
                 }
             }
 
-            if (cmodel.m_arrNSupports != null) // Some nodal supports exist
+            if (cmodel.m_arrFoundations != null && sDisplayOptions.bDisplayFoundations)
+            {
+                SolidColorBrush brushFoundations = new SolidColorBrush(Colors.Gray);
+
+                // Model Groups of Volumes
+                for (int i = 0; i < cmodel.m_arrFoundations.Length; i++)
+                {
+                    if (cmodel.m_arrFoundations[i] != null &&
+                        cmodel.m_arrFoundations[i].m_pControlPoint != null &&
+                        cmodel.m_arrFoundations[i].BIsDisplayed == true) // Foundation object is valid (not empty) and should be displayed
+                    {
+                        GeometryModel3D model = cmodel.m_arrFoundations[i].CreateGeomModel3D(/*brushFoundations*/);
+                        model3D_group.Children.Add(model); // Add foundation to the model group
+                    }
+                }
+            }
+
+            // Structural Model
+
+            if (cmodel.m_arrNSupports != null && sDisplayOptions.bDisplayNodalSupports) // Some nodal supports exist
             {
                 // Model Groups of Nodal Suports
                 for (int i = 0; i < cmodel.m_arrNSupports.Length; i++)
