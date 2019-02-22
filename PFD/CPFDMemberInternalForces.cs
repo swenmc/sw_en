@@ -60,10 +60,9 @@ namespace PFD
         //    {
         //        if(value != -1) MLoadCombinationIndex = value;
         //        //TODO No. 68
-        //        NotifyPropertyChanged("LoadCombinationIndex");                                
+        //        NotifyPropertyChanged("LoadCombinationIndex");
         //    }
         //}
-        
 
         //-------------------------------------------------------------------------------------------------------------
         public int ComponentTypeIndex
@@ -118,7 +117,7 @@ namespace PFD
 
             set
             {
-                MLoadCombinations = value;                
+                MLoadCombinations = value;
                 NotifyPropertyChanged("LoadCombinations");
                 SelectedLoadCombinationID = MLoadCombinations[0].ID;
             }
@@ -132,7 +131,7 @@ namespace PFD
 
             set
             {
-                MSelectedLoadCombinationID = value;                
+                MSelectedLoadCombinationID = value;
                 NotifyPropertyChanged("SelectedLoadCombinationID");
             }
         }
@@ -143,13 +142,12 @@ namespace PFD
         //-------------------------------------------------------------------------------------------------------------
         public CPFDMemberInternalForces(CLimitState[] limitStates, CLoadCombination[] allLoadCombinations, ObservableCollection<CComponentInfo> componentList)
         {
-            MLimitStates = limitStates;            
+            MLimitStates = limitStates;
             MComponentList = componentList;
             m_allLoadCombinations = allLoadCombinations;
 
-
             // Set default
-            LimitStateIndex = 0;            
+            LimitStateIndex = 0;
             ComponentTypeIndex = 0;
 
             IsSetFromCode = false;
@@ -164,7 +162,7 @@ namespace PFD
             {
                 if (lc.eLComType == limitState.eLS_Type) loadCombinations.Add(lc);
             }
-            LoadCombinations = loadCombinations;            
+            LoadCombinations = loadCombinations;
         }
 
         //-------------------------------------------------------------------------------------------------------------

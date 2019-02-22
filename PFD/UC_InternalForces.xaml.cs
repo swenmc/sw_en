@@ -61,7 +61,10 @@ namespace PFD
 
         GraphWindow graph;
 
-        public UC_InternalForces(bool bDeterminateCombinationResultsByFEMSolver, CModel_PFD model, CComponentListVM compList,
+        public UC_InternalForces(
+            bool bDeterminateCombinationResultsByFEMSolver,
+            CModel_PFD model,
+            CComponentListVM compList,
             List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations,
             List<CFrame> frameModels_temp
             )
@@ -69,13 +72,9 @@ namespace PFD
             InitializeComponent();
 
             DeterminateCombinationResultsByFEMSolver = bDeterminateCombinationResultsByFEMSolver;
-            Model = model;
+            Model = model; // 3D model
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
-
-            // TODO Ondrej - prenos modelov a vyslekov frames do UC_InternalForces
-            frameModels = frameModels_temp;
-            //internalforcesframes = internalforcesframes_temp; // TO Ondrej - tu je potrebne zohladnit ci boli pocitane v BFENet load cases alebo load combinations, ak load cases tak tento zoznam vysledkov treba nahradit zoznamom pre load combinations
-            //deflectionsframes = deflectionsframes_temp;
+            frameModels = frameModels_temp; // particular 2D models
 
             // Internal forces
             ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);

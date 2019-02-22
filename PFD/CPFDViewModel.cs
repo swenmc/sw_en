@@ -917,19 +917,33 @@ namespace PFD
                                 
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
-                                //sMomentValuesforCb_design.fM_14 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][2].fM_yy;
-                                //sMomentValuesforCb_design.fM_24 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][5].fM_yy;
-                                //sMomentValuesforCb_design.fM_34 = internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex][7].fM_yy;
 
                                 sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yy;
                                 sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yy;
                                 sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yy;
-                                
+
                                 sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                 // BUG 212 - tu sa nacitaju vysledky pre ram a load combinations v pripade ze BFENet pocita Load Combinations
-                                //sBIF_x_design = (internalforcesframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
                                 sBIF_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
+
+                                // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
+                                // Preto hodnoty momentov prenasobime
+                                float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
+
+                                sMomentValuesforCb_design.fM_14 *= fInternalForceSignFactor;
+                                sMomentValuesforCb_design.fM_24 *= fInternalForceSignFactor;
+                                sMomentValuesforCb_design.fM_34 *= fInternalForceSignFactor;
+                                sMomentValuesforCb_design.fM_max *= fInternalForceSignFactor;
+
+                                for(int i = 0; i < sBIF_x_design.Length; i++)
+                                {
+                                    sBIF_x_design[i].fT *= fInternalForceSignFactor;
+                                    sBIF_x_design[i].fM_yy *= fInternalForceSignFactor;
+                                    sBIF_x_design[i].fM_yu *= fInternalForceSignFactor;
+                                    sBIF_x_design[i].fM_zz *= fInternalForceSignFactor;
+                                    sBIF_x_design[i].fM_zv *= fInternalForceSignFactor;
+                                }
                             }
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
