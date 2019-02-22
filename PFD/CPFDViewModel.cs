@@ -699,13 +699,16 @@ namespace PFD
             basicInternalForces[] sBIF_x = null;
             basicDeflections[] sBDeflections_x = null;
 
-            // Tu by sa mal napojit 3D FEM vypocet
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
+
+            // Validate model before calculation (compare IDs)
+            CModelHelper.ValidateModel(model);
+
+            // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
             //RunFEMSOlver();
 
             ////////////////////////////////////////////////////////////////////////
             // Calculation of frame model
-
-            CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
 
             if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) // Generate loads if they are not generated
             {
