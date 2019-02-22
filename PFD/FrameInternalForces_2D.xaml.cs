@@ -162,6 +162,9 @@ namespace PFD
                     int iIndexMinValue = 0;
                     int iIndexMaxValue = 0;
 
+                    if (internalforces == null)
+                        continue; // TODO - Sem by sa to uz nemalo ani dostat ak je prut nema vysledky
+
                     for (int c = 0; c < internalforces[iLoadCombinationIndex][i].Count; c++)
                     {
                         float IF_Value = GetInternalForcesValue(internalforces[iLoadCombinationIndex][i][c]);
@@ -264,6 +267,13 @@ namespace PFD
 
         private List<Point> GetMemberInternalForcePoints(int memberIndex, double dInternalForceScale_user, float fReal_Model_Zoom_Factor, string key)
         {
+            List<Point> listMemberInternalForcePoints = new List<Point>();
+
+            if (internalforces == null)
+            {
+                return listMemberInternalForcePoints; // Return empty list ???
+            }
+
             double dInternalForceScale = 0.001; // TODO - spocitat podla rozmerov canvas + nastavitelne uzivatelom
 
             // Draw positive forces on + side, positive moments on -side (positive values are on the side with tension fibre)
@@ -271,8 +281,6 @@ namespace PFD
             // Da sa prutu prednastavit ako strana kde ma prut zapornu zvislu os v LCS, teda -z alebo zmenit a potom sa vnutorne sily kreslia prevratene +/-
 
             float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
-
-            List<Point> listMemberInternalForcePoints = new List<Point>();
 
             const int iNumberOfResultsSections = 11;
             double[] xLocations_rel = new double[iNumberOfResultsSections];
@@ -288,7 +296,7 @@ namespace PFD
             for (int j = 0; j < internalforces[iLoadCombinationIndex][memberIndex].Count; j++) // For each member create list of points [x, IF value]
             {
                 double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
-                
+
                 float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(internalforces[iLoadCombinationIndex][memberIndex][j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
 
