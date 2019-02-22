@@ -313,7 +313,10 @@ namespace PFD
 
         private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
         {
-            int iFrameIndex = 0; // TODO Ondrej - urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
+            CMember member = Model.listOfModelMemberGroups[ifinput.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
+            if (member == null) throw new Exception("No member in List of Members");
+
+            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels); // TODO Ondrej - pozri ci to robim dobre urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
             CModel model = frameModels[iFrameIndex];
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
