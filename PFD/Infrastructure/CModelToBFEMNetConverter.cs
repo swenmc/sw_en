@@ -227,17 +227,16 @@ namespace PFD
                         Load BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].MemberLoadsList[j], loadcases[i]);
                         if (BFEMLoad != null)
                         {
-                            // Docasna oprava - pouziva sa globalne ID pruta ale tu sa zmeni na ID elementu v BFENet
-                            int iMemberID_GM = topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member.ID; // ID of Member in Global 3D Model
-                            //int iMemberID_FM = iMemberID_GM - iFrameIndexTemp * (4 + 2); // ID of Member in Frame Model
-                            int iMemberID_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
+                            // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
+                            int iMemberIndex_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
 
-                            if (iMemberID_FM < 1) // Validation
+                            if (iMemberIndex_FM < 0 && iMemberIndex_FM > elementCollection.Count-1) // Validation
                             {
+                                // Index pruta ma byt od 0 - 3, ale odkaz v zatazeni je Member.ID je z globalneho modelu
                                 throw new ArgumentException("Invalid ID of member assigned to the member load");
                             }
 
-                            elementCollection[iMemberID_FM - 1].Loads.Add(BFEMLoad); // Tu je bug kedze Member.ID - 1 ma byt od 0-3 ale Member.ID je z globalneho modelu
+                            elementCollection[iMemberIndex_FM].Loads.Add(BFEMLoad);
                         }
                     }
                 }
