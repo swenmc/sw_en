@@ -2143,5 +2143,32 @@ namespace BaseClasses
                 Drawing2D.DrawPolyLine(arrPointsCoordX, arrPointsCoordY, modelMarginTop_y, modelMarginLeft_x, fFactorX, fFactorY, modelMarginLeft_x, modelBottomPosition_y, Brushes.SlateGray, new PenLineCap(), PenLineCap.Triangle, 1, canvas);
             }
         }
+
+        public static void DrawYValuesPolygonInCanvas(bool bYOrientationIsUp, float[] arrPointsCoordX, float[] arrPointsCoordY, List <Point> listPoints, float fCanvasWidth, float fCanvasHeight,
+        float modelMarginLeft_x, float modelMarginRight_x, float modelMarginTop_y, float modelMarginBottom_y, float modelBottomPosition_y, Canvas canvas)
+        {
+            float xValueMin, xValueMax, xRangeOfValues, xAxisLength;
+            float fFactorX = CalculateZoomFactor(arrPointsCoordX, fCanvasWidth, modelMarginLeft_x, modelMarginRight_x, out xValueMin, out xValueMax, out xRangeOfValues, out xAxisLength);
+
+            float yValueMin, yValueMax, yRangeOfValues, yAxisLength;
+            float fFactorY = CalculateZoomFactor(arrPointsCoordY, fCanvasHeight, modelMarginTop_y, modelMarginBottom_y, out yValueMin, out yValueMax, out yRangeOfValues, out yAxisLength);
+
+            if (arrPointsCoordY != null)
+            {
+                if (!bYOrientationIsUp) // Draw positive values below x-axis
+                {
+                    for (int i = 0; i < arrPointsCoordY.Length; i++)
+                        arrPointsCoordY[i] *= -1f;
+
+                    for (int i = 0; i < listPoints.Count; i++)
+                    {
+                        double dNewValueY = listPoints[i].Y * -1f;
+                        listPoints[i] = new Point(listPoints[i].X, dNewValueY);
+                    }
+                }
+
+                Drawing2D.DrawPolygon(listPoints, Brushes.LightSlateGray, Brushes.SlateGray, PenLineCap.Flat, PenLineCap.Flat, 1, 0.3f, canvas);
+            }
+        }
     }
 }

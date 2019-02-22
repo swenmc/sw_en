@@ -158,7 +158,7 @@ namespace PFD
             // Draw axis (x, y)
 
             // BUG 211 - pokusy
-            //fArr_AxialForceValuesN = new float[11]{2000,1000,1000,3000,1000,1000,1000,2000,1000,1000,1000};
+            //fArr_AxialForceValuesN = new float[11]{2000,1000,1000,3000,1000,1000,3000,2000,500,1000,1000};
             //fArr_AxialForceValuesN = new float[11] { -2000, -1000, -1000, -3000, -1000, -1000, -1000, -2000, -1000, -1000, -1000 };
             //fArr_BendingMomentValuesMx = new float[11] { 2000, 1000, 1000, 3000, 1000, 1000, 1000, 2000, 1000, 1000, 1000 };
             //fArr_BendingMomentValuesMx = new float[11] { -2000, -1000, -1000, -3000, -1000, -1000, -1000, -2000, -1000, -1000, -1000 };
@@ -177,6 +177,13 @@ namespace PFD
             // Vysledky by mali byt v N a Nm (pocitame v zakladnych jednotkach SI), pre zobrazenie prekonvertovat na kN a kNm, pripadne pridat nastavenie jednotiek do GUI
 
             // Draw y values
+
+            // TODO Ondrej - skusal som vykreslovat diagram ako polygon ale zatial neuspesne, zase je tu "rozpor" v tom na akej urovni prepocitat hodnoty do zobrazovacich jednotiek
+            // Chcelo by to nejako pekne zjednotit s vykreslovanim FrameInternalForces, ale tu je to zlozitejsie lebo som navymyslal rozne pozicie a orientaciu osi x podla toho ake su hodnoty
+
+            //List<Point> listAxialForceValuesN = AddFirstAndLastDiagramPoint(fArr_AxialForceValuesN, member, 40, arrPointsCoordX, -1, 0.01, 1);
+            //Drawing2D.DrawYValuesPolygonInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, listAxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
+
             Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_AxialForceValuesN, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_AxialForceDiagram);
             Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVx);
             Drawing2D.DrawYValuesCurveInCanvas(true, arrPointsCoordX, fArr_ShearForceValuesVy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Canvas_ShearForceDiagramVy);
@@ -194,6 +201,38 @@ namespace PFD
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_TorsionMomentValuesT, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_TorsionMomentValuesT, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_TorsionMomentDiagram);
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_BendingMomentValuesMx, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMx, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMx);
             Drawing2D.DrawTexts(false, true, ConvertArrayFloatToString(fArr_BendingMomentValuesMy, iNumberOfDecimalPlaces), arrPointsCoordX, fArr_BendingMomentValuesMy, fCanvasWidth, fCanvasHeight, modelMarginLeft_x, modelMarginRight_x, modelMarginTop_y, modelMarginBottom_y, modelBottomPosition_y, Brushes.SlateGray, Canvas_BendingMomentDiagramMy);
+        }
+
+        private List<Point> AddFirstAndLastDiagramPoint(
+            float [] valuesArray,
+            CMember member,
+            float fReal_Model_Zoom_Factor,
+            float [] xLocations_rel,
+            float fInternalForceSignFactor,
+            double dInternalForceScale,
+            double dInternalForceScale_user
+            )
+        {
+            List<Point> listMemberInternalForcePoints = new List<Point>();
+            // First point (start at [0,0])
+            listMemberInternalForcePoints.Add(new Point(0, 0));
+
+            // Internal force diagram points
+            for (int j = 0; j < valuesArray.Length; j++) // For each member create list of points [x, IF value]
+            {
+                double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * member.FLength;
+
+                float IF_Value = fInternalForceSignFactor * valuesArray[j];
+                double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
+
+                //pozicie x sa ulozia, aby sa nemuseli pocitat znova
+                listMemberInternalForcePoints.Add(new Point(xlocationCoordinate, xlocationValue));
+            }
+
+            // Last point (end at [L,0])
+            listMemberInternalForcePoints.Add(new Point(fReal_Model_Zoom_Factor * member.FLength, 0));
+
+            return listMemberInternalForcePoints;
         }
 
         public void FillComboboxValues(ComboBox combobox, CObject[] array)

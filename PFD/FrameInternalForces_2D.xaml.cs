@@ -303,9 +303,6 @@ namespace PFD
             for (int s = 0; s < iNumberOfResultsSections; s++)
                 xLocations_rel[s] = s * 1.0f / (iNumberOfResultsSections - 1);
 
-            // First point (start at [0,0])
-            listMemberInternalForcePoints.Add(new Point(0, 0));
-
             designBucklingLengthFactors sBucklingLengthFactors;
             designMomentValuesForCb sMomentValuesforCb;
             basicInternalForces[] sBIF_x;
@@ -317,6 +314,9 @@ namespace PFD
                 out sBucklingLengthFactors,
                 out sMomentValuesforCb,
                 out sBIF_x);
+
+            // First point (start at [0,0])
+            listMemberInternalForcePoints.Add(new Point(0, 0));
 
             // Internal force diagram points
             for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
