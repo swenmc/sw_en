@@ -280,10 +280,6 @@ namespace PFD
             int iFrameIndex = 0; // TODO Ondrej - urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
             CModel model = frameModels[iFrameIndex];
 
-            // Nacitanie zoznamov vysledkov pre jednotlive load combinations, members, x-locations
-            // TODO Ondrej - je potrebne zakomponovat ci sa v BFENet pocitaju load cases alebo load combinations, ak sa pocitaju len load cases musime load combinations vyrobit sami superpoziciou pre kazdy prut, miesto x a vnutornu silu na tom mieste ... podla zoznamu LC v kombinacii, tj. faktorLC1 * vysledok v mieste "x" z LC1 + faktorLC2 * vysledkok v mieste z "x" LC2 + ....
-            List<List<List<basicInternalForces>>> internalforces = null; // Vysledky na konkretnom rame
-
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
 
             // 4.4.2.2.1
@@ -324,7 +320,7 @@ namespace PFD
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
             int lcombIndex = model.GetLoadCombinationIndex(ifinput.SelectedLoadCombinationID);
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, model, lcombIndex, internalforces);
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, model, lcombIndex, ListMemberInternalForcesInLoadCombinations);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();

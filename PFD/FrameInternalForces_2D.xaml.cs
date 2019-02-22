@@ -16,6 +16,7 @@ using System.Globalization;
 using BaseClasses;
 using MATH;
 using PFD.ViewModels;
+using FEM_CALC_BASE;
 
 namespace PFD
 {
@@ -25,16 +26,16 @@ namespace PFD
     public partial class FrameInternalForces_2D : Window
     {
         private CModel model;
-        List<List<List<basicInternalForces>>> internalforces;
+        public List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
 
         Dictionary<string, List<Point>> DictMemberInternalForcePoints;
         int iLoadCombinationIndex;
 
-        public FrameInternalForces_2D(bool bDeterminateCombinationResultsByFEMSolver, CModel example_model, int iLoadCombinationIndex_temp, List<List<List<basicInternalForces>>> list_internalforces)
+        public FrameInternalForces_2D(bool bDeterminateCombinationResultsByFEMSolver, CModel example_model, int iLoadCombinationIndex_temp, List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations)
         {
             model = example_model;
             iLoadCombinationIndex = iLoadCombinationIndex_temp;
-            internalforces = list_internalforces;
+            ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
 
             DictMemberInternalForcePoints = new Dictionary<string, List<Point>>();
 
@@ -162,12 +163,25 @@ namespace PFD
                     int iIndexMinValue = 0;
                     int iIndexMaxValue = 0;
 
-                    if (internalforces == null)
+                    if (ListMemberInternalForcesInLoadCombinations == null)
                         continue; // TODO - Sem by sa to uz nemalo ani dostat ak je prut nema vysledky
 
-                    for (int c = 0; c < internalforces[iLoadCombinationIndex][i].Count; c++)
+                    int iNumberOfDesignSections = 11;
+                    designBucklingLengthFactors sBucklingLengthFactors;
+                    designMomentValuesForCb sMomentValuesforCb;
+                    basicInternalForces[] sBIF_x;
+
+                    CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[i],
+                        model.m_arrLoadCombs[iLoadCombinationIndex],
+                        ListMemberInternalForcesInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBucklingLengthFactors,
+                        out sMomentValuesforCb,
+                        out sBIF_x);
+
+                    for (int c = 0; c < sBIF_x.Length; c++)
                     {
-                        float IF_Value = GetInternalForcesValue(internalforces[iLoadCombinationIndex][i][c]);
+                        float IF_Value = GetInternalForcesValue(sBIF_x[c]);
 
                         if(IF_Value < dMinValue)
                         {
@@ -183,18 +197,18 @@ namespace PFD
                     }
 
                     // Display text depending on GUI options
-                    for (int c = 0; c < internalforces[iLoadCombinationIndex][i].Count; c++)
+                    for (int c = 0; c < sBIF_x.Length; c++)
                     {
                         if (!vm.ShowAll && !vm.ShowEndValues && !vm.ShowExtremeValues && !vm.ShowEverySecondSection && !vm.ShowEveryThirdSection) continue;
-                        else if (!vm.ShowAll && vm.ShowEndValues && !(c == 0 || c == (internalforces[iLoadCombinationIndex][i].Count - 1))) continue; // First and last value
+                        else if (!vm.ShowAll && vm.ShowEndValues && !(c == 0 || c == (sBIF_x.Length - 1))) continue; // First and last value
                         else if (!vm.ShowAll && vm.ShowExtremeValues && !(c == iIndexMinValue || c == iIndexMaxValue)) continue; // ??? TODO - tu potrebujeme prejst vsetky hodnoty, najst min a max a tie zobrazit, pripadne ak vieme najst aj lokalne minima a maxima, ignorovat nuly - Local extreme - min or max in absolute value
-                        else if (!vm.ShowAll && vm.ShowEndValues && vm.ShowExtremeValues && !(c == 0 || c == (internalforces[iLoadCombinationIndex][i].Count - 1) || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Pre extremy a konce zobrazit "zjednotenie" tychto hodnot, tj. najdene extremy aj koncove hodnoty - upravit podmienku
+                        else if (!vm.ShowAll && vm.ShowEndValues && vm.ShowExtremeValues && !(c == 0 || c == (sBIF_x.Length - 1) || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Pre extremy a konce zobrazit "zjednotenie" tychto hodnot, tj. najdene extremy aj koncove hodnoty - upravit podmienku
                         else if (!vm.ShowAll && vm.ShowEverySecondSection && c % 2 == 1) continue;
                         else if (!vm.ShowAll && vm.ShowEverySecondSection && vm.ShowExtremeValues && !(c % 2 != 1 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && c % 3 != 0) continue;
                         else if (!vm.ShowAll && vm.ShowEveryThirdSection && vm.ShowExtremeValues && !(c % 3 == 0 || c == iIndexMinValue || c == iIndexMaxValue)) continue; // TODO / BUG 198 - Ked je zakrtnuty extrem aj tato volba chcem zobrazit zjednotenie hodnot - upravit podmienku
 
-                        float IF_Value = GetInternalForcesValue(internalforces[iLoadCombinationIndex][i][c]);
+                        float IF_Value = GetInternalForcesValue(sBIF_x[c]);
 
                         // Ignore and do not display zero value label
                         if (MathF.d_equal(IF_Value, 0))
@@ -269,7 +283,7 @@ namespace PFD
         {
             List<Point> listMemberInternalForcePoints = new List<Point>();
 
-            if (internalforces == null)
+            if (ListMemberInternalForcesInLoadCombinations == null)
             {
                 return listMemberInternalForcePoints; // Return empty list ???
             }
@@ -292,12 +306,24 @@ namespace PFD
             // First point (start at [0,0])
             listMemberInternalForcePoints.Add(new Point(0, 0));
 
+            designBucklingLengthFactors sBucklingLengthFactors;
+            designMomentValuesForCb sMomentValuesforCb;
+            basicInternalForces[] sBIF_x;
+
+            CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[memberIndex],
+                model.m_arrLoadCombs[iLoadCombinationIndex],
+                ListMemberInternalForcesInLoadCombinations,
+                iNumberOfResultsSections,
+                out sBucklingLengthFactors,
+                out sMomentValuesforCb,
+                out sBIF_x);
+
             // Internal force diagram points
-            for (int j = 0; j < internalforces[iLoadCombinationIndex][memberIndex].Count; j++) // For each member create list of points [x, IF value]
+            for (int j = 0; j < sBIF_x.Length; j++) // For each member create list of points [x, IF value]
             {
                 double xlocationCoordinate = fReal_Model_Zoom_Factor * xLocations_rel[j] * model.m_arrMembers[memberIndex].FLength;
 
-                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(internalforces[iLoadCombinationIndex][memberIndex][j]);
+                float IF_Value = fInternalForceSignFactor * GetInternalForcesValue(sBIF_x[j]);
                 double xlocationValue = dInternalForceScale * dInternalForceScale_user * IF_Value;
 
                 //pozicie x sa ulozia, aby sa nemuseli pocitat znova

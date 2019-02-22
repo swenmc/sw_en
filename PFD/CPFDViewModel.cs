@@ -1101,11 +1101,6 @@ namespace PFD
                                                       "Design Ratio: " + Math.Round(memberDesignModel.fMaximumDesignRatio, 3).ToString());
                             }
                         }
-
-                        float fNS = MemberInternalForcesInLoadCombinations[0].InternalForces[1].fN;
-                        float fNE = MemberInternalForcesInLoadCombinations[0].InternalForces[9].fN;
-                        float fMyS = MemberInternalForcesInLoadCombinations[0].InternalForces[1].fM_yy;
-                        float fMyE = MemberInternalForcesInLoadCombinations[0].InternalForces[9].fM_yy;
                     }
                 }
                 progressValue += step;
