@@ -101,6 +101,30 @@ namespace FEM_CALC_BASE
         }
 
         //  Deflections - SLS
+        public static void SetMemberDeflectionsInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCombinations> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
+        {
+            sBDeflections_x_output = new basicDeflections[iNumberOfMemberResultsSections];
+
+            if (listMemberDeflections != null) // If some results data exist
+            {
+                CMemberDeflectionsInLoadCombinations mdefl = listMemberDeflections.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
+                if (mdefl != null)
+                {
+                    int j = 0;
+                    foreach (basicDeflections bdef in mdefl.Deflections)
+                    {
+                        sBDeflections_x_output[j].fDelta_yu = bdef.fDelta_yu;
+                        sBDeflections_x_output[j].fDelta_yy = bdef.fDelta_yy;
+                        sBDeflections_x_output[j].fDelta_zv = bdef.fDelta_zv;
+                        sBDeflections_x_output[j].fDelta_zz = bdef.fDelta_zz;
+                        sBDeflections_x_output[j].fDelta_tot = (float)Math.Sqrt(MathF.Pow2(bdef.fDelta_yu) + MathF.Pow2(bdef.fDelta_zv));
+
+                        j++;
+                    }
+                }
+            }
+        }
+
         public static void SetMemberDeflectionsInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberDeflectionsInLoadCases> listMemberDeflections, int iNumberOfMemberResultsSections, out basicDeflections[] sBDeflections_x_output)
         {
             sBDeflections_x_output = new basicDeflections[iNumberOfMemberResultsSections];
