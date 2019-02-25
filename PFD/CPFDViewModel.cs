@@ -86,13 +86,8 @@ namespace PFD
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
-
-        // TODO - Ondrej - zoznamy modelov frames a vysledkov na frames - pre komunikaciu s UC_InternalForces a zobrazenie diagramov v FrameInternalForces_2D
-        // TO Ondrej - nerobil som z toho properties lebo este neviem ci to nemalo byt cele nejako inak, cakam ci mi to schvalis :-)
-        public List<CFrame> frameModels;
-        //public List<List<List<List<basicInternalForces>>>> internalforcesframes;
-        //public List<List<List<List<basicDeflections>>>> deflectionsframes;
-
+                
+        public List<CFrame> frameModels;        
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -885,7 +880,7 @@ namespace PFD
 
                     foreach (CLoadCombination lcomb in Model.m_arrLoadCombs)
                     {
-                        if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for SLS
+                        if (lcomb.eLComType == ELSType.eLS_ULS) // Do not perform internal foces calculation for ULS
                         {
                             // Member basic internal forces
                             designBucklingLengthFactors sBucklingLengthFactors_design;

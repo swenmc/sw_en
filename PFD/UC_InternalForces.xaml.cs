@@ -50,8 +50,10 @@ namespace PFD
 
         bool DeterminateCombinationResultsByFEMSolver;
         CModel_PFD Model;
-        CPFDMemberInternalForces ifinput;
+        CPFDMemberInternalForces vm;
         List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
+        public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
+        public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
 
         // TODO - Ondrej
         // Potrebujeme do UC_InternalForces dostat nejakym sposobom geometriu ramov a vysledky na ramoch aby sme to mohli pre prislusny rozhodujuci MainColumn alebo Rafter zobrazit v FrameInternalForces_2D
@@ -66,6 +68,8 @@ namespace PFD
             CModel_PFD model,
             CComponentListVM compList,
             List<CMemberInternalForcesInLoadCombinations> listMemberInternalForcesInLoadCombinations,
+            List<CMemberLoadCombinationRatio_ULS> memberDesignResults_ULS,
+            List<CMemberLoadCombinationRatio_SLS> memberDesignResults_SLS,
             List<CFrame> frameModels_temp
             )
         {
@@ -76,12 +80,15 @@ namespace PFD
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
             frameModels = frameModels_temp; // particular 2D models
 
-            // Internal forces
-            ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
-            ifinput.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
-            this.DataContext = ifinput;
+            MemberDesignResults_ULS = memberDesignResults_ULS;
+            MemberDesignResults_SLS = memberDesignResults_SLS;
 
-            ifinput.LimitStateIndex = 0;
+            // Internal forces
+            vm = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
+            vm.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
+            this.DataContext = vm;
+
+            vm.LimitStateIndex = 0;
         }
 
         protected void HandleMemberInternalForcesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
@@ -315,14 +322,16 @@ namespace PFD
 
         private void Button_Frame_2D_Click(object sender, RoutedEventArgs e)
         {
-            CMember member = Model.listOfModelMemberGroups[ifinput.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
-            if (member == null) throw new Exception("No member in List of Members");
-
-            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels); // TODO Ondrej - pozri ci to robim dobre urcit index ramu podla toho ktory konkretny member z daneho typu componenty je rozhodujuci
+            CLoadCombination lcomb = vm.LoadCombinations.Find(lc => lc.ID == vm.SelectedLoadCombinationID);
+            if (lcomb == null) throw new Exception("Load combination not found.");
+            
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb);
+            if (member == null) throw new Exception("Member with maximum design ratio not found.");
+            
+            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);             
             CModel model = frameModels[iFrameIndex];
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
-
             // 4.4.2.2.1
             // Second-order effects may be neglected for any frame where the elastic buckling load factor (λc) of the frame, as determined in accordance with 4.9, is greater than 10.
 
@@ -360,7 +369,7 @@ namespace PFD
             // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
-            int lcombIndex = model.GetLoadCombinationIndex(ifinput.SelectedLoadCombinationID);
+            int lcombIndex = model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
             FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, model, lcombIndex, ListMemberInternalForcesInLoadCombinations);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
@@ -578,5 +587,43 @@ namespace PFD
         //    //if(graph == null) graph = new GraphWindow(x_values, y_values);
         //    //graph.Show();
         //}
+
+
+
+        private CMember FindMemberWithMaximumDesignRatio(CLoadCombination lc)
+        {
+            float maximumDesignRatio = float.MinValue;
+            CMember memberWithMaxDesignRatio = null;
+
+            if (lc.eLComType == ELSType.eLS_SLS)
+            {
+                foreach (CMemberLoadCombinationRatio_SLS sls in MemberDesignResults_SLS)
+                {
+                    if (sls.LoadCombination.ID != lc.ID) continue;
+                    if (sls.MaximumDesignRatio > maximumDesignRatio)
+                    {
+                        maximumDesignRatio = sls.MaximumDesignRatio;
+                        memberWithMaxDesignRatio = sls.Member;
+                    }
+                }
+            }
+            else
+            {
+                foreach (CMemberLoadCombinationRatio_ULS sls in MemberDesignResults_ULS)
+                {
+                    if (sls.LoadCombination.ID != lc.ID) continue;
+                    if (sls.MaximumDesignRatio > maximumDesignRatio)
+                    {
+                        maximumDesignRatio = sls.MaximumDesignRatio;
+                        memberWithMaxDesignRatio = sls.Member;
+                    }
+                }
+            }
+            return memberWithMaxDesignRatio;
+        }
+
+
+
+
     }
 }
