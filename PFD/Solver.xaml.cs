@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace PFD
 {
     /// <summary>
-    /// Interaction logic for ProgressBarDialog.xaml
+    /// Interaction logic for Solver.xaml
     /// </summary>
-    public partial class ProgressBarDialog : Window
+    public partial class Solver : Window
     {
-        public ProgressBarDialog()
+        public Solver()
         {
             InitializeComponent();
         }
