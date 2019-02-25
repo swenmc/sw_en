@@ -83,8 +83,8 @@ namespace PFD
         public List<CMemberInternalForcesInLoadCombinations> MemberInternalForcesInLoadCombinations;
         public List<CMemberDeflectionsInLoadCombinations> MemberDeflectionsInLoadCombinations;
 
-        public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
-        public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
+        public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
+        public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
                 
         public List<CFrame> frameModels;        
@@ -1143,6 +1143,8 @@ namespace PFD
                     "Member ID: " + MaximumDesignRatioColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioColumns, 3).ToString() + "\n\n";
 
             PFDMainWindow.ShowMessageBoxInPFDWindow(txt);
+
+            PFDMainWindow.UpdateResults();
         }
 
         private void GetMinAndMaxValueInTheArray(float[] array, out float min, out float max)

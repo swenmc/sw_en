@@ -1152,6 +1152,13 @@ namespace PFD
                     vm.frameModels
                     );
                 }
+                else
+                {
+                    UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
+                    uc_intForces.MemberDesignResults_SLS = vm.MemberDesignResults_SLS;
+                    uc_intForces.MemberDesignResults_ULS = vm.MemberDesignResults_ULS;
+                    uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
+                }
             }
             else if (MainTabControl.SelectedIndex == 6)
             {
@@ -1605,6 +1612,23 @@ namespace PFD
             Dispatcher.Invoke(() =>
             {
                 MessageBox.Show(text);
+            });
+        }
+
+        public void UpdateResults()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (Internal_Forces.Content != null)
+                {
+                    UC_InternalForces uc_intForces = Internal_Forces.Content as UC_InternalForces;
+                    uc_intForces.MemberDesignResults_SLS = vm.MemberDesignResults_SLS;
+                    uc_intForces.MemberDesignResults_ULS = vm.MemberDesignResults_ULS;
+                    uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
+
+                    CPFDMemberInternalForces vmIF = uc_intForces.DataContext as CPFDMemberInternalForces;
+                    vmIF.LimitStateIndex = 0;
+                }
             });
         }
 

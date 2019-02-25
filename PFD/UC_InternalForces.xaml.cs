@@ -51,7 +51,8 @@ namespace PFD
         bool DeterminateCombinationResultsByFEMSolver;
         CModel_PFD Model;
         CPFDMemberInternalForces vm;
-        List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
+
+        public List<CMemberInternalForcesInLoadCombinations> ListMemberInternalForcesInLoadCombinations;
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
 
@@ -582,13 +583,6 @@ namespace PFD
             graph = new GraphWindow(arrPointsCoordX, fArr_AxialForceValuesN, fArr_ShearForceValuesVx, fArr_ShearForceValuesVy, fArr_TorsionMomentValuesT, fArr_BendingMomentValuesMx, fArr_BendingMomentValuesMy);
             graph.Show();
         }
-        //private void ShowGraph(float[] x_values, float[] y_values)
-        //{
-        //    //if(graph == null) graph = new GraphWindow(x_values, y_values);
-        //    //graph.Show();
-        //}
-
-
 
         private CMember FindMemberWithMaximumDesignRatio(CLoadCombination lc)
         {
