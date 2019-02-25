@@ -13,13 +13,13 @@ namespace PFD
     {
         public static LoadCombinationsInternalForces GetResultsList(Model bfenet_model, List<LoadCombination> loadcombinations)
         {
-            bool debugging = false;            
+            bool debugging = false;
             LoadCombinationsInternalForces lcIF = new LoadCombinationsInternalForces();
 
             // Load Combinations - results
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
             {
-                int loadCombinationID = loadcombinations[i].LcID;                
+                int loadCombinationID = loadcombinations[i].LcID;
                 const int iNumberOfResultsSections = 11;
                 double[] xLocations_rel = new double[iNumberOfResultsSections];
 
@@ -88,8 +88,6 @@ namespace PFD
             {
                 // Reactions in nodes
                 Trace.WriteLine("Load Combination No." + (i + 1).ToString() + " Name: " + GetLoadCombinationString(loadcombinations[i])); 
-                // DONE - zapracovat vypis kluca kombinacie 1.00*LC1 + 1.50*LC2 (ak je to mozne niekde vydolovat) a pripadne zaviest do BFENet aj property "Name" pre tuto triedu "LoadCombination"
-                
 
                 // Total reactions
                 // Show sum of reactions
