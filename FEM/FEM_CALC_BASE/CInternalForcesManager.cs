@@ -11,7 +11,9 @@ namespace FEM_CALC_BASE
     public static class CMemberResultsManager
     {
         // Internal forces - ULS
-        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, int iNumberOfMemberResultsSections, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
+        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCombinations> listMemberLoadForces, 
+            int iNumberOfMemberResultsSections, 
+            out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
             sBucklingLengthFactors = new designBucklingLengthFactors();
             sMomentValuesforCb_output = new designMomentValuesForCb();
@@ -53,7 +55,9 @@ namespace FEM_CALC_BASE
             }
         }
 
-        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, int iNumberOfMemberResultsSections, out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
+        public static void SetMemberInternalForcesInLoadCombination(CMember m, CLoadCombination lcomb, List<CMemberInternalForcesInLoadCases> listMemberLoadForces, 
+            int iNumberOfMemberResultsSections, 
+            out designBucklingLengthFactors sBucklingLengthFactors, out designMomentValuesForCb sMomentValuesforCb_output, out basicInternalForces[] sBIF_x_output)
         {
             sBucklingLengthFactors = new designBucklingLengthFactors();
             sMomentValuesforCb_output = new designMomentValuesForCb();
