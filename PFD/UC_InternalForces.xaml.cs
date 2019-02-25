@@ -330,7 +330,7 @@ namespace PFD
             if (member == null) throw new Exception("Member with maximum design ratio not found.");
             
             int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);             
-            CModel model = frameModels[iFrameIndex];
+            CModel frameModel = frameModels[iFrameIndex];
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
             // 4.4.2.2.1
@@ -339,15 +339,15 @@ namespace PFD
             // TODO napojit hodnoty
 
             float fN_om_column;
-            float fLambda_c = GetFrameBucklingFactorLambda_c(model.m_arrMat[0].m_fE, // Modulus of Elasticity
-            (float)model.m_arrCrSc[1].I_y, // Moment of inertia - rafter
-            (float)model.m_arrCrSc[0].I_y,  // Moment of inertia - column
+            float fLambda_c = GetFrameBucklingFactorLambda_c(frameModel.m_arrMat[0].m_fE, // Modulus of Elasticity
+            (float)frameModel.m_arrCrSc[1].I_y, // Moment of inertia - rafter
+            (float)frameModel.m_arrCrSc[0].I_y,  // Moment of inertia - column
             73430f, // Axial force - column 1 (+ compression, - tension)
             -7.43f, // Axial force - column 2 (+ compression, - tension)
             12670f, // Axial force - rafter (+ compression, - tension)
-            model.m_arrMembers[0].FLength, // Heigth - column
-            model.m_arrMembers[1].FLength, // Length - rafter
-            model.m_arrNSupports[0].m_bRestrain[2] == true ? 0 : 1, // 0 - fixed base joint, 1 - pinned base joint // TODO - napojit na podpory
+            frameModel.m_arrMembers[0].FLength, // Heigth - column
+            frameModel.m_arrMembers[1].FLength, // Length - rafter
+            frameModel.m_arrNSupports[0].m_bRestrain[2] == true ? 0 : 1, // 0 - fixed base joint, 1 - pinned base joint // TODO - napojit na podpory
             5, // Roof Pitch - Gable Roof Model
             out fN_om_column);
 
@@ -364,14 +364,14 @@ namespace PFD
                 58240f, // Shear force - column 1 (absolute value)
                 24160f, // Shear force - column 2 (absolute value)
                 0.08054f, // Horizontal deflection (x-direction) [m] node ID 1 - knee point // Horny okraj stlpa
-                model.m_arrMembers[0].FLength, // Heigth - column
+                frameModel.m_arrMembers[0].FLength, // Heigth - column
                 fN_om_column);
 
             // TODO Ondrej - ifinput.LoadCombinationIndex - chcem ziskat index kombinacie z comboboxu a poslat ho do FrameInternalForces_2D, aby som vedel ktore vysledky zobrazit, snad to je to OK, este bude treba overit ci naozaj odpovedaju index z comboboxu a index danej kombinacie vo vysledkoch
             //celovo je podla mna posielat indexy somarina, lepsie je poslat cely objekt, alebo ID kombinacie. Co ak v kombe nerobrazim vsetky kombinacie? potom mi bude index na 2 veci
 
-            int lcombIndex = model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
-            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, model, lcombIndex, ListMemberInternalForcesInLoadCombinations);
+            int lcombIndex = frameModel.GetLoadCombinationIndex(vm.SelectedLoadCombinationID);
+            FrameInternalForces_2D window_2D_diagram = new FrameInternalForces_2D(DeterminateCombinationResultsByFEMSolver, frameModel, lcombIndex, ListMemberInternalForcesInLoadCombinations);
 
             // TODO - faktorom fLambda_m treba prenasobit vnutorne sily ktore vstupuju do design
             window_2D_diagram.ShowDialog();
