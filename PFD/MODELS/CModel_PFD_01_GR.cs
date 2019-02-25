@@ -1006,6 +1006,21 @@ namespace PFD
                 // Validation - skontroluje ci je velkost pola zhodna s poctom vygenerovanych prvkov
                 if (m_arrFoundations.Length != iLastFoundationIndex)
                     throw new Exception("Incorrect number of generated foundations");
+
+                // Ground Floor Slab
+                float fFloorSlab_AdditionalOffset_X = 0.1f;
+                float fFloorSlab_AdditionalOffset_Y = 0.1f;
+                float fFloorSlab_aX = fW_frame + (float)m_arrCrSc[0].h + 2 * fFloorSlab_AdditionalOffset_X;
+                float fFloorSlab_bY = fL_tot + (float)m_arrCrSc[0].b + 2 * fFloorSlab_AdditionalOffset_Y;
+                float fTolerance = 0.001f; // Tolerance - 3D graphics collision
+                float fFloorSlab_h = 0.125f;
+                float fFloorSlab_eX = -0.5f * (float)m_arrCrSc[0].h - fFloorSlab_AdditionalOffset_X;
+                float fFloorSlab_eY = -0.5f * (float)m_arrCrSc[0].b - fFloorSlab_AdditionalOffset_Y;
+
+                CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h + fTolerance, 0);
+                m_arrGOVolumes = new CVolume[1];
+                //m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, Colors.Gray, 0.5f, true, 0);
+                m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, new DiffuseMaterial(new SolidColorBrush (Colors.DarkGray)), true, 0);
             }
             #endregion
 

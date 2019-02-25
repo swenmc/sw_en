@@ -509,7 +509,7 @@ namespace BaseClasses
 
             }
 
-            if (cmodel.m_arrGOVolumes != null) // Some volumes exist
+            if (cmodel.m_arrGOVolumes != null && sDisplayOptions.bDisplayFloorSlab) // Some volumes exist
             {
                 // Model Groups of Volumes
                 for (int i = 0; i < cmodel.m_arrGOVolumes.Length; i++)

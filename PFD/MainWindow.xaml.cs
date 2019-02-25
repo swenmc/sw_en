@@ -962,6 +962,7 @@ namespace PFD
             sDisplayOptions.bDisplayConnectors = chbDisplayConnectors.IsChecked == true;
 
             sDisplayOptions.bDisplayFoundations = chbDisplayFoundations.IsChecked == true;
+            sDisplayOptions.bDisplayFloorSlab = chbDisplayFloorSlab.IsChecked == true;
             sDisplayOptions.bDisplayNodalSupports = chbDisplayNodalSupports.IsChecked == true;
 
             sDisplayOptions.bDisplayMemberDescription = chbDisplayMemberDescription.IsChecked == true;
@@ -1311,6 +1312,16 @@ namespace PFD
                 UpdateAll();
             }
         }
+        private void chbDisplayFloorSlab_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                if (chbDisplayFloorSlab.IsChecked == false)
+                    chbDisplayFloorSlab.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
+                UpdateAll();
+            }
+        }
         private void chbDisplayNodalSupports_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
@@ -1352,6 +1363,14 @@ namespace PFD
         }
 
         private void chbDisplayFoundations_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+            {
+                UpdateAll();
+            }
+        }
+
+        private void chbDisplayFloorSlab_Unchecked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {

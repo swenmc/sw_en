@@ -54,6 +54,8 @@ namespace BaseClasses.GraphObj
             m_fvolOpacity = fvolOpacity;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
+
+            m_Material_2 = new DiffuseMaterial(new SolidColorBrush(m_volColor_2));
         }
 
         // Constructor 4
