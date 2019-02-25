@@ -166,20 +166,19 @@ namespace PFD
                     if (ListMemberInternalForcesInLoadCombinations == null)
                         continue; // TODO - Sem by sa to uz nemalo ani dostat ak je prut nema vysledky
 
-                    //int iNumberOfDesignSections = 11;
-                    //designBucklingLengthFactors sBucklingLengthFactors;
-                    //designMomentValuesForCb sMomentValuesforCb;
-                    //basicInternalForces[] sBIF_x;
+                    int iNumberOfDesignSections = 11;
+                    designBucklingLengthFactors sBucklingLengthFactors;
+                    designMomentValuesForCb sMomentValuesforCb;
+                    basicInternalForces[] sBIF_x;
 
-                    //CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[i],
-                    //    model.m_arrLoadCombs[iLoadCombinationIndex],
-                    //    ListMemberInternalForcesInLoadCombinations,
-                    //    iNumberOfDesignSections,
-                    //    out sBucklingLengthFactors,
-                    //    out sMomentValuesforCb,
-                    //    out sBIF_x);
-
-                    basicInternalForces[] sBIF_x = ListMemberInternalForcesInLoadCombinations[iLoadCombinationIndex].InternalForces; 
+                    CMemberResultsManager.SetMemberInternalForcesInLoadCombination(model.m_arrMembers[i],
+                        model.m_arrLoadCombs[iLoadCombinationIndex],
+                        ListMemberInternalForcesInLoadCombinations,
+                        iNumberOfDesignSections,
+                        out sBucklingLengthFactors,
+                        out sMomentValuesforCb,
+                        out sBIF_x);
+                                        
                     for (int c = 0; c < sBIF_x.Length; c++)
                     {
                         float IF_Value = GetInternalForcesValue(sBIF_x[c]);
