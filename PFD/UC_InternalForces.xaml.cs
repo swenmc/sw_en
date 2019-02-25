@@ -80,6 +80,8 @@ namespace PFD
             ifinput = new CPFDMemberInternalForces(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             ifinput.PropertyChanged += HandleMemberInternalForcesPropertyChangedEvent;
             this.DataContext = ifinput;
+
+            ifinput.LimitStateIndex = 0;
         }
 
         protected void HandleMemberInternalForcesPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
