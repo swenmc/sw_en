@@ -65,8 +65,6 @@ namespace PFD
                     topomodel.m_arrMembers[i].CrScStart.I_z,
                     topomodel.m_arrMembers[i].CrScStart.I_t);
 
-                // TO Ondrej: parameter prierezu (moze sa pouzit I_zv, I_yu), ktory by sa mal nacitat z databazy / pripadne urcit samostatnym vypoctom pri tvorbe prierezu, toto by sa malo diat uz pri tvorbe naseho modelu
-                // 2019_02_18 OP: I_zv, I_yu tu nikde nevidim - potrebne prekonzultovat
                 var mat = new BriefFiniteElementNet.Materials.UniformIsotropicMaterial(topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fE, topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fNu);
                 element_1D_2Node.E = mat.YoungModulus;
                 element_1D_2Node.G = topomodel.m_arrMembers[i].CrScStart.m_Mat.m_fG;
@@ -75,7 +73,7 @@ namespace PFD
                 element_1D_2Node.A = sec.A;
                 element_1D_2Node.Ay = 0.00252f;
                 element_1D_2Node.Az = 0.00252f; // Todo - doplnit do databazy
-                element_1D_2Node.Iy = sec.Iy;
+                element_1D_2Node.Iy = sec.Iy; // TODO - doriesit Iyy a Iyu - geometricke alebo hlavne osi prierezu
                 element_1D_2Node.Iz = sec.Iz;
                 element_1D_2Node.J = sec.J;
                 //element_1D_2Node.ConsiderShearDeformation = true;
@@ -107,7 +105,7 @@ namespace PFD
 
             // SUPPORTS
             // 2D model in XZ plane - we set for all nodes deflection DY fixed and rotation RX fixed and RZ fixed
-            // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z            
+            // podoprieme vsetky uzly pre posun z roviny XZ a pre pootocenie okolo X a Z
             // Zabranime vsetkym uzlom aby sa posunuli v smere Y a pootocili okolo X a Z pretoze ram je v rovine XZ, 
             // ale pocitame ho 3D solverom ktory berie do uvahy ze sa to moze posunut aj mimo tejto roviny,
             // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
@@ -276,8 +274,7 @@ namespace PFD
 
         private Load GetBFEMLoad(CMLoad memberLoad, LoadCase loadCase)
         {
-            // BFEMNet ma tri typy - concentrated, uniform, trapezoidal
-            // load
+            // BFEMNet ma tri typy - concentrated, uniform, trapezoidal load, dopracoval som partial uniform load
             var lu = new UniformLoad1D();
             var lpu = new PartialUniformLoad1D();
 
