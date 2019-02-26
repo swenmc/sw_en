@@ -116,6 +116,7 @@ namespace PFD
                 lc_new.Prefix = lc.Prefix;
                 lc_new.Name = lc.Name;
                 lc_new.MType_LS = lc.MType_LS;
+                lc_new.Type = lc.Type;
                 lc_new.MainDirection = lc.MainDirection;
                 lc_new.Factor = lc.Factor;
                 lc_new.NodeLoadsList = lc.NodeLoadsList;
