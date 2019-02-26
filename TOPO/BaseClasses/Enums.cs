@@ -559,6 +559,18 @@
         eD_DomedWasherScrew            // (d) Domed washer (non-solid) beneath screw head
     }
 
+    public enum ETypesOfBearingConnection
+    {
+        // See AS / NZS 4600 - Table 5.3.4.2(A)
+        eType1 = 0, // Single shear and outside sheets of double shear connection with washers under both bolt head and nut (alpha = 1.00)
+        eType2 = 1, // Single shear and outside sheets of double shear connection without washers under both head and nut, or with only one washer (alpha = 0.75)
+        eType3 = 2, // Single shear and outside sheets of double shear connection using oversized or short-slotted holes parallel to the applied load without washers under both bolt head and nut, or with only one washer(alpha = 0.70)
+        eType4 = 3, // Single shear and outside sheets of double shear connection using short-slotted holes perpendicular to the applied load without washers under both bolt head and nut, or with only one washer (alpha = 0.55)
+        eType5 = 4, // Inside sheet of double shear connection with or without washers(alpha = 1.33)
+        eType6 = 5, // Inside sheet of double shear connection using oversized or short slotted holes parallel to the applied load with or without washers (alpha = 1.10)
+        eType7 = 6  // Inside sheet of double shear connection using short slotted holes perpendicular to the applied load with or without washers(alpha = 0.90)
+    }
+
     // Todo Ondrej - urcit kde maju byt tieto struktury, vstupy z dialogu pre grafiku, zatazenie a lokalizaciu budovy
 
     public struct DisplayOptions

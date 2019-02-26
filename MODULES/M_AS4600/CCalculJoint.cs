@@ -701,6 +701,33 @@ namespace M_AS4600
             float fN_t_section_MainMember = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, fA_n_MainMember, ff_uk_2_MainMember);
             float fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, 0.65f, fN_t_section_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_MainMember);
+
+
+            //
+            float fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
+            float fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
+
+            float fV_asterix_x_joint = Math.Abs(sDIF_temp.fV_yy);
+            float fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_zz);
+            float fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(fV_asterix_x_joint) + MathF.Pow2(fV_asterix_y_joint));
+
+            int iNumberOfAnchorsInConnection = 0;// TODO
+            float fN_asterix_anchor_uplif = fN_asterix_joint_uplif / iNumberOfAnchorsInConnection; // Design axial force per anchor
+            float fV_asterix_anchor = fV_asterix_res_joint / iNumberOfAnchorsInConnection; // Design shear force per anchor
+
+            float fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
+            float fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
+
+            float fe_x_AnchorToPlateEdge = 0; // TODO - Distance between anchor and plate edge
+            float fe_y_AnchorToPlateEdge = 0; // TODO - Distance between anchor and plate edge
+
+            float fu_x_Washer = 0.08f;
+            float fu_y_Washer = 0.08f;
+
+            float f_c_aphostrophe = 25e+6f; // Characteristic compressive (cylinder) concrete strength
+            float fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
+
+
         }
 
         
