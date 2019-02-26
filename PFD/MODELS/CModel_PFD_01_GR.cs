@@ -133,16 +133,17 @@ namespace PFD
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(9);
 
+            CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
             // See UC component list
-            listOfModelMemberGroups.Add(new CMemberGroup(1, "Main Column" , m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, "Rafter"      , m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, "Eaves Purlin", m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, "Girt - Wall" , m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, "Purlin"      , m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, "Front Column", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, "Back Column" , m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, "Front Girt"  , m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, "Back Girt"   , m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1] , m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
 
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit

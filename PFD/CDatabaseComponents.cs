@@ -480,6 +480,7 @@ namespace PFD
         };
 
         // TODO nahradit vstupmi z databazy
+
         public string[,] arr_Member_Types_Prefix = new string[15, 2]
         {
             {"G", "Girt"},             // 00

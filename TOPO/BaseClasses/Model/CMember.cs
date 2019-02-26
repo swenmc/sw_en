@@ -1724,7 +1724,7 @@ namespace BaseClasses
                 }
             }
         }
-        
+
         protected Point3D RotatePoint_POKUSY(EGCS eGCS, Point3D pA, Point3D p, double alphaX, double betaY, double gamaZ, double dDeltaX, double dDeltaY, double dDeltaZ)
         {
             Point3D p3Drotated = new Point3D();
@@ -1938,6 +1938,5 @@ namespace BaseClasses
             // Mozno by som mal zapracovat toto
             //http://mathworld.wolfram.com/EulerAngles.html
         }
-
     } // End of Class CMember
 }

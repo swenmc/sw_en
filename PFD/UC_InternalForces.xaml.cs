@@ -122,7 +122,15 @@ namespace PFD
             // Kombinacia ktorej vysledky chceme zobrazit
             CLoadCombination lcomb = Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID)];
 
-            CMember member = FindMemberWithMaximumDesignRatio(lcomb);
+            // TODO - Ondrej - Musime hladat nielen prut s maximalnym design ratio ale s maximalnym design ratio v ramci skupiny urcenej v comboboxe Component Type
+            // O nieco som sa pokusil ale nie je to velmi pekne. Skus to vylepsit prosim
+
+            // TODO - Ondrej - Ak este combobox nie je inicializovany nemali by sme sa tu asi ani dostat, na riadku 105 je nejaky return, asi by sa to uz tam niekde malo oddychitit
+            // Validate that combobox is initialized
+            if (Combobox_ComponentType == null || Combobox_ComponentType.SelectedItem == null) return;
+
+            string selectedGroupName = ((CComponentInfo)Combobox_ComponentType.Items[vm.ComponentTypeIndex]).ComponentName; // TODO - identifikovat nazov alebo ENUM skupiny podla vyberu v comboboxe - pozri ci to takto moze byt alebo sa to da urobit prehladnejsie
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb, selectedGroupName, Model.listOfModelMemberGroups); // Find member in group (members with same compoment type) with maximum design ratio
             if (member == null) throw new Exception("Member with maximum design ratio not found.");
 
             fMemberLength_xMax = member.FLength;
@@ -326,7 +334,7 @@ namespace PFD
         {
             CLoadCombination lcomb = vm.LoadCombinations.Find(lc => lc.ID == vm.SelectedLoadCombinationID);
             if (lcomb == null) throw new Exception("Load combination not found.");
-            CMember member = FindMemberWithMaximumDesignRatio(lcomb);
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb, Combobox_ComponentType.Text, Model.listOfModelMemberGroups);
             if (member == null) throw new Exception("Member with maximum design ratio not found.");
 
             int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);
@@ -584,7 +592,7 @@ namespace PFD
             graph.Show();
         }
 
-        private CMember FindMemberWithMaximumDesignRatio(CLoadCombination lc)
+        private CMember FindMemberWithMaximumDesignRatio(CLoadCombination lc, string memberGroupName, List<CMemberGroup> listOfGroups)
         {
             float maximumDesignRatio = float.MinValue;
             CMember memberWithMaxDesignRatio = null;
@@ -594,7 +602,7 @@ namespace PFD
                 foreach (CMemberLoadCombinationRatio_SLS sls in MemberDesignResults_SLS)
                 {
                     if (sls.LoadCombination.ID != lc.ID) continue;
-                    if (sls.MaximumDesignRatio > maximumDesignRatio)
+                    if (sls.MaximumDesignRatio > maximumDesignRatio && bIsMemberInGroup(sls.Member, memberGroupName, listOfGroups))
                     {
                         maximumDesignRatio = sls.MaximumDesignRatio;
                         memberWithMaxDesignRatio = sls.Member;
@@ -603,21 +611,30 @@ namespace PFD
             }
             else
             {
-                foreach (CMemberLoadCombinationRatio_ULS sls in MemberDesignResults_ULS)
+                foreach (CMemberLoadCombinationRatio_ULS uls in MemberDesignResults_ULS)
                 {
-                    if (sls.LoadCombination.ID != lc.ID) continue;
-                    if (sls.MaximumDesignRatio > maximumDesignRatio)
+                    if (uls.LoadCombination.ID != lc.ID) continue;
+                    if (uls.MaximumDesignRatio > maximumDesignRatio && bIsMemberInGroup(uls.Member, memberGroupName, listOfGroups))
                     {
-                        maximumDesignRatio = sls.MaximumDesignRatio;
-                        memberWithMaxDesignRatio = sls.Member;
+                        maximumDesignRatio = uls.MaximumDesignRatio;
+                        memberWithMaxDesignRatio = uls.Member;
                     }
                 }
             }
             return memberWithMaxDesignRatio;
         }
 
+        bool bIsMemberInGroup(CMember member, string groupName, List<CMemberGroup> listOfGroups)
+        {
+            // TODO - toto vyhladavanie podla podla skupiny je dost kostrbate, lepsi by bol ENUM EMemberGroupNames
+            for (int i = 0; i < listOfGroups.Count; i++)
+            {
+                for(int j = 0; i< listOfGroups[i].ListOfMembers.Count; j++)
+                if (listOfGroups[i].ListOfMembers[j] == member)
+                    return true;
+            }
 
-
-
+            return false;
+        }
     }
 }
