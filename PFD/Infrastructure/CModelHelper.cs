@@ -192,6 +192,10 @@ namespace PFD
         //podla ID pruta treba identifikovat do ktoreho ramu patri
         public static int GetFrameIndexForMember(CMember m, List<CFrame> frames)
         {
+            // Validate argument
+            if (m == null || frames == null)
+                return -1;
+
             for (int i = 0; i < frames.Count; i++)
             {
                 if (Array.Exists(frames[i].m_arrMembers, mem => mem.ID == m.ID)) return i;
