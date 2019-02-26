@@ -86,8 +86,8 @@ namespace PFD
         public List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
         public List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
-                
-        public List<CFrame> frameModels;        
+
+        public List<CFrame> frameModels;
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -910,9 +910,8 @@ namespace PFD
                                 }
 
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
-                                int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
                                 int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
-                                
+
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
 
@@ -923,6 +922,14 @@ namespace PFD
                                 sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                 // BUG 212 - tu sa nacitaju vysledky pre ram a load combinations v pripade ze BFENet pocita Load Combinations
+
+                                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                // BUG 212 - Ondrej - Problem je ze vysledky su inak ukladane do LoadCombInternalForcesResults a MemberInternalForcesInLoadCases
+                                // LoadCombinationsInternalForces : Dictionary dedi od dictionary a CMemberInternalForcesInLoadCases je list objektov
+                                // Potrebujeme teda asi zjednotit a sprehladnit indexovanie zaznamov aby bolo jasne co je co a ci sa to uklada pod indexom alebo pod ID, u members ci je to ID z celeho modelu alebo ID len z modelu ramu. Popozeraj na to.
+                                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                                // Ak tu do key pridam jednotku tak vysledky sedia
                                 sBIF_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
 
                                 // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
@@ -942,11 +949,78 @@ namespace PFD
                                     sBIF_x_design[i].fM_zz *= fInternalForceSignFactor;
                                     sBIF_x_design[i].fM_zv *= fInternalForceSignFactor;
                                 }
+
+                                // BUG 212 TEST
+                                if (lcomb.ID == 1 && m.ID == 1)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy / 0.9f;
+                                    // CO1 = 0.9 * G = 1.0/0.9 * 2403 = 2670 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 2670, 3))
+                                        throw new Exception();
+                                }
+
+                                if (lcomb.ID == 40 && m.ID == 1)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy;
+                                    // CO40 = 1.2 * G = 1.2 * 2670 = 3204 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 3204, 3))
+                                        throw new Exception();
+                                }
+
+                                if (lcomb.ID == 1 && m.ID == 7)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy / 0.9f;
+                                    // CO1 = 0.9 * G = 1.0/0.9 * 5341 = 5341 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 5341, 3))
+                                        throw new Exception();
+                                }
+
+                                if (lcomb.ID == 40 && m.ID == 7)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy;
+                                    // CO40 = 1.2 * G = 1.2 * 5341 = 6409 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 6409, 3))
+                                        throw new Exception();
+                                }
                             }
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                             {
                                 // BUG 212 - tu sa nakombinuju vysledky pre load cases podla predpisu v kombinacii
+
                                 CMemberResultsManager.SetMemberInternalForcesInLoadCombination(m, lcomb, MemberInternalForcesInLoadCases, iNumberOfDesignSections, out sBucklingLengthFactors_design, out sMomentValuesforCb_design, out sBIF_x_design);
+
+                                // BUG 212 TEST
+                                if (lcomb.ID == 1 && m.ID == 1)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy / 0.9f;
+                                    // CO1 = 0.9 * G = 1.0/0.9 * 2403 = 2670 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 2670, 3))
+                                        throw new Exception();
+                                }
+
+                                if (lcomb.ID == 40 && m.ID == 1)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy; // Rovnaka pre roznu hodnotu DeterminateCombinationResultsByFEMSolver
+                                    // CO40 = 1.2 * G = 1.2 * 2670 = 3204 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 3204, 3))
+                                        throw new Exception();
+                                }
+
+                                if (lcomb.ID == 1 && m.ID == 7)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy / 0.9f;
+                                    // CO1 = 0.9 * G = 1.0/0.9 * 5341 = 5341 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 5341, 3))
+                                        throw new Exception();
+                                }
+
+                                if (lcomb.ID == 40 && m.ID == 7)
+                                {
+                                    float fTestValue1 = sBIF_x_design[0].fM_yy; // Rovnaka pre roznu hodnotu DeterminateCombinationResultsByFEMSolver
+                                    // CO40 = 1.2 * G = 1.2 * 5341 = 6409 Nm
+                                    if (!MathF.d_equal(Math.Abs(fTestValue1), 6409, 3))
+                                        throw new Exception();
+                                }
                             }
 
                             // 22.2.2019 - Ulozime vnutorne sily v kombinacii - pre zobrazenie v Internal forces

@@ -178,7 +178,7 @@ namespace PFD
                         out sBucklingLengthFactors,
                         out sMomentValuesforCb,
                         out sBIF_x);
-                                        
+
                     for (int c = 0; c < sBIF_x.Length; c++)
                     {
                         float IF_Value = GetInternalForcesValue(sBIF_x[c]);
