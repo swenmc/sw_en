@@ -120,7 +120,7 @@ namespace PFD
             basicInternalForces[] sBIF_x;
 
             // Kombinacia ktorej vysledky chceme zobrazit
-            CLoadCombination lcomb = Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID)];
+            CLoadCombination lcomb = Model.GetLoadCombinationWithID(vm.SelectedLoadCombinationID);
 
             // TODO - Ondrej - Musime hladat nielen prut s maximalnym design ratio ale s maximalnym design ratio v ramci skupiny urcenej v comboboxe Component Type
             // O nieco som sa pokusil ale nie je to velmi pekne. Skus to vylepsit prosim

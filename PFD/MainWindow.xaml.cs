@@ -1165,7 +1165,14 @@ namespace PFD
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Member_Design.Content = new UC_MemberDesign(vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
+
+                if (Member_Design.Content == null) Member_Design.Content = new UC_MemberDesign(vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
+                else
+                {
+                    UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
+                    uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
+                    uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
+                }
             }
             else if (MainTabControl.SelectedIndex == 7)
             {
@@ -1628,6 +1635,15 @@ namespace PFD
 
                     CPFDMemberInternalForces vmIF = uc_intForces.DataContext as CPFDMemberInternalForces;
                     vmIF.LimitStateIndex = 0;
+                }
+
+                if (Member_Design.Content != null)
+                {
+                    UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;
+                    uc_memberDesign.DesignResults_SLS = vm.MemberDesignResults_SLS;
+                    uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
+                    CPFDMemberDesign vmMD = uc_memberDesign.DataContext as CPFDMemberDesign;
+                    vmMD.LimitStateIndex = 0;
                 }
             });
         }

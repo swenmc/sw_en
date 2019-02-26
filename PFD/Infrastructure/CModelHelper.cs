@@ -227,6 +227,16 @@ namespace PFD
             return -1; //not found
         }
 
+        public static CLoadCombination GetLoadCombinationWithID(this CModel model, int id)
+        {
+            for (int i = 0; i < model.m_arrLoadCombs.Length; i++)
+            {
+                if (model.m_arrLoadCombs[i].ID == id) return model.m_arrLoadCombs[i];
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Method for model validation. Tries to find IDs duplicates...
         /// </summary>
