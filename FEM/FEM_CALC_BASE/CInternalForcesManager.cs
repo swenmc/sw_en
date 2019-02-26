@@ -22,6 +22,7 @@ namespace FEM_CALC_BASE
             if (listMemberLoadForces != null) // If some results data exist
             {
                 CMemberInternalForcesInLoadCombinations mlf = listMemberLoadForces.Find(i => i.Member.ID == m.ID && i.LoadCombination.ID == lcomb.ID);
+
                 if (mlf != null)
                 {
                     // TODO - malo by sa nastavovat u pruta ale moze zavisiet od zatazenia

@@ -205,7 +205,7 @@ namespace PFD
         {
             for (int i = 0; i < frame.m_arrMembers.Length; i++)
             {
-                if (frame.m_arrMembers[i].ID == m.ID) return i;                
+                if (frame.m_arrMembers[i].ID == m.ID) return i;
             }
 
             return -1; //not found
@@ -220,7 +220,6 @@ namespace PFD
 
             return -1; //not found
         }
-
 
         /// <summary>
         /// Method for model validation. Tries to find IDs duplicates...
@@ -239,7 +238,7 @@ namespace PFD
                     for (int i = 0; i < model.m_arrMembers.Length; i++)
                     {
                         s += i + ", ";
-                    }                        
+                    }
                 }
                 throw new Exception($"Member With same ID [{duplicateM.ID}] are at indexes: {s}");
             }
@@ -259,11 +258,6 @@ namespace PFD
                 }
                 throw new Exception($"Nodes With same ID [{duplicateNode.ID}] are at indexes: {s}");
             }
-
         }
-
-
-
-
     }
 }

@@ -113,13 +113,6 @@ namespace PFD
 
             modelBottomPosition_y = fCanvasHeight - modelMarginBottom_y;
 
-            CMember member = Model.listOfModelMemberGroups[vm.ComponentTypeIndex].ListOfMembers.FirstOrDefault();
-            if (member == null) throw new Exception("No member in List of Members");
-            fMemberLength_xMax = member.FLength;
-
-            for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
-                arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * fMemberLength_xMax; // Int must be converted to the float to get decimal numbers
-
             // Perform display in of internal foces just for ULS combinations
             // Member basic internal forces
             designBucklingLengthFactors sBucklingLengthFactors;
@@ -128,6 +121,14 @@ namespace PFD
 
             // Kombinacia ktorej vysledky chceme zobrazit
             CLoadCombination lcomb = Model.m_arrLoadCombs[Model.GetLoadCombinationIndex(vm.SelectedLoadCombinationID)];
+
+            CMember member = FindMemberWithMaximumDesignRatio(lcomb);
+            if (member == null) throw new Exception("Member with maximum design ratio not found.");
+
+            fMemberLength_xMax = member.FLength;
+
+            for (int i = 0; i < iNumberOfDesignSections; i++) // TODO Ondrej - toto pole by malo prist do dialogu spolu s hodnotami y, moze sa totiz stat ze v jednom x mieste budu 2 hodnoty y (2 vysledky pre zobrazenie), pole bude teda ine pre kazdu vnutornu silu (N, Vx, Vy, ....)
+                arrPointsCoordX[i] = ((float)i / (float)iNumberOfSegments) * fMemberLength_xMax; // Int must be converted to the float to get decimal numbers
 
             // TODO - nastavi sa sada vnutornych sil ktora sa ma pre dany prut zobrazit (podla vybraneho pruta a load combination)
             // Zmena 22.02.20019 - Potrebujeme pracovat s LoadCombinations, pretoze BFENet moze vracat vysledky v Load Cases aj Load Combinations
@@ -325,11 +326,10 @@ namespace PFD
         {
             CLoadCombination lcomb = vm.LoadCombinations.Find(lc => lc.ID == vm.SelectedLoadCombinationID);
             if (lcomb == null) throw new Exception("Load combination not found.");
-            
             CMember member = FindMemberWithMaximumDesignRatio(lcomb);
             if (member == null) throw new Exception("Member with maximum design ratio not found.");
-            
-            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);             
+
+            int iFrameIndex = CModelHelper.GetFrameIndexForMember(member, frameModels);
             CModel frameModel = frameModels[iFrameIndex];
 
             // TODO - vypocet vzperneho faktora ramu - ak je mensi ako 10, je potrebne navysit ohybove momenty
