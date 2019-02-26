@@ -127,11 +127,13 @@ namespace PFD
 
             // TODO - Ondrej - Ak este combobox nie je inicializovany nemali by sme sa tu asi ani dostat, na riadku 105 je nejaky return, asi by sa to uz tam niekde malo oddychitit
             // Validate that combobox is initialized
-            if (Combobox_ComponentType == null || Combobox_ComponentType.SelectedItem == null) return;
+            //if (Combobox_ComponentType == null || Combobox_ComponentType.SelectedItem == null) return;
 
-            string selectedGroupName = ((CComponentInfo)Combobox_ComponentType.Items[vm.ComponentTypeIndex]).ComponentName; // TODO - identifikovat nazov alebo ENUM skupiny podla vyberu v comboboxe - pozri ci to takto moze byt alebo sa to da urobit prehladnejsie
+
+            string selectedGroupName = vm.ComponentList[vm.ComponentTypeIndex].ComponentName;
+                // ((CComponentInfo)Combobox_ComponentType.Items[vm.ComponentTypeIndex]).ComponentName; // TODO - identifikovat nazov alebo ENUM skupiny podla vyberu v comboboxe - pozri ci to takto moze byt alebo sa to da urobit prehladnejsie
             CMember member = FindMemberWithMaximumDesignRatio(lcomb, selectedGroupName, Model.listOfModelMemberGroups); // Find member in group (members with same compoment type) with maximum design ratio
-            if (member == null) throw new Exception("Member with maximum design ratio not found.");
+            if (member == null) return; // nemame vypocitane vysledky...nie je co zobrazovat //throw new Exception("Member with maximum design ratio not found.");
 
             fMemberLength_xMax = member.FLength;
 
