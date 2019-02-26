@@ -43,6 +43,8 @@ namespace PFD
             CPFDMemberDesign vm = new CPFDMemberDesign(model.m_arrLimitStates, model.m_arrLoadCombs, compList.ComponentList);
             vm.PropertyChanged += HandleLoadInputPropertyChangedEvent;
             this.DataContext = vm;
+
+            vm.LimitStateIndex = 0;
         }
         protected void HandleLoadInputPropertyChangedEvent(object sender, PropertyChangedEventArgs e)
         {

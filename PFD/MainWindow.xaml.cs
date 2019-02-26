@@ -1179,7 +1179,12 @@ namespace PFD
                 if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
                 UC_ComponentList component = Model_Component.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                Joint_Design.Content = new UC_JointDesign(vm.Model, compList, vm.JointDesignResults_ULS);
+                if (Joint_Design.Content != null) Joint_Design.Content = new UC_JointDesign(vm.Model, compList, vm.JointDesignResults_ULS);
+                else
+                {
+                    UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
+                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
+                }
             }
             else if (MainTabControl.SelectedIndex == 8)
                 Part_List.Content = new UC_MaterialList(vm.Model);
@@ -1644,6 +1649,14 @@ namespace PFD
                     uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
                     CPFDMemberDesign vmMD = uc_memberDesign.DataContext as CPFDMemberDesign;
                     vmMD.LimitStateIndex = 0;
+                }
+
+                if (Joint_Design.Content != null)
+                {
+                    UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
+                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
+                    CPFDJointsDesign vmJD = uc_jointDesign.DataContext as CPFDJointsDesign;
+                    vmJD.LimitStateIndex = 0;
                 }
             });
         }

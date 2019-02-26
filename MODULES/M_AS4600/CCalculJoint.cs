@@ -3,6 +3,9 @@ using System.Windows.Forms;
 using BaseClasses;
 using MATH;
 using CRSC;
+using System.Collections.Generic;
+using System.Data;
+
 namespace M_AS4600
 {
     public class CCalculJoint
@@ -699,5 +702,8 @@ namespace M_AS4600
             float fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, 0.65f, fN_t_section_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_MainMember);
         }
+
+        
+
     }
 }
