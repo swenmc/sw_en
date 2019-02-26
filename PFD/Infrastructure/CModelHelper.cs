@@ -179,7 +179,8 @@ namespace PFD
                         {
                             // Set Factor and Frame Model Load Case
                             newloadcombination.LoadCasesFactorsList.Add(lcomb.LoadCasesFactorsList[i]);
-                            newloadcombination.LoadCasesList.Add(memberLoadCases[i]);
+                            newloadcombination.LoadCasesList.Add(memberLoadCases[j]);
+                            break; // Load case can't be added many times.
                         }
                     }
                 }
