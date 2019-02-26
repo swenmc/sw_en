@@ -629,9 +629,11 @@ namespace PFD
             // TODO - toto vyhladavanie podla podla skupiny je dost kostrbate, lepsi by bol ENUM EMemberGroupNames
             for (int i = 0; i < listOfGroups.Count; i++)
             {
-                for(int j = 0; i< listOfGroups[i].ListOfMembers.Count; j++)
-                if (listOfGroups[i].ListOfMembers[j] == member)
-                    return true;
+                for (int j = 0; j < listOfGroups[i].ListOfMembers.Count; j++)
+                {
+                    if (listOfGroups[i].ListOfMembers[j] == member && listOfGroups[i].Name == groupName)
+                        return true;
+                }
             }
 
             return false;
