@@ -3,7 +3,6 @@ using MATH.ARRAY;
 using System;
 using BaseClasses;
 
-
 namespace M_AS4600
 {
     public class AS_4600
@@ -12,6 +11,105 @@ namespace M_AS4600
         {
             return fV_asterix / (fPhi_v * fV_v); // Eq. (3.3.4.1) // fV_v design ratio
         }
+        // 5.3 BOLTED CONNECTIONS
+        public float Eq_532_1___(float fV_asterix_f, float fPhi, float fV_f)
+        {
+            return fV_asterix_f / (fPhi * fV_f); // Eq. (5.3.2(1)) // fV_f design ratio
+        }
+        public float Eq_532_2___(float ft, float fe, float ff_u)
+        {
+            return ft * fe * ff_u; // Eq. (5.3.2(2)) // fV_f
+        }
+        public float Get_Phi_532(float ff_y, float ff_u)
+        {
+            if (ff_u / ff_y >= 1.05f)
+                return 0.7f; // fPhi
+            else
+                return 0.6f;
+        }
+        public float Eq_533_1___(float fN_asterix_f, float fPhi, float fN_f)
+        {
+            return fN_asterix_f / (fPhi * fN_f); // Eq. (5.3.3(1)) // fN_f design ratio
+        }
+        public float Eq_533_2___(float fd_f, float fs_f, float fA_n, float ff_u)
+        {
+            return (0.9f + (0.1f * fd_f / fs_f)) * fA_n * ff_u; // Eq. (5.3.3(2)) // fN_f
+        }
+        public float Eq_5342____(float fAlpha, float fC, float fd_f, float ft, float ff_u)
+        {
+            return fAlpha * fC * fd_f * ft * ff_u; // Eq. (5.3.4.2) // fV_b
+        }
+        public float Get_Alpha_Table_5342_A(ETypesOfBearingConnection eTypeOfBearingConnection)
+        {
+            switch (eTypeOfBearingConnection)
+            {
+                case ETypesOfBearingConnection.eType1:
+                    return 1.00f;
+                case ETypesOfBearingConnection.eType2:
+                    return 0.75f;
+                case ETypesOfBearingConnection.eType3:
+                    return 0.70f;
+                case ETypesOfBearingConnection.eType4:
+                    return 0.55f;
+                case ETypesOfBearingConnection.eType5:
+                    return 1.33f;
+                case ETypesOfBearingConnection.eType6:
+                    return 1.10f;
+                case ETypesOfBearingConnection.eType7:
+                    return 0.90f;
+                default:
+                    return 0; // Not defined
+            }
+        }
+        public float Get_Factor_C_Table_5342_B(float fd_f, float ft)
+        {
+            if (0.00042f <= ft && ft < 0.00476f)
+            {
+                float fdf_To_t_ratio = fd_f / ft;
+
+                if (fdf_To_t_ratio < 10)
+                    return 3.0f;
+                else if (10 <= fdf_To_t_ratio && fdf_To_t_ratio <= 22)
+                    return 4.0f - 0.1f * fdf_To_t_ratio;
+                else // fdf_To_t_ratio > 22
+                    return 1.8f;
+            }
+            else
+            {
+                // Invalid thickness
+                // Exception
+                throw new ArgumentException("Invalid value of thickness t! Less than 0.42 mm or more than 4.76 mm, see Table 5.3.4.2(B).");
+            }
+        }
+        public float Eq_5343____(float fd_f, float ft, float ff_u)
+        {
+            return (0.183f * ft + 1.53f) * fd_f * ft * ff_u; // Eq. (5.3.4.3) // fV_b
+        }
+        public float Eq_5351_1__(float fV_asterix_fv, float fPhi, float fV_fv)
+        {
+            return fV_asterix_fv / (fPhi * fV_fv); // Eq. (5.3.5.1(1)) // fV_fv design ratio
+        }
+        public float Eq_5351_2__(float ff_uf, int in_n, float fA_c, int in_x, float fA_o)
+        {
+            return 0.62f * ff_uf * (in_n * fA_c + in_x * fA_o); // Eq. (5.3.5.1(2)) // fV_fv
+        }
+        public float Eq_5352_1__(float fN_asterix_ft, float fPhi, float fN_ft)
+        {
+            return fN_asterix_ft / (fPhi * fN_ft); // Eq. (5.3.5.2(1)) // fN_ft design ratio
+        }
+        public float Eq_5352_2__(float fA_s, float ff_uf)
+        {
+            return fA_s * ff_uf; // Eq. (5.3.5.2(2)) // fN_ft
+        }
+        public float Eq_5353_3__(float fV_asterix_fv, float fPhi_V, float fV_fv, float fN_asterix_ft, float fPhi_N, float fN_ft, out float fPortion_V, out float fPortion_N)
+        {
+            fPortion_V = MathF.Pow2(fV_asterix_fv / (fPhi_V * fV_fv));
+            fPortion_N = MathF.Pow2(fN_asterix_ft / (fPhi_N * fN_ft));
+
+            return fPortion_V + fPortion_N; // Eq. (5.3.5.3(3)) // fDesignRatio
+        }
+
+        // 5.4 SCREWED CONNECTIONS
         public float Eq_5423_1__(float fN_asterix_t, float fPhi, float fN_t)
         {
             return fN_asterix_t / (fPhi * fN_t); // Eq. (5.4.2.3(1)) // fN_t design ratio
