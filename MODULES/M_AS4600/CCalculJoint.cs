@@ -708,7 +708,10 @@ namespace M_AS4600
 
             float fV_asterix_x_joint = Math.Abs(sDIF_temp.fV_yy);
             float fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_zz);
-            float fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(fV_asterix_x_joint) + MathF.Pow2(fV_asterix_y_joint));
+            float fV_asterix_res_joint = 0f;
+
+            if(!MathF.d_equal(fV_asterix_x_joint,0) || !MathF.d_equal(fV_asterix_y_joint, 0))
+                fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(fV_asterix_x_joint) + MathF.Pow2(fV_asterix_y_joint));
 
             //int iNumberAnchors = plate.AnchorArrangement.Anchors.Length;
             int iNumberAnchors = plate.AnchorArrangement.IHolesNumber;
@@ -733,8 +736,8 @@ namespace M_AS4600
             float fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
             float fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
 
-            float fe_x_AnchorToPlateEdge = 0; // TODO - Distance between anchor and plate edge
-            float fe_y_AnchorToPlateEdge = 0; // TODO - Distance between anchor and plate edge
+            float fe_x_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
+            float fe_y_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
 
             float fu_x_Washer = 0.08f;
             float fu_y_Washer = 0.08f;
@@ -749,8 +752,8 @@ namespace M_AS4600
             float fA_c = plate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
             float fA_o = plate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
 
-            float ff_y_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_yk[0];
-            float ff_u_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_u[0];
+            float ff_y_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_yk_by_thickness(fd_f);
+            float ff_u_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_uk_by_thickness(fd_f);
 
             // AS / NZS 4600:2018 - 5.3 Bolted connections
             // Base plate design
