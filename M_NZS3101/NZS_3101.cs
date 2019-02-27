@@ -8,6 +8,25 @@ namespace M_NZS_3101
 {
     public class NZS_3101
     {
+        // 5.2 Properties of concrete
+        public float Eq_5_1_____(float ff_apostrophe_c, float fRho_density)
+        {
+            return (float)(4700f * Math.Sqrt(ff_apostrophe_c / 1e+6f) * Math.Pow(fRho_density / 2300f, 1.5f) * 1e+6f); // Eq. (5-1) // fE_c - output in [Pa]
+        }
+        public float Eq_5_2_____(float fLambda, float ff_apostrophe_c)
+        {
+            return (float)(0.38f * fLambda * Math.Sqrt(ff_apostrophe_c)); // Eq. (5-2) // ff_t
+        }
+        public float Eq_5_3_____(float fRho_density)
+        {
+            return Math.Min(0.4f + (0.6f * fRho_density / 2200f), 1f); // Eq. (5-3) // fLambda
+        }
+        public float Eq_5_4_____(float fLambda, float ff_apostrophe_c)
+        {
+            return 0.6f * fLambda * MathF.Sqrt(ff_apostrophe_c); // Eq. (5-4) // ff_r
+        }
+
+        // 17.5.6 Strength of cast-in anchors
         public float Eq_17_1____(float fN_asterix, float fPhi, float fN_n)
         {
             return fN_asterix / (fPhi * fN_n); // Eq. (17-1) // fN Design ratio
@@ -78,7 +97,7 @@ namespace M_NZS_3101
         {
             return 13.3f * fk_1 * fc_1 * fLambda * MathF.Sqrt(fA_brg * ff_apostrophe_c); // Eq. (17-13) // fN_sb
         }
-        public float Get_k_1__(float fc_1, float fc_2)
+        public float Get_k_1____(float fc_1, float fc_2)
         {
             if (fc_2 >= 3f * fc_1)
                 return 1.0f;
@@ -96,12 +115,46 @@ namespace M_NZS_3101
             else
                 throw new Exception("Tensile strength fut is more than 1.9fy or 860 MPa, see 17.5.8.1(b).");
         }
-
-
-
-
-
-
-        // TODO - rovnice z NZS 3101 - IN WORK
+        public float Eq_17_16___(float fA_v, float fA_vo, float fPsi_5, float fPsi_6, float fPsi_7, float fV_b)
+        {
+            return fA_v / fA_vo * fPsi_5 * fPsi_6 * fPsi_7 * fV_b; // Eq. (17-16) // fV_cb
+        }
+        public float Eq_17_17a__(float fk_2, float fl, float fd_o, float fLambda, float ff_apostrophe_c, float fc_1)
+        {
+            return (float)(fk_2 * Math.Pow(fl / fd_o, 0.2f) * fLambda * Math.Sqrt(fd_o * ff_apostrophe_c) * Math.Pow(fc_1, 1.5f)); // Eq. (17-17(a)) // fV_b
+        }
+        public float Eq_17_17b__(float fLambda, float ff_apostrophe_c, float fc_1)
+        {
+            return (float)(3.8f * fLambda * Math.Sqrt(ff_apostrophe_c) * Math.Pow(fc_1, 1.5f)); // Eq. (17-17(b)) // fV_b
+        }
+        public float Eq_17_18___(float fc_1, float fe_apostrophe_v, float fs)
+        {
+            if (fe_apostrophe_v < 0.5f * fs)
+                return Math.Min(1f + ((2f * fe_apostrophe_v) / (3f * fc_1)), 1f); // Eq. (17-18) // fPsi_5
+            else
+                throw new Exception("Condition is not fulfilled, see Eq. 17-18.");
+        }
+        public float Get_Psi_6__(float fc_1, float fc_2)
+        {
+            if (fc_2 >= 1.5f * fc_1)
+                return 1.0f; // Eq. (17-19) // fPsi_6
+            else //if (fc_2 < 1.5f * fc_1)
+                return 0.7f + 0.3f * (fc_2 / (1.5f * fc_1)); // Eq. (17-20) // fPsi_6
+        }
+        public float Eq_17_21___(float fA_v, float fA_vo, float fPsi_5, float fPsi_7, float fV_b)
+        {
+            return 2f * fA_v / fA_vo * fPsi_5 * fPsi_7 * fV_b; // Eq. (17-21) // fV_cb
+        }
+        public float Eq_17_22___(float fk_cp, float fN_cb)
+        {
+            return fk_cp * fN_cb; // Eq. (17-22) // fV_cp
+        }
+        public float Get_k_cp___(float fh_ef)
+        {
+            if (fh_ef < 0.065f)
+                return 1.0f;
+            else
+                return 2.0f;
+        }
     }
 }
