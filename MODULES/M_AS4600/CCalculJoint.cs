@@ -333,7 +333,7 @@ namespace M_AS4600
             // Tension and shear
             float fC_for5434_MainMember = eq.Get_C_Tab_5424(screw.Diameter_thread, ft_2_crscmainMember);
             float fV_b_for5434_MainMember = eq.Eq_5424_6__(fC_for5434_MainMember, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // Eq. 5.4.2.4(6)
-            float fd_w_for5434_plate = eq.Get_d_aphostrof_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
+            float fd_w_for5434_plate = eq.Get_d_apostrophe_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
             float fN_ov_for5434_plate = eq.Eq_5432_3__(ft_1_plate, screw.D_w_washerdiameter, ff_uk_1_plate); // 5.4.3.2(b) Eq. 5.4.3.2(3) - Nov
 
             bool bIsEccentricallyLoadedJoint = false;
@@ -480,7 +480,7 @@ namespace M_AS4600
             // Tension and shear
             float fC_for5434_MainMember = eq.Get_C_Tab_5424(screw.Diameter_thread, ft_2_crscmainMember);
             float fV_b_for5434_MainMember = eq.Eq_5424_6__(fC_for5434_MainMember, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // Eq. 5.4.2.4(6)
-            float fd_w_for5434_plate = eq.Get_d_aphostrof_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
+            float fd_w_for5434_plate = eq.Get_d_apostrophe_w(screw.Type, ft_1_plate, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter);
             float fN_ov_for5434_plate = eq.Eq_5432_3__(ft_1_plate, screw.D_w_washerdiameter, ff_uk_1_plate); // 5.4.3.2(b) Eq. 5.4.3.2(3) - Nov
 
             bool bIsEccentricallyLoadedJoint = false;
@@ -703,7 +703,7 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_MainMember);
 
 
-            //
+            // Anchors
             float fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
             float fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
 
@@ -724,13 +724,10 @@ namespace M_AS4600
             float fu_x_Washer = 0.08f;
             float fu_y_Washer = 0.08f;
 
-            float f_c_aphostrophe = 25e+6f; // Characteristic compressive (cylinder) concrete strength
+            float f_c_apostrophe = 25e+6f; // Characteristic compressive (cylinder) concrete strength
             float fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
 
 
         }
-
-        
-
     }
 }

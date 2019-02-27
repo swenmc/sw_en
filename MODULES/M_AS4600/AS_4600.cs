@@ -241,7 +241,7 @@ namespace M_AS4600
         {
             return 1.5f * ft_1 * fd_w * ff_u1; // Eq. (5.4.3.2(3)) // fN_ov
         }
-        public float Get_d_aphostrof_w(EScrewTypes eScrewType,  float ft1_plate, float fd_h, float ft_w, float fd_w) // Effective pull-over diameter 5.4.3.2
+        public float Get_d_apostrophe_w(EScrewTypes eScrewType,  float ft1_plate, float fd_h, float ft_w, float fd_w) // Effective pull-over diameter 5.4.3.2
         {
             /*
             For screws subject to tensile forces, the head of the screw or washer shall have a diameter
@@ -274,29 +274,29 @@ namespace M_AS4600
         }
         public float Get_Nt_5432(EScrewTypes eScrewType, float ft1_plate, float ft2_crsc, float fd_f, float fd_h, float ft_w, float fd_w, float ff_u1_plate, float ff_u2_crsc)
         {
-            float fd_aphostrof_w = Get_d_aphostrof_w(eScrewType, ft1_plate, fd_h, ft_w, fd_w);
+            float fd_apostrophe_w = Get_d_apostrophe_w(eScrewType, ft1_plate, fd_h, ft_w, fd_w);
 
             return Math.Min(
                 Eq_5432_2__(ft2_crsc, fd_f, ff_u2_crsc), // (a) The nominal pull-out capacity (Nou) (pull-out from cross-section)
-                Eq_5432_3__(ft1_plate, fd_aphostrof_w, ff_u1_plate) // (b) The nominal pull-over (pull-through) (pull-through connection plate)
+                Eq_5432_3__(ft1_plate, fd_apostrophe_w, ff_u1_plate) // (b) The nominal pull-over (pull-through) (pull-through connection plate)
                 );
         }
         public float Eq_5432_4__(float fd_h, float ft_w, float ft_1, float fd_w)
         {
-            return MathF.Min(fd_h + 2 * ft_w + ft_1, fd_w); // Eq. (5.4.3.2(4)) // fd_aphostrof_w
+            return MathF.Min(fd_h + 2 * ft_w + ft_1, fd_w); // Eq. (5.4.3.2(4)) // fd_apostrophe_w
         }
         public float Eq_5432_5__(float fd_h, float ft_w, float ft_1, float fd_w)
         {
-            return MathF.Min(fd_h, 0.02f); // Eq. (5.4.3.2(5)) // fd_aphostrof_w
+            return MathF.Min(fd_h, 0.02f); // Eq. (5.4.3.2(5)) // fd_apostrophe_w
         }
         public float Eq_5432_6__(float ft_1, float ff_ul)
         {
             return 8.68f * MathF.Pow2(ft_1) * ff_ul; // Eq. (5.4.3.2(6)) // fN_ov
         }
-        public float Eq_5432_7__(float ft_1, float fd_aphostrof_w, float ff_ul)
+        public float Eq_5432_7__(float ft_1, float fd_apostrophe_w, float ff_ul)
         {
-            if(0.011f <= fd_aphostrof_w && fd_aphostrof_w <= 0.0145f)
-               return (float)(3.07f * Math.Pow(ft_1, 1.4f) * Math.Pow(fd_aphostrof_w, 0.6f) * ff_ul); // Eq. (5.4.3.2(7)) // fN_ov
+            if(0.011f <= fd_apostrophe_w && fd_apostrophe_w <= 0.0145f)
+               return (float)(3.07f * Math.Pow(ft_1, 1.4f) * Math.Pow(fd_apostrophe_w, 0.6f) * ff_ul); // Eq. (5.4.3.2(7)) // fN_ov
             else
             {
                 // Exception
