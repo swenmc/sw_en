@@ -599,7 +599,13 @@
         public bool bTransparentMemberModel;   // Set material opacity less than 1.0
 
         public bool bDisplayGlobalAxis;
+
         public bool bDisplayMemberDescription;
+        public bool bDisplayMemberID;
+        public bool bDisplayMemberPrefix;
+        public bool bDisplayMemberCrossSectionStartName;
+        public bool bDisplayMemberRealLength;
+
         public bool bDisplayLoads;
 
         public bool bDisplayMemberLoads;

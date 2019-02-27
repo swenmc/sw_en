@@ -83,8 +83,14 @@ namespace BaseClasses
 
                 if (sDisplayOptions.bDisplayMembers && sDisplayOptions.bDisplayMemberDescription)
                 {
-                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort);
-                    //System.Diagnostics.Trace.WriteLine("After DrawMemberDescriptionTexts: " + (DateTime.Now - start).TotalMilliseconds);
+                    Drawing3D.CreateMembersDescriptionModel3D(model, _trackport.ViewPort, sDisplayOptions);
+                    //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
+                }
+
+                if (sDisplayOptions.bDisplayLoads)
+                {
+                    Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions, _trackport.ViewPort);
+                    //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
                 }
 
             }
@@ -969,7 +975,7 @@ namespace BaseClasses
             }
         }
         // Draw Text in 3D
-        public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort)
+        public static void CreateMembersDescriptionModel3D(CModel model, Viewport3D viewPort, DisplayOptions displayOptions)
         {
             // Members
             if (model.m_arrMembers != null)
@@ -987,12 +993,7 @@ namespace BaseClasses
                         Point3D pNodeStart = new Point3D(model.m_arrMembers[i].NodeStart.X, model.m_arrMembers[i].NodeStart.Y, model.m_arrMembers[i].NodeStart.Z);
                         Point3D pNodeEnd = new Point3D(model.m_arrMembers[i].NodeEnd.X, model.m_arrMembers[i].NodeEnd.Y, model.m_arrMembers[i].NodeEnd.Z);
 
-                        // TODO - Ondrej - vytvorit v GUI dialog options kde si uzivatel moze vybrat co chce na prute zobrazit a z toho vyskladat tento text;
-                        string sTextToDisplay =
-                            model.m_arrMembers[i].ID.ToString() + " - " +   // Number of member
-                            model.m_arrMembers[i].Prefix + " - " +          // Member prefix
-                            model.m_arrMembers[i].CrScStart.Name + " - " +  // Member cross-section (start)
-                            Math.Round(model.m_arrMembers[i].FLength_real,3).ToString() + "m"; // Member real length
+                        string sTextToDisplay = GetMemberDisplayText(displayOptions, model.m_arrMembers[i]);
 
                         TextBlock tb = new TextBlock();
                         tb.Text = sTextToDisplay;
@@ -1030,6 +1031,129 @@ namespace BaseClasses
                 }
             }
         }
+
+        private static string GetMemberDisplayText(DisplayOptions options, CMember m)
+        {
+            string separator = " - ";
+            List<string> parts = new List<string>();
+            if (options.bDisplayMemberID) parts.Add(m.ID.ToString());
+            if (options.bDisplayMemberPrefix) parts.Add(m.Prefix.ToString());
+            if (options.bDisplayMemberCrossSectionStartName) parts.Add(m.CrScStart?.Name);
+            if (options.bDisplayMemberRealLength) parts.Add(m.FLength_real.ToString("F3") + " m");
+
+            return string.Join(separator, parts);
+        }
+
+        private static string GetNodeLoadDisplayText(DisplayOptions options, CNLoad l)
+        {
+            string separator = " - ";
+            List<string> parts = new List<string>();
+            parts.Add(l.ID.ToString());
+            parts.Add(l.Prefix.ToString());            
+            parts.Add(l.Displayin3DRatio.ToString("F3") + " [kN]");
+
+            return string.Join(separator, parts);
+        }
+
+
+        // Draw Text in 3D
+        public static void CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions, Viewport3D viewPort)
+        {
+            float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
+            float fTextBlockVerticalSize = 0.1f;
+            float fTextBlockVerticalSizeFactor = 0.8f;
+            float fTextBlockHorizontalSizeFactor = 0.3f;
+            float fOffsetZ = 0.07f;
+
+            if (loadCase != null)
+            {
+                if (loadCase.NodeLoadsList != null) // Some nodal loads exist
+                {
+                    // Model Groups of Nodal Loads
+                    for (int i = 0; i < loadCase.NodeLoadsList.Count; i++)
+                    {
+                        if (loadCase.NodeLoadsList[i] != null && loadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            ModelVisual3D textlabel = null;
+
+                            string sTextToDisplay = GetNodeLoadDisplayText(displayOptions, loadCase.NodeLoadsList[i]);
+
+                            TextBlock tb = new TextBlock();
+                            tb.Text = sTextToDisplay;
+                            tb.FontFamily = new FontFamily("Arial");
+                            
+                            Point3D pTextPosition = new Point3D();
+                            pTextPosition.X = loadCase.NodeLoadsList[i].Node.X;
+                            pTextPosition.Y = loadCase.NodeLoadsList[i].Node.Y;
+                            pTextPosition.Z = loadCase.NodeLoadsList[i].Node.Z;
+
+                            // Create text
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            viewPort.Children.Add(textlabel);
+                        }
+                    }
+                }
+
+                if (loadCase.MemberLoadsList != null) // Some member loads exist
+                {
+                    // Model Groups of Member Loads
+                    for (int i = 0; i < loadCase.MemberLoadsList.Count; i++)
+                    {
+                        if (loadCase.MemberLoadsList[i] != null && loadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            // Set load for all assigned member
+                            ModelVisual3D textlabel = null;
+
+                            string sTextToDisplay = loadCase.MemberLoadsList[i].Displayin3DRatio.ToString("F3") + " [kN/m]";
+
+                            TextBlock tb = new TextBlock();
+                            tb.Text = sTextToDisplay;
+                            tb.FontFamily = new FontFamily("Arial");
+                            
+                            Point3D pTextPosition = new Point3D();
+                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.X + fRelativePositionFactor * loadCase.MemberLoadsList[i].Member.Delta_X;
+                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.Y + fRelativePositionFactor * loadCase.MemberLoadsList[i].Member.Delta_Y;
+                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionFactor * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
+
+                            // Create text
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            viewPort.Children.Add(textlabel);
+                        }
+                    }
+                }
+
+                if (loadCase.SurfaceLoadsList != null) // Some surface loads exist
+                {
+                    // Model Groups of Surface Loads
+                    for (int i = 0; i < loadCase.SurfaceLoadsList.Count; i++)
+                    {
+                        if (loadCase.SurfaceLoadsList[i] != null && loadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            // Set load for all assigned surfaces
+                            ModelVisual3D textlabel = null;
+
+                            string sTextToDisplay = loadCase.SurfaceLoadsList[i].Displayin3DRatio.ToString("F3") + " [kN]";
+
+                            TextBlock tb = new TextBlock();
+                            tb.Text = sTextToDisplay;
+                            tb.FontFamily = new FontFamily("Arial");
+
+                            Point3D pTextPosition = new Point3D();
+                            pTextPosition.X = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.X);
+                            pTextPosition.Y = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Y);
+                            pTextPosition.Z = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Z);
+
+                            // Create text
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            viewPort.Children.Add(textlabel);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
 
         /// <summary>
         /// Creates a ModelVisual3D containing a text label.

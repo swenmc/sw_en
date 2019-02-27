@@ -965,7 +965,11 @@ namespace PFD
             sDisplayOptions.bDisplayFloorSlab = chbDisplayFloorSlab.IsChecked == true;
             sDisplayOptions.bDisplayNodalSupports = chbDisplayNodalSupports.IsChecked == true;
 
-            sDisplayOptions.bDisplayMemberDescription = chbDisplayMemberDescription.IsChecked == true;
+            sDisplayOptions.bDisplayMemberDescription = vm.ShowMemberDescription;
+            sDisplayOptions.bDisplayMemberID = vm.ShowMemberID;
+            sDisplayOptions.bDisplayMemberPrefix = vm.ShowMemberPrefix;
+            sDisplayOptions.bDisplayMemberCrossSectionStartName = vm.ShowMemberCrossSectionStartName;
+            sDisplayOptions.bDisplayMemberRealLength = vm.ShowMemberRealLength;
 
             sDisplayOptions.bDisplayMembersCenterLines = chbDisplayMembersCenterLines.IsChecked == true;
             sDisplayOptions.bDisplaySolidModel = chbDisplaySolidModel.IsChecked == true;
@@ -1411,21 +1415,21 @@ namespace PFD
             }
         }
 
-        private void chbDisplayMemberDescription_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
+        //private void chbDisplayMemberDescription_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+        //    {
+        //        UpdateAll();
+        //    }
+        //}
 
-        private void chbDisplayMemberDescription_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                UpdateAll();
-            }
-        }
+        //private void chbDisplayMemberDescription_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
+        //    {
+        //        UpdateAll();
+        //    }
+        //}
 
         private void chbDisplayMembersCenterLines_Checked(object sender, RoutedEventArgs e)
         {

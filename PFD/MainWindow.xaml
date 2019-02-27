@@ -226,7 +226,13 @@
                         <CheckBox Name="chbDisplayFloorSlab" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayFloorSlab_Unchecked" Checked="chbDisplayFloorSlab_Checked">Display Floor Slab</CheckBox>
                         <CheckBox Name="chbDisplayNodalSupports" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayNodalSupports_Unchecked" Checked="chbDisplayNodalSupports_Checked">Nodal Supports</CheckBox>
 
-                        <CheckBox Name="chbDisplayMemberDescription" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked ="chbDisplayMemberDescription_Unchecked" Checked="chbDisplayMemberDescription_Checked">Display Member Description</CheckBox>
+                        <StackPanel Grid.Row="5" Grid.Column="4" Grid.RowSpan="3">
+                            <CheckBox Name="chbDisplayMemberDescription" IsChecked="{Binding Path=ShowMemberDescription}">Display Member Description</CheckBox>
+                            <CheckBox Name="chbDisplayMemberID" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberID}" >Display Member ID</CheckBox>
+                            <CheckBox Name="chbDisplayMemberPrefix" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberPrefix}" >Display Member Prefix</CheckBox>
+                            <CheckBox Name="chbDisplayMemberCrossSectionStartName" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberCrossSectionStartName}" >Display Cross-Section name</CheckBox>
+                            <CheckBox Name="chbDisplayMemberRealLength" Margin="25 0 0 0" IsChecked="{Binding Path=ShowMemberRealLength}" >Display Member Real Length</CheckBox>
+                        </StackPanel>
 
                         <CheckBox Name="chbDisplayMembersCenterLines" Grid.Row="15" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayMembersCenterLines_UnChecked" Checked="chbDisplayMembersCenterLines_Checked">Display Members Centerlines</CheckBox>
                         <CheckBox Name="chbDisplaySolidModel" Grid.Row="16" Grid.Column="3" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplaySolidModel_Unchecked" Checked="chbDisplaySolidModel_Checked">Display Solid Model</CheckBox>

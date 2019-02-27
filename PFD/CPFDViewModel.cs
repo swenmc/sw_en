@@ -56,6 +56,13 @@ namespace PFD
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
 
+        //member description options
+        private bool MShowMemberDescription;
+        private bool MShowMemberID;
+        private bool MShowMemberPrefix;
+        private bool MShowMemberCrossSectionStartName;
+        private bool MShowMemberRealLength;
+
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
 
@@ -621,6 +628,76 @@ namespace PFD
             }
         }
 
+        public bool ShowMemberDescription
+        {
+            get
+            {
+                return MShowMemberDescription;
+            }
+
+            set
+            {
+                MShowMemberDescription = value;
+                NotifyPropertyChanged("ShowMemberDescription");
+            }
+        }
+
+        public bool ShowMemberID
+        {
+            get
+            {
+                return MShowMemberID;
+            }
+
+            set
+            {
+                MShowMemberID = value;
+                NotifyPropertyChanged("ShowMemberID");
+            }
+        }
+
+        public bool ShowMemberPrefix
+        {
+            get
+            {
+                return MShowMemberPrefix;
+            }
+
+            set
+            {
+                MShowMemberPrefix = value;
+                NotifyPropertyChanged("ShowMemberPrefix");
+            }
+        }
+
+        public bool ShowMemberCrossSectionStartName
+        {
+            get
+            {
+                return MShowMemberCrossSectionStartName;
+            }
+
+            set
+            {
+                MShowMemberCrossSectionStartName = value;
+                NotifyPropertyChanged("ShowMemberCrossSectionStartName");
+            }
+        }
+
+        public bool ShowMemberRealLength
+        {
+            get
+            {
+                return MShowMemberRealLength;
+            }
+
+            set
+            {
+                MShowMemberRealLength = value;
+                NotifyPropertyChanged("ShowMemberRealLength");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -632,6 +709,8 @@ namespace PFD
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
 
+            ShowMemberID = true;
+            ShowMemberRealLength = true;
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;
