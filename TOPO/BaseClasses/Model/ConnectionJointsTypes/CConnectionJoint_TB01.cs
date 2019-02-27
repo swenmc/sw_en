@@ -34,7 +34,7 @@ namespace BaseClasses
             float fAlignment_x = 0; // Odsadenie plechu od definicneho uzla pruta
 
             CPoint ControlPoint_P1 = new CPoint(0, fAlignment_x, /*m_MainMember.CrScStart.y_min*/ - 0.5f * fb_plate, m_MainMember.EccentricityEnd.MFz_local - 0.5f * fh_plate, 0);
-            CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+            CAnchor referenceAnchor = new CAnchor(0.016f, 0.141f, 0.18f, 0.5f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement = new CAnchorArrangement_BB_BG(referenceAnchor);

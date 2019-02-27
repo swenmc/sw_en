@@ -1139,13 +1139,19 @@ namespace BaseClasses
                             tb.FontFamily = new FontFamily("Arial");
 
                             Point3D pTextPosition = new Point3D();
-                            pTextPosition.X = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.X);
-                            pTextPosition.Y = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Y);
-                            pTextPosition.Z = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Z);
 
-                            // Create text
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                            viewPort.Children.Add(textlabel);
+                            if (loadCase.SurfaceLoadsList[i].pSurfacePoints != null) // Check that surface points are initialized
+                            {
+                                pTextPosition.X = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.X);
+                                pTextPosition.Y = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Y);
+                                pTextPosition.Z = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Z);
+
+                                // TODO Ondrej Tu je asi pozicia v lokalnych suradniciach, potrebujes to este presunut (transformovat do GCS)
+
+                                // Create text
+                                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                                viewPort.Children.Add(textlabel);
+                            }
                         }
                     }
                 }

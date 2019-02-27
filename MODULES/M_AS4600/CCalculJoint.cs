@@ -702,7 +702,6 @@ namespace M_AS4600
             float fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, 0.65f, fN_t_section_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_MainMember);
 
-
             // Anchors
             float fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
             float fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
@@ -711,9 +710,25 @@ namespace M_AS4600
             float fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_zz);
             float fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(fV_asterix_x_joint) + MathF.Pow2(fV_asterix_y_joint));
 
-            int iNumberOfAnchorsInConnection = 0;// TODO
-            float fN_asterix_anchor_uplif = fN_asterix_joint_uplif / iNumberOfAnchorsInConnection; // Design axial force per anchor
-            float fV_asterix_anchor = fV_asterix_res_joint / iNumberOfAnchorsInConnection; // Design shear force per anchor
+            //int iNumberAnchors = plate.AnchorArrangement.Anchors.Length;
+            int iNumberAnchors = plate.AnchorArrangement.IHolesNumber;
+            int iNumberAnchors_t = iNumberAnchors; // Total number of anchors active in tension - all anchors active as default
+            int iNumberAnchors_v = iNumberAnchors; // Total number of anchors active in shear - all anchors active as default
+
+            CAnchorArrangement_BB_BG anchorArrangement;
+
+            if (plate.AnchorArrangement is CAnchorArrangement_BB_BG)
+                anchorArrangement = (CAnchorArrangement_BB_BG)plate.AnchorArrangement;
+            else
+            {
+                throw new Exception("Not implemented arrangmement of anchors.");
+            }
+
+            int iNumberAnchors_x = anchorArrangement.NumberOfAnchorsInYDirection;
+            int iNumberAnchors_y = anchorArrangement.NumberOfAnchorsInZDirection;
+
+            float fN_asterix_anchor_uplif = fN_asterix_joint_uplif / iNumberAnchors_t; // Design axial force per anchor
+            float fV_asterix_anchor = fV_asterix_res_joint / iNumberAnchors_v; // Design shear force per anchor
 
             float fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
             float fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
@@ -727,6 +742,52 @@ namespace M_AS4600
             float f_c_apostrophe = 25e+6f; // Characteristic compressive (cylinder) concrete strength
             float fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
 
+            // Anchors (bolts)
+            float fd_s = plate.AnchorArrangement.referenceAnchor.Diameter_thread;
+            float fd_f = plate.AnchorArrangement.referenceAnchor.Diameter_shank;
+
+            float fA_c = plate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
+            float fA_o = plate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
+
+            float ff_y_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_yk[0];
+            float ff_u_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.m_ff_u[0];
+
+            // AS / NZS 4600:2018 - 5.3 Bolted connections
+            // Base plate design
+            // 5.3.2 Tearout
+            float fV_f_532 = eq.Eq_532_2___(ft_1_plate, fe_y_AnchorToPlateEdge, ff_uk_1_plate);
+            float fDesignRatio_532_1 = eq.Eq_5351_1__(fV_asterix_anchor, 0.7f, fV_f_532);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_532_1);
+
+            // 5.3.4.2 Bearing capacity without considering bolt hole deformation
+            float fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
+            float fC_5342 = eq.Get_Factor_C_Table_5342_B(fd_f, ft_1_plate);
+            float fV_b_5342 = eq.Eq_5342____(fAlpha_5342, fC_5342, fd_f, ft_1_plate, ff_uk_1_plate);
+            float fDesignRatio_5342 = fV_asterix_anchor / (0.6f * fV_b_5342);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_5342);
+
+            // 5.3.4.3 Bearing capacity at a bolt hole deformation of 6 mm
+            float fV_b_5343 = eq.Eq_5343____(fd_f, ft_1_plate, ff_uk_1_plate);
+            float fDesignRatio_5343 = fV_asterix_anchor / (0.6f * fV_b_5343);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_5343);
+
+            // Bolt design / Anchor design
+            // 5.3.5.1 Bolt in shear
+            int iNumberOfShearPlanesOfBolt_core = 1; // Jednostrizny spoj - strih jardom skrutky
+            float fV_fv_5351_2_anchor = eq.Eq_5351_2__(ff_u_anchor, iNumberOfShearPlanesOfBolt_core, fA_c, 0, fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
+            float fDesignRatio_5351_2 = eq.Eq_5351_1__(fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_5351_2);
+
+            // 5.3.5.2 Bolt in tension
+            float fN_ft_5352_1 = eq.Eq_5352_2__(fA_c, ff_u_anchor);
+            float fDesignRatio_5352_1 = eq.Eq_5352_1__(fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_5352_1);
+
+            // 5.3.5.3 Bolt subject to combined shear and tension
+            float fPortion_V_5353;
+            float fPortion_N_5353;
+            float fDesignRatio_5353 = eq.Eq_5353____(fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor, fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_5353);
 
         }
     }

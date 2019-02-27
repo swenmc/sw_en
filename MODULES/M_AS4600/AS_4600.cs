@@ -101,12 +101,12 @@ namespace M_AS4600
         {
             return fA_s * ff_uf; // Eq. (5.3.5.2(2)) // fN_ft
         }
-        public float Eq_5353_3__(float fV_asterix_fv, float fPhi_V, float fV_fv, float fN_asterix_ft, float fPhi_N, float fN_ft, out float fPortion_V, out float fPortion_N)
+        public float Eq_5353____(float fV_asterix_fv, float fPhi_V, float fV_fv, float fN_asterix_ft, float fPhi_N, float fN_ft, out float fPortion_V, out float fPortion_N)
         {
             fPortion_V = MathF.Pow2(fV_asterix_fv / (fPhi_V * fV_fv));
             fPortion_N = MathF.Pow2(fN_asterix_ft / (fPhi_N * fN_ft));
 
-            return fPortion_V + fPortion_N; // Eq. (5.3.5.3(3)) // fDesignRatio
+            return fPortion_V + fPortion_N; // Eq. (5.3.5.3) // fDesignRatio
         }
 
         // 5.4 SCREWED CONNECTIONS

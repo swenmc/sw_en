@@ -39,6 +39,34 @@ namespace BaseClasses
             }
         }
 
+        private float m_fArea_c_thread;
+        public float Area_c_thread  // Core / thread area
+        {
+            get
+            {
+                return m_fArea_c_thread;
+            }
+
+            set
+            {
+                m_fArea_c_thread = value;
+            }
+        }
+
+        private float m_fArea_o_shank;
+        public float Area_o_shank // Shank area
+        {
+            get
+            {
+                return m_fArea_o_shank;
+            }
+
+            set
+            {
+                m_fArea_o_shank = value;
+            }
+        }
+
         private float m_fLength;
         public float Length
         {

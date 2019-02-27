@@ -200,7 +200,7 @@ namespace PFD
 
         private void ScrewArrangementChanged()
         {
-            CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+            CAnchor referenceAnchor = new CAnchor(0.16f, 0.141f, 0.18f, 0.5f, true);
             CScrew referenceScrew = new CScrew("TEK", "14");
 
             CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);
@@ -1047,7 +1047,7 @@ namespace PFD
             {
                 bool bUseSimpleShapeOfPlates = true; // Zjednoduseny alebo presny tvar plechu
 
-                CAnchor referenceAnchor = new CAnchor(0.02f, 0.18f, 0.5f, true);
+                CAnchor referenceAnchor = new CAnchor(0.16f, 0.141f, 0.18f, 0.5f, true);
                 CScrew referenceScrew = new CScrew("TEK", "14");
 
                 CAnchorArrangement_BB_BG anchorArrangement_BB_BG = new CAnchorArrangement_BB_BG(referenceAnchor);

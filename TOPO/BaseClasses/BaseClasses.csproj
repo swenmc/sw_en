@@ -93,6 +93,8 @@
     <Compile Include="GraphObj\CDimensionArc.cs" />
     <Compile Include="GraphObj\CDimensionLinear.cs" />
     <Compile Include="GraphObj\PointF.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Circular.cs" />
+    <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Rectangular.cs" />
     <Compile Include="Results\CMemberDeflectionsInLoadCombinations.cs" />
     <Compile Include="Results\CMemberInternalForcesInLoadCombinations.cs" />
     <Compile Include="Results\CMemberLoadCombinationRatio_SLS.cs" />

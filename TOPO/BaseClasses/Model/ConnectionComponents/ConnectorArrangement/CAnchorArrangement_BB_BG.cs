@@ -11,7 +11,7 @@ using MATH;
 namespace BaseClasses
 {
     [Serializable]
-    public class CAnchorArrangement_BB_BG: CAnchorArrangement
+    public class CAnchorArrangement_BB_BG : CAnchorArrangement_Rectangular
     {
         private float m_fDistanceBetweenHoles;
 
@@ -31,6 +31,8 @@ namespace BaseClasses
         public CAnchorArrangement_BB_BG(CAnchor referenceAnchor_temp)
         {
             IHolesNumber = 2; // 2 Otvory
+            NumberOfAnchorsInYDirection = 1;
+            NumberOfAnchorsInZDirection = 2;
             referenceAnchor = referenceAnchor_temp;
             HoleRadius = 0.5f * referenceAnchor.Diameter_thread; // Anchor diameter
             RadiusAngle = 360; // Circle total angle to generate holes
@@ -39,6 +41,8 @@ namespace BaseClasses
         public CAnchorArrangement_BB_BG(float fDistanceBetweenHoles_temp, CAnchor referenceAnchor_temp)
         {
             IHolesNumber = 2; // 2 Otvory
+            NumberOfAnchorsInYDirection = 1;
+            NumberOfAnchorsInZDirection = 2;
             DistanceBetweenHoles = fDistanceBetweenHoles_temp;
             referenceAnchor = referenceAnchor_temp;
             HoleRadius = 0.5f * referenceAnchor.Diameter_thread; // Anchor diameter
