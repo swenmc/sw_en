@@ -1142,24 +1142,48 @@ namespace BaseClasses
 
                             if (loadCase.SurfaceLoadsList[i].pSurfacePoints != null) // Check that surface points are initialized
                             {
+                                // TODO Ondrej - Tu je asi pozicia v lokalnych suradniciach, potrebujes to este presunut (transformovat do GCS)
+                                /*
                                 pTextPosition.X = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.X);
                                 pTextPosition.Y = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Y);
                                 pTextPosition.Z = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Z);
+                                */
 
-                                // TODO Ondrej Tu je asi pozicia v lokalnych suradniciach, potrebujes to este presunut (transformovat do GCS)
+                                // TODO Ondrej - Treba odlisit ci je v to jedna plocha alebo skupina ploch
+                                if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
+                                {
+                                    foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
+                                    {
+                                        loadCase.SurfaceLoadsList[i].PointsGCS = GetLoadCoordinates_GCS(l);
 
-                                // Create text
-                                textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                                viewPort.Children.Add(textlabel);
+                                        pTextPosition.X = l.PointsGCS.Average(p => p.X);
+                                        pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
+                                        pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
+
+                                        // Create text
+                                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                                        viewPort.Children.Add(textlabel);
+                                    }
+                                }
+                                else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
+                                {
+                                    loadCase.SurfaceLoadsList[i].PointsGCS = GetLoadCoordinates_GCS((CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i]);
+
+                                    pTextPosition.X = loadCase.SurfaceLoadsList[i].PointsGCS.Average(p => p.X);
+                                    pTextPosition.Y = loadCase.SurfaceLoadsList[i].PointsGCS.Average(p => p.Y);
+                                    pTextPosition.Z = loadCase.SurfaceLoadsList[i].PointsGCS.Average(p => p.Z);
+
+                                    // Create text
+                                    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                                    viewPort.Children.Add(textlabel);
+                                }
+                                else throw new Exception("Load type not known.");
                             }
                         }
                     }
                 }
             }
         }
-
-
-
 
         /// <summary>
         /// Creates a ModelVisual3D containing a text label.
@@ -1272,6 +1296,21 @@ namespace BaseClasses
             Vector3D up)
         {
             return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up);
+        }
+
+        public static List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load)
+        {
+            Model3DGroup gr = load.CreateM_3D_G_Load();
+            if (gr.Children.Count < 1) return new List<Point3D>();
+
+            GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
+            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
+
+            List<Point3D> transPoints = new List<Point3D>();
+            foreach (Point3D p in mesh.Positions)
+                transPoints.Add(model3D.Transform.Transform(p));
+
+            return transPoints;
         }
 
         //-------------------------------------------------------------------------------------------------------------

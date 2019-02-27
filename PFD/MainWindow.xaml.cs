@@ -1868,7 +1868,7 @@ namespace PFD
 
         private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
         {
-            load.PointsGCS = GetLoadCoordinates_GCS(load);
+            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load);
         }
 
         private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)
@@ -1956,21 +1956,6 @@ namespace PFD
             }
         }
 
-        private List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load)
-        {
-            Model3DGroup gr = load.CreateM_3D_G_Load();
-            if (gr.Children.Count < 1) return new List<Point3D>();
-
-            GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
-            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
-
-            List<Point3D> transPoints = new List<Point3D>();
-            foreach (Point3D p in mesh.Positions)
-                transPoints.Add(model3D.Transform.Transform(p));
-
-            return transPoints;
-        }
-
         private void chbDisplayMemberLoads_Checked(object sender, RoutedEventArgs e)
         {
 
@@ -1980,8 +1965,6 @@ namespace PFD
         {
 
         }
-
-        
 
         public void ShowBFEMNetModel(Model model)
         {
