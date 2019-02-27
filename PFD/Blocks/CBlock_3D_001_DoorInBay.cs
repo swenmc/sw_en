@@ -20,6 +20,7 @@ namespace PFD
             CMember referenceGirt_temp,
             CMember Colummn,
             float fBayWidth,
+            float fWallHeight,
             bool bIsReverseGirtSession = false,
             bool bIsFirstBayInFrontorBackSide = false,
             bool bIsLastBayInFrontorBackSide = false)
@@ -116,8 +117,14 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfColumns; i++) // (Column on the left side and the right side of door)
             {
+                // Verical coordinate
+                float fz = fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt;
+
+                if (BuildingSide == "Left" || BuildingSide == "Right")
+                    fz = Math.Min(fz, fWallHeight); // Top node z-coordinate must be less or equal to the side wall height
+
                 m_arrNodes[iNodesForGirts + i * iNumberOfColumns] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, 0, 0);
-                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt, 0);
+                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, fz, 0);
             }
 
             // Coordinates of door lintel nodes

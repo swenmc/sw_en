@@ -813,7 +813,7 @@ namespace PFD
                 {
                     for (int i = 0; i < doorBlocksProperties.Count; i++)
                     {
-                        AddDoorBlock(doorBlocksPropertiesToInsert[i], doorBlocksProperties[i], 0.5f);
+                        AddDoorBlock(doorBlocksPropertiesToInsert[i], doorBlocksProperties[i], 0.5f, fH1_frame);
                     }
                 }
                 else
@@ -1594,7 +1594,7 @@ namespace PFD
             allignment_knee_rafter = (0.5f * fh_column - (0.5f * x)) / cosAlpha;
         }
 
-        public void AddDoorBlock(PropertiesToInsertOpening insertprop, DoorProperties prop, float fLimitDistanceFromColumn)
+        public void AddDoorBlock(PropertiesToInsertOpening insertprop, DoorProperties prop, float fLimitDistanceFromColumn, float fSideWallHeight)
         {
             CMember mReferenceGirt;
             CMember mColumn;
@@ -1619,6 +1619,7 @@ namespace PFD
                 mReferenceGirt,
                 mColumn,
                 fBayWidth,
+                fSideWallHeight,
                 bIsReverseSession,
                 bIsFirstBayInFrontorBackSide,
                 bIsLastBayInFrontorBackSide);
