@@ -1055,7 +1055,6 @@ namespace BaseClasses
             return string.Join(separator, parts);
         }
 
-
         // Draw Text in 3D
         public static void CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions, Viewport3D viewPort)
         {
@@ -1231,6 +1230,8 @@ namespace BaseClasses
                                 pTextPosition.Z = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Z);
                                 */
 
+                                // TO Ondrej - nieco som tu povystrajal, skus sa na to popozerat a pripadne to este preberieme a vylepsime
+
                                 // TODO Ondrej - Treba odlisit ci je v to jedna plocha alebo skupina ploch
                                 // TO Ondrej - nic Ti to nezobrazuje preto ze Displayin3DRatio nie je hodnota zatazenia ale len faktor pre vypocet velkosti kvadra v 3D grafike ktorym sa prenasobi hodnota zatazenia
                                 // Pre konkretne hodnoty zatazenia sa musis dostat do potomkov zakladnych tried, tam je Fq alebo fValue alebo Fy, Fz... atd
@@ -1243,7 +1244,20 @@ namespace BaseClasses
                                         if (MathF.d_equal(l.fValue, 0))
                                             continue;
 
-                                        l.PointsGCS = GetLoadCoordinates_GCS(l);
+                                        l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
+
+                                        // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenene
+                                        // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
+                                        // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
+
+                                        // Pokus ????????
+                                        for (int j = 0; j < l.PointsGCS.Count; j++)
+                                        {
+                                            double Y = l.PointsGCS[j].Z;
+                                            double Z = l.PointsGCS[j].Y;
+
+                                            l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
+                                        }
 
                                         if (l.PointsGCS.Count > 0)
                                         {
@@ -1268,7 +1282,20 @@ namespace BaseClasses
                                     if (MathF.d_equal(l.fValue, 0))
                                         continue;
 
-                                    l.PointsGCS = GetLoadCoordinates_GCS(l);
+                                    l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
+
+                                    // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenene
+                                    // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
+                                    // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
+
+                                    // Pokus ????????
+                                    for(int j = 0; j < l.PointsGCS.Count; j++)
+                                    {
+                                        double Y = l.PointsGCS[j].Z;
+                                        double Z = l.PointsGCS[j].Y;
+
+                                        l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
+                                    }
 
                                     if (l.PointsGCS.Count > 0)
                                     {
