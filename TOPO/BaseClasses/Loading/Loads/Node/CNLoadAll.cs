@@ -53,7 +53,9 @@ namespace BaseClasses
         {
 
         }
-        public CNLoadAll(CNode nNode,
+        public CNLoadAll(
+              int iLoadID,
+              CNode nNode,
               float fValue_FX,
               float fValue_FY,
               float fValue_FZ,
@@ -64,6 +66,7 @@ namespace BaseClasses
               int fTime
             )
         {
+            ID = iLoadID;
             Node = nNode;
             Value_FX = fValue_FX;
             Value_FY = fValue_FY;

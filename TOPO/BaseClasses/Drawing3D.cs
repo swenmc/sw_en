@@ -1044,18 +1044,98 @@ namespace BaseClasses
             return string.Join(separator, parts);
         }
 
-        private static string GetNodeLoadDisplayText(DisplayOptions options, CNLoad l)
+        private static string GetNodeLoadDisplayText(DisplayOptions options, CNLoadSingle l)
         {
-            string separator = " - ";
+            // TODO - zistit smer a hodnotu CNLoad
+
             List<string> parts = new List<string>();
+
+            float fLoadValue = 0f;
+            float fUnitFactor = 0.001f; // Fx - Fz (N to kN) or Mx - Mz (N/m to kN/m)
+
+            string sUnitString = "";
+
+            switch (l.NLoadType)
+            {
+                case ENLoadType.eNLT_Fx:
+                case ENLoadType.eNLT_Fy:
+                case ENLoadType.eNLT_Fz:
+                    {
+                        sUnitString = "[kN]";
+                        break;
+                    }
+                case ENLoadType.eNLT_Mx:
+                case ENLoadType.eNLT_My:
+                case ENLoadType.eNLT_Mz:
+                    {
+                        sUnitString = "[kNm]";
+                        break;
+                    }
+                default:
+                    Console.WriteLine("Not implemented nodal load.");
+                    break;
+            }
+
+            fLoadValue = l.Value;
+
+            string separator = " - ";
             parts.Add(l.ID.ToString());
             parts.Add(l.Prefix.ToString());
-            parts.Add(l.Displayin3DRatio.ToString("F3") + " [kN]");
+            parts.Add((fLoadValue * fUnitFactor).ToString("F3") + " " + sUnitString);
 
             return string.Join(separator, parts);
         }
 
-        // Draw Text in 3D
+        private static string GetNodeLoadDisplayText(DisplayOptions options, CNLoadAll l)
+        {
+            List<string> listOfStrings = new List<string>();
+            string separator = " - ";
+            string id = l.ID.ToString();
+
+            float fUnitFactor = 0.001f; // Fx - Fz (N to kN) or Mx - Mz (N/m to kN/m)
+
+            List<string> parts1 = new List<string>();
+            parts1.Add("Fx");
+            parts1.Add((l.Value_FX * fUnitFactor).ToString("F3") + " " + "[kN]");
+            string lineFx = string.Join(separator, parts1);
+
+            List<string> parts2 = new List<string>();
+            parts2.Add("Fy");
+            parts2.Add((l.Value_FY * fUnitFactor).ToString("F3") + " " + "[kN]");
+            string lineFy = string.Join(separator, parts2);
+
+            List<string> parts3 = new List<string>();
+            parts3.Add("Fz");
+            parts3.Add((l.Value_FZ * fUnitFactor).ToString("F3") + " " + "[kN]");
+            string lineFz = string.Join(separator, parts3);
+
+            List<string> parts4 = new List<string>();
+            parts4.Add("Fx");
+            parts4.Add((l.Value_MX * fUnitFactor).ToString("F3") + " " + "[kNm]");
+            string lineMx = string.Join(separator, parts4);
+
+            List<string> parts5 = new List<string>();
+            parts5.Add("Fx");
+            parts5.Add((l.Value_MY * fUnitFactor).ToString("F3") + " " + "[kNm]");
+            string lineMy = string.Join(separator, parts5);
+
+            List<string> parts6 = new List<string>();
+            parts6.Add("Fx");
+            parts6.Add((l.Value_MZ * fUnitFactor).ToString("F3") + " " + "[kNm]");
+            string lineMz = string.Join(separator, parts6);
+
+            string wholeString = id + "\n" +
+                lineFx + "\n" +
+                lineFy + "\n" +
+                lineFz + "\n" +
+                lineMx + "\n" +
+                lineMy + "\n" +
+                lineMz + "\n";
+
+            return wholeString;
+        }
+
+         // Draw Text in 3D
         public static void CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions, Viewport3D viewPort)
         {
             float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
@@ -1077,13 +1157,27 @@ namespace BaseClasses
                         {
                             ModelVisual3D textlabel = null;
 
-                            string sTextToDisplay = GetNodeLoadDisplayText(displayOptions, loadCase.NodeLoadsList[i]);
+                            string sTextToDisplay;
+                            
+                            if(loadCase.NodeLoadsList[i] is CNLoadSingle)
+                                sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadSingle)loadCase.NodeLoadsList[i]);
+                            else
+                                sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadAll)loadCase.NodeLoadsList[i]);
 
                             TextBlock tb = new TextBlock();
                             tb.Text = sTextToDisplay;
                             tb.FontFamily = new FontFamily("Arial");
-                            
+                            tb.FontStretch = FontStretches.UltraCondensed;
+                            tb.FontStyle = FontStyles.Normal;
+                            tb.FontWeight = FontWeights.Thin;
+                            tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
+                            tb.Background = Brushes.Black;
+
                             Point3D pTextPosition = new Point3D();
+
+                            // TODO - Ondrej - polohu textu by sme nemali vztahovat na bod kde je sipka ale na koncovy bod + nejaky odstup
+                            // Tento bod je mozne ziskat podla smeru a hodnoty zatazenia alebo urcit z Model3DGroup zatazenia
+
                             pTextPosition.X = loadCase.NodeLoadsList[i].Node.X;
                             pTextPosition.Y = loadCase.NodeLoadsList[i].Node.Y;
                             pTextPosition.Z = loadCase.NodeLoadsList[i].Node.Z;
@@ -1152,6 +1246,8 @@ namespace BaseClasses
                             Point3D pTextPosition = new Point3D();
 
                             // TO - Ondrej - fRelativePositionFactor plati len ak je zatazenie na celej dlzke pruta CMLoad_21, pre ostatne zatazenia to musime urcit podla polohy zatazenia na prute
+                            // Este bude potrebne skontrolovat ci to kresli spravne ak je smer pruta v smere GCS - X opacny
+
                             // Prerobit na switch
                             if (loadCase.MemberLoadsList[i] is CMLoad_21)
                             {

@@ -163,9 +163,9 @@ namespace CENEX
             // Pozn. Jednym z parametrov by malo byt pole ID uzlov v ktorych je zadefinovane uzlove zatazenie
             // objekt zatazenia bude len jeden a dotknute uzly budu vediet ze na ich dane zatazenie existuje a ake je konkretne ID jeho vlastnosti
 
-            arrNLoads[0] = new CNLoadSingle(arrNodes[1], ENLoadType.eNLT_Fx, 40.0f, true, 0);
-            arrNLoads[1] = new CNLoadSingle(arrNodes[4], ENLoadType.eNLT_Fx, -60.0f, true, 0);
-            arrNLoads[2] = new CNLoadSingle(arrNodes[5], ENLoadType.eNLT_Fz, 80.0f, true, 0);
+            arrNLoads[0] = new CNLoadSingle(1, arrNodes[1], ENLoadType.eNLT_Fx, 40.0f, true, 0);
+            arrNLoads[1] = new CNLoadSingle(2, arrNodes[4], ENLoadType.eNLT_Fx, -60.0f, true, 0);
+            arrNLoads[2] = new CNLoadSingle(3, arrNodes[5], ENLoadType.eNLT_Fz, 80.0f, true, 0);
         }
     }
 }

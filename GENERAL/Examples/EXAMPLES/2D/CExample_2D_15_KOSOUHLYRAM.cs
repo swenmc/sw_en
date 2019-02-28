@@ -104,13 +104,13 @@ namespace Examples
             Array.Sort(m_arrNSupports, new BaseClasses.CCompare_NSupportID());
 
             // Nodal loads
-            CNLoadSingle NLoad_F1 = new CNLoadSingle(m_arrNodes[1], ENLoadType.eNLT_Fy, -4000, true, 0);
+            CNLoadSingle NLoad_F1 = new CNLoadSingle(1,m_arrNodes[1], ENLoadType.eNLT_Fy, -4000, true, 0);
             m_arrNLoads[0] = NLoad_F1;
 
-            CNLoadSingle NLoad_F2 = new CNLoadSingle(m_arrNodes[2], ENLoadType.eNLT_Fy, -3000, true, 0);
+            CNLoadSingle NLoad_F2 = new CNLoadSingle(2, m_arrNodes[2], ENLoadType.eNLT_Fy, -3000, true, 0);
             m_arrNLoads[1] = NLoad_F1;
 
-            CNLoadSingle NLoad_M = new CNLoadSingle(m_arrNodes[2], ENLoadType.eNLT_Mz, -675, true, 0);
+            CNLoadSingle NLoad_M = new CNLoadSingle(3, m_arrNodes[2], ENLoadType.eNLT_Mz, -675, true, 0);
             m_arrNLoads[2] = NLoad_M;
 
             // Member loads

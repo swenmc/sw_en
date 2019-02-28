@@ -54,11 +54,11 @@ namespace M_EC1.AS_NZS
         */
 
         public float fV_x_ULS_stab;
-        public float fV_x_ULS_stregnth;
+        public float fV_x_ULS_strength;
         public float fV_x_SLS;
 
         public float fV_y_ULS_stab;
-        public float fV_y_ULS_stregnth;
+        public float fV_y_ULS_strength;
         public float fV_y_SLS;
 
         public CCalcul_1170_5(float fT_1x, float fT_1y, float fG_tot_x, float fG_tot_y, BuildingDataInput sBuildInput, SeisLoadDataInput sSeisInput)
@@ -105,13 +105,15 @@ namespace M_EC1.AS_NZS
 
             // Forces at one frame (number of frames)
             fV_x_ULS_stab = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_ULS_stab, fG_tot_x);
-            fV_x_ULS_stregnth = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_ULS_strength, fG_tot_x);
+            fV_x_ULS_strength = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_ULS_strength, fG_tot_x);
             fV_x_SLS = AS_NZS_1170_5.Eq_62_1____(fC_d_T1x_SLS, fG_tot_x);
 
             // Forces at one frame (sides of structure = 2)
             fV_y_ULS_stab = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_ULS_stab, fG_tot_y);
-            fV_y_ULS_stregnth = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_ULS_strength, fG_tot_y);
+            fV_y_ULS_strength = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_ULS_strength, fG_tot_y);
             fV_y_SLS = AS_NZS_1170_5.Eq_62_1____(fC_d_T1y_SLS, fG_tot_y);
+
+            // TODO - tento vypocet nezohladnuje ine zatazenie a tuhost koncovych ramov
         }
 
         protected float GetReturnPeriodFactor_R(float fRequiredAnnualProbabilityOfExceedance)

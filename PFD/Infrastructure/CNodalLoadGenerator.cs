@@ -14,6 +14,7 @@ namespace PFD
         private int iNumberOfLoadsInYDirection;
         private CLoadCase[] m_arrLoadCases;
         CNode[] m_arrNodes;
+        private float fL1;
         CCalcul_1170_5 eq;
 
         public List<CNLoad> nodalLoadEQ_ULS_PlusX;
@@ -22,12 +23,13 @@ namespace PFD
         public List<CNLoad> nodalLoadEQ_SLS_PlusY;
 
         public CNodalLoadGenerator(int numberOfLoadsInXDirection, int numberOfLoadsInYDirection,
-            CLoadCase[] arrLoadCases, CNode[] arrNodes, CCalcul_1170_5 calc_eq)
+            CLoadCase[] arrLoadCases, CNode[] arrNodes, /*float fL1_frame,*/ CCalcul_1170_5 calc_eq)
         {
             iNumberOfLoadsInXDirection = numberOfLoadsInXDirection;
             iNumberOfLoadsInYDirection = numberOfLoadsInYDirection;
             m_arrLoadCases = arrLoadCases;
             m_arrNodes = arrNodes;
+            //fL1 = fL1_frame; // Docasne riesenie zatazenie krajnych ramov pre smer X a redukuje na polovicu, TODO - dopracovat detailnejsie, ina tuhost a hmotnost krajnych ramov
             eq = calc_eq;
         }
 
@@ -39,24 +41,34 @@ namespace PFD
             nodalLoadEQ_SLS_PlusX = new List<CNLoad>(iNumberOfLoadsInXDirection);
             nodalLoadEQ_SLS_PlusY = new List<CNLoad>(iNumberOfLoadsInYDirection);
 
+            int iLastIndex = 0;
             for (int i = 0; i < iNumberOfLoadsInXDirection; i++)
             {
-                nodalLoadEQ_ULS_PlusX.Add(new CNLoadSingle(m_arrNodes[i * 5 + 1], ENLoadType.eNLT_Fx, eq.fV_x_ULS_stregnth, true, 0));
-                nodalLoadEQ_SLS_PlusX.Add(new CNLoadSingle(m_arrNodes[i * 5 + 1], ENLoadType.eNLT_Fx, eq.fV_x_SLS, true, 0));
+                float fLoadFactor = 1f;
+
+                if (i == 0 || i == iNumberOfLoadsInXDirection - 1)
+                    fLoadFactor = 0.5f /** fL1 / fL1*/; // Pre krajne ramy je uvazovana polovica zatazovacej sirky - TODO - dopracovat preciznejsie
+
+                nodalLoadEQ_ULS_PlusX.Add(new CNLoadSingle(i + 1, m_arrNodes[i * 5 + 1], ENLoadType.eNLT_Fx, fLoadFactor * eq.fV_x_ULS_strength, true, 0));
+                nodalLoadEQ_SLS_PlusX.Add(new CNLoadSingle(i + 1, m_arrNodes[i * 5 + 1], ENLoadType.eNLT_Fx, fLoadFactor * eq.fV_x_SLS, true, 0));
             }
+
+            iLastIndex += iNumberOfLoadsInXDirection;
 
             for (int i = 0; i < iNumberOfLoadsInYDirection; i++)
             {
-                nodalLoadEQ_ULS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_ULS_stregnth, true, 0));
-                nodalLoadEQ_SLS_PlusY.Add(new CNLoadSingle(m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_SLS, true, 0));
+                nodalLoadEQ_ULS_PlusY.Add(new CNLoadSingle(iLastIndex + i + 1, m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_ULS_strength, true, 0));
+                nodalLoadEQ_SLS_PlusY.Add(new CNLoadSingle(iLastIndex + i + 1, m_arrNodes[i * 2 + 1], ENLoadType.eNLT_Fy, eq.fV_y_SLS, true, 0));
             }
-                        
+
+            iLastIndex += iNumberOfLoadsInYDirection;
+
             // ULS
-            m_arrLoadCases[(int)ELCName.eEQ_Eu_Left_X_Plus].NodeLoadsList = nodalLoadEQ_ULS_PlusX;    // 22
+            m_arrLoadCases[(int)ELCName.eEQ_Eu_Left_X_Plus].NodeLoadsList = nodalLoadEQ_ULS_PlusX;     // 22
             m_arrLoadCases[(int)ELCName.eEQ_Eu_Front_Y_Plus].NodeLoadsList = nodalLoadEQ_ULS_PlusY;    // 23
 
             // SLS
-            m_arrLoadCases[(int)ELCName.eEQ_Es_Left_X_Plus].NodeLoadsList = nodalLoadEQ_SLS_PlusX;    // 43
+            m_arrLoadCases[(int)ELCName.eEQ_Es_Left_X_Plus].NodeLoadsList = nodalLoadEQ_SLS_PlusX;     // 43
             m_arrLoadCases[(int)ELCName.eEQ_Es_Front_Y_Plus].NodeLoadsList = nodalLoadEQ_SLS_PlusY;    // 44
         }
     }
