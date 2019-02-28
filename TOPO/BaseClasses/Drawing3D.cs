@@ -1049,7 +1049,7 @@ namespace BaseClasses
             string separator = " - ";
             List<string> parts = new List<string>();
             parts.Add(l.ID.ToString());
-            parts.Add(l.Prefix.ToString());            
+            parts.Add(l.Prefix.ToString());
             parts.Add(l.Displayin3DRatio.ToString("F3") + " [kN]");
 
             return string.Join(separator, parts);
@@ -1060,7 +1060,9 @@ namespace BaseClasses
         public static void CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions, Viewport3D viewPort)
         {
             float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
-            float fTextBlockVerticalSize = 0.1f;
+            float fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor;
+
+            float fTextBlockVerticalSize = 0.2f;
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
             float fOffsetZ = 0.07f;
@@ -1104,16 +1106,92 @@ namespace BaseClasses
                             // Set load for all assigned member
                             ModelVisual3D textlabel = null;
 
-                            string sTextToDisplay = loadCase.MemberLoadsList[i].Displayin3DRatio.ToString("F3") + " [kN/m]";
+                            float fLoadValue = 0f;
+
+                            // Todo Ondrej - toto asi treba dak niekam stranou a prerobit na switch, tych zatazeni je asi 20
+                            if (loadCase.MemberLoadsList[i] is CMLoad_21)
+                            {
+                                CMLoad_21 l = (CMLoad_21)loadCase.MemberLoadsList[i];
+                                fLoadValue = l.Fq;
+                            }
+                            if (loadCase.MemberLoadsList[i] is CMLoad_22)
+                            {
+                                CMLoad_22 l = (CMLoad_22)loadCase.MemberLoadsList[i];
+                                fLoadValue = l.Fq;
+                            }
+                            if (loadCase.MemberLoadsList[i] is CMLoad_23)
+                            {
+                                CMLoad_23 l = (CMLoad_23)loadCase.MemberLoadsList[i];
+                                fLoadValue = l.Fq;
+                            }
+                            if (loadCase.MemberLoadsList[i] is CMLoad_24)
+                            {
+                                CMLoad_24 l = (CMLoad_24)loadCase.MemberLoadsList[i];
+                                fLoadValue = l.Fq;
+                            }
+                            else
+                            {
+                               // Not implemented
+                            }
+
+                            // Ak je hodnota zatazenia 0, tak nic nevykreslit
+                            if (MathF.d_equal(fLoadValue, 0))
+                                continue;
+
+                            float fUnitFactor = 0.001f; // N/m to kN/m
+                            string sTextToDisplay = (fLoadValue * fUnitFactor).ToString("F3") + " [kN/m]";
 
                             TextBlock tb = new TextBlock();
                             tb.Text = sTextToDisplay;
                             tb.FontFamily = new FontFamily("Arial");
-                            
+                            tb.FontStretch = FontStretches.UltraCondensed;
+                            tb.FontStyle = FontStyles.Normal;
+                            tb.FontWeight = FontWeights.Thin;
+                            tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
+                            tb.Background = Brushes.Black;
+
                             Point3D pTextPosition = new Point3D();
-                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.X + fRelativePositionFactor * loadCase.MemberLoadsList[i].Member.Delta_X;
-                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.Y + fRelativePositionFactor * loadCase.MemberLoadsList[i].Member.Delta_Y;
-                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionFactor * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
+
+                            // TO - Ondrej - fRelativePositionFactor plati len ak je zatazenie na celej dlzke pruta CMLoad_21, pre ostatne zatazenia to musime urcit podla polohy zatazenia na prute
+                            // Prerobit na switch
+                            if (loadCase.MemberLoadsList[i] is CMLoad_21)
+                            {
+                                fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor/* * (loadCase.MemberLoadsList[i].Member.FLength / loadCase.MemberLoadsList[i].Member.FLength)*/;
+                            }
+                            else if(loadCase.MemberLoadsList[i] is CMLoad_22)
+                            {
+                                CMLoad_22 l = (CMLoad_22)loadCase.MemberLoadsList[i];
+
+                                fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor * l.Fa / loadCase.MemberLoadsList[i].Member.FLength;
+                            }
+                            else if(loadCase.MemberLoadsList[i] is CMLoad_23)
+                            {
+                                CMLoad_23 l = (CMLoad_23)loadCase.MemberLoadsList[i];
+                                fRelativePositionOfTextOnMember_LCS = (l.Fa + fRelativePositionFactor * l.Fb) / loadCase.MemberLoadsList[i].Member.FLength;
+                            }
+                            else if (loadCase.MemberLoadsList[i] is CMLoad_24)
+                            {
+                                CMLoad_24 l = (CMLoad_24)loadCase.MemberLoadsList[i];
+
+                                fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor * l.Fa / loadCase.MemberLoadsList[i].Member.FLength;
+                            }
+                            else { }
+
+                            // TO Ondrej - kreslime to priamo v GCS na strednicu pruta, ale lepsie by bolo vykreslit to v LCS pruta a potom transformovat,
+                            // pretoze ked to chcem vykreslit nie na strednicu pruta, ale na hranu zatazenia (tam kde nie su sipky), tak sa k suradniciam nedostanem
+                            // Takto nejako by to malo vyzerat
+
+                            //                       Fq [kN/m]
+                            //           ________________*_____________
+                            //           |                            |
+                            //           |                            |
+                            //          \|/                          \|/
+                            //================================================= - MEMBER
+
+
+                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.X + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_X;
+                            pTextPosition.Y = loadCase.MemberLoadsList[i].Member.NodeStart.Y + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Y;
+                            pTextPosition.Z = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
 
                             // Create text
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
@@ -1134,6 +1212,13 @@ namespace BaseClasses
 
                             TextBlock tb = new TextBlock();
                             tb.FontFamily = new FontFamily("Arial");
+                            tb.FontStretch = FontStretches.UltraCondensed;
+                            tb.FontStyle = FontStyles.Normal;
+                            tb.FontWeight = FontWeights.Thin;
+                            tb.Foreground = Brushes.Coral;
+                            tb.Background = Brushes.Black;
+
+                            float fUnitFactor = 0.001f; // N/m^2 to kN/m^2 (Pa to kPa)
 
                             Point3D pTextPosition = new Point3D();
 
@@ -1147,10 +1232,17 @@ namespace BaseClasses
                                 */
 
                                 // TODO Ondrej - Treba odlisit ci je v to jedna plocha alebo skupina ploch
+                                // TO Ondrej - nic Ti to nezobrazuje preto ze Displayin3DRatio nie je hodnota zatazenia ale len faktor pre vypocet velkosti kvadra v 3D grafike ktorym sa prenasobi hodnota zatazenia
+                                // Pre konkretne hodnoty zatazenia sa musis dostat do potomkov zakladnych tried, tam je Fq alebo fValue alebo Fy, Fz... atd
+
                                 if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
                                 {
                                     foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                     {
+                                        // Ak je hodnota zatazenia 0, tak nic nevykreslit
+                                        if (MathF.d_equal(l.fValue, 0))
+                                            continue;
+
                                         l.PointsGCS = GetLoadCoordinates_GCS(l);
 
                                         if (l.PointsGCS.Count > 0)
@@ -1159,7 +1251,7 @@ namespace BaseClasses
                                             pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
                                             pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
 
-                                            string sTextToDisplay = l.fValue.ToString("F3") + " [kN]";
+                                            string sTextToDisplay = (l.fValue * fUnitFactor).ToString("F3") + " [kPa]";
                                             tb.Text = sTextToDisplay;
 
                                             // Create text
@@ -1171,6 +1263,11 @@ namespace BaseClasses
                                 else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
                                 {
                                     CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
+
+                                    // Ak je hodnota zatazenia 0, tak nic nevykreslit
+                                    if (MathF.d_equal(l.fValue, 0))
+                                        continue;
+
                                     l.PointsGCS = GetLoadCoordinates_GCS(l);
 
                                     if (l.PointsGCS.Count > 0)
@@ -1180,7 +1277,7 @@ namespace BaseClasses
                                         pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
 
                                         // Set load value to display
-                                        string sTextToDisplay = l.fValue.ToString("F3") + " [kN]";
+                                        string sTextToDisplay = (l.fValue * fUnitFactor).ToString("F3") + " [kPa]";
                                         tb.Text = sTextToDisplay;
 
                                         // Create text
