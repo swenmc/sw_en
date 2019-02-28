@@ -1132,10 +1132,7 @@ namespace BaseClasses
                             // Set load for all assigned surfaces
                             ModelVisual3D textlabel = null;
 
-                            string sTextToDisplay = loadCase.SurfaceLoadsList[i].Displayin3DRatio.ToString("F3") + " [kN]";
-
                             TextBlock tb = new TextBlock();
-                            tb.Text = sTextToDisplay;
                             tb.FontFamily = new FontFamily("Arial");
 
                             Point3D pTextPosition = new Point3D();
@@ -1154,28 +1151,42 @@ namespace BaseClasses
                                 {
                                     foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                     {
-                                        loadCase.SurfaceLoadsList[i].PointsGCS = GetLoadCoordinates_GCS(l);
+                                        l.PointsGCS = GetLoadCoordinates_GCS(l);
 
+                                        if (l.PointsGCS.Count > 0)
+                                        {
+                                            pTextPosition.X = l.PointsGCS.Average(p => p.X);
+                                            pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
+                                            pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
+
+                                            string sTextToDisplay = l.fValue.ToString("F3") + " [kN]";
+                                            tb.Text = sTextToDisplay;
+
+                                            // Create text
+                                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                                            viewPort.Children.Add(textlabel);
+                                        }
+                                    }
+                                }
+                                else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
+                                {
+                                    CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
+                                    l.PointsGCS = GetLoadCoordinates_GCS(l);
+
+                                    if (l.PointsGCS.Count > 0)
+                                    {
                                         pTextPosition.X = l.PointsGCS.Average(p => p.X);
                                         pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
                                         pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
+
+                                        // Set load value to display
+                                        string sTextToDisplay = l.fValue.ToString("F3") + " [kN]";
+                                        tb.Text = sTextToDisplay;
 
                                         // Create text
                                         textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
                                         viewPort.Children.Add(textlabel);
                                     }
-                                }
-                                else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
-                                {
-                                    loadCase.SurfaceLoadsList[i].PointsGCS = GetLoadCoordinates_GCS((CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i]);
-
-                                    pTextPosition.X = loadCase.SurfaceLoadsList[i].PointsGCS.Average(p => p.X);
-                                    pTextPosition.Y = loadCase.SurfaceLoadsList[i].PointsGCS.Average(p => p.Y);
-                                    pTextPosition.Z = loadCase.SurfaceLoadsList[i].PointsGCS.Average(p => p.Z);
-
-                                    // Create text
-                                    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                                    viewPort.Children.Add(textlabel);
                                 }
                                 else throw new Exception("Load type not known.");
                             }
