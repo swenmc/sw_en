@@ -1204,7 +1204,7 @@ namespace BaseClasses
                     // Model Groups of Surface Loads
                     for (int i = 0; i < loadCase.SurfaceLoadsList.Count; i++)
                     {
-                        if (loadCase.SurfaceLoadsList[i] != null && loadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        if (loadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             // Set load for all assigned surfaces
                             ModelVisual3D textlabel = null;
@@ -1221,43 +1221,40 @@ namespace BaseClasses
 
                             Point3D pTextPosition = new Point3D();
 
-                            if (loadCase.SurfaceLoadsList[i].pSurfacePoints != null) // Check that surface points are initialized
+                            // TO Ondrej - nieco som tu povystrajal, skus sa na to popozerat a pripadne to este preberieme a vylepsime
+
+                            // TODO Ondrej - Treba odlisit ci je v to jedna plocha alebo skupina ploch
+                            // TO Ondrej - nic Ti to nezobrazuje preto ze Displayin3DRatio nie je hodnota zatazenia ale len faktor pre vypocet velkosti kvadra v 3D grafike ktorym sa prenasobi hodnota zatazenia
+                            // Pre konkretne hodnoty zatazenia sa musis dostat do potomkov zakladnych tried, tam je Fq alebo fValue alebo Fy, Fz... atd
+
+                            if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
                             {
-                                // TODO Ondrej - Tu je asi pozicia v lokalnych suradniciach, potrebujes to este presunut (transformovat do GCS)
-                                /*
-                                pTextPosition.X = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.X);
-                                pTextPosition.Y = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Y);
-                                pTextPosition.Z = loadCase.SurfaceLoadsList[i].pSurfacePoints.Average(p => p.Z);
-                                */
-
-                                // TO Ondrej - nieco som tu povystrajal, skus sa na to popozerat a pripadne to este preberieme a vylepsime
-
-                                // TODO Ondrej - Treba odlisit ci je v to jedna plocha alebo skupina ploch
-                                // TO Ondrej - nic Ti to nezobrazuje preto ze Displayin3DRatio nie je hodnota zatazenia ale len faktor pre vypocet velkosti kvadra v 3D grafike ktorym sa prenasobi hodnota zatazenia
-                                // Pre konkretne hodnoty zatazenia sa musis dostat do potomkov zakladnych tried, tam je Fq alebo fValue alebo Fy, Fz... atd
-
-                                if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
+                                foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                 {
-                                    foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
+                                    if (l.pSurfacePoints != null) // Check that surface points are initialized
                                     {
+                                        // TODO - Ondrej (ma tam byt continue alebo nieco ine?)
                                         // Ak je hodnota zatazenia 0, tak nic nevykreslit
-                                        if (MathF.d_equal(l.fValue, 0))
-                                            continue;
+                                        //if (MathF.d_equal(l.fValue, 0))
+                                        //   continue;
 
                                         l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
 
                                         // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenene
+                                        // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenenem
+                                        // ale aj ked som to prehodil tak to nesedi, takze sa s tym treba pohrat a prist na to co v tej transformacii nie je spravne
                                         // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
                                         // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
 
                                         // Pokus ????????
+                                        /*
                                         for (int j = 0; j < l.PointsGCS.Count; j++)
                                         {
                                             double Y = l.PointsGCS[j].Z;
                                             double Z = l.PointsGCS[j].Y;
 
                                             l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
-                                        }
+                                        }*/
 
                                         if (l.PointsGCS.Count > 0)
                                         {
@@ -1274,28 +1271,35 @@ namespace BaseClasses
                                         }
                                     }
                                 }
-                                else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
-                                {
-                                    CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
+                            }
+                            else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
+                            {
+                                CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
 
+                                if (l.pSurfacePoints != null) // Check that surface points are initialized
+                                {
+                                    // TODO - Ondrej (ma tam byt continue alebo nieco ine?)
                                     // Ak je hodnota zatazenia 0, tak nic nevykreslit
-                                    if (MathF.d_equal(l.fValue, 0))
-                                        continue;
+                                    //if (MathF.d_equal(l.fValue, 0))
+                                    //    continue;
 
                                     l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
 
-                                    // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenene
+                                    // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenenem
+                                    // ale aj ked som to prehodil tak to nesedi, takze sa s tym treba pohrat a prist na to co v tej transformacii nie je spravne
                                     // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
                                     // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
 
                                     // Pokus ????????
-                                    for(int j = 0; j < l.PointsGCS.Count; j++)
+                                    /*
+                                    for (int j = 0; j < l.PointsGCS.Count; j++)
                                     {
                                         double Y = l.PointsGCS[j].Z;
                                         double Z = l.PointsGCS[j].Y;
 
                                         l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
                                     }
+                                    */
 
                                     if (l.PointsGCS.Count > 0)
                                     {
@@ -1312,8 +1316,8 @@ namespace BaseClasses
                                         viewPort.Children.Add(textlabel);
                                     }
                                 }
-                                else throw new Exception("Load type not known.");
                             }
+                            else throw new Exception("Load type not known.");
                         }
                     }
                 }
