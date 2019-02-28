@@ -711,6 +711,13 @@ namespace PFD
 
             ShowMemberID = true;
             ShowMemberRealLength = true;
+
+            ShowLoads = true;
+            ShowLoadsOnMembers = true;
+            ShowLoadsOnPurlinsAndGirts = true;
+            ShowLoadsOnFrameMembers = true;
+            ShowNodalLoads = true;
+
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
             ModelIndex = modelIndex;

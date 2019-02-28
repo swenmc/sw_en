@@ -1170,20 +1170,21 @@ namespace BaseClasses
                             tb.FontStretch = FontStretches.UltraCondensed;
                             tb.FontStyle = FontStyles.Normal;
                             tb.FontWeight = FontWeights.Thin;
-                            tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
+                            tb.Foreground = Brushes.Coral; // musime nastavovat farbu textu, inak sa to kresli ciernou
                             tb.Background = Brushes.Black;
 
                             Point3D pTextPosition = new Point3D();
 
                             // TODO - Ondrej - polohu textu by sme nemali vztahovat na bod kde je sipka ale na koncovy bod + nejaky odstup
                             // Tento bod je mozne ziskat podla smeru a hodnoty zatazenia alebo urcit z Model3DGroup zatazenia
-
+                            Model3DGroup gr3D = loadCase.NodeLoadsList[i].CreateM_3D_G_Load();
+                            
                             pTextPosition.X = loadCase.NodeLoadsList[i].Node.X;
                             pTextPosition.Y = loadCase.NodeLoadsList[i].Node.Y;
                             pTextPosition.Z = loadCase.NodeLoadsList[i].Node.Z;
 
                             // Create text
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));                            
                             viewPort.Children.Add(textlabel);
                         }
                     }
@@ -1199,33 +1200,7 @@ namespace BaseClasses
                             // Set load for all assigned member
                             ModelVisual3D textlabel = null;
 
-                            float fLoadValue = 0f;
-
-                            // Todo Ondrej - toto asi treba dak niekam stranou a prerobit na switch, tych zatazeni je asi 20
-                            if (loadCase.MemberLoadsList[i] is CMLoad_21)
-                            {
-                                CMLoad_21 l = (CMLoad_21)loadCase.MemberLoadsList[i];
-                                fLoadValue = l.Fq;
-                            }
-                            if (loadCase.MemberLoadsList[i] is CMLoad_22)
-                            {
-                                CMLoad_22 l = (CMLoad_22)loadCase.MemberLoadsList[i];
-                                fLoadValue = l.Fq;
-                            }
-                            if (loadCase.MemberLoadsList[i] is CMLoad_23)
-                            {
-                                CMLoad_23 l = (CMLoad_23)loadCase.MemberLoadsList[i];
-                                fLoadValue = l.Fq;
-                            }
-                            if (loadCase.MemberLoadsList[i] is CMLoad_24)
-                            {
-                                CMLoad_24 l = (CMLoad_24)loadCase.MemberLoadsList[i];
-                                fLoadValue = l.Fq;
-                            }
-                            else
-                            {
-                               // Not implemented
-                            }
+                            float fLoadValue = loadCase.MemberLoadsList[i].GetLoadValue(); //extension method used
 
                             // Ak je hodnota zatazenia 0, tak nic nevykreslit
                             if (MathF.d_equal(fLoadValue, 0))
@@ -1289,7 +1264,10 @@ namespace BaseClasses
                             pTextPosition.Z = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
 
                             // Create text
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            
+                            //tu by bolo fajn aj urcit ktorym smerom sa ma vykreslovat text
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(0, 0, -fTextBlockHorizontalSizeFactor), new Vector3D(fTextBlockVerticalSizeFactor, 0, 0));
                             viewPort.Children.Add(textlabel);
                         }
                     }

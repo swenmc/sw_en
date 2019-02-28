@@ -76,6 +76,35 @@ namespace BaseClasses
 
 
 
+        public static float GetLoadValue(this CMLoad load)
+        {
+            float fLoadValue = 0f;
 
+            if (load is CMLoad_21)
+            {
+                CMLoad_21 l = (CMLoad_21)load;
+                fLoadValue = l.Fq;
+            }
+            else if (load is CMLoad_22)
+            {
+                CMLoad_22 l = (CMLoad_22)load;
+                fLoadValue = l.Fq;
+            }
+            else if (load is CMLoad_23)
+            {
+                CMLoad_23 l = (CMLoad_23)load;
+                fLoadValue = l.Fq;
+            }
+            else if (load is CMLoad_24)
+            {
+                CMLoad_24 l = (CMLoad_24)load;
+                fLoadValue = l.Fq;
+            }
+            else
+            {
+                // Not implemented
+            }
+            return fLoadValue;
+        }
     }
 }
