@@ -1161,27 +1161,7 @@ namespace BaseClasses
                     {
                         if (loadCase.NodeLoadsList[i] != null && loadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            ModelVisual3D textlabel = null;
-
-                            string sTextToDisplay;                            
-                            if(loadCase.NodeLoadsList[i] is CNLoadSingle)
-                                sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadSingle)loadCase.NodeLoadsList[i]);
-                            else
-                                sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadAll)loadCase.NodeLoadsList[i]);
-
-                            TextBlock tb = new TextBlock();
-                            tb.Text = sTextToDisplay;
-                            tb.FontFamily = new FontFamily("Arial");
-                            tb.FontStretch = FontStretches.UltraCondensed;
-                            tb.FontStyle = FontStyles.Normal;
-                            tb.FontWeight = FontWeights.Thin;
-                            tb.Foreground = Brushes.Coral; // musime nastavovat farbu textu, inak sa to kresli ciernou
-                            tb.Background = Brushes.Black;
-
-                            Point3D pTextPosition = GetNodalLoadCoordinates_GCS(loadCase.NodeLoadsList[i]);
-
-                            // Create text
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));                            
+                            ModelVisual3D textlabel = DrawNodalLoadLabel3D(loadCase.NodeLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);
                             gr.Children.Add(textlabel.Content);
                         }
                     }
@@ -1298,6 +1278,34 @@ namespace BaseClasses
             }
             return gr;
         }
+
+        private static ModelVisual3D DrawNodalLoadLabel3D(CNLoad load, float fTextBlockVerticalSize, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor,  DisplayOptions displayOptions)
+        {
+            ModelVisual3D textlabel = null;
+
+            string sTextToDisplay;
+            if (load is CNLoadSingle)
+                sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadSingle)load);
+            else
+                sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadAll)load);
+
+            TextBlock tb = new TextBlock();
+            tb.Text = sTextToDisplay;
+            tb.FontFamily = new FontFamily("Arial");
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = Brushes.Coral; // musime nastavovat farbu textu, inak sa to kresli ciernou
+            tb.Background = Brushes.Black;
+
+            Point3D pTextPosition = GetNodalLoadCoordinates_GCS(load);
+
+            // Create text
+            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+            return textlabel;
+        }
+
+
 
         //najvacsi problem bol s dodatocnym odsadenim pre celu CSLoad_FreeUniformGroup a tato transformacia je ako parameter
         /// <summary>
