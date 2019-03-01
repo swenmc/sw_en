@@ -1163,7 +1163,7 @@ namespace BaseClasses
                         if (loadCase.NodeLoadsList[i] != null && loadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             ModelVisual3D textlabel = DrawNodalLoadLabel3D(loadCase.NodeLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);
-                            gr.Children.Add(textlabel.Content);
+                            if (textlabel != null) gr.Children.Add(textlabel.Content);
                         }
                     }
                 }
@@ -1175,113 +1175,8 @@ namespace BaseClasses
                     {
                         if (loadCase.MemberLoadsList[i] != null && loadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            // Set load for all assigned member
-                            ModelVisual3D textlabel = null;
-
-                            float fLoadValue = loadCase.MemberLoadsList[i].GetLoadValue(); //extension method used
-
-                            // Ak je hodnota zatazenia 0, tak nic nevykreslit
-                            if (MathF.d_equal(fLoadValue, 0))
-                                continue;
-
-                            float fUnitFactor = 0.001f; // N/m to kN/m
-                            string sTextToDisplay = (fLoadValue * fUnitFactor).ToString("F3") + " [kN/m]";
-
-                            TextBlock tb = new TextBlock();
-                            tb.Text = sTextToDisplay;
-                            tb.FontFamily = new FontFamily("Arial");
-                            tb.FontStretch = FontStretches.UltraCondensed;
-                            tb.FontStyle = FontStyles.Normal;
-                            tb.FontWeight = FontWeights.Thin;
-                            tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
-                            tb.Background = Brushes.Black;
-
-                            Point3D pTextPosition = new Point3D();
-
-                            // TO - Ondrej - fRelativePositionFactor plati len ak je zatazenie na celej dlzke pruta CMLoad_21, pre ostatne zatazenia to musime urcit podla polohy zatazenia na prute
-                            // Este bude potrebne skontrolovat ci to kresli spravne ak je smer pruta v smere GCS - X opacny
-
-                            // Prerobit na switch
-                            if (loadCase.MemberLoadsList[i] is CMLoad_21)
-                            {
-                                fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor/* * (loadCase.MemberLoadsList[i].Member.FLength / loadCase.MemberLoadsList[i].Member.FLength)*/;
-                            }
-                            else if(loadCase.MemberLoadsList[i] is CMLoad_22)
-                            {
-                                CMLoad_22 l = (CMLoad_22)loadCase.MemberLoadsList[i];
-
-                                fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor * l.Fa / loadCase.MemberLoadsList[i].Member.FLength;
-                            }
-                            else if(loadCase.MemberLoadsList[i] is CMLoad_23)
-                            {
-                                CMLoad_23 l = (CMLoad_23)loadCase.MemberLoadsList[i];
-                                fRelativePositionOfTextOnMember_LCS = (l.Fa + fRelativePositionFactor * l.Fb) / loadCase.MemberLoadsList[i].Member.FLength;
-                            }
-                            else if (loadCase.MemberLoadsList[i] is CMLoad_24)
-                            {
-                                CMLoad_24 l = (CMLoad_24)loadCase.MemberLoadsList[i];
-
-                                fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor * l.Fa / loadCase.MemberLoadsList[i].Member.FLength;
-                            }
-                            else { }
-
-
-                            Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = loadCase.MemberLoadsList[i].CreateM_3D_G_Load(displayOptions.bDisplaySolidModel);
-
-                            Model3D loadLine = model_gr.Children.Last();
-                            GeometryModel3D model3D = null;
-                            if (loadLine is GeometryModel3D) model3D = (GeometryModel3D)loadLine;
-                            else model3D = (GeometryModel3D)((Model3DGroup)loadLine).Children[0];
-                            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
-
-                            Point3D p1 = mesh.Positions.First();
-                            Point3D p2 = mesh.Positions.Last();
-                            Point3D pCenter = new Point3D((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, (p1.Z + p2.Z) / 2);
-
-                            if (loadLine.Transform is TranslateTransform3D)
-                            {
-                                TranslateTransform3D tt = loadLine.Transform as TranslateTransform3D;
-                                tt.OffsetZ *= 1.1;
-                                pCenter = tt.Transform(pCenter);
-                                
-                            }
-                            else
-                            {
-                                pCenter = model3D.Transform.Transform(pCenter);
-                            }
-
-
-                            Transform3DGroup transGroup = loadCase.MemberLoadsList[i].CreateTransformCoordGroup(loadCase.MemberLoadsList[i].Member);
-                            Point3D resPoint = transGroup.Transform(pCenter);
-                            pTextPosition = resPoint;
-
-                            // Transform modelgroup from LCS to GCS
-                            //model_gr = loadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, loadCase.MemberLoadsList[i].Member);
-
-
-
-
-                            // TO Ondrej - kreslime to priamo v GCS na strednicu pruta, ale lepsie by bolo vykreslit to v LCS pruta a potom transformovat,
-                            // pretoze ked to chcem vykreslit nie na strednicu pruta, ale na hranu zatazenia (tam kde nie su sipky), tak sa k suradniciam nedostanem
-                            // Takto nejako by to malo vyzerat
-
-                            //                       Fq [kN/m]
-                            //           ________________*_____________
-                            //           |                            |
-                            //           |                            |
-                            //          \|/                          \|/
-                            //================================================= - MEMBER
-
-
-                            //pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.X + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_X;
-                            //pTextPosition.Y = loadCase.MemberLoadsList[i].Member.NodeStart.Y + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Y;
-                            //pTextPosition.Z = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
-
-                            // Create text
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                                                        
-                            gr.Children.Add(textlabel.Content);
+                            ModelVisual3D textlabel = DrawMemberLoadLabel3D(loadCase.MemberLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);                            
+                            if(textlabel != null) gr.Children.Add(textlabel.Content);
                         }
                     }
                 }
@@ -1340,7 +1235,67 @@ namespace BaseClasses
             return textlabel;
         }
 
+        private static ModelVisual3D DrawMemberLoadLabel3D(CMLoad load, float fTextBlockVerticalSize, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor, DisplayOptions displayOptions)
+        {
+            // Set load for all assigned member
+            ModelVisual3D textlabel = null;
 
+            float fLoadValue = load.GetLoadValue(); //extension method used
+
+            // Ak je hodnota zatazenia 0, tak nic nevykreslit
+            if (MathF.d_equal(fLoadValue, 0)) return null;
+
+            float fUnitFactor = 0.001f; // N/m to kN/m
+            string sTextToDisplay = (fLoadValue * fUnitFactor).ToString("F3") + " [kN/m]";
+
+            TextBlock tb = new TextBlock();
+            tb.Text = sTextToDisplay;
+            tb.FontFamily = new FontFamily("Arial");
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
+            tb.Background = Brushes.Black;
+            
+            Model3DGroup model_gr = new Model3DGroup();
+            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel);
+
+            Model3D loadLine = model_gr.Children.Last();
+            GeometryModel3D model3D = null;
+            if (loadLine is GeometryModel3D) model3D = (GeometryModel3D)loadLine;
+            else model3D = (GeometryModel3D)((Model3DGroup)loadLine).Children[0];
+            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
+
+            Point3D p1 = mesh.Positions.First();
+            Point3D p2 = mesh.Positions.Last();
+            Point3D pCenter = new Point3D((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, (p1.Z + p2.Z) / 2);
+
+            pCenter = model_gr.Transform.Transform(pCenter);  //first trannsform whole group - posun FaA = startPoistion
+            if (loadLine.Transform is TranslateTransform3D)
+            {
+                TranslateTransform3D tt = loadLine.Transform as TranslateTransform3D;
+                tt.OffsetZ *= 1.1;
+                pCenter = tt.Transform(pCenter);
+            }
+            else
+            {
+                pCenter = model3D.Transform.Transform(pCenter);  //toto si nie som isty ci treba, asi je to stale Identity
+            }
+
+            Transform3DGroup transGroup = load.CreateTransformCoordGroup(load.Member);
+            Point3D pTextPosition = transGroup.Transform(pCenter);
+
+            //                       Fq [kN/m]
+            //           ________________*_____________
+            //           |                            |
+            //           |                            |
+            //          \|/                          \|/
+            //================================================= - MEMBER
+            
+            // Create text
+            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+            return textlabel;
+        }
 
         //najvacsi problem bol s dodatocnym odsadenim pre celu CSLoad_FreeUniformGroup a tato transformacia je ako parameter
         /// <summary>
