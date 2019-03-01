@@ -942,6 +942,54 @@ namespace M_AS4600
                 fPhi_concrete_tension_174a * iNumberAnchors_t * fN_sb_1713_single); // 17.5.7.4
 
             // 17.5.8 Lower characteristic strength of anchor in shear
+
+            // 17.5.8.1 Lower characteristic shear strength of steel of anchor
+            // Group of anchors
+
+            // TODO - rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
+            float fV_s_1714_group = eq_concrete.Eq_17_14___(iNumberAnchors_v, fA_se, ff_u_anchor, ff_y_anchor);
+            float fV_s_1715_group = eq_concrete.Eq_17_15___(iNumberAnchors_v, fA_se, ff_u_anchor, ff_y_anchor);
+
+            float fV_s_17581 = Math.Min(fV_s_1714_group, fV_s_1715_group);
+            float fDesignRatio_17581_group = eq_concrete.Eq_17_2____(fV_asterix_res_joint, fPhi_anchor_shear_174, fV_s_17581);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_17573_group);
+
+            // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
+            // Group of anchors
+
+            float fe_apostrophe_v = 0;
+            float fPsi_5 = eq_concrete.Eq_17_18___(fc_1_y, fe_apostrophe_v, fs_2_x); // Todo overit ci sa jedna o s v smere sily alebo s kolmo na smer sily
+            float fPsi_6 = eq_concrete.Get_Psi_6__(fc_1_y, fc_2_x);
+
+            // Ψ7 = modification factor for cracked concrete, given by:
+            // Ψ7 = 1.0 for anchors in cracked concrete with no supplementary reinforcement or with smaller than 12 mm diameter reinforcing bar as supplementary reinforcement
+            // Ψ7 = 1.2 for anchors in cracked concrete with a 12 mm diameter reinforcing bar or greater as supplementary reinforcement
+            // Ψ7 = 1.4 for concrete that is not cracked at service load levels.
+            float fPsi_7 = 1.0f;
+
+            float fA_vo = 2 * (1.5f * fc_1_y) * (1.5f * fc_1_y); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
+            float fAv_Length_x_group = 1.5f * fc_1_y + Math.Min(1.5f * fc_1_y, fc_2_x) + (iNumberAnchors_x - 1) * fs_2_x;
+            float fAv_Depth_h = Math.Min(1.5f * fc_1_y, fFootingHeight);
+            float fA_v = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
+            float fd_o = fd_f;
+
+            float fk_2 = 0.6f;
+            float fl = Math.Min(fh_ef, 8f * fd_o); // load-bearing length of anchors for shear, equal to hef for anchors with constant stiffness over the full length of the embedded section but less than 8do.Shall be taken as 0.8 times the effective embedment depth for hooked metal plates.
+
+            if (iNumberAnchors != 1 && fs_min != 0 && fs_min < 0.065f)
+                throw new Exception("Distance between anchors s is smaller than 65 mm.");
+
+            float fV_b_1717a_group = eq_concrete.Eq_17_17a__(fk_2, fl, fd_o, fLambda_53, ff_apostrophe_c, fc_1_y);
+            float fV_b_1717b_group = eq_concrete.Eq_17_17b__(fLambda_53, ff_apostrophe_c, fc_1_y);
+            float fV_b_1717_group = Math.Min(fV_b_1717a_group, fV_b_1717b_group);
+            float fV_cb_1716_group = eq_concrete.Eq_17_16___(fA_v, fA_vo, fPsi_5, fPsi_6, fPsi_7, fV_b_1717_group);
+
+            float fDesignRatio_17582_group = eq_concrete.Eq_17_2____(fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1716_group);
+            fEta_max = MathF.Max(fEta_max, fDesignRatio_17582_group);
+
+            // Single of anchor - edge (TODO - riadok 9976 v xls)
+
+
         }
     }
 }

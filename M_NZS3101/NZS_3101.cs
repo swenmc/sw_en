@@ -104,13 +104,16 @@ namespace M_NZS3101
             else //if (fc_2 < 3f * fc_1)
                 return (1 + (fc_2 / fc_1)) / 4f;
         }
-        public float Eq_17_14___(float iNumber, float fA_se, float ff_ut)
+        public float Eq_17_14___(float iNumber, float fA_se, float ff_ut, float ff_y)
         {
-            return iNumber * fA_se * ff_ut; // Eq. (17-14) // fV_s
+            if (ff_ut < Math.Min(1.9f * ff_y, 860e+6f))
+                return iNumber * fA_se * ff_ut; // Eq. (17-14) // fV_s
+            else
+                throw new Exception("Tensile strength fut is more than 1.9fy or 860 MPa, see 17.5.8.1(b).");
         }
         public float Eq_17_15___(float iNumber, float fA_se, float ff_ut, float ff_y)
         {
-            if(ff_ut < Math.Max(1.9f * ff_y, 860f))
+            if(ff_ut < Math.Min(1.9f * ff_y, 860e+6f))
                 return iNumber * 0.6f * fA_se * ff_ut; // Eq. (17-15) // fV_s
             else
                 throw new Exception("Tensile strength fut is more than 1.9fy or 860 MPa, see 17.5.8.1(b).");
@@ -129,7 +132,7 @@ namespace M_NZS3101
         }
         public float Eq_17_18___(float fc_1, float fe_apostrophe_v, float fs)
         {
-            if (fe_apostrophe_v < 0.5f * fs)
+            if (MathF.d_equal(fs, 0) || fe_apostrophe_v < 0.5f * fs) // s can be zero for single anchor
                 return Math.Min(1f + ((2f * fe_apostrophe_v) / (3f * fc_1)), 1f); // Eq. (17-18) // fPsi_5
             else
                 throw new Exception("Condition is not fulfilled, see Eq. 17-18.");
