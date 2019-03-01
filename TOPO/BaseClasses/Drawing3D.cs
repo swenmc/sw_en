@@ -1289,15 +1289,17 @@ namespace BaseClasses
                         {
                             if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
                             {
+                                Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).CreateTransformCoordGroupOfLoadGroup();
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                 {
-                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor,ref gr);
+                                    
+                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, loadGroupTransform, ref gr);
                                 }
                             }
                             else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
                             {                                
                                 CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
-                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, ref gr);
+                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, null, ref gr);
                             }
                             else throw new Exception("Load type not known.");
                         }
@@ -1307,7 +1309,18 @@ namespace BaseClasses
             return gr;
         }
 
-        private static void DrawSurfaceLoadLabel3D(CSLoad_FreeUniform l, float fTextBlockVerticalSize, float fTextBlockVerticalSizeFactor, float fTextBlockHorizontalSizeFactor, ref Model3DGroup gr /*Viewport3D viewPort*/)
+        //najvacsi problem bol s dodatocnym odsadenim pre celu CSLoad_FreeUniformGroup a tato transformacia je ako parameter
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="load">surface load</param>
+        /// <param name="fTextBlockVerticalSize"></param>
+        /// <param name="fTextBlockVerticalSizeFactor"></param>
+        /// <param name="fTextBlockHorizontalSizeFactor"></param>
+        /// <param name="groupTransform">transformacia celej </param>
+        /// <param name="gr"></param>
+        private static void DrawSurfaceLoadLabel3D(CSLoad_FreeUniform load, float fTextBlockVerticalSize, float fTextBlockVerticalSizeFactor, float fTextBlockHorizontalSizeFactor, 
+            Transform3D groupTransform, ref Model3DGroup gr)
         {
             // Set load for all assigned surfaces
             ModelVisual3D textlabel = null;
@@ -1323,43 +1336,48 @@ namespace BaseClasses
             float fUnitFactor = 0.001f; // N/m^2 to kN/m^2 (Pa to kPa)
             Point3D pTextPosition = new Point3D();
             
-            if (l.pSurfacePoints != null) // Check that surface points are initialized
+            if (load.pSurfacePoints != null) // Check that surface points are initialized
             {
                 // Ak je hodnota zatazenia 0, tak nic nevykreslit
-                if (MathF.d_equal(l.fValue, 0))
+                if (MathF.d_equal(load.fValue, 0))
                     return;
 
-                l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
-
-                // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenenem
-                // ale aj ked som to prehodil tak to nesedi, takze sa s tym treba pohrat a prist na to co v tej transformacii nie je spravne
-                // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
-                // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
-
-                // Pokus ????????
-                /*
-                for (int j = 0; j < l.PointsGCS.Count; j++)
+                //Je mozne prepinat zobrazenie uprostred, na vrchu a na spodku kvadra
+                //Pokial by boli vsetky loads rovnako vykreslene a vyuzili by sa SurfacePoints_h s nejakym odsadenim...
+                //tak by sa cisla zobrazili mimo kvadra a bolo by to asi podstatne krajsie
+                //show in load center
+                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform); // Positions in global coordinate system GCS
+                //show on bottom
+                //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints(l, groupTransform);
+                //show on top
+                //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints_h(l, groupTransform);  
+                
+                if (load.PointsGCS.Count > 0)
                 {
-                    double Y = l.PointsGCS[j].Z;
-                    double Z = l.PointsGCS[j].Y;
-
-                    l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
-                }
-                */
-
-                if (l.PointsGCS.Count > 0)
-                {
-                    pTextPosition.X = l.PointsGCS.Average(p => p.X);
-                    pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
-                    pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
+                    bool drawPointsOnEdges = false;  //moznost vykreslit suradnice na vrcholy kvadra (neviem ci sa niekedy este vyuzije)
+                    if (drawPointsOnEdges)
+                    {
+                        foreach (Point3D p in load.PointsGCS)
+                        {
+                            pTextPosition.X = p.X;
+                            pTextPosition.Y = p.Y;
+                            pTextPosition.Z = p.Z;
+                            tb.Text = $"{load.ID}_{load.Name}[{p.X:F1};{p.Y:F1};{p.Z:F1}]";
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                            gr.Children.Add(textlabel.Content);
+                        }
+                    }
+                    
+                    pTextPosition.X = load.PointsGCS.Average(p => p.X);
+                    pTextPosition.Y = load.PointsGCS.Average(p => p.Y);
+                    pTextPosition.Z = load.PointsGCS.Average(p => p.Z);
 
                     // Set load value to display
-                    string sTextToDisplay = (l.fValue * fUnitFactor).ToString("F3") + " [kPa]";
+                    string sTextToDisplay = (load.fValue * fUnitFactor).ToString("F3") + " [kPa]";
                     tb.Text = sTextToDisplay;
 
                     // Create text
                     textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                    //viewPort.Children.Add(textlabel);
                     gr.Children.Add(textlabel.Content);
                 }
             }
@@ -1479,17 +1497,59 @@ namespace BaseClasses
             return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up);
         }
 
-        public static List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load)
+        public static List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform)
         {
             Model3DGroup gr = load.CreateM_3D_G_Load();
             if (gr.Children.Count < 1) return new List<Point3D>();
 
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
             MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
-            
+            Transform3DGroup trans = new Transform3DGroup();
+            trans.Children.Add(gr.Transform);
+            if (groupTransform != null)
+            {
+                trans.Children.Add(groupTransform);
+            }
+
             List<Point3D> transPoints = new List<Point3D>();
-            foreach (Point3D p in load.pSurfacePoints)
-                transPoints.Add(gr.Transform.Transform(p));
+            foreach (Point3D p in mesh.Positions)
+                transPoints.Add(trans.Transform(p));
+
+            return transPoints;
+        }
+        public static List<Point3D> GetLoadCoordinates_GCS_SurfacePoints_h(CSLoad_FreeUniform load, Transform3D groupTransform)
+        {
+            Model3DGroup gr = load.CreateM_3D_G_Load();
+            if (gr.Children.Count < 1) return new List<Point3D>();
+
+            Transform3DGroup trans = new Transform3DGroup();
+            trans.Children.Add(gr.Transform);
+            if (groupTransform != null)
+            {
+                trans.Children.Add(groupTransform);
+            }
+
+            List<Point3D> transPoints = new List<Point3D>();
+            foreach (Point3D p in load.pSurfacePoints_h)
+                transPoints.Add(trans.Transform(p));
+
+            return transPoints;
+        }
+        public static List<Point3D> GetLoadCoordinates_GCS_SurfacePoints(CSLoad_FreeUniform load, Transform3D groupTransform)
+        {
+            Model3DGroup gr = load.CreateM_3D_G_Load();
+            if (gr.Children.Count < 1) return new List<Point3D>();
+
+            Transform3DGroup trans = new Transform3DGroup();
+            trans.Children.Add(gr.Transform);
+            if (groupTransform != null)
+            {
+                trans.Children.Add(groupTransform);
+            }
+
+            List<Point3D> transPoints = new List<Point3D>();
+            foreach (Point3D p in load.pSurfacePoints_h)
+                transPoints.Add(trans.Transform(p));
 
             return transPoints;
         }

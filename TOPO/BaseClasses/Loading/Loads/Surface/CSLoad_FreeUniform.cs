@@ -269,7 +269,7 @@ namespace BaseClasses
                     fz_coordBottom = -fValueFor3D;
                 }
 
-                Point3DCollection pSurfacePoints_h = new Point3DCollection(pSurfacePoints.Count);
+                pSurfacePoints_h = new Point3DCollection(pSurfacePoints.Count);
 
                 float fy = 0.0f;
 

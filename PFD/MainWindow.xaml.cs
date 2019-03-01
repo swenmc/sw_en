@@ -1868,7 +1868,7 @@ namespace PFD
 
         private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
         {
-            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load);
+            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null);
         }
 
         private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)

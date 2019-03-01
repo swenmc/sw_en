@@ -17,6 +17,7 @@ namespace BaseClasses
         private float m_fRotationY_deg;
         private float m_fRotationZ_deg;
         private Point3DCollection m_pSurfacePoints;
+        private Point3DCollection m_pSurfacePoints_h;
         private List<FreeSurfaceLoadsMemberData> m_listOfMemberData; // Tento zoznam by sme mali vyhodit - member moze byt pod roznymi plochami, takze to nie je jednoznacne
         private List<FreeSurfaceLoadsMemberTypeData> m_listOfLoadedMemberTypeData; // Tento zoznam by sme mali vyhodit - member moze byt pod roznymi plochami, takze to nie je jednoznacne
 
@@ -66,6 +67,11 @@ namespace BaseClasses
         {
             get { return m_pSurfacePoints; }
             set { m_pSurfacePoints = value; }
+        }
+        public Point3DCollection pSurfacePoints_h
+        {
+            get { return m_pSurfacePoints_h; }
+            set { m_pSurfacePoints_h = value; }
         }
 
         // Vymazat - member moze byt pod roznymi plochami, tak ze to nie je jednoznacne, musi to fungovat takze je zatazovacie plochy neobsahuju takyto zoznam, ale algoritmus vygeneruje CMLoad_21 alebo skupinu CMLoad_24 na jednom prute, pre pruty ktore su pod jednou plochou alebo pod viacerymi plochami
