@@ -24,10 +24,18 @@ namespace BaseClasses
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
 
+            
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
                 Model3DGroup gr = new Model3DGroup();
+
+                if (sDisplayOptions.bDisplayLoads)
+                {
+                    gr.Children.Add( Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
+                    //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
+                }
+
 
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
@@ -87,11 +95,7 @@ namespace BaseClasses
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
 
-                if (sDisplayOptions.bDisplayLoads)
-                {
-                    Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions, _trackport.ViewPort);
-                    //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
-                }
+               
 
             }
 
@@ -1136,8 +1140,10 @@ namespace BaseClasses
         }
 
          // Draw Text in 3D
-        public static void CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions, Viewport3D viewPort)
+        public static Model3DGroup CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions)
         {
+            Model3DGroup gr = new Model3DGroup();
+
             float fRelativePositionFactor = 0.4f; //(0-1) // Relative position of member description on member
             float fRelativePositionOfTextOnMember_LCS = fRelativePositionFactor;
 
@@ -1185,7 +1191,7 @@ namespace BaseClasses
 
                             // Create text
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));                            
-                            viewPort.Children.Add(textlabel);
+                            gr.Children.Add(textlabel.Content);
                         }
                     }
                 }
@@ -1268,7 +1274,8 @@ namespace BaseClasses
                             
                             //tu by bolo fajn aj urcit ktorym smerom sa ma vykreslovat text
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(0, 0, -fTextBlockHorizontalSizeFactor), new Vector3D(fTextBlockVerticalSizeFactor, 0, 0));
-                            viewPort.Children.Add(textlabel);
+                            //viewPort.Children.Add(textlabel);
+                            gr.Children.Add(textlabel.Content);
                         }
                     }
                 }
@@ -1280,122 +1287,83 @@ namespace BaseClasses
                     {
                         if (loadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            // Set load for all assigned surfaces
-                            ModelVisual3D textlabel = null;
-
-                            TextBlock tb = new TextBlock();
-                            tb.FontFamily = new FontFamily("Arial");
-                            tb.FontStretch = FontStretches.UltraCondensed;
-                            tb.FontStyle = FontStyles.Normal;
-                            tb.FontWeight = FontWeights.Thin;
-                            tb.Foreground = Brushes.Coral;
-                            tb.Background = Brushes.Black;
-
-                            float fUnitFactor = 0.001f; // N/m^2 to kN/m^2 (Pa to kPa)
-
-                            Point3D pTextPosition = new Point3D();
-
-                            // TO Ondrej - nieco som tu povystrajal, skus sa na to popozerat a pripadne to este preberieme a vylepsime
-
-                            // TODO Ondrej - Treba odlisit ci je v to jedna plocha alebo skupina ploch
-                            // TO Ondrej - nic Ti to nezobrazuje preto ze Displayin3DRatio nie je hodnota zatazenia ale len faktor pre vypocet velkosti kvadra v 3D grafike ktorym sa prenasobi hodnota zatazenia
-                            // Pre konkretne hodnoty zatazenia sa musis dostat do potomkov zakladnych tried, tam je Fq alebo fValue alebo Fy, Fz... atd
-
                             if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
                             {
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                 {
-                                    if (l.pSurfacePoints != null) // Check that surface points are initialized
-                                    {
-                                        // TODO - Ondrej (ma tam byt continue alebo nieco ine?)
-                                        // Ak je hodnota zatazenia 0, tak nic nevykreslit
-                                        //if (MathF.d_equal(l.fValue, 0))
-                                        //   continue;
-
-                                        l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
-
-                                        // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenene
-                                        // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenenem
-                                        // ale aj ked som to prehodil tak to nesedi, takze sa s tym treba pohrat a prist na to co v tej transformacii nie je spravne
-                                        // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
-                                        // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
-
-                                        // Pokus ????????
-                                        /*
-                                        for (int j = 0; j < l.PointsGCS.Count; j++)
-                                        {
-                                            double Y = l.PointsGCS[j].Z;
-                                            double Z = l.PointsGCS[j].Y;
-
-                                            l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
-                                        }*/
-
-                                        if (l.PointsGCS.Count > 0)
-                                        {
-                                            pTextPosition.X = l.PointsGCS.Average(p => p.X);
-                                            pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
-                                            pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
-
-                                            string sTextToDisplay = (l.fValue * fUnitFactor).ToString("F3") + " [kPa]";
-                                            tb.Text = sTextToDisplay;
-
-                                            // Create text
-                                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                                            viewPort.Children.Add(textlabel);
-                                        }
-                                    }
+                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor,ref gr);
                                 }
                             }
                             else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
-                            {
+                            {                                
                                 CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
-
-                                if (l.pSurfacePoints != null) // Check that surface points are initialized
-                                {
-                                    // TODO - Ondrej (ma tam byt continue alebo nieco ine?)
-                                    // Ak je hodnota zatazenia 0, tak nic nevykreslit
-                                    //if (MathF.d_equal(l.fValue, 0))
-                                    //    continue;
-
-                                    l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
-
-                                    // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenenem
-                                    // ale aj ked som to prehodil tak to nesedi, takze sa s tym treba pohrat a prist na to co v tej transformacii nie je spravne
-                                    // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
-                                    // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
-
-                                    // Pokus ????????
-                                    /*
-                                    for (int j = 0; j < l.PointsGCS.Count; j++)
-                                    {
-                                        double Y = l.PointsGCS[j].Z;
-                                        double Z = l.PointsGCS[j].Y;
-
-                                        l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
-                                    }
-                                    */
-
-                                    if (l.PointsGCS.Count > 0)
-                                    {
-                                        pTextPosition.X = l.PointsGCS.Average(p => p.X);
-                                        pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
-                                        pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
-
-                                        // Set load value to display
-                                        string sTextToDisplay = (l.fValue * fUnitFactor).ToString("F3") + " [kPa]";
-                                        tb.Text = sTextToDisplay;
-
-                                        // Create text
-                                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                                        viewPort.Children.Add(textlabel);
-                                    }
-                                }
+                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, ref gr);
                             }
                             else throw new Exception("Load type not known.");
                         }
                     }
                 }
             }
+            return gr;
+        }
+
+        private static void DrawSurfaceLoadLabel3D(CSLoad_FreeUniform l, float fTextBlockVerticalSize, float fTextBlockVerticalSizeFactor, float fTextBlockHorizontalSizeFactor, ref Model3DGroup gr /*Viewport3D viewPort*/)
+        {
+            // Set load for all assigned surfaces
+            ModelVisual3D textlabel = null;
+
+            TextBlock tb = new TextBlock();
+            tb.FontFamily = new FontFamily("Arial");
+            tb.FontStretch = FontStretches.UltraCondensed;
+            tb.FontStyle = FontStyles.Normal;
+            tb.FontWeight = FontWeights.Thin;
+            tb.Foreground = Brushes.Coral;
+            tb.Background = Brushes.Black;
+
+            float fUnitFactor = 0.001f; // N/m^2 to kN/m^2 (Pa to kPa)
+            Point3D pTextPosition = new Point3D();
+            
+            if (l.pSurfacePoints != null) // Check that surface points are initialized
+            {
+                // Ak je hodnota zatazenia 0, tak nic nevykreslit
+                if (MathF.d_equal(l.fValue, 0))
+                    return;
+
+                l.PointsGCS = GetLoadCoordinates_GCS(l); // Positions in global coordinate system GCS
+
+                // TO Ondrej - vystup z tejto funkcie GetLoadCoordinates_GCS sa mi nezda, mam pocit ze Y a Z suradnice su vymenenem
+                // ale aj ked som to prehodil tak to nesedi, takze sa s tym treba pohrat a prist na to co v tej transformacii nie je spravne
+                // Neviem ci tam nemoze byt problem s tym ze som prehodil niekde lavotocivy a pravotocivy system ??? skus sa na to popozerat
+                // Bolo ty dobre umoznit vizualnu kontrolu vykreslovania ploch a labels (napriklad pridat do options moznost kreslit plochy velmi transparentne, aby bolo vidno texty)
+
+                // Pokus ????????
+                /*
+                for (int j = 0; j < l.PointsGCS.Count; j++)
+                {
+                    double Y = l.PointsGCS[j].Z;
+                    double Z = l.PointsGCS[j].Y;
+
+                    l.PointsGCS[j] = new Point3D(l.PointsGCS[j].X, Y, Z);
+                }
+                */
+
+                if (l.PointsGCS.Count > 0)
+                {
+                    pTextPosition.X = l.PointsGCS.Average(p => p.X);
+                    pTextPosition.Y = l.PointsGCS.Average(p => p.Y);
+                    pTextPosition.Z = l.PointsGCS.Average(p => p.Z);
+
+                    // Set load value to display
+                    string sTextToDisplay = (l.fValue * fUnitFactor).ToString("F3") + " [kPa]";
+                    tb.Text = sTextToDisplay;
+
+                    // Create text
+                    textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                    //viewPort.Children.Add(textlabel);
+                    gr.Children.Add(textlabel.Content);
+                }
+            }
+
         }
 
         /// <summary>
@@ -1518,10 +1486,10 @@ namespace BaseClasses
 
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
             MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
-
+            
             List<Point3D> transPoints = new List<Point3D>();
-            foreach (Point3D p in mesh.Positions)
-                transPoints.Add(model3D.Transform.Transform(p));
+            foreach (Point3D p in load.pSurfacePoints)
+                transPoints.Add(gr.Transform.Transform(p));
 
             return transPoints;
         }
