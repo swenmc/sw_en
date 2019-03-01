@@ -51,7 +51,7 @@ namespace PFD
             sloadInputComboBoxes.ExposureCategoryIndex = 0;
             sloadInputComboBoxes.SiteSubSoilClassIndex = 1;
             sloadInputComboBoxes.ImportanceLevelIndex = 1;
-            sloadInputComboBoxes.TerrainCategoryIndex = 0;
+            sloadInputComboBoxes.TerrainCategoryIndex = 4;     // Default terrain category 3
             sloadInputComboBoxes.AngleWindDirectionIndex = 90; // Default ??? see Figure 2.2
 
             loadInputTextBoxValues sloadInputTextBoxes;
