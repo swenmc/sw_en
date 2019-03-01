@@ -4,7 +4,7 @@ using System;
 using BaseClasses;
 
 
-namespace M_NZS_3101
+namespace M_NZS3101
 {
     public class NZS_3101
     {

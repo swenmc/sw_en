@@ -93,6 +93,10 @@
       <Project>{864d95ad-46ae-4198-b7f3-d5bbe1245208}</Project>
       <Name>MATERIAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\M_NZS3101\M_NZS3101.csproj">
+      <Project>{38b77165-5e1c-4ce7-8662-33d8ebf853b1}</Project>
+      <Name>M_NZS3101</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TOPO\BaseClasses\BaseClasses.csproj">
       <Project>{41236339-3f00-4767-8150-24b22a54e8d5}</Project>
       <Name>BaseClasses</Name>
