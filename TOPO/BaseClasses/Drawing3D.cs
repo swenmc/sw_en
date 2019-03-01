@@ -1163,8 +1163,7 @@ namespace BaseClasses
                         {
                             ModelVisual3D textlabel = null;
 
-                            string sTextToDisplay;
-                            
+                            string sTextToDisplay;                            
                             if(loadCase.NodeLoadsList[i] is CNLoadSingle)
                                 sTextToDisplay = GetNodeLoadDisplayText(displayOptions, (CNLoadSingle)loadCase.NodeLoadsList[i]);
                             else
@@ -1179,15 +1178,7 @@ namespace BaseClasses
                             tb.Foreground = Brushes.Coral; // musime nastavovat farbu textu, inak sa to kresli ciernou
                             tb.Background = Brushes.Black;
 
-                            Point3D pTextPosition = new Point3D();
-
-                            // TODO - Ondrej - polohu textu by sme nemali vztahovat na bod kde je sipka ale na koncovy bod + nejaky odstup
-                            // Tento bod je mozne ziskat podla smeru a hodnoty zatazenia alebo urcit z Model3DGroup zatazenia
-                            Model3DGroup gr3D = loadCase.NodeLoadsList[i].CreateM_3D_G_Load();
-                            
-                            pTextPosition.X = loadCase.NodeLoadsList[i].Node.X;
-                            pTextPosition.Y = loadCase.NodeLoadsList[i].Node.Y;
-                            pTextPosition.Z = loadCase.NodeLoadsList[i].Node.Z;
+                            Point3D pTextPosition = GetNodalLoadCoordinates_GCS(loadCase.NodeLoadsList[i]);
 
                             // Create text
                             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));                            
@@ -1291,8 +1282,7 @@ namespace BaseClasses
                             {
                                 Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).CreateTransformCoordGroupOfLoadGroup();
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
-                                {
-                                    
+                                {                                    
                                     DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, loadGroupTransform, ref gr);
                                 }
                             }
@@ -1495,6 +1485,23 @@ namespace BaseClasses
             Vector3D up)
         {
             return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up);
+        }
+
+        public static Point3D GetNodalLoadCoordinates_GCS(CNLoad load)
+        {
+            Model3DGroup gr = load.CreateM_3D_G_Load();
+            if (gr.Children.Count < 1) return new Point3D();
+
+            GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
+            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
+
+            Point3D p2 = mesh.Positions.LastOrDefault();   
+            if(p2 == null) return new Point3D();
+            //p2.Y += 0.1 * p2.Z;  // to odsadenie este mozno treba nejako vyladit
+            p2.Z += 0.2 * p2.Z;
+            
+            Point3D transPoint = gr.Transform.Transform(p2);            
+            return transPoint;
         }
 
         public static List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform)

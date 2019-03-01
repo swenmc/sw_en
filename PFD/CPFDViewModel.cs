@@ -713,11 +713,11 @@ namespace PFD
             ShowMemberRealLength = true;
 
             ShowLoads = true;
-            ShowLoadsOnMembers = false;
-            ShowLoadsOnPurlinsAndGirts = false;
-            ShowLoadsOnFrameMembers = false;
-            ShowNodalLoads = false;
-            ShowSurfaceLoads = true;
+            ShowLoadsOnMembers = true;
+            ShowLoadsOnPurlinsAndGirts = true;
+            ShowLoadsOnFrameMembers = true;
+            ShowNodalLoads = true;
+            ShowSurfaceLoads = false;
             
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
