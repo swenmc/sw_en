@@ -30,6 +30,7 @@ namespace BaseClasses
             {
                 Model3DGroup gr = new Model3DGroup();
 
+                //najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty
                 if (sDisplayOptions.bDisplayLoads)
                 {
                     gr.Children.Add( Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
@@ -1224,6 +1225,43 @@ namespace BaseClasses
                             }
                             else { }
 
+
+                            Model3DGroup model_gr = new Model3DGroup();
+                            model_gr = loadCase.MemberLoadsList[i].CreateM_3D_G_Load(displayOptions.bDisplaySolidModel);
+
+                            Model3D loadLine = model_gr.Children.Last();
+                            GeometryModel3D model3D = null;
+                            if (loadLine is GeometryModel3D) model3D = (GeometryModel3D)loadLine;
+                            else model3D = (GeometryModel3D)((Model3DGroup)loadLine).Children[0];
+                            MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
+
+                            Point3D p1 = mesh.Positions.First();
+                            Point3D p2 = mesh.Positions.Last();
+                            Point3D pCenter = new Point3D((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2, (p1.Z + p2.Z) / 2);
+
+                            if (loadLine.Transform is TranslateTransform3D)
+                            {
+                                TranslateTransform3D tt = loadLine.Transform as TranslateTransform3D;
+                                tt.OffsetZ *= 1.1;
+                                pCenter = tt.Transform(pCenter);
+                                
+                            }
+                            else
+                            {
+                                pCenter = model3D.Transform.Transform(pCenter);
+                            }
+
+
+                            Transform3DGroup transGroup = loadCase.MemberLoadsList[i].CreateTransformCoordGroup(loadCase.MemberLoadsList[i].Member);
+                            Point3D resPoint = transGroup.Transform(pCenter);
+                            pTextPosition = resPoint;
+
+                            // Transform modelgroup from LCS to GCS
+                            //model_gr = loadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, loadCase.MemberLoadsList[i].Member);
+
+
+
+
                             // TO Ondrej - kreslime to priamo v GCS na strednicu pruta, ale lepsie by bolo vykreslit to v LCS pruta a potom transformovat,
                             // pretoze ked to chcem vykreslit nie na strednicu pruta, ale na hranu zatazenia (tam kde nie su sipky), tak sa k suradniciam nedostanem
                             // Takto nejako by to malo vyzerat
@@ -1236,16 +1274,13 @@ namespace BaseClasses
                             //================================================= - MEMBER
 
 
-                            pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.X + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_X;
-                            pTextPosition.Y = loadCase.MemberLoadsList[i].Member.NodeStart.Y + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Y;
-                            pTextPosition.Z = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
+                            //pTextPosition.X = loadCase.MemberLoadsList[i].Member.NodeStart.X + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_X;
+                            //pTextPosition.Y = loadCase.MemberLoadsList[i].Member.NodeStart.Y + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Y;
+                            //pTextPosition.Z = loadCase.MemberLoadsList[i].Member.NodeStart.Z + fRelativePositionOfTextOnMember_LCS * loadCase.MemberLoadsList[i].Member.Delta_Z + fOffsetZ;
 
                             // Create text
-                            //textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
-                            
-                            //tu by bolo fajn aj urcit ktorym smerom sa ma vykreslovat text
-                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(0, 0, -fTextBlockHorizontalSizeFactor), new Vector3D(fTextBlockVerticalSizeFactor, 0, 0));
-                            //viewPort.Children.Add(textlabel);
+                            textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
+                                                        
                             gr.Children.Add(textlabel.Content);
                         }
                     }
