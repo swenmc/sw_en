@@ -56,6 +56,11 @@ namespace PFD
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
 
+        private bool MShowLoadsLabels;
+        private bool MShowLoadsLabelsUnits;
+
+
+
         //member description options
         private bool MShowMemberDescription;
         private bool MShowMemberID;
@@ -698,6 +703,34 @@ namespace PFD
             }
         }
 
+        public bool ShowLoadsLabels
+        {
+            get
+            {
+                return MShowLoadsLabels;
+            }
+
+            set
+            {
+                MShowLoadsLabels = value;
+                NotifyPropertyChanged("ShowLoadsLabels");
+            }
+        }
+
+        public bool ShowLoadsLabelsUnits
+        {
+            get
+            {
+                return MShowLoadsLabelsUnits;
+            }
+
+            set
+            {
+                MShowLoadsLabelsUnits = value;
+                NotifyPropertyChanged("ShowLoadsLabelsUnits");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -718,6 +751,8 @@ namespace PFD
             ShowLoadsOnFrameMembers = true;
             ShowNodalLoads = true;
             ShowSurfaceLoads = false;
+            ShowLoadsLabels = true;
+            ShowLoadsLabelsUnits = true;
             
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 

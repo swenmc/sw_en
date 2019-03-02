@@ -607,6 +607,8 @@
         public bool bDisplayMemberRealLength;
 
         public bool bDisplayLoads;
+        public bool bDisplayLoadsLabels;
+        public bool bDisplayLoadsLabelsUnits;
 
         public bool bDisplayMemberLoads;
         public bool bDisplaySurfaceLoads;

@@ -981,6 +981,8 @@ namespace PFD
             sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
 
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
+            sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
+            sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
         }
 
         private void UpdateAll()

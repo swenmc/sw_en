@@ -31,7 +31,7 @@ namespace BaseClasses
                 Model3DGroup gr = new Model3DGroup();
 
                 //najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty
-                if (sDisplayOptions.bDisplayLoads)
+                if (sDisplayOptions.bDisplayLoads && sDisplayOptions.bDisplayLoadsLabels)
                 {
                     gr.Children.Add( Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
                     //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
@@ -1086,7 +1086,8 @@ namespace BaseClasses
             string separator = " - ";
             parts.Add(l.ID.ToString());
             parts.Add(l.Prefix.ToString());
-            parts.Add((fLoadValue * fUnitFactor).ToString("F3") + " " + sUnitString);
+            if(options.bDisplayLoadsLabelsUnits) parts.Add((fLoadValue * fUnitFactor).ToString("F3") + " " + sUnitString);
+            else parts.Add((fLoadValue * fUnitFactor).ToString("F3"));
 
             return string.Join(separator, parts);
         }
@@ -1101,32 +1102,32 @@ namespace BaseClasses
 
             List<string> parts1 = new List<string>();
             parts1.Add("Fx");
-            parts1.Add((l.Value_FX * fUnitFactor).ToString("F3") + " " + "[kN]");
+            parts1.Add((l.Value_FX * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kN]" :""));
             string lineFx = string.Join(separator, parts1);
 
             List<string> parts2 = new List<string>();
             parts2.Add("Fy");
-            parts2.Add((l.Value_FY * fUnitFactor).ToString("F3") + " " + "[kN]");
+            parts2.Add((l.Value_FY * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kN]" : ""));
             string lineFy = string.Join(separator, parts2);
 
             List<string> parts3 = new List<string>();
             parts3.Add("Fz");
-            parts3.Add((l.Value_FZ * fUnitFactor).ToString("F3") + " " + "[kN]");
+            parts3.Add((l.Value_FZ * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kN]" : ""));
             string lineFz = string.Join(separator, parts3);
 
             List<string> parts4 = new List<string>();
             parts4.Add("Fx");
-            parts4.Add((l.Value_MX * fUnitFactor).ToString("F3") + " " + "[kNm]");
+            parts4.Add((l.Value_MX * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kNm]" : ""));
             string lineMx = string.Join(separator, parts4);
 
             List<string> parts5 = new List<string>();
             parts5.Add("Fx");
-            parts5.Add((l.Value_MY * fUnitFactor).ToString("F3") + " " + "[kNm]");
+            parts5.Add((l.Value_MY * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kNm]" : ""));
             string lineMy = string.Join(separator, parts5);
 
             List<string> parts6 = new List<string>();
             parts6.Add("Fx");
-            parts6.Add((l.Value_MZ * fUnitFactor).ToString("F3") + " " + "[kNm]");
+            parts6.Add((l.Value_MZ * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kNm]" : ""));
             string lineMz = string.Join(separator, parts6);
 
             string wholeString = id + "\n" +
@@ -1151,10 +1152,11 @@ namespace BaseClasses
             float fTextBlockVerticalSize = 0.2f;
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
-            float fOffsetZ = 0.07f;
-
+            //float fOffsetZ = 0.07f;
+            
             if (loadCase != null)
             {
+                
                 if (loadCase.NodeLoadsList != null) // Some nodal loads exist
                 {
                     // Model Groups of Nodal Loads
@@ -1193,13 +1195,13 @@ namespace BaseClasses
                                 Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).CreateTransformCoordGroupOfLoadGroup();
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                 {                                    
-                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, loadGroupTransform, ref gr);
+                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, displayOptions, loadGroupTransform, ref gr);
                                 }
                             }
                             else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
                             {                                
                                 CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
-                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, null, ref gr);
+                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, displayOptions, null, ref gr);
                             }
                             else throw new Exception("Load type not known.");
                         }
@@ -1246,7 +1248,7 @@ namespace BaseClasses
             if (MathF.d_equal(fLoadValue, 0)) return null;
 
             float fUnitFactor = 0.001f; // N/m to kN/m
-            string sTextToDisplay = (fLoadValue * fUnitFactor).ToString("F3") + " [kN/m]";
+            string sTextToDisplay = (fLoadValue * fUnitFactor).ToString("F3") + (displayOptions.bDisplayLoadsLabelsUnits ? " [kN/m]" : "");
 
             TextBlock tb = new TextBlock();
             tb.Text = sTextToDisplay;
@@ -1307,8 +1309,8 @@ namespace BaseClasses
         /// <param name="fTextBlockHorizontalSizeFactor"></param>
         /// <param name="groupTransform">transformacia celej </param>
         /// <param name="gr"></param>
-        private static void DrawSurfaceLoadLabel3D(CSLoad_FreeUniform load, float fTextBlockVerticalSize, float fTextBlockVerticalSizeFactor, float fTextBlockHorizontalSizeFactor, 
-            Transform3D groupTransform, ref Model3DGroup gr)
+        private static void DrawSurfaceLoadLabel3D(CSLoad_FreeUniform load, float fTextBlockVerticalSize, float fTextBlockVerticalSizeFactor, float fTextBlockHorizontalSizeFactor,
+            DisplayOptions displayOptions, Transform3D groupTransform, ref Model3DGroup gr)
         {
             // Set load for all assigned surfaces
             ModelVisual3D textlabel = null;
@@ -1361,7 +1363,7 @@ namespace BaseClasses
                     pTextPosition.Z = load.PointsGCS.Average(p => p.Z);
 
                     // Set load value to display
-                    string sTextToDisplay = (load.fValue * fUnitFactor).ToString("F3") + " [kPa]";
+                    string sTextToDisplay = (load.fValue * fUnitFactor).ToString("F3") + (displayOptions.bDisplayLoadsLabelsUnits ? " [kPa]" : "");
                     tb.Text = sTextToDisplay;
 
                     // Create text
