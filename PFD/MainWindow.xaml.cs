@@ -44,6 +44,27 @@ namespace PFD
 
     public partial class MainWindow : Window
     {
+        // Names of tabs in Main Window
+        private enum ETabNames
+        {
+            eGeneral = 0,
+            eMember_Input = 1,
+            eJoint_Input = 2,
+            eFoting_Input = 3,
+            eLoads = 4,
+
+            eLoadCases = 5,
+            eLoadCombinations = 6,
+
+            eInternalForces = 7,
+            eMemberDesign = 8,
+            eJointDesign = 9,
+            eFootingDesign = 10,
+
+            ePartList = 11,
+            eQuoation = 12
+        }
+
         ////////////////////////////////////////////////////////////////////////
         // PORTAL FRAME DESIGNER
         ////////////////////////////////////////////////////////////////////////
@@ -357,8 +378,8 @@ namespace PFD
         private void CalculateLoadingValues()
         {
             // Input - TabItem Components
-            if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
-            UC_ComponentList componentList_UC = (UC_ComponentList)Model_Component.Content;
+            if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+            UC_ComponentList componentList_UC = (UC_ComponentList)Member_Input.Content;
             //tu som nenasiel ziaden ViewModel napojeny na dany User Control
             //DataGrid grid = componentList_UC.Datagrid_Components;
 
@@ -1128,22 +1149,26 @@ namespace PFD
         {
             if (!(e.OriginalSource is TabControl)) return; //pozor selection changed event buble smerom nahor
 
-            if (MainTabControl.SelectedIndex == 1)
+            if (MainTabControl.SelectedIndex == (int)ETabNames.eMember_Input)
             {
-                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
+                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
             }
-            else if (MainTabControl.SelectedIndex == 2)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {
                 if (Loads.Content == null) Loads.Content = new UC_Loads(sGeometryInputData);
             }
-            else if (MainTabControl.SelectedIndex == 3)
-                Load_Cases.Content = new UC_LoadCaseList(vm);
-            else if (MainTabControl.SelectedIndex == 4)
-                Load_Combinations.Content = new UC_LoadCombinationList(vm.Model);
-            else if (MainTabControl.SelectedIndex == 5)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoadCases)
             {
-                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
-                UC_ComponentList component = Model_Component.Content as UC_ComponentList;
+                Load_Cases.Content = new UC_LoadCaseList(vm);
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoadCombinations)
+            {
+                Load_Combinations.Content = new UC_LoadCombinationList(vm.Model);
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eInternalForces)
+            {
+                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
 
                 if (Internal_Forces.Content == null)
@@ -1166,10 +1191,10 @@ namespace PFD
                     uc_intForces.ListMemberInternalForcesInLoadCombinations = vm.MemberInternalForcesInLoadCombinations;
                 }
             }
-            else if (MainTabControl.SelectedIndex == 6)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eMemberDesign)
             {
-                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
-                UC_ComponentList component = Model_Component.Content as UC_ComponentList;
+                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
 
                 if (Member_Design.Content == null) Member_Design.Content = new UC_MemberDesign(vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
@@ -1180,10 +1205,10 @@ namespace PFD
                     uc_memberDesign.DesignResults_ULS = vm.MemberDesignResults_ULS;
                 }
             }
-            else if (MainTabControl.SelectedIndex == 7)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eJointDesign)
             {
-                if (Model_Component.Content == null) Model_Component.Content = new UC_ComponentList();
-                UC_ComponentList component = Model_Component.Content as UC_ComponentList;
+                if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+                UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
                 if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.Model, compList, vm.JointDesignResults_ULS);
                 else
@@ -1192,14 +1217,15 @@ namespace PFD
                     uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                 }
             }
-            else if (MainTabControl.SelectedIndex == 8)
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
+            {
                 Part_List.Content = new UC_MaterialList(vm.Model);
+            }
             else
             {
                 // Not implemented like UC;
             };
         }
-
 
         // TO Ondrej - TODO - nemali by sme tieto metody pre checkboxy tiez prerobit na ViewModel properties ???
 
