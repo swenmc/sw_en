@@ -25,6 +25,81 @@ namespace M_NZS3101
         {
             return 0.6f * fLambda * MathF.Sqrt(ff_apostrophe_c); // Eq. (5-4) // ff_r
         }
+        public float Eq_9_1_area(float ff_apostrophe_c, float ff_y, float fb_w, float fd)
+        {
+            return Math.Min((MathF.Sqrt(ff_apostrophe_c) / (4f * ff_y)) * fb_w * fd, 1.4f * fb_w * fd / ff_y); // Eq. (9-1) // fA_s
+        }
+        public float Eq_9_1_ratio(float ff_apostrophe_c, float ff_y)
+        {
+            return Math.Min((MathF.Sqrt(ff_apostrophe_c) / (4f * ff_y)), 1.4f / ff_y); // Eq. (9-1) // Minimum reinforcement ratio
+        }
+        public float Eq_9_4_____(float  fv_c, float fA_cv)
+        {
+            return fv_c * fA_cv; // Eq. (9-4) // fV_c
+        }
+        public float Eq_9_5_____(float fk_d, float fk_a, float fv_b)
+        {
+            return fk_d * fk_a * fv_b; // Eq. (9-4) // fv_c
+        }
+        public float Get_v_b_93934(float fp_w, float ff_apostrophe_c)
+        {
+            float ff_apostrophe_c_reduced = Math.Min(ff_apostrophe_c, 50e+6f);
+            return Math.Max(MathF.Min((0.07f + 10f * fp_w) * MathF.Sqrt(ff_apostrophe_c_reduced), 0.2f * MathF.Sqrt(ff_apostrophe_c_reduced)), 0.08f * MathF.Sqrt(ff_apostrophe_c_reduced)); // fv_b
+        }
+        public float Get_k_a_93934(float fMaximumAgregateSize_meter)
+        {
+            if (fMaximumAgregateSize_meter >= 0.019f) // 19 mm
+                return 1.00f;
+            else if (fMaximumAgregateSize_meter <= 0.010f) // 10 mm
+                return 0.85f;
+            else
+                return (float)ArrayF.GetLinearInterpolationValuePositive(fMaximumAgregateSize_meter, new double[2] { 0.010, 0.019 }, new double[2] { 0.85, 1.00 });
+        }
+        public float Get_k_d_93934()
+        {
+            // TODO - dopracovat podla roznych podmienok a) - e) v 9.3.9.3.4
+            return 1.00f;
+        }
+        public float Eq_9_10____(float ff_apostrophe_c, float ff_y, float fb_w, float fd)
+        {
+            return 1f / 16f * MathF.Sqrt(ff_apostrophe_c) * fb_w * fd; // Eq. (9-10) // fV_s_min
+        }
+        public float Eq_12_4____(float fV_s, float fV_c)
+        {
+            return fV_s + fV_c; // Eq. (12-4) // fV_n
+        }
+        public float Get_V_c_12731(float fv_c, float fb_0, float fd)
+        {
+            return fv_c * fb_0 * fd; // fV_c
+        }
+        public float Eq_12_5____(float fV_asterix, float fPhi, float fV_n)
+        {
+            return fV_asterix / (fPhi * fV_n); // Eq. (12-5) // fV Design ratio
+        }
+        public float Eq_12_6____(float fk_ds, float fBeta_c, float ff_apostrophe_c)
+        {
+            return 1f / 6f * fk_ds * (1f + (2f / fBeta_c)) * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-6) // fv_c
+        }
+        public float Eq_12_7____(float fk_ds, float fAlpha_s, float fd, float fb_0, float ff_apostrophe_c)
+        {
+            return 1f / 6f * fk_ds * ((fAlpha_s * fd / fb_0) + 1f) * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-7) // fv_c
+        }
+        public float Eq_12_8____(float fk_ds, float ff_apostrophe_c)
+        {
+            return 1f / 3f * fk_ds * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-8) // fv_c
+        }
+        public float Eq_12_9____(float ff_apostrophe_c)
+        {
+            return 1 / 6f * MathF.Sqrt(ff_apostrophe_c); // Eq. (12-9) // fv_c
+        }
+        public float Eq_12_9____(float fv_n, float fv_c, float fb_x, float fd)
+        {
+            return (fv_n - fv_c) * fb_x * fd; // Eq. (12-10) // fV_s
+        }
+        public float Get_k_ds_12732(float fd)
+        {
+            return Math.Min(Math.Max(0.5f, MathF.Sqrt(200f / (fd * 1000f))), 1f); // fk_ds - note: d in [mm]
+        }
 
         // 17.5.6 Strength of cast-in anchors
         public float Eq_17_1____(float fN_asterix, float fPhi, float fN_n)
