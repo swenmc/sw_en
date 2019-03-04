@@ -1686,7 +1686,7 @@ namespace PFD
                 if (Joint_Design.Content != null)
                 {
                     UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
-                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;                    
+                    uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                     CPFDJointsDesign vmJD = uc_jointDesign.DataContext as CPFDJointsDesign;
                     vmJD.LimitStateIndex = 0;
                 }
@@ -1756,8 +1756,9 @@ namespace PFD
                 {
                     foreach (CMember m in gr.ListOfMembers)
                     {
-                        //it is not Main Column and it is not Main rafter
-                        if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR) continue;
+                        //it is not Main/End Column and it is not Main/End rafter
+                        if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR &&
+                            m.EMemberType != EMemberType_FormSteel.eEC && m.EMemberType != EMemberType_FormSteel.eER) continue;
 
                         if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
                         {
@@ -1769,8 +1770,6 @@ namespace PFD
 
                 frames.Add(frameMembers);
             }
-
-
 
             // Frame 1
             // Member ID 1 - Main Column
@@ -1866,9 +1865,6 @@ namespace PFD
                     }
                 }
             }
-
-
-
 
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
             {

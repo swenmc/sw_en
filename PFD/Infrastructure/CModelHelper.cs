@@ -32,7 +32,7 @@ namespace PFD
                 foreach (CMember m in model.m_arrMembers)
                 {
                     // It is not Main Column and it is not Main rafter
-                    if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR) continue;
+                    if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR && m.EMemberType != EMemberType_FormSteel.eEC && m.EMemberType != EMemberType_FormSteel.eER) continue;
 
                     if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
                     {

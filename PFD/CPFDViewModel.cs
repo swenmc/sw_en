@@ -849,6 +849,8 @@ namespace PFD
             float fMaximumDesignRatioWholeStructure = 0;
             float fMaximumDesignRatioMainColumn = 0;
             float fMaximumDesignRatioMainRafter = 0;
+            float fMaximumDesignRatioEndColumn = 0;
+            float fMaximumDesignRatioEndRafter = 0;
             float fMaximumDesignRatioGirts = 0;
             float fMaximumDesignRatioPurlins = 0;
             float fMaximumDesignRatioColumns = 0;
@@ -856,6 +858,8 @@ namespace PFD
             CMember MaximumDesignRatioWholeStructureMember = new CMember();
             CMember MaximumDesignRatioMainColumn = new CMember();
             CMember MaximumDesignRatioMainRafter = new CMember();
+            CMember MaximumDesignRatioEndColumn = new CMember();
+            CMember MaximumDesignRatioEndRafter = new CMember();
             CMember MaximumDesignRatioGirt = new CMember();
             CMember MaximumDesignRatioPurlin = new CMember();
             CMember MaximumDesignRatioColumn = new CMember();
@@ -878,8 +882,8 @@ namespace PFD
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
-                    if((!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)) ||
-                    (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR))
+                    if((!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER)) ||
+                    (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR && m.EMemberType != EMemberType_FormSteel.eEC && m.EMemberType != EMemberType_FormSteel.eER))
                     {
                         for (int i = 0; i < iNumberOfDesignSections; i++)
                             fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -892,7 +896,8 @@ namespace PFD
                         foreach (CLoadCase lc in Model.m_arrLoadCases)
                         {
                             // Frame member
-                            if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR)
+                            if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR ||
+                                m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER)
                             {
                                 // BEFENet - calculate load cases only
 
@@ -1005,7 +1010,7 @@ namespace PFD
                             // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
 
                             // Frame member - vysledky pocitane pre load combinations
-                            if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
+                            if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER))
                             {
                                 // Nastavit vysledky pre prut ramu
 
@@ -1015,7 +1020,7 @@ namespace PFD
                                 sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
 
-                                if (m.EMemberType == EMemberType_FormSteel.eMR)
+                                if (m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eER)
                                 {
                                     sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 0.5f;
                                     sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 0.5f;
@@ -1139,6 +1144,24 @@ namespace PFD
                                             }
                                             break;
                                         }
+                                    case EMemberType_FormSteel.eEC: // End Column
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndColumn)
+                                            {
+                                                fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioEndColumn = m;
+                                            }
+                                            break;
+                                        }
+                                    case EMemberType_FormSteel.eER: // End Rafter
+                                        {
+                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndRafter)
+                                            {
+                                                fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
+                                                MaximumDesignRatioEndRafter = m;
+                                            }
+                                            break;
+                                        }
                                     case EMemberType_FormSteel.eG: // Girt
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
@@ -1185,7 +1208,7 @@ namespace PFD
 
                                 // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
                                 // Frame member - vysledky pocitane pre load combinations
-                                if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR))
+                                if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER))
                                 {
                                     int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                     int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
@@ -1244,6 +1267,10 @@ namespace PFD
                     "Member ID: " + MaximumDesignRatioMainColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioMainColumn, 3).ToString() + "\n\n" +
                     "Maximum design ratio - rafters\n" +
                     "Member ID: " + MaximumDesignRatioMainRafter.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioMainRafter, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - end columns\n" +
+                    "Member ID: " + MaximumDesignRatioEndColumn.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioEndColumn, 3).ToString() + "\n\n" +
+                    "Maximum design ratio - end rafters\n" +
+                    "Member ID: " + MaximumDesignRatioEndRafter.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioEndRafter, 3).ToString() + "\n\n" +
                     "Maximum design ratio - girts\n" +
                     "Member ID: " + MaximumDesignRatioGirt.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioGirts, 3).ToString() + "\n\n" +
                     "Maximum design ratio - purlins\n" +

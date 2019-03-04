@@ -71,6 +71,10 @@ namespace PFD
             cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1], "Box 63020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEC, 1], "Box 63020", "G550", true, true, true, true, true);
+            cl.ComponentList.Add(ci);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eER, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eER, 1], "Box 63020", "G550", true, true, true, true, true);
+            cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], "C 50020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
             ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], "C 27095", "G550", true, true, true, true, true);

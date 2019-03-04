@@ -110,7 +110,7 @@ namespace PFD
             iGirtNoInOneFrame = 0;
 
             m_arrMat = new CMat[1];
-            m_arrCrSc = new CCrSc[9];
+            m_arrCrSc = new CCrSc[11];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
@@ -120,30 +120,34 @@ namespace PFD
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
             // TODO Ondrej - Nastavit objekt prierezu podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
-            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);   // Main Column
-            m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);           // Rafter
-            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(3, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                // Eaves Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(4, 0.27f, 0.07f, 0.00115f, Colors.Orange);                   // Girt - Wall
-            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(5, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                  // Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(6, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);    // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(7, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);     // Back Column
-            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(8, 0.27f, 0.07f, 0.00115f, Colors.Brown);                   // Front Girt
-            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(9, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);              // Back Girt
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);       // Main Column
+            m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);               // Rafter
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.DarkOrchid);   // Main Column - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.GreenYellow);      // Rafter - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(3, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                    // Eaves Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(4, 0.27f, 0.07f, 0.00115f, Colors.Orange);                       // Girt - Wall
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(5, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                      // Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(6, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);        // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(7, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);         // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(8, 0.27f, 0.07f, 0.00115f, Colors.Brown);                       // Front Girt
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(9, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);                  // Back Girt
 
             // Member Groups
-            listOfModelMemberGroups = new List<CMemberGroup>(9);
+            listOfModelMemberGroups = new List<CMemberGroup>(11);
 
             CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
             // See UC component list
             listOfModelMemberGroups.Add(new CMemberGroup(1, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1] , m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eER, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
 
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
@@ -363,13 +367,26 @@ namespace PFD
             // Members
             for (int i = 0; i < iFrameNo; i++)
             {
+                int iCrscColumnIndex = (int)EMemberGroupNames.eMainColumn;
+                int iCrscRafterIndex = (int)EMemberGroupNames.eRafter;
+                EMemberType_FormSteel eColumnType = EMemberType_FormSteel.eMC;
+                EMemberType_FormSteel eRafterType = EMemberType_FormSteel.eMR;
+
+                if (i == 0 || i == (iFrameNo - 1))
+                {
+                    iCrscColumnIndex = (int)EMemberGroupNames.eMainColumn_EF;
+                    iCrscRafterIndex = (int)EMemberGroupNames.eRafter_EF;
+                    eColumnType = EMemberType_FormSteel.eEC;
+                    eRafterType = EMemberType_FormSteel.eER;
+                }
+
                 // Main Column
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 0] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1, m_arrNodes[i * iFrameNodesNo + 0], m_arrNodes[i * iFrameNodesNo + 1], m_arrCrSc[iCrscColumnIndex], eColumnType, null, null, fMainColumnStart, fMainColumnEnd, 0f, 0);
                 // Rafters
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterStart, fRafterEnd, 0f, 0);
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eRafter], EMemberType_FormSteel.eMR, null, null, fRafterEnd, fRafterStart, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[i * iFrameNodesNo + 2], m_arrCrSc[iCrscRafterIndex], eRafterType, null, null, fRafterStart, fRafterEnd, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3, m_arrNodes[i * iFrameNodesNo + 2], m_arrNodes[i * iFrameNodesNo + 3], m_arrCrSc[iCrscRafterIndex], eRafterType, null, null, fRafterEnd, fRafterStart, 0f, 0);
                 // Main Column
-                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], EMemberType_FormSteel.eMC, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
+                m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 3] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[i * iFrameNodesNo + 4], m_arrCrSc[iCrscColumnIndex], eColumnType, null, null, fMainColumnEnd, fMainColumnStart, 0f, 0);
 
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))
