@@ -1131,7 +1131,7 @@ namespace M_AS4600
             float fA_s_tot_Ydirection = iNumberOfBarsInYDirection * fA_s1_Ydirection;
 
             float fConcreteCover_reinforcement_side = 0.075f;
-            float fSpacing_xDirection = (fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection -1);
+            float fSpacing_xDirection = (fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection - 1);
             float fSpacing_yDirection = (fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_xDirection) / (iNumberOfBarsInXDirection - 1);
 
             string sReinforcingSteelGrade_Name = "500E";
