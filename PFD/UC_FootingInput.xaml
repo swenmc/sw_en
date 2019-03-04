@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="PFD.UC_FootingInput"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:PFD"
+        mc:Ignorable="d" 
+        d:DesignHeight="1270" d:DesignWidth="600">
+    <UserControl.Resources>
+        <System:Double x:Key="theTextBoxWidth">90</System:Double>
+        <System:Double x:Key="theTextBoxWidthLarge">200</System:Double>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Component Type:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <ComboBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
+                         VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" DisplayMemberPath="ComponentName" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Concrete Grade:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ConcreteGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{StaticResource theTextBoxWidth}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Reinforcement Grade:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Name ="Combobox_ReinforcementGrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{StaticResource theTextBoxWidth}"/>
+
+        <ComboBox Grid.Row ="3" Grid.Column="1" Grid.ColumnSpan="3" Name ="ComboBox_Reinforcement" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{StaticResource theTextBoxWidth}">
+            <ComboBoxItem Content="250"/>
+            <ComboBoxItem Content="500B"/>
+            <ComboBoxItem Content="500C"/>
+        </ComboBox>
+
+        <TextBlock Grid.Row ="4" Grid.Column="0" HorizontalAlignment="Left" Height="20"  TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="Top x-direction"/>
+        <ComboBox Grid.Row ="4" Grid.Column="1" Name ="ComboBox_LongReinTop_No" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="50">
+            <ComboBoxItem Content="2"/>
+            <ComboBoxItem Content="3"/>
+            <ComboBoxItem Content="4"/>
+        </ComboBox>
+        <TextBlock Grid.Row ="4" Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="x Ø" VerticalAlignment="Top" Width="20"/>
+
+        <ComboBox Grid.Row ="4" Grid.Column="3" Name ="ComboBox_LongReinTop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="20">
+            <ComboBoxItem Content="5"/>
+            <ComboBoxItem Content="5.5"/>
+            <ComboBoxItem Content="6"/>
+            <ComboBoxItem Content="8"/>
+            <ComboBoxItem Content="10"/>
+            <ComboBoxItem Content="12"/>
+            <ComboBoxItem Content="14"/>
+            <ComboBoxItem Content="16"/>
+            <ComboBoxItem Content="18"/>
+            <ComboBoxItem Content="20"/>
+        </ComboBox>
+
+        <TextBlock Grid.Row ="4" Grid.Column="4" HorizontalAlignment="Center" TextWrapping="Wrap" Text="/" VerticalAlignment="Top" Width="10"/>
+        <TextBox Grid.Row ="4" Grid.Column="5" Name="TextBoxLongReinTop_distance_s_y" HorizontalAlignment="Left" Height="20"  TextWrapping="Wrap" Text="0.210" VerticalAlignment="Top" Width="50" MaxLength="250" IsReadOnly="True"/>
+        <TextBlock Grid.Row ="4" Grid.Column="6" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" Text="[m]" VerticalAlignment="Top" Width="20"/>
+
+    </Grid>
+</UserControl>

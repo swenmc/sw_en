@@ -173,6 +173,9 @@
       <DependentUpon>SystemComponentViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextBoxEnterKeyUpdateBehavior.cs" />
+    <Compile Include="UC_FootingInput.xaml.cs">
+      <DependentUpon>UC_FootingInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CLoadCaseView.cs" />
     <Compile Include="ViewModels\FrameInternalForces_2DViewModel.cs" />
     <Compile Include="WaitWindow.xaml.cs">
@@ -258,6 +261,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Solver.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC_FootingInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

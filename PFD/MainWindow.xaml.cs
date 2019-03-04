@@ -50,7 +50,7 @@ namespace PFD
             eGeneral = 0,
             eMember_Input = 1,
             eJoint_Input = 2,
-            eFoting_Input = 3,
+            eFooting_Input = 3,
             eLoads = 4,
 
             eLoadCases = 5,
@@ -1152,6 +1152,10 @@ namespace PFD
             if (MainTabControl.SelectedIndex == (int)ETabNames.eMember_Input)
             {
                 if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eFooting_Input)
+            {
+                if (Footing_Input.Content == null) Footing_Input.Content = new UC_FootingInput();
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.eLoads)
             {
