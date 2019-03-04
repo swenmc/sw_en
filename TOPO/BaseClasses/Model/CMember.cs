@@ -104,6 +104,20 @@ namespace BaseClasses
             }
         }
 
+        private List<CSegment_LTB> m_LTBSegmentGroup;
+        public List<CSegment_LTB> LTBSegmentGroup // Group of LTB segments at member (default - 1 segment)
+        {
+            get
+            {
+                return m_LTBSegmentGroup;
+            }
+
+            set
+            {
+                m_LTBSegmentGroup = value;
+            }
+        }
+
         private EMemberType_FormSteel eMemberType_FS;
 
         public EMemberType_FormSteel EMemberType

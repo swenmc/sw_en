@@ -486,10 +486,50 @@ namespace PFD
 
                         if (lTransverseSupportGroup_Rafter.Count > 0)
                         {
+                            int iLeftRafterIndex = (i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1;
+                            int iRightRafterIndex = (i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2;
+
+                            List<CSegment_LTB> LTB_segment_group_rafter = new List<CSegment_LTB>();
+
+                            // Create lateral-torsional buckling segments
+                            for (int j = 0; j < lTransverseSupportGroup_Rafter.Count + 1; j++)
+                            {
+                                // Number of segments = number of intermediate supports + 1 - type BothFlanges
+                                // TODO - doriesit ako generovat segmenty ak nie su vsetky lateral supports typu BothFlanges
+                                // Najprv by sa mal najst pocet podpor s BothFlanges, z toho urcit pocet segmentov a zohladnovat len tie coordinates x,
+                                // ktore sa vztahuju na podpory s BothFlanges
+
+                                float fSegmentStart_abs = 0;
+                                float fSegmentEnd_abs = fRafterLength;
+
+                                if (j == 0) // First Segment
+                                {
+                                    fSegmentStart_abs = 0f;
+                                    fSegmentEnd_abs = lTransverseSupportGroup_Rafter[j].Fx_position_abs;
+                                }
+                                else if(j < lTransverseSupportGroup_Rafter.Count)
+                                {
+                                    fSegmentStart_abs = lTransverseSupportGroup_Rafter[j-1].Fx_position_abs;
+                                    fSegmentEnd_abs = lTransverseSupportGroup_Rafter[j].Fx_position_abs;
+                                }
+                                else // Last
+                                {
+                                    fSegmentStart_abs = lTransverseSupportGroup_Rafter[j-1].Fx_position_abs;
+                                    fSegmentEnd_abs = fRafterLength;
+                                }
+
+                                CSegment_LTB segment = new CSegment_LTB(j + 1, false, fSegmentStart_abs, fSegmentEnd_abs, fRafterLength);
+
+                                LTB_segment_group_rafter.Add(segment);
+                            }
+
+                            // Assign transverse support group to the rafter
                             // Left Rafter
-                            m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 1].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter;
+                            m_arrMembers[iLeftRafterIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter;
+                            m_arrMembers[iLeftRafterIndex].LTBSegmentGroup = LTB_segment_group_rafter;
                             // Right Rafter
-                            m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 2].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter;
+                            m_arrMembers[iRightRafterIndex].IntermediateTransverseSupportGroup = lTransverseSupportGroup_Rafter; // TODO - neviem ci pre pravy rafter nie su suradnice opacne orientovane , takze pouzit L - x
+                            m_arrMembers[iRightRafterIndex].LTBSegmentGroup = LTB_segment_group_rafter; // TODO - neviem ci pre pravy rafter nie su suradnice opacne orientovane , takze pouzit L - x
                         }
                     }
                 }
