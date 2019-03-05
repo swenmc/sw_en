@@ -1,8 +1,10 @@
 ﻿using BaseClasses.GraphObj.Objects_3D;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
 
 namespace BaseClasses
 {
@@ -82,11 +84,23 @@ namespace BaseClasses
                             {
                                 if (MemberLiesOnSurfaceLoadPlane(l, m, null)) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
                                 else { System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}"); continue; }
-                                
-                                //ak by bol cely pod tou serface load
+
+                                GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, loadGroupTransform);
+                                Point3D pStart = new Point3D(m.NodeStart.X, m.NodeStart.Y, m.NodeStart.Z);
+                                Point3D pEnd = new Point3D(m.NodeEnd.X, m.NodeEnd.Y, m.NodeEnd.Z);
+
+                                Point3D pStartLCS = inverseTrans.Transform(pStart);
+                                Point3D pEndLCS = inverseTrans.Transform(pEnd);
+
+                                if(Drawing3D.LineLiesOnPlane(l.SurfaceDefinitionPoints[0], l.SurfaceDefinitionPoints[1], l.SurfaceDefinitionPoints[2], pStartLCS, pEndLCS))
+                                    System.Diagnostics.Trace.WriteLine($"SUPER. LIES ON PLANE IN LCS TOO. LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+
+                                //ak by bol cely pod tou surface load
                                 float fMemberLoadValue = l.fValue * fDist;
                                 lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                                 iLoadID += 1;
+
+                                
                             }
                         }
                         else if (csload is CSLoad_FreeUniform)
@@ -94,8 +108,29 @@ namespace BaseClasses
                             CSLoad_FreeUniform l = (CSLoad_FreeUniform)csload;
                             if(MemberLiesOnSurfaceLoadPlane(l, m, null)) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
                             else { System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}"); continue; }
+                            
+                            GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, null);
+                            Point3D pStart = new Point3D(m.NodeStart.X, m.NodeStart.Y, m.NodeStart.Z);
+                            Point3D pEnd = new Point3D(m.NodeEnd.X, m.NodeEnd.Y, m.NodeEnd.Z);
 
-                            //ak by bol cely pod tou serface load
+                            Point3D pStartLCS = inverseTrans.Transform(pStart);
+                            Point3D pEndLCS = inverseTrans.Transform(pEnd);
+
+                            if (Drawing3D.LineLiesOnPlane(l.SurfaceDefinitionPoints[0], l.SurfaceDefinitionPoints[1], l.SurfaceDefinitionPoints[2], pStartLCS, pEndLCS))
+                                System.Diagnostics.Trace.WriteLine($"SUPER. LIES ON PLANE IN LCS TOO. LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+
+
+                            Point p1r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[0]);
+                            Point p2r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[2]);
+
+                            pStart.X -= fDist / 2;
+                            pEnd.X += fDist / 2;
+                            Point p1r2 = Drawing3D.GetPoint_IgnoreZ(pStart);
+                            Point p2r2 = Drawing3D.GetPoint_IgnoreZ(pEnd);
+                            Rect intersection = Drawing3D.GetRectanglesIntersection(p1r1, p2r1, p1r2, p2r2);
+                            System.Diagnostics.Trace.WriteLine($"INTERSECTION IS height: {intersection.Height} width: {intersection.Width}  LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+
+                            //ak by bol cely pod tou surface load
                             float fMemberLoadValue = l.fValue * fDist;
                             lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                             iLoadID += 1;
@@ -115,13 +150,28 @@ namespace BaseClasses
             return Drawing3D.MemberLiesOnPlane(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[2], m);
         }
 
+        //public static List<Point3D> GetSurfaceLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform)
+        //{
+        //    Model3DGroup gr = load.CreateM_3D_G_Load();
+        //    if (gr.Children.Count < 1) return new List<Point3D>();
+
+        //    Transform3DGroup trans = new Transform3DGroup();
+        //    trans.Children.Add(gr.Transform);
+        //    if (groupTransform != null)
+        //    {
+        //        trans.Children.Add(groupTransform);
+        //    }
+
+        //    List<Point3D> transPoints = new List<Point3D>();
+        //    foreach (Point3D p in load.SurfaceDefinitionPoints)
+        //        transPoints.Add(trans.Transform(p));
+
+        //    return transPoints;
+        //}
         public static List<Point3D> GetSurfaceLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load();
-            if (gr.Children.Count < 1) return new List<Point3D>();
-
             Transform3DGroup trans = new Transform3DGroup();
-            trans.Children.Add(gr.Transform);
+            trans.Children.Add(load.CreateTransformCoordGroup());
             if (groupTransform != null)
             {
                 trans.Children.Add(groupTransform);
@@ -132,6 +182,17 @@ namespace BaseClasses
                 transPoints.Add(trans.Transform(p));
 
             return transPoints;
+        }
+
+        public static GeneralTransform3D GetSurfaceLoadTransformFromGCSToLCS(CSLoad_FreeUniform load, Transform3D groupTransform)
+        {
+            Transform3DGroup trans = new Transform3DGroup();
+            trans.Children.Add(load.CreateTransformCoordGroup());
+            if (groupTransform != null)
+            {
+                trans.Children.Add(groupTransform);
+            }
+            return trans.Inverse;
         }
 
     }

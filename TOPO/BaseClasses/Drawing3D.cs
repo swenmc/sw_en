@@ -1730,6 +1730,29 @@ namespace BaseClasses
             else
                 return false;
         }
+        public static bool LineLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, Point3D pLineStart, Point3D pLineEnd, double dLimit = 0.000001)
+        {
+            double distanceStart = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, pLineStart));
+            double distanceEnd = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, pLineEnd));
+
+            if (distanceStart < dLimit && distanceEnd < dLimit)
+                return true;
+            else
+                return false;
+        }
+
+        public static Rect GetRectanglesIntersection(Point p1r1, Point p2r1, Point p1r2, Point p2r2)
+        {
+            Rect r1 = new Rect(p1r1, p2r1);
+            Rect r2 = new Rect(p1r2, p2r2);
+            r1.Intersect(r2);
+            return r1;
+        }
+
+        public static Point GetPoint_IgnoreZ(Point3D p)
+        {
+            return new Point(p.X, p.Y);
+        }
 
 
 
