@@ -38,6 +38,7 @@ namespace BaseClasses
             ELoadDirection = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
             pSurfacePoints = pSurfacePoints_temp;
+            SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints_temp);
             fValue = fValue_temp;
             bDrawPositiveValueOnPlusLocalZSide = bDrawPositiveValueOnPlusLocalZSide_temp;
             bChangePositionForNegativeValue = bChangePositionForNegativeValue_temp;
@@ -74,6 +75,7 @@ namespace BaseClasses
             m_pControlPoint = pControlPoint_temp;
 
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
+            SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints);
 
             fValue = fValue_temp;
             RotationX_deg = m_fRotationX_deg_temp;
@@ -116,6 +118,7 @@ namespace BaseClasses
 
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
 
+            SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints);
             fValue = fValue_temp;
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;
@@ -170,6 +173,7 @@ namespace BaseClasses
             else
                 pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(0.5f * fX_dimension, fY2_dimension, 0), new Point3D(0, fY1_dimension, 0) };
 
+            SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints);
             fValue = fValue_temp;
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;
@@ -224,6 +228,7 @@ namespace BaseClasses
             else
                 pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY1_dimension, 0), new Point3D(fX2_dimension, fY2_dimension, 0), new Point3D(0, fY3_dimension, 0) };
 
+            SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints);
             fValue = fValue_temp;
             RotationX_deg = m_fRotationX_deg_temp;
             RotationY_deg = m_fRotationY_deg_temp;

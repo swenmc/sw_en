@@ -1730,5 +1730,13 @@ namespace BaseClasses
             else
                 return false;
         }
+
+
+
+        //private static bool Intersects()
+        //{
+        //    MeshGeometry3D 3d = new MeshGeometry3D();
+
+        //}
     }
 }

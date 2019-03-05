@@ -18,6 +18,7 @@ namespace BaseClasses
         private float m_fRotationZ_deg;
         private Point3DCollection m_pSurfacePoints;
         private Point3DCollection m_pSurfacePoints_h;
+        private Point3DCollection m_pSurfaceDefinitionPoints;
         private List<FreeSurfaceLoadsMemberData> m_listOfMemberData; // Tento zoznam by sme mali vyhodit - member moze byt pod roznymi plochami, takze to nie je jednoznacne
         private List<FreeSurfaceLoadsMemberTypeData> m_listOfLoadedMemberTypeData; // Tento zoznam by sme mali vyhodit - member moze byt pod roznymi plochami, takze to nie je jednoznacne
 
@@ -98,6 +99,19 @@ namespace BaseClasses
             set
             {
                 m_PointsGCS = value;
+            }
+        }
+
+        public Point3DCollection SurfaceDefinitionPoints
+        {
+            get
+            {
+                return m_pSurfaceDefinitionPoints;
+            }
+
+            set
+            {
+                m_pSurfaceDefinitionPoints = value;
             }
         }
 
