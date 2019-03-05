@@ -301,28 +301,28 @@
             <TabItem Name ="Internal_Forces">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Internal Forces" Foreground="Red"/>
+                    <TextBlock Text="Internal Forces" Foreground="DarkCyan"/>
                 </StackPanel>
             </TabItem.Header>
             </TabItem>
             <TabItem Name ="Member_Design">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Member Design" Foreground="Red"/>
+                        <TextBlock Text="Member Design" Foreground="DarkCyan"/>
                 </StackPanel>
             </TabItem.Header>
             </TabItem>
             <TabItem Name ="Joint_Design">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Joint Design" Foreground="Red"/>
+                        <TextBlock Text="Joint Design" Foreground="DarkCyan"/>
                 </StackPanel>
             </TabItem.Header>
             </TabItem>
             <TabItem Name ="Footing_Design">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Footing Design" Foreground="Red"/>
+                        <TextBlock Text="Footing Design" Foreground="DarkCyan"/>
                 </StackPanel>
             </TabItem.Header>
             </TabItem>
