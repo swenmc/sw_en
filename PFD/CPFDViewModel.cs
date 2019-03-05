@@ -767,7 +767,7 @@ namespace PFD
             ShowLoadsOnPurlinsAndGirts = true;
             ShowLoadsOnFrameMembers = true;
             ShowNodalLoads = true;
-            ShowSurfaceLoads = false;
+            ShowSurfaceLoads = true;
             ShowLoadsLabels = true;
             ShowLoadsLabelsUnits = true;
             
