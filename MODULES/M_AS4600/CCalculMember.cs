@@ -80,15 +80,19 @@ namespace M_AS4600
             public float fN;
             public float fN_c;
             public float fN_t;
-            public float fV_xu;
-            public float fV_yv;
-            public float fV_xx;
-            public float fV_yy;
+            public float fV_xu_xx; // Univerzalne hodnoty nezavisle na systeme geometrical alebo principal axes of cross-section
+            public float fV_yv_yy;
+            //public float fV_xu;
+            //public float fV_yv;
+            //public float fV_xx;
+            //public float fV_yy;
             public float fT;
-            public float fM_xu;
-            public float fM_yv;
-            public float fM_xx;
-            public float fM_yy;
+            public float fM_xu_xx;
+            public float fM_yv_yy;
+            //public float fM_xu;
+            //public float fM_yv;
+            //public float fM_xx;
+            //public float fM_yy;
         }
 
         designInternalForces_AS4600 sDIF;
@@ -233,7 +237,7 @@ namespace M_AS4600
         public float fEta_defl_zz = 0f;
         public float fEta_defl_tot = 0f;
 
-        public CCalculMember(bool bIsDebugging, CMember member, float fM_asterix_xu, float fM_asterix_yv, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, CMember member, float fM_asterix_xu, float fM_asterix_yv, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
             designInternalForces sDIF_x_temp;
             sDIF_x_temp.fN = 0.0f;
@@ -244,12 +248,24 @@ namespace M_AS4600
             sDIF_x_temp.fV_zv = 0.0f;
             sDIF_x_temp.fV_zz = 0.0f;
             sDIF_x_temp.fT = 0.0f;
-            sDIF_x_temp.fM_yu = fM_asterix_xu;
-            sDIF_x_temp.fM_yy = fM_asterix_xu;
-            sDIF_x_temp.fM_zv = fM_asterix_yv;
-            sDIF_x_temp.fM_zz = fM_asterix_yv;
 
-            CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
+            if (bUseCRSCGeometricalAxes)
+            {
+                sDIF_x_temp.fM_yu = 0;
+                sDIF_x_temp.fM_zv = 0;
+                sDIF_x_temp.fM_yy = fM_asterix_xu; // indexy
+                sDIF_x_temp.fM_zz = fM_asterix_yv; // Indexy
+
+            }
+            else
+            {
+                sDIF_x_temp.fM_yu = fM_asterix_xu;
+                sDIF_x_temp.fM_zv = fM_asterix_yv;
+                sDIF_x_temp.fM_yy = 0;
+                sDIF_x_temp.fM_zz = 0;
+            }
+
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -258,9 +274,9 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CMember member, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
-            CalculateDesignRatio(bIsDebugging, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDIF_x_temp, (CCrSc_TW)member.CrScStart, member.FLength, sBucklingLengthFactors, sMomentValuesForCb);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -269,9 +285,9 @@ namespace M_AS4600
             }
         }
 
-        public CCalculMember(bool bIsDebugging, designDeflections sDDeflections_x_temp, CMember member)
+        public CCalculMember(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, CMember member)
         {
-            CalculateDesignRatio(bIsDebugging, sDDeflections_x_temp, member.FLength);
+            CalculateDesignRatio(bIsDebugging, bUseCRSCGeometricalAxes, sDDeflections_x_temp, member.FLength);
 
             // Validation
             if (fEta_max > 9e+10)
@@ -280,7 +296,7 @@ namespace M_AS4600
             }
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, designDeflections sDDeflections_x_temp, float fL_temp)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designDeflections sDDeflections_x_temp, float fL_temp)
         {
             float fLimit = 1f / 360f; // TODO nastavovat podla obsahu kombinacie SLS a typu prvku
             float fLimitDeflection = fL_temp * fLimit;
@@ -296,9 +312,9 @@ namespace M_AS4600
             fEta_max = fEta_defl_tot;
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors,  designMomentValuesForCb sMomentValuesForCb)
+        public void CalculateDesignRatio(bool bIsDebugging, bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors,  designMomentValuesForCb sMomentValuesForCb)
         {
-            SetDesignInputParameters(sDIF_x_temp, cs_temp, fL_temp,  sBucklingLengthFactors,  sMomentValuesForCb);
+            SetDesignInputParameters(bUseCRSCGeometricalAxes, sDIF_x_temp, cs_temp, fL_temp,  sBucklingLengthFactors,  sMomentValuesForCb);
 
             // Design
 
@@ -396,9 +412,9 @@ namespace M_AS4600
 
             // 7.2.2 Design of members subject to bending
 
-            CalculateBendingStrength_722(ELSType.eLS_ULS, sDIF.fM_xu, sDIF.fM_yv);
+            CalculateBendingStrength_722(ELSType.eLS_ULS, sDIF.fM_xu_xx, sDIF.fM_yv_yy);
 
-            fEta_722_M_xu = Math.Abs(sDIF.fM_xu) / (fPhi_b * fM_b_xu); // 7.2.2
+            fEta_722_M_xu = Math.Abs(sDIF.fM_xu_xx) / (fPhi_b * fM_b_xu); // 7.2.2
             fEta_max = MathF.Max(fEta_max, fEta_722_M_xu);
 
             // D2.3  Local buckling stresses
@@ -463,22 +479,22 @@ namespace M_AS4600
             float fV_v_yv_drv;
 
             // 7.2.3.5 Combined bending and shear
-            eq.Eq_723_9___(sDIF.fM_xu, fPhi_b_section, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
+            eq.Eq_723_9___(sDIF.fM_xu_xx, fPhi_b_section, fM_s_xu, sDIF.fV_yv_yy, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_9_xu_yv);
             fEta_max = MathF.Max(fEta_max, fEta_723_9_xu_yv);
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
             {
-                eq.Eq_723_10__(sDIF.fM_xu, fPhi_b, fM_b_xu, out fM_b_xu_drv, out fEta_723_10_xu);
+                eq.Eq_723_10__(sDIF.fM_xu_xx, fPhi_b, fM_b_xu, out fM_b_xu_drv, out fEta_723_10_xu);
                 fEta_max = MathF.Max(fEta_max, fEta_723_10_xu);
             }
 
             // Shear
-            eq.Eq_723_11__(sDIF.fV_yv, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_V_yv);
+            eq.Eq_723_11__(sDIF.fV_yv_yy, fPhi_v, fV_v_yv, out fV_v_yv_drv, out fEta_723_11_V_yv);
             fEta_max = MathF.Max(fEta_max, fEta_723_11_V_yv);
 
-            if ((Math.Abs(sDIF.fM_xu) / (fPhi_b_section * fM_s_xu)) > 0.5f && (Math.Abs(sDIF.fV_yv) / (fPhi_v * fV_v_yv)) > 0.7f)
+            if ((Math.Abs(sDIF.fM_xu_xx) / (fPhi_b_section * fM_s_xu)) > 0.5f && (Math.Abs(sDIF.fV_yv_yy) / (fPhi_v * fV_v_yv)) > 0.7f)
             {
-                eq.Eq_723_12__(sDIF.fM_xu, fPhi_b_section, fM_s_xu, sDIF.fV_yv, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_xu_yv_13, out fEta_723_12_xu_yv_10);
+                eq.Eq_723_12__(sDIF.fM_xu_xx, fPhi_b_section, fM_s_xu, sDIF.fV_yv_yy, fPhi_v, fV_v_yv, out fEta_M_xu, out fEta_V_yv, out fEta_723_12_xu_yv_13, out fEta_723_12_xu_yv_10);
                 fEta_max = MathF.Max(fEta_max, fEta_723_12_xu_yv_10);
             }
 
@@ -494,16 +510,16 @@ namespace M_AS4600
                 if (sDIF.fN < 0.0f) // Compression
                 {
                     // 7.2.4 Design of members subject to combined axial compression and bending
-                    eq.Eq_724_____(fPhi_c, fPhi_b, sDIF.fN_c, fN_c_min, sDIF.fM_xu, fM_b_xu, sDIF.fM_yv, fM_b_yv, out fEta_N_724, out fEta_Mxu_724, out fEta_Myv_724, out fEta_724);
+                    eq.Eq_724_____(fPhi_c, fPhi_b, sDIF.fN_c, fN_c_min, sDIF.fM_xu_xx, fM_b_xu, sDIF.fM_yv_yy, fM_b_yv, out fEta_N_724, out fEta_Mxu_724, out fEta_Myv_724, out fEta_724);
                     fEta_max = MathF.Max(fEta_max, fEta_724);
                 }
                 else
                 {
                     // 7.2.5 Design of members subject to combined axial tension and bending
-                    eq.Eq_725_1___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_b_xu, sDIF.fM_yv, fM_b_yv, out fEta_N_725_1, out fEta_Mxu_725_1, out fEta_Myv_725_1, out fEta_725_1);
+                    eq.Eq_725_1___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu_xx, fM_b_xu, sDIF.fM_yv_yy, fM_b_yv, out fEta_N_725_1, out fEta_Mxu_725_1, out fEta_Myv_725_1, out fEta_725_1);
                     fEta_max = MathF.Max(fEta_max, fEta_725_1);
 
-                    eq.Eq_725_2___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu, fM_s_xu_f, sDIF.fM_yv, fM_s_yv_f, out fEta_N_725_2, out fEta_Mxu_725_2, out fEta_Myv_725_2, out fEta_725_2);
+                    eq.Eq_725_2___(fPhi_t, fPhi_b, sDIF.fN_t, fN_t_min, sDIF.fM_xu_xx, fM_s_xu_f, sDIF.fM_yv_yy, fM_s_yv_f, out fEta_N_725_2, out fEta_Mxu_725_2, out fEta_Myv_725_2, out fEta_725_2);
                     fEta_max = MathF.Max(fEta_max, fEta_725_2);
                 }
             }
@@ -543,7 +559,7 @@ namespace M_AS4600
                               + "Design Ratio η max = " + Math.Round(fEta_max, iNumberOfDecimalPlaces) + " [-]");
         }
 
-        void SetDesignInputParameters(designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
+        void SetDesignInputParameters(bool bUseCRSCGeometricalAxes, designInternalForces sDIF_x_temp, CCrSc_TW cs_temp, float fL_temp, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesForCb)
         {
             cs = cs_temp;
 
@@ -551,15 +567,22 @@ namespace M_AS4600
             sDIF.fN = sDIF_x_temp.fN;
             sDIF.fN_c = sDIF_x_temp.fN_c;
             sDIF.fN_t = sDIF_x_temp.fN_t;
-            sDIF.fV_xu = sDIF_x_temp.fV_yu;
-            sDIF.fV_yv = sDIF_x_temp.fV_zv;
-            sDIF.fV_xx = sDIF_x_temp.fV_yy;
-            sDIF.fV_yy = sDIF_x_temp.fV_zz;
             sDIF.fT = sDIF_x_temp.fT;
-            sDIF.fM_xu = sDIF_x_temp.fM_yu;
-            sDIF.fM_yv = sDIF_x_temp.fM_zv;
-            sDIF.fM_xx = sDIF_x_temp.fM_yy;
-            sDIF.fM_yv = sDIF_x_temp.fM_zz;
+
+            if (bUseCRSCGeometricalAxes)
+            {
+                sDIF.fV_xu_xx = sDIF_x_temp.fV_yy;
+                sDIF.fV_yv_yy = sDIF_x_temp.fV_zz;
+                sDIF.fM_xu_xx = sDIF_x_temp.fM_yy;
+                sDIF.fM_yv_yy = sDIF_x_temp.fM_zz;
+            }
+            else
+            {
+                sDIF.fV_xu_xx = sDIF_x_temp.fV_yu;
+                sDIF.fV_yv_yy = sDIF_x_temp.fV_zv;
+                sDIF.fM_xu_xx = sDIF_x_temp.fM_yu;
+                sDIF.fM_yv_yy = sDIF_x_temp.fM_zv;
+            }
 
             // Set cross-section properties
             fh = (float)cs.h;
@@ -680,7 +703,7 @@ namespace M_AS4600
 
             // 7.2.2.2.2 Lateral-torsional buckling
 
-            if (!MathF.d_equal(sDIF.fM_xu, 0.0f))
+            if (!MathF.d_equal(sDIF.fM_xu_xx, 0.0f))
             {
                 switch (eCb_option)
                 {

@@ -31,6 +31,7 @@ namespace PFD
         MATERIAL.CMat_03_00 mat;
         CCalculMember cCalcULS_data;
         WindPressureCalculatorViewModel vm_WindPressure = null;
+        bool bUseCRSCGeometricalAxes = true;
 
         public PurlinDesigner()
         {
@@ -59,7 +60,6 @@ namespace PFD
 
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             CComboBoxHelper.FillComboboxValues("TrapezoidalSheetingSQLiteDB", Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), "name", Combobox_RoofCladdingThickness);
-            
 
             // Default object of material and cross-section
             //cs = new CCrSc_3_270XX_C(0, 0.27f, 0.07f, 0.00095f, Colors.Aquamarine);
@@ -276,10 +276,16 @@ namespace PFD
                 designInternalForces sDIF_x_temp_upwind;
 
                 SetZeroValues(out sDIF_x_temp_upwind);
-                sDIF_x_temp_upwind.fV_zv = ShearForceUpwind_V_asterix_inLocation_x;
-                sDIF_x_temp_upwind.fV_zz = ShearForceUpwind_V_asterix_inLocation_x;
-                sDIF_x_temp_upwind.fM_yu = fBendingMomentUpwind_M_asterix_inLocation_x;
-                sDIF_x_temp_upwind.fM_yy = fBendingMomentUpwind_M_asterix_inLocation_x;
+                if (bUseCRSCGeometricalAxes)
+                {
+                    sDIF_x_temp_upwind.fV_zz = ShearForceUpwind_V_asterix_inLocation_x;
+                    sDIF_x_temp_upwind.fM_yy = fBendingMomentUpwind_M_asterix_inLocation_x;
+                }
+                else
+                {
+                    sDIF_x_temp_upwind.fV_zv = ShearForceUpwind_V_asterix_inLocation_x;
+                    sDIF_x_temp_upwind.fM_yu = fBendingMomentUpwind_M_asterix_inLocation_x;
+                }
 
                 designMomentValuesForCb sMomentValuesForCb_upwind;
                 sMomentValuesForCb_upwind.fM_14 = calcModel.ShearForceUpwind_V_asterix * (0.25f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Upwind * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
@@ -287,7 +293,7 @@ namespace PFD
                 sMomentValuesForCb_upwind.fM_34 = calcModel.ShearForceUpwind_V_asterix * (0.75f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Upwind * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
                 sMomentValuesForCb_upwind.fM_max = calcModel.BendingMomentUpwind_M_asterix;
 
-                CCalculMember cCalcULS_upwind = new CCalculMember(false, sDIF_x_temp_upwind, member, sBucklingLengthFactors, sMomentValuesForCb_upwind);
+                CCalculMember cCalcULS_upwind = new CCalculMember(false, bUseCRSCGeometricalAxes, sDIF_x_temp_upwind, member, sBucklingLengthFactors, sMomentValuesForCb_upwind);
 
                 float fRatio_M_upwind_inLocation_x = cCalcULS_upwind.fEta_722_M_xu; // Lateral-torsional bending
                 float fRatio_V_upwind_inLocation_x = cCalcULS_upwind.fEta_723_11_V_yv; // Combined bending and shear
@@ -299,10 +305,17 @@ namespace PFD
                 designInternalForces sDIF_x_temp_downwind;
 
                 SetZeroValues(out sDIF_x_temp_downwind);
-                sDIF_x_temp_downwind.fV_zv = ShearForceDownwind_V_asterix_inLocation_x;
-                sDIF_x_temp_downwind.fV_zz = ShearForceDownwind_V_asterix_inLocation_x;
-                sDIF_x_temp_downwind.fM_yu = fBendingMomentDownwind_M_asterix_inLocation_x;
-                sDIF_x_temp_downwind.fM_yy = fBendingMomentDownwind_M_asterix_inLocation_x;
+
+                if (bUseCRSCGeometricalAxes)
+                {
+                    sDIF_x_temp_downwind.fV_zz = ShearForceDownwind_V_asterix_inLocation_x;
+                    sDIF_x_temp_downwind.fM_yy = fBendingMomentDownwind_M_asterix_inLocation_x;
+                }
+                else
+                {
+                    sDIF_x_temp_downwind.fV_zv = ShearForceDownwind_V_asterix_inLocation_x;
+                    sDIF_x_temp_downwind.fM_yu = fBendingMomentDownwind_M_asterix_inLocation_x;
+                }
 
                 designMomentValuesForCb sMomentValuesForCb_downwind;
                 sMomentValuesForCb_downwind.fM_14 = calcModel.ShearForceDownwind_V_asterix * (0.25f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Downwind * 0.5f * MathF.Pow2(0.25f * calcModel.Length_L);
@@ -310,7 +323,7 @@ namespace PFD
                 sMomentValuesForCb_downwind.fM_34 = calcModel.ShearForceDownwind_V_asterix * (0.75f * calcModel.Length_L) - calcModel.TotalLoad_ULS_Downwind * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
                 sMomentValuesForCb_downwind.fM_max = calcModel.BendingMomentDownwind_M_asterix;
 
-                CCalculMember cCalcULS_downwind = new CCalculMember(false, sDIF_x_temp_downwind, member, sBucklingLengthFactors, sMomentValuesForCb_downwind);
+                CCalculMember cCalcULS_downwind = new CCalculMember(false, bUseCRSCGeometricalAxes, sDIF_x_temp_downwind, member, sBucklingLengthFactors, sMomentValuesForCb_downwind);
 
                 float fRatio_M_downwind_inLocation_x = cCalcULS_downwind.fEta_722_M_xu; // Lateral-torsional bending
                 float fRatio_V_downwind_inLocation_x = cCalcULS_downwind.fEta_723_11_V_yv; // Combined bending and shear
@@ -369,7 +382,7 @@ namespace PFD
             sMomentValuesForCb_SLS.fM_34 = fV_asterix_GQ * (0.75f * calcModel.Length_L) - fLoad_GQ * 0.5f * MathF.Pow2(0.75f * calcModel.Length_L);
             sMomentValuesForCb_SLS.fM_max = fM_asterix_max_GQ;
 
-            CCalculMember cCalcSLS = new CCalculMember(false, member, fM_asterix_max_GQ, 0.0f, sBucklingLengthFactors, sMomentValuesForCb_SLS); // Pomocny objekt
+            CCalculMember cCalcSLS = new CCalculMember(false, bUseCRSCGeometricalAxes, member, fM_asterix_max_GQ, 0.0f, sBucklingLengthFactors, sMomentValuesForCb_SLS); // Pomocny objekt
             float fI_x_eff = calcModel.MomentOfInertia_Ix; // Default value same as Ix
 
             // Dead Load + imposed live load (long-term)

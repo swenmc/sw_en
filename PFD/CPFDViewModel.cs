@@ -59,9 +59,7 @@ namespace PFD
         private bool MShowLoadsLabels;
         private bool MShowLoadsLabelsUnits;
 
-
-
-        //member description options
+        // Member description options
         private bool MShowMemberDescription;
         private bool MShowMemberID;
         private bool MShowMemberPrefix;
@@ -70,6 +68,10 @@ namespace PFD
 
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
+
+        // Local member load direction used for load definition, calculation of internal forces and design
+        // Use geometrical or principal axes of cross-section to define load direction etc.
+        private bool MUseCRSCGeometricalAxes = true;
 
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
@@ -100,6 +102,7 @@ namespace PFD
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
 
         public List<CFrame> frameModels;
+
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
         {
@@ -633,6 +636,20 @@ namespace PFD
             }
         }
 
+        public bool UseCRSCGeometricalAxes
+        {
+            get
+            {
+                return MUseCRSCGeometricalAxes;
+            }
+
+            set
+            {
+                MUseCRSCGeometricalAxes = value;
+                NotifyPropertyChanged("UseCRSCGeometricalAxes");
+            }
+        }
+
         public bool ShowMemberDescription
         {
             get
@@ -932,9 +949,19 @@ namespace PFD
                                     if(m.LTBSegmentGroup != null) // Temporary
                                         sBucklingLengthFactors = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
 
-                                    sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yy;
-                                    sMomentValuesforCb.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yy;
-                                    sMomentValuesforCb.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yy;
+                                    if (MUseCRSCGeometricalAxes)
+                                    {
+                                        sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yy;
+                                        sMomentValuesforCb.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yy;
+                                        sMomentValuesforCb.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yy;
+                                    }
+                                    else
+                                    {
+                                        sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yu;
+                                        sMomentValuesforCb.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yu;
+                                        sMomentValuesforCb.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yu;
+                                    }
+
                                     sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                     sBIF_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
@@ -1049,9 +1076,18 @@ namespace PFD
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
 
-                                sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yy;
-                                sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yy;
-                                sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yy;
+                                if (MUseCRSCGeometricalAxes)
+                                {
+                                    sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yy;
+                                    sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yy;
+                                    sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yy;
+                                }
+                                else
+                                {
+                                    sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yu;
+                                    sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yu;
+                                    sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yu;
+                                }
                                 sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                 sBIF_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
@@ -1068,10 +1104,17 @@ namespace PFD
                                 for(int i = 0; i < sBIF_x_design.Length; i++)
                                 {
                                     sBIF_x_design[i].fT *= fInternalForceSignFactor;
-                                    sBIF_x_design[i].fM_yy *= fInternalForceSignFactor;
-                                    sBIF_x_design[i].fM_yu *= fInternalForceSignFactor;
-                                    sBIF_x_design[i].fM_zz *= fInternalForceSignFactor;
-                                    sBIF_x_design[i].fM_zv *= fInternalForceSignFactor;
+
+                                    if (MUseCRSCGeometricalAxes)
+                                    {
+                                        sBIF_x_design[i].fM_yy *= fInternalForceSignFactor;
+                                        sBIF_x_design[i].fM_zz *= fInternalForceSignFactor;
+                                    }
+                                    else
+                                    {
+                                        sBIF_x_design[i].fM_yu *= fInternalForceSignFactor;
+                                        sBIF_x_design[i].fM_zv *= fInternalForceSignFactor;
+                                    }
                                 }
                             }
                             else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
@@ -1089,7 +1132,8 @@ namespace PFD
 
                                 // Member Design
                                 CMemberDesign memberDesignModel = new CMemberDesign();
-                                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(iNumberOfDesignSections, m, sBIF_x_design, sBucklingLengthFactors_design, sMomentValuesforCb_design, out sMemberDIF_x);
+                                // TODO - sBucklingLengthFactors_design  a sMomentValuesforCb_design nemaju byt priradene prutu ale segmentu pruta pre kazdy load case / load combination
+                                memberDesignModel.SetDesignForcesAndMemberDesign_PFD(UseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBIF_x_design, sBucklingLengthFactors_design, sMomentValuesforCb_design, out sMemberDIF_x);
                                 MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors, sMomentValuesforCb_design));
 
                                 // Set maximum design ratio of whole structure
@@ -1233,13 +1277,13 @@ namespace PFD
                                     //sBDeflection_x_design = (deflectionsframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
                                     sBDeflection_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
 
-                                    memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                    memberDesignModel.SetDesignDeflections_PFD(UseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
                                     MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }
                                 else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                                 {
                                     CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
-                                    memberDesignModel.SetDesignDeflections_PFD(iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                    memberDesignModel.SetDesignDeflections_PFD(UseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
                                     MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }
 

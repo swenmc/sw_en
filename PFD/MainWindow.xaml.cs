@@ -1178,6 +1178,7 @@ namespace PFD
                 if (Internal_Forces.Content == null)
                 {
                     Internal_Forces.Content = new UC_InternalForces(
+                    vm.UseCRSCGeometricalAxes,
                     vm.DeterminateCombinationResultsByFEMSolver,
                     vm.Model,
                     compList,
@@ -1201,7 +1202,7 @@ namespace PFD
                 UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
 
-                if (Member_Design.Content == null) Member_Design.Content = new UC_MemberDesign(vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
+                if (Member_Design.Content == null) Member_Design.Content = new UC_MemberDesign(vm.UseCRSCGeometricalAxes, vm.Model, compList, vm.MemberDesignResults_ULS, vm.MemberDesignResults_SLS);
                 else
                 {
                     UC_MemberDesign uc_memberDesign = Member_Design.Content as UC_MemberDesign;

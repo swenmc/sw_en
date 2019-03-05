@@ -800,6 +800,7 @@
 
     public struct designInternalForces
     {
+        // TODO - mozno je zbytocne mat tu 12 hodnot kedze zvycajne posudzujeme v jednom systeme bud geometrical axes alebo principal axes
         public float fN;
         public float fN_c;
         public float fN_t;

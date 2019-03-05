@@ -30,11 +30,13 @@ namespace PFD
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
-                
-        public UC_MemberDesign(CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
+        public bool UseCRSCGeometricalAxes;
+
+        public UC_MemberDesign(bool bUseCRSCGeometricalAxes, CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
         {
             InitializeComponent();
 
+            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             Model = model;
             DesignResults_ULS = designResults_ULS;
             DesignResults_SLS = designResults_SLS;
@@ -58,13 +60,13 @@ namespace PFD
             CCalculMember cGoverningMemberResults;
             
             if (vm.LimitStates[vm.LimitStateIndex].eLS_Type == ELSType.eLS_ULS)
-                CalculateGoverningMemberDesignDetails(DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_ULS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
             else
-                CalculateGoverningMemberDesignDetails(DesignResults_SLS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
+                CalculateGoverningMemberDesignDetails(UseCRSCGeometricalAxes, DesignResults_SLS, vm.SelectedLoadCombinationID, GroupOfMembersWithSelectedType, out cGoverningMemberResults);
         }
 
         // Calculate governing member design ratio
-        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_ULS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -76,7 +78,7 @@ namespace PFD
                     // Select member with identical ID from the list of results
                     CMemberLoadCombinationRatio_ULS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
                     if (res == null) continue;
-                    CCalculMember c = new CCalculMember(false, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
+                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignInternalForces, m, res.DesignBucklingLengthFactors, res.DesignMomentValuesForCb);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
@@ -102,7 +104,7 @@ namespace PFD
             }
         }
 
-        public void CalculateGoverningMemberDesignDetails(List<CMemberLoadCombinationRatio_SLS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
+        public void CalculateGoverningMemberDesignDetails(bool bUseCRSCGeometricalAxes, List<CMemberLoadCombinationRatio_SLS> DesignResults, int loadCombID, CMemberGroup GroupOfMembersWithSelectedType, out CCalculMember cGoverningMemberResults)
         {
             cGoverningMemberResults = null;
 
@@ -114,7 +116,7 @@ namespace PFD
                 {
                     CMemberLoadCombinationRatio_SLS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
                     if (res == null) continue;
-                    CCalculMember c = new CCalculMember(false, res.DesignDeflections, m);
+                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m);
 
                     if (c.fEta_max > fMaximumDesignRatio)
                     {
@@ -124,7 +126,7 @@ namespace PFD
                 }
 
                 if (cGoverningMemberResults != null)
-                    cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView);                    
+                    cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_SLS, Results_GridView);
                 else
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)

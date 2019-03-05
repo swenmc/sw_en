@@ -22,12 +22,12 @@ namespace M_BASE
         }
 
         // SBD
-        public void SetDesignForcesAndMemberDesign_SBD(int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_SBD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
-            SetDesignForcesAndMemberDesign_SBD(1, iNumberOfDesignSections, member, sBIF_x, sBucklingLengthFactors, sMomentValuesforCb, out sDIF_x);
+            SetDesignForcesAndMemberDesign_SBD(bUseCRSCGeometricalAxes, 1, iNumberOfDesignSections, member, sBIF_x, sBucklingLengthFactors, sMomentValuesforCb, out sDIF_x);
         }
 
-        public void SetDesignForcesAndMemberDesign_SBD(int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_SBD(bool bUseCRSCGeometricalAxes, int iNumberOfLoadCombinations, int iNumberOfDesignSections, CMember member, basicInternalForces[,] sBIF_x, designBucklingLengthFactors[] sBucklingLengthFactors, designMomentValuesForCb[] sMomentValuesforCb, out designInternalForces[,] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
@@ -42,13 +42,22 @@ namespace M_BASE
                     sDIF_x[i, j].fN_t = sDIF_x[i, j].fN < 0 ? 0f : sDIF_x[i, j].fN;
                     sDIF_x[i, j].fT = sBIF_x[i, j].fT;
 
-                    sDIF_x[i, j].fV_yu = sBIF_x[i, j].fV_yu;
-                    sDIF_x[i, j].fM_zv = sBIF_x[i, j].fM_zv;
+                    if (bUseCRSCGeometricalAxes)
+                    {
+                        sDIF_x[i, j].fV_yy = sBIF_x[i, j].fV_yy;
+                        sDIF_x[i, j].fV_zz = sBIF_x[i, j].fV_zz;
+                        sDIF_x[i, j].fM_yy = sBIF_x[i, j].fM_yy;
+                        sDIF_x[i, j].fM_zz = sBIF_x[i, j].fM_zz;
+                    }
+                    else
+                    {
+                        sDIF_x[i, j].fV_yu = sBIF_x[i, j].fV_yu;
+                        sDIF_x[i, j].fV_zv = sBIF_x[i, j].fV_zv;
+                        sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
+                        sDIF_x[i, j].fM_zv = sBIF_x[i, j].fM_zv;
+                    }
 
-                    sDIF_x[i, j].fV_zv = sBIF_x[i, j].fV_zv;
-                    sDIF_x[i, j].fM_yu = sBIF_x[i, j].fM_yu;
-
-                    CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, sDIF_x[i, j], member, sBucklingLengthFactors[i], sMomentValuesforCb[i]);
+                    CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDIF_x[i, j], member, sBucklingLengthFactors[i], sMomentValuesforCb[i]);
 
                     if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
@@ -62,7 +71,7 @@ namespace M_BASE
         }
 
         // PFD
-        public void SetDesignForcesAndMemberDesign_PFD(int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesforCb, out designInternalForces[] sDIF_x)
+        public void SetDesignForcesAndMemberDesign_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicInternalForces[] sBIF_x, designBucklingLengthFactors sBucklingLengthFactors, designMomentValuesForCb sMomentValuesforCb, out designInternalForces[] sDIF_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
@@ -75,13 +84,22 @@ namespace M_BASE
                 sDIF_x[j].fN_t = sDIF_x[j].fN < 0 ? 0f : sDIF_x[j].fN;
                 sDIF_x[j].fT = sBIF_x[j].fT;
 
-                sDIF_x[j].fV_yu = sBIF_x[j].fV_yu;
-                sDIF_x[j].fM_zv = sBIF_x[j].fM_zv;
+                if (bUseCRSCGeometricalAxes)
+                {
+                    sDIF_x[j].fV_yy = sBIF_x[j].fV_yy;
+                    sDIF_x[j].fV_zz = sBIF_x[j].fV_zz;
+                    sDIF_x[j].fM_yy = sBIF_x[j].fM_yy;
+                    sDIF_x[j].fM_zz = sBIF_x[j].fM_zz;
+                }
+                else
+                {
+                    sDIF_x[j].fV_yu = sBIF_x[j].fV_yu;
+                    sDIF_x[j].fV_zv = sBIF_x[j].fV_zv;
+                    sDIF_x[j].fM_yu = sBIF_x[j].fM_yu;
+                    sDIF_x[j].fM_zv = sBIF_x[j].fM_zv;
+                }
 
-                sDIF_x[j].fV_zv = sBIF_x[j].fV_zv;
-                sDIF_x[j].fM_yu = sBIF_x[j].fM_yu;
-
-                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, sDIF_x[j], member, sBucklingLengthFactors, sMomentValuesforCb);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDIF_x[j], member, sBucklingLengthFactors, sMomentValuesforCb);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                     {
@@ -93,7 +111,7 @@ namespace M_BASE
                 }
         }
 
-        public void SetDesignDeflections_PFD(int iNumberOfDesignSections, CMember member, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)
+        public void SetDesignDeflections_PFD(bool bUseCRSCGeometricalAxes, int iNumberOfDesignSections, CMember member, basicDeflections[] sBDeflections_x, out designDeflections[] sDDeflections_x)
         {
             listOfMemberDesignInLocations = new List<CCalculMember>(iNumberOfDesignSections);
             // Design
@@ -101,13 +119,20 @@ namespace M_BASE
 
             for (int j = 0; j < iNumberOfDesignSections; j++)
             {
-                sDDeflections_x[j].fDelta_yu = sBDeflections_x[j].fDelta_yu;
-                sDDeflections_x[j].fDelta_yy = sBDeflections_x[j].fDelta_yy;
-                sDDeflections_x[j].fDelta_zv = sBDeflections_x[j].fDelta_zv;
-                sDDeflections_x[j].fDelta_zz = sBDeflections_x[j].fDelta_zz;
+                if (bUseCRSCGeometricalAxes)
+                {
+                    sDDeflections_x[j].fDelta_yy = sBDeflections_x[j].fDelta_yy;
+                    sDDeflections_x[j].fDelta_zz = sBDeflections_x[j].fDelta_zz;
+                }
+                else
+                {
+                    sDDeflections_x[j].fDelta_yu = sBDeflections_x[j].fDelta_yu;
+                    sDDeflections_x[j].fDelta_zv = sBDeflections_x[j].fDelta_zv;
+                }
+
                 sDDeflections_x[j].fDelta_tot = sBDeflections_x[j].fDelta_tot;
 
-                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, sDDeflections_x[j], member);
+                CCalculMember obj_CalcDesign = new CCalculMember(bDebugging, bUseCRSCGeometricalAxes, sDDeflections_x[j], member);
 
                 if (obj_CalcDesign.fEta_max > fMaximumDesignRatio)
                 {

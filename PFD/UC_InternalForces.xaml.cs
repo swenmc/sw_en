@@ -49,6 +49,8 @@ namespace PFD
         float[] fArr_BendingMomentValuesMy;
 
         bool DeterminateCombinationResultsByFEMSolver;
+        bool UseCRSCGeometricalAxes;
+
         CModel_PFD Model;
         CPFDMemberInternalForces vm;
 
@@ -65,6 +67,7 @@ namespace PFD
         GraphWindow graph;
 
         public UC_InternalForces(
+            bool bUseCRSCGeometricalAxes,
             bool bDeterminateCombinationResultsByFEMSolver,
             CModel_PFD model,
             CComponentListVM compList,
@@ -76,6 +79,7 @@ namespace PFD
         {
             InitializeComponent();
 
+            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             DeterminateCombinationResultsByFEMSolver = bDeterminateCombinationResultsByFEMSolver;
             Model = model; // 3D model
             ListMemberInternalForcesInLoadCombinations = listMemberInternalForcesInLoadCombinations;
@@ -141,9 +145,8 @@ namespace PFD
             //TODO - tato transofrmacia je zbytocna ak grafiku 2D prerobime priamo na vykreslovanie vysledkovych struktur
             //TODO - predpoklada sa ze pocet vysledkovych rezov na prute je pre kazdy load case, resp. load combination rovnaky ale nemusi byt, je potrebne dopracovat
 
-            bool bUseResultsForGeometricalCRSCAxis = true; // TODO - toto budem musiet nejako elegantne vyriesit LCS vs PCS pruta, problem sa tiahne uz od zadavaneho zatazenie, vypoctu vn. sil az do posudkov
             int iUnitConversionFactor = 1000; // N to kN, Nm to kNm
-            TransformIFStructureOnMemberToFloatArrays(bUseResultsForGeometricalCRSCAxis,
+            TransformIFStructureOnMemberToFloatArrays(UseCRSCGeometricalAxes, // // TODO - toto budem musiet nejako elegantne vyriesit LCS vs PCS pruta, problem sa tiahne uz od zadavaneho zatazenie, vypoctu vn. sil az do posudkov
             iUnitConversionFactor,
             sBIF_x,
             out fArr_AxialForceValuesN,
