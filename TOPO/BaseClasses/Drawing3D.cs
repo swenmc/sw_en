@@ -1730,6 +1730,16 @@ namespace BaseClasses
             else
                 return false;
         }
+        public static bool LineLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, Point3D pLineStart, Point3D pLineEnd, double dLimit = 0.000001)
+        {
+            double distanceStart = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, pLineStart));
+            double distanceEnd = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, pLineEnd));
+
+            if (distanceStart < dLimit && distanceEnd < dLimit)
+                return true;
+            else
+                return false;
+        }
 
 
 
