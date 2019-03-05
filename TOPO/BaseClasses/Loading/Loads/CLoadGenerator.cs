@@ -1,8 +1,10 @@
 ﻿using BaseClasses.GraphObj.Objects_3D;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
 
 namespace BaseClasses
 {
@@ -116,6 +118,17 @@ namespace BaseClasses
 
                             if (Drawing3D.LineLiesOnPlane(l.SurfaceDefinitionPoints[0], l.SurfaceDefinitionPoints[1], l.SurfaceDefinitionPoints[2], pStartLCS, pEndLCS))
                                 System.Diagnostics.Trace.WriteLine($"SUPER. LIES ON PLANE IN LCS TOO. LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+
+
+                            Point p1r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[0]);
+                            Point p2r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[2]);
+
+                            pStart.X -= fDist / 2;
+                            pEnd.X += fDist / 2;
+                            Point p1r2 = Drawing3D.GetPoint_IgnoreZ(pStart);
+                            Point p2r2 = Drawing3D.GetPoint_IgnoreZ(pEnd);
+                            Rect intersection = Drawing3D.GetRectanglesIntersection(p1r1, p2r1, p1r2, p2r2);
+                            System.Diagnostics.Trace.WriteLine($"INTERSECTION IS height: {intersection.Height} width: {intersection.Width}  LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                             //ak by bol cely pod tou surface load
                             float fMemberLoadValue = l.fValue * fDist;
