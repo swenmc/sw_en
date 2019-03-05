@@ -71,8 +71,8 @@ namespace PFD
                 //element_1D_2Node.MassDensity = topomodel.m_arrMembers[i].m_Mat.m_fRho;
 
                 element_1D_2Node.A = sec.A;
-                element_1D_2Node.Ay = 0.00252f;
-                element_1D_2Node.Az = 0.00252f; // Todo - doplnit do databazy
+                element_1D_2Node.Ay = 0.00f;
+                element_1D_2Node.Az = 0.00f; // Todo - doplnit do databazy
                 element_1D_2Node.Iy = sec.Iy; // TODO - doriesit Iyy a Iyu - geometricke alebo hlavne osi prierezu
                 element_1D_2Node.Iz = sec.Iz;
                 element_1D_2Node.J = sec.J;

@@ -109,28 +109,40 @@ namespace PFD
             iOneColumnGirtNo = 0;
             iGirtNoInOneFrame = 0;
 
-            m_arrMat = new CMat[1];
+            m_arrMat = new CMat[11];
             m_arrCrSc = new CCrSc[11];
 
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
-            m_arrMat[0] = new CMat_03_00("G550", 0.1f, 550e+6f, 550e+6f);
+            // TODO - napojit na GUI a na databazu
+            m_arrMat[(int)EMemberGroupNames.eMainColumn] = new CMat_03_00(1, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eRafter] = new CMat_03_00(2, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eMainColumn_EF] = new CMat_03_00(3, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eRafter_EF] = new CMat_03_00(4, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eEavesPurlin] = new CMat_03_00(5, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eGirtWall] = new CMat_03_00(6, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.ePurlin] = new CMat_03_00(7, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eFrontColumn] = new CMat_03_00(8, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eBackColumn] = new CMat_03_00(9, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eFrontGirt] = new CMat_03_00(10, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
+            m_arrMat[(int)EMemberGroupNames.eBackGirt] = new CMat_03_00(11, "G550", 200e+6f, 0.3f, 0.1f, 550e+6f, 550e+6f);
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
 
             // TODO Ondrej - Nastavit objekt prierezu podla databazy models, tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
+            // Napojit na GUI
             m_arrCrSc[(int)EMemberGroupNames.eMainColumn] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Chocolate);       // Main Column
             m_arrCrSc[(int)EMemberGroupNames.eRafter] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);               // Rafter
-            m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = new CCrSc_3_63020_BOX(1, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.DarkOrchid);   // Main Column - Edge Frame
-            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.GreenYellow);      // Rafter - Edge Frame
-            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(3, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                    // Eaves Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(4, 0.27f, 0.07f, 0.00115f, Colors.Orange);                       // Girt - Wall
-            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(5, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                      // Purlin
-            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(6, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);        // Front Column
-            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(7, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);         // Back Column
-            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(8, 0.27f, 0.07f, 0.00115f, Colors.Brown);                       // Front Girt
-            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(9, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);                  // Back Girt
+            m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF] = new CCrSc_3_63020_BOX(3, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.DarkOrchid);   // Main Column - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eRafter_EF] = new CCrSc_3_63020_BOX(4, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.GreenYellow);      // Rafter - Edge Frame
+            m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin] = new CCrSc_3_50020_C(5, 0.5f, 0.2f, 0.00195f, Colors.DarkCyan);                    // Eaves Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eGirtWall] = new CCrSc_3_270XX_C(6, 0.27f, 0.07f, 0.00115f, Colors.Orange);                       // Girt - Wall
+            m_arrCrSc[(int)EMemberGroupNames.ePurlin] = new CCrSc_3_270XX_C(7, 0.27f, 0.07f, 0.00095f, Colors.SlateBlue);                      // Purlin
+            m_arrCrSc[(int)EMemberGroupNames.eFrontColumn] = new CCrSc_3_270XX_C_NESTED(8, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);        // Front Column
+            m_arrCrSc[(int)EMemberGroupNames.eBackColumn] = new CCrSc_3_270XX_C_NESTED(9, 0.29f, 0.071f, 0.00115f, Colors.BlueViolet);         // Back Column
+            m_arrCrSc[(int)EMemberGroupNames.eFrontGirt] = new CCrSc_3_270XX_C(10, 0.27f, 0.07f, 0.00115f, Colors.Brown);                       // Front Girt
+            m_arrCrSc[(int)EMemberGroupNames.eBackGirt] = new CCrSc_3_270XX_C(11, 0.27f, 0.07f, 0.00095f, Colors.YellowGreen);                  // Back Girt
 
             // Member Groups
             listOfModelMemberGroups = new List<CMemberGroup>(11);
@@ -148,6 +160,17 @@ namespace PFD
             listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
             listOfModelMemberGroups.Add(new CMemberGroup(10, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
             listOfModelMemberGroups.Add(new CMemberGroup(11, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
+
+            // Priradit material prierezov, asi by sa to malo robit uz pri vytvoreni prierezu ale trebalo by upravovat konstruktory :)
+            if (m_arrMat.Length >= m_arrCrSc.Length)
+            {
+                for (int i = 0; i < m_arrCrSc.Length; i++)
+                {
+                    m_arrCrSc[i].m_Mat = m_arrMat[i];
+                }
+            }
+            else
+                throw new Exception("Cross-section material is not defined.");
 
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
