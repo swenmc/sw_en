@@ -168,9 +168,9 @@ namespace BriefFiniteElementNet.CodeProjectExamples
 
             var model = new Model();
 
-            var n1 = new Node(-0, 0, 0);
+            var n1 = new Node(0, 0, 0);
             var n2 = new Node(0, 0, 6);
-            var n3 = new Node(0, 0, 8);
+            var n3 = new Node(15, 0, 8);
             var n4 = new Node(30, 0, 6);
             var n5 = new Node(30, 0, 0);
 
@@ -186,15 +186,15 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             e4.Label = "e4";
 
             var A_column = 0.003343;
-            var Ay_column = 0.002585f;
-            var Az_column = 0.000702f;
+            var Ay_column = 0; // 0.002585f;
+            var Az_column = 0; // 0.000702f;
             var Iy_column = 0.0001478;
             var Iz_column = 1.857E-05;
             var J_column = 4.606E-05;
 
             var A_rafter = 0.003343;
-            var Ay_rafter = 0.002585f;
-            var Az_rafter = 0.000702f;
+            var Ay_rafter = 0; // 0.002585f;
+            var Az_rafter = 0; // 0.000702f;
             var Iy_rafter = 0.0001478;
             var Iz_rafter = 1.857E-05;
             var J_rafter = 4.606E-05;
@@ -214,10 +214,12 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             e2.J = e3.J = J_rafter;
 
             e1.E = e2.E = e3.E = e4.E = 200e9;
-            e1.G = e2.G = e3.G = e4.G = 200e9 / (2 * (1 + 0.3));//G = E / (2*(1+no))
+            e1.G = e2.G = e3.G = e4.G = 200e9 / (2 * (1 + 0.25));//G = E / (2*(1+no))
 
             e1.UseOverridedProperties =
-                e2.UseOverridedProperties = e3.UseOverridedProperties = e4.UseOverridedProperties = false;
+            e2.UseOverridedProperties =
+            e3.UseOverridedProperties =
+            e4.UseOverridedProperties = true; // Activate overrided properties
 
             model.Elements.Add(e1, e2, e3, e4);
 
@@ -241,11 +243,25 @@ namespace BriefFiniteElementNet.CodeProjectExamples
             List<LoadCombination> loadcombinations = new List<LoadCombination>();
             loadcombinations.Add(lcomb1);
 
-            var ll = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Global, lc1);
-            var lr = new UniformLoad1D(-10000, LoadDirection.Z, CoordinationSystem.Local, lc1);
+            // Loads
+            // Columns
+            var l_columnLeft = new UniformLoad1D(-2000, LoadDirection.Z, CoordinationSystem.Local, lc1);
+            var l_columnRight = new UniformLoad1D(1500, LoadDirection.Z, CoordinationSystem.Local, lc1);
 
-            e2.Loads.Add(ll);
-            e3.Loads.Add(lr);
+            var l_rafterLeft_1 = new PartialUniformLoad1D(3000, -1, 0, LoadDirection.Z, CoordinationSystem.Local, lc1);
+            var l_rafterLeft_2 = new PartialUniformLoad1D(1500, 0, 1, LoadDirection.Z, CoordinationSystem.Local, lc1);
+
+            var l_rafterRight_1 = new PartialUniformLoad1D(1000, -1,0, LoadDirection.Z, CoordinationSystem.Local, lc1);
+            var l_rafterRight_2 = new PartialUniformLoad1D(0500, 0, 1, LoadDirection.Z, CoordinationSystem.Local, lc1);
+
+            e1.Loads.Add(l_columnLeft);
+            e4.Loads.Add(l_columnRight);
+
+            e2.Loads.Add(l_rafterLeft_1);
+            e2.Loads.Add(l_rafterLeft_2);
+
+            e3.Loads.Add(l_rafterRight_1);
+            e3.Loads.Add(l_rafterRight_2);
 
             var wnd = WpfTraceListener.CreateModelTrace(model);
             new ModelWarningChecker().CheckModel(model);
