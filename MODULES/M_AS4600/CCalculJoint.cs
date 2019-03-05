@@ -705,6 +705,12 @@ namespace M_AS4600
             float fEta_N_t_5423_MainMember = eq.Eq_5423_1__(sDIF_temp.fN_t, 0.65f, fN_t_section_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_MainMember);
 
+
+            // TODO - tu este chybaju posudenia samotnej dosky na napati betonu pod nou na lokalny tlak betonu pod plechom, ohyb, oslabeny prierez v ohybe , tahu, tlaku, smyku atd vid xls
+
+
+
+
             // Anchors
             float fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
             float fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative

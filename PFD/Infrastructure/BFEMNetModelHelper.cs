@@ -87,7 +87,7 @@ namespace PFD
             for (int i = 0; i < loadcombinations.Count; i++) // Each load combination
             {
                 // Reactions in nodes
-                Trace.WriteLine("Load Combination No." + (i + 1).ToString() + " Name: " + GetLoadCombinationString(loadcombinations[i])); 
+                Trace.WriteLine("Load Combination No." + (i + 1).ToString() + " Name: " + GetLoadCombinationString(loadcombinations[i]));
 
                 // Total reactions
                 // Show sum of reactions
