@@ -481,9 +481,6 @@
     <Resource Include="loading2.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="formsteel-screen.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="spin.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -527,6 +524,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\solver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fs-screen.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net46\System.Data.SQLite.Core.targets')" />

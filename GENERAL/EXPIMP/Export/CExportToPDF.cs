@@ -52,7 +52,7 @@ namespace EXPIMP
         public static void CreatePDFFileForPlate(Canvas canvas, List<string[]> tableParams, CPlate plate, CProductionInfo pInfo)
         {
             PdfDocument s_document = new PdfDocument();
-            s_document.Info.Title = "Export from FormSteel software";
+            s_document.Info.Title = "Export from software";
             //s_document.Info.Author = "";
             //s_document.Info.Subject = "Created with code snippets that show the use of graphical functions";
             //s_document.Info.Keywords = "PDFsharp, XGraphics";
@@ -95,7 +95,7 @@ namespace EXPIMP
         public static void CreatePDFDocument()
         {
             document = new PdfDocument();
-            document.Info.Title = "Export from FormSteel software";
+            document.Info.Title = "Export from software";
         }
         public static void AddPlateToPDF(Canvas canvas, double canvasWidth, CPlate plate, CProductionInfo pInfo)
         {
@@ -424,7 +424,7 @@ namespace EXPIMP
             XFont font = new XFont(fontFamily, 6, XFontStyle.Regular);
 
             string sLine1 = "Enquires to:";
-            string sLine2 = "Formsteel Technologies Ltd";
+            string sLine2 = "FS Technologies Ltd";
             string sLine3 = "2-4 Waokauri Pl, Mangere";
             string sLine4 = "P.O.Box 23-718, Auckland";
             string sLine5 = "Telephone 09 275 0089";
@@ -645,7 +645,7 @@ namespace EXPIMP
         {
             try
             {
-                string jpegSamplePath = "formsteel-screen.jpg";
+                string jpegSamplePath = "fs-screen.jpg";
                 XImage image = XImage.FromFile(jpegSamplePath);
                 // Left position in point
                 double x = (250 - image.PixelWidth * 72 / image.HorizontalResolution) / 2;

@@ -579,61 +579,61 @@ namespace PFD
 
             if (vm.ComponentTypeIndex == 0) // Cross-section
             {
-                switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
+                switch ((ESerieTypeCrSc_FS)vm.ComponentSerieIndex)
                 {
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
+                    case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
-                            fb = dcomponents.arr_Serie_Box_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fh = dcomponents.arr_Serie_Box_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            ft = dcomponents.arr_Serie_Box_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            cComponentColor = dcomponents.arr_Serie_Box_FormSteel_Colors[vm.ComponentIndex];
+                            fb = dcomponents.arr_Serie_Box_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fh = dcomponents.arr_Serie_Box_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            ft = dcomponents.arr_Serie_Box_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            cComponentColor = dcomponents.arr_Serie_Box_FS_Colors[vm.ComponentIndex];
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                    case ESerieTypeCrSc_FS.eSerie_Z:
                         {
-                            fh = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fb_fl = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            fc_lip1 = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            ft = dcomponents.arr_Serie_Z_FormSteel_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            cComponentColor = dcomponents.arr_Serie_Z_FormSteel_Colors[vm.ComponentIndex];
+                            fh = dcomponents.arr_Serie_Z_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fb_fl = dcomponents.arr_Serie_Z_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            fc_lip1 = dcomponents.arr_Serie_Z_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            ft = dcomponents.arr_Serie_Z_FS_Dimension[vm.ComponentIndex, 3] / 1000f;
+                            cComponentColor = dcomponents.arr_Serie_Z_FS_Colors[vm.ComponentIndex];
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_single:
+                    case ESerieTypeCrSc_FS.eSerie_C_single:
                         {
-                            fb = dcomponents.arr_Serie_C_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fh = dcomponents.arr_Serie_C_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            ft = dcomponents.arr_Serie_C_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            cComponentColor = dcomponents.arr_Serie_C_FormSteel_Colors[vm.ComponentIndex];
+                            fb = dcomponents.arr_Serie_C_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fh = dcomponents.arr_Serie_C_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            ft = dcomponents.arr_Serie_C_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            cComponentColor = dcomponents.arr_Serie_C_FS_Colors[vm.ComponentIndex];
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                    case ESerieTypeCrSc_FS.eSerie_C_back_to_back:
                         {
-                            fb = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fh = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            fc_lip1 = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            ft = dcomponents.arr_Serie_C_BtoB_FormSteel_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            cComponentColor = dcomponents.arr_Serie_C_BtoB_FormSteel_Colors[vm.ComponentIndex];
+                            fb = dcomponents.arr_Serie_C_BtoB_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fh = dcomponents.arr_Serie_C_BtoB_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            fc_lip1 = dcomponents.arr_Serie_C_BtoB_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            ft = dcomponents.arr_Serie_C_BtoB_FS_Dimension[vm.ComponentIndex, 3] / 1000f;
+                            cComponentColor = dcomponents.arr_Serie_C_BtoB_FS_Colors[vm.ComponentIndex];
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                    case ESerieTypeCrSc_FS.eSerie_C_nested:
                         {
-                            fb = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fh = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            ft = dcomponents.arr_Serie_C_Nested_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            cComponentColor = dcomponents.arr_Serie_C_Nested_FormSteel_Colors[vm.ComponentIndex];
+                            fb = dcomponents.arr_Serie_C_Nested_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fh = dcomponents.arr_Serie_C_Nested_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            ft = dcomponents.arr_Serie_C_Nested_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            cComponentColor = dcomponents.arr_Serie_C_Nested_FS_Colors[vm.ComponentIndex];
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
+                    case ESerieTypeCrSc_FS.eSerie_Box_63020:
                         {
-                            fb = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 0] / 1000f;
-                            fh = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 1] / 1000f;
-                            ft = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 2] / 1000f;
-                            ft_f = dcomponents.arr_Serie_Box63020_FormSteel_Dimension[vm.ComponentIndex, 3] / 1000f;
-                            cComponentColor = dcomponents.arr_Serie_Box63020_FormSteel_Colors[vm.ComponentIndex];
+                            fb = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 0] / 1000f;
+                            fh = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 1] / 1000f;
+                            ft = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 2] / 1000f;
+                            ft_f = dcomponents.arr_Serie_Box63020_FS_Dimension[vm.ComponentIndex, 3] / 1000f;
+                            cComponentColor = dcomponents.arr_Serie_Box63020_FS_Colors[vm.ComponentIndex];
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
-                    case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
+                    case ESerieTypeCrSc_FS.eSerie_PurlinDek:
+                    case ESerieTypeCrSc_FS.eSerie_SmartDek:
                         {
                             // TODO TEMP
                             fb = 0.1f;
@@ -983,9 +983,9 @@ namespace PFD
             // Change Combobox
             if (vm.ComponentTypeIndex == 0) // Cross-section
             {
-                switch ((ESerieTypeCrSc_FormSteel)vm.ComponentSerieIndex)
+                switch ((ESerieTypeCrSc_FS)vm.ComponentSerieIndex)
                 {
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
+                    case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
                             //temp test 
                             //crsc = new CCrSc_3_10075_BOX(fh * 3 , fb * 3, ft * 3, Colors.Red); 
@@ -993,12 +993,12 @@ namespace PFD
                             crsc = new CCrSc_3_10075_BOX(0, fh, fb, ft, cComponentColor); // BOX
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                    case ESerieTypeCrSc_FS.eSerie_Z:
                         {
                             crsc = new CCrSc_3_Z(0, fh, fb_fl, fc_lip1, ft, cComponentColor);
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_single:
+                    case ESerieTypeCrSc_FS.eSerie_C_single:
                         {
                             if (vm.ComponentIndex < 3) // C270
                                 crsc = new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor);
@@ -1007,12 +1007,12 @@ namespace PFD
 
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                    case ESerieTypeCrSc_FS.eSerie_C_back_to_back:
                         {
                             crsc = new CCrSc_3_270XX_C_BACK_TO_BACK(0, fh, fb, fc_lip1, ft, cComponentColor);
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                    case ESerieTypeCrSc_FS.eSerie_C_nested:
                         {
                             if (vm.ComponentIndex == 0)
                                 crsc = new CCrSc_3_270XX_C_NESTED(0, fh, fb, ft, cComponentColor); // C270115n
@@ -1020,17 +1020,17 @@ namespace PFD
                                 crsc = new CCrSc_3_50020_C_NESTED(0, fh, fb, ft, cComponentColor); // C50020n
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
+                    case ESerieTypeCrSc_FS.eSerie_Box_63020:
                         {
                             crsc = new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor); // BOX
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_SmartDek:
+                    case ESerieTypeCrSc_FS.eSerie_SmartDek:
                         {
                             crsc = new CCrSc_3_TR_SMARTDEK(0, fh, fb, ft, cComponentColor); // Trapezoidal sheeting
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_PurlinDek:
+                    case ESerieTypeCrSc_FS.eSerie_PurlinDek:
                         {
                             crsc = new CCrSc_3_TR_PURLINDEK(0, fh, fb, ft, cComponentColor); // Trapezoidal sheeting
                             break;

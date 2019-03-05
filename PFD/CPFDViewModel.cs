@@ -882,8 +882,8 @@ namespace PFD
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
-                    if((!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER)) ||
-                    (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR && m.EMemberType != EMemberType_FormSteel.eEC && m.EMemberType != EMemberType_FormSteel.eER))
+                    if((!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER)) ||
+                    (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR && m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER))
                     {
                         for (int i = 0; i < iNumberOfDesignSections; i++)
                             fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -896,8 +896,8 @@ namespace PFD
                         foreach (CLoadCase lc in Model.m_arrLoadCases)
                         {
                             // Frame member
-                            if (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR ||
-                                m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER)
+                            if (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR ||
+                                m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER)
                             {
                                 // BEFENet - calculate load cases only
 
@@ -917,7 +917,7 @@ namespace PFD
                                     sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
                                     sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
 
-                                    if (m.EMemberType == EMemberType_FormSteel.eMR)
+                                    if (m.EMemberType == EMemberType_FS.eMR)
                                     {
                                         sBucklingLengthFactors.fBeta_y_FB_fl_ey = 0.5f;
                                         sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 0.5f;
@@ -1010,7 +1010,7 @@ namespace PFD
                             // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
 
                             // Frame member - vysledky pocitane pre load combinations
-                            if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER))
+                            if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER))
                             {
                                 // Nastavit vysledky pre prut ramu
 
@@ -1020,7 +1020,7 @@ namespace PFD
                                 sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
 
-                                if (m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eER)
+                                if (m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eER)
                                 {
                                     sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 0.5f;
                                     sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 0.5f;
@@ -1126,7 +1126,7 @@ namespace PFD
                                 // Output - set maximum design ratio by component Type
                                 switch (m.EMemberType)
                                 {
-                                    case EMemberType_FormSteel.eMC: // Main Column
+                                    case EMemberType_FS.eMC: // Main Column
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainColumn)
                                             {
@@ -1135,7 +1135,7 @@ namespace PFD
                                             }
                                             break;
                                         }
-                                    case EMemberType_FormSteel.eMR: // Main Rafter
+                                    case EMemberType_FS.eMR: // Main Rafter
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainRafter)
                                             {
@@ -1144,7 +1144,7 @@ namespace PFD
                                             }
                                             break;
                                         }
-                                    case EMemberType_FormSteel.eEC: // End Column
+                                    case EMemberType_FS.eEC: // End Column
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndColumn)
                                             {
@@ -1153,7 +1153,7 @@ namespace PFD
                                             }
                                             break;
                                         }
-                                    case EMemberType_FormSteel.eER: // End Rafter
+                                    case EMemberType_FS.eER: // End Rafter
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndRafter)
                                             {
@@ -1162,7 +1162,7 @@ namespace PFD
                                             }
                                             break;
                                         }
-                                    case EMemberType_FormSteel.eG: // Girt
+                                    case EMemberType_FS.eG: // Girt
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
                                             {
@@ -1171,7 +1171,7 @@ namespace PFD
                                             }
                                             break;
                                         }
-                                    case EMemberType_FormSteel.eP: // Purlin
+                                    case EMemberType_FS.eP: // Purlin
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
                                             {
@@ -1180,7 +1180,7 @@ namespace PFD
                                             }
                                             break;
                                         }
-                                    case EMemberType_FormSteel.eC: // Column
+                                    case EMemberType_FS.eC: // Column
                                         {
                                             if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
                                             {
@@ -1208,7 +1208,7 @@ namespace PFD
 
                                 // TODO - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
                                 // Frame member - vysledky pocitane pre load combinations
-                                if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FormSteel.eMC || m.EMemberType == EMemberType_FormSteel.eMR || m.EMemberType == EMemberType_FormSteel.eEC || m.EMemberType == EMemberType_FormSteel.eER))
+                                if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER))
                                 {
                                     int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                     int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie

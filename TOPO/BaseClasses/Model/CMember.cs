@@ -118,9 +118,9 @@ namespace BaseClasses
             }
         }
 
-        private EMemberType_FormSteel eMemberType_FS;
+        private EMemberType_FS eMemberType_FS;
 
-        public EMemberType_FormSteel EMemberType
+        public EMemberType_FS EMemberType
         {
             get { return eMemberType_FS; }
             set { eMemberType_FS = value; }
@@ -368,7 +368,7 @@ namespace BaseClasses
             CNode iNode1,
             CNode iNode2,
             CCrSc objCrSc1,
-            EMemberType_FormSteel eMemberType,
+            EMemberType_FS eMemberType,
             CMemberEccentricity objEccentricityStart,
             CMemberEccentricity objEccentricityEnd,
             float fAligment1,
@@ -427,7 +427,7 @@ namespace BaseClasses
             CNode iNode2,
             CCrSc objCrSc1,
             CCrSc objCrSc2,
-            EMemberType_FormSteel eMemberType,
+            EMemberType_FS eMemberType,
             CMemberEccentricity objEccentricityStart,
             CMemberEccentricity objEccentricityEnd,
             float fAligment1,

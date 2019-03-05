@@ -14,7 +14,7 @@ namespace BaseClasses
     [Serializable]
     public abstract class CPlate : CConnectionComponentEntity3D
     {
-        public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FormSteel
+        public ESerieTypePlate m_ePlateSerieType_FS; // Type of plate - FS
         public float fWidth_bx;
         public float fHeight_hy;
 

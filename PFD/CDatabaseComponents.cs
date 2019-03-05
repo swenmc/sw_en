@@ -358,7 +358,7 @@ namespace PFD
         };
 
         // Cross-section - len docasne, mali by byt v samostatnej databaze
-        public string[] arr_Serie_CrSc_FormSteel_Names = new string[8]
+        public string[] arr_Serie_CrSc_FS_Names = new string[8]
         {
                 "Box-10075",
                 "Z",
@@ -370,38 +370,38 @@ namespace PFD
                 "PurlinDek"
         };
 
-        public string[] arr_Serie_Box_FormSteel_Names = new string[1]
+        public string[] arr_Serie_Box_FS_Names = new string[1]
         {
                 "10075"
         };
 
-        public Color[] arr_Serie_Box_FormSteel_Colors = new Color[1]
+        public Color[] arr_Serie_Box_FS_Colors = new Color[1]
         {
             Colors.Red,
         };
 
-        public float[,] arr_Serie_Box_FormSteel_Dimension = new float[1, 3]
+        public float[,] arr_Serie_Box_FS_Dimension = new float[1, 3]
         {
                 {100, 100, 0.75f}
         };
 
-        public string[] arr_Serie_Z_FormSteel_Names = new string[1]
+        public string[] arr_Serie_Z_FS_Names = new string[1]
         {
                 "TeC-singlemplate Z"
         };
 
-        public Color[] arr_Serie_Z_FormSteel_Colors = new Color[1]
+        public Color[] arr_Serie_Z_FS_Colors = new Color[1]
         {
             Colors.Gold,
         };
 
-        public float[,] arr_Serie_Z_FormSteel_Dimension = new float[1, 4]
+        public float[,] arr_Serie_Z_FS_Dimension = new float[1, 4]
         {
                 // h, b_flange, c_lip, t
                 {200, 100, 20, 0.95f}
         };
 
-        public string[] arr_Serie_C_FormSteel_Names = new string[4]
+        public string[] arr_Serie_C_FS_Names = new string[4]
         {
                 "27095",
                 "270115",
@@ -409,7 +409,7 @@ namespace PFD
                 "50020"
         };
 
-        public Color[] arr_Serie_C_FormSteel_Colors = new Color[4]
+        public Color[] arr_Serie_C_FS_Colors = new Color[4]
         {
             Colors.Yellow,
             Colors.Violet,
@@ -417,7 +417,7 @@ namespace PFD
             Colors.Green
         };
 
-        public float[,] arr_Serie_C_FormSteel_Dimension = new float[4, 3]
+        public float[,] arr_Serie_C_FS_Dimension = new float[4, 3]
         {
                 {70,270,0.95f},
                 {70,270,1.15f},
@@ -425,54 +425,54 @@ namespace PFD
                 {100,500,1.95f}
         };
 
-        public string[] arr_Serie_C_BtoB_FormSteel_Names = new string[1]
+        public string[] arr_Serie_C_BtoB_FS_Names = new string[1]
         {
                 "270115 back to back"
         };
 
-        public Color[] arr_Serie_C_BtoB_FormSteel_Colors = new Color[1]
+        public Color[] arr_Serie_C_BtoB_FS_Colors = new Color[1]
         {
             Color.FromRgb(204,204,204)
         };
 
-        public float[,] arr_Serie_C_BtoB_FormSteel_Dimension = new float[1, 4]
+        public float[,] arr_Serie_C_BtoB_FS_Dimension = new float[1, 4]
         {
                 {2*70,270,40,1.15f}
         };
 
-        public string[] arr_Serie_C_Nested_FormSteel_Names = new string[2]
+        public string[] arr_Serie_C_Nested_FS_Names = new string[2]
         {
                 "270115 nested",
                 "50020 nested"
         };
 
-        public Color[] arr_Serie_C_Nested_FormSteel_Colors = new Color[2]
+        public Color[] arr_Serie_C_Nested_FS_Colors = new Color[2]
         {
             Color.FromRgb(122,40,204),
             Color.FromRgb(10,40,200)
         };
 
-        public float[,] arr_Serie_C_Nested_FormSteel_Dimension = new float[2, 3]
+        public float[,] arr_Serie_C_Nested_FS_Dimension = new float[2, 3]
         {
                 {70,290,1.15f},
                 {102,550,1.95f},
         };
 
-        public string[] arr_Serie_Box63020_FormSteel_Names = new string[3]
+        public string[] arr_Serie_Box63020_FS_Names = new string[3]
         {
                 "63020-Without Stiffener",
                 "63020-Single Stiffened",
                 "63020-Double Stiffened"
         };
 
-        public Color[] arr_Serie_Box63020_FormSteel_Colors = new Color[3]
+        public Color[] arr_Serie_Box63020_FS_Colors = new Color[3]
         {
             Color.FromRgb(0,38,255),  // Blue
             Color.FromRgb(0,148,255), // Blue
             Color.FromRgb(0,255,255)  // Blue
         };
 
-        public float[,] arr_Serie_Box63020_FormSteel_Dimension = new float[3, 4]
+        public float[,] arr_Serie_Box63020_FS_Dimension = new float[3, 4]
         {
                 {180, 630, 1.95f, 1.95f},
                 {180, 630, 1.95f, 4.95f},

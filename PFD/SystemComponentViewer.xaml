@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="FormSteel System Component Viewer"  Height="800" Width="1300">
+        Title="System Component Viewer"  Height="800" Width="1300">
     <Window.Resources>
         <SolidColorBrush x:Key="colorReadOnlyCell" Color="WhiteSmoke" />
         <!-- Light gray color of readonly cell background -->

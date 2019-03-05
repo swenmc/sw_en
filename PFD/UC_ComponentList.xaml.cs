@@ -67,54 +67,54 @@ namespace PFD
             // TODO - Ondrej - obsah tohto zoznamu preberat z CExample_3D_901_PF - zoznam listOfModelMemberGroups
             CComponentInfo ci = null;
             CComponentListVM cl = new CComponentListVM();
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], "Box 63020", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1], "Box 63020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1], "Box 63020", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1], "Box 63020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEC, 1], "Box 63020", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 1], "Box 63020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eER, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eER, 1], "Box 63020", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 1], "Box 63020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], "C 50020", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1], "C 50020", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], "C 27095", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1], "C 27095", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 1], "C 270115", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 1], "C 270115", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side", "Box 10075", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side", "Box 10075", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", "Box 10075", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", "Box 10075", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", "C 27095", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", "C 27095", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
-            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", "C 27095", "G550", true, true, true, true, true);
+            ci = new CComponentInfo(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 0], database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", "C 27095", "G550", true, true, true, true, true);
             cl.ComponentList.Add(ci);
 
             cl.PropertyChanged += HandleComponentListPropertyChangedEvent;
             this.DataContext = cl;
 
             // For each component add one row
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 0]);   // "MC"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 0]);   // "MR"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 0]);   // "EP"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP,  0]);   // "P"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 0]);   // "MC"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 0]);   // "MR"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 0]);   // "EP"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG,  0]);   // "G"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP,  0]);   // "P"
 
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC,  0]);   // "C"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC,  0]);   // "C"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
-            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  0]);   // "G"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC,  0]);   // "C"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC,  0]);   // "C"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG,  0]);   // "G"
+            //listMemberPrefix.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG,  0]);   // "G"
 
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1]);
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1]);
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1]);
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG,  1]);
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP,  1]);
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1]);
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1]);
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1]);
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG,  1]);
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eP,  1]);
 
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side");
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side");
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side");
-            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side");
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side");
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side");
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side");
+            //listMemberComponentName.Add(database.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side");
 
             //// Creating new DataGridComboBoxColumn
             //DataGridComboBoxColumn myDGCBC_crsc = new DataGridComboBoxColumn();

@@ -53,11 +53,11 @@ namespace CRSC
             ID = iID_temp;
 
             Name = "C " + (fh * 1000).ToString() + (ft * 1000 * 10).ToString() + " nested"; // Original Description
-            Name = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // Formsteel Description
+            Name = "C " + (fh * 1000).ToString() + (20).ToString() + " nested"; // FS Description
             NameDatabase = (fh * 1000).ToString() + (20).ToString() + "n";
 
             // Temporary
-            Name = "C " + "500" + (20).ToString() + " nested"; // Formsteel Description
+            Name = "C " + "500" + (20).ToString() + " nested"; // FS Description
             NameDatabase = "500" + (20).ToString() + "n";
 
             CSColor = color_temp;  // Set cross-section color

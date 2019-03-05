@@ -422,7 +422,7 @@
         eSerie_O
     };
 
-    public enum ESerieTypeCrSc_FormSteel
+    public enum ESerieTypeCrSc_FS
     {
         eSerie_Box_10075,
         eSerie_Z,
@@ -434,7 +434,7 @@
         eSerie_PurlinDek
     };
 
-    public enum EMemberType_FormSteel
+    public enum EMemberType_FS
     {
         eG,  // Girt
         eC,  // Column
@@ -697,10 +697,10 @@
 
     public struct FreeSurfaceLoadsMemberTypeData
     {
-        public EMemberType_FormSteel memberType;
+        public EMemberType_FS memberType;
         public float fLoadingWidth;
 
-        public FreeSurfaceLoadsMemberTypeData(EMemberType_FormSteel memberType_temp, float fLoadingWidth_temp)
+        public FreeSurfaceLoadsMemberTypeData(EMemberType_FS memberType_temp, float fLoadingWidth_temp)
         {
             memberType = memberType_temp;
             fLoadingWidth = fLoadingWidth_temp;

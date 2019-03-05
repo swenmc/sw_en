@@ -123,7 +123,7 @@ namespace PFD
             dmodels = new CDatabaseModels();
 
             // Initial Screen
-            SplashScreen splashScreen = new SplashScreen("formsteel-screen.jpg");
+            SplashScreen splashScreen = new SplashScreen("Resources/fs-screen.jpg");
             splashScreen.Show(false);
             InitializeComponent();
             splashScreen.Close(TimeSpan.FromMilliseconds(1000));
@@ -765,7 +765,7 @@ namespace PFD
             //                    {
             //                        switch (m.EMemberType)
             //                        {
-            //                            case EMemberType_FormSteel.eG: // Girt
+            //                            case EMemberType_FS.eG: // Girt
             //                                {
             //                                    if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
             //                                    {
@@ -774,7 +774,7 @@ namespace PFD
             //                                    }
             //                                    break;
             //                                }
-            //                            case EMemberType_FormSteel.eP: // Purlin
+            //                            case EMemberType_FS.eP: // Purlin
             //                                {
             //                                    if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
             //                                    {
@@ -783,7 +783,7 @@ namespace PFD
             //                                    }
             //                                    break;
             //                                }
-            //                            case EMemberType_FormSteel.eC: // Column
+            //                            case EMemberType_FS.eC: // Column
             //                                {
             //                                    if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
             //                                    {
@@ -1761,8 +1761,8 @@ namespace PFD
                     foreach (CMember m in gr.ListOfMembers)
                     {
                         //it is not Main/End Column and it is not Main/End rafter
-                        if (m.EMemberType != EMemberType_FormSteel.eMC && m.EMemberType != EMemberType_FormSteel.eMR &&
-                            m.EMemberType != EMemberType_FormSteel.eEC && m.EMemberType != EMemberType_FormSteel.eER) continue;
+                        if (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR &&
+                            m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER) continue;
 
                         if (MathF.d_equal(m.PointStart.Y, i * model.fL1_frame, limit))
                         {
@@ -1949,7 +1949,7 @@ namespace PFD
 
             if (load.ELoadDirection == ELoadDir.eLD_Z)
             {
-                if (m.EMemberType == EMemberType_FormSteel.eMR)
+                if (m.EMemberType == EMemberType_FS.eMR)
                 {
                     //urcit x1,x2 pre member v LCS
                     

@@ -604,8 +604,8 @@ namespace PFD
         {
             if (ComponentTypeIndex == 0) // Cross-sections
             {
-                ComponentSeries = databaseComponents.arr_Serie_CrSc_FormSteel_Names; // Cross-sections
-                Components = databaseComponents.arr_Serie_Box_FormSteel_Names;
+                ComponentSeries = databaseComponents.arr_Serie_CrSc_FS_Names; // Cross-sections
+                Components = databaseComponents.arr_Serie_Box_FS_Names;
             }
             else if (ComponentTypeIndex == 1)
             {
@@ -626,36 +626,36 @@ namespace PFD
         {
             if (ComponentTypeIndex == 0) // Cross-sections
             {
-                switch ((ESerieTypeCrSc_FormSteel)ComponentSerieIndex)
+                switch ((ESerieTypeCrSc_FS)ComponentSerieIndex)
                 {
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_10075:
+                    case ESerieTypeCrSc_FS.eSerie_Box_10075:
                         {
-                            Components = databaseComponents.arr_Serie_Box_FormSteel_Names;
+                            Components = databaseComponents.arr_Serie_Box_FS_Names;
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Z:
+                    case ESerieTypeCrSc_FS.eSerie_Z:
                         {
-                            Components = databaseComponents.arr_Serie_Z_FormSteel_Names;
+                            Components = databaseComponents.arr_Serie_Z_FS_Names;
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_single:
+                    case ESerieTypeCrSc_FS.eSerie_C_single:
                         {
-                            Components = databaseComponents.arr_Serie_C_FormSteel_Names;
+                            Components = databaseComponents.arr_Serie_C_FS_Names;
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_back_to_back:
+                    case ESerieTypeCrSc_FS.eSerie_C_back_to_back:
                         {
-                            Components = databaseComponents.arr_Serie_C_BtoB_FormSteel_Names;
+                            Components = databaseComponents.arr_Serie_C_BtoB_FS_Names;
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_C_nested:
+                    case ESerieTypeCrSc_FS.eSerie_C_nested:
                         {
-                            Components = databaseComponents.arr_Serie_C_Nested_FormSteel_Names;
+                            Components = databaseComponents.arr_Serie_C_Nested_FS_Names;
                             break;
                         }
-                    case ESerieTypeCrSc_FormSteel.eSerie_Box_63020:
+                    case ESerieTypeCrSc_FS.eSerie_Box_63020:
                         {
-                            Components = databaseComponents.arr_Serie_Box63020_FormSteel_Names;
+                            Components = databaseComponents.arr_Serie_Box63020_FS_Names;
                             break;
                         }
                     default:
@@ -1203,21 +1203,21 @@ namespace PFD
 
         //    // BOX 10075
         //    List<CCrSc_TW> sectionsInSerie1 = new List<CCrSc_TW>();
-        //    fb = databaseComponents.arr_Serie_Box_FormSteel_Dimension[0, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_Box_FormSteel_Dimension[0, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_Box_FormSteel_Dimension[0, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_Box_FormSteel_Colors[0];
+        //    fb = databaseComponents.arr_Serie_Box_FS_Dimension[0, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_Box_FS_Dimension[0, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_Box_FS_Dimension[0, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_Box_FS_Colors[0];
         //    sectionsInSerie1.Add(new CCrSc_3_10075_BOX(0, fh, fb, ft, cComponentColor));
 
         //    crossSections.Add("Box-10075", sectionsInSerie1);
 
         //    // Z
         //    List<CCrSc_TW> sectionsInSerie2 = new List<CCrSc_TW>();
-        //    fh = databaseComponents.arr_Serie_Z_FormSteel_Dimension[0, 0] / 1000f;
-        //    fb_fl = databaseComponents.arr_Serie_Z_FormSteel_Dimension[0, 1] / 1000f;
-        //    fc_lip1 = databaseComponents.arr_Serie_Z_FormSteel_Dimension[0, 2] / 1000f;
-        //    ft = databaseComponents.arr_Serie_Z_FormSteel_Dimension[0, 3] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_Z_FormSteel_Colors[0];
+        //    fh = databaseComponents.arr_Serie_Z_FS_Dimension[0, 0] / 1000f;
+        //    fb_fl = databaseComponents.arr_Serie_Z_FS_Dimension[0, 1] / 1000f;
+        //    fc_lip1 = databaseComponents.arr_Serie_Z_FS_Dimension[0, 2] / 1000f;
+        //    ft = databaseComponents.arr_Serie_Z_FS_Dimension[0, 3] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_Z_FS_Colors[0];
         //    sectionsInSerie2.Add(new CCrSc_3_Z(0, fh, fb_fl, fc_lip1, ft, cComponentColor));
 
         //    crossSections.Add("Z", sectionsInSerie2);
@@ -1225,80 +1225,80 @@ namespace PFD
 
         //    // C single
         //    List<CCrSc_TW> sectionsInSerie3 = new List<CCrSc_TW>();
-        //    fb = databaseComponents.arr_Serie_C_FormSteel_Dimension[0, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_FormSteel_Dimension[0, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_FormSteel_Dimension[0, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_FormSteel_Colors[0];
+        //    fb = databaseComponents.arr_Serie_C_FS_Dimension[0, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_FS_Dimension[0, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_FS_Dimension[0, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_FS_Colors[0];
         //    sectionsInSerie3.Add(new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor));
 
-        //    fb = databaseComponents.arr_Serie_C_FormSteel_Dimension[1, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_FormSteel_Dimension[1, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_FormSteel_Dimension[1, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_FormSteel_Colors[1];
+        //    fb = databaseComponents.arr_Serie_C_FS_Dimension[1, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_FS_Dimension[1, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_FS_Dimension[1, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_FS_Colors[1];
         //    sectionsInSerie3.Add(new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor));
 
-        //    fb = databaseComponents.arr_Serie_C_FormSteel_Dimension[2, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_FormSteel_Dimension[2, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_FormSteel_Dimension[2, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_FormSteel_Colors[2];
+        //    fb = databaseComponents.arr_Serie_C_FS_Dimension[2, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_FS_Dimension[2, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_FS_Dimension[2, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_FS_Colors[2];
         //    sectionsInSerie3.Add(new CCrSc_3_270XX_C(0, fh, fb, ft, cComponentColor));
 
-        //    fb = databaseComponents.arr_Serie_C_FormSteel_Dimension[3, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_FormSteel_Dimension[3, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_FormSteel_Dimension[3, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_FormSteel_Colors[3];
+        //    fb = databaseComponents.arr_Serie_C_FS_Dimension[3, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_FS_Dimension[3, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_FS_Dimension[3, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_FS_Colors[3];
         //    sectionsInSerie3.Add(new CCrSc_3_50020_C(0, fh, fb, ft, cComponentColor));
 
         //    crossSections.Add("C-single", sectionsInSerie3);
 
         //    // C back to back
         //    List<CCrSc_TW> sectionsInSerie4 = new List<CCrSc_TW>();
-        //    fb = databaseComponents.arr_Serie_C_BtoB_FormSteel_Dimension[0, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_BtoB_FormSteel_Dimension[0, 1] / 1000f;
-        //    fc_lip1 = databaseComponents.arr_Serie_C_BtoB_FormSteel_Dimension[0, 2] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_BtoB_FormSteel_Dimension[0, 3] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_BtoB_FormSteel_Colors[0];
+        //    fb = databaseComponents.arr_Serie_C_BtoB_FS_Dimension[0, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_BtoB_FS_Dimension[0, 1] / 1000f;
+        //    fc_lip1 = databaseComponents.arr_Serie_C_BtoB_FS_Dimension[0, 2] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_BtoB_FS_Dimension[0, 3] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_BtoB_FS_Colors[0];
         //    sectionsInSerie4.Add(new CCrSc_3_270XX_C_BACK_TO_BACK(0, fh, fb, fc_lip1, ft, cComponentColor));
 
         //    crossSections.Add("C-back to back", sectionsInSerie4);
 
         //    // C nested
         //    List<CCrSc_TW> sectionsInSerie5 = new List<CCrSc_TW>();
-        //    fb = databaseComponents.arr_Serie_C_Nested_FormSteel_Dimension[0, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_Nested_FormSteel_Dimension[0, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_Nested_FormSteel_Dimension[0, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_Nested_FormSteel_Colors[0];
+        //    fb = databaseComponents.arr_Serie_C_Nested_FS_Dimension[0, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_Nested_FS_Dimension[0, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_Nested_FS_Dimension[0, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_Nested_FS_Colors[0];
         //    sectionsInSerie5.Add(new CCrSc_3_270XX_C_NESTED(0, fh, fb, ft, cComponentColor)); // C270115n
 
-        //    fb = databaseComponents.arr_Serie_C_Nested_FormSteel_Dimension[1, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_C_Nested_FormSteel_Dimension[1, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_C_Nested_FormSteel_Dimension[1, 2] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_C_Nested_FormSteel_Colors[1];
+        //    fb = databaseComponents.arr_Serie_C_Nested_FS_Dimension[1, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_C_Nested_FS_Dimension[1, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_C_Nested_FS_Dimension[1, 2] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_C_Nested_FS_Colors[1];
         //    sectionsInSerie5.Add(new CCrSc_3_50020_C_NESTED(0, fh, fb, ft, cComponentColor)); // C50020n
 
         //    crossSections.Add("C-nested", sectionsInSerie5);
 
         //    // BOX 63020
         //    List<CCrSc_TW> sectionsInSerie6 = new List<CCrSc_TW>();
-        //    fb = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[0, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[0, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[0, 2] / 1000f;
-        //    ft_f = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[0, 3] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_Box63020_FormSteel_Colors[0];
+        //    fb = databaseComponents.arr_Serie_Box63020_FS_Dimension[0, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_Box63020_FS_Dimension[0, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_Box63020_FS_Dimension[0, 2] / 1000f;
+        //    ft_f = databaseComponents.arr_Serie_Box63020_FS_Dimension[0, 3] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_Box63020_FS_Colors[0];
         //    sectionsInSerie6.Add(new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor));
 
-        //    fb = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[1, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[1, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[1, 2] / 1000f;
-        //    ft_f = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[1, 3] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_Box63020_FormSteel_Colors[1];
+        //    fb = databaseComponents.arr_Serie_Box63020_FS_Dimension[1, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_Box63020_FS_Dimension[1, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_Box63020_FS_Dimension[1, 2] / 1000f;
+        //    ft_f = databaseComponents.arr_Serie_Box63020_FS_Dimension[1, 3] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_Box63020_FS_Colors[1];
         //    sectionsInSerie6.Add(new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor));
 
-        //    fb = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[2, 0] / 1000f;
-        //    fh = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[2, 1] / 1000f;
-        //    ft = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[2, 2] / 1000f;
-        //    ft_f = databaseComponents.arr_Serie_Box63020_FormSteel_Dimension[2, 3] / 1000f;
-        //    cComponentColor = databaseComponents.arr_Serie_Box63020_FormSteel_Colors[2];
+        //    fb = databaseComponents.arr_Serie_Box63020_FS_Dimension[2, 0] / 1000f;
+        //    fh = databaseComponents.arr_Serie_Box63020_FS_Dimension[2, 1] / 1000f;
+        //    ft = databaseComponents.arr_Serie_Box63020_FS_Dimension[2, 2] / 1000f;
+        //    ft_f = databaseComponents.arr_Serie_Box63020_FS_Dimension[2, 3] / 1000f;
+        //    cComponentColor = databaseComponents.arr_Serie_Box63020_FS_Colors[2];
         //    sectionsInSerie6.Add(new CCrSc_3_63020_BOX(0, fh, fb, ft, ft_f, cComponentColor));
 
         //    crossSections.Add("Box-63020", sectionsInSerie6);

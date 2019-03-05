@@ -137,17 +137,17 @@ namespace PFD
 
             CDatabaseComponents database_temp = new CDatabaseComponents(); // TODO - Ondrej - prerobit triedu na nacitanie z databazy
             // See UC component list
-            listOfModelMemberGroups.Add(new CMemberGroup(1, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eMR, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eER, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(10, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
-            listOfModelMemberGroups.Add(new CMemberGroup(11, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FormSteel.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(1, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eMC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(2, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eMR, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(3, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eEC, 1], m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(4, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eER, 1], m_arrCrSc[(int)EMemberGroupNames.eRafter_EF], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(5, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eEP, 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(6, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(7, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eP, 1], m_arrCrSc[(int)EMemberGroupNames.ePurlin], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(8, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(9, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eC, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackColumn], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(10, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Front Side", m_arrCrSc[(int)EMemberGroupNames.eFrontGirt], 0));
+            listOfModelMemberGroups.Add(new CMemberGroup(11, database_temp.arr_Member_Types_Prefix[(int)EMemberType_FS.eG, 1] + " - Back Side", m_arrCrSc[(int)EMemberGroupNames.eBackGirt], 0));
 
             // Member Eccentricities
             // Zadane hodnoty predpokladaju ze prierez je symetricky, je potrebne zobecnit
@@ -369,15 +369,15 @@ namespace PFD
             {
                 int iCrscColumnIndex = (int)EMemberGroupNames.eMainColumn;
                 int iCrscRafterIndex = (int)EMemberGroupNames.eRafter;
-                EMemberType_FormSteel eColumnType = EMemberType_FormSteel.eMC;
-                EMemberType_FormSteel eRafterType = EMemberType_FormSteel.eMR;
+                EMemberType_FS eColumnType = EMemberType_FS.eMC;
+                EMemberType_FS eRafterType = EMemberType_FS.eMR;
 
                 if (i == 0 || i == (iFrameNo - 1))
                 {
                     iCrscColumnIndex = (int)EMemberGroupNames.eMainColumn_EF;
                     iCrscRafterIndex = (int)EMemberGroupNames.eRafter_EF;
-                    eColumnType = EMemberType_FormSteel.eEC;
-                    eRafterType = EMemberType_FormSteel.eER;
+                    eColumnType = EMemberType_FS.eEC;
+                    eRafterType = EMemberType_FS.eER;
                 }
 
                 // Main Column
@@ -391,8 +391,8 @@ namespace PFD
                 // Eaves Purlins
                 if (i < (iFrameNo - 1))
                 {
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FormSteel.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
-                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 6, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FormSteel.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 4] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5, m_arrNodes[i * iFrameNodesNo + 1], m_arrNodes[(i + 1) * iFrameNodesNo + 1], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, (float)Math.PI, 0);
+                    m_arrMembers[(i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 5] = new CMember((i * iEavesPurlinNoInOneFrame) + i * (iFrameNodesNo - 1) + 6, m_arrNodes[i * iFrameNodesNo + 3], m_arrNodes[(i + 1) * iFrameNodesNo + 3], m_arrCrSc[(int)EMemberGroupNames.eEavesPurlin], EMemberType_FS.eEP, eccentricityEavePurlin, eccentricityEavePurlin, fEavesPurlinStart, fEavesPurlinEnd, 0f, 0);
                 }
             }
 
@@ -424,13 +424,13 @@ namespace PFD
                 {
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FormSteel.eG, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart, fGirtEnd, fGirtsRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FS.eG, eccentricityGirtLeft_X0, eccentricityGirtLeft_X0, fGirtStart, fGirtEnd, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + j]);
                     }
 
                     for (int j = 0; j < iOneColumnGirtNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FormSteel.eG, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart, fGirtEnd, fGirtsRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j] = new CMember(i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iGirtNoInOneFrame + iOneColumnGirtNo + j], m_arrCrSc[(int)EMemberGroupNames.eGirtWall], EMemberType_FS.eG, eccentricityGirtRight_XB, eccentricityGirtRight_XB, fGirtStart, fGirtEnd, fGirtsRotation, 0);
                         RotateFrontOrBackFrameNodeAboutZ(m_arrNodes[i_temp_numberofMembers + i * iGirtNoInOneFrame + iOneColumnGirtNo + j]);
                     }
                 }
@@ -554,12 +554,12 @@ namespace PFD
                             temp.MFz_local = -eccentricityPurlin.MFz_local; // We need to change sign of eccentrictiy for purlins on the left side because z axis of these purlins is oriented downwards
                         }
 
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FormSteel.eP, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, temp/*eccentricityPurlin*/, temp /*eccentricityPurlin*/, fPurlinStart, fPurlinEnd, fRotationAngle, 0);
                     }
 
                     for (int j = 0; j < iOneRafterPurlinNo; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FormSteel.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
+                        m_arrMembers[i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j] = new CMember(i_temp_numberofMembers + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j + 1, m_arrNodes[i_temp_numberofNodes + i * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrNodes[i_temp_numberofNodes + (i + 1) * iPurlinNoInOneFrame + iOneRafterPurlinNo + j], m_arrCrSc[(int)EMemberGroupNames.ePurlin], EMemberType_FS.eP, eccentricityPurlin, eccentricityPurlin, fPurlinStart, fPurlinEnd, fRoofPitch_rad, 0);
                     }
                 }
             }
@@ -1021,7 +1021,7 @@ namespace PFD
                     {
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FormSteel.eC &&
+                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
                             m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eFrontColumn].CrossSection))
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
                     }
@@ -1047,7 +1047,7 @@ namespace PFD
                     {
                         // Find foundation definition nodes
                         if (MathF.d_equal(m_arrMembers[i].NodeStart.Z, 0) &&
-                            m_arrMembers[i].EMemberType == EMemberType_FormSteel.eC &&
+                            m_arrMembers[i].EMemberType == EMemberType_FS.eC &&
                             m_arrMembers[i].CrScStart.Equals(listOfModelMemberGroups[(int)EMemberGroupNames.eBackColumn].CrossSection))
                             listOfControlPoints.Add(m_arrMembers[i].NodeStart);
                     }
@@ -1188,7 +1188,7 @@ namespace PFD
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // List of all girts
-                if (m.EMemberType == EMemberType_FormSteel.eG)
+                if (m.EMemberType == EMemberType_FS.eG)
                     listOfGirts.Add(m);
 
                 // TODO - Ondrej tieto suradnice by sa mali preberat priamo z objektu CSLoad_FreeUniform.cs, transformacna funkcia 
@@ -1199,7 +1199,7 @@ namespace PFD
                 p3 = new Point3D(pRoofBackLeft.X, pRoofBackLeft.Y, pRoofBackLeft.Z);
 
                 // List of girts - left wall
-                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfGirtsLeftSide.Add(m);
 
                 p1 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
@@ -1207,7 +1207,7 @@ namespace PFD
                 p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
 
                 // List of girts - right wall
-                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfGirtsRightSide.Add(m);
 
                 p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
@@ -1215,7 +1215,7 @@ namespace PFD
                 p3 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
 
                 // List of girts - front wall
-                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfGirtsFrontSide.Add(m);
 
                 p1 = new Point3D(pWallBackLeft.X, pWallBackLeft.Y, pWallBackLeft.Z);
@@ -1223,7 +1223,7 @@ namespace PFD
                 p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
 
                 // List of girts - back wall
-                if (m.EMemberType == EMemberType_FormSteel.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfGirtsBackSide.Add(m);
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1231,11 +1231,11 @@ namespace PFD
                 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // List of all purlins
-                if (m.EMemberType == EMemberType_FormSteel.eP)
+                if (m.EMemberType == EMemberType_FS.eP)
                     listOfPurlins.Add(m);
 
                 // List of all edge purlins
-                if (m.EMemberType == EMemberType_FormSteel.eEP)
+                if (m.EMemberType == EMemberType_FS.eEP)
                     listOfEavePurlins.Add(m);
 
                 p1 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
@@ -1243,11 +1243,11 @@ namespace PFD
                 p3 = new Point3D(pRoofBackApex.X, pRoofBackApex.Y, pRoofBackApex.Z);
 
                 // List of purlins - left side of the roof
-                if (m.EMemberType == EMemberType_FormSteel.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfPurlinsLeftSide.Add(m);
 
                 // List of edge purlins - left side of the roof (tento zoznam pouzit aj pre zatazenie lavej steny)
-                if (m.EMemberType == EMemberType_FormSteel.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfEavePurlinsLeftSide.Add(m);
 
                 p1 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
@@ -1255,11 +1255,11 @@ namespace PFD
                 p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
 
                 // List of purlins - right side of the roof
-                if (m.EMemberType == EMemberType_FormSteel.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfPurlinsRightSide.Add(m);
 
                 // List of edge purlins - right side of the roof (tento zoznam pouzit aj pre zatazenie pravej steny)
-                if (m.EMemberType == EMemberType_FormSteel.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                if (m.EMemberType == EMemberType_FS.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
                     listOfEavePurlinsRightSide.Add(m);
             }
 
@@ -1490,12 +1490,12 @@ namespace PFD
             // Members - Columns
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, EMemberType_FormSteel.eC, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                m_arrMembers[i_temp_numberofMembers + i] = new CMember(i_temp_numberofMembers + i + 1, m_arrNodes[i_temp_numberofNodes + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + i], section, EMemberType_FS.eC, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
             }
 
             for (int i = 0; i < iOneRafterColumnNo; i++)
             {
-                m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FormSteel.eC, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
+                m_arrMembers[i_temp_numberofMembers + iOneRafterColumnNo + i] = new CMember(i_temp_numberofMembers + iOneRafterColumnNo + i + 1, m_arrNodes[i_temp_numberofNodes + iOneRafterColumnNo + i], m_arrNodes[i_temp_numberofNodes + iColumnNoInOneFrame + iOneRafterColumnNo + i], section, EMemberType_FS.eC, eccentricityColumn, eccentricityColumn, fColumnAlignmentStart, fColumnAlignmentEnd, fMemberRotation, 0);
             }
         }
 
@@ -1568,7 +1568,7 @@ namespace PFD
                 {
                     for (int j = 0; j < iOneColumnGirtNo_temp; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + j] = new CMember(i_temp_numberofMembers + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + j], m_arrNodes[i_temp_numberofNodes + j], section, EMemberType_FormSteel.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, fMemberRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + j] = new CMember(i_temp_numberofMembers + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + j], m_arrNodes[i_temp_numberofNodes + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, fMemberRotation, 0);
                     }
 
                     iTemp += iOneColumnGirtNo_temp;
@@ -1577,7 +1577,7 @@ namespace PFD
                 {
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FormSteel.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
                     }
 
                     iTemp2 += iArrNumberOfNodesPerColumn[i - 1];
@@ -1587,7 +1587,7 @@ namespace PFD
                 {
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneFrameNo - iArrNumberOfNodesPerColumn[iOneRafterColumnNo - 1] + j], section, EMemberType_FormSteel.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + iTemp + j] = new CMember(i_temp_numberofMembers + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneFrameNo - iArrNumberOfNodesPerColumn[iOneRafterColumnNo - 1] + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, fMemberRotation, 0);
                     }
 
                     iTemp += iArrNumberOfNodesPerColumn[i - 1];
@@ -1605,7 +1605,7 @@ namespace PFD
                 {
                     for (int j = 0; j < iOneColumnGirtNo_temp; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iOneColumnGirtNo_temp + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + j], section, EMemberType_FormSteel.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, -fMemberRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + j + 1, m_arrNodes[iFrameNodesNo * iFrameNo + iTempJumpBetweenFrontAndBack_GirtsNumberInLongidutinalDirection + iOneColumnGirtNo_temp + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart_MC, fGirtEnd, -fMemberRotation, 0);
                     }
 
                     iTemp += iOneColumnGirtNo_temp;
@@ -1614,7 +1614,7 @@ namespace PFD
                 {
                     for (int j = 0; j < iArrNumberOfNodesPerColumn[i - 1]; j++)
                     {
-                        m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FormSteel.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, -fMemberRotation, 0);
+                        m_arrMembers[i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j] = new CMember(i_temp_numberofMembers + iNumberOfMembers_temp + iTemp + j + 1, m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iTemp2 + j], m_arrNodes[i_temp_numberofNodes + iIntermediateColumnNodesForGirtsOneRafterNo + iArrNumberOfNodesPerColumn[i - 1] + iTemp2 + j], section, EMemberType_FS.eG, eGirtEccentricity, eGirtEccentricity, fGirtStart, fGirtEnd, -fMemberRotation, 0);
                     }
 
                     iTemp2 += iArrNumberOfNodesPerColumn[i - 1];
