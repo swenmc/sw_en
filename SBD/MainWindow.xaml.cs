@@ -86,6 +86,8 @@ namespace SBD
         float fTempMax_Y;
         float fTempMin_Y;
 
+        public bool UseCRSCGeometricalAxes = true;
+
         // Temporary for constructor
         List<double> listOfyCoordinates = new List<double>();
         List<double> listOfzCoordinates = new List<double>();
@@ -185,7 +187,7 @@ namespace SBD
             // Design
             designInternalForces[,] sDIF_x;
             CMemberDesign designModel = new CMemberDesign();
-            designModel.SetDesignForcesAndMemberDesign_SBD(iNumberOfLoadCombinations, iNumberOfDesignSections, member, sBIF_x, sBucklingLengthFactors, sMomentValuesforCb, out sDIF_x);
+            designModel.SetDesignForcesAndMemberDesign_SBD(UseCRSCGeometricalAxes, iNumberOfLoadCombinations, iNumberOfDesignSections, member, sBIF_x, sBucklingLengthFactors, sMomentValuesforCb, out sDIF_x);
 
             // TODO - toto zobrazenie detailov v Gridview pre PFD a SBD treba refaktorovat a vytvorit jednotnu bazu pre zobrazovanie dat
             // v datagrid napriec roznymi projektmi
