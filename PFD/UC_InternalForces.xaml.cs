@@ -340,7 +340,8 @@ namespace PFD
             // 4.4.2.2.1
             // Second-order effects may be neglected for any frame where the elastic buckling load factor (λc) of the frame, as determined in accordance with 4.9, is greater than 10.
 
-            // TODO napojit hodnoty
+            // TODO presunut funkcie niekam medzi vypocet vn sil a posudenie a napojit hodnoty
+            // Potrebujeme sa dostat na hodnoty vn. sil v roznych prutoch ramu, vlastnosti tychto prutov, sklon strechy, podpory ramu
 
             float fN_om_column;
             float fLambda_c = GetFrameBucklingFactorLambda_c(frameModel.m_arrMat[0].m_fE, // Modulus of Elasticity

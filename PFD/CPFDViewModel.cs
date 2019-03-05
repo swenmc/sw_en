@@ -917,16 +917,24 @@ namespace PFD
                                     sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
                                     sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
 
-                                    if (m.EMemberType == EMemberType_FS.eMR)
+                                    if (m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eER)
                                     {
                                         sBucklingLengthFactors.fBeta_y_FB_fl_ey = 0.5f;
                                         sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 0.5f;
                                         sBucklingLengthFactors.fBeta_LTB_fl_LTB = 0.5f;
                                     }
 
+                                    // TODO - faktory vzpernej dlzky mozu byt ine pre kazdy segment pruta a kazdy load case alebo load combination
+                                    // TODO - vymysliet system ako s tym pracovat a priradzovat, je potrebne pouzit pri posudeni v mieste x na prute
+
+                                    // Podobne aj hodnoty M14,M24,M34 a Mmax sa maju brat z hodnot na segmente, nie na celom prute
+
+                                    if(m.LTBSegmentGroup != null) // Temporary
+                                        sBucklingLengthFactors = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
+
                                     sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yy;
-                                    sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yy;
-                                    sMomentValuesforCb.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yy;
+                                    sMomentValuesforCb.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yy;
+                                    sMomentValuesforCb.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yy;
                                     sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
 
                                     sBIF_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
@@ -1026,6 +1034,14 @@ namespace PFD
                                     sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 0.5f;
                                     sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 0.5f;
                                 }
+
+                                // TODO - faktory vzpernej dlzky mozu byt ine pre kazdy segment pruta a kazdy load case alebo load combination
+                                // TODO - vymysliet system ako s tym pracovat a priradzovat, je potrebne pouzit pri posudeni v mieste x na prute
+
+                                // Podobne aj hodnoty M14,M24,M34 a Mmax sa maju brat z hodnot na segmente, nie na celom prute
+
+                                if (m.LTBSegmentGroup != null) // Temporary
+                                    sBucklingLengthFactors_design = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
 
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda

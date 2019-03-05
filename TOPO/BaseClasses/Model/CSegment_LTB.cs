@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BaseClasses
 {
@@ -49,6 +50,14 @@ namespace BaseClasses
             set { m_SegmentLength = value; }
         }
 
+        private List<designBucklingLengthFactors> m_BucklingLengthFactors; // Zoznam faktorov vzpernych dlzok segmentu pre kazdu load combination ???
+
+        public List<designBucklingLengthFactors> BucklingLengthFactors
+        {
+            get { return m_BucklingLengthFactors; }
+            set { m_BucklingLengthFactors = value; }
+        }
+
         public CSegment_LTB(int id_temp, bool bIsRelativeCoordinate_x, float segmentStart, float segmentEnd, float fLengthMember)
         {
             ID = id_temp;
@@ -69,6 +78,17 @@ namespace BaseClasses
             }
 
             SegmentLength = SegmentEndCoord_Abs - SegmentStartCoord_Abs;
+
+            BucklingLengthFactors = new List<designBucklingLengthFactors>();
+
+            designBucklingLengthFactors sBucklingLengthFactors;
+            sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1.0f; // Default - Length of member (pre prvky ramu column MC, EC a rafter MR,ER moze byt ina)
+
+            sBucklingLengthFactors.fBeta_y_FB_fl_ey = SegmentLength / fLengthMember;
+            sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = SegmentLength / fLengthMember;
+            sBucklingLengthFactors.fBeta_LTB_fl_LTB = SegmentLength / fLengthMember;
+
+            BucklingLengthFactors.Add(sBucklingLengthFactors);
         }
     }
 }
