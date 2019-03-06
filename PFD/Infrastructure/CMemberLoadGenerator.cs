@@ -36,6 +36,8 @@ namespace PFD
         float fValueLoadRafterSnowSLS_Nu_2;
         CCalcul_1170_2 wind;
 
+        bool bConsiderFactors_Kci_Kce_Ka_Generator = true; // Zohladnuje faktory Kci, Kce a Ka az v generatore zatazenia
+
         public CMemberLoadGenerator(
             int frameNo,
             float L1_frame,
@@ -111,6 +113,14 @@ namespace PFD
             fValueLoadRafterSnowSLS_Nu_2 = -snow.fs_SLS_Nu_2 * model.fSlopeFactor;
 
             wind = calc_wind;
+
+            // Validation of options
+            if (bConsiderFactors_Kci_Kce_Ka_Generator == true &&
+                (wind.bConsiderAreaReductionFactor_Ka == true || wind.bConsiderAreaReductionFactor_Kci_and_Kce == true))
+            {
+                // Ak uz boli K_ca, Kce alebo Kci redukovane, tak je nastavenie pre tento generator nevalidne
+                throw new Exception("Wind pressure reduction factor Kci, Kce or Ka was already considered. Check options.");
+            }
         }
 
 
@@ -860,6 +870,8 @@ namespace PFD
                         ref memberLoadExternalPressure_SLS_Cpemax_Rear);
         }
 
+        // Internal Pressure
+        // Poznamka: Faktor Ka * Kci >= 0.8 sa pre internal pressure nezohladnuje
         private void SetFrameMembersWindLoads_InternalPressure(
            int iFrameIndex,
            int indexColumn1Left,
@@ -873,7 +885,19 @@ namespace PFD
            CCalcul_1170_2 wind,
            ref List<CMLoad> listOfMemberLoads)
         {
-            //listOfMemberLoads = new List<CMLoad>(4);
+            float fK_ci_min = 1;
+            float fK_ci_max = 1;
+            float fK_ci;
+
+            if (bConsiderFactors_Kci_Kce_Ka_Generator)
+            {
+                Set_ActionCombinationFactors_Kci(
+                            wind.fC_pi_min,
+                            wind.fC_pi_max,
+                            out fK_ci_min,
+                            out fK_ci_max
+                            );
+            }
 
             float[] fp_i_Theta_4;
 
@@ -882,10 +906,12 @@ namespace PFD
                 if (iCodeForCpeMinMaxValue == 0) // ULS - Cpi,min
                 {
                     fp_i_Theta_4 = wind.fp_i_min_ULS_Theta_4;
+                    fK_ci = fK_ci_min;
                 }
                 else // ULS - Cpi,max
                 {
                     fp_i_Theta_4 = wind.fp_i_max_ULS_Theta_4;
+                    fK_ci = fK_ci_max;
                 }
             }
             else
@@ -893,25 +919,34 @@ namespace PFD
                 if (iCodeForCpeMinMaxValue == 0) // SLS - Cpi,min
                 {
                     fp_i_Theta_4 = wind.fp_i_min_SLS_Theta_4;
+                    fK_ci = fK_ci_min;
                 }
                 else // SLS - Cpi,max
                 {
                     fp_i_Theta_4 = wind.fp_i_max_SLS_Theta_4;
+                    fK_ci = fK_ci_max;
                 }
             }
 
+            float fReductionFactor_Kci_Column1Left = fK_ci;
+            float fReductionFactor_Kci_Column2Right = fK_ci;
+            float fReductionFactor_Kci_Rafter1Left = fK_ci;
+            float fReductionFactor_Kci_Rafter2Right = fK_ci;
+
             // Columns
-            CMLoad loadColumnLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 1, fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumnRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 2, fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Kci_Column1Left * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 2, fReductionFactor_Kci_Column2Right * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             listOfMemberLoads.Add(loadColumnLeft_WindLoad_Cpi);
             listOfMemberLoads.Add(loadColumnRight_WindLoad_Cpi);
             // Rafters
-            CMLoad loadRafterLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 3, fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 4, fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 3, fReductionFactor_Kci_Rafter1Left * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 4, fReductionFactor_Kci_Rafter2Right * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             listOfMemberLoads.Add(loadRafterLeft_WindLoad_Cpi);
             listOfMemberLoads.Add(loadRafterRight_WindLoad_Cpi);
         }
 
+        // External pressure
+        // Poznamka: Faktor Ka * Kce >= 0.8 sa pre internal pressure nezohladnuje
         private void SetFrameMembersWindLoads_LeftOrRight(
             int iFrameIndex,
             int indexColumn1Left,
@@ -926,10 +961,42 @@ namespace PFD
             ref List<CMLoad> listOfMemberLoads)
         {
             // External Pressure
-            //listOfMemberLoads = new List<CMLoad>();
-
             if (iDirectionIndex != (int)ELCMainDirection.ePlusX && iDirectionIndex != (int)ELCMainDirection.eMinusX)
                 return; // Invalid direction - return empty list of loads
+
+            float fK_a_Column1Left = 1f;
+            float fK_a_Column2Right = 1f;
+            float fK_a_Rafter1Left = 1f;
+            float fK_a_Rafter2Right = 1f;
+            float fK_ce_min_roof = 1f;
+            float fK_ce_max_roof = 1f;
+            float fK_ce_wall = 1f;
+            float fK_ce_roof = 1f;
+
+            if (bConsiderFactors_Kci_Kce_Ka_Generator)
+            {
+                // Calculate reduction factors Ka, Kci, Kce
+                // 5.4.2 Area reduction factor(Ka)
+                Calculate_Wind_Area_Reduction_Factors_Ka(
+                indexColumn1Left,
+                indexColumn2Right,
+                indexRafter1Left,
+                indexRafter2Right,
+                fFrameTributaryWidth,
+                out fK_a_Column1Left,
+                out fK_a_Column2Right,
+                out fK_a_Rafter1Left,
+                out fK_a_Rafter2Right
+                );
+
+                // For any roofs and side walls, the product Ka. Kc,e shall not be less than 0.8.
+
+                Set_ActionCombinationFactors_Kce(
+                out fK_ce_min_roof,
+                out fK_ce_max_roof,
+                out fK_ce_wall
+                );
+            }
 
             // Left or Right Main Direction
             float fColumnLeftLoadValue;
@@ -946,9 +1013,12 @@ namespace PFD
                 fColumnRightLoadValue = -wind.fp_e_W_wall_ULS_Theta_4[iDirectionIndex] * fFrameTributaryWidth;
             }
 
+            float fReductionFactor_Ka_Kce_Column1Left = fK_a_Column1Left * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column1Left * fK_ce_wall;
+            float fReductionFactor_Ka_Kce_Column2Right = fK_a_Column2Right * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column2Right * fK_ce_wall;
+
             // Columns
-            CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, fColumnLeftLoadValue, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumnRight_WindLoad = new CMLoad_21(iFrameIndex * 4 + 2, fColumnRightLoadValue, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Ka_Kce_Column1Left * fColumnLeftLoadValue, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnRight_WindLoad = new CMLoad_21(iFrameIndex * 4 + 2, fReductionFactor_Ka_Kce_Column2Right * fColumnRightLoadValue, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             listOfMemberLoads.Add(loadColumnLeft_WindLoad);
             listOfMemberLoads.Add(loadColumnRight_WindLoad);
 
@@ -962,11 +1032,13 @@ namespace PFD
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_ULS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_ULS_Theta_4;
+                    fK_ce_roof = fK_ce_min_roof;
                 }
                 else // ULS - Cpe,max
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_ULS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_ULS_Theta_4;
+                    fK_ce_roof = fK_ce_max_roof;
                 }
             }
             else
@@ -975,13 +1047,18 @@ namespace PFD
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_min_U_roof_SLS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_min_D_roof_SLS_Theta_4;
+                    fK_ce_roof = fK_ce_min_roof;
                 }
                 else // ULS - Cpe,max
                 {
                     fp_e_U_roof_Theta_4 = wind.fp_e_max_U_roof_SLS_Theta_4;
                     fp_e_D_roof_Theta_4 = wind.fp_e_max_D_roof_SLS_Theta_4;
+                    fK_ce_roof = fK_ce_max_roof;
                 }
             }
+
+            float fReductionFactor_Ka_Kce_Rafter1Left = fK_a_Rafter1Left * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter1Left * fK_ce_roof;
+            float fReductionFactor_Ka_Kce_Rafter2Right = fK_a_Rafter2Right * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter2Right * fK_ce_roof;
 
             float[,] fRafterLeft_LoadValues;
             float[] fRafterLeft_RoofDimensions;
@@ -1010,6 +1087,7 @@ namespace PFD
 
             // Left Rafter
             GenerateListOfWindLoadsOnRafter_LeftRight(indexRafter1Left,
+                fReductionFactor_Ka_Kce_Rafter1Left,
                 fFrameTributaryWidth,
                 iLastLoadIndex,
                 fRafterLeft_LoadValues,
@@ -1019,6 +1097,7 @@ namespace PFD
 
             // Right Rafter
             GenerateListOfWindLoadsOnRafter_LeftRight(indexRafter2Right,
+                fReductionFactor_Ka_Kce_Rafter2Right,
                 fFrameTributaryWidth,
                 iLastLoadIndex,
                 fRafterRight_LoadValues,
@@ -1029,6 +1108,7 @@ namespace PFD
 
         private void GenerateListOfWindLoadsOnRafter_LeftRight(
             int indexRafter,
+            float fReductionFactor_Ka_Kce,
             float fFrameTributaryWidth,
             int iLastLoadIndex,
             float[,] fp_e_roof_Theta_4,
@@ -1056,7 +1136,7 @@ namespace PFD
                 float fstart_abs = fstart_abs_Projected * m_arrMembers[indexRafter].FLength / fMemberProjectedLength_X;
                 float floadsegmentlength = floadsegmentlengthProjected * m_arrMembers[indexRafter].FLength / fMemberProjectedLength_X;
 
-                CMLoad loadRafterSegment = new CMLoad_24(iLastLoadIndex + 1, fq, fstart_abs, floadsegmentlength, m_arrMembers[indexRafter], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadRafterSegment = new CMLoad_24(iLastLoadIndex + 1, fReductionFactor_Ka_Kce * fq, fstart_abs, floadsegmentlength, m_arrMembers[indexRafter], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
                 listOfMemberLoads.Add(loadRafterSegment);
 
                 iLastLoadIndex++;
@@ -1116,24 +1196,76 @@ namespace PFD
             float[,] fLoadValues_Columns;
             float[,] fLoadValues_Rafters;
 
+            // For any roofs and side walls, the product Ka. Kc,e shall not be less than 0.8.
+            float fK_a_Column1Left = 1f;
+            float fK_a_Column2Right = 1f;
+            float fK_a_Rafter1Left = 1f;
+            float fK_a_Rafter2Right = 1f;
+            float fK_ce_min_roof = 1f;
+            float fK_ce_max_roof = 1f;
+            float fK_ce_wall = 1f;
+            float fK_ce_roof = 1f;
+
+            if (bConsiderFactors_Kci_Kce_Ka_Generator)
+            {
+                // Calculate reduction factors Ka, Kci, Kce
+                // 5.4.2 Area reduction factor(Ka)
+                Calculate_Wind_Area_Reduction_Factors_Ka(
+                indexColumn1Left,
+                indexColumn2Right,
+                indexRafter1Left,
+                indexRafter2Right,
+                fFrameTributaryWidth,
+                out fK_a_Column1Left,
+                out fK_a_Column2Right,
+                out fK_a_Rafter1Left,
+                out fK_a_Rafter2Right
+                );
+
+                // For any roofs and side walls, the product Ka. Kc,e shall not be less than 0.8.
+
+                Set_ActionCombinationFactors_Kce(
+                out fK_ce_min_roof,
+                out fK_ce_max_roof,
+                out fK_ce_wall
+                );
+            }
+
             if (eLSType == ELSType.eLS_ULS)
             {
                 fLoadValues_Columns = wind.fp_e_S_wall_ULS_Theta_4;
 
                 if (iCodeForCpeMinMaxValue == 0)
+                {
                     fLoadValues_Rafters = wind.fp_e_min_R_roof_ULS_Theta_4;
+                    fK_ce_roof = fK_ce_min_roof;
+                }
                 else
+                {
                     fLoadValues_Rafters = wind.fp_e_max_R_roof_ULS_Theta_4;
+                    fK_ce_roof = fK_ce_max_roof;
+                }
             }
             else
             {
                 fLoadValues_Columns = wind.fp_e_S_wall_SLS_Theta_4;
 
                 if (iCodeForCpeMinMaxValue == 0)
+                {
                     fLoadValues_Rafters = wind.fp_e_min_R_roof_SLS_Theta_4;
+                    fK_ce_roof = fK_ce_min_roof;
+                }
                 else
+                {
                     fLoadValues_Rafters = wind.fp_e_max_R_roof_SLS_Theta_4;
+                    fK_ce_roof = fK_ce_max_roof;
+                }
             }
+
+            float fReductionFactor_Ka_Kce_Column1Left =  fK_a_Column1Left  * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column1Left  * fK_ce_wall;
+            float fReductionFactor_Ka_Kce_Column2Right = fK_a_Column2Right * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column2Right * fK_ce_wall;
+            float fReductionFactor_Ka_Kce_Rafter1Left =  fK_a_Rafter1Left  * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter1Left  * fK_ce_roof;
+            float fReductionFactor_Ka_Kce_Rafter2Right = fK_a_Rafter2Right * fK_ce_roof < 0.8f ? 0.8f : fK_a_Rafter2Right * fK_ce_roof;
 
             float[] fx_dimensions_Columns = wind.fC_pe_S_wall_dimensions; // Wall - Columns
             float[] fx_dimensions_Rafters = wind.fC_pe_R_roof_dimensions; // Roof - Rafters
@@ -1151,8 +1283,8 @@ namespace PFD
             out fValue_q_columns);
 
             // Create Member Load - Left and Right Column
-            CMLoad loadColumn1 = new CMLoad_21(1, fValue_q_columns, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumn2 = new CMLoad_21(2, fValue_q_columns, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumn1 = new CMLoad_21(1, fReductionFactor_Ka_Kce_Column1Left * fValue_q_columns, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumn2 = new CMLoad_21(2, fReductionFactor_Ka_Kce_Column2Right * fValue_q_columns, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 
             listOfMemberLoads.Add(loadColumn1);
             listOfMemberLoads.Add(loadColumn2);
@@ -1170,8 +1302,8 @@ namespace PFD
             out fValue_q_rafters);
 
             // Create Member Load - Left and Right Rafter
-            CMLoad loadRafter1 = new CMLoad_21(3, fValue_q_rafters, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafter2 = new CMLoad_21(4, fValue_q_rafters, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafter1 = new CMLoad_21(3, fReductionFactor_Ka_Kce_Rafter1Left * fValue_q_rafters, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafter2 = new CMLoad_21(4, fReductionFactor_Ka_Kce_Rafter2Right * fValue_q_rafters, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 
             listOfMemberLoads.Add(loadRafter1);
             listOfMemberLoads.Add(loadRafter2);
@@ -1280,6 +1412,58 @@ namespace PFD
 
                 fValue_q = -fLoadValues[iDirectionIndex, x_dimensionsInTributaryAreaIndices[0]] * fFrameTributaryWidth;
             }
+        }
+
+        private void Calculate_Wind_Area_Reduction_Factors_Ka(
+            int indexColumn1Left,
+            int indexColumn2Right,
+            int indexRafter1Left,
+            int indexRafter2Right,
+            float fFrameTributaryWidth,
+            out float fK_a_Column1Left,
+            out float fK_a_Column2Right,
+            out float fK_a_Rafter1Left,
+            out float fK_a_Rafter2Right
+            )
+        {
+            // Calculate reduction factors Ka, Kci, Kce
+            // 5.4.2 Area reduction factor(Ka)
+
+            float fTributaryArea_Column1Left = m_arrMembers[indexColumn1Left].FLength * fFrameTributaryWidth;
+            float fTributaryArea_Column2Right = m_arrMembers[indexColumn2Right].FLength * fFrameTributaryWidth;
+            float fTributaryArea_Rafter1Left = m_arrMembers[indexRafter1Left].FLength * fFrameTributaryWidth;
+            float fTributaryArea_Rafter2Right = m_arrMembers[indexRafter2Right].FLength * fFrameTributaryWidth;
+
+            fK_a_Column1Left = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Column1Left);
+            fK_a_Column2Right = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Column2Right);
+            fK_a_Rafter1Left = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Rafter1Left);
+            fK_a_Rafter2Right = wind.Get_AreaReductionFactor_Ka(fTributaryArea_Rafter2Right);
+        }
+
+        private void Set_ActionCombinationFactors_Kci(
+            float fC_pi_min,
+            float fC_pi_max,
+            out float fK_ci_min,
+            out float fK_ci_max
+            )
+        {
+            // 5.4.3 Action combination factor
+            fK_ci_min = 1.0f;
+            fK_ci_max = 1.0f;
+
+            if (Math.Abs(fC_pi_min) >= 0.2f) fK_ci_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+        }
+
+        private void Set_ActionCombinationFactors_Kce(
+            out float fK_ce_min,
+            out float fK_ce_max,
+            out float fK_ce_wall)
+        {
+            // 5.4.3 Action combination factor
+            fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            fK_ce_wall = 0.8f;
         }
     }
 }

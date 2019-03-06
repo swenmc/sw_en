@@ -29,6 +29,8 @@ namespace M_EC1.AS_NZS
         WindLoadDataInput sWindInput;
 
         bool bConsiderCardinalDirectionsAndDifferentValues_M_D = false; // TODO - napojit na GUI
+        public bool bConsiderAreaReductionFactor_Ka = false;
+        public bool bConsiderAreaReductionFactor_Kci_and_Kce = false;
 
         float fz_max = 200f; // m
         public float fz;
@@ -53,11 +55,29 @@ namespace M_EC1.AS_NZS
         // 5.4.5 Permeable cladding reduction factor(Kp) for roofs and side walls
         public float fK_p; // K_p - net porosity factor, as given in Paragraph D1.4
 
-        public float fK_ce_min; // TODO - dopracovat podla kombinacii external and internal pressure
-        public float fK_ce_max; // TODO - dopracovat podla kombinacii external and internal pressure
-        public float fK_ci_min; // TODO - dopracovat podla kombinacii external and internal pressure
-        public float fK_ci_max; // TODO - dopracovat podla kombinacii external and internal pressure
-        public float fK_ce_wall; // TODO - dopracovat podla kombinacii external and internal pressure
+        /*
+        According to AS1170.2:
+        Kc,i(side walls and roof) = 0.8 if abs(Cp, i) >= 0.2, otherwise 1.0
+        Kc,e(side walls and roof = 0.8
+        Kc, i and Kc, e (end walls) = 0.9 if abs(Cp, i) >= 0.2, otherwise 1.0
+        Kc, e (side overhangs) = 0.9
+        Kc (friction drag) = 1.0(front / rear wind directions) or 0.9 (left/right wind directions)
+
+        Because Kc, i and Kc, e depend on abs(Cp, i) >= 0.2, and there are two values for Cp,i(for positive and negative internal pressures), there could potentially be two values of Kc, i and Kc, e for each surface too. 
+        For conservatism we therefore do the following:
+
+        Kc,i(side walls and roof) = 0.8 if abs(Cp, i+) >= 0.2 and abs(Cp, i-) >= 0.2, otherwise 1.0
+        Kc,e(side walls and roof) = 0.8
+        Kc,i and Kc,e(end walls) = 0.9 if abs(Cp, i+) >= 0.2 and abs(Cp, i-) >= 0.2, otherwise 1.0
+        Kc,e(side overhangs) = 0.9
+        Kc(friction drag) = 1.0 (front/rear wind directions) or 0.9 (left/right wind directions)
+        */
+
+        public float fK_ce_min = 1f;  // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ce_max = 1f;  // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ci_min = 1f;  // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ci_max = 1f;  // TODO - dopracovat podla kombinacii external and internal pressure
+        public float fK_ce_wall = 1f; // TODO - dopracovat podla kombinacii external and internal pressure
 
         public float fC_dyn = 1.0f; // Dynamic response factor
 
@@ -187,7 +207,7 @@ namespace M_EC1.AS_NZS
 
         public int iFirst_D_SegmentColorID = 0; // Color ID of first downwind side segment (continue from upwind U side)
 
-        // Basic Input
+        // Basic Input (portal frame designer)
         public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp)
         {
             sBuildInput = sBuildingData_temp;
@@ -215,15 +235,20 @@ namespace M_EC1.AS_NZS
             fM_t = 1.0f;
 
             fK_p = 1.0f;
-            fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-            fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
-            fK_ci_min = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
-            fK_ci_max = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
-            fK_ce_wall = 0.8f;
 
-            fK_ce_min = 1;
-            fK_ce_max = 1;
-            fK_ce_wall = 1;
+            SetInternalPressureFactors_Cpi_min_C_pi_max();
+
+            bConsiderAreaReductionFactor_Kci_and_Kce = false; // Zohladnuje sa az v generatore prutovych zatazeni
+
+            if (bConsiderAreaReductionFactor_Kci_and_Kce)
+            {
+                fK_ce_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+                fK_ce_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+                fK_ce_wall = 0.8f;
+
+                if (Math.Abs(fC_pi_min) >= 0.2f) fK_ci_min = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+                if (Math.Abs(fC_pi_max) >= 0.2f) fK_ci_max = 0.8f; // TODO - dopracovat podla kombinacii external and internal pressure
+            }
 
             // M_s
             float fl_s = 1000f;    // Average spacing of shielding buildings
@@ -242,10 +267,11 @@ namespace M_EC1.AS_NZS
                 fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
             }
 
+            bConsiderAreaReductionFactor_Ka = false;
             CalculateWindData();
         }
 
-        // Specific GUI input
+        // Specific GUI input (purlin designer)
         public CCalcul_1170_2(BuildingDataInput sBuildingData_temp, BuildingGeometryDataInput sGeometryData_temp, WindLoadDataInput sWindData_temp, WindLoadDataSpecificInput sWinDataSpecific_temp)
         {
             sBuildInput = sBuildingData_temp;
@@ -273,12 +299,21 @@ namespace M_EC1.AS_NZS
             fM_t = AS_NZS_1170_2.Eq_44_1____(fM_h, fM_lee, sBuildInput.fE);
 
             fK_p = sWinDataSpecific_temp.fK_p;
-            fK_ci_min = sWinDataSpecific_temp.fK_ci_min;
-            fK_ci_max = sWinDataSpecific_temp.fK_ci_max;
-            fK_ce_min = sWinDataSpecific_temp.fK_ce_min;
-            fK_ce_max = sWinDataSpecific_temp.fK_ce_max;
-            fK_ce_wall = 1.0f; // TODO - nastavit podobne ako pre strechu rozne pre min a max Cpi
 
+            SetInternalPressureFactors_Cpi_min_C_pi_max();
+
+            bConsiderAreaReductionFactor_Kci_and_Kce = true;
+
+            if (bConsiderAreaReductionFactor_Kci_and_Kce)
+            {
+                fK_ci_min = sWinDataSpecific_temp.fK_ci_min;
+                fK_ci_max = sWinDataSpecific_temp.fK_ci_max;
+                fK_ce_min = sWinDataSpecific_temp.fK_ce_min;
+                fK_ce_max = sWinDataSpecific_temp.fK_ce_max;
+                fK_ce_wall = 1.0f; // TODO - nastavit podobne ako pre strechu rozne pre min a max Cpi
+            }
+
+            bConsiderAreaReductionFactor_Ka = true;
             CalculateWindData();
         }
 
@@ -384,17 +419,6 @@ namespace M_EC1.AS_NZS
             float fq_ULS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
             float fq_SLS = 0.6f * MathF.Pow2(fV_sit_ULS); // Pa
             */
-
-            /*
-            An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
-            than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
-            total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
-            to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
-            */
-
-            // Internal pressure
-            fC_pi_min = -0.3f; // Underpressure
-            fC_pi_max = 0.0f; // Overpressure
 
             // External pressure
 
@@ -521,12 +545,12 @@ namespace M_EC1.AS_NZS
             Calculate_Cpe_Table_5_3_A(fh, fRatioHtoD_Theta90or270, ref fC_pe_R_roof_dimensions, ref fC_pe_R_roof_values_min, ref fC_pe_R_roof_values_max);
 
             // 5.4.2 Area reduction factor(Ka) for roofs and side walls
-            fx = new float[5] { 0, 10, 25, 100, 9999 };
-            fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
-
-            fK_a_roof = ArrayF.GetLinearInterpolationValuePositive(fRoofArea, fx, fy);
-            fK_a_wall_0or180 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_0or180, fx, fy);
-            fK_a_wall_90or270 = ArrayF.GetLinearInterpolationValuePositive(fWallArea_90or270, fx, fy);
+            if (bConsiderAreaReductionFactor_Ka)
+            {
+                fK_a_roof = Get_AreaReductionFactor_Ka(fRoofArea);
+                fK_a_wall_0or180 = Get_AreaReductionFactor_Ka(fWallArea_0or180);
+                fK_a_wall_90or270 = Get_AreaReductionFactor_Ka(fWallArea_90or270);
+            }
 
             // Aerodynamic shape factor (C fig)
             // Internal and external pressure factors
@@ -1212,6 +1236,30 @@ namespace M_EC1.AS_NZS
                 return (fb + 2 * fh) / (fd - 4 * fh);
             else
                 return (fb + 2 * fh) / (fd - 4 * fb);
+        }
+
+        public void SetInternalPressureFactors_Cpi_min_C_pi_max()
+        {
+            /*
+            An ‘impermeable surface’ means a surface having a ratio of total open area to total surface area of less
+            than 0.1%. A ‘permeable surface’ means a surface having a ratio of total open area, including leakage, to
+            total surface area between 0.1% and 0.5%. Other surfaces with open areas greater than 0.5% are deemed
+            to have ‘large openings’ and internal pressures shall be obtained from Table 5.1(B).
+            */
+
+            // TODO - urobit nastavitelne v GUI
+            // Internal pressure
+            fC_pi_min = -0.3f; // Underpressure
+            fC_pi_max = 0.0f; // Overpressure
+        }
+
+        public float Get_AreaReductionFactor_Ka(float fTributaryArea)
+        {
+            // 5.4.2 Area reduction factor(Ka) for roofs and side walls
+            float[]fx = new float[5] { 0, 10, 25, 100, 9999 };
+            float[]fy = new float[5] { 1.0f, 1.0f, 0.9f, 0.8f, 0.8f };
+
+            return ArrayF.GetLinearInterpolationValuePositive(fTributaryArea, fx, fy);
         }
 
         protected float Get_LocalPressureFactor_Kl(float fa, ELocalWindPressureReference eLWPR)
