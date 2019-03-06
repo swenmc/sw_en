@@ -113,7 +113,7 @@ namespace PFD
             if (vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn ||
                 vm.ComponentTypeIndex == (int)EMemberGroupNames.eRafter ||
                 vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn_EF ||
-                vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn_EF)
+                vm.ComponentTypeIndex == (int)EMemberGroupNames.eRafter_EF)
                 Button_Frame_2D.IsEnabled = true;
             else
                 Button_Frame_2D.IsEnabled = false;

@@ -212,6 +212,10 @@ namespace M_EC1.AS_NZS
             fK_ci_max = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
             fK_ce_wall = 0.8f;
 
+            fK_ce_min = 1;
+            fK_ce_max = 1;
+            fK_ce_wall = 1;
+
             // M_s
             float fl_s = 1000f;    // Average spacing of shielding buildings
             float fh_s = 0.1f;     // Average roof height of shielding buildings

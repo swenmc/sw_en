@@ -1,4 +1,5 @@
 ﻿using BaseClasses;
+using CRSC;
 using M_EC1.AS_NZS;
 using MATH;
 using System;
@@ -17,6 +18,15 @@ namespace PFD
         private CLoadCase[] m_arrLoadCases;
         private CMember[] m_arrMembers;
 
+        CCrSc GirtCrSc;
+        CCrSc PurlinCrSc;
+        float fDistanceGirts;
+        float fDistancePurlins;
+        CCrSc ColumnCrSc;
+        CCrSc RafterCrSc;
+        CCrSc ColumnCrSc_EF;
+        CCrSc RafterCrSc_EF;
+
         float fValueLoadColumnDead;
         float fValueLoadRafterDead;
         float fValueLoadRafterImposed;
@@ -26,14 +36,39 @@ namespace PFD
         float fValueLoadRafterSnowSLS_Nu_2;
         CCalcul_1170_2 wind;
 
-        public CMemberLoadGenerator(int frameNo, float L1_frame, float L_tot, float fSlopeFactor, CLoadCase[] arrLoadCases, CMember[] arrMembers,
-            CCalcul_1170_1 generalLoad, CCalcul_1170_3 snow, CCalcul_1170_2 calc_wind)
+        public CMemberLoadGenerator(
+            int frameNo,
+            float L1_frame,
+            float L_tot,
+            float fSlopeFactor,
+            CCrSc GirtCrSc_temp,
+            CCrSc PurlinCrSc_temp,
+            float fDistanceGirts_temp,
+            float fDistancePurlins_temp,
+            CCrSc ColumnCrSc_temp,
+            CCrSc RafterCrSc_temp,
+            CCrSc ColumnCrSc_EF_temp,
+            CCrSc RafterCrSc_EF_temp,
+            CLoadCase[] arrLoadCases,
+            CMember[] arrMembers,
+            CCalcul_1170_1 generalLoad,
+            CCalcul_1170_3 snow,
+            CCalcul_1170_2 calc_wind)
         {
             iFrameNo = frameNo;
             fL1_frame = L1_frame;
             fL_tot = L_tot;
             m_arrLoadCases = arrLoadCases;
             m_arrMembers = arrMembers;
+
+            GirtCrSc = GirtCrSc_temp;
+            PurlinCrSc = PurlinCrSc_temp;
+            fDistanceGirts = fDistanceGirts_temp;
+            fDistancePurlins = fDistancePurlins_temp;
+            ColumnCrSc = ColumnCrSc_temp;
+            RafterCrSc = RafterCrSc_temp;
+            ColumnCrSc_EF = ColumnCrSc_EF_temp;
+            RafterCrSc_EF = RafterCrSc_EF_temp;
 
             fValueLoadColumnDead = -generalLoad.fDeadLoadTotal_Wall;
             fValueLoadRafterDead = -generalLoad.fDeadLoadTotal_Roof;
@@ -55,7 +90,16 @@ namespace PFD
             fL_tot = model.fL_tot;
             m_arrLoadCases = model.m_arrLoadCases;
             m_arrMembers = model.m_arrMembers;
-            
+
+            GirtCrSc = model.m_arrCrSc[(int)EMemberGroupNames.eGirtWall];
+            PurlinCrSc = model.m_arrCrSc[(int)EMemberGroupNames.ePurlin];
+            fDistanceGirts = model.fDist_Girt;
+            fDistancePurlins = model.fDist_Purlin;
+            ColumnCrSc = model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn];
+            RafterCrSc = model.m_arrCrSc[(int)EMemberGroupNames.eRafter];
+            ColumnCrSc_EF = model.m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF];
+            RafterCrSc_EF = model.m_arrCrSc[(int)EMemberGroupNames.eRafter_EF];
+
             fValueLoadColumnDead = -generalLoad.fDeadLoadTotal_Wall;
             fValueLoadRafterDead = -generalLoad.fDeadLoadTotal_Roof;
             fValueLoadRafterImposed = -generalLoad.fImposedLoadTotal_Roof;
@@ -124,6 +168,15 @@ namespace PFD
                 GenerateLoadsOnFrame(i,
                 fValueLoadColumnDead,
                 fValueLoadRafterDead,
+                GirtCrSc,
+                PurlinCrSc,
+                fDistanceGirts,
+                fDistancePurlins,
+                ColumnCrSc,
+                RafterCrSc,
+                ColumnCrSc_EF,
+                RafterCrSc_EF,
+
                 fValueLoadRafterImposed,
                 fValueLoadRafterSnowULS_Nu_1,
                 fValueLoadRafterSnowULS_Nu_2,
@@ -225,8 +278,16 @@ namespace PFD
 
         public void GenerateLoadsOnFrame(
             int iFrameIndex,
-            float fValueLoadColumnDead,
-            float fValueLoadRafterDead,
+            float fValueLoadWallCladdingSelfWeight_SurfaceLoad,
+            float fValueLoadRoofCladdingSelfWeight_SurfaceLoad,
+            CCrSc GirtCrSc,
+            CCrSc PurlinCrSc,
+            float fDistanceGirts,
+            float fDistancePurlins,
+            CCrSc ColumnCrSc,
+            CCrSc RafterCrSc,
+            CCrSc ColumnCrSc_EF,
+            CCrSc RafterCrSc_EF,
             float fValueLoadRafterImposed,
             float fValueLoadRafterSnowULS_Nu_1,
             float fValueLoadRafterSnowULS_Nu_2,
@@ -296,22 +357,41 @@ namespace PFD
             float fFrameTributaryWidth = fL1_frame;
             float fFrameGCSCoordinate_Y = iFrameIndex * fL1_frame;
 
+            // Additional surface dead load
+            float fSelfWeight_Girts_SurfaceLoad = -(float)(GirtCrSc.A_g * GirtCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration / fDistanceGirts);
+            float fSelfWeight_Purlins_SurfaceLoad = -(float)(PurlinCrSc.A_g * PurlinCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration / fDistancePurlins);
+
+            float fSelfWeightColumn = -(float)(ColumnCrSc.A_g * ColumnCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
+            float fSelfWeightRafter = -(float)(RafterCrSc.A_g * RafterCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
+
             // Half tributary width - first and last frame
             if (iFrameIndex == 0 || iFrameIndex == iFrameNo - 1)
+            {
                 fFrameTributaryWidth *= 0.5f;
+                fSelfWeightColumn = -(float)(ColumnCrSc_EF.A_g * ColumnCrSc_EF.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
+                fSelfWeightRafter = -(float)(RafterCrSc_EF.A_g * RafterCrSc_EF.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
+            }
+
+            // Total surface dead load
+            float fValueLoadColumnDead_Surface = fValueLoadWallCladdingSelfWeight_SurfaceLoad + fSelfWeight_Girts_SurfaceLoad;
+            float fValueLoadRafterDead_Surface = fValueLoadRoofCladdingSelfWeight_SurfaceLoad + fSelfWeight_Purlins_SurfaceLoad;
+
+            // Final uniform linear member load
+            float fValueLoadColumnDead = fValueLoadColumnDead_Surface * fFrameTributaryWidth + fSelfWeightColumn;
+            float fValueLoadRafterDead = fValueLoadRafterDead_Surface * fFrameTributaryWidth + fSelfWeightRafter;
 
             // Dead Loads
             // Columns
-            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * 4 + 1, fValueLoadColumnDead * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
+            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * 4 + 1, fValueLoadColumnDead, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
             // Osovy system praveho stlpa smeruje zhora nadol, takze hodnota zatazenia v LCS je s opacnym znamienkom (* -1)
-            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * 4 + 2, -fValueLoadColumnDead * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
+            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * 4 + 2, -fValueLoadColumnDead, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
             memberLoadDead.Add(loadColumnLeft_DL);
             memberLoadDead.Add(loadColumnRight_DL);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * 4 + 3, fValueLoadRafterDead * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * 4 + 4, fValueLoadRafterDead * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * 4 + 3, fValueLoadRafterDead, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * 4 + 4, fValueLoadRafterDead, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             memberLoadDead.Add(loadRafterLeft_DL);
             memberLoadDead.Add(loadRafterRight_DL);
 
