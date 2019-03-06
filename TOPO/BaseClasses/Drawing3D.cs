@@ -1749,6 +1749,12 @@ namespace BaseClasses
             return r1;
         }
 
+        public static Rect GetRectanglesIntersection(Rect r1, Rect r2)
+        {
+            r1.Intersect(r2);
+            return r1;
+        }
+
         public static Point GetPoint_IgnoreZ(Point3D p)
         {
             return new Point(p.X, p.Y);
