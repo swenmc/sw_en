@@ -94,7 +94,15 @@ namespace PFD
             */
 
             // TODO - TEMPORARY - natvrdo vyrobena podpora a pridany do kolekcie prvy a posledny uzol ramu
-            CNSupport support = model.m_arrNSupports[0];
+
+            // Vyrobime podporu v 2D (rovina XY, rotacia okolo Z) z podpory v 3D (rovina XZ,rotacia okolo Y)
+
+            bool [] bRestrain = new bool[3];
+            bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Ux] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ux];
+            bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Uy] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz];
+            bRestrain[(int)BaseClasses.ENSupportType_2D.eNST_Rz] = model.m_arrNSupports[0].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry];
+
+            CNSupport support = new CNSupport((int)ENDOF.e2DEnv, 1, null, bRestrain, 0);
             support.m_iNodeCollection = new int[2];
             support.m_iNodeCollection[0] = 1;
             support.m_iNodeCollection[1] = 5;

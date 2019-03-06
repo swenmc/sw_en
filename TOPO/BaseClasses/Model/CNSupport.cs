@@ -13,8 +13,6 @@ namespace BaseClasses
         public int[] m_iNodeCollection; // List / Collection of nodes IDs where support is defined [First member index is 0]
         private CNode m_Node; // Musi sa vymazat z tejto triedy a ostane len list of nodes
 
-        private ENSupportType m_NSupportType;
-
         // Restraints - list of node degreess of freedom
         // false - 0 - free DOF
         // true - 1 - restrained (rigid)
@@ -27,11 +25,6 @@ namespace BaseClasses
         {
             get { return m_Node; }
             set { m_Node = value; }
-        }
-        public ENSupportType NSupportType
-        {
-            get { return m_NSupportType; }
-            set { m_NSupportType = value; }
         }
 
         //----------------------------------------------------------------------------

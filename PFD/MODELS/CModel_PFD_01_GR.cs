@@ -1303,7 +1303,7 @@ namespace PFD
             #endregion
 
             #region Frame Member Loads
-            // Surface Loads
+            // Frame Member Loads
             if (bGenerateLoadsOnMembers && bGenerateLoadsOnFrameMembers)
             {
                 CMemberLoadGenerator loadGenerator = 

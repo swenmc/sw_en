@@ -220,22 +220,19 @@ namespace PFD
                     if (topomodel.m_arrLoadCases[i].MemberLoadsList[j] == null) continue;
                     //if (topomodel.m_arrLoadCases[i].MemberLoadsList[j].IMemberCollection != null) // PODOBNY PROBLEM AKO S CNSUPPORT - mal by to byt objekt v ktorom je list prutov ktorym je priradeny, ale teraz je CMLoad definovane na kazdom prute zvlast
 
-                    for (int k = 0; k < topomodel.m_arrLoadCases[i].MemberLoadsList.Count; k++)
+                    Load BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].MemberLoadsList[j], loadcases[i]);
+                    if (BFEMLoad != null)
                     {
-                        Load BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].MemberLoadsList[j], loadcases[i]);
-                        if (BFEMLoad != null)
+                        // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
+                        int iMemberIndex_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
+
+                        if (iMemberIndex_FM < 0 || iMemberIndex_FM > elementCollection.Count - 1) // Validation
                         {
-                            // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
-                            int iMemberIndex_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
-
-                            if (iMemberIndex_FM < 0 || iMemberIndex_FM > elementCollection.Count-1) // Validation
-                            {
-                                // Index pruta ma byt od 0 - 3, ale odkaz v zatazeni je Member.ID je z globalneho modelu
-                                throw new ArgumentException("Invalid ID of member assigned to the member load");
-                            }
-
-                            elementCollection[iMemberIndex_FM].Loads.Add(BFEMLoad);
+                            // Index pruta ma byt od 0 - 3, ale odkaz v zatazeni je Member.ID je z globalneho modelu
+                            throw new ArgumentException("Invalid ID of member assigned to the member load");
                         }
+
+                        elementCollection[iMemberIndex_FM].Loads.Add(BFEMLoad);
                     }
                 }
             }

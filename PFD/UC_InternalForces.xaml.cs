@@ -110,10 +110,10 @@ namespace PFD
             }
 
             // Frame internal forces enabled only for type of members Main Columns and Rafters
-            if (vm.ComponentTypeIndex == (int)EMemberType_FS.eMC ||
-                vm.ComponentTypeIndex == (int)EMemberType_FS.eMR ||
-                vm.ComponentTypeIndex == (int)EMemberType_FS.eEC ||
-                vm.ComponentTypeIndex == (int)EMemberType_FS.eER)
+            if (vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn ||
+                vm.ComponentTypeIndex == (int)EMemberGroupNames.eRafter ||
+                vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn_EF ||
+                vm.ComponentTypeIndex == (int)EMemberGroupNames.eMainColumn_EF)
                 Button_Frame_2D.IsEnabled = true;
             else
                 Button_Frame_2D.IsEnabled = false;
