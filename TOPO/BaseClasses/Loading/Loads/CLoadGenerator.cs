@@ -129,7 +129,37 @@ namespace BaseClasses
             Point3D pStartLCS = inverseTrans.Transform(pStart);
             Point3D pEndLCS = inverseTrans.Transform(pEnd);
 
+            // Surface load - local coordinate system
+
+            // Rectangular
+
+            //            4 [0,cY]  _____________  3 [cX,cY]
+            //                     |             |
+            //                     |             |
+            // ^ y                 |             |
+            // |                   |_____________|
+            // |          1 [0,0]                  2 [cX,0]
+            // o----->x
+
+            // Trapezoidal
+            //                            4 [cX2,cY2]
+            //                           /\
+            //                          /  \
+            //                         /    \
+            //                        /      \
+            //                       /        \
+            //            5 [0,cY1] /          \  3 [cX1,cY1]
+            //                     |            |
+            // ^ y                 |            |
+            // |                   |____________|
+            // |          1 [0,0]                  2 [cX1,0]
+            // o----->x
+
             //tu si nie som uplne isty,ci je dany 1. a 3. bodom (obdlznik je definovany 2 bodmi, bottomleft a topright)
+            // To Ondrej - ak tomu rozumiem spravne tak rectangle Rect je definovany v lavotocivom systeme x,y s [0,0] v TopLeft,
+            // zatial co body plochy su definovane v pravotocivom systeme x,y s [0,0] BottomLeft
+            // Neviem ci to nemoze robit problemy
+
             Point p1r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[0]);
             Point p2r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[2]);
 
@@ -138,8 +168,8 @@ namespace BaseClasses
             Point p1r2 = Drawing3D.GetPoint_IgnoreZ(pStartLCS);
             Point p2r2 = Drawing3D.GetPoint_IgnoreZ(pEndLCS);
 
-            Rect loadRect = new Rect(p1r1, p2r1);
-            Rect memberRect = new Rect(p1r2, p2r2);
+            Rect loadRect = new Rect(p1r1, p2r1); // Rectangle defined in LCS of surface load
+            Rect memberRect = new Rect(p1r2, p2r2); // To Ondrej Tu je problem - vracia to napriklad obdlznik s nulovym rozmerom Height
 
             Rect intersection = Drawing3D.GetRectanglesIntersection(loadRect, memberRect);
             if (intersection == Rect.Empty)
@@ -148,18 +178,18 @@ namespace BaseClasses
             }
             else if (intersection == memberRect)
             {
-                float fMemberLoadValue = l.fValue * fDist;
-                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                float fq = l.fValue * fDist; // Load Value
+                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                 iLoadID += 1;
             }
             else
             {
                 //nie som si isty,ci to je spravne
-                float fq = (float)(l.fValue * intersection.Height);
-                float faA = (float)(memberRect.Width - intersection.Width);
-                float fs = (float)intersection.Width;
+                float fq = (float)(l.fValue * intersection.Height); // Load Value
+                float faA = (float)(memberRect.Width - intersection.Width); // Load start point on member (absolute coordinate x)
+                float fs = (float)intersection.Width; // Load segment length on member (absolute coordinate x)
 
-                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                 iLoadID += 1;
             }
         }

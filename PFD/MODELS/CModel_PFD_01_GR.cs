@@ -1305,8 +1305,11 @@ namespace PFD
             // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
             // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
 
-            if(bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts) // TODO - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
-            CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+            if (bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts) // TODO - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
+            {
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlinsLeftSide, fDist_Purlin); // Test
+                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+            }
 
             #endregion
 
