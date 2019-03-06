@@ -28,6 +28,8 @@ namespace M_EC1.AS_NZS
         BuildingGeometryDataInput sGeometryInput;
         WindLoadDataInput sWindInput;
 
+        bool bConsiderCardinalDirectionsAndDifferentValues_M_D = false; // TODO - napojit na GUI
+
         float fz_max = 200f; // m
         public float fz;
         public float fh;
@@ -192,12 +194,19 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            // Gable roof
+            // TODO - k tymto rozmerom treba pridat rozmery prierezov
+            sGeometryInput.fWidthTotal = sGeometryInput.fW + 0.63f; // vyska prierezu stlpov + 2 x plech....
+            sGeometryInput.fLengthTotal = sGeometryInput.fL + 0.18f; // sirka prierezu stlpov + 2x plech....
+            sGeometryInput.fEaveHeight = sGeometryInput.fH_1 + 0.63f/2f; // 0.5 * vyska prierezu stlpov (faktor pootocenia) + plech....
+            sGeometryInput.fRidgeHeight = sGeometryInput.fH_2 + 0.63f / 2f; // 0.5 * vyska prierezu stlpov (faktor pootocenia) + plech....
+
+            fz = sGeometryInput.fEaveHeight + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
             fh = fz;
 
-            fRoofArea = sGeometryInput.fW / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fL;
-            fWallArea_0or180 = sGeometryInput.fH_1 * sGeometryInput.fL;
-            fWallArea_90or270 = sGeometryInput.fH_1 * sGeometryInput.fW + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1) * sGeometryInput.fW; // Gable Roof
+            fRoofArea = sGeometryInput.fWidthTotal / (float)Math.Cos(sGeometryInput.fRoofPitch_deg / 180 * Math.PI) * sGeometryInput.fLengthTotal;
+            fWallArea_0or180 = sGeometryInput.fEaveHeight * sGeometryInput.fLengthTotal;
+            fWallArea_90or270 = sGeometryInput.fEaveHeight * sGeometryInput.fWidthTotal + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight) * sGeometryInput.fWidthTotal; // Gable Roof
 
             fK_l_upwind = fK_l_downwind = 1.0f;
             fM_lee = 1.0f;
@@ -221,7 +230,7 @@ namespace M_EC1.AS_NZS
             float fh_s = 0.1f;     // Average roof height of shielding buildings
             float fb_s = 0.1f;     // Average breadth of shielding buildings, normal to the wind stream
             int in_s = 1;          // Number of upwind shielding buildings within a 45° sector of radius 20h and with hs >= z
-            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fH_2, in_s);
+            fs_shielding = AS_NZS_1170_2.Eq_43_1____(fl_s, fh_s, fb_s, sGeometryInput.fRidgeHeight, in_s);
             SetShieldingMultiplier();
 
             // M_t
@@ -243,7 +252,7 @@ namespace M_EC1.AS_NZS
             sGeometryInput = sGeometryData_temp;
             sWindInput = sWindData_temp;
 
-            fz = sGeometryInput.fH_1 + 0.5f * (sGeometryInput.fH_2 - sGeometryInput.fH_1); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
+            fz = sGeometryInput.fEaveHeight + 0.5f * (sGeometryInput.fRidgeHeight - sGeometryInput.fEaveHeight); // Set height of building // referencna vyska uprosted sklonu, overit ??? Generally, the wind speed is determined at the average roof height (h).
             fh = fz;
 
             //fz = sWinDataSpecific_temp.fz;
@@ -253,7 +262,7 @@ namespace M_EC1.AS_NZS
             fWallArea_0or180 = fRoofArea; // Temp
             fWallArea_90or270 = fRoofArea; // Temp
 
-            float fa = MathF.Min(0.2f * sGeometryInput.fW, 0.2f * sGeometryInput.fL, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
+            float fa = MathF.Min(0.2f * sGeometryInput.fWidthTotal, 0.2f * sGeometryInput.fLengthTotal, fh); // The value of dimension a is the minimum of 0.2b or 0.2d or the height (h) // TODO - rozmery maju byt rozne podla smeru posobenia vetra
 
             fK_l_upwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceUpwind);
             fK_l_downwind = Get_LocalPressureFactor_Kl(fa, sWinDataSpecific_temp.eLocalPressureReferenceDownwind);
@@ -393,11 +402,11 @@ namespace M_EC1.AS_NZS
             float fb; // Width perpendicular to the wind direction
             float fd; // Length in wind direction;
 
-            float fRatioDtoB_Theta0or180 = sGeometryInput.fL / sGeometryInput.fW;
-            float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fL;
+            float fRatioDtoB_Theta0or180 = sGeometryInput.fLengthTotal / sGeometryInput.fWidthTotal;
+            float fRatioHtoD_Theta0or180 = fh / sGeometryInput.fLengthTotal;
 
-            float fRatioDtoB_Theta90or270 = sGeometryInput.fW / sGeometryInput.fL;
-            float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fW;
+            float fRatioDtoB_Theta90or270 = sGeometryInput.fWidthTotal / sGeometryInput.fLengthTotal;
+            float fRatioHtoD_Theta90or270 = fh / sGeometryInput.fWidthTotal;
 
             // Table 5.2(A) - Walls external pressure coefficients (Cpe) for rectangular enclosed buildings - windward wall (W)
             bool bIsBuildingOnGround = true;
@@ -734,8 +743,8 @@ namespace M_EC1.AS_NZS
             // 0 or 180 deg
             if (fRatioDtoH_Theta0or180 > 4 || fRatioDtoB_Theta0or180 > 4)
             {
-                fb = sGeometryInput.fL;
-                fd = sGeometryInput.fW;
+                fb = sGeometryInput.fLengthTotal;
+                fd = sGeometryInput.fWidthTotal;
 
                 float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
 
@@ -746,14 +755,14 @@ namespace M_EC1.AS_NZS
 
             if (fRatioDtoH_Theta90or270 > 4 || fRatioDtoB_Theta90or270 > 4)
             {
-                fb = sGeometryInput.fW;
-                fd = sGeometryInput.fL;
+                fb = sGeometryInput.fWidthTotal;
+                fd = sGeometryInput.fLengthTotal;
 
                 float fx_length = MathF.Max(fd, MathF.Min(4 * fh, 4 * fb));
 
                 fArea_Theta90or270 = GetArea_Table_5_9(fh, fb, fd);
 
-                fC_f_Theta90or270 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh, sGeometryInput.fW, eSurfaceDescription);
+                fC_f_Theta90or270 = GetFrictionalDragCoefficient_Table_5_9(fx_length, fh, fb, eSurfaceDescription);
             }
 
             float fK_c = 1.0f; // TODO - dopracovat podla kombinacii external and internal pressure
@@ -1039,19 +1048,26 @@ namespace M_EC1.AS_NZS
                     int i = 0;
                     while (reader.Read())
                     {
-                        if (sWindInput.eWindRegion != EWindRegion.eB &&
-                            sWindInput.eWindRegion != EWindRegion.eC &&
-                            sWindInput.eWindRegion != EWindRegion.eD)
+                        if (bConsiderCardinalDirectionsAndDifferentValues_M_D)
                         {
-                            // 3.3.1 Regions A and W
-                            fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString(), nfi);
+                            if (sWindInput.eWindRegion != EWindRegion.eB &&
+                                sWindInput.eWindRegion != EWindRegion.eC &&
+                                sWindInput.eWindRegion != EWindRegion.eD)
+                            {
+                                // 3.3.1 Regions A and W
+                                fM_D_array_values_9[i] = float.Parse(reader[sWindRegion].ToString(), nfi);
+                            }
+                            else
+                            {
+                                // 3.3.2 - Regions B, C and D
+                                fM_D_array_values_9[i] = 0.95f;
+
+                                // // 3.3.2(b) TODO - doplnit identifikaciu ci sa jedna o celu budovu alebo podruzne prvky (cladding, purlins girts Md = 1.0)
+                            }
                         }
                         else
                         {
-                            // 3.3.2 - Regions B, C and D
-                            fM_D_array_values_9[i] = 0.95f;
-
-                            // // 3.3.2(b) TODO - doplnit identifikaciu ci sa jedna o celu budovu alebo podruzne prvky (cladding, purlins girts Md = 1.0)
+                            fM_D_array_values_9[i] = 1.00f; // Same for all directions
                         }
 
                         sWindDirections_9[i] = reader["cardinalDirection"].ToString();

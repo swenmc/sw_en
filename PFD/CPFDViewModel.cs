@@ -161,10 +161,14 @@ namespace PFD
 
                 if (MModelIndex != 0)
                 {
+                    // UHOL ZACHOVAME ROVNAKY - V OPACNOM PRIPADE SA NEUPDATOVALA SPRAVNE VYSKA h2
+
                     // Recalculate roof pitch
-                    fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));
+                    //fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));
                     // Set new value in GUI
-                    MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
+                    //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
+                    // Recalculate roof heigth
+                    fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
 
                 NotifyPropertyChanged("GableWidth");
@@ -784,12 +788,30 @@ namespace PFD
 
         public void CreateModel()
         {
+            BuildingGeometryDataInput sBuildingGeometryData;
+
+            // Centerline dimenions
+            sBuildingGeometryData.fW = GableWidth;
+            sBuildingGeometryData.fL = Length;
+            sBuildingGeometryData.fH_1 = WallHeight;
+            sBuildingGeometryData.fH_2 = fh2;
+
+            sBuildingGeometryData.fRoofPitch_deg = RoofPitch_deg;
+
+            // Total dimensions
+            sBuildingGeometryData.fWidthTotal = GableWidth;
+            sBuildingGeometryData.fLengthTotal = Length;
+            sBuildingGeometryData.fEaveHeight = WallHeight;
+            sBuildingGeometryData.fRidgeHeight = fh2;
+
             // Create 3D model of structure including loading
             MModel = new CModel_PFD_01_GR(
-                    WallHeight,
-                    GableWidth,
-                    fL1, Frames,
-                    fh2,
+                    sBuildingGeometryData,
+                    //WallHeight,
+                    //GableWidth,
+                    //fL1,
+                    Frames,
+                    //fh2,
                     GirtDistance,
                     PurlinDistance,
                     ColumnDistance,

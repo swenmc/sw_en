@@ -635,10 +635,16 @@
 
     public struct BuildingGeometryDataInput
     {
-        public float fW;     // Width X -axis
-        public float fL;     // Length Y -axis
-        public float fH_2;   // Height of building
-        public float fH_1;   // Height of wall
+        public float fW;     // Width X -axis - centerlines
+        public float fL;     // Length Y -axis - centerlines
+        public float fH_2;   // Height of building - centerlines
+        public float fH_1;   // Height of wall - centerlines
+
+        public float fWidthTotal;
+        public float fLengthTotal;
+        public float fEaveHeight;
+        public float fRidgeHeight;
+
         public float fRoofPitch_deg;
     }
 

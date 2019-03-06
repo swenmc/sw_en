@@ -52,11 +52,12 @@ namespace PFD
 
         public CModel_PFD_01_GR
             (
-                float fH1_temp,
-                float fW_temp,
-                float fL1_temp,
+                BuildingGeometryDataInput sGeometryInputData,
+                //float fH1_temp,
+                //float fW_temp,
+                //float fL1_temp,
                 int iFrameNo_temp,
-                float fH2_temp,
+                //float fH2_temp,
                 float fDist_Girt_temp,
                 float fDist_Purlin_temp,
                 float fDist_FrontColumns_temp,
@@ -78,13 +79,20 @@ namespace PFD
                 bool bGenerateSurfaceLoads
             )
         {
-            fH1_frame = fH1_temp;
-            fW_frame = fW_temp;
-            fL1_frame = fL1_temp;
+            fH1_frame = sGeometryInputData.fH_1;
+            fW_frame = sGeometryInputData.fW;
+            fL_tot = sGeometryInputData.fL;
             iFrameNo = iFrameNo_temp;
-            fH2_frame = fH2_temp;
+            fH2_frame = sGeometryInputData.fH_2;
 
-            fL_tot = (iFrameNo - 1) * fL1_frame;
+            //fH1_frame = fH1_temp;
+            //fW_frame = fW_temp;
+            //fL1_frame = fL1_temp;
+            iFrameNo = iFrameNo_temp;
+            //fH2_frame = fH2_temp;
+
+            //fL_tot = (iFrameNo - 1) * fL1_frame;
+            fL1_frame = fL_tot / (iFrameNo - 1);
 
             fDist_Girt = fDist_Girt_temp;
             fDist_Purlin = fDist_Purlin_temp;
