@@ -511,9 +511,31 @@ namespace PFD
         {
             sWindInputData.eWindRegion = loadinput.WindRegion;
             sWindInputData.iAngleWindDirection = loadinput.AngleWindDirectionIndex;
-            sWindInputData.fTerrainCategory = loadinput.TerrainCategoryIndex;
+            sWindInputData.fTerrainCategory = GetTerrainCategory(loadinput.TerrainCategoryIndex);
 
             wind = new CCalcul_1170_2(sBuildingInputData, sGeometryInputData, sWindInputData);
+        }
+
+        // TODO - refaktorovat tuto funkciu s UC_Load
+        private float GetTerrainCategory(int iCategoryIndex) // TODO - prerobit na nacitanie z databazy
+        {
+            if (iCategoryIndex == 0)
+                return 1.0f;
+            else if (iCategoryIndex == 1)
+                return 1.5f;
+            else if (iCategoryIndex == 2)
+                return 2.0f;
+            else if (iCategoryIndex == 3)
+                return 2.5f;
+            else if (iCategoryIndex == 4)
+                return 3.0f;
+            else if (iCategoryIndex == 5)
+                return 4.0f;
+            else
+            {
+                // Invalid index
+                return -1;
+            }
         }
 
         public void CalculateEQParameters(float fT_1x_param, float fT_1y_param, float fMass_Total_x_param, float fMass_Total_y_param)

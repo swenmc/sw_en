@@ -167,7 +167,7 @@ namespace PFD
                     //fRoofPitch_radians = (float)Math.Atan((fh2 - MWallHeight) / (0.5f * MGableWidth));
                     // Set new value in GUI
                     //MRoofPitch_deg = (fRoofPitch_radians * 180f / MathF.fPI);
-                    // Recalculate roof heigth
+                    // Recalculate roof height
                     fh2 = MWallHeight + 0.5f * MGableWidth * (float)Math.Tan(fRoofPitch_radians);
                 }
 

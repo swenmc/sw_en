@@ -660,6 +660,7 @@
     {
         public EWindRegion eWindRegion; // Wind region // Wind region Cl 3.2 - Fig 3.1(A)
         public int iAngleWindDirection; // Clockwise angle between Notrth  cardinal direction (Beta = 0) and Theta = 0 (building side L)
+        //public int iTerrainCategoryIndex;
         public float fTerrainCategory;  // float value 1-4 see Tab 4.2
     }
 
