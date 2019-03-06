@@ -95,7 +95,7 @@ namespace Examples
             // Member Loads
             //m_arrMLoads[0] = new BaseClasses.CMLoad_12(1.0f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12,EMLoadType.eMLT_F,EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 
-            m_arrMLoads[0] = new CMLoad_21(1, -0.8f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            m_arrMLoads[0] = new CMLoad_21(1, -0.8f, m_arrMembers[0], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
             //m_arrMLoads[1] = new BaseClasses.CMLoad_21(1.0f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FYU_MZV, true, 0);
             //m_arrMLoads[2] = new BaseClasses.CMLoad_21(1.5f, m_arrMembers[0], EMLoadTypeDistr.eMLT_FS_H_12, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
 

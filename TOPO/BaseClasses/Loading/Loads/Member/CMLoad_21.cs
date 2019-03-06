@@ -50,6 +50,7 @@ namespace BaseClasses
         public CMLoad_21(int id_temp, 
             float fq,
             CMember member_aux,
+            ELoadCoordSystem mLoadCoordinateSystem,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
             EMLoadDirPCC1 eDirPPC,
@@ -59,6 +60,7 @@ namespace BaseClasses
             ID = id_temp;
             Fq = fq;
             Member = member_aux;
+            ELoadCS = mLoadCoordinateSystem;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
             EDirPPC = eDirPPC;

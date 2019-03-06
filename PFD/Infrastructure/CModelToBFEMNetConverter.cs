@@ -236,15 +236,17 @@ namespace PFD
                     }
                 }
             }
-            
+
             model.Solve();
             // model.Solve_MPC(); //no difference with Model.Solve() - toto su asi identicke prikazy
 
             //model.ShowInternalForce();  //toto tu nebude fungovat pokial to chceme pocitat v Background THREAD
             //model.Show(); //toto tu nebude fungovat pokial to chceme pocitat v Background THREAD
 
-            //temporary off
-            //BFEMNetModelHelper.DisplayResultsinConsole(model, loadcombinations, false);
+            bool bDebugMemberResults = false; // Display member IF results in console
+
+            if(bDebugMemberResults)
+               BFEMNetModelHelper.DisplayResultsinConsole(model, loadcombinations, false);
 
             // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
             topomodel.LoadCombInternalForcesResults = BFEMNetModelHelper.GetResultsList(model, loadcombinations);

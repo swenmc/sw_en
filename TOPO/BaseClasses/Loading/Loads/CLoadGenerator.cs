@@ -97,10 +97,8 @@ namespace BaseClasses
 
                                 //ak by bol cely pod tou surface load
                                 float fMemberLoadValue = l.fValue * fDist;
-                                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                                 iLoadID += 1;
-
-                                
                             }
                         }
                         else if (csload is CSLoad_FreeUniform)
@@ -132,7 +130,7 @@ namespace BaseClasses
 
                             //ak by bol cely pod tou surface load
                             float fMemberLoadValue = l.fValue * fDist;
-                            lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
+                            lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fMemberLoadValue, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
                             iLoadID += 1;
                         }
 
