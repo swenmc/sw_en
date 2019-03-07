@@ -217,13 +217,17 @@ namespace BaseClasses
             Point p2r1 = Drawing3D.GetPoint_IgnoreZ(l.SurfaceDefinitionPoints[2]);
 
             // TO Ondrej - Tento rozmer musi byt vzdy kolmy na lokalnu osu x pruta
+            bool bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x;
+
             if (MathF.d_equal(pStartLCS.X, pEndLCS.X))
             {
+                bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x = false;
                 pStartLCS.X -= fDist / 2;
                 pEndLCS.X += fDist / 2;
             }
             else
             {
+                bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x = true;
                 pStartLCS.Y -= fDist / 2;
                 pEndLCS.Y += fDist / 2;
             }
@@ -270,22 +274,48 @@ namespace BaseClasses
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Rect intersection = Drawing3D.GetRectanglesIntersection(loadRect, memberRect);
+
+            double dMemberLoadStartCoordinate_x_axis;
+            double dIntersectionLengthInMember_x_axis;
+            double dIntersectionLengthInMember_yz_axis;
+
+            if (bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x)
+            {
+                if (loadRect.Right > memberRect.Right)
+                    dMemberLoadStartCoordinate_x_axis = memberRect.Right - loadRect.Left; // Plocha v smere x konci za prutom
+                else
+                    dMemberLoadStartCoordinate_x_axis = loadRect.Right - memberRect.Left; // Plocha v smere x konci pred prutom
+
+                dIntersectionLengthInMember_x_axis = intersection.Width;   // Length of applied load
+                dIntersectionLengthInMember_yz_axis = intersection.Height; // Tributary width
+            }
+            else
+            {
+                if (loadRect.Bottom > memberRect.Bottom)
+                    dMemberLoadStartCoordinate_x_axis = memberRect.Bottom - loadRect.Top; // Plocha v smere x konci za prutom
+                else
+                    dMemberLoadStartCoordinate_x_axis = loadRect.Bottom - memberRect.Top; // Plocha v smere x konci pred prutom
+
+                dIntersectionLengthInMember_x_axis = intersection.Height; // Length of applied load
+                dIntersectionLengthInMember_yz_axis = intersection.Width; // Tributary width
+            }
+
             if (intersection == Rect.Empty)
             {
                 return;
             }
-            else if (intersection == memberRect)
+            else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
             {
-                float fq = l.fValue * fDist; // Load Value
+                float fq = l.fValue * (float)dIntersectionLengthInMember_yz_axis; // Load Value
                 lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, eMemberLoadDirection, true, 0));
                 iLoadID += 1;
             }
             else
             {
                 //nie som si isty,ci to je spravne
-                float fq = (float)(l.fValue * intersection.Height); // Load Value
-                float faA = (float)(memberRect.Width - intersection.Width); // Load start point on member (absolute coordinate x)
-                float fs = (float)intersection.Width; // Load segment length on member (absolute coordinate x)
+                float fq = (float)(l.fValue * dIntersectionLengthInMember_yz_axis); // Load Value
+                float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
+                float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
 
                 lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, eMemberLoadDirection, true, 0));
                 iLoadID += 1;
