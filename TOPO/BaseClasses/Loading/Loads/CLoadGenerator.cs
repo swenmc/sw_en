@@ -145,8 +145,8 @@ namespace BaseClasses
             Vector3D vLCS_Y = new Vector3D(0, 1, 0);
             Vector3D vLCS_Z = new Vector3D(0, 0, 1);
 
-            Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup();
-            Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup();
+            Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup(); // TODO Ondrej - podarilo by sa nam niekde vyhrabat tieto transformacie z LCS objektu do GCS (zda sa mi ze je to iste co si odo mna chcel pre minule member)
+            Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup(); // TODO Ondrej - ziskat transformacnu maticu zatazenia z jeho LCS do GCS
 
             // Zaciatok LCS pruta v GCS
             Point3D pMemberLCSOrigin = pStart;
