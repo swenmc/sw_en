@@ -12,62 +12,7 @@ namespace BaseClasses
     public static class CLoadGenerator
     {
         static bool bDebugging = false; // Console output
-
-
-        //// TODO - Ondrej, pripravit staticku triedu a metody pre generovanie member load zo surface load v zlozke Loading
-        //float fMemberLoadValue = ((CSLoad_FreeUniform)m_arrLoadCases[01].SurfaceLoadsList[0]).fValue * fDist_Purlin;
-
-        //    foreach (CMember m in listOfPurlins)
-        //    {
-        //        m_arrLoadCases[01].MemberLoadsList = new List<CMLoad>();
-        //        m_arrLoadCases[01].MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
-        //    }
-
-        //public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, List<CMember> members, float fDist)
-        //{
-        //    foreach (CLoadCase lc in m_arrLoadCases)
-        //    {
-        //        int iLoadID_Temp = 1;
-        //        foreach (CSLoad_Free csload in lc.SurfaceLoadsList)
-        //        {
-        //            if (csload is CSLoad_FreeUniform)
-        //            {
-        //                float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
-        //                foreach (CMember m in members)
-        //                {
-        //                    lc.MemberLoadsList.Add(new CMLoad_21(iLoadID_Temp, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
-        //                    iLoadID_Temp += 1;
-        //                }
-        //            }
-        //            if (csload is CSLoad_FreeUniformGroup)
-        //            {
-        //                CSLoad_FreeUniformGroup group = (CSLoad_FreeUniformGroup)csload;
-        //                foreach (CSLoad_FreeUniform csloadFree in group.LoadList)
-        //                {
-        //                    float fMemberLoadValue = csloadFree.fValue * fDist;
-        //                    foreach (CMember m in members)
-        //                    {
-        //                        lc.MemberLoadsList.Add(new CMLoad_21(iLoadID_Temp, fMemberLoadValue, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
-        //                        iLoadID_Temp += 1;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public static void GenerateMemberLoads(CLoadCase loadCase, List<CMember> members, float fDist)
-        //{
-        //    foreach (CSLoad_Free csload in loadCase.SurfaceLoadsList)
-        //    {
-        //        float fMemberLoadValue = ((CSLoad_FreeUniform)csload).fValue * fDist;
-        //        foreach (CMember m in members)
-        //        {
-        //            loadCase.MemberLoadsList.Add(new CMLoad_21(fMemberLoadValue, m, EMLoadTypeDistr.eMLT_FS_G_11, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0));
-        //        }
-        //    }
-        //}
-
+        
         public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, List<CMember> members, float fDist)
         {
             foreach (CLoadCase lc in m_arrLoadCases)
@@ -84,7 +29,7 @@ namespace BaseClasses
                             Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)csload).CreateTransformCoordGroupOfLoadGroup();
                             foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)csload).LoadList)
                             {
-                                if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform)) // TO Ondrej - tu bol parameter loadGroupTransform = null, ale potom to nikdy nenaslo prut na ploche pretoze dielcia plocha surface load v ramci group bola v LCS, dal som tam ako parameter tu transformaciu, skus sa na to pozriet ci je to spravne
+                                if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform))
                                 {
                                     if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
@@ -145,8 +90,12 @@ namespace BaseClasses
             Vector3D vLCS_Y = new Vector3D(0, 1, 0);
             Vector3D vLCS_Z = new Vector3D(0, 0, 1);
 
-            Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup(); // TODO Ondrej - podarilo by sa nam niekde vyhrabat tieto transformacie z LCS objektu do GCS (zda sa mi ze je to iste co si odo mna chcel pre minule member)
-            Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup(); // TODO Ondrej - ziskat transformacnu maticu zatazenia z jeho LCS do GCS
+            // TODO Ondrej - podarilo by sa nam niekde vyhrabat tieto transformacie z LCS objektu do GCS (zda sa mi ze je to iste co si odo mna chcel pre minule member)
+            Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup();
+            memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m);  //podla kody by som povedal,ze takto ziskam transformaciu pre member, ale ruku do ohna za ten kod nedam
+            // TODO Ondrej - ziskat transformacnu maticu zatazenia z jeho LCS do GCS
+            Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup();
+            loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);  //Done transformacia z LCS->GCS
 
             // Zaciatok LCS pruta v GCS
             Point3D pMemberLCSOrigin = pStart;
@@ -384,6 +333,16 @@ namespace BaseClasses
                 trans.Children.Add(groupTransform);
             }
             return trans.Inverse;
+        }
+        public static Transform3DGroup GetSurfaceLoadTransformFromLCSToGCS(CSLoad_FreeUniform load, Transform3D groupTransform)
+        {
+            Transform3DGroup trans = new Transform3DGroup();
+            trans.Children.Add(load.CreateTransformCoordGroup());
+            if (groupTransform != null)
+            {
+                trans.Children.Add(groupTransform);
+            }
+            return trans;
         }
 
         public static Vector3D GetTransformedVector(Vector3D v, Transform3D transformation)
