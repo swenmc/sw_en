@@ -1760,6 +1760,13 @@ namespace BaseClasses
             return new Point(p.X, p.Y);
         }
 
+        public static Vector3D GetSurfaceNormalVector(Point3D a, Point3D b, Point3D c)
+        {
+                var dir = Vector3D.CrossProduct(b - a, c - a);
+                Vector3D norm = dir;
+                norm.Normalize();
+                return norm;
+        }
 
 
         //private static bool Intersects()
