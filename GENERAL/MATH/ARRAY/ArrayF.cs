@@ -237,5 +237,53 @@ namespace MATH.ARRAY
 
             return outputArray;
         }
+
+        public static void ShowArrayInfo(Array arr)
+        {
+            Console.WriteLine("Length of Array:      {0,3}", arr.Length);
+            Console.WriteLine("Number of Dimensions: {0,3}", arr.Rank);
+
+            // For multidimensional arrays, show number of elements in each dimension.
+            if (arr.Rank > 1)
+            {
+                for (int dimension = 1; dimension <= arr.Rank; dimension++)
+                    Console.WriteLine("   Dimension {0}: {1,3}", dimension, arr.GetUpperBound(dimension - 1) + 1);
+            }
+            Console.WriteLine();
+        }
+
+        public static List<int> GetMultiArrayDimensionList(Array arr)
+        {
+            List<int> listDimensions = new List<int>();
+            //Console.WriteLine("Length of Array:      {0,3}", arr.Length);
+            //Console.WriteLine("Number of Dimensions: {0,3}", arr.Rank);
+
+            // For multidimensional arrays, show number of elements in each dimension.
+            if (arr.Rank > 1)
+            {
+                for (int dimension = 1; dimension <= arr.Rank; dimension++)
+                {
+                    //Console.WriteLine("   Dimension {0}: {1,3}", dimension, arr.GetUpperBound(dimension - 1) + 1);
+                    listDimensions.Add(arr.GetUpperBound(dimension - 1) + 1);
+                }
+            }
+            //Console.WriteLine();
+
+            return listDimensions;
+        }
+
+        public static void MultiplyMultiFloatArrayItems(float factor, ref float[,] arr)
+        {
+            // TODO - Toto by bolo super zobecnit pre rozny pocet rozmerov pola a rozny datovy typ (int, float, double)
+            List<int> arrayDimensionsList = GetMultiArrayDimensionList(arr);
+
+            for (int i = 0; i < arrayDimensionsList[0]; i++)
+            {
+                for (int j = 0; j < arrayDimensionsList[1]; j++)
+                {
+                    arr[i,j] *= -1f;
+                }
+            }
+        }
     }
 }
