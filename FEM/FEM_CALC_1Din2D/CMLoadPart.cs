@@ -35,14 +35,13 @@ namespace FEM_CALC_1Din2D
 
                 // Fill external forces temp values 
 
-                switch (TopoModel.m_arrMLoads[iMLoadIndex].EDirPPC) // Load direction in principal coordinate system XX / YU / ZV
+                switch (TopoModel.m_arrMLoads[iMLoadIndex].ELoadDir) // Load direction in principal coordinate system XX / YU / ZV
                 {
-
                     // 0 - Displacement in x-axis and rotation about x-axis in PCS
                     // 1 - Displacement in y-axis and rotation about z-axis in PCS
                     // 2 - Displacement in z-axis and rotation about y-axis in PCS - not used
 
-                    case EMLoadDirPCC1.eMLD_PCC_FXX_MXX: // Axial force or torsional moment
+                    case ELoadDirection.eLD_X: // Axial force or torsional moment
                         {
                             // DOF RX can't be released - always rigid
                             switch (arrFemMembers[kMemberIndex].m_eSuppType[(int)EM_PCS_DIR1.eUXRX])
@@ -194,7 +193,7 @@ namespace FEM_CALC_1Din2D
                             }
                             break;
                         }
-                    case EMLoadDirPCC1.eMLD_PCC_FYU_MZV: // Transversal load
+                    case ELoadDirection.eLD_Y: // Transversal load
                         {
                             switch (arrFemMembers[kMemberIndex].m_eSuppType[(int)EM_PCS_DIR1.eUYRZ])
                             {
@@ -467,7 +466,7 @@ namespace FEM_CALC_1Din2D
                             }
                             break;
                         }
-                    case EMLoadDirPCC1.eMLD_PCC_FZV_MYU: // Transversal load
+                    case ELoadDirection.eLD_Z: // Transversal load
                     {
                        // DOF UZ and RY can't be released - always rigid for 2D in-plane solution x- axial load, y - transverse load, - z bending moment about axis
                         break;

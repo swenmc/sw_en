@@ -46,7 +46,8 @@ namespace BaseClasses
             CMember member_aux,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
-            EMLoadDirPCC1 eDirPPC,
+            ELoadCoordSystem eLoadCS,
+            ELoadDirection eLoadDir,
             bool bIsDislayed,
             int fTime)
         {
@@ -57,7 +58,8 @@ namespace BaseClasses
             Member = member_aux;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
-            EDirPPC = eDirPPC;
+            ELoadCS = eLoadCS;
+            ELoadDir = eLoadDir;
             BIsDisplayed = bIsDislayed;
             FTime = fTime;
         }

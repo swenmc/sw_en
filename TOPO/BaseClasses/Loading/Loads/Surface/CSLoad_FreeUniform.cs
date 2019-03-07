@@ -21,7 +21,7 @@ namespace BaseClasses
         public CSLoad_FreeUniform(
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
             ELoadCoordSystem eLoadCS_temp,
-            ELoadDir eLoadDirection_temp,
+            ELoadDirection eLoadDirection_temp,
             CPoint pControlPoint_temp,
             Point3DCollection pSurfacePoints_temp,
             float fValue_temp,
@@ -35,7 +35,7 @@ namespace BaseClasses
 
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
-            ELoadDirection = eLoadDirection_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
             pSurfacePoints = pSurfacePoints_temp;
             SurfaceDefinitionPoints = new Point3DCollection(pSurfacePoints_temp);
@@ -56,7 +56,7 @@ namespace BaseClasses
         public CSLoad_FreeUniform(
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
-               ELoadDir eLoadDirection_temp,
+               ELoadDirection eLoadDirection_temp,
                CPoint pControlPoint_temp,
                float fX_dimension,
                float fY_dimension,
@@ -71,7 +71,7 @@ namespace BaseClasses
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
-            ELoadDirection = eLoadDirection_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
 
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
@@ -97,7 +97,7 @@ namespace BaseClasses
         public CSLoad_FreeUniform(
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
-               ELoadDir eLoadDirection_temp,
+               ELoadDirection eLoadDirection_temp,
                CPoint pControlPoint_temp,
                float fX_dimension,
                float fY_dimension,
@@ -113,7 +113,7 @@ namespace BaseClasses
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
-            ELoadDirection = eLoadDirection_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
 
             pSurfacePoints = new Point3DCollection { new Point3D(0, 0, 0), new Point3D(fX_dimension, 0, 0), new Point3D(fX_dimension, fY_dimension, 0), new Point3D(0, fY_dimension, 0) };
@@ -146,7 +146,7 @@ namespace BaseClasses
         public CSLoad_FreeUniform(
         List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
         ELoadCoordSystem eLoadCS_temp,
-        ELoadDir eLoadDirection_temp,
+        ELoadDirection eLoadDirection_temp,
         CPoint pControlPoint_temp,
         float fX_dimension,
         float fY1_dimension,
@@ -164,7 +164,7 @@ namespace BaseClasses
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
-            ELoadDirection = eLoadDirection_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
             bIsFourPointBase = bIsFourPointBase_temp;
 
@@ -199,7 +199,7 @@ namespace BaseClasses
         public CSLoad_FreeUniform(
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
-               ELoadDir eLoadDirection_temp,
+               ELoadDirection eLoadDirection_temp,
                CPoint pControlPoint_temp,
                float fX_dimension,
                float fY1_dimension,
@@ -219,7 +219,7 @@ namespace BaseClasses
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
-            ELoadDirection = eLoadDirection_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
             bIsFourPointBase = bIsFourPointBase_temp;
 
@@ -279,7 +279,7 @@ namespace BaseClasses
                 float fy = 0.0f;
 
                 // Todo limit 35 stupnov je tak trosku riskantny, asi by to malo byt zadane jednoznacne ci sa maju skosit hrany kvadra, resp ze normala plochy zviera s osou Z uhol mensi nez 90 stupnov
-                if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDirection == ELoadDir.eLD_Z && Math.Abs(RotationX_deg) < 35) // Load defined in GCS in global Z direction, rotation is less than 35 deg in absolute value - so we know that it is roof pitch angle
+                if (ELoadCS == ELoadCoordSystem.eGCS && ELoadDir == ELoadDirection.eLD_Z && Math.Abs(RotationX_deg) < 35) // Load defined in GCS in global Z direction, rotation is less than 35 deg in absolute value - so we know that it is roof pitch angle
                 {
                     // Move coordinates in y-direction
                     fy = (float)(Math.Tan(RotationX_deg / 180 * Math.PI) * fValueFor3D);

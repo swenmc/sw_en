@@ -296,11 +296,11 @@ namespace PFD
 
                 LoadDirection eLD;
 
-                if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                if (load.ELoadDir == BaseClasses.ELoadDirection.eLD_X)
                     eLD = LoadDirection.X;
-                else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                else if (load.ELoadDir == BaseClasses.ELoadDirection.eLD_Y)
                     eLD = LoadDirection.Y;
-                else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                else //if (load.EDirection == ELoadDirection.eLD_Z)
                     eLD = LoadDirection.Z;
 
                 lu = new UniformLoad1D(load.Fq, eLD, eCS, loadCase);
@@ -326,11 +326,11 @@ namespace PFD
 
                 LoadDirection eLD;
 
-                if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                if (load.ELoadDir == BaseClasses.ELoadDirection.eLD_X)
                     eLD = LoadDirection.X;
-                else if (load.EDirPPC == BaseClasses.EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                else if (load.ELoadDir == BaseClasses.ELoadDirection.eLD_Y)
                     eLD = LoadDirection.Y;
-                else //if (load.EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                else //if (load.ELoadDir == ELoadDirection.eLD_Z)
                     eLD = LoadDirection.Z;
 
                 // PartialTrapezoidalLoad

@@ -1608,7 +1608,7 @@ namespace PFD
 
             if (load.PointsGCS.Count == 0) return null; //toto by podla mna nemalo nastavat a just nastane // To Ondrej - vid komentar vyssie GetTributaryWidth_B
 
-            if (load.ELoadDirection == ELoadDir.eLD_Z)
+            if (load.ELoadDir == ELoadDirection.eLD_Z)
             {
                 if (m.EMemberType == EMemberType_FS.eMR)
                 {

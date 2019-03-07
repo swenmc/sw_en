@@ -30,19 +30,19 @@ namespace BaseClasses
 
         public CMLoad_21(int id_temp,
             float fq,
-            ELoadCoordSystem mLoadCoordSystem,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
-            EMLoadDirPCC1 eDirPPC,
+            ELoadCoordSystem mLoadCoordSystem,
+            ELoadDirection eLoadDir,
             bool bIsDislayed,
             int fTime)
         {
             ID = id_temp;
             Fq = fq;
-            ELoadCS = mLoadCoordSystem;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
-            EDirPPC = eDirPPC;
+            ELoadCS = mLoadCoordSystem;
+            ELoadDir = eLoadDir;
             BIsDisplayed = bIsDislayed;
             FTime = fTime;
         }
@@ -50,20 +50,20 @@ namespace BaseClasses
         public CMLoad_21(int id_temp, 
             float fq,
             CMember member_aux,
-            ELoadCoordSystem mLoadCoordinateSystem,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
-            EMLoadDirPCC1 eDirPPC,
+            ELoadCoordSystem mLoadCS,
+            ELoadDirection eLoadDir,
             bool bIsDislayed,
             int fTime)
         {
             ID = id_temp;
             Fq = fq;
             Member = member_aux;
-            ELoadCS = mLoadCoordinateSystem;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
-            EDirPPC = eDirPPC;
+            ELoadCS = mLoadCS;
+            ELoadDir = eLoadDir;
             BIsDisplayed = bIsDislayed;
             FTime = fTime;
         }

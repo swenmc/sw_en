@@ -33,7 +33,8 @@ namespace BaseClasses
             CMember member_aux,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
-            EMLoadDirPCC1 eDirPPC,
+            ELoadCoordSystem eLoadCS,
+            ELoadDirection eLoadDir,
             bool bIsDislayed,
             int fTime)
         {
@@ -41,7 +42,8 @@ namespace BaseClasses
             Member = member_aux;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
-            EDirPPC = eDirPPC;
+            ELoadCS = eLoadCS;
+            ELoadDir = eLoadDir;
             BIsDisplayed = bIsDislayed;
             FTime = fTime;
         }
@@ -50,7 +52,7 @@ namespace BaseClasses
         {
             Model3DGroup model_gr = new Model3DGroup();
 
-            ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(EDirPPC, MLoadType);
+            ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(ELoadDir, MLoadType);
 
             return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(0.5f * Member.FLength, 0, 0), nLoadType, m_Color, FF, m_fOpacity, m_Material3DGraphics);
         }

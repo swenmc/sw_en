@@ -104,9 +104,9 @@
 
     // Nodes and Members
     //----------------------------------------------------------------------------
-    // Define load direction or orientation in GCC (global coordinate system)
+    // Define load direction in GCS (global coordinate system) or LCS (local coordinate system) of members or PCS (principal coordinate system) of members
     //----------------------------------------------------------------------------
-    public enum ELoadDir
+    public enum ELoadDirection
     {
         eLD_X = 0,
         eLD_Y = 1,
@@ -133,25 +133,7 @@
         eUYRZ,
         eUZRY
     }
-    //----------------------------------------------------------------------------
-    // Define load direction or orientation in LCC (local coordinate system) of members
-    //----------------------------------------------------------------------------
-    public enum EMLoadDirLCC1
-    {
-        eMLD_LCC_FX_MX = 0,
-        eMLD_LCC_Y = 1,
-        eMLD_LCC_Z = 2
-    }
-    //----------------------------------------------------------------------------
-    // Define load direction or orientation in PCC (principal coordinate system) of members
-    //----------------------------------------------------------------------------
-    public enum EMLoadDirPCC1
-    {
-        eMLD_PCC_FXX_MXX = 0,
-        eMLD_PCC_FYU_MZV = 1,
-        eMLD_PCC_FZV_MYU = 2
-    }
-
+ 
     //----------------------------------------------------------------------------
     // Intermediate Transverse Support Type (upper flange, bottom flange, both flanges, etc.)
     //----------------------------------------------------------------------------

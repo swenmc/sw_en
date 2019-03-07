@@ -196,26 +196,26 @@ namespace BaseClasses
             // Load direction and load orientation depends on LCSs relationship
             // Ak normala plochy smeruje rovnakym smerom ako osa z LCS pruta tak je typ a orientacia (znamienko hodnoty zatazenia) rovnake
             // Treba sa s tym pohrat, moze to byt v GCS alebo LCS podla toho v ktorom systeme je definovane zatazenie plochy
-            EMLoadDirPCC1 eMemberLoadDirection = EMLoadDirPCC1.eMLD_PCC_FZV_MYU; // Default
+            ELoadDirection eMemberLoadDirection = ELoadDirection.eLD_Z; // Default
 
             Vector3D surfaceNormal_GCS = Drawing3D.GetSurfaceNormalVector(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[l.PointsGCS.Count - 1]);
 
             if(MathF.d_equal(surfaceNormal_GCS.Z, 1, 0.0001))
             {
-                eMemberLoadDirection = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
+                eMemberLoadDirection = ELoadDirection.eLD_Z;
             }
             else if(MathF.d_equal(surfaceNormal_GCS.Y, 1, 0.0001) && MathF.d_equal(m.Delta_Y, 0, 0.0001))
             {
-                eMemberLoadDirection = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+                eMemberLoadDirection = ELoadDirection.eLD_Y;
             }
             else if (MathF.d_equal(surfaceNormal_GCS.X, 1, 0.0001) && MathF.d_equal(m.Delta_X, 0, 0.0001))
             {
-                eMemberLoadDirection = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+                eMemberLoadDirection = ELoadDirection.eLD_Y;
             }
             /*
             else
             {
-                eMemberLoadDirection = EMLoadDirPCC1.eMLD_PCC_FXX_MXX; // ????????
+                eMemberLoadDirection = ELoadDirection.eLD_X; // ????????
             }*/
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +275,7 @@ namespace BaseClasses
             else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
             {
                 float fq = l.fValue * (float)dIntersectionLengthInMember_yz_axis; // Load Value
-                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, eMemberLoadDirection, true, 0));
+                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
                 iLoadID += 1;
             }
             else
@@ -285,7 +285,7 @@ namespace BaseClasses
                 float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
                 float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
 
-                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, eMemberLoadDirection, true, 0));
+                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
                 iLoadID += 1;
             }
         }

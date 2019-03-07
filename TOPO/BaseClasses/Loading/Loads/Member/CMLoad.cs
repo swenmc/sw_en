@@ -12,7 +12,6 @@ namespace BaseClasses
         private int[] m_iMemberCollection; // List / Collection of members IDs where load is defined
         private EMLoadTypeDistr m_mLoadTypeDistr; // Type of external force distribution
         private EMLoadType m_mLoadType; // Type of external force
-        private EMLoadDirPCC1 m_eDirPPC; // External Force Direction in Principal Coordinate System of Member
         private CMember m_member;
         //----------------------------------------------------------------------------
         public int[] IMemberCollection
@@ -29,11 +28,6 @@ namespace BaseClasses
         {
             get { return m_mLoadType; }
             set { m_mLoadType = value; }
-        }
-        public EMLoadDirPCC1 EDirPPC
-        {
-            get { return m_eDirPPC; }
-            set { m_eDirPPC = value; }
         }
 
         public CMember Member
@@ -60,36 +54,36 @@ namespace BaseClasses
             m_Material3DGraphics.Brush.Opacity = 0.9f;
         }
 
-        public ENLoadType TransformLoadTypefroMemberToPoint(EMLoadDirPCC1 eDirPPC, EMLoadType eMLoadType)
+        public ENLoadType TransformLoadTypefroMemberToPoint(ELoadDirection eLoadDirection, EMLoadType eMLoadType)
         {
             ENLoadType nLoadType = ENLoadType.eNLT_OTHER; // Auxliary
 
             if (eMLoadType == EMLoadType.eMLT_F) // Force
             {
-                if (eDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                if (eLoadDirection == ELoadDirection.eLD_X)
                 {
                     nLoadType = ENLoadType.eNLT_Fx;
                 }
-                else if (eDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                else if (eLoadDirection == ELoadDirection.eLD_Y)
                 {
                     nLoadType = ENLoadType.eNLT_Fy;
                 }
-                else if (eDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                else if (eLoadDirection == ELoadDirection.eLD_Z)
                 {
                     nLoadType = ENLoadType.eNLT_Fz;
                 }
             }
             else if (eMLoadType == EMLoadType.eMLT_M) // Moment
             {
-                if (eDirPPC == EMLoadDirPCC1.eMLD_PCC_FXX_MXX)
+                if (eLoadDirection == ELoadDirection.eLD_X)
                 {
                     nLoadType = ENLoadType.eNLT_Mx;
                 }
-                else if (eDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+                else if (eLoadDirection == ELoadDirection.eLD_Y)
                 {
                     nLoadType = ENLoadType.eNLT_Mz;
                 }
-                else if (eDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                else if (eLoadDirection == ELoadDirection.eLD_Z)
                 {
                     nLoadType = ENLoadType.eNLT_My;
                 }
@@ -108,7 +102,7 @@ namespace BaseClasses
 
             Model3DGroup model_gr = new Model3DGroup();
 
-            ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(EDirPPC, MLoadType);
+            ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(ELoadDir, MLoadType);
 
             // Set Load Model "material" Color and Opacity - default
             if (fq_value >= 0)
@@ -128,11 +122,11 @@ namespace BaseClasses
                 model_gr.Children.Add(model_temp);
             }
 
-            if (EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV || EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+            if (ELoadDir == ELoadDirection.eLD_Y || ELoadDir == ELoadDirection.eLD_Z)
             {
                 // Add connecting top (z = q) "line" in LCS x-direction
                 Point3D pPoint;
-                if (EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+                if (ELoadDir == ELoadDirection.eLD_Z)
                 {
                     pPoint = new Point3D(0, 0, -fq_value * fDisplayin3D_ratio);
                 }
@@ -150,8 +144,8 @@ namespace BaseClasses
 
             if(bConsiderCrossSectionDimensions)
             {
-                dOffset_y = EDirPPC == EMLoadDirPCC1.eMLD_PCC_FYU_MZV ? (fq_value > 0 ? -0.5 * Member.CrScStart.b : 0.5 * Member.CrScStart.b) : 0;
-                dOffset_z = EDirPPC == EMLoadDirPCC1.eMLD_PCC_FZV_MYU ? (fq_value > 0 ? -0.5 * Member.CrScStart.h : 0.5 * Member.CrScStart.h) : 0;
+                dOffset_y = ELoadDir == ELoadDirection.eLD_Y ? (fq_value > 0 ? -0.5 * Member.CrScStart.b : 0.5 * Member.CrScStart.b) : 0;
+                dOffset_z = ELoadDir == ELoadDirection.eLD_Z ? (fq_value > 0 ? -0.5 * Member.CrScStart.h : 0.5 * Member.CrScStart.h) : 0;
             }
 
             TranslateTransform3D translate = new TranslateTransform3D(fstartPosition, dOffset_y, dOffset_z);

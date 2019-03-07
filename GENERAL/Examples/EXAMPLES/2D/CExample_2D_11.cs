@@ -200,7 +200,8 @@ namespace Examples
             MLoad_F1x.ID = 1;
             MLoad_F1x.MLoadTypeDistr = EMLoadTypeDistr.eMLT_FS_H_12;
             MLoad_F1x.MLoadType = EMLoadType.eMLT_F;
-            MLoad_F1x.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FXX_MXX;
+            MLoad_F1x.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_F1x.ELoadDir = ELoadDirection.eLD_X;
             MLoad_F1x.IMemberCollection = new int[1];
             MLoad_F1x.IMemberCollection[0] = 1;
 
@@ -210,7 +211,8 @@ namespace Examples
             MLoad_F1y.ID = 2;
             MLoad_F1y.MLoadTypeDistr = EMLoadTypeDistr.eMLT_FS_H_12;
             MLoad_F1y.MLoadType = EMLoadType.eMLT_F;
-            MLoad_F1y.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_F1y.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_F1y.ELoadDir = ELoadDirection.eLD_Y;
             MLoad_F1y.IMemberCollection = new int[1];
             MLoad_F1y.IMemberCollection[0] = 1;
 
@@ -221,7 +223,8 @@ namespace Examples
             MLoad_q.ID = 3;
             MLoad_q.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_q.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q.ELoadDir = ELoadDirection.eLD_Y;
             MLoad_q.IMemberCollection = new int[1];
             MLoad_q.IMemberCollection[0] = 2;
 
@@ -232,7 +235,7 @@ namespace Examples
             MLoad_M.ID = 4;
             MLoad_M.MLoadTypeDistr = EMLoadTypeDistr.eMLT_FS_H_12;
             MLoad_M.MLoadType = EMLoadType.eMLT_M;
-            MLoad_M.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_M.ELoadDir = ELoadDirection.eLD_Y;
             MLoad_M.IMemberCollection = new int[1];
             MLoad_M.IMemberCollection[0] = 4;
 

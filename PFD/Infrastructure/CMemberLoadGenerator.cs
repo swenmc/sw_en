@@ -392,43 +392,43 @@ namespace PFD
 
             // Dead Loads
             // Columns
-            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * 4 + 1, fValueLoadColumnDead, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
+            CMLoad loadColumnLeft_DL = new CMLoad_21(iFrameIndex * 4 + 1, fValueLoadColumnDead, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_X, true, 0);
             // Osovy system praveho stlpa smeruje zhora nadol, takze hodnota zatazenia v LCS je s opacnym znamienkom (* -1)
-            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * 4 + 2, -fValueLoadColumnDead, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FXX_MXX, true, 0);
+            CMLoad loadColumnRight_DL = new CMLoad_21(iFrameIndex * 4 + 2, -fValueLoadColumnDead, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_X, true, 0);
             memberLoadDead.Add(loadColumnLeft_DL);
             memberLoadDead.Add(loadColumnRight_DL);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * 4 + 3, fValueLoadRafterDead, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * 4 + 4, fValueLoadRafterDead, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_DL = new CMLoad_21(iFrameIndex * 4 + 3, fValueLoadRafterDead, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_DL = new CMLoad_21(iFrameIndex * 4 + 4, fValueLoadRafterDead, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberLoadDead.Add(loadRafterLeft_DL);
             memberLoadDead.Add(loadRafterRight_DL);
 
             // Imposed Loads - roof
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_IL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_IL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_IL = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2)], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_IL = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterImposed * fFrameTributaryWidth, m_arrMembers[1 + iFrameIndex * (2 + 2 + 2) + 1], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberLoadImposed.Add(loadRafterLeft_IL);
             memberLoadImposed.Add(loadRafterRight_IL);
 
             // Snow Loads - roof
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_SL1_All_ULS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowAll_ULS.Add(loadRafterLeft_SL1_All_ULS);
             memberMaxLoadSnowAll_ULS.Add(loadRafterRight_SL1_All_ULS);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_SL2_Left_ULS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_SL2_Left_ULS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowLeft_ULS.Add(loadRafterLeft_SL2_Left_ULS);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterRight_SL3_Right_ULS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_SL3_Right_ULS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowULS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowRight_ULS.Add(loadRafterRight_SL3_Right_ULS);
 
             // Wind Loads
@@ -644,19 +644,19 @@ namespace PFD
             // Snow Loads - roof
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowSLS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 1, fValueLoadRafterSnowULS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_SL1_All_SLS = new CMLoad_21(iFrameIndex * 2 + 2, fValueLoadRafterSnowSLS_Nu_1 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowAll_SLS.Add(loadRafterLeft_SL1_All_SLS);
             memberMaxLoadSnowAll_SLS.Add(loadRafterRight_SL1_All_SLS);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterLeft_SL2_Left_SLS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_SL2_Left_SLS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowLeft_SLS.Add(loadRafterLeft_SL2_Left_SLS);
 
             // Rafters
             // TODO - zapracovat do konstruktora nastavenie GCS smeru zatazenia, teraz je to nespravne v PCS
-            CMLoad loadRafterRight_SL3_Right_SLS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterRight_SL3_Right_SLS = new CMLoad_21(iFrameIndex + 1, fValueLoadRafterSnowSLS_Nu_2 * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             memberMaxLoadSnowRight_SLS.Add(loadRafterRight_SL3_Right_SLS);
 
             // Wind Loads
@@ -934,13 +934,13 @@ namespace PFD
             float fReductionFactor_Kci_Rafter2Right = fK_ci;
 
             // Columns
-            CMLoad loadColumnLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Kci_Column1Left * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumnRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 2, fReductionFactor_Kci_Column2Right * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Kci_Column1Left * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadColumnRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 2, fReductionFactor_Kci_Column2Right * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             listOfMemberLoads.Add(loadColumnLeft_WindLoad_Cpi);
             listOfMemberLoads.Add(loadColumnRight_WindLoad_Cpi);
             // Rafters
-            CMLoad loadRafterLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 3, fReductionFactor_Kci_Rafter1Left * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafterRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 4, fReductionFactor_Kci_Rafter2Right * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafterLeft_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 3, fReductionFactor_Kci_Rafter1Left * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafterRight_WindLoad_Cpi = new CMLoad_21(iFrameIndex * 4 + 4, fReductionFactor_Kci_Rafter2Right * fp_i_Theta_4[iWindDirectionIndex] * fFrameTributaryWidth, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             listOfMemberLoads.Add(loadRafterLeft_WindLoad_Cpi);
             listOfMemberLoads.Add(loadRafterRight_WindLoad_Cpi);
         }
@@ -1017,8 +1017,8 @@ namespace PFD
             float fReductionFactor_Ka_Kce_Column2Right = fK_a_Column2Right * fK_ce_wall < 0.8f ? 0.8f : fK_a_Column2Right * fK_ce_wall;
 
             // Columns
-            CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Ka_Kce_Column1Left * fColumnLeftLoadValue, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumnRight_WindLoad = new CMLoad_21(iFrameIndex * 4 + 2, fReductionFactor_Ka_Kce_Column2Right * fColumnRightLoadValue, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumnLeft_WindLoad = new CMLoad_21(iFrameIndex * 4 + 1, fReductionFactor_Ka_Kce_Column1Left * fColumnLeftLoadValue, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadColumnRight_WindLoad = new CMLoad_21(iFrameIndex * 4 + 2, fReductionFactor_Ka_Kce_Column2Right * fColumnRightLoadValue, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
             listOfMemberLoads.Add(loadColumnLeft_WindLoad);
             listOfMemberLoads.Add(loadColumnRight_WindLoad);
 
@@ -1136,7 +1136,7 @@ namespace PFD
                 float fstart_abs = fstart_abs_Projected * m_arrMembers[indexRafter].FLength / fMemberProjectedLength_X;
                 float floadsegmentlength = floadsegmentlengthProjected * m_arrMembers[indexRafter].FLength / fMemberProjectedLength_X;
 
-                CMLoad loadRafterSegment = new CMLoad_24(iLastLoadIndex + 1, fReductionFactor_Ka_Kce * fq, fstart_abs, floadsegmentlength, m_arrMembers[indexRafter], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+                CMLoad loadRafterSegment = new CMLoad_24(iLastLoadIndex + 1, fReductionFactor_Ka_Kce * fq, fstart_abs, floadsegmentlength, m_arrMembers[indexRafter], EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
                 listOfMemberLoads.Add(loadRafterSegment);
 
                 iLastLoadIndex++;
@@ -1283,8 +1283,8 @@ namespace PFD
             out fValue_q_columns);
 
             // Create Member Load - Left and Right Column
-            CMLoad loadColumn1 = new CMLoad_21(1, fReductionFactor_Ka_Kce_Column1Left * fValue_q_columns, m_arrMembers[indexColumn1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadColumn2 = new CMLoad_21(2, fReductionFactor_Ka_Kce_Column2Right * fValue_q_columns, m_arrMembers[indexColumn2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadColumn1 = new CMLoad_21(1, fReductionFactor_Ka_Kce_Column1Left * fValue_q_columns, m_arrMembers[indexColumn1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadColumn2 = new CMLoad_21(2, fReductionFactor_Ka_Kce_Column2Right * fValue_q_columns, m_arrMembers[indexColumn2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
 
             listOfMemberLoads.Add(loadColumn1);
             listOfMemberLoads.Add(loadColumn2);
@@ -1302,8 +1302,8 @@ namespace PFD
             out fValue_q_rafters);
 
             // Create Member Load - Left and Right Rafter
-            CMLoad loadRafter1 = new CMLoad_21(3, fReductionFactor_Ka_Kce_Rafter1Left * fValue_q_rafters, m_arrMembers[indexRafter1Left], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
-            CMLoad loadRafter2 = new CMLoad_21(4, fReductionFactor_Ka_Kce_Rafter2Right * fValue_q_rafters, m_arrMembers[indexRafter2Right], ELoadCoordSystem.eLCS, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, EMLoadDirPCC1.eMLD_PCC_FZV_MYU, true, 0);
+            CMLoad loadRafter1 = new CMLoad_21(3, fReductionFactor_Ka_Kce_Rafter1Left * fValue_q_rafters, m_arrMembers[indexRafter1Left], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            CMLoad loadRafter2 = new CMLoad_21(4, fReductionFactor_Ka_Kce_Rafter2Right * fValue_q_rafters, m_arrMembers[indexRafter2Right], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
 
             listOfMemberLoads.Add(loadRafter1);
             listOfMemberLoads.Add(loadRafter2);

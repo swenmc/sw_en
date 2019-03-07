@@ -125,10 +125,10 @@ namespace Examples
             // Load 1 - MemberIDs: 1
             CMLoad_21 MLoad_q1 = new CMLoad_21(fLoad_q1);
             MLoad_q1.ID = 1;
-            MLoad_q1.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q1.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q1.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q1.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
+            MLoad_q1.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q1.ELoadDir = ELoadDirection.eLD_Z;
             MLoad_q1.IMemberCollection = new int[1];
             MLoad_q1.IMemberCollection[0] = 1;
             m_arrMLoads[0] = MLoad_q1;
@@ -136,10 +136,10 @@ namespace Examples
             // Load 2 - MemberIDs: 2
             CMLoad_21 MLoad_q2x = new CMLoad_21(fLoad_q2_x);
             MLoad_q2x.ID = 2;
-            MLoad_q2x.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q2x.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q2x.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q2x.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FXX_MXX;
+            MLoad_q2x.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q2x.ELoadDir = ELoadDirection.eLD_X;
             MLoad_q2x.IMemberCollection = new int[1];
             MLoad_q2x.IMemberCollection[0] = 2;
             m_arrMLoads[1] = MLoad_q2x;
@@ -147,10 +147,10 @@ namespace Examples
             // Load 2 - MemberIDs: 2
             CMLoad_21 MLoad_q2z = new CMLoad_21(fLoad_q2_z);
             MLoad_q2z.ID = 2;
-            MLoad_q2z.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q2z.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q2z.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q2z.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
+            MLoad_q2z.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q2z.ELoadDir = ELoadDirection.eLD_Z;
             MLoad_q2z.IMemberCollection = new int[1];
             MLoad_q2z.IMemberCollection[0] = 2;
             m_arrMLoads[2] = MLoad_q2z;
@@ -158,10 +158,10 @@ namespace Examples
             // Load 3 - MemberIDs: 3
             CMLoad_21 MLoad_q3 = new CMLoad_21(fLoad_q3);
             MLoad_q3.ID = 3;
-            MLoad_q3.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q3.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q3.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q3.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
+            MLoad_q3.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q3.ELoadDir = ELoadDirection.eLD_Z;
             MLoad_q3.IMemberCollection = new int[1];
             MLoad_q3.IMemberCollection[0] = 3;
             m_arrMLoads[3] = MLoad_q3;
@@ -169,10 +169,10 @@ namespace Examples
             // Load 4 - MemberIDs: 4
             CMLoad_21 MLoad_q4 = new CMLoad_21(fLoad_q4);
             MLoad_q4.ID = 4;
-            MLoad_q4.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q4.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q4.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q4.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FZV_MYU;
+            MLoad_q4.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q4.ELoadDir = ELoadDirection.eLD_Z;
             MLoad_q4.IMemberCollection = new int[1];
             MLoad_q4.IMemberCollection[0] = 4;
             m_arrMLoads[4] = MLoad_q4;

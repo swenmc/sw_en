@@ -158,7 +158,8 @@ namespace Examples
             MLoad_q.ID = 1;
             MLoad_q.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q.EDirPPC = EMLoadDirPCC1.eMLD_PCC_FYU_MZV;
+            MLoad_q.ELoadCS = ELoadCoordSystem.eLCS;
+            MLoad_q.ELoadDir = ELoadDirection.eLD_Y;
             MLoad_q.IMemberCollection = new int[1];
             MLoad_q.IMemberCollection[0] = 3;
 

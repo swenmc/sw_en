@@ -53,10 +53,10 @@ namespace BaseClasses
             float fq,
             float faA,
             float fs,
-            ELoadCoordSystem mLoadCoordSystem,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
-            EMLoadDirPCC1 eDirPPC,
+            ELoadCoordSystem mLoadCS,
+            ELoadDirection mLoadDir,
             bool bIsDislayed,
             int fTime)
         {
@@ -66,10 +66,10 @@ namespace BaseClasses
             Fs = fs;
             // Calculate Load Centre Position from Start of Member
             m_fa = m_faA + m_fs / 2.0f;
-            ELoadCS = mLoadCoordSystem;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
-            EDirPPC = eDirPPC;
+            ELoadCS = mLoadCS;
+            ELoadDir = mLoadDir;
             BIsDisplayed = bIsDislayed;
             FTime = fTime;
         }
@@ -79,10 +79,10 @@ namespace BaseClasses
             float faA,
             float fs,
             CMember member_aux,
-            ELoadCoordSystem mLoadCoordSystem,
             EMLoadTypeDistr mLoadTypeDistr,
             EMLoadType mLoadType,
-            EMLoadDirPCC1 eDirPPC,
+            ELoadCoordSystem mLoadCS,
+            ELoadDirection mLoadDir,
             bool bIsDislayed,
             int fTime)
         {
@@ -93,10 +93,10 @@ namespace BaseClasses
             // Calculate Load Centre Position from Start of Member
             m_fa = m_faA + m_fs / 2.0f;
             Member = member_aux;
-            ELoadCS = mLoadCoordSystem;
             MLoadTypeDistr = mLoadTypeDistr;
             MLoadType = mLoadType;
-            EDirPPC = eDirPPC;
+            ELoadCS = mLoadCS;
+            ELoadDir = mLoadDir;
             BIsDisplayed = bIsDislayed;
             FTime = fTime;
         }

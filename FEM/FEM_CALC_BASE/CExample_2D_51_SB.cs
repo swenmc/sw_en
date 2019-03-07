@@ -13,14 +13,14 @@ namespace FEM_CALC_BASE
     {
         float fq;
         float fL;
-        EMLoadDirPCC1 eLoadDirection;
+        ELoadDirection eLoadDir;
         float fI;
         float fE;
 
         // Docasne riesenie
         // TODO 51 - nahradny model pruta zatazeneho spojitym zatazenim pre vypocet vn. sil pre lokalny smer y alebo z
         // TODO - Ondrej , upravit vsetko tak aby sem vstupoval priamo objekt pruta, limit state, load case, load
-        public CExample_2D_51_SB(CMember member, EMLoadDirPCC1 eLoadDirection_temp, float fq_temp)
+        public CExample_2D_51_SB(CMember member, ELoadDirection eLoadDirection_temp, float fq_temp)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
@@ -37,7 +37,7 @@ namespace FEM_CALC_BASE
 
             fL = member.FLength;
             fq = fq_temp;
-            eLoadDirection = eLoadDirection_temp;
+            eLoadDir = eLoadDirection_temp;
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
@@ -48,9 +48,9 @@ namespace FEM_CALC_BASE
             // Materials List - Materials Array - Fill Data of Materials Array
             m_arrMat[0] = m_arrCrSc[0].m_Mat;
 
-            if (eLoadDirection == EMLoadDirPCC1.eMLD_PCC_FYU_MZV)
+            if (eLoadDir == ELoadDirection.eLD_Y)
                 fI = (float)m_arrCrSc[0].I_z;
-            else if (eLoadDirection == EMLoadDirPCC1.eMLD_PCC_FZV_MYU)
+            else if (eLoadDir == ELoadDirection.eLD_Z)
                 fI = (float)m_arrCrSc[0].I_y;
             else
                 fI = 0;
@@ -112,7 +112,8 @@ namespace FEM_CALC_BASE
             MLoad_q1.ID = 1;
             MLoad_q1.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
             MLoad_q1.MLoadType = EMLoadType.eMLT_F;
-            MLoad_q1.EDirPPC = eLoadDirection; // Load in LCS
+            MLoad_q1.ELoadCS = ELoadCoordSystem.eLCS; // Load in LCS
+            MLoad_q1.ELoadDir = eLoadDir; // Load direction
             MLoad_q1.IMemberCollection = new int[1];
             MLoad_q1.IMemberCollection[0] = 1;
             m_arrMLoads[0] = MLoad_q1;

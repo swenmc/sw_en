@@ -26,8 +26,6 @@ namespace BaseClasses
             set { m_bUseColorScaleRedAndBlue = value; }
         }
 
-        ELoadCoordSystem eLoadCS;
-        ELoadDir eLoadDirection;
         float[] fX_coordinates;
         float fX_dimension_max;
         float fY_dimension;
@@ -42,7 +40,7 @@ namespace BaseClasses
         public CSLoad_FreeUniformGroup(
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
-               ELoadDir eLoadDirection_temp,
+               ELoadDirection eLoadDirection_temp,
                CPoint pControlPoint_temp,
                float[] fX_coordinates_temp,
                float fX_dimension_max_temp,
@@ -59,8 +57,8 @@ namespace BaseClasses
                int iFirstSegmentColorID_temp = 0) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
-            eLoadCS = eLoadCS_temp;
-            eLoadDirection = eLoadDirection_temp;
+            ELoadCS = eLoadCS_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
             fX_coordinates = fX_coordinates_temp;
             fX_dimension_max = fX_dimension_max_temp;
@@ -84,7 +82,7 @@ namespace BaseClasses
         public CSLoad_FreeUniformGroup(
                List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp,
                ELoadCoordSystem eLoadCS_temp,
-               ELoadDir eLoadDirection_temp, // Load direction related to the surface (global, or local)
+               ELoadDirection eLoadDirection_temp, // Load direction related to the surface (global, or local)
                CPoint pControlPoint_temp,
                float[] fX_coordinates_temp,
                float fX_dimension_max_temp,
@@ -102,8 +100,8 @@ namespace BaseClasses
                int iFirstSegmentColorID_temp = 0) : base(listOfLoadedMemberTypeData_temp, eLoadCS_temp, eLoadDirection_temp, bIsDisplayed, fTime)
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
-            eLoadCS = eLoadCS_temp;
-            eLoadDirection = eLoadDirection_temp;
+            ELoadCS = eLoadCS_temp;
+            ELoadDir = eLoadDirection_temp;
             m_pControlPoint = pControlPoint_temp;
             fX_coordinates = fX_coordinates_temp;
             fX_dimension_max = fX_dimension_max_temp;
@@ -171,13 +169,13 @@ namespace BaseClasses
                         float fY_dimension_temp1_unused;
                         float fY3_dimension_temp; // Bod na pravej strane
                         CalculateYCoordinatesOfSegment(0.5f * fX_dimension_max, segmentStart_x_coordinate + segment_x_dimension - 0.5f * fX_dimension_max, out fY_dimension_temp1_unused, out fY3_dimension_temp);
-                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY3_dimension_temp, 0.5f * fX_dimension_max - segmentStart_x_coordinate, fY2_dimension, fY_dimension_temp1, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, false, BIsDisplayed, FTime));
+                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCS, ELoadDir, pControlPoint_segment, segment_x_dimension, fY3_dimension_temp, 0.5f * fX_dimension_max - segmentStart_x_coordinate, fY2_dimension, fY_dimension_temp1, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, false, BIsDisplayed, FTime));
                     }
                     else
                     {
                         // Create object in LCS (x - direction with changing values of load)
                         // 4 points
-                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY_dimension_temp1, fY_dimension_temp2, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, true, BIsDisplayed, FTime));
+                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCS, ELoadDir, pControlPoint_segment, segment_x_dimension, fY_dimension_temp1, fY_dimension_temp2, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, true, BIsDisplayed, FTime));
                     }
                 }
                 else
@@ -203,13 +201,13 @@ namespace BaseClasses
                     {
                         // Create object in LCS (x - direction with changing values of load)
                         // 5 points
-                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY_dimension, 0.5f * fX_dimension_max - segmentStart_x_coordinate, fY2_dimension, fY_dimension_temp1, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, false, BIsDisplayed, FTime));
+                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCS, ELoadDir, pControlPoint_segment, segment_x_dimension, fY_dimension, 0.5f * fX_dimension_max - segmentStart_x_coordinate, fY2_dimension, fY_dimension_temp1, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, false, BIsDisplayed, FTime));
                     }
                     else
                     {
                         // Create object in LCS (x - direction with changing values of load)
                         // 4 points
-                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, eLoadCS, eLoadDirection, pControlPoint_segment, segment_x_dimension, fY_dimension_temp1, fY_dimension_temp2, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, true, BIsDisplayed, FTime));
+                        LoadList.Add(new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCS, ELoadDir, pControlPoint_segment, segment_x_dimension, fY_dimension_temp1, fY_dimension_temp2, fValues[(int)eMainLoadDirection, i], 0, 0, 0, GetColorBySegmentIDAndValueSign(iFirstSegmentColorID + i, fValues[(int)eMainLoadDirection, i]), bDrawPositiveValueOnPlusLocalZSide, bChangePositionForNegativeValue, true, BIsDisplayed, FTime));
                     }
 
                     break; // Finish cycle after adding of last segment, we dont need to continue per whole list of fX_coordinates

@@ -16,6 +16,14 @@ namespace BaseClasses
             set { m_eLoadCS = value; }
         }
 
+        private ELoadDirection m_eLoadDir;
+
+        public ELoadDirection ELoadDir
+        {
+            get { return m_eLoadDir; }
+            set { m_eLoadDir = value; }
+        }
+
         // TODO - zapracovat do GUI option uzivatelske nastavenie, aku velkost v 3D zobrazeni ma mat 1kN , 1 kN / m, 1 kN / m2 (rozne typy zatazenia, bodove, liniove, plosne)
         private float m_fDisplayin3DRatio; // Load value is in N, N/m, N/m2. Display unit is meter, so 1kN = 1 m in display units, 1000 N = 1 m, therefore is fDisplayRatio = 1/1000
         public float Displayin3DRatio

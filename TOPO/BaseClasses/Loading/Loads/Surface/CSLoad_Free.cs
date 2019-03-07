@@ -12,7 +12,7 @@ namespace BaseClasses
         //private int [] m_iSurfaceCollection;
         private ESLoadTypeDistr m_sLoadTypeDistr; // Type of external force distribution
         private ESLoadType m_sLoadType; // Type of external force
-        private ELoadDir m_eLoadDirection;
+        private ELoadDirection m_eLoadDir;
         private float m_fRotationX_deg;
         private float m_fRotationY_deg;
         private float m_fRotationZ_deg;
@@ -40,10 +40,10 @@ namespace BaseClasses
             get { return m_sLoadType; }
             set { m_sLoadType = value; }
         }
-        public ELoadDir ELoadDirection
+        public ELoadDirection ELoadDir
         {
-            get { return m_eLoadDirection; }
-            set { m_eLoadDirection = value; }
+            get { return m_eLoadDir; }
+            set { m_eLoadDir = value; }
         }
 
         public float RotationX_deg
@@ -122,12 +122,12 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         //----------------------------------------------------------------------------
 
-        public CSLoad_Free(List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp, ELoadCoordSystem eLoadCS_temp, ELoadDir eLoadDirection_temp, bool bIsDisplayed, float fTime)
+        public CSLoad_Free(List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp, ELoadCoordSystem eLoadCS_temp, ELoadDirection eLoadDirection_temp, bool bIsDisplayed, float fTime)
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
             Displayin3DRatio = 0.001f;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
-            ELoadDirection = eLoadDirection_temp;
+            ELoadDir = eLoadDirection_temp;
             BIsDisplayed = bIsDisplayed;
             FTime = fTime;
         }
