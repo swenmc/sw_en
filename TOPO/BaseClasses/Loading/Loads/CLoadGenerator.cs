@@ -287,6 +287,15 @@ namespace BaseClasses
                 else
                     dMemberLoadStartCoordinate_x_axis = loadRect.Left - memberRect.Left; // Prut zacina pred plochou
 
+                // Opacny smer osi pruta x voci osi x load surface
+                if (pStartLCS.X > pEndLCS.X)
+                {
+                    dMemberLoadStartCoordinate_x_axis = m.FLength - intersection.Width;
+
+                    if (loadRect.Width >= pStartLCS.X)
+                        dMemberLoadStartCoordinate_x_axis = 0;
+                }
+
                 dIntersectionLengthInMember_x_axis = intersection.Width;   // Length of applied load
                 dIntersectionLengthInMember_yz_axis = intersection.Height; // Tributary width
             }
@@ -296,6 +305,15 @@ namespace BaseClasses
                     dMemberLoadStartCoordinate_x_axis = 0; // Prut zacina za plochou
                 else
                     dMemberLoadStartCoordinate_x_axis = loadRect.Top - memberRect.Top;  // Prut zacina pred plochou
+
+                // Opacny smer osi pruta x voci osi x load surface
+                if (pStartLCS.Y > pEndLCS.Y)
+                {
+                    dMemberLoadStartCoordinate_x_axis = m.FLength - intersection.Height;
+
+                    if (loadRect.Height >= pStartLCS.Y)
+                        dMemberLoadStartCoordinate_x_axis = 0;
+                }
 
                 dIntersectionLengthInMember_x_axis = intersection.Height; // Length of applied load
                 dIntersectionLengthInMember_yz_axis = intersection.Width; // Tributary width
