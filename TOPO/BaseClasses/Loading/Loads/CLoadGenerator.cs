@@ -372,8 +372,12 @@ namespace BaseClasses
             Vector3D v_out = new Vector3D();
 
             // TODO Ondrej - Tu by som chcel transformovat suradnice vektora podla toho ako bol objekt (mebmer, surface) transformovany z LCS do GCS
-            // Da sa to nejako vymysliet ??? :)))
+            // Da sa to nejako vymysliet ??? :)))           
+
             // Napriklad nejaky fake 3D objekt, ktory by mal vybrany bod so suradnicami vektora a po transformacii by sa nove suradnice toho bodu nastavili do vektora
+
+            //To Mato - takto by to malo ist :-)
+            v_out = transformation.Transform(v_out);
 
             return v_out;
         }
