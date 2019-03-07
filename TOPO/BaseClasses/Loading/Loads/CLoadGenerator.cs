@@ -279,22 +279,23 @@ namespace BaseClasses
             double dIntersectionLengthInMember_x_axis;
             double dIntersectionLengthInMember_yz_axis;
 
+            // TODO - tu bude potrebne zapravoat ako je x plochy a x pruta vzajomne pootocene, ak o 180 stupnov, tak bude treba prehodit vsetko L - x
             if (bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x)
             {
-                if (loadRect.Right > memberRect.Right)
-                    dMemberLoadStartCoordinate_x_axis = memberRect.Right - loadRect.Left; // Plocha v smere x konci za prutom
+                if(memberRect.Left - loadRect.Left > 0)
+                    dMemberLoadStartCoordinate_x_axis = 0; // Prut zacina za plochou
                 else
-                    dMemberLoadStartCoordinate_x_axis = loadRect.Right - memberRect.Left; // Plocha v smere x konci pred prutom
+                    dMemberLoadStartCoordinate_x_axis = loadRect.Left - memberRect.Left; // Prut zacina pred plochou
 
                 dIntersectionLengthInMember_x_axis = intersection.Width;   // Length of applied load
                 dIntersectionLengthInMember_yz_axis = intersection.Height; // Tributary width
             }
             else
             {
-                if (loadRect.Bottom > memberRect.Bottom)
-                    dMemberLoadStartCoordinate_x_axis = memberRect.Bottom - loadRect.Top; // Plocha v smere x konci za prutom
+                if (memberRect.Top - loadRect.Top > 0)
+                    dMemberLoadStartCoordinate_x_axis = 0; // Prut zacina za plochou
                 else
-                    dMemberLoadStartCoordinate_x_axis = loadRect.Bottom - memberRect.Top; // Plocha v smere x konci pred prutom
+                    dMemberLoadStartCoordinate_x_axis = loadRect.Top - memberRect.Top;  // Prut zacina pred plochou
 
                 dIntersectionLengthInMember_x_axis = intersection.Height; // Length of applied load
                 dIntersectionLengthInMember_yz_axis = intersection.Width; // Tributary width
