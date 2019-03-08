@@ -107,6 +107,9 @@ namespace BaseClasses
             {
                 // VERZIA 1
 
+                // Surface Load Direction Vector
+                l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
+
                 // Member coordinate system LCS in GCS
                 memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
                 Vector3D vMemberLCSinGCS = GetTransformedVector(vLCS, memberTransformGroupLCS_to_GCS); // Toto "vyzera spravne", ale este treba poskusat rozne moznosti
@@ -115,19 +118,25 @@ namespace BaseClasses
                 loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
                 Vector3D vLoadLCSinGCS = GetTransformedVector(vLCS, loadTransformGroupLCS_to_GCS);
 
-                // Vector LCS of member in LCS of surface
-                // Pozname poziciu LCS plochy a LCS pruta voci GCS,
-                // Transformujeme LCS pruta do LCS plochy - To Ondrej - myslis ze to mozem urobit takto???
-                Matrix3D matrixLCSMemberToLCSSurface = GetLocalToGlobalTransformMatrix(vLoadLCSinGCS, vMemberLCSinGCS);
-                Vector3D vLCSMemberInLCSSurface = Vector3D.Multiply(vLCS, matrixLCSMemberToLCSSurface);
+                // Surface load direction vector in GCS
+                Vector3D vLoadDirectioninGCS = GetTransformedVector(l.LoadDirectionVector, loadTransformGroupLCS_to_GCS);
 
-                // Surface Load Direction Vector
-                l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
+                // Pozname poziciu load direction vector plochy v GCS a LCS pruta v GCS
+                // Transformujeme load direction vector plochy do LCS pruta
+                Matrix3D matrixLoadDirectionVectorToMember = GetLocalToGlobalTransformMatrix(vLoadLCSinGCS, vMemberLCSinGCS);
+                vMemberLoadDirection = Vector3D.Multiply(vLoadDirectioninGCS, matrixLoadDirectionVectorToMember);
 
-                // Vystupny vektor zloziek zatazenia pruta
-                // Vektor smeru zatazenia v ploche transformujeme do systemu LCS pruta v LCS systeme plochy - To Ondrej - myslis ze to mozem urobit takto???
-                Matrix3D matrixLoadDirectionVectorToMember = GetLocalToGlobalTransformMatrix(vLCSMemberInLCSSurface, l.LoadDirectionVector);
-                vMemberLoadDirection = Vector3D.Multiply(vLCS, matrixLoadDirectionVectorToMember);
+                // Ondrej
+                Transform3DGroup trans = m.CreateTransformCoordGroup(m, true);
+                GeneralTransform3D inverseTrans2 = trans.Inverse;
+                List<Point3D> surfaceDefPointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform);
+
+                List<Point3D> surfaceDefPointsLCSMember = new List<Point3D>();
+                foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
+
+                // Vektror smeru zatazenia na ploche v GCS transformujeme do LCS pruta
+                Point3D vMemberLoadDirection_P = inverseTrans.Transform(new Point3D(vLoadDirectioninGCS.X, vLoadDirectioninGCS.Y, vLoadDirectioninGCS.Z));
+                vMemberLoadDirection = new Vector3D(vMemberLoadDirection_P.X, vMemberLoadDirection_P.Y, vMemberLoadDirection_P.Z);
             }
             else
             {
