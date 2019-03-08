@@ -72,26 +72,25 @@ namespace BaseClasses
 
         private static void GenerateMemberLoad(CLoadCase lc, CSLoad_FreeUniform l, CMember m, Transform3DGroup loadGroupTransform, float fDist, ref int iLoadID)
         {
+            // Transformacia pruta do LCS plochy
             GeneralTransform3D inverseTrans = GetSurfaceLoadTransformFromGCSToLCS(l, loadGroupTransform);
             Point3D pStart = new Point3D(m.NodeStart.X, m.NodeStart.Y, m.NodeStart.Z);
             Point3D pEnd = new Point3D(m.NodeEnd.X, m.NodeEnd.Y, m.NodeEnd.Z);
 
-            Point3D pStartLCS = inverseTrans.Transform(pStart); // To Ondrej: Tu sa sice vratia nejake suradnice pruta v LCS plochy ale nie som si isty ci sa spravne uvazuje pootocenie medzi osou x plochy a x pruta !!!
+            Point3D pStartLCS = inverseTrans.Transform(pStart);
             Point3D pEndLCS = inverseTrans.Transform(pEnd);
 
+            // Transformacia bodov plochy do LCS pruta
+            Transform3DGroup trans = m.CreateTransformCoordGroup(m, true);
+            GeneralTransform3D inverseTrans2 = trans.Inverse;
+            List<Point3D> surfaceDefPointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform);
+
+            List<Point3D> surfaceDefPointsLCSMember = new List<Point3D>();
+            foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
+
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // MC 7.3.2019: To Ondrej - moje "analyticke" pochody a pokusy :) - prosim zatial nemazat
-
-            // LCS axes vector
-            Vector3D vLCS_X = new Vector3D(1, 0, 0);
-            Vector3D vLCS_Y = new Vector3D(0, 1, 0);
-            Vector3D vLCS_Z = new Vector3D(0, 0, 1);
-
-            // Coordinate system LCS
-            Vector3D vLCS = new Vector3D(1, 1, 1);
 
             // Member coordinate system LCS in GCS
             Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup();
@@ -99,128 +98,24 @@ namespace BaseClasses
             // Surface coordinate system LCS in GCS
             Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup();
 
-            // Member load direction
-            Vector3D vMemberLoadDirection;
+            // Surface Load Direction Vector
+            l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
 
-            bool bIsVerzia1 = true;
-            if (bIsVerzia1)
-            {
-                // VERZIA 1
+            // Member coordinate system LCS in GCS
+            memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
+ 
+            // Surface coordinate system LCS in GCS
+            loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
 
-                // Surface Load Direction Vector
-                l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
-
-                // Member coordinate system LCS in GCS
-                memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
-                Vector3D vMemberLCSinGCS = GetTransformedVector(vLCS, memberTransformGroupLCS_to_GCS); // Toto "vyzera spravne", ale este treba poskusat rozne moznosti
-
-                // Surface coordinate system LCS in GCS
-                loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
-                Vector3D vLoadLCSinGCS = GetTransformedVector(vLCS, loadTransformGroupLCS_to_GCS);
-
-                Vector3D vloadinLCS = ((Transform3D)(memberTransformGroupLCS_to_GCS.Inverse)).Transform(vLoadLCSinGCS);
-
-                // Surface load direction vector in GCS
-                Vector3D vLoadDirectioninGCS = GetTransformedVector(l.LoadDirectionVector, loadTransformGroupLCS_to_GCS);
-
-                //Vector3D vLoadDirection_X_inGCS = GetTransformedVector(new Vector3D(l.LoadDirectionVector.X, 0, 0), loadTransformGroupLCS_to_GCS);
-                //Vector3D vLoadDirection_Y_inGCS = GetTransformedVector(new Vector3D(0, l.LoadDirectionVector.Y, 0), loadTransformGroupLCS_to_GCS);
-                //Vector3D vLoadDirection_Z_inGCS = GetTransformedVector(new Vector3D(0, 0, l.LoadDirectionVector.Z), loadTransformGroupLCS_to_GCS);
-
-                Vector3D vloadDirectioninLCS = ((Transform3D)(memberTransformGroupLCS_to_GCS.Inverse)).Transform(vLoadDirectioninGCS);
-
-                // Pozname poziciu load direction vector plochy v GCS a LCS pruta v GCS
-                // Transformujeme load direction vector plochy do LCS pruta
-                //Matrix3D matrixLoadDirectionVectorToMember = GetLocalToGlobalTransformMatrix(vLoadLCSinGCS, vMemberLCSinGCS);
-                //vMemberLoadDirection = Vector3D.Multiply(vLoadDirectioninGCS, matrixLoadDirectionVectorToMember);
-
-                // Ondrej
-                Transform3DGroup trans = m.CreateTransformCoordGroup(m, true);
-                GeneralTransform3D inverseTrans2 = trans.Inverse;
-                List<Point3D> surfaceDefPointsGCS = GetSurfaceLoadCoordinates_GCS(l, loadGroupTransform);
-
-                List<Point3D> surfaceDefPointsLCSMember = new List<Point3D>();
-                foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
-
-                // Vektor smeru zatazenia na ploche v GCS transformujeme do LCS pruta
-                //Point3D vMemberLoadDirection_P = inverseTrans.Transform(new Point3D(vLoadDirectioninGCS.X, vLoadDirectioninGCS.Y, vLoadDirectioninGCS.Z));
-                //vMemberLoadDirection = new Vector3D(vMemberLoadDirection_P.X, vMemberLoadDirection_P.Y, vMemberLoadDirection_P.Z);
-
-                /*
-                Point3D vMemberLoadDirection_X_P = inverseTrans.Transform(new Point3D(vLoadDirection_X_inGCS.X, vLoadDirection_X_inGCS.Y, vLoadDirection_X_inGCS.Z));
-                Point3D vMemberLoadDirection_Y_P = inverseTrans.Transform(new Point3D(vLoadDirection_Y_inGCS.X, vLoadDirection_Y_inGCS.Y, vLoadDirection_Y_inGCS.Z));
-                Point3D vMemberLoadDirection_Z_P = inverseTrans.Transform(new Point3D(vLoadDirection_Z_inGCS.X, vLoadDirection_Z_inGCS.Y, vLoadDirection_Z_inGCS.Z));
-
-                Vector3D vMemberLoadDirection_X = new Vector3D(vMemberLoadDirection_X_P.X, vMemberLoadDirection_X_P.Y, vMemberLoadDirection_X_P.Z);
-                Vector3D vMemberLoadDirection_Y = new Vector3D(vMemberLoadDirection_Y_P.X, vMemberLoadDirection_Y_P.Y, vMemberLoadDirection_Y_P.Z);
-                Vector3D vMemberLoadDirection_Z = new Vector3D(vMemberLoadDirection_Z_P.X, vMemberLoadDirection_Z_P.Y, vMemberLoadDirection_Z_P.Z);
-
-                vMemberLoadDirection = new Vector3D(vMemberLoadDirection_X.X, vMemberLoadDirection_Y.Y, vMemberLoadDirection_Z.Z);
-                */
-
-                vMemberLoadDirection = vloadDirectioninLCS;
-            }
-            else
-            {
-                // VERZIA 2
-
-                // Surface Load Direction Vector
-                l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
-
-                // Vector LCS of member in LCS of surface
-                // Member coordinate system LCS in surface coordinate system
-                Vector3D vLCSMemberInLCSSurface = GetTransformedVector(vLCS, inverseTrans); // TO ONDREJ - Tu je asi problem v tom ze inverseTransform nezohladnuje pootocenie pruta okolo vlastnej osi x v LCS, pretoze to nebolo robene geometrickou transformaciou modelu ale este pred vytvorenim 3D modelu
-
-                // Vynasobime zlozky vektora smeru zatazenia plochy s vektorom LCS pruta v pozicii voci LCS plochy
-                // Vobec neviem ci je to takto spravne :)))))
-
-                // Vystupny vektor zloziek zatazenia pruta
-                vMemberLoadDirection = new Vector3D(
-                l.LoadDirectionVector.X * vLCSMemberInLCSSurface.X,
-                l.LoadDirectionVector.Y * vLCSMemberInLCSSurface.Y,
-                l.LoadDirectionVector.Z * vLCSMemberInLCSSurface.Z);
-
-
-
-
-                // POKUSY
-
-                // Member coordinate system LCS in GCS
-                memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
-
-                // Surface coordinate system LCS in GCS
-                loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
-
-                // Zaciatok LCS pruta v GCS
-                Point3D pMemberLCSOrigin = pStart;
-                // Smerove vektory LCS os pruta v GCS
-                Vector3D vMember_X = GetTransformedVector(vLCS_X, memberTransformGroupLCS_to_GCS);
-                Vector3D vMember_Y = GetTransformedVector(vLCS_Y, memberTransformGroupLCS_to_GCS);
-                Vector3D vMember_Z = GetTransformedVector(vLCS_Z, memberTransformGroupLCS_to_GCS);
-
-                // Smerovy vektor pruta v GCS
-                Vector3D vMember = new Vector3D(m.Delta_X, m.Delta_Y, m.Delta_Z);
-
-                // Zaciatok LCS plochy zatazenia v GCS
-                Point3D pSurfaceLCSOrigin = new Point3D(l.PointsGCS[0].X, l.PointsGCS[0].Y, l.PointsGCS[0].Z);
-                // Smerove vektory LCS os plochy v GCS
-                Vector3D vLoad_X = GetTransformedVector(vLCS_X, loadTransformGroupLCS_to_GCS);
-                Vector3D vLoad_Y = GetTransformedVector(vLCS_Y, loadTransformGroupLCS_to_GCS);
-                Vector3D vLoad_Z = GetTransformedVector(vLCS_Z, loadTransformGroupLCS_to_GCS);
-
-                /*
-                // Smerove vektory hran plochy
-                Vector3D vLoad_X = new Vector3D(l.PointsGCS[1].X - l.PointsGCS[0].X, l.PointsGCS[l.PointsGCS.Count - 1].Y - l.PointsGCS[0].Y, 1);
-                Vector3D vLoad_Y = new Vector3D(l.PointsGCS[1].X - l.PointsGCS[0].X, l.PointsGCS[l.PointsGCS.Count - 1].Y - l.PointsGCS[0].Y, 1);
-                Vector3D vLoad_Z = new Vector3D(l.PointsGCS[1].X - l.PointsGCS[0].X, l.PointsGCS[l.PointsGCS.Count - 1].Y - l.PointsGCS[0].Y, 1);
-                */
-            }
+            // Surface load direction vector in GCS
+            Vector3D vLoadDirectioninGCS = GetTransformedVector(l.LoadDirectionVector, loadTransformGroupLCS_to_GCS);
+            Vector3D vloadDirectioninLCS = ((Transform3D)(memberTransformGroupLCS_to_GCS.Inverse)).Transform(vLoadDirectioninGCS);
 
             ELoadDirection eMemberLoadDirection;
             float fMemberLoadValueSign;
 
             // Nastavime znamienko a smer generovaneho zatazenia na prute
-            l.GetLoadDirectionAndValueSign(vMemberLoadDirection, out fMemberLoadValueSign, out eMemberLoadDirection);
+            l.GetLoadDirectionAndValueSign(vloadDirectioninLCS, out fMemberLoadValueSign, out eMemberLoadDirection);
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
