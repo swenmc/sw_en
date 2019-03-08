@@ -115,9 +115,10 @@ namespace BaseClasses
                 loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
                 Vector3D vLoadLCSinGCS = GetTransformedVector(vLCS, loadTransformGroupLCS_to_GCS);
 
+                // Vector LCS of member in LCS of surface
                 // Pozname poziciu LCS plochy a LCS pruta voci GCS, vynasobime zlozky tychto LCS vektorov
                 // Vobec neviem ci je to takto spravne :)))))
-                Vector3D temp = new Vector3D(
+                Vector3D vLCSMemberInLCSSurface = new Vector3D(
                 vMemberLCSinGCS.X * vLoadLCSinGCS.X,
                 vMemberLCSinGCS.Y * vLoadLCSinGCS.Y,
                 vMemberLCSinGCS.Z * vLoadLCSinGCS.Z);
@@ -127,9 +128,9 @@ namespace BaseClasses
 
                 // Vystupny vektor zloziek zatazenia pruta
                 vMemberLoadDirection = new Vector3D(
-                l.LoadDirectionVector.X * temp.X,
-                l.LoadDirectionVector.Y * temp.Y,
-                l.LoadDirectionVector.Z * temp.Z);
+                l.LoadDirectionVector.X * vLCSMemberInLCSSurface.X,
+                l.LoadDirectionVector.Y * vLCSMemberInLCSSurface.Y,
+                l.LoadDirectionVector.Z * vLCSMemberInLCSSurface.Z);
             }
             else
             {
@@ -138,6 +139,7 @@ namespace BaseClasses
                 // Surface Load Direction Vector
                 l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
 
+                // Vector LCS of member in LCS of surface
                 // Member coordinate system LCS in surface coordinate system
                 Vector3D vLCSMemberInLCSSurface = GetTransformedVector(vLCS, inverseTrans); // TO ONDREJ - Tu je asi problem v tom ze inverseTransform nezohladnuje pootocenie pruta okolo vlastnej osi x v LCS, pretoze to nebolo robene geometrickou transformaciou modelu ale este pred vytvorenim 3D modelu
 
@@ -146,9 +148,9 @@ namespace BaseClasses
 
                 // Vystupny vektor zloziek zatazenia pruta
                 vMemberLoadDirection = new Vector3D(
-                    l.LoadDirectionVector.X * vLCSMemberInLCSSurface.X,
-                    l.LoadDirectionVector.Y * vLCSMemberInLCSSurface.Y,
-                    l.LoadDirectionVector.Z * vLCSMemberInLCSSurface.Z);
+                l.LoadDirectionVector.X * vLCSMemberInLCSSurface.X,
+                l.LoadDirectionVector.Y * vLCSMemberInLCSSurface.Y,
+                l.LoadDirectionVector.Z * vLCSMemberInLCSSurface.Z);
 
 
 

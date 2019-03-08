@@ -1307,11 +1307,11 @@ namespace PFD
 
             if (bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts) // TODO - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
             {
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlinsLeftSide, fDist_Purlin); // Test len purlins na lavej strane
+                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlinsLeftSide, fDist_Purlin); // Test len purlins na lavej strane
                 //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirtsLeftSide, fDist_Girt);  // Test len girts na lavej strane
 
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirts, fDist_Girt);
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirts, fDist_Girt);
             }
 
             #endregion
