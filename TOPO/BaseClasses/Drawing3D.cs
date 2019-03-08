@@ -39,8 +39,7 @@ namespace BaseClasses
                     gr.Children.Add(Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
                     //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
                 }
-
-
+                
                 Model3D membersModel3D = null;
                 if (sDisplayOptions.bDisplaySolidModel && sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
@@ -451,7 +450,7 @@ namespace BaseClasses
 
             if (selectedLoadCase != null)
             {
-                if (selectedLoadCase.NodeLoadsList != null) // Some nodal loads exist
+                if (selectedLoadCase.NodeLoadsList != null  && sDisplayOptions.bDisplayNodalLoads) // Some nodal loads exist
                 {
                     // Model Groups of Nodal Loads
                     for (int i = 0; i < selectedLoadCase.NodeLoadsList.Count; i++)
@@ -466,7 +465,7 @@ namespace BaseClasses
                     }
                 }
 
-                if (selectedLoadCase.MemberLoadsList != null) // Some member loads exist
+                if (selectedLoadCase.MemberLoadsList != null && sDisplayOptions.bDisplayMemberLoads) // Some member loads exist
                 {
                     // Model Groups of Member Loads
                     for (int i = 0; i < selectedLoadCase.MemberLoadsList.Count; i++)
@@ -486,7 +485,7 @@ namespace BaseClasses
                     }
                 }
 
-                if (selectedLoadCase.SurfaceLoadsList != null) // Some surface loads exist
+                if (selectedLoadCase.SurfaceLoadsList != null && sDisplayOptions.bDisplaySurfaceLoads) // Some surface loads exist
                 {
                     // Model Groups of Surface Loads
                     for (int i = 0; i < selectedLoadCase.SurfaceLoadsList.Count; i++)
@@ -497,9 +496,6 @@ namespace BaseClasses
                             model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.DisplayIn3DRatio);
 
                             model3D_group.Children.Add(model_gr); // Add surface load to the model group
-
-                            // Set load for all assigned surfaces
-
                         }
                     }
                 }

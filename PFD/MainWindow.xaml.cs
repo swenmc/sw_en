@@ -661,8 +661,10 @@ namespace PFD
             sDisplayOptions.bDisplaySurfaceLoadAxis = vm.ShowSurfaceLoadsAxis;
 
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
-            sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
+            sDisplayOptions.bDisplayNodalLoads = vm.ShowNodalLoads;
             sDisplayOptions.bDisplayMemberLoads = vm.ShowLoadsOnMembers;
+            sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
+            
 
             sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
@@ -686,6 +688,7 @@ namespace PFD
 
             CalculateLoadingValues();
 
+            bool generateSurfaceLoads = vm.ShowSurfaceLoads || vm.ShowSurfaceLoadsAxis || vm.ShowLoadsOnPurlinsAndGirts;
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
                 sGeometryInputData,
@@ -712,7 +715,7 @@ namespace PFD
                 vm.ShowLoadsOnMembers,
                 vm.ShowLoadsOnPurlinsAndGirts,
                 vm.ShowLoadsOnFrameMembers,
-                vm.ShowSurfaceLoads
+                generateSurfaceLoads
                 );
 
             // Create 3D window

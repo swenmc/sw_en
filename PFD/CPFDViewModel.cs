@@ -851,6 +851,8 @@ namespace PFD
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
 
+            bool generateSurfaceLoads = MShowSurfaceLoads || MShowSurfaceLoadsAxis || MShowLoadsOnPurlinsAndGirts;
+
             // Create 3D model of structure including loading
             MModel = new CModel_PFD_01_GR(
                     sBuildingGeometryData,
@@ -877,7 +879,7 @@ namespace PFD
                     MShowLoadsOnMembers,
                     MShowLoadsOnPurlinsAndGirts,
                     MShowLoadsOnFrameMembers,
-                    MShowSurfaceLoads);
+                    generateSurfaceLoads);
         }
 
         public void Run()

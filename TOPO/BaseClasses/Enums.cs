@@ -586,6 +586,7 @@
         public bool bDisplayLoadsLabels;
         public bool bDisplayLoadsLabelsUnits;
 
+        public bool bDisplayNodalLoads;
         public bool bDisplayMemberLoads;
         public bool bDisplaySurfaceLoads;
 
