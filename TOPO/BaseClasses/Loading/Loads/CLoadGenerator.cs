@@ -123,8 +123,8 @@ namespace BaseClasses
 
                 // Pozname poziciu load direction vector plochy v GCS a LCS pruta v GCS
                 // Transformujeme load direction vector plochy do LCS pruta
-                Matrix3D matrixLoadDirectionVectorToMember = GetLocalToGlobalTransformMatrix(vLoadLCSinGCS, vMemberLCSinGCS);
-                vMemberLoadDirection = Vector3D.Multiply(vLoadDirectioninGCS, matrixLoadDirectionVectorToMember);
+                //Matrix3D matrixLoadDirectionVectorToMember = GetLocalToGlobalTransformMatrix(vLoadLCSinGCS, vMemberLCSinGCS);
+                //vMemberLoadDirection = Vector3D.Multiply(vLoadDirectioninGCS, matrixLoadDirectionVectorToMember);
 
                 // Ondrej
                 Transform3DGroup trans = m.CreateTransformCoordGroup(m, true);
