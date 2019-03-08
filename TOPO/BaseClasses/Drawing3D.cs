@@ -24,7 +24,8 @@ namespace BaseClasses
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
 
-            
+            DrawModelMembersAxis(model, _trackport.ViewPort);
+
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
@@ -33,7 +34,7 @@ namespace BaseClasses
                 //najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty
                 if (sDisplayOptions.bDisplayLoads && sDisplayOptions.bDisplayLoadsLabels)
                 {
-                    gr.Children.Add( Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
+                    gr.Children.Add(Drawing3D.CreateLabels3DForLoadCase(model, loadcase, sDisplayOptions));
                     //System.Diagnostics.Trace.WriteLine("After CreateLabels3DForLoadCase: " + (DateTime.Now - start).TotalMilliseconds);
                 }
 
@@ -78,9 +79,9 @@ namespace BaseClasses
                 // Add WireFrame Model
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayMembers)
                 {
-                    if(membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
+                    if (membersModel3D == null) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial);
                     Drawing3D.DrawModelMembersWireFrame(model, _trackport.ViewPort);
-                } 
+                }
                 //System.Diagnostics.Trace.WriteLine("After DrawModelMembersinOneWireFrame: " + (DateTime.Now - start).TotalMilliseconds);
 
                 if (sDisplayOptions.bDisplayWireFrameModel && sDisplayOptions.bDisplayJoints)
@@ -96,7 +97,7 @@ namespace BaseClasses
                     //System.Diagnostics.Trace.WriteLine("After CreateMembersDescriptionModel3D: " + (DateTime.Now - start).TotalMilliseconds);
                 }
 
-               
+
 
             }
 
@@ -166,7 +167,7 @@ namespace BaseClasses
             if (model != null && sDisplayOptions.bDisplaySolidModel)
             {
                 Model3D membersModel3D = null;
-                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel,sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, null, null, null, egcs);
+                if (sDisplayOptions.bDisplayMembers) membersModel3D = Drawing3D.CreateMembersModel3D(model, !sDisplayOptions.bDistinguishedColor, sDisplayOptions.bTransparentMemberModel, sDisplayOptions.bUseDiffuseMaterial, sDisplayOptions.bUseEmissiveMaterial, null, null, null, egcs);
                 if (membersModel3D != null) gr.Children.Add(membersModel3D);
 
                 Model3DGroup jointsModel3DGroup = null;
@@ -646,7 +647,7 @@ namespace BaseClasses
             Point3D pAxisX = new Point3D(1, 0, 0);
             Point3D pAxisY = new Point3D(0, 1, 0);
             Point3D pAxisZ = new Point3D(0, 0, 1);
-                        
+
             sAxisX_3D.Points.Add(pGCS_centre);
             sAxisX_3D.Points.Add(pAxisX);
             sAxisX_3D.Color = Colors.Red;
@@ -671,7 +672,7 @@ namespace BaseClasses
                 model.AxisY = sAxisY_3D;
                 model.AxisZ = sAxisZ_3D;
             }
-            
+
             //temp skuska
             WireLine wX = new WireLine();
             wX.Point1 = pGCS_centre;
@@ -728,6 +729,67 @@ namespace BaseClasses
 
                 viewPort.Children.Add(lines);
             }
+        }
+
+        // Draw Members Centerlines
+        public static void DrawModelMembersAxis(CModel model, Viewport3D viewPort)
+        {
+            double axisL = 0.5;
+            // Members
+            if (model.m_arrMembers == null) return;
+
+            foreach (CMember m in model.m_arrMembers)
+            {
+                if (m != null &&
+                    m.NodeStart != null &&
+                    m.NodeEnd != null &&
+                    m.CrScStart != null &&
+                    m.BIsDisplayed) // Member object is valid (not empty) and is active to be displayed
+                {
+
+                    Transform3DGroup transform = m.CreateTransformCoordGroup(m, true);
+                    Point3D pC = new Point3D(0 + m.FLength * 0.35, 0, 0);
+                    
+                    Point3D pAxisX = new Point3D(pC.X + axisL, pC.Y, pC.Z);
+                    Point3D pAxisY = new Point3D(pC.X, pC.Y + axisL, pC.Z);
+                    Point3D pAxisZ = new Point3D(pC.X, pC.Y, pC.Z + axisL);
+
+                    pC = transform.Transform(pC);
+                    pAxisX = transform.Transform(pAxisX);
+                    pAxisY = transform.Transform(pAxisY);
+                    pAxisZ = transform.Transform(pAxisZ);
+
+                    DrawAxis(viewPort, pC, pAxisX, pAxisY, pAxisZ);
+                }
+            }
+        }
+
+        // Draw Axis
+        public static void DrawAxis(Viewport3D viewPort, Point3D pGCS_centre, Point3D pAxisX, Point3D pAxisY, Point3D pAxisZ)
+        {
+            float flineThickness = 3;
+            // axis     
+            WireLine wX = new WireLine();
+            wX.Point1 = pGCS_centre;
+            wX.Point2 = pAxisX;
+            wX.Thickness = flineThickness;
+            wX.Color = Colors.Red;
+
+            WireLine wY = new WireLine();
+            wY.Point1 = pGCS_centre;
+            wY.Point2 = pAxisY;
+            wY.Thickness = flineThickness;
+            wY.Color = Colors.Green;
+
+            WireLine wZ = new WireLine();
+            wZ.Point1 = pGCS_centre;
+            wZ.Point2 = pAxisZ;
+            wZ.Thickness = flineThickness;
+            wZ.Color = Colors.Blue;
+
+            viewPort.Children.Add(wX);
+            viewPort.Children.Add(wY);
+            viewPort.Children.Add(wZ);
         }
 
         // TODO Ondrej - z tychto troch metod staci asi ponechat uz len jednu ??? pripadne popisat naco sa ktora este moze hodit aby to bolo hned zrejme
@@ -795,7 +857,7 @@ namespace BaseClasses
         {
             // Members - Wire Frame
             if (model.m_arrMembers != null)
-            {                
+            {
                 List<Point3D> wireFramePoints = new List<Point3D>();
                 for (int i = 0; i < model.m_arrMembers.Length; i++) // Per each member
                 {
@@ -1030,7 +1092,7 @@ namespace BaseClasses
                         pTextPosition.Z = pNodeStart.Z + fRelativePositionFactor * model.m_arrMembers[i].Delta_Z + fOffsetZ;
 
                         // Create text
-                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0,0),  new Vector3D (0,0, fTextBlockVerticalSizeFactor));
+                        textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
                         viewPort.Children.Add(textlabel);
                     }
                 }
@@ -1086,7 +1148,7 @@ namespace BaseClasses
             string separator = " - ";
             parts.Add(l.ID.ToString());
             parts.Add(l.Prefix.ToString());
-            if(options.bDisplayLoadsLabelsUnits) parts.Add((fLoadValue * fUnitFactor).ToString("F3") + " " + sUnitString);
+            if (options.bDisplayLoadsLabelsUnits) parts.Add((fLoadValue * fUnitFactor).ToString("F3") + " " + sUnitString);
             else parts.Add((fLoadValue * fUnitFactor).ToString("F3"));
 
             return string.Join(separator, parts);
@@ -1102,7 +1164,7 @@ namespace BaseClasses
 
             List<string> parts1 = new List<string>();
             parts1.Add("Fx");
-            parts1.Add((l.Value_FX * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kN]" :""));
+            parts1.Add((l.Value_FX * fUnitFactor).ToString("F3") + (options.bDisplayLoadsLabelsUnits ? " [kN]" : ""));
             string lineFx = string.Join(separator, parts1);
 
             List<string> parts2 = new List<string>();
@@ -1141,7 +1203,7 @@ namespace BaseClasses
             return wholeString;
         }
 
-         // Draw Text in 3D
+        // Draw Text in 3D
         public static Model3DGroup CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions)
         {
             Model3DGroup gr = new Model3DGroup();
@@ -1153,10 +1215,10 @@ namespace BaseClasses
             float fTextBlockVerticalSizeFactor = 0.8f;
             float fTextBlockHorizontalSizeFactor = 0.3f;
             //float fOffsetZ = 0.07f;
-            
+
             if (loadCase != null)
             {
-                
+
                 if (loadCase.NodeLoadsList != null) // Some nodal loads exist
                 {
                     // Model Groups of Nodal Loads
@@ -1177,8 +1239,8 @@ namespace BaseClasses
                     {
                         if (loadCase.MemberLoadsList[i] != null && loadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            ModelVisual3D textlabel = DrawMemberLoadLabel3D(loadCase.MemberLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);                            
-                            if(textlabel != null) gr.Children.Add(textlabel.Content);
+                            ModelVisual3D textlabel = DrawMemberLoadLabel3D(loadCase.MemberLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);
+                            if (textlabel != null) gr.Children.Add(textlabel.Content);
                         }
                     }
                 }
@@ -1211,7 +1273,7 @@ namespace BaseClasses
             return gr;
         }
 
-        private static ModelVisual3D DrawNodalLoadLabel3D(CNLoad load, float fTextBlockVerticalSize, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor,  DisplayOptions displayOptions)
+        private static ModelVisual3D DrawNodalLoadLabel3D(CNLoad load, float fTextBlockVerticalSize, float fTextBlockHorizontalSizeFactor, float fTextBlockVerticalSizeFactor, DisplayOptions displayOptions)
         {
             ModelVisual3D textlabel = null;
 
@@ -1258,7 +1320,7 @@ namespace BaseClasses
             tb.FontWeight = FontWeights.Thin;
             tb.Foreground = Brushes.Coral; // To Ondrej - asi musime nastavovat farbu textu, inak sa to kresli ciernou a nebolo to vidno
             tb.Background = Brushes.Black;
-            
+
             Model3DGroup model_gr = new Model3DGroup();
             model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.DisplayIn3DRatio);
 
@@ -1293,7 +1355,7 @@ namespace BaseClasses
             //           |                            |
             //          \|/                          \|/
             //================================================= - MEMBER
-            
+
             // Create text
             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
             return textlabel;
@@ -1325,7 +1387,7 @@ namespace BaseClasses
 
             float fUnitFactor = 0.001f; // N/m^2 to kN/m^2 (Pa to kPa)
             Point3D pTextPosition = new Point3D();
-            
+
             if (load.pSurfacePoints != null) // Check that surface points are initialized
             {
                 // Ak je hodnota zatazenia 0, tak nic nevykreslit
@@ -1337,11 +1399,11 @@ namespace BaseClasses
                 //tak by sa cisla zobrazili mimo kvadra a bolo by to asi podstatne krajsie
                 //show in load center
                 load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform, displayOptions.DisplayIn3DRatio); // Positions in global coordinate system GCS
-                //show on bottom
-                //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints(l, groupTransform);
-                //show on top
-                //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints_h(l, groupTransform);  
-                
+                                                                                                                //show on bottom
+                                                                                                                //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints(l, groupTransform);
+                                                                                                                //show on top
+                                                                                                                //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints_h(l, groupTransform);  
+
                 if (load.PointsGCS.Count > 0)
                 {
                     bool drawPointsOnEdges = false;  //moznost vykreslit suradnice na vrcholy kvadra (neviem ci sa niekedy este vyuzije)
@@ -1357,7 +1419,7 @@ namespace BaseClasses
                             gr.Children.Add(textlabel.Content);
                         }
                     }
-                    
+
                     pTextPosition.X = load.PointsGCS.Average(p => p.X);
                     pTextPosition.Y = load.PointsGCS.Average(p => p.Y);
                     pTextPosition.Z = load.PointsGCS.Average(p => p.Z);
@@ -1496,10 +1558,10 @@ namespace BaseClasses
             MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
 
             Point3D p2 = mesh.Positions.LastOrDefault();
-            if(p2 == null) return new Point3D();
+            if (p2 == null) return new Point3D();
             //p2.Y += 0.1 * p2.Z;  // to odsadenie este mozno treba nejako vyladit
             p2.Z += 0.2 * p2.Z;
-            
+
             Point3D transPoint = gr.Transform.Transform(p2);
             return transPoint;
         }
@@ -1639,7 +1701,7 @@ namespace BaseClasses
             Vector3D v1 = new Vector3D();
             Vector3D v2 = new Vector3D();
             Point3D abc = new Point3D();
-                        
+
             //'Create 2 vectors by subtracting p3 from p1 and p2
             v1.X = p1.X - p3.X;
             v1.Y = p1.Y - p3.Y;
@@ -1660,7 +1722,7 @@ namespace BaseClasses
             //    'calc z coordinate for point (x,y)
             //    GetPointOnPlaneZ = 
             double z = (d - abc.X * x - abc.Y * y) / abc.Z;
-            
+
             Point3D resultPoint = new Point3D(x, y, z);
             return resultPoint;
         }
@@ -1712,7 +1774,7 @@ namespace BaseClasses
 
         public static bool NodeLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, CNode n, double dLimit = 0.000001)
         {
-            double distance = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(n.X,n.Y,n.Z)));
+            double distance = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(n.X, n.Y, n.Z)));
 
             if (distance < dLimit)
                 return true;
@@ -1723,7 +1785,7 @@ namespace BaseClasses
         public static bool MemberLiesOnPlane(Point3D p1, Point3D p2, Point3D p3, CMember m, double dLimit = 0.000001)
         {
             double distanceStart = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(m.NodeStart.X, m.NodeStart.Y, m.NodeStart.Z)));
-            double distanceEnd   = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(m.NodeEnd.X, m.NodeEnd.Y, m.NodeEnd.Z)));
+            double distanceEnd = Math.Abs(GetDistanceFromPointToPlane(p1, p2, p3, new Point3D(m.NodeEnd.X, m.NodeEnd.Y, m.NodeEnd.Z)));
 
             if (distanceStart < dLimit && distanceEnd < dLimit)
                 return true;
@@ -1762,10 +1824,10 @@ namespace BaseClasses
 
         public static Vector3D GetSurfaceNormalVector(Point3D a, Point3D b, Point3D c)
         {
-                var dir = Vector3D.CrossProduct(b - a, c - a);
-                Vector3D norm = dir;
-                norm.Normalize();
-                return norm;
+            var dir = Vector3D.CrossProduct(b - a, c - a);
+            Vector3D norm = dir;
+            norm.Normalize();
+            return norm;
         }
 
 

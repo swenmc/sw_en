@@ -784,9 +784,9 @@ namespace PFD
             ShowLoads = true;
             ShowLoadsOnMembers = true;
             ShowLoadsOnPurlinsAndGirts = true;
-            ShowLoadsOnFrameMembers = true;
-            ShowNodalLoads = true;
-            ShowSurfaceLoads = true;
+            ShowLoadsOnFrameMembers = false;
+            ShowNodalLoads = false;
+            ShowSurfaceLoads = false;
             ShowLoadsLabels = true;
             ShowLoadsLabelsUnits = true;
             DisplayIn3DRatio = 0.001f;
