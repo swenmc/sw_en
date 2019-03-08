@@ -12,7 +12,7 @@ namespace BaseClasses
     public static class CLoadGenerator
     {
         static bool bDebugging = false; // Console output
-        
+
         public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, List<CMember> allMembersInModel)
         {
             foreach (CLoadCase lc in m_arrLoadCases)
@@ -24,41 +24,40 @@ namespace BaseClasses
                     c++;
                     foreach (CMember m in allMembersInModel)
                     {
-                        if (csload is CSLoad_FreeUniformGroup)
+                        foreach (FreeSurfaceLoadsMemberTypeData mtypedata in csload.listOfLoadedMemberTypeData)
                         {
-                            Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)csload).CreateTransformCoordGroupOfLoadGroup();
-                            foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)csload).LoadList)
+                            if (m.EMemberType == mtypedata.memberType) // Prut je rovnakeho typu ako je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
                             {
-                                foreach (FreeSurfaceLoadsMemberTypeData mtypedata in l.listOfLoadedMemberTypeData)
+                                if (csload is CSLoad_FreeUniformGroup)
                                 {
-                                    if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform) && m.EMemberType == mtypedata.memberType) // Prut lezi na ploche a je rovnakeho typu ake je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
+                                    Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)csload).CreateTransformCoordGroupOfLoadGroup();
+                                    foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)csload).LoadList)
+                                    {
+                                        if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform)) // Prut lezi na ploche
+                                        {
+                                            if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+
+                                            if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
+                                                GenerateMemberLoad(lc, l, m, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID);
+                                        }
+                                        else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
+                                    }
+                                }
+                                else if (csload is CSLoad_FreeUniform)
+                                {
+                                    CSLoad_FreeUniform l = (CSLoad_FreeUniform)csload;
+
+                                    if (MemberLiesOnSurfaceLoadPlane(l, m, null)) // Prut lezi na ploche
                                     {
                                         if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
                                         if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                            GenerateMemberLoad(lc, l, m, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID);
+                                            GenerateMemberLoad(lc, l, m, null, mtypedata.fLoadingWidth, ref iLoadID);
                                     }
                                     else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                 }
-                            }
-                        }
-                        else if (csload is CSLoad_FreeUniform)
-                        {
-                            CSLoad_FreeUniform l = (CSLoad_FreeUniform)csload;
-
-                            foreach (FreeSurfaceLoadsMemberTypeData mtypedata in l.listOfLoadedMemberTypeData)
-                            {
-                                if (MemberLiesOnSurfaceLoadPlane(l, m, null) && m.EMemberType == mtypedata.memberType) // Prut lezi na ploche a je rovnakeho typu ake je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
-                                {
-                                    if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
-
-                                    if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                        GenerateMemberLoad(lc, l, m, null, mtypedata.fLoadingWidth, ref iLoadID);
-                                }
-                                else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
-                            }
-                        }
-
+                            } // member type is included in group of types
+                        } //foreach memberType in group of types loaded by surface load
                     } //foreach member
                 } //foreach surface load in load case
             } //foreach loadcase
