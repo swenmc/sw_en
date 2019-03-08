@@ -196,7 +196,7 @@ namespace PFD
 
             // Member Intermediate Supports
             m_arrIntermediateTransverseSupports = new CIntermediateTransverseSupport[1];
-            CIntermediateTransverseSupport forkSupport = new CIntermediateTransverseSupport(1, EITSType.eBothFlanges,0);
+            CIntermediateTransverseSupport forkSupport = new CIntermediateTransverseSupport(1, EITSType.eBothFlanges, 0);
             m_arrIntermediateTransverseSupports[0] = forkSupport;
 
             // Fly bracing
@@ -510,8 +510,8 @@ namespace PFD
                         {
                             float fxLocationOfFlyBrace = fFirstFlyBracePosition + (j * iEveryXXPurlin) * fDist_Purlin;
 
-                            if(fxLocationOfFlyBrace < fRafterLength)
-                             lTransverseSupportGroup_Rafter.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fRafterLength, fxLocationOfFlyBrace, 0));
+                            if (fxLocationOfFlyBrace < fRafterLength)
+                                lTransverseSupportGroup_Rafter.Add(new CIntermediateTransverseSupport(j + 1, EITSType.eBothFlanges, fxLocationOfFlyBrace / fRafterLength, fxLocationOfFlyBrace, 0));
                             // TODO - To Ondrej, nie som si isty ci mam v kazdej podpore CIntermediateTransverseSupport ukladat jej poziciu (aktualny stav) alebo ma CMember nie list CIntermediateTransverseSupport ale list nejakych struktur (x, CIntermediateTransverseSupport), takze x miesta budu definovane v tejto strukture v objekte CMember a samotny objekt CIntermediateTransverseSupport nebude vediet kde je
                         }
 
@@ -538,14 +538,14 @@ namespace PFD
                                     fSegmentStart_abs = 0f;
                                     fSegmentEnd_abs = lTransverseSupportGroup_Rafter[j].Fx_position_abs;
                                 }
-                                else if(j < lTransverseSupportGroup_Rafter.Count)
+                                else if (j < lTransverseSupportGroup_Rafter.Count)
                                 {
-                                    fSegmentStart_abs = lTransverseSupportGroup_Rafter[j-1].Fx_position_abs;
+                                    fSegmentStart_abs = lTransverseSupportGroup_Rafter[j - 1].Fx_position_abs;
                                     fSegmentEnd_abs = lTransverseSupportGroup_Rafter[j].Fx_position_abs;
                                 }
                                 else // Last
                                 {
-                                    fSegmentStart_abs = lTransverseSupportGroup_Rafter[j-1].Fx_position_abs;
+                                    fSegmentStart_abs = lTransverseSupportGroup_Rafter[j - 1].Fx_position_abs;
                                     fSegmentEnd_abs = fRafterLength;
                                 }
 
@@ -751,12 +751,12 @@ namespace PFD
                     int iCurrentMemberIndex = iMainColumnNo + iRafterNo + iEavesPurlinNo + (iFrameNo - 1) * iGirtNoInOneFrame + i;
 
                     int iFirstPurlinOnCurrentSideIndex;
-                    if(iCurrentMemberIndex < iFirstPurlinInFrameRightSide)
+                    if (iCurrentMemberIndex < iFirstPurlinInFrameRightSide)
                         iFirstPurlinOnCurrentSideIndex = iFirstPurlinInFrameLeftSide;
                     else
                         iFirstPurlinOnCurrentSideIndex = iFirstPurlinInFrameRightSide;
 
-                    if (bUseFlyBracingPlates && iEveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1)%iEveryXXPurlin == 0)
+                    if (bUseFlyBracingPlates && iEveryXXPurlin > 0 && (iCurrentMemberIndex - iFirstPurlinOnCurrentSideIndex + 1) % iEveryXXPurlin == 0)
                     {
                         m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeStart, m_arrMembers[1], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                         m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", current_member.NodeEnd, m_arrMembers[1], current_member, ft_knee_joint_plate, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
@@ -873,7 +873,7 @@ namespace PFD
             for (int i = 0; i < m_arrConnectionJoints.Count; i++)
             {
                 if (m_arrConnectionJoints[i].m_MainMember == null)
-                    throw new ArgumentNullException("Main member is not assigned to the joint No.:"+ m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
+                    throw new ArgumentNullException("Main member is not assigned to the joint No.:" + m_arrConnectionJoints[i].ID.ToString() + " Joint index in the list: " + i);
             }
 
             // Validation - duplicity of node ID
@@ -992,7 +992,7 @@ namespace PFD
                     // Resize array
                     Array.Resize(ref m_arrNSupports, m_arrNSupports.Length + 1);
 
-                    m_arrNSupports[m_arrNSupports.Length-1] = new CNSupport(6, i + 1, m_arrNodes[i], bSupport1, 0);
+                    m_arrNSupports[m_arrNSupports.Length - 1] = new CNSupport(6, i + 1, m_arrNodes[i], bSupport1, 0);
                 }
             }
 
@@ -1109,7 +1109,7 @@ namespace PFD
                 CPoint controlPoint_FloorSlab = new CPoint(iLastFoundationIndex + 1, m_arrNodes[0].X + fFloorSlab_eX, m_arrNodes[0].Y + fFloorSlab_eY, m_arrNodes[0].Z - fFloorSlab_h + fTolerance, 0);
                 m_arrGOVolumes = new CVolume[1];
                 //m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, Colors.Gray, 0.5f, true, 0);
-                m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, new DiffuseMaterial(new SolidColorBrush (Colors.DarkGray)), true, 0);
+                m_arrGOVolumes[0] = new CVolume(1, EVolumeShapeType.eShape3DPrism_8Edges, controlPoint_FloorSlab, fFloorSlab_aX, fFloorSlab_bY, fFloorSlab_h, new DiffuseMaterial(new SolidColorBrush(Colors.DarkGray)), true, 0);
             }
             #endregion
 
@@ -1150,196 +1150,171 @@ namespace PFD
             }
             #endregion
 
-            // POKUS TODO 186
-            #region Member Loads (girts, purlins, wind posts, door trimmers)
-            // Generated from surface load (on girts and purlins)
-            // TO Ondrej - 7.2.2019
-            // Toto je pokus o generovanie prutoveho zatazenia z plosneho
-            // Jedna sa o zoznamy prutov typu girts a typu purlins
-            // Problem je v tom suradnice bodov rovin beriem z celej stavby, by sa mali preberat priamo z objektu CSLoad_FreeUniform.cs,
-            // Mozes sa tymto insprirovat ale treba to vyladit tak aby sa CMLoad generovali vzdy len pre pruty ktore su pod CSurfaceLoad, pripadne generovat viacero CMLoad_24, ak je prut pod viacerymi CSurfaceLoads
-
-            // TODO No. 54
-            // tieto zoznamy sa maju nahradit funckiou v TODO 54 ktora ich vytvori pre jednotlive zatazovacie plochy zo suradnic ploch
-            // Uvedomil som si ze to ma jeden nedostatok, member (napr. purlin) moze byt jednou castou pod jednou plochou a druhou castou pod druhou plochou
-            // takze nie je spravne mat v ploche zoznam prutov ktore zatazuje
-            // Member moze byt pod roznymi plochami, takze to nie je jednoznacne, musi to fungovat tak ze je zatazovacie plochy neobsahuju takyto zoznam, ale algoritmus vygeneruje CMLoad_21 alebo skupinu CMLoad_24 na jednom prute, pre pruty ktore su pod jednou plochou alebo pod viacerymi plochami
-            // Generate linear Loads
-            List<CMember> listOfPurlins = new List<CMember>(0);
-            List<CMember> listOfEavePurlins = new List<CMember>(0);
-            List<CMember> listOfGirts = new List<CMember>(0);
-
-            List<CMember> listOfPurlinsLeftSide = new List<CMember>(0);
-            List<CMember> listOfPurlinsRightSide = new List<CMember>(0);
-            List<CMember> listOfEavePurlinsLeftSide = new List<CMember>(0);
-            List<CMember> listOfEavePurlinsRightSide = new List<CMember>(0);
-            List<CMember> listOfGirtsLeftSide = new List<CMember>(0);
-            List<CMember> listOfGirtsRightSide = new List<CMember>(0);
-            List<CMember> listOfGirtsFrontSide = new List<CMember>(0);
-            List<CMember> listOfGirtsBackSide = new List<CMember>(0);
-
-            Point3D p1;
-            Point3D p2;
-            Point3D p3;
-
-            // Roof Surface Geometry
-            // Control Points
-            CPoint pRoofFrontLeft = new CPoint(0, 0, 0, fH1_frame, 0);
-            CPoint pRoofFrontApex = new CPoint(0, 0.5f * fW_frame, 0, fH2_frame, 0);
-            CPoint pRoofFrontRight = new CPoint(0, fW_frame, 0, fH1_frame, 0);
-            CPoint pRoofBackLeft = new CPoint(0, 0, fL_tot, fH1_frame, 0);
-            CPoint pRoofBackApex = new CPoint(0, 0.5f * fW_frame, fL_tot, fH2_frame, 0);
-            CPoint pRoofBackRight = new CPoint(0, fW_frame, fL_tot, fH1_frame, 0);
-
-            // Wall Surface Geometry
-            CPoint pWallFrontLeft = new CPoint(0, 0, 0, 0, 0);
-            CPoint pWallFrontRight = new CPoint(0, fW_frame, 0, 0, 0);
-            CPoint pWallBackRight = new CPoint(0, fW_frame, fL_tot, 0, 0);
-            CPoint pWallBackLeft = new CPoint(0, 0, fL_tot, 0, 0);
-
-            // TODO No 49 and 50 - in work, naplnit zoznamy prutov ktore lezia v rovine definujucej zatazenie, presnost 1 mm
-            // Uvedomil som si ze to ma jeden nedostatok, member (napr. purlin) moze byt jednou castou pod jednou plochou a druhou castou pod druhou plochou
-            // takze nie je spravne mat v ploche zoznam prutov ktore zatazuje
-
-            // Loading width of member (Zatazovacia sirka pruta)
-            float fLoadingWidthPurlin = fDist_Purlin;
-            float fLoadingWidthEdgePurlin_Roof = 0.5f * fDist_Purlin;
-            float fLoadingWidthEdgePurlin_Wall = 0.5f * fDist_Girt;
-            float fLoadingWidthGirt = fDist_Girt;
-
-            // TODO No. 54 - po implementacii tento cyklus odstranit a napojit metodu
-            // Uvedomil som si ze to ma jeden nedostatok, member (napr. purlin) moze byt jednou castou pod jednou plochou a druhou castou pod druhou plochou
-            // takze nie je spravne mat v ploche zoznam prutov ktore zatazuje
-            // FillListOfMemberData z CSLoad_Free.cs
-
-            foreach (CMember m in m_arrMembers)
+            #region Member Loads
+            if (bGenerateLoadsOnMembers)
             {
-                ///////////////////////////////////////////////////////////////////////////////////////////////////
-                // Girts
-                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
 
-                // List of all girts
-                if (m.EMemberType == EMemberType_FS.eG)
-                    listOfGirts.Add(m);
+                // TODO Ondrej - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
+                if (bGenerateLoadsOnPurlinsAndGirts)
+                {
+                    // Generated from surface load (on girts and purlins)
+                    List<CMember> listOfPurlins = new List<CMember>(0);
+                    List<CMember> listOfEavePurlins = new List<CMember>(0);
+                    List<CMember> listOfGirts = new List<CMember>(0);
 
-                // TODO - Ondrej tieto suradnice by sa mali preberat priamo z objektu CSLoad_FreeUniform.cs, transformacna funkcia 
-                // CreateTransformCoordGroup
+                    List<CMember> listOfPurlinsLeftSide = new List<CMember>(0);
+                    List<CMember> listOfPurlinsRightSide = new List<CMember>(0);
+                    List<CMember> listOfEavePurlinsLeftSide = new List<CMember>(0);
+                    List<CMember> listOfEavePurlinsRightSide = new List<CMember>(0);
+                    List<CMember> listOfGirtsLeftSide = new List<CMember>(0);
+                    List<CMember> listOfGirtsRightSide = new List<CMember>(0);
+                    List<CMember> listOfGirtsFrontSide = new List<CMember>(0);
+                    List<CMember> listOfGirtsBackSide = new List<CMember>(0);
 
-                p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
-                p2 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
-                p3 = new Point3D(pRoofBackLeft.X, pRoofBackLeft.Y, pRoofBackLeft.Z);
+                    Point3D p1;
+                    Point3D p2;
+                    Point3D p3;
 
-                // List of girts - left wall
-                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfGirtsLeftSide.Add(m);
+                    // Roof Surface Geometry
+                    // Control Points
+                    CPoint pRoofFrontLeft = new CPoint(0, 0, 0, fH1_frame, 0);
+                    CPoint pRoofFrontApex = new CPoint(0, 0.5f * fW_frame, 0, fH2_frame, 0);
+                    CPoint pRoofFrontRight = new CPoint(0, fW_frame, 0, fH1_frame, 0);
+                    CPoint pRoofBackLeft = new CPoint(0, 0, fL_tot, fH1_frame, 0);
+                    CPoint pRoofBackApex = new CPoint(0, 0.5f * fW_frame, fL_tot, fH2_frame, 0);
+                    CPoint pRoofBackRight = new CPoint(0, fW_frame, fL_tot, fH1_frame, 0);
 
-                p1 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
-                p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
-                p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
+                    // Wall Surface Geometry
+                    CPoint pWallFrontLeft = new CPoint(0, 0, 0, 0, 0);
+                    CPoint pWallFrontRight = new CPoint(0, fW_frame, 0, 0, 0);
+                    CPoint pWallBackRight = new CPoint(0, fW_frame, fL_tot, 0, 0);
+                    CPoint pWallBackLeft = new CPoint(0, 0, fL_tot, 0, 0);
 
-                // List of girts - right wall
-                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfGirtsRightSide.Add(m);
+                    // Zoznamy prutov ktore lezia v rovine definujucej zatazenie, presnost 1 mm
 
-                p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
-                p2 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
-                p3 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
+                    // Loading width of member (Zatazovacia sirka pruta)
+                    float fLoadingWidthPurlin = fDist_Purlin;
+                    float fLoadingWidthEdgePurlin_Roof = 0.5f * fDist_Purlin;
+                    float fLoadingWidthEdgePurlin_Wall = 0.5f * fDist_Girt;
+                    float fLoadingWidthGirt = fDist_Girt;
 
-                // List of girts - front wall
-                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfGirtsFrontSide.Add(m);
+                    foreach (CMember m in m_arrMembers)
+                    {
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////
+                        // Girts
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-                p1 = new Point3D(pWallBackLeft.X, pWallBackLeft.Y, pWallBackLeft.Z);
-                p2 = new Point3D(pWallBackRight.X, pWallBackRight.Y, pWallBackRight.Z);
-                p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
+                        // List of all girts
+                        if (m.EMemberType == EMemberType_FS.eG)
+                            listOfGirts.Add(m);
 
-                // List of girts - back wall
-                if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfGirtsBackSide.Add(m);
+                        // TODO - Ondrej tieto suradnice by sa mali preberat priamo z objektu CSLoad_FreeUniform.cs, transformacna funkcia 
+                        // CreateTransformCoordGroup
 
-                ///////////////////////////////////////////////////////////////////////////////////////////////////
-                // Purlins
-                ///////////////////////////////////////////////////////////////////////////////////////////////////
+                        p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
+                        p2 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
+                        p3 = new Point3D(pRoofBackLeft.X, pRoofBackLeft.Y, pRoofBackLeft.Z);
 
-                // List of all purlins
-                if (m.EMemberType == EMemberType_FS.eP)
-                    listOfPurlins.Add(m);
+                        // List of girts - left wall
+                        if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfGirtsLeftSide.Add(m);
 
-                // List of all edge purlins
-                if (m.EMemberType == EMemberType_FS.eEP)
-                    listOfEavePurlins.Add(m);
+                        p1 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
+                        p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
+                        p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
 
-                p1 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
-                p2 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
-                p3 = new Point3D(pRoofBackApex.X, pRoofBackApex.Y, pRoofBackApex.Z);
+                        // List of girts - right wall
+                        if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfGirtsRightSide.Add(m);
 
-                // List of purlins - left side of the roof
-                if (m.EMemberType == EMemberType_FS.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfPurlinsLeftSide.Add(m);
+                        p1 = new Point3D(pWallFrontLeft.X, pWallFrontLeft.Y, pWallFrontLeft.Z);
+                        p2 = new Point3D(pWallFrontRight.X, pWallFrontRight.Y, pWallFrontRight.Z);
+                        p3 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
 
-                // List of edge purlins - left side of the roof (tento zoznam pouzit aj pre zatazenie lavej steny)
-                if (m.EMemberType == EMemberType_FS.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfEavePurlinsLeftSide.Add(m);
+                        // List of girts - front wall
+                        if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfGirtsFrontSide.Add(m);
 
-                p1 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
-                p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
-                p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
+                        p1 = new Point3D(pWallBackLeft.X, pWallBackLeft.Y, pWallBackLeft.Z);
+                        p2 = new Point3D(pWallBackRight.X, pWallBackRight.Y, pWallBackRight.Z);
+                        p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
 
-                // List of purlins - right side of the roof
-                if (m.EMemberType == EMemberType_FS.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfPurlinsRightSide.Add(m);
+                        // List of girts - back wall
+                        if (m.EMemberType == EMemberType_FS.eG && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfGirtsBackSide.Add(m);
 
-                // List of edge purlins - right side of the roof (tento zoznam pouzit aj pre zatazenie pravej steny)
-                if (m.EMemberType == EMemberType_FS.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
-                    listOfEavePurlinsRightSide.Add(m);
-            }
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////
+                        // Purlins
+                        ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-            // TODO 50
-            // Ukazka - purlin - imposed load
-            // Preorganizovat properties v triedach surface load tak, aby sa dalo dostat k hodnote zatazenia a prenasobit vzdialenostou medzi vaznicami
-            // Vypocitane zatazenie priradit prutom zo zoznamu listOfPurlins v Load Case v m_arrLoadCases[01]
+                        // List of all purlins
+                        if (m.EMemberType == EMemberType_FS.eP)
+                            listOfPurlins.Add(m);
 
-            // TODO - Ondrej, pripravit staticku triedu a metody pre generovanie member load zo surface load v zlozke Loading
-            // TODO 186 - To Ondrej - Tu je trieda CLoadGenerator, v ktorej by mohlo byt zapracovane generovanie zatazenia
+                        // List of all edge purlins
+                        if (m.EMemberType == EMemberType_FS.eEP)
+                            listOfEavePurlins.Add(m);
 
-            // Generator prutoveho zatazenia z plosneho zatazenia by mohol byt niekde stranou v tomto CExample je toto uz velmi vela
-            // Pre urcenie spravneho znamienka generovaneho member load bude potrebne poznat uhol medzi normalou plochy definujucej zatazenie a osovym systemom pruta
+                        p1 = new Point3D(pRoofFrontLeft.X, pRoofFrontLeft.Y, pRoofFrontLeft.Z);
+                        p2 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
+                        p3 = new Point3D(pRoofBackApex.X, pRoofBackApex.Y, pRoofBackApex.Z);
 
-            if (bGenerateLoadsOnMembers && bGenerateLoadsOnPurlinsAndGirts) // TODO - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
-            {
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlinsLeftSide, fDist_Purlin); // Test len purlins na lavej strane
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirtsLeftSide, fDist_Girt); // Test len girts na lavej strane
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirtsFrontSide, fDist_FrontGirts); // Test len girts na lavej strane
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirts, fDist_Girt);
-            }
+                        // List of purlins - left side of the roof
+                        if (m.EMemberType == EMemberType_FS.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfPurlinsLeftSide.Add(m);
 
-            #endregion
+                        // List of edge purlins - left side of the roof (tento zoznam pouzit aj pre zatazenie lavej steny)
+                        if (m.EMemberType == EMemberType_FS.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfEavePurlinsLeftSide.Add(m);
 
-            #region Frame Member Loads
-            // Frame Member Loads
-            if (bGenerateLoadsOnMembers && bGenerateLoadsOnFrameMembers)
-            {
-                CMemberLoadGenerator loadGenerator = 
-                    new CMemberLoadGenerator(iFrameNo,
-                    fL1_frame,
-                    fL_tot,
-                    fSlopeFactor,
-                    m_arrCrSc[(int)EMemberGroupNames.eGirtWall],
-                    m_arrCrSc[(int)EMemberGroupNames.ePurlin],
-                    fDist_Girt,
-                    fDist_Purlin,
-                    m_arrCrSc[(int)EMemberGroupNames.eMainColumn],
-                    m_arrCrSc[(int)EMemberGroupNames.eRafter],
-                    m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
-                    m_arrCrSc[(int)EMemberGroupNames.eRafter_EF],
-                    m_arrLoadCases,
-                    m_arrMembers,
-                    generalLoad,
-                    snow,
-                    wind);
+                        p1 = new Point3D(pRoofFrontApex.X, pRoofFrontApex.Y, pRoofFrontApex.Z);
+                        p2 = new Point3D(pRoofFrontRight.X, pRoofFrontRight.Y, pRoofFrontRight.Z);
+                        p3 = new Point3D(pRoofBackRight.X, pRoofBackRight.Y, pRoofBackRight.Z);
 
-                loadGenerator.GenerateLoadsOnFrames();
+                        // List of purlins - right side of the roof
+                        if (m.EMemberType == EMemberType_FS.eP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfPurlinsRightSide.Add(m);
+
+                        // List of edge purlins - right side of the roof (tento zoznam pouzit aj pre zatazenie pravej steny)
+                        if (m.EMemberType == EMemberType_FS.eEP && Drawing3D.MemberLiesOnPlane(p1, p2, p3, m, 0.001))
+                            listOfEavePurlinsRightSide.Add(m);
+                    }
+
+                    // Generate member loads
+                    CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+                    CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirts, fDist_Girt);
+                    CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfEavePurlins, fDist_Purlin); // TODO - tu treba pridat aj parameter fDistGirt pre zatazenie v smere LCS y na eave purlins a dopracovat to ze sa moze pouzit ina zatazovacia sirka podla smeru
+                }
+
+                #endregion
+
+                #region Frame Member Loads (main and edge columns and rafters)
+                // Frame Member Loads
+                if (bGenerateLoadsOnFrameMembers)
+                {
+                    CMemberLoadGenerator loadGenerator =
+                        new CMemberLoadGenerator(iFrameNo,
+                        fL1_frame,
+                        fL_tot,
+                        fSlopeFactor,
+                        m_arrCrSc[(int)EMemberGroupNames.eGirtWall],
+                        m_arrCrSc[(int)EMemberGroupNames.ePurlin],
+                        fDist_Girt,
+                        fDist_Purlin,
+                        m_arrCrSc[(int)EMemberGroupNames.eMainColumn],
+                        m_arrCrSc[(int)EMemberGroupNames.eRafter],
+                        m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
+                        m_arrCrSc[(int)EMemberGroupNames.eRafter_EF],
+                        m_arrLoadCases,
+                        m_arrMembers,
+                        generalLoad,
+                        snow,
+                        wind);
+
+                    loadGenerator.GenerateLoadsOnFrames();
+                }
+                #endregion
             }
             #endregion
 
