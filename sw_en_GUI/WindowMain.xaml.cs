@@ -1050,6 +1050,32 @@ namespace sw_en_GUI
             win.Close();
         }
 
+        private void menuItemExample3D_903_ML_Click(object sender, RoutedEventArgs e)
+        {
+            model = new CExample_3D_903_ML();
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bUseDiffuseMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayWireFrameModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+            sDisplayOptions.bDisplayPlates = true;
+            sDisplayOptions.bDisplayConnectors = true;
+            sDisplayOptions.bDisplayGlobalAxis = true;
+            sDisplayOptions.bDisplayMembersCenterLines = true;
+            sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
+
+            sDisplayOptions.bDisplayLoads = true;
+
+            Window2 win = new Window2(model, sDisplayOptions, model.m_arrLoadCases[0], m_bDebugging);
+            list_trackports.Add(win._trackport);
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Example 3D 903 ML" + " - Window " + (Container.Children.Count + 1) });
+            win.Close();
+        }
+
         private void menuItemExample3D_Ondro_Click(object sender, RoutedEventArgs e)
         {
             //model = new sw_en_GUI.EXAMPLES._3D.CExample_3D_Ondro();

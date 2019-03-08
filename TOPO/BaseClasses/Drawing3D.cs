@@ -1194,12 +1194,12 @@ namespace BaseClasses
                             {
                                 Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).CreateTransformCoordGroupOfLoadGroup();
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
-                                {                                    
+                                {
                                     DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, displayOptions, loadGroupTransform, ref gr);
                                 }
                             }
                             else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
-                            {                                
+                            {
                                 CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
                                 DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, displayOptions, null, ref gr);
                             }
@@ -1495,12 +1495,12 @@ namespace BaseClasses
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
             MeshGeometry3D mesh = (MeshGeometry3D)model3D.Geometry;
 
-            Point3D p2 = mesh.Positions.LastOrDefault();   
+            Point3D p2 = mesh.Positions.LastOrDefault();
             if(p2 == null) return new Point3D();
             //p2.Y += 0.1 * p2.Z;  // to odsadenie este mozno treba nejako vyladit
             p2.Z += 0.2 * p2.Z;
             
-            Point3D transPoint = gr.Transform.Transform(p2);            
+            Point3D transPoint = gr.Transform.Transform(p2);
             return transPoint;
         }
 

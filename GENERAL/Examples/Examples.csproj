@@ -68,6 +68,7 @@
     <Compile Include="EXAMPLES\3D\CExample_3D_50.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_80.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_90.cs" />
+    <Compile Include="EXAMPLES\3D\CExample_3D_903_ML.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_902_OM.cs" />
     <Compile Include="EXAMPLES\3D\CExample_3D_Ondro.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
