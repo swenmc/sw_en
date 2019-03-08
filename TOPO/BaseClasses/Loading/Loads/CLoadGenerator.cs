@@ -175,8 +175,9 @@ namespace BaseClasses
             double dIntersectionLengthInMember_x_axis;
             double dIntersectionLengthInMember_yz_axis;
 
+            // TODO - toto by sa asi tiez dalo nejako pekne vyriesit cez Vector LCS pruta v LCS plochy, resp opacne
             // TODO - tu bude potrebne zapravoat ako je x plochy a x pruta vzajomne pootocene, ak o 180 stupnov, tak bude treba prehodit vsetko L - x
-            if (bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x)
+            if (bIsMemberLCS_xInSameDirectionAsLoadAxis_LCS_x) // x pruta a x plochy su na jednej priamke
             {
                 if(memberRect.Left - loadRect.Left > 0)
                     dMemberLoadStartCoordinate_x_axis = 0; // Prut zacina za plochou
@@ -195,14 +196,14 @@ namespace BaseClasses
                 dIntersectionLengthInMember_x_axis = intersection.Width;   // Length of applied load
                 dIntersectionLengthInMember_yz_axis = intersection.Height; // Tributary width
             }
-            else
+            else  // x pruta a x plochy nie na jednej priamke
             {
                 if (memberRect.Top - loadRect.Top > 0)
                     dMemberLoadStartCoordinate_x_axis = 0; // Prut zacina za plochou
                 else
                     dMemberLoadStartCoordinate_x_axis = loadRect.Top - memberRect.Top;  // Prut zacina pred plochou
 
-                // Opacny smer osi pruta x voci osi x load surface
+                // Opacny smer osi pruta x voci osi y load surface
                 if (pStartLCS.Y > pEndLCS.Y)
                 {
                     dMemberLoadStartCoordinate_x_axis = m.FLength - intersection.Height;
