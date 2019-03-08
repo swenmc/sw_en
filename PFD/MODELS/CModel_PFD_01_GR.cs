@@ -1309,9 +1309,9 @@ namespace PFD
             {
                 //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlinsLeftSide, fDist_Purlin); // Test len purlins na lavej strane
                 //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirtsLeftSide, fDist_Girt); // Test len girts na lavej strane
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirtsFrontSide, fDist_FrontGirts); // Test len girts na lavej strane
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
-                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirts, fDist_Girt);
+                //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirtsFrontSide, fDist_FrontGirts); // Test len girts na lavej strane
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfPurlins, fDist_Purlin);
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfGirts, fDist_Girt);
             }
 
             #endregion

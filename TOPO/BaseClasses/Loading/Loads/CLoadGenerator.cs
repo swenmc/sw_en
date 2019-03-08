@@ -118,16 +118,16 @@ namespace BaseClasses
                 loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
                 Vector3D vLoadLCSinGCS = GetTransformedVector(vLCS, loadTransformGroupLCS_to_GCS);
 
-                Vector3D vLoadLCS_X_inGCS = GetTransformedVector(vLCS_X, loadTransformGroupLCS_to_GCS);
-                Vector3D vLoadLCS_Y_inGCS = GetTransformedVector(vLCS_Y, loadTransformGroupLCS_to_GCS);
-                Vector3D vLoadLCS_Z_inGCS = GetTransformedVector(vLCS_Z, loadTransformGroupLCS_to_GCS);
+                Vector3D vloadinLCS = ((Transform3D)(memberTransformGroupLCS_to_GCS.Inverse)).Transform(vLoadLCSinGCS);
 
                 // Surface load direction vector in GCS
                 Vector3D vLoadDirectioninGCS = GetTransformedVector(l.LoadDirectionVector, loadTransformGroupLCS_to_GCS);
 
-                Vector3D vLoadDirection_X_inGCS = GetTransformedVector(new Vector3D(l.LoadDirectionVector.X, 0, 0), loadTransformGroupLCS_to_GCS);
-                Vector3D vLoadDirection_Y_inGCS = GetTransformedVector(new Vector3D(0, l.LoadDirectionVector.Y, 0), loadTransformGroupLCS_to_GCS);
-                Vector3D vLoadDirection_Z_inGCS = GetTransformedVector(new Vector3D(0, 0, l.LoadDirectionVector.Z), loadTransformGroupLCS_to_GCS);
+                //Vector3D vLoadDirection_X_inGCS = GetTransformedVector(new Vector3D(l.LoadDirectionVector.X, 0, 0), loadTransformGroupLCS_to_GCS);
+                //Vector3D vLoadDirection_Y_inGCS = GetTransformedVector(new Vector3D(0, l.LoadDirectionVector.Y, 0), loadTransformGroupLCS_to_GCS);
+                //Vector3D vLoadDirection_Z_inGCS = GetTransformedVector(new Vector3D(0, 0, l.LoadDirectionVector.Z), loadTransformGroupLCS_to_GCS);
+
+                Vector3D vloadDirectioninLCS = ((Transform3D)(memberTransformGroupLCS_to_GCS.Inverse)).Transform(vLoadDirectioninGCS);
 
                 // Pozname poziciu load direction vector plochy v GCS a LCS pruta v GCS
                 // Transformujeme load direction vector plochy do LCS pruta
@@ -146,6 +146,7 @@ namespace BaseClasses
                 //Point3D vMemberLoadDirection_P = inverseTrans.Transform(new Point3D(vLoadDirectioninGCS.X, vLoadDirectioninGCS.Y, vLoadDirectioninGCS.Z));
                 //vMemberLoadDirection = new Vector3D(vMemberLoadDirection_P.X, vMemberLoadDirection_P.Y, vMemberLoadDirection_P.Z);
 
+                /*
                 Point3D vMemberLoadDirection_X_P = inverseTrans.Transform(new Point3D(vLoadDirection_X_inGCS.X, vLoadDirection_X_inGCS.Y, vLoadDirection_X_inGCS.Z));
                 Point3D vMemberLoadDirection_Y_P = inverseTrans.Transform(new Point3D(vLoadDirection_Y_inGCS.X, vLoadDirection_Y_inGCS.Y, vLoadDirection_Y_inGCS.Z));
                 Point3D vMemberLoadDirection_Z_P = inverseTrans.Transform(new Point3D(vLoadDirection_Z_inGCS.X, vLoadDirection_Z_inGCS.Y, vLoadDirection_Z_inGCS.Z));
@@ -155,6 +156,9 @@ namespace BaseClasses
                 Vector3D vMemberLoadDirection_Z = new Vector3D(vMemberLoadDirection_Z_P.X, vMemberLoadDirection_Z_P.Y, vMemberLoadDirection_Z_P.Z);
 
                 vMemberLoadDirection = new Vector3D(vMemberLoadDirection_X.X, vMemberLoadDirection_Y.Y, vMemberLoadDirection_Z.Z);
+                */
+
+                vMemberLoadDirection = vloadDirectioninLCS;
             }
             else
             {
