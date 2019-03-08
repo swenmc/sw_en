@@ -117,7 +117,7 @@ namespace Examples
             else
             {
                 // Member loads generated from surface load
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfAllMembers, 0.5f); // Test
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfAllMembers); // Test
             }
         }
     }

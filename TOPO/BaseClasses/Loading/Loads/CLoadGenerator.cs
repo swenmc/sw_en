@@ -13,7 +13,7 @@ namespace BaseClasses
     {
         static bool bDebugging = false; // Console output
         
-        public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, List<CMember> members, float fDist)
+        public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, List<CMember> allMembersInModel)
         {
             foreach (CLoadCase lc in m_arrLoadCases)
             {
@@ -22,37 +22,41 @@ namespace BaseClasses
                 foreach (CSLoad_Free csload in lc.SurfaceLoadsList)
                 {
                     c++;
-                    foreach (CMember m in members)
+                    foreach (CMember m in allMembersInModel)
                     {
                         if (csload is CSLoad_FreeUniformGroup)
                         {
                             Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)csload).CreateTransformCoordGroupOfLoadGroup();
                             foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)csload).LoadList)
                             {
-                                if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform))
+                                foreach (FreeSurfaceLoadsMemberTypeData mtypedata in l.listOfLoadedMemberTypeData)
                                 {
-                                    if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+                                    if (MemberLiesOnSurfaceLoadPlane(l, m, loadGroupTransform) && m.EMemberType == mtypedata.memberType) // Prut lezi na ploche a je rovnakeho typu ake je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
+                                    {
+                                        if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
-                                    if(m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                        GenerateMemberLoad(lc, l, m, loadGroupTransform, fDist, ref iLoadID);
+                                        if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
+                                            GenerateMemberLoad(lc, l, m, loadGroupTransform, mtypedata.fLoadingWidth, ref iLoadID);
+                                    }
+                                    else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                                 }
-                                else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
-
                             }
                         }
                         else if (csload is CSLoad_FreeUniform)
                         {
                             CSLoad_FreeUniform l = (CSLoad_FreeUniform)csload;
 
-                            if (MemberLiesOnSurfaceLoadPlane(l, m, null))
+                            foreach (FreeSurfaceLoadsMemberTypeData mtypedata in l.listOfLoadedMemberTypeData)
                             {
-                                if(bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
+                                if (MemberLiesOnSurfaceLoadPlane(l, m, null) && m.EMemberType == mtypedata.memberType) // Prut lezi na ploche a je rovnakeho typu ake je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
+                                {
+                                    if (bDebugging) System.Diagnostics.Trace.WriteLine($"LoadCase: {lc.Name} Surface: {c} contains member: {m.ID}");
 
-                                if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
-                                    GenerateMemberLoad(lc, l, m, null, fDist, ref iLoadID);
+                                    if (m.BIsDisplayed) // TODO - tu by mala byt podmienka ci je prut aktivny pre vypocet (nie len ci je zobrazeny) potrebujeme doriesit co s prutmi, ktore boli v mieste kde sa vlozili dvere, zatial som ich nemazal, lebo som si nebol isty ci by mi sedeli ID pre generovanie zatazenia, chcel som ich len deaktivovat
+                                        GenerateMemberLoad(lc, l, m, null, mtypedata.fLoadingWidth, ref iLoadID);
+                                }
+                                else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
                             }
-                            else { /*System.Diagnostics.Trace.WriteLine($"ERROR: Member {m.ID} not on plane. LoadCase: {lc.Name} Surface: {c}");*/ continue; }
-
                         }
 
                     } //foreach member
