@@ -61,10 +61,10 @@ namespace Examples
             listOfModelMemberGroups.Add(new CMemberGroup(1, "Column", m_arrCrSc[0], 0));
 
             // Members
-            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, 0.0f/*MathF.fPI / 6.0f*/, 0);
-            m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
-            m_arrMembers[002] = new CMember(003, m_arrNodes[04], m_arrNodes[05], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
-            m_arrMembers[003] = new CMember(004, m_arrNodes[06], m_arrNodes[07], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, 0.0f, 0);
+            m_arrMembers[000] = new CMember(001, m_arrNodes[00], m_arrNodes[01], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
+            m_arrMembers[001] = new CMember(002, m_arrNodes[02], m_arrNodes[03], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
+            m_arrMembers[002] = new CMember(003, m_arrNodes[04], m_arrNodes[05], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
+            m_arrMembers[003] = new CMember(004, m_arrNodes[06], m_arrNodes[07], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
 
             List<CMember> listOfAllMembers = new List<CMember>() { m_arrMembers[000], m_arrMembers[001], m_arrMembers[002], m_arrMembers[003] };
 
@@ -86,7 +86,7 @@ namespace Examples
             float fLoadValue = -1000f; // N/m^2 (Pa)
             float fLoadArea_x = 5; //m
             float fLoadArea_y = 2; //m
-            m_arrSLoads[0] = new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, loadAreaControlPoint, fLoadArea_x, fLoadArea_y, fLoadValue, 0, 0, 0, Colors.DarkGoldenrod, true, true, true, 0);
+            m_arrSLoads[0] = new CSLoad_FreeUniform(listOfLoadedMemberTypeData, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Y, loadAreaControlPoint, fLoadArea_x, fLoadArea_y, fLoadValue, 0, 0, 0, Colors.DarkGoldenrod, true, true, true, 0);
             List<CSLoad_Free> listOfSurfaceLoads = new List<CSLoad_Free> { m_arrSLoads[0] };
 
             // Load Cases
