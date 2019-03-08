@@ -658,6 +658,7 @@ namespace PFD
 
             sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
             sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
+            sDisplayOptions.bDisplaySurfaceLoadAxis = vm.ShowSurfaceLoadsAxis;
 
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
             sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;

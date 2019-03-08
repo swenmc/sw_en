@@ -243,8 +243,8 @@
 
                         <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
                         <CheckBox Name="chbDisplayLocalMemberAxis" Grid.Row="18" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowLocalMembersAxis}" >Display Local Member Axis</CheckBox>
+                        <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
 
-                        
 
                         <!--<TextBlock Grid.Row="19" Grid.Column="3" Text="Load Case:" HorizontalAlignment="Left" Margin="5,0"/>
 

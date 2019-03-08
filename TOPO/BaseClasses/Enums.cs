@@ -574,6 +574,7 @@
 
         public bool bDisplayGlobalAxis;
         public bool bDisplayLocalMembersAxis;
+        public bool bDisplaySurfaceLoadAxis;
 
         public bool bDisplayMemberDescription;
         public bool bDisplayMemberID;

@@ -22,10 +22,9 @@ namespace BaseClasses
             _trackport.TrackportBackground = new SolidColorBrush(Colors.Black);
 
             // Global coordinate system - axis
-            if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
+            if (sDisplayOptions.bDisplayGlobalAxis) DrawGlobalAxis(_trackport.ViewPort, model);
 
-            if (sDisplayOptions.bDisplayLoads && sDisplayOptions.bDisplaySurfaceLoads)
-                DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
+            if (sDisplayOptions.bDisplaySurfaceLoadAxis) DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
 
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
