@@ -89,23 +89,17 @@ namespace BaseClasses
             foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // Member coordinate system LCS in GCS
-            Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup();
-
-            // Surface coordinate system LCS in GCS
-            Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup();
+ 
+            // Load direction transformation
 
             // Surface Load Direction Vector
             l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
 
             // Member coordinate system LCS in GCS
-            memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
- 
+            Transform3DGroup memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
+
             // Surface coordinate system LCS in GCS
-            loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
+            Transform3DGroup loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);
 
             // Surface load direction vector in GCS
             Vector3D vLoadDirectioninGCS = GetTransformedVector(l.LoadDirectionVector, loadTransformGroupLCS_to_GCS);
@@ -118,10 +112,6 @@ namespace BaseClasses
             l.GetLoadDirectionAndValueSign(vloadDirectioninLCS, out fMemberLoadValueSign, out eMemberLoadDirection);
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
             // Surface load - local coordinate system
 
