@@ -96,9 +96,9 @@ namespace BaseClasses
             return nLoadType;
         }
 
-        public Model3DGroup CreateUniformLoadSequence(float fq_value, float fstartPosition, float floadsequencelength, bool bConsiderCrossSectionDimensions)
+        public Model3DGroup CreateUniformLoadSequence(float fq_value, float fstartPosition, float floadsequencelength, bool bConsiderCrossSectionDimensions, float fDisplayin3D_ratio)
         {
-            float fDisplayin3D_ratio = 0.001f; // (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
+            //float fDisplayin3D_ratio = 0.001f; // (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
 
             Model3DGroup model_gr = new Model3DGroup();
 

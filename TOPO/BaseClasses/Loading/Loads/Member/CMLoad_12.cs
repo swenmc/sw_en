@@ -48,13 +48,13 @@ namespace BaseClasses
             FTime = fTime;
         }
 
-        public override Model3DGroup CreateM_3D_G_Load()
+        public override Model3DGroup CreateM_3D_G_Load(float displayIn3DRatio)
         {
             Model3DGroup model_gr = new Model3DGroup();
 
             ENLoadType nLoadType = TransformLoadTypefroMemberToPoint(ELoadDir, MLoadType);
 
-            return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(0.5f * Member.FLength, 0, 0), nLoadType, m_Color, FF, m_fOpacity, m_Material3DGraphics);
+            return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(0.5f * Member.FLength, 0, 0), nLoadType, m_Color, FF, m_fOpacity, m_Material3DGraphics, displayIn3DRatio);
         }
     }
 }

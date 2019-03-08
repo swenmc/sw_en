@@ -586,6 +586,8 @@
 
         public bool bDisplayMemberLoads;
         public bool bDisplaySurfaceLoads;
+
+        public float DisplayIn3DRatio;
     }
 
     public struct BuildingDataInput

@@ -113,7 +113,7 @@ namespace BaseClasses
         public CSLoad_Free(List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeData_temp, ELoadCoordSystem eLoadCS_temp, ELoadDirection eLoadDirection_temp, bool bIsDisplayed, float fTime)
         {
             listOfLoadedMemberTypeData = listOfLoadedMemberTypeData_temp;
-            Displayin3DRatio = 0.001f;
+            //Displayin3DRatio = 0.001f;
             ELoadCS = eLoadCS_temp; // GCS or LCS surface load
             ELoadDir = eLoadDirection_temp;
             BIsDisplayed = bIsDisplayed;

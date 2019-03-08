@@ -64,9 +64,9 @@ namespace BaseClasses
             FTime = fTime;
         }
 
-        public override Model3DGroup CreateM_3D_G_Load(bool bConsiderCrossSectionDimensions)
+        public override Model3DGroup CreateM_3D_G_Load(bool bConsiderCrossSectionDimensions, float fDisplayin3D_ratio)
         {
-            return CreateUniformLoadSequence(Fq, Fa, Fb, bConsiderCrossSectionDimensions);
+            return CreateUniformLoadSequence(Fq, Fa, Fb, bConsiderCrossSectionDimensions, fDisplayin3D_ratio);
         }
     }
 }

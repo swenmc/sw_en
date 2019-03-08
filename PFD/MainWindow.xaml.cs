@@ -661,6 +661,8 @@ namespace PFD
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
             sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
+
+            sDisplayOptions.DisplayIn3DRatio = vm.DisplayIn3DRatio;
         }
 
         private void UpdateAll()
@@ -1556,7 +1558,7 @@ namespace PFD
 
         private void SetLoadGCSCoordinates(CSLoad_FreeUniform load)
         {
-            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null);
+            load.PointsGCS = Drawing3D.GetLoadCoordinates_GCS(load, null, 0.001f);
         }
 
         private bool IsLoadForMember(CSLoad_FreeUniform load, CMember m, float fL1_frame)

@@ -455,7 +455,7 @@ namespace BaseClasses
                     {
                         if (selectedLoadCase.NodeLoadsList[i] != null && selectedLoadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load()); // Add to the model group
+                            model3D_group.Children.Add(selectedLoadCase.NodeLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.DisplayIn3DRatio)); // Add to the model group
 
                             // Set load for all assigned nodes
 
@@ -471,7 +471,7 @@ namespace BaseClasses
                         if (selectedLoadCase.MemberLoadsList[i] != null && selectedLoadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel);
+                            model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.DisplayIn3DRatio);
                             // Transform modelgroup from LCS to GCS
                             model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member, selectedLoadCase.MemberLoadsList[i].ELoadCS == ELoadCoordSystem.eLCS);
 
@@ -491,7 +491,7 @@ namespace BaseClasses
                         if (selectedLoadCase.SurfaceLoadsList[i] != null && selectedLoadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
                             Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load();
+                            model_gr = selectedLoadCase.SurfaceLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.DisplayIn3DRatio);
 
                             model3D_group.Children.Add(model_gr); // Add surface load to the model group
 
@@ -1230,7 +1230,7 @@ namespace BaseClasses
             tb.Foreground = Brushes.Coral; // musime nastavovat farbu textu, inak sa to kresli ciernou
             tb.Background = Brushes.Black;
 
-            Point3D pTextPosition = GetNodalLoadCoordinates_GCS(load);
+            Point3D pTextPosition = GetNodalLoadCoordinates_GCS(load, displayOptions);
 
             // Create text
             textlabel = CreateTextLabel3D(tb, true, fTextBlockVerticalSize, pTextPosition, new Vector3D(fTextBlockHorizontalSizeFactor, 0, 0), new Vector3D(0, 0, fTextBlockVerticalSizeFactor));
@@ -1260,7 +1260,7 @@ namespace BaseClasses
             tb.Background = Brushes.Black;
             
             Model3DGroup model_gr = new Model3DGroup();
-            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel);
+            model_gr = load.CreateM_3D_G_Load(displayOptions.bDisplaySolidModel, displayOptions.DisplayIn3DRatio);
 
             Model3D loadLine = model_gr.Children.Last();
             GeometryModel3D model3D = null;
@@ -1336,7 +1336,7 @@ namespace BaseClasses
                 //Pokial by boli vsetky loads rovnako vykreslene a vyuzili by sa SurfacePoints_h s nejakym odsadenim...
                 //tak by sa cisla zobrazili mimo kvadra a bolo by to asi podstatne krajsie
                 //show in load center
-                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform); // Positions in global coordinate system GCS
+                load.PointsGCS = GetLoadCoordinates_GCS(load, groupTransform, displayOptions.DisplayIn3DRatio); // Positions in global coordinate system GCS
                 //show on bottom
                 //l.PointsGCS = GetLoadCoordinates_GCS_SurfacePoints(l, groupTransform);
                 //show on top
@@ -1487,9 +1487,9 @@ namespace BaseClasses
             return CreateTextLabel3D(tb.Text, tb.Foreground, bDoubleSided, tb.FontFamily, height, center, over, up);
         }
 
-        public static Point3D GetNodalLoadCoordinates_GCS(CNLoad load)
+        public static Point3D GetNodalLoadCoordinates_GCS(CNLoad load, DisplayOptions options)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load();
+            Model3DGroup gr = load.CreateM_3D_G_Load(options.DisplayIn3DRatio);
             if (gr.Children.Count < 1) return new Point3D();
 
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
@@ -1504,9 +1504,9 @@ namespace BaseClasses
             return transPoint;
         }
 
-        public static List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform)
+        public static List<Point3D> GetLoadCoordinates_GCS(CSLoad_FreeUniform load, Transform3D groupTransform, float displayIn3DRatio)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load();
+            Model3DGroup gr = load.CreateM_3D_G_Load(displayIn3DRatio);
             if (gr.Children.Count < 1) return new List<Point3D>();
 
             GeometryModel3D model3D = (GeometryModel3D)gr.Children[0];
@@ -1524,9 +1524,9 @@ namespace BaseClasses
 
             return transPoints;
         }
-        public static List<Point3D> GetLoadCoordinates_GCS_SurfacePoints_h(CSLoad_FreeUniform load, Transform3D groupTransform)
+        public static List<Point3D> GetLoadCoordinates_GCS_SurfacePoints_h(CSLoad_FreeUniform load, Transform3D groupTransform, float displayIn3DRatio)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load();
+            Model3DGroup gr = load.CreateM_3D_G_Load(displayIn3DRatio);
             if (gr.Children.Count < 1) return new List<Point3D>();
 
             Transform3DGroup trans = new Transform3DGroup();
@@ -1542,9 +1542,9 @@ namespace BaseClasses
 
             return transPoints;
         }
-        public static List<Point3D> GetLoadCoordinates_GCS_SurfacePoints(CSLoad_FreeUniform load, Transform3D groupTransform)
+        public static List<Point3D> GetLoadCoordinates_GCS_SurfacePoints(CSLoad_FreeUniform load, Transform3D groupTransform, float displayIn3DRatio)
         {
-            Model3DGroup gr = load.CreateM_3D_G_Load();
+            Model3DGroup gr = load.CreateM_3D_G_Load(displayIn3DRatio);
             if (gr.Children.Count < 1) return new List<Point3D>();
 
             Transform3DGroup trans = new Transform3DGroup();

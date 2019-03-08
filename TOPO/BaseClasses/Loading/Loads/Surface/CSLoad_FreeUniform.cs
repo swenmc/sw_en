@@ -250,7 +250,7 @@ namespace BaseClasses
             }
         }
 
-        public override Model3DGroup CreateM_3D_G_Load()
+        public override Model3DGroup CreateM_3D_G_Load(float fDisplayin3DRatio)
         {
             m_Material3DGraphics = new DiffuseMaterial();
             m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
@@ -263,7 +263,7 @@ namespace BaseClasses
             {
                 CVolume volume = new CVolume();
 
-                float fValueFor3D = Math.Abs(fValue) * Displayin3DRatio; // Load value to display as 3D graphical object, height of prism (local z-axis) (1 kN = 1 m)
+                float fValueFor3D = Math.Abs(fValue) * fDisplayin3DRatio; // Load value to display as 3D graphical object, height of prism (local z-axis) (1 kN = 1 m)
 
                 float fz_coordTop = fValueFor3D;
                 float fz_coordBottom = 0;

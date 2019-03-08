@@ -30,6 +30,8 @@
                                   IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
                     <CheckBox Name ="chbDisplaySurfaceLoads" Margin="25 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowSurfaceLoads}">Surface Loads</CheckBox>
+                    <TextBlock>Display In 3D Ratio:</TextBlock>
+                    <Slider x:Name="sldDisplayIn3DRatio" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.0002" Maximum="0.005" Value="{Binding Path=DisplayIn3DRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSnapToTickEnabled="True" SmallChange="0.0002" TickFrequency="0.0002"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <CheckBox Name ="chbDisplayLoadsLabels" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,25,0,0"
@@ -41,6 +43,7 @@
 
                 
             </StackPanel>
+            
         </ScrollViewer>
         
     </Grid>

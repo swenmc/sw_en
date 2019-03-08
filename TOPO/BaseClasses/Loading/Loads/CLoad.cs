@@ -41,12 +41,12 @@ namespace BaseClasses
         }
 
         // TODO - zapracovat do GUI option uzivatelske nastavenie, aku velkost v 3D zobrazeni ma mat 1kN , 1 kN / m, 1 kN / m2 (rozne typy zatazenia, bodove, liniove, plosne)
-        private float m_fDisplayin3DRatio; // Load value is in N, N/m, N/m2. Display unit is meter, so 1kN = 1 m in display units, 1000 N = 1 m, therefore is fDisplayRatio = 1/1000
-        public float Displayin3DRatio
-        {
-            get { return m_fDisplayin3DRatio; }
-            set { m_fDisplayin3DRatio = value; }
-        }
+        //private float m_fDisplayin3DRatio; // Load value is in N, N/m, N/m2. Display unit is meter, so 1kN = 1 m in display units, 1000 N = 1 m, therefore is fDisplayRatio = 1/1000
+        //public float Displayin3DRatio
+        //{
+        //    get { return m_fDisplayin3DRatio; }
+        //    set { m_fDisplayin3DRatio = value; }
+        //}
 
         public CLoad()
         { }
@@ -157,11 +157,11 @@ namespace BaseClasses
         // Model of arrow or moment curve in LCS
         // Arrow in z-axis
         // Moment around y-axis
-        public Model3DGroup CreateM_3D_G_SimpleLoad(Point3D p, ENLoadType eLoadType, Color cColor, float fValue, float fOpacity, DiffuseMaterial material, float fDisplayin3D_ratio = 0.001f)
+        public Model3DGroup CreateM_3D_G_SimpleLoad(Point3D p, ENLoadType eLoadType, Color cColor, float fValue, float fOpacity, DiffuseMaterial material, float fDisplayin3D_ratio)
         {
-            Displayin3DRatio = fDisplayin3D_ratio;
+            //Displayin3DRatio = fDisplayin3D_ratio;
 
-            float fValueFor3D = fValue * Displayin3DRatio; // Load value to display as 3D graphical object (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
+            float fValueFor3D = fValue * fDisplayin3D_ratio; // Load value to display as 3D graphical object (1 kN = 1 m, fValue is in [N] so for 1000 N = 1 m, display ratio = 1/1000)
 
             Model3DGroup model_gr = new Model3DGroup();
 
@@ -330,13 +330,13 @@ namespace BaseClasses
             return model_gr;
         }
 
-        virtual public Model3DGroup CreateM_3D_G_Load()
+        virtual public Model3DGroup CreateM_3D_G_Load(float fDisplayin3D_ratio)
         {
             Model3DGroup model_gr = new Model3DGroup();
             return model_gr;
         }
 
-        virtual public Model3DGroup CreateM_3D_G_Load(bool bConsiderCrossSectionDimensions)
+        virtual public Model3DGroup CreateM_3D_G_Load(bool bConsiderCrossSectionDimensions, float fDisplayin3D_ratio)
         {
             Model3DGroup model_gr = new Model3DGroup();
             return model_gr;

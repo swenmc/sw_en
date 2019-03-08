@@ -52,10 +52,10 @@ namespace BaseClasses
             SetPrefix();
         }
 
-        public override Model3DGroup CreateM_3D_G_Load()
+        public override Model3DGroup CreateM_3D_G_Load(float displayIn3DRatio)
         {
             Model3DGroup model_gr = new Model3DGroup();
-            return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(Node.X, Node.Y, Node.Z), NLoadType, m_Color, Value, m_fOpacity, m_Material);
+            return model_gr = CreateM_3D_G_SimpleLoad(new Point3D(Node.X, Node.Y, Node.Z), NLoadType, m_Color, Value, m_fOpacity, m_Material, displayIn3DRatio);
         }
 
         private void SetPrefix()

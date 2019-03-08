@@ -66,6 +66,7 @@ namespace PFD
         private bool MShowMemberCrossSectionStartName;
         private bool MShowMemberRealLength;
 
+        private float MDisplayIn3DRatio;
         // Load Combination - options
         private bool MDeterminateCombinationResultsByFEMSolver;
 
@@ -752,6 +753,20 @@ namespace PFD
             }
         }
 
+        public float DisplayIn3DRatio
+        {
+            get
+            {
+                return MDisplayIn3DRatio;
+            }
+
+            set
+            {
+                MDisplayIn3DRatio = value;
+                NotifyPropertyChanged("MDisplayIn3DRatio");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -774,7 +789,7 @@ namespace PFD
             ShowSurfaceLoads = true;
             ShowLoadsLabels = true;
             ShowLoadsLabelsUnits = true;
-            
+            DisplayIn3DRatio = 0.001f;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex

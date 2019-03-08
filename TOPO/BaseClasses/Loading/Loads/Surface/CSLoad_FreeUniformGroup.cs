@@ -278,7 +278,7 @@ namespace BaseClasses
             return loadcolor;
         }
 
-        public override Model3DGroup CreateM_3D_G_Load()
+        public override Model3DGroup CreateM_3D_G_Load(float displayIn3DRatio)
         {
             m_Material3DGraphics = new DiffuseMaterial();
             m_Material3DGraphics.Brush = new SolidColorBrush(m_Color);
@@ -301,7 +301,7 @@ namespace BaseClasses
                 Transform3DGroup tempTransformGroupOfLoadSegment = new Transform3DGroup();
 
                 // Create segment 3D model
-                tempModelOfLoadSegment = load.CreateM_3D_G_Load();
+                tempModelOfLoadSegment = load.CreateM_3D_G_Load(displayIn3DRatio);
 
                 bool bUseAlternativeSolution = false; // true - create new translate transformation for replacement in x, false - use Transform3DGroup of segment
 
