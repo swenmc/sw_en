@@ -134,7 +134,7 @@ namespace BaseClasses
                 List<Point3D> surfaceDefPointsLCSMember = new List<Point3D>();
                 foreach (Point3D p in surfaceDefPointsGCS) surfaceDefPointsLCSMember.Add(inverseTrans.Transform(p));
 
-                // Vektror smeru zatazenia na ploche v GCS transformujeme do LCS pruta
+                // Vektor smeru zatazenia na ploche v GCS transformujeme do LCS pruta
                 Point3D vMemberLoadDirection_P = inverseTrans.Transform(new Point3D(vLoadDirectioninGCS.X, vLoadDirectioninGCS.Y, vLoadDirectioninGCS.Z));
                 vMemberLoadDirection = new Vector3D(vMemberLoadDirection_P.X, vMemberLoadDirection_P.Y, vMemberLoadDirection_P.Z);
             }
