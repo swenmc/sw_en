@@ -802,10 +802,10 @@ namespace PFD
             ShowLoadsOnPurlinsAndGirts = true;
             ShowLoadsOnFrameMembers = false;
             ShowNodalLoads = false;
-            ShowSurfaceLoads = false;
-            ShowLoadsLabels = true;
-            ShowLoadsLabelsUnits = true;
-            ShowLocalMembersAxis = true;
+            ShowSurfaceLoads = true;
+            ShowLoadsLabels = false;
+            ShowLoadsLabelsUnits = false;
+            ShowLocalMembersAxis = false;
             DisplayIn3DRatio = 0.001f;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 

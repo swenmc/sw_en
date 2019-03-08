@@ -660,6 +660,9 @@ namespace PFD
             sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
 
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
+            sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
+            sDisplayOptions.bDisplayMemberLoads = vm.ShowLoadsOnMembers;
+
             sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
 

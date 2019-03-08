@@ -23,7 +23,10 @@ namespace BaseClasses
 
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
-            
+
+            if (sDisplayOptions.bDisplayLoads && sDisplayOptions.bDisplaySurfaceLoads)
+                DrawSurfaceLoadsAxis(loadcase, _trackport.ViewPort);
+
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
@@ -1621,6 +1624,68 @@ namespace BaseClasses
                 transPoints.Add(trans.Transform(p));
 
             return transPoints;
+        }
+
+
+        public static void DrawSurfaceLoadsAxis(CLoadCase loadCase, Viewport3D viewPort)
+        {
+            if (loadCase != null)
+            {
+                if (loadCase.SurfaceLoadsList != null) // Some surface loads exist
+                {
+                    // Model Groups of Surface Loads
+                    for (int i = 0; i < loadCase.SurfaceLoadsList.Count; i++)
+                    {
+                        if (loadCase.SurfaceLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
+                        {
+                            if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniformGroup)
+                            {
+                                Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).CreateTransformCoordGroupOfLoadGroup();
+                                foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
+                                {
+                                    DrawSurfaceLoadAxis(l, loadGroupTransform, viewPort);
+                                }
+                            }
+                            else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
+                            {
+                                CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
+                                DrawSurfaceLoadAxis(l, null, viewPort);
+                            }
+                            else throw new Exception("Load type not known.");
+                        }
+                    }
+                }
+            }
+            
+        }
+        private static void DrawSurfaceLoadAxis(CSLoad_FreeUniform l, Transform3DGroup loadGroupTransform, Viewport3D viewPort)
+        {
+            double axisL = 0.5;
+
+            if (l.SurfaceDefinitionPoints != null) // Check that surface points are initialized
+            {
+                Point3D pC = new Point3D();
+                pC.X = l.SurfaceDefinitionPoints.Average(p => p.X);
+                pC.Y = l.SurfaceDefinitionPoints.Average(p => p.Y);
+                pC.Z = l.SurfaceDefinitionPoints.Average(p => p.Z);
+                Point3D pAxisX = new Point3D(pC.X + axisL, pC.Y, pC.Z);
+                Point3D pAxisY = new Point3D(pC.X, pC.Y + axisL, pC.Z);
+                Point3D pAxisZ = new Point3D(pC.X, pC.Y, pC.Z + axisL);
+
+                Transform3DGroup trans = new Transform3DGroup();
+                trans.Children.Add(l.CreateTransformCoordGroup());
+                if (loadGroupTransform != null)
+                {
+                    trans.Children.Add(loadGroupTransform);
+                }
+                
+                pC = trans.Transform(pC);
+                pAxisX = trans.Transform(pAxisX);
+                pAxisY = trans.Transform(pAxisY);
+                pAxisZ = trans.Transform(pAxisZ);
+
+                DrawAxis(viewPort, pC, pAxisX, pAxisY, pAxisZ);
+            }
         }
 
         //-------------------------------------------------------------------------------------------------------------
