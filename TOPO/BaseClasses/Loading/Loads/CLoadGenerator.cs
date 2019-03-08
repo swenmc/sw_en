@@ -116,21 +116,18 @@ namespace BaseClasses
                 Vector3D vLoadLCSinGCS = GetTransformedVector(vLCS, loadTransformGroupLCS_to_GCS);
 
                 // Vector LCS of member in LCS of surface
-                // Pozname poziciu LCS plochy a LCS pruta voci GCS, vynasobime zlozky tychto LCS vektorov
-                // Vobec neviem ci je to takto spravne :)))))
-                Vector3D vLCSMemberInLCSSurface = new Vector3D(
-                vMemberLCSinGCS.X * vLoadLCSinGCS.X,
-                vMemberLCSinGCS.Y * vLoadLCSinGCS.Y,
-                vMemberLCSinGCS.Z * vLoadLCSinGCS.Z);
+                // Pozname poziciu LCS plochy a LCS pruta voci GCS,
+                // Transformujeme LCS pruta do LCS plochy - To Ondrej - myslis ze to mozem urobit takto???
+                Matrix3D matrixLCSMemberToLCSSurface = GetLocalToGlobalTransformMatrix(vLoadLCSinGCS, vMemberLCSinGCS);
+                Vector3D vLCSMemberInLCSSurface = Vector3D.Multiply(vLCS, matrixLCSMemberToLCSSurface);
 
                 // Surface Load Direction Vector
                 l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
 
                 // Vystupny vektor zloziek zatazenia pruta
-                vMemberLoadDirection = new Vector3D(
-                l.LoadDirectionVector.X * vLCSMemberInLCSSurface.X,
-                l.LoadDirectionVector.Y * vLCSMemberInLCSSurface.Y,
-                l.LoadDirectionVector.Z * vLCSMemberInLCSSurface.Z);
+                // Vektor smeru zatazenia v ploche transformujeme do systemu LCS pruta v LCS systeme plochy - To Ondrej - myslis ze to mozem urobit takto???
+                Matrix3D matrixLoadDirectionVectorToMember = GetLocalToGlobalTransformMatrix(vLCSMemberInLCSSurface, l.LoadDirectionVector);
+                vMemberLoadDirection = Vector3D.Multiply(vLCS, matrixLoadDirectionVectorToMember);
             }
             else
             {
@@ -401,6 +398,72 @@ namespace BaseClasses
             v_out.Z = p_out.Z;
 
             return v_out;
+        }
+
+        public static Matrix3D GetLocalToGlobalTransformMatrix(Vector3D vGlobalVector, Vector3D vLocalVector)
+        {
+            Vector3D X1 = new Vector3D(vGlobalVector.X, 0, 0);
+            Vector3D X2 = new Vector3D(0, vGlobalVector.Y, 0);
+            Vector3D X3 = new Vector3D(0, 0, vGlobalVector.Z);
+
+            Vector3D X1_LCS = new Vector3D(vLocalVector.X, 0, 0);
+            Vector3D X2_LCS = new Vector3D(0, vLocalVector.Y, 0);
+            Vector3D X3_LCS = new Vector3D(0, 0, vLocalVector.Z);
+
+            // This matrix will transform points from the rotated axis to the global
+            Matrix3D LocalToGlobalTransformMatrix = new Matrix3D(
+                Vector3D.DotProduct(X1, X1_LCS),
+                Vector3D.DotProduct(X1, X2_LCS),
+                Vector3D.DotProduct(X1, X3_LCS),
+                0,
+                Vector3D.DotProduct(X2, X1_LCS),
+                Vector3D.DotProduct(X2, X2_LCS),
+                Vector3D.DotProduct(X2, X3_LCS),
+                0,
+                Vector3D.DotProduct(X3, X1_LCS),
+                Vector3D.DotProduct(X3, X2_LCS),
+                Vector3D.DotProduct(X3, X3_LCS),
+                0,
+
+                0,
+                0,
+                0,
+                1);
+
+            return LocalToGlobalTransformMatrix;
+        }
+
+        public static Matrix3D GetGlobalToLocalTransformMatrix(Vector3D vGlobalVector, Vector3D vLocalVector)
+        {
+            Vector3D X1 = new Vector3D(vGlobalVector.X, 0, 0);
+            Vector3D X2 = new Vector3D(0, vGlobalVector.Y, 0);
+            Vector3D X3 = new Vector3D(0, 0, vGlobalVector.Z);
+
+            Vector3D X1_LCS = new Vector3D(vLocalVector.X, 0, 0);
+            Vector3D X2_LCS = new Vector3D(0, vLocalVector.Y, 0);
+            Vector3D X3_LCS = new Vector3D(0, 0, vLocalVector.Z);
+
+            // This matrix will transform points from the global system back to the rotated axis
+            Matrix3D GlobalToLocalTransformMatrix = new Matrix3D(
+                Vector3D.DotProduct(X1_LCS, X1),
+                Vector3D.DotProduct(X1_LCS, X2),
+                Vector3D.DotProduct(X1_LCS, X3),
+                0,
+                Vector3D.DotProduct(X2_LCS, X1),
+                Vector3D.DotProduct(X2_LCS, X2),
+                Vector3D.DotProduct(X2_LCS, X3),
+                0,
+                Vector3D.DotProduct(X3_LCS, X1),
+                Vector3D.DotProduct(X3_LCS, X2),
+                Vector3D.DotProduct(X3_LCS, X3),
+                0,
+
+                0,
+                0,
+                0,
+                1);
+
+            return GlobalToLocalTransformMatrix;
         }
     }
 }
