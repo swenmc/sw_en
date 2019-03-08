@@ -23,12 +23,12 @@ namespace BaseClasses
 
             // Global coordinate system - axis
             if (sDisplayOptions.bDisplayGlobalAxis) Drawing3D.DrawGlobalAxis(_trackport.ViewPort, model);
-
-            DrawModelMembersAxis(model, _trackport.ViewPort);
-
+            
             //System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             if (model != null)
             {
+                if (sDisplayOptions.bDisplayLocalMembersAxis) DrawModelMembersAxis(model, _trackport.ViewPort);
+
                 Model3DGroup gr = new Model3DGroup();
 
                 //najprv sa musia vykreslit labels lebo su nepriehliadne a az potom sa vykresluju transparentne objekty

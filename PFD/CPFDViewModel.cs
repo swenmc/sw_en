@@ -59,6 +59,8 @@ namespace PFD
         private bool MShowLoadsLabels;
         private bool MShowLoadsLabelsUnits;
 
+        private bool MShowLocalMembersAxis;
+
         // Member description options
         private bool MShowMemberDescription;
         private bool MShowMemberID;
@@ -767,6 +769,20 @@ namespace PFD
             }
         }
 
+        public bool ShowLocalMembersAxis
+        {
+            get
+            {
+                return MShowLocalMembersAxis;
+            }
+
+            set
+            {
+                MShowLocalMembersAxis = value;
+                NotifyPropertyChanged("ShowLocalMembersAxis");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -789,6 +805,7 @@ namespace PFD
             ShowSurfaceLoads = false;
             ShowLoadsLabels = true;
             ShowLoadsLabelsUnits = true;
+            ShowLocalMembersAxis = true;
             DisplayIn3DRatio = 0.001f;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 

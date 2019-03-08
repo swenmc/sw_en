@@ -657,6 +657,7 @@ namespace PFD
             sDisplayOptions.bTransparentMemberModel = chbDisplayTransparentModelMember.IsChecked == true;
 
             sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
+            sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
 
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
             sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;

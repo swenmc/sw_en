@@ -573,6 +573,7 @@
         public bool bTransparentMemberModel;   // Set material opacity less than 1.0
 
         public bool bDisplayGlobalAxis;
+        public bool bDisplayLocalMembersAxis;
 
         public bool bDisplayMemberDescription;
         public bool bDisplayMemberID;
