@@ -282,7 +282,7 @@ namespace PFD
                 lu = new UniformLoad1D();
                 BaseClasses.CMLoad_21 load = new BaseClasses.CMLoad_21();
                 // Create member load
-                if (memberLoad.MLoadType == BaseClasses.EMLoadType.eMLT_F && memberLoad is BaseClasses.CMLoad_21)
+                if (memberLoad.MLoadType == BaseClasses.ELoadType.eLT_F && memberLoad is BaseClasses.CMLoad_21)
                     load = (BaseClasses.CMLoad_21)memberLoad;
 
                 // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane
@@ -312,7 +312,7 @@ namespace PFD
                 BaseClasses.CMLoad_24 load = new BaseClasses.CMLoad_24();
 
                 // Create member load
-                if (memberLoad.MLoadType == BaseClasses.EMLoadType.eMLT_F && memberLoad is BaseClasses.CMLoad_24)
+                if (memberLoad.MLoadType == BaseClasses.ELoadType.eLT_F && memberLoad is BaseClasses.CMLoad_24)
                     load = (BaseClasses.CMLoad_24)memberLoad;
 
                 // TODO - nastavit spravny smer a system v ktorom je zatazenie zadane

@@ -39,7 +39,7 @@ namespace BaseClasses
             float fa,
             CMember member_aux,
             EMLoadTypeDistr mLoadTypeDistr,
-            EMLoadType mLoadType,
+            ELoadType mLoadType,
             ELoadCoordSystem eLoadCS,
             ELoadDirection eLoadDir,
             bool bIsDislayed,

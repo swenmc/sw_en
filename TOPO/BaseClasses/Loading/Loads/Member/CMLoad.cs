@@ -11,7 +11,7 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         private int[] m_iMemberCollection; // List / Collection of members IDs where load is defined
         private EMLoadTypeDistr m_mLoadTypeDistr; // Type of external force distribution
-        private EMLoadType m_mLoadType; // Type of external force
+        private ELoadType m_mLoadType; // Type of external force
         private CMember m_member;
         //----------------------------------------------------------------------------
         public int[] IMemberCollection
@@ -24,7 +24,7 @@ namespace BaseClasses
             get { return m_mLoadTypeDistr; }
             set { m_mLoadTypeDistr = value; }
         }
-        public EMLoadType MLoadType
+        public ELoadType MLoadType
         {
             get { return m_mLoadType; }
             set { m_mLoadType = value; }
@@ -54,11 +54,11 @@ namespace BaseClasses
             m_Material3DGraphics.Brush.Opacity = 0.9f;
         }
 
-        public ENLoadType TransformLoadTypefroMemberToPoint(ELoadDirection eLoadDirection, EMLoadType eMLoadType)
+        public ENLoadType TransformLoadTypefroMemberToPoint(ELoadDirection eLoadDirection, ELoadType eMLoadType)
         {
             ENLoadType nLoadType = ENLoadType.eNLT_OTHER; // Auxliary
 
-            if (eMLoadType == EMLoadType.eMLT_F) // Force
+            if (eMLoadType == ELoadType.eLT_F) // Force
             {
                 if (eLoadDirection == ELoadDirection.eLD_X)
                 {
@@ -73,7 +73,7 @@ namespace BaseClasses
                     nLoadType = ENLoadType.eNLT_Fz;
                 }
             }
-            else if (eMLoadType == EMLoadType.eMLT_M) // Moment
+            else if (eMLoadType == ELoadType.eLT_M) // Moment
             {
                 if (eLoadDirection == ELoadDirection.eLD_X)
                 {

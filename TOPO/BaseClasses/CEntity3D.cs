@@ -21,10 +21,10 @@ namespace BaseClasses
         }
         */
         
-        public CPoint m_pControlPoint = new CPoint();        
+        public CPoint m_pControlPoint = new CPoint();
         public CMat m_Mat;
         [NonSerialized]
-        public DiffuseMaterial m_Material3DGraphics;        
+        public DiffuseMaterial m_Material3DGraphics;
         public string m_Shape;
 
         //----------------------------------------------------------------------------------------------------------------
@@ -32,14 +32,14 @@ namespace BaseClasses
         //----------------------------------------------------------------------------------------------------------------
         public CEntity3D() { }
 
-        public Model3DGroup Transform3D_OnMemberEntity_fromLCStoGCS(Model3DGroup modelgroup_original, CMember member)
+        public Model3DGroup Transform3D_OnMemberEntity_fromLCStoGCS(Model3DGroup modelgroup_original, CMember member, bool bConsiderRotationAboutLCS_xAxis = false)
         {
             // Objekty na prute s x <> 0
             // Modelgroup musime pridat ako child do novej modelgroup inak sa "Transform" definovane z 0,0,0 do LCS pruta prepise "Transform" z LCS do GCS
 
             Model3DGroup modelgroup_out = new Model3DGroup();
             modelgroup_out.Children.Add(modelgroup_original);
-            modelgroup_out.Transform = CreateTransformCoordGroup(member);
+            modelgroup_out.Transform = CreateTransformCoordGroup(member, bConsiderRotationAboutLCS_xAxis);
 
             // Return transformed model group
             return modelgroup_out;
@@ -59,7 +59,6 @@ namespace BaseClasses
             }
         }
 
-
         public ScreenSpaceLines3D Transform3D_OnMemberEntity_fromLCStoGCS(ScreenSpaceLines3D wireframeModel_original, CMember member)
         {
             ScreenSpaceLines3D wireframeModel_out = new ScreenSpaceLines3D();
@@ -77,8 +76,10 @@ namespace BaseClasses
             }
         }
 
-        public Transform3DGroup CreateTransformCoordGroup(CMember member)
+        public Transform3DGroup CreateTransformCoordGroup(CMember member, bool bConsiderRotationAboutLCS_xAxis = false)
         {
+            // TATO TRANSFORMACIA V DEFAULT IGNORUJE POOTOCENIE LCS PRUTA / RESP PRIEREZU - treba to nejako elegantne domysliet
+
             double dAlphaX = 0;
             double dBetaY = 0;
             double dGammaZ = 0;
@@ -103,6 +104,17 @@ namespace BaseClasses
             TranslateTransform3D Translate3D_AUX = new TranslateTransform3D(member.NodeStart.X, member.NodeStart.Y, member.NodeStart.Z);
 
             Transform3DGroup Trans3DGroup = new Transform3DGroup();
+
+            RotateTransform3D RotateTrans3D_LCSx = new RotateTransform3D();
+
+            RotateTrans3D_LCSx.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), member.DTheta_x * 180 / Math.PI);
+            RotateTrans3D_LCSx.CenterX = 0;
+            RotateTrans3D_LCSx.CenterY = 0;
+            RotateTrans3D_LCSx.CenterZ = 0;
+
+            if (bConsiderRotationAboutLCS_xAxis)
+                Trans3DGroup.Children.Add(RotateTrans3D_LCSx);
+
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_Y);
             Trans3DGroup.Children.Add(RotateTrans3D_AUX_Z);
             Trans3DGroup.Children.Add(Translate3D_AUX);

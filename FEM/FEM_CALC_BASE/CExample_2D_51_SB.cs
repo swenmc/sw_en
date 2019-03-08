@@ -111,7 +111,7 @@ namespace FEM_CALC_BASE
             CMLoad_21 MLoad_q1 = new CMLoad_21(fq);
             MLoad_q1.ID = 1;
             MLoad_q1.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            MLoad_q1.MLoadType = EMLoadType.eMLT_F;
+            MLoad_q1.MLoadType = ELoadType.eLT_F;
             MLoad_q1.ELoadCS = ELoadCoordSystem.eLCS; // Load in LCS
             MLoad_q1.ELoadDir = eLoadDir; // Load direction
             MLoad_q1.IMemberCollection = new int[1];

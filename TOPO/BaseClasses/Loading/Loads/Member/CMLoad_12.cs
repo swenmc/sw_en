@@ -32,7 +32,7 @@ namespace BaseClasses
         public CMLoad_12(float fF,
             CMember member_aux,
             EMLoadTypeDistr mLoadTypeDistr,
-            EMLoadType mLoadType,
+            ELoadType mLoadType,
             ELoadCoordSystem eLoadCS,
             ELoadDirection eLoadDir,
             bool bIsDislayed,

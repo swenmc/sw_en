@@ -199,22 +199,14 @@
         eSLT_QUF_W
     }
     //----------------------------------------------------------------------------
-    // Define load type
+    // Define load type (node, member or surface loads)
     //----------------------------------------------------------------------------
-    public enum EMLoadType
+    public enum ELoadType
     {
-        eMLT_F = 0, // Force
-        eMLT_M = 1, // Moment
-        eMLD_Temperature = 2 // Temperature
-    }
-
-    public enum ESLoadType
-    {
-        eSLT_F = 0, // Force
-        /*
-        eSLT_M = 1, // Moment
-        eSLD_Temperature = 2 // Temperature
-        */
+        eLT_F = 0, // Force
+        eLT_M = 1, // Moment
+        eLT_Temperature = 2, // Temperature
+        eLT_Settlement = 3
     }
 
     //----------------------------------------------------------------------------

@@ -114,11 +114,11 @@ namespace Examples
             m_arrConnectionJoints.Add(new CConnectionJoint_T003("FB", m_arrMembers[000].NodeStart, null, m_arrMembers[000], 0.003f, EPlateNumberAndPositionInJoint.eOneLeftPlate, true, true));
 
             m_arrMLoads = new CMLoad[1];
-            //m_arrMLoads[0] = new CMLoad_21(1, -250, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadDirection.eLD_Z, true, 0);
-            //m_arrMLoads[0] = new CMLoad_22(1, -250,0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, EMLoadType.eMLT_F, ELoadDirection.eLD_Z, true, 0);
-            //m_arrMLoads[0] = new CMLoad_23(1, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, EMLoadType.eMLT_F, ELoadDirection.eLD_Z, true, 0);
-            m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
-            //m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, ELoadDirection.eLD_Y, true, 0);
+            //m_arrMLoads[0] = new CMLoad_21(1, -250, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
+            //m_arrMLoads[0] = new CMLoad_22(1, -250,0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PA_22, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
+            //m_arrMLoads[0] = new CMLoad_23(1, -250, 0.3f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PB_23, ELoadType.eLT_F, ELoadDirection.eLD_Z, true, 0);
+            m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, ELoadDirection.eLD_Z, true, 0);
+            //m_arrMLoads[0] = new CMLoad_24(1, -250, 0.3f * m_arrMembers[0].FLength, 0.6f * m_arrMembers[0].FLength, m_arrMembers[0], EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadDirection.eLD_Y, true, 0);
 
             m_arrLoadCases = new CLoadCase[1];
             m_arrLoadCases[0] = new CLoadCase(1, "LC1", ELCGTypeForLimitState.eUniversal, ELCType.ePermanentLoad, ELCMainDirection.eGeneral, new List<CMLoad> { m_arrMLoads[0] });

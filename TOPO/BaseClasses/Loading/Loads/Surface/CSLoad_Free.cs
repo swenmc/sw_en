@@ -11,8 +11,6 @@ namespace BaseClasses
         //----------------------------------------------------------------------------
         //private int [] m_iSurfaceCollection;
         private ESLoadTypeDistr m_sLoadTypeDistr; // Type of external force distribution
-        private ESLoadType m_sLoadType; // Type of external force
-        private ELoadDirection m_eLoadDir;
         private float m_fRotationX_deg;
         private float m_fRotationY_deg;
         private float m_fRotationZ_deg;
@@ -34,16 +32,6 @@ namespace BaseClasses
         {
             get { return m_sLoadTypeDistr; }
             set { m_sLoadTypeDistr = value; }
-        }
-        public ESLoadType SLoadType
-        {
-            get { return m_sLoadType; }
-            set { m_sLoadType = value; }
-        }
-        public ELoadDirection ELoadDir
-        {
-            get { return m_eLoadDir; }
-            set { m_eLoadDir = value; }
         }
 
         public float RotationX_deg

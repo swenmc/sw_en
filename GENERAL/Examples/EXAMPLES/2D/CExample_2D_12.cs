@@ -157,7 +157,7 @@ namespace Examples
             CMLoad_21 MLoad_q = new CMLoad_21(fq);
             MLoad_q.ID = 1;
             MLoad_q.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            MLoad_q.MLoadType = EMLoadType.eMLT_F;
+            MLoad_q.MLoadType = ELoadType.eLT_F;
             MLoad_q.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q.ELoadDir = ELoadDirection.eLD_Y;
             MLoad_q.IMemberCollection = new int[1];

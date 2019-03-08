@@ -130,7 +130,7 @@ namespace Examples
             CMLoad_21 MLoad_q1 = new CMLoad_21(fLoadColumn_q1);
             MLoad_q1.ID = 1;
             MLoad_q1.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            MLoad_q1.MLoadType = EMLoadType.eMLT_F;
+            MLoad_q1.MLoadType = ELoadType.eLT_F;
             MLoad_q1.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q1.ELoadDir = ELoadDirection.eLD_Z;
             MLoad_q1.IMemberCollection = new int[1];
@@ -160,7 +160,7 @@ namespace Examples
             CMLoad_21 MLoad_q4 = new CMLoad_21(fLoadColumn_q2);
             MLoad_q4.ID = 1 + loadRafter1.Count + loadRafter2.Count + 1;
             MLoad_q4.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            MLoad_q4.MLoadType = EMLoadType.eMLT_F;
+            MLoad_q4.MLoadType = ELoadType.eLT_F;
             MLoad_q4.ELoadCS = ELoadCoordSystem.eLCS;
             MLoad_q4.ELoadDir = ELoadDirection.eLD_Z;
             MLoad_q4.IMemberCollection = new int[1];

@@ -90,9 +90,31 @@ namespace BaseClasses
             Vector3D vLCS_Y = new Vector3D(0, 1, 0);
             Vector3D vLCS_Z = new Vector3D(0, 0, 1);
 
+            // Surface Load Direction Vector
+            l.SetLoadDirectionVector(l.fValue); // Set vector depending on value
+            Vector3D vSurfaceLoadDirection = l.LoadDirectionVector;
+
+            // Member coordinate system LCS
+            Vector3D vLCS = new Vector3D(1, 1, 1);
+            // Member coordinate system LCS in surface coordinate system
+            Vector3D vLCSMemberInLCSSurface = GetTransformedVector(vLCS, inverseTrans);
+
+            // Vynasobime zlozky vektora smeru zatazenia plochy s vektorom LCS pruta v pozicii voci LCS plochy
+            // Vobec neviem ci je to takto spravne :)))))
+            Vector3D vMemberLoadDirection = new Vector3D(
+                vSurfaceLoadDirection.X * vLCSMemberInLCSSurface.X,
+                vSurfaceLoadDirection.Y * vLCSMemberInLCSSurface.Y,
+                vSurfaceLoadDirection.Z * vLCSMemberInLCSSurface.Z);
+
+            ELoadDirection eMemberLoadDirection;
+            float fMemberLoadValueSign;
+
+            // Nastavime znamienko a smer generovaneho zatazenia na prute
+            l.GetLoadDirectionAndValueSign(vMemberLoadDirection, out fMemberLoadValueSign, out eMemberLoadDirection);
+
             // TODO Ondrej - podarilo by sa nam niekde vyhrabat tieto transformacie z LCS objektu do GCS (zda sa mi ze je to iste co si odo mna chcel pre minule member)
             Transform3DGroup memberTransformGroupLCS_to_GCS = new Transform3DGroup();
-            memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m);  //podla kody by som povedal,ze takto ziskam transformaciu pre member, ale ruku do ohna za ten kod nedam
+            memberTransformGroupLCS_to_GCS = m.CreateTransformCoordGroup(m, true);
             // TODO Ondrej - ziskat transformacnu maticu zatazenia z jeho LCS do GCS
             Transform3DGroup loadTransformGroupLCS_to_GCS = new Transform3DGroup();
             loadTransformGroupLCS_to_GCS = GetSurfaceLoadTransformFromLCSToGCS(l, loadGroupTransform);  //Done transformacia z LCS->GCS
@@ -187,41 +209,6 @@ namespace BaseClasses
             Rect loadRect = new Rect(p1r1, p2r1); // Rectangle defined in LCS of surface load
             Rect memberRect = new Rect(p1r2, p2r2); // To Ondrej Tu bol problem - vracia to napriklad obdlznik s nulovym rozmerom Height ak ma prut globalne Y suradnice rovnake, dorobil som podmienku if (MathF.d_equal(pStartLCS.X, pEndLCS.X))
 
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            // MC 7.3.2019: Moje pokusy - prosim zatial nemazat
-
-            // Load direction and load orientation depends on LCSs relationship
-            // Ak normala plochy smeruje rovnakym smerom ako osa z LCS pruta tak je typ a orientacia (znamienko hodnoty zatazenia) rovnake
-            // Treba sa s tym pohrat, moze to byt v GCS alebo LCS podla toho v ktorom systeme je definovane zatazenie plochy
-            ELoadDirection eMemberLoadDirection = ELoadDirection.eLD_Z; // Default
-
-            Vector3D surfaceNormal_GCS = Drawing3D.GetSurfaceNormalVector(l.PointsGCS[0], l.PointsGCS[1], l.PointsGCS[l.PointsGCS.Count - 1]);
-
-            if(MathF.d_equal(surfaceNormal_GCS.Z, 1, 0.0001))
-            {
-                eMemberLoadDirection = ELoadDirection.eLD_Z;
-            }
-            else if(MathF.d_equal(surfaceNormal_GCS.Y, 1, 0.0001) && MathF.d_equal(m.Delta_Y, 0, 0.0001))
-            {
-                eMemberLoadDirection = ELoadDirection.eLD_Y;
-            }
-            else if (MathF.d_equal(surfaceNormal_GCS.X, 1, 0.0001) && MathF.d_equal(m.Delta_X, 0, 0.0001))
-            {
-                eMemberLoadDirection = ELoadDirection.eLD_Y;
-            }
-            /*
-            else
-            {
-                eMemberLoadDirection = ELoadDirection.eLD_X; // ????????
-            }*/
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Rect intersection = Drawing3D.GetRectanglesIntersection(loadRect, memberRect);
 
             double dMemberLoadStartCoordinate_x_axis;
@@ -274,18 +261,18 @@ namespace BaseClasses
             }
             else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
             {
-                float fq = l.fValue * (float)dIntersectionLengthInMember_yz_axis; // Load Value
-                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
+                float fq = fMemberLoadValueSign * Math.Abs(l.fValue) * (float)dIntersectionLengthInMember_yz_axis; // Load Value
+                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
                 iLoadID += 1;
             }
             else
             {
                 //nie som si isty,ci to je spravne
-                float fq = (float)(l.fValue * dIntersectionLengthInMember_yz_axis); // Load Value
+                float fq = (float)(fMemberLoadValueSign * Math.Abs(l.fValue) * dIntersectionLengthInMember_yz_axis); // Load Value
                 float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
                 float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
 
-                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, EMLoadType.eMLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
+                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
                 iLoadID += 1;
             }
         }
@@ -349,15 +336,26 @@ namespace BaseClasses
         {
             Vector3D v_out = new Vector3D();
 
-            // TODO Ondrej - Tu by som chcel transformovat suradnice vektora podla toho ako bol objekt (mebmer, surface) transformovany z LCS do GCS
-            // Da sa to nejako vymysliet ??? :)))           
-
-            // Napriklad nejaky fake 3D objekt, ktory by mal vybrany bod so suradnicami vektora a po transformacii by sa nove suradnice toho bodu nastavili do vektora
-
-            //To Mato - takto by to malo ist :-)
-            v_out = transformation.Transform(v_out);
+            v_out = transformation.Transform(v);
 
             return v_out;
         }
+
+        public static Vector3D GetTransformedVector(Vector3D v, GeneralTransform3D transformation)
+        {
+            Vector3D v_out = new Vector3D();
+            Point3D p_out = new Point3D();
+
+            p_out = transformation.Transform(new Point3D(v.X, v.Y, v.Z));
+
+            // Set output vector
+            v_out.X = p_out.X;
+            v_out.Y = p_out.Y;
+            v_out.Z = p_out.Z;
+
+            return v_out;
+        }
+
+        
     }
 }

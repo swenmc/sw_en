@@ -8,6 +8,14 @@ namespace BaseClasses
     [Serializable]
     abstract public class CLoad : CEntity3D
     {
+        private ELoadType m_eLoadType_FMTS;
+
+        public ELoadType ELoadType_FMTS
+        {
+            get { return m_eLoadType_FMTS; }
+            set { m_eLoadType_FMTS = value; }
+        }
+
         private ELoadCoordSystem m_eLoadCS;
 
         public ELoadCoordSystem ELoadCS
@@ -24,6 +32,14 @@ namespace BaseClasses
             set { m_eLoadDir = value; }
         }
 
+        private Vector3D m_LoadDirectionVector; // Vektor zohladnuje smer a znamienko zatazenia
+
+        public Vector3D LoadDirectionVector
+        {
+            get { return m_LoadDirectionVector; }
+            set { m_LoadDirectionVector = value; }
+        }
+
         // TODO - zapracovat do GUI option uzivatelske nastavenie, aku velkost v 3D zobrazeni ma mat 1kN , 1 kN / m, 1 kN / m2 (rozne typy zatazenia, bodove, liniove, plosne)
         private float m_fDisplayin3DRatio; // Load value is in N, N/m, N/m2. Display unit is meter, so 1kN = 1 m in display units, 1000 N = 1 m, therefore is fDisplayRatio = 1/1000
         public float Displayin3DRatio
@@ -34,6 +50,109 @@ namespace BaseClasses
 
         public CLoad()
         { }
+
+        // Funkcia urci z enumu pre smer zatazenia a znamienka hodnoty zatazenia vektor smeru zatazenia
+        public void SetLoadDirectionVector(ELoadDirection eld, float fLoadValue, out Vector3D vOutloadDirectionVector)
+        {
+            int ix_LCSorGCS = 0;
+            int iy_LCSorGCS = 0;
+            int iz_LCSorGCS = 0;
+
+            if (eld == ELoadDirection.eLD_X)
+            {
+                ix_LCSorGCS = fLoadValue < 0 ? -1 : 1;
+            }
+            else if (eld == ELoadDirection.eLD_Y)
+            {
+                iy_LCSorGCS = fLoadValue < 0 ? -1 : 1;
+            }
+            else if (eld == ELoadDirection.eLD_Z)
+            {
+                iz_LCSorGCS = fLoadValue < 0 ? -1 : 1;
+            }
+            else
+            {
+                // Un-defined direction
+            }
+
+            // Validacia
+            if (ix_LCSorGCS == 0 && iy_LCSorGCS == 0 && iz_LCSorGCS == 0)
+            {
+                // Vektor nie je definovany - zatazenie ma nulovu hodnotu alebo sa nejedna o silove zatazenie alebo je definicia zatazenia chybna
+
+                if (MATH.MathF.d_equal(fLoadValue, 0)) // Ak je zatazenie nulove nastavime default ako kladny smer z
+                    iz_LCSorGCS = 1;
+
+                if (ELoadType_FMTS == ELoadType.eLT_F || ELoadType_FMTS == ELoadType.eLT_M) // Silove alebo momentove zatazenie musi mat urceny vektor
+                    throw new Exception("Load direction is not defined.");
+            }
+
+            // Set load direction vector
+            vOutloadDirectionVector = new Vector3D(ix_LCSorGCS, iy_LCSorGCS, iz_LCSorGCS);
+        }
+
+        public void SetLoadDirectionVector(float fLoadValue)
+        {
+            Vector3D vOutloadDirectionVector;
+            SetLoadDirectionVector(ELoadDir, fLoadValue, out vOutloadDirectionVector);
+
+            LoadDirectionVector = vOutloadDirectionVector;
+        }
+
+        // Funkcia urci z vektora smeru zatazenia smer a znamienko pre hodnotu zatazenia
+        public void GetLoadDirectionAndValueSign(Vector3D vLoadDirectionVector, out float fLoadValueSignFactor, out ELoadDirection eld)
+        {
+            // Validacia
+            if (MATH.MathF.d_equal(vLoadDirectionVector.X, 0) &&
+                MATH.MathF.d_equal(vLoadDirectionVector.Y, 0) &&
+                MATH.MathF.d_equal(vLoadDirectionVector.Z, 0))
+            {
+                // Vektor nie je definovany - zatazenie ma nulovu hodnotu alebo sa nejedna o silove zatazenie alebo je definicia zatazenia chybna
+                fLoadValueSignFactor = 1;
+                eld = ELoadDirection.eLD_Z;
+
+                if (ELoadType_FMTS == ELoadType.eLT_F || ELoadType_FMTS == ELoadType.eLT_M) // Silove alebo momentove zatazenie musi mat urceny vektor
+                    throw new Exception("Load direction is not defined.");
+            }
+
+            double x_LCSorGCS = vLoadDirectionVector.X;
+            double y_LCSorGCS = vLoadDirectionVector.Y;
+            double z_LCSorGCS = vLoadDirectionVector.Z;
+
+            if (!MATH.MathF.d_equal(x_LCSorGCS, 0))
+            {
+                eld = ELoadDirection.eLD_X;
+                fLoadValueSignFactor = x_LCSorGCS < 0 ? -1 : 1;
+            }
+            else if (!MATH.MathF.d_equal(y_LCSorGCS, 0))
+            {
+                eld = ELoadDirection.eLD_Y;
+                fLoadValueSignFactor = y_LCSorGCS < 0 ? -1 : 1;
+            }
+            else if (!MATH.MathF.d_equal(z_LCSorGCS, 0))
+            {
+                eld = ELoadDirection.eLD_Z;
+                fLoadValueSignFactor = z_LCSorGCS < 0 ? -1 : 1;
+            }
+            else
+            {
+                // Un-defined direction
+                fLoadValueSignFactor = 1;
+                eld = ELoadDirection.eLD_Z;
+            }
+        }
+
+        public void GetLoadDirectionAndValueSign(out float fLoadValueSignFactor, out ELoadDirection eld)
+        {
+            GetLoadDirectionAndValueSign(LoadDirectionVector, out fLoadValueSignFactor, out eld);
+        }
+
+        public void SetLoadDirectionAndValueSign(out float fLoadValueSignFactor)
+        {
+            ELoadDirection eld;
+            GetLoadDirectionAndValueSign(out fLoadValueSignFactor, out eld);
+            ELoadDir = eld; // Set load direction
+        }
 
         // Model of arrow or moment curve in LCS
         // Arrow in z-axis

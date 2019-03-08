@@ -473,7 +473,7 @@ namespace BaseClasses
                             Model3DGroup model_gr = new Model3DGroup();
                             model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel);
                             // Transform modelgroup from LCS to GCS
-                            model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member);
+                            model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member, selectedLoadCase.MemberLoadsList[i].ELoadCS == ELoadCoordSystem.eLCS);
 
                             model3D_group.Children.Add(model_gr); // Add member load to the model group
 

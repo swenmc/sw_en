@@ -93,17 +93,17 @@ namespace Examples
             m_arrMLoads[2].ID = 3;
 
             m_arrMLoads[0].MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            m_arrMLoads[0].MLoadType = EMLoadType.eMLT_F;
+            m_arrMLoads[0].MLoadType = ELoadType.eLT_F;
             m_arrMLoads[0].ELoadCS = ELoadCoordSystem.eLCS;
             m_arrMLoads[0].ELoadDir = BaseClasses.ELoadDirection.eLD_Z;
 
             m_arrMLoads[1].MLoadTypeDistr = EMLoadTypeDistr.eMLT_FS_H_12;
-            m_arrMLoads[1].MLoadType = EMLoadType.eMLT_F;
+            m_arrMLoads[1].MLoadType = ELoadType.eLT_F;
             m_arrMLoads[1].ELoadCS = ELoadCoordSystem.eLCS;
             m_arrMLoads[1].ELoadDir = ELoadDirection.eLD_Z;
 
             m_arrMLoads[2].MLoadTypeDistr = EMLoadTypeDistr.eMLT_FS_H_12;
-            m_arrMLoads[2].MLoadType = EMLoadType.eMLT_M;
+            m_arrMLoads[2].MLoadType = ELoadType.eLT_M;
             m_arrMLoads[2].ELoadCS = ELoadCoordSystem.eLCS;
             m_arrMLoads[2].ELoadDir = ELoadDirection.eLD_X;
 

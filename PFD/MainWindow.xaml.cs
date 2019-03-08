@@ -1567,7 +1567,7 @@ namespace PFD
                     || m.NodeEnd.Y - 0.5 * fL1_frame <= p.Y && m.NodeEnd.Y + 0.5 * fL1_frame >= p.Y)
                 {
                     if(bDebugging)
-                       System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.SLoadType} for member {m.Name} ID: {m.ID}");
+                       System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID}");
                     return true;
                 }
             }
@@ -1597,7 +1597,7 @@ namespace PFD
 
             double b = (MaxLoadY - MinLoadY) / (maxY - minY);
             if(bDebugging)
-               System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.SLoadType} for member {m.Name} ID: {m.ID} b: {b}");
+               System.Diagnostics.Trace.WriteLine($"found load: {load.fValue}_{load.ELoadType_FMTS} for member {m.Name} ID: {m.ID} b: {b}");
             return b;
         }
 
