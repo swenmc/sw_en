@@ -1069,6 +1069,7 @@ namespace sw_en_GUI
             sDisplayOptions.bDistinguishedColor = true; // Menit nastavenie pre kontrolu vykreslovania jednou alebo viacerymi farbami
 
             sDisplayOptions.bDisplayLoads = true;
+            sDisplayOptions.DisplayIn3DRatio = 0.001f; // Default
 
             Window2 win = new Window2(model, sDisplayOptions, model.m_arrLoadCases[0], m_bDebugging);
             list_trackports.Add(win._trackport);

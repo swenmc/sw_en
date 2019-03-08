@@ -60,15 +60,15 @@ namespace BaseClasses
 
             if (eld == ELoadDirection.eLD_X)
             {
-                ix_LCSorGCS = fLoadValue < 0 ? -1 : 1;
+                ix_LCSorGCS = fLoadValue < 0.0f ? -1 : 1;
             }
             else if (eld == ELoadDirection.eLD_Y)
             {
-                iy_LCSorGCS = fLoadValue < 0 ? -1 : 1;
+                iy_LCSorGCS = fLoadValue < 0.0f ? -1 : 1;
             }
             else if (eld == ELoadDirection.eLD_Z)
             {
-                iz_LCSorGCS = fLoadValue < 0 ? -1 : 1;
+                iz_LCSorGCS = fLoadValue < 0.0f ? -1 : 1;
             }
             else
             {
