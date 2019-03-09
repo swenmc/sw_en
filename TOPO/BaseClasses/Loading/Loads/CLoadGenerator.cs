@@ -20,7 +20,7 @@ namespace BaseClasses
     {
         static bool bDebugging = false; // Console output
 
-        public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, List<CMember> allMembersInModel)
+        public static void GenerateMemberLoads(CLoadCase[] m_arrLoadCases, CMember[] allMembersInModel)
         {
             foreach (CLoadCase lc in m_arrLoadCases)
             {

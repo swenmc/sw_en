@@ -599,6 +599,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnPurlinsAndGirts = value;
+                if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false;
                 NotifyPropertyChanged("ShowLoadsOnPurlinsAndGirts");
             }
         }
@@ -613,6 +614,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnFrameMembers = value;
+                if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false;
                 NotifyPropertyChanged("ShowLoadsOnFrameMembers");
             }
         }
@@ -822,7 +824,7 @@ namespace PFD
             ShowLoadsLabelsUnits = false;
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = true;
-            DisplayIn3DRatio = 0.001f;
+            DisplayIn3DRatio = 0.003f;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
@@ -852,7 +854,7 @@ namespace PFD
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
 
-            bool generateSurfaceLoads = MShowSurfaceLoads || MShowSurfaceLoadsAxis || MShowLoadsOnPurlinsAndGirts;
+            bool generateSurfaceLoads = MShowSurfaceLoads || MShowSurfaceLoadsAxis || MShowLoadsOnPurlinsAndGirts || MShowLoadsOnMembers || MShowLoadsOnFrameMembers;
 
             // Create 3D model of structure including loading
             MModel = new CModel_PFD_01_GR(

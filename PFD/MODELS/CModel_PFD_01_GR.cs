@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Linq;
 
 namespace PFD
 {
@@ -1154,20 +1155,11 @@ namespace PFD
             if (bGenerateLoadsOnMembers)
             {
                 #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
-
-                // TODO Ondrej - tu je mensi problem s tym ze ak je vypnute generovanie surface loads tak aj tieto zoznamy su prazdne kedze na surface loads zavisia, ak surface loads nie su vygenerovane, mali by sa dogenerovat
+                
                 if (bGenerateLoadsOnPurlinsAndGirts)
                 {
-                    // List of all members
-                    // To Ondrej - opat moj stary problem s prevodom z pola do zoznamu
-                    List<CMember> listOfAllMembers = new List<CMember>();
-                    foreach(CMember m in m_arrMembers)
-                    {
-                        listOfAllMembers.Add(m);
-                    }
-
                     // Generate member loads
-                    CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfAllMembers);
+                    CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, m_arrMembers);
                 }
 
                 #endregion

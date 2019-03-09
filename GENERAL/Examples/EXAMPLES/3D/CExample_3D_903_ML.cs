@@ -66,7 +66,7 @@ namespace Examples
             m_arrMembers[002] = new CMember(003, m_arrNodes[04], m_arrNodes[05], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
             m_arrMembers[003] = new CMember(004, m_arrNodes[06], m_arrNodes[07], m_arrCrSc[0], EMemberType_FS.eP, eccmember, eccmember, 0.0f, 0.0f, MathF.fPI, 0);
 
-            List<CMember> listOfAllMembers = new List<CMember>() { m_arrMembers[000], m_arrMembers[001], m_arrMembers[002], m_arrMembers[003] };
+            //List<CMember> listOfAllMembers = new List<CMember>() { m_arrMembers[000], m_arrMembers[001], m_arrMembers[002], m_arrMembers[003] };
 
             // Nodal Supports - fill values
 
@@ -117,7 +117,7 @@ namespace Examples
             else
             {
                 // Member loads generated from surface load
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, listOfAllMembers); // Test
+                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, m_arrMembers); // Test
             }
         }
     }
