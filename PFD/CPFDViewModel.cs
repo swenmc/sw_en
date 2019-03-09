@@ -106,6 +106,7 @@ namespace PFD
         public List<CJointLoadCombinationRatio_ULS> JointDesignResults_ULS;
 
         public List<CFrame> frameModels;
+        public List<CBeam_Simple> beamSimpleModels;
 
         //-------------------------------------------------------------------------------------------------------------
         public int ModelIndex
@@ -931,6 +932,16 @@ namespace PFD
                 // Convert model and calculate results
                 Model bfemNetModel = converter.Convert(frame, !DeterminateCombinationResultsByFEMSolver);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
+            }
+
+            beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
+
+            foreach (CBeam_Simple beam in beamSimpleModels)
+            {
+                // Convert SW_EN model to BFENet model
+                CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
+                // Convert model and calculate results
+                Model bfemNetModel = converter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);
             }
 
             // Calculation of simple beam model

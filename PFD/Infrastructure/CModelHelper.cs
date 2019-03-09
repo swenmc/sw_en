@@ -61,25 +61,33 @@ namespace PFD
                 List<CNode> simpleBeamNodes = new List<CNode>();
 
                 // Add nodes to the beam
-                simpleBeamNodes.Add(model.m_arrNodes[i + 0]);
-                simpleBeamNodes.Add(model.m_arrNodes[i + 1]);
+
+                simpleBeamNodes.Add(new CNode(model.m_arrMembers[i].NodeStart.ID, 0,0,0,0));
+                simpleBeamNodes.Add(new CNode(model.m_arrMembers[i].NodeEnd.ID, model.m_arrMembers[i].FLength,0,0,0));
 
                 // Create Member Is case that simple beam model should be created for member with specific member type
                 // Purlin, Eave Purlin, Girts, Columns (wind posts)
-                if (model.m_arrMembers[i].EMemberType == EMemberType_FS.eP &&
-                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eEP &&
-                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eG &&
-                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eC)
+                if (model.m_arrMembers[i].BIsDisplayed && // TODO - nemusi byt zobrazeny ale mal by ist do vypoctu BCalculate = true
+                    (model.m_arrMembers[i].EMemberType == EMemberType_FS.eP ||
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eEP ||
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eG ||
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eC))
                 {
                     simpleBeamMember = model.m_arrMembers[i];
+                    simpleBeamMember.NodeStart = simpleBeamNodes[0];
+                    simpleBeamMember.NodeEnd = simpleBeamNodes[1];
+
+                    // Validate - pridat len prut s priradenym prierezom
+                    if (simpleBeamMember.CrScStart == null)
+                        continue;
+
+                    List<CLoadCase> simpleBeamLoadCases = CModelHelper.GetLoadCasesForMembers(new List<CMember> { simpleBeamMember }, model.m_arrLoadCases);
+                    List<CLoadCombination> simpleBeamLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(simpleBeamLoadCases.ToArray(), model.m_arrLoadCombs);
+                    List<CNSupport> simpleBeamSupports = model.GetSimpleBeamCNSupports();
+                    CBeam_Simple beam = new CBeam_Simple(simpleBeamMember, simpleBeamNodes.ToArray(), simpleBeamLoadCases.ToArray(), simpleBeamLoadCombinations.ToArray(), simpleBeamSupports.ToArray());
+
+                    simpleBeams.Add(beam);
                 }
-
-                List<CLoadCase> simpleBeamLoadCases = CModelHelper.GetLoadCasesForMembers(new List<CMember> { simpleBeamMember }, model.m_arrLoadCases);
-                List<CLoadCombination> simpleBeamLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(simpleBeamLoadCases.ToArray(), model.m_arrLoadCombs);
-                List<CNSupport> simpleBeamSupports = model.GetSimpleBeamCNSupports();
-                CBeam_Simple beam = new CBeam_Simple(simpleBeamMember, simpleBeamNodes.ToArray(), simpleBeamLoadCases.ToArray(), simpleBeamLoadCombinations.ToArray(), simpleBeamSupports.ToArray());
-
-                simpleBeams.Add(beam);
             }
             return simpleBeams;
         }

@@ -111,9 +111,12 @@ namespace PFD
             // takze musi byt podoprety tak ze sa v smere Y nemoze posunut, stale musi byt fixovany len v rovine XZ
             // Preto sa na vsetky uzly nastavia tieto tri podmienky
 
-            for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
+            if (topomodel.m_eSLN == ESLN.e2DD_1D) // 2D model is defined
             {
-                model.Nodes[i].Constraints = Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;
+                for (int i = 0; i < topomodel.m_arrNodes.Length; i++)
+                {
+                    model.Nodes[i].Constraints = Constraints.FixedDY & Constraints.FixedRX & Constraints.FixedRZ;
+                }
             }
 
             // Prejdeme vsetky podpory, vsetky uzly im priradene a nastavime na tychto uzloch podopretie pre prislusne posuny alebo pootocenia            
@@ -149,11 +152,11 @@ namespace PFD
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDY;
                                 if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Uz] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedDZ;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rx && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rx] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRX;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Ry && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Ry] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRY;
-                                if (topomodel.m_arrNSupports[i].m_bRestrain.Length > (int)BaseClasses.ENSupportType.eNST_Rz && topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
+                                if (topomodel.m_arrNSupports[i].m_bRestrain[(int)BaseClasses.ENSupportType.eNST_Rz] == true)
                                     model.Nodes[k].Constraints = model.Nodes[i].Constraints & Constraints.FixedRZ;
                             }
                             else
