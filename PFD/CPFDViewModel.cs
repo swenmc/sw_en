@@ -1062,36 +1062,55 @@ namespace PFD
                             }
                             else // Single member
                             {
-                                // Calculate Internal forces just for Load Cases that are included in ULS
-                                if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
+                                bool bUseBFENetCalculation = true;
+
+                                if (bUseBFENetCalculation)
                                 {
-                                    foreach (CMLoad cmload in lc.MemberLoadsList)
+                                    // TU potrebujeme nacitat vysledky z 
+                                    // beamSimpleModels
+
+                                    // podobne ako to robime pre frames
+
+                                    // a pridat k MemberInternalForcesInLoadCases a MemberDeflectionsInLoadCases
+
+
+
+
+
+                                }
+                                else
+                                {
+                                    // Calculate Internal forces just for Load Cases that are included in ULS
+                                    if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
                                     {
-                                        if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                        foreach (CMLoad cmload in lc.MemberLoadsList)
                                         {
-                                            // ULS - internal forces
-                                            calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
+                                            if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                            {
+                                                // ULS - internal forces
+                                                calcModel.CalculateInternalForcesOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBIF_x, out sBucklingLengthFactors, out sMomentValuesforCb);
+                                            }
                                         }
                                     }
-                                }
 
-                                if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
-                                {
-                                    foreach (CMLoad cmload in lc.MemberLoadsList)
+                                    if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
                                     {
-                                        if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                        foreach (CMLoad cmload in lc.MemberLoadsList)
                                         {
-                                            // SLS - deflections
-                                            calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
+                                            if (cmload.Member.ID == m.ID) // TODO - Zatial pocitat len pre zatazenia, ktore lezia priamo skumanom na prute, po zavedeni 3D solveru upravit
+                                            {
+                                                // SLS - deflections
+                                                calcModel.CalculateDeflectionsOnSimpleBeam_PFD(iNumberOfDesignSections, fx_positions, m, (CMLoad_21)cmload, out sBDeflections_x);
+                                            }
                                         }
                                     }
+
+                                    if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                    if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+
+                                    //m.MMomentValuesforCb.Add(sMomentValuesforCb);
+                                    //m.MBIF_x.Add(sBIF_x);
                                 }
-
-                                if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
-                                if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
-
-                                //m.MMomentValuesforCb.Add(sMomentValuesforCb);
-                                //m.MBIF_x.Add(sBIF_x);
                             }
                         }
                     }
