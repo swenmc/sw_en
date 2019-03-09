@@ -368,18 +368,18 @@ namespace PFD
             float fFrameGCSCoordinate_Y = iFrameIndex * fL1_frame;
 
             // Additional surface dead load
-            float fSelfWeight_Girts_SurfaceLoad = -(float)(GirtCrSc.A_g * GirtCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration / fDistanceGirts);
-            float fSelfWeight_Purlins_SurfaceLoad = -(float)(PurlinCrSc.A_g * PurlinCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration / fDistancePurlins);
+            float fSelfWeight_Girts_SurfaceLoad = -(float)(GirtCrSc.A_g * GirtCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION / fDistanceGirts);
+            float fSelfWeight_Purlins_SurfaceLoad = -(float)(PurlinCrSc.A_g * PurlinCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION / fDistancePurlins);
 
-            float fSelfWeightColumn = -(float)(ColumnCrSc.A_g * ColumnCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
-            float fSelfWeightRafter = -(float)(RafterCrSc.A_g * RafterCrSc.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
+            float fSelfWeightColumn = -(float)(ColumnCrSc.A_g * ColumnCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
+            float fSelfWeightRafter = -(float)(RafterCrSc.A_g * RafterCrSc.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
 
             // Half tributary width - first and last frame
             if (iFrameIndex == 0 || iFrameIndex == iFrameNo - 1)
             {
                 fFrameTributaryWidth *= 0.5f;
-                fSelfWeightColumn = -(float)(ColumnCrSc_EF.A_g * ColumnCrSc_EF.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
-                fSelfWeightRafter = -(float)(RafterCrSc_EF.A_g * RafterCrSc_EF.m_Mat.m_fRho * GlobalConstants.fg_acceleration);
+                fSelfWeightColumn = -(float)(ColumnCrSc_EF.A_g * ColumnCrSc_EF.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
+                fSelfWeightRafter = -(float)(RafterCrSc_EF.A_g * RafterCrSc_EF.m_Mat.m_fRho * GlobalConstants.G_ACCELERATION);
             }
 
             // Total surface dead load

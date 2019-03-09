@@ -169,7 +169,7 @@ namespace PFD
             //toto tu tu proste nemoze byt, je nemozne volat tuto metodu skor ako je v combe nastavene Combobox_RoofCladding.SelectedItem
             float fMass_Roof = CComboBoxHelper.GetValueFromDatabasebyRowID("TrapezoidalSheetingSQLiteDB", (string)Combobox_RoofCladding.SelectedItem, "mass_kg_m2", calcModel.RoofCladdingThicknessIndex);
             // Chcem nacitat z databazy plosnu hmotnost plechu a vypocitat zatazenie (doriesit jednotky kN a N, predtym sa zadavalo v kN, pocitat by sa malo v N)
-            calcModel.CladdingSelfWeight_gc = fMass_Roof * GlobalConstants.fg_acceleration / 1000f;
+            calcModel.CladdingSelfWeight_gc = fMass_Roof * GlobalConstants.G_ACCELERATION / 1000f;
 
             CMember member = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, calcModel.Length_L, 0, 0), cs, 0);
 
@@ -177,7 +177,7 @@ namespace PFD
             calcModel.MomentOfInertia_Ix = (float)cs.I_y; // (Ix = Iy a Iy = Iz podla AS 4600)
 
             float fMemberMassPerLength = calcModel.Area_Ag * mat.m_fRho;
-            calcModel.PurlinSelfWeight_gp = fMemberMassPerLength * GlobalConstants.fg_acceleration;
+            calcModel.PurlinSelfWeight_gp = fMemberMassPerLength * GlobalConstants.G_ACCELERATION;
 
             calcModel.AdditionalDeadLoad_gl =  calcModel.AdditionalDeadLoad_g * calcModel.TributaryWidth_B;
 

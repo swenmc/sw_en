@@ -90,11 +90,7 @@ namespace PFD
         public SnowLoadDataInput sSnowInputData;
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
-
-        // TODO - Ondrej zaviest staticku triedu pre fyzikalne konstanty, prevody jednotiek a podobne
-        public const float fg_acceleration = 9.80665f; // gravitational acceleration [m/s^2]
-        public float fMaterial_density = 7850f; //  [kg /m^3] (malo by byt zadane v databaze materialov)
-
+        
         //int selected_Model_Index;
         //float fb; // 3 - 100 m
         //float fL; // 3 - 150 m
@@ -425,8 +421,8 @@ namespace PFD
             float fMass_Girts_x = iNumberOfGirts_x * fGirtMassPerMeter * fLoadingWidth_Frame_x;
             float fMass_Frame_x = iNumberOfMainColumns_x * fMainColumnMassPerMeter * vm.WallHeight + iNumberOfMainRafters_x * fMainRafterMassPerMeter * fRafterLength;
 
-            float fMass_Wall_x_kg = 2 * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
-            float fMass_Roof_x_kg = 2 * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_x_kg = 2 * vm.WallHeight * fLoadingWidth_Frame_x * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_x_kg = 2 * fRafterLength * fLoadingWidth_Frame_x * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_x = fMass_Frame_x + fMass_Girts_x + fMass_Wall_x_kg + fMass_EavePurlins_x + fMass_Purlins_x + fMass_Roof_x_kg;
 
@@ -446,8 +442,8 @@ namespace PFD
 
             float fLoadingWidth_Frame_y = 0.5f * vm.GableWidth; // Zatazovacia sirka ramu
 
-            float fMass_Wall_y_kg = vm.Length * vm.WallHeight * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
-            float fMass_Roof_y_kg = vm.Length * fRafterLength * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / fg_acceleration); // NZS 1170.5, cl. 4.2
+            float fMass_Wall_y_kg = vm.Length * vm.WallHeight * (fMass_Wall + (loadinput.AdditionalDeadActionWall * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
+            float fMass_Roof_y_kg = vm.Length * fRafterLength * (fMass_Roof + (loadinput.AdditionalDeadActionRoof * 1000) / GlobalConstants.G_ACCELERATION); // NZS 1170.5, cl. 4.2
 
             float fMass_Total_y = fMass_Frame_y + fMass_Girts_y + fMass_Wall_y_kg + fMass_EavePurlins_y + fMass_Purlins_y + fMass_Roof_y_kg;
 
@@ -495,7 +491,7 @@ namespace PFD
                 loadinput.AdditionalDeadActionRoof,
                 loadinput.AdditionalDeadActionWall,
                 loadinput.ImposedActionRoof,
-                fg_acceleration);
+                GlobalConstants.G_ACCELERATION);
         }
 
         public void CalculateSnowLoad()
@@ -573,7 +569,7 @@ namespace PFD
         {
             double fP = 1; // Unit Force
             double fDelta_x = fP * MathF.Pow3(vm.WallHeight) / (iNumberOfColumns * 3 * fI_column * fE); // Cantilever deflection (rafter is considered as rigid member)
-            return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * fg_acceleration * MathF.Pow2(fDelta_x)) / (fg_acceleration * fP * fDelta_x))); // Eq. 4.1(1)
+            return (float)(2 * MathF.fPI * Math.Sqrt((fMass_Total * GlobalConstants.G_ACCELERATION * MathF.Pow2(fDelta_x)) / (GlobalConstants.G_ACCELERATION * fP * fDelta_x))); // Eq. 4.1(1)
         }
 
         public void FillComboboxTrapezoidalSheetingThickness(string sTableName, ComboBox combobox)
