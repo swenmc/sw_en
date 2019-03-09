@@ -236,6 +236,11 @@ namespace PFD
                             // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
                             iMemberIndex_FM = frame.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
                         }
+                        else
+                        {
+                            // General 3D model - not implemented yet
+                            throw new Exception("Not implemented model type.");
+                        }
 
                         if (iMemberIndex_FM < 0 || iMemberIndex_FM > elementCollection.Count - 1) // Validation
                         {

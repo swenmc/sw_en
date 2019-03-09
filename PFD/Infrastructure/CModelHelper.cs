@@ -51,6 +51,38 @@ namespace PFD
             return frames;
         }
 
+        public static List<CBeam_Simple> GetMembersFromModel(this CModel_PFD_01_GR model)
+        {
+            List<CBeam_Simple> simpleBeams = new List<CBeam_Simple>();
+
+            for (int i = 0; i < model.m_arrMembers.Length; i++)
+            {
+                CMember simpleBeamMember = new CMember();
+                List<CNode> simpleBeamNodes = new List<CNode>();
+
+                // Add nodes to the beam
+                simpleBeamNodes.Add(model.m_arrNodes[i + 0]);
+                simpleBeamNodes.Add(model.m_arrNodes[i + 1]);
+
+                // Create Member Is case that simple beam model should be created for member with specific member type
+                // Purlin, Eave Purlin, Girts, Columns (wind posts)
+                if (model.m_arrMembers[i].EMemberType == EMemberType_FS.eP &&
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eEP &&
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eG &&
+                    model.m_arrMembers[i].EMemberType == EMemberType_FS.eC)
+                {
+                    simpleBeamMember = model.m_arrMembers[i];
+                }
+
+                List<CLoadCase> simpleBeamLoadCases = CModelHelper.GetLoadCasesForMembers(new List<CMember> { simpleBeamMember }, model.m_arrLoadCases);
+                List<CLoadCombination> simpleBeamLoadCombinations = CModelHelper.GetLoadCombinationsForMembers(simpleBeamLoadCases.ToArray(), model.m_arrLoadCombs);
+                List<CNSupport> simpleBeamSupports = model.GetSimpleBeamCNSupports();
+                CBeam_Simple beam = new CBeam_Simple(simpleBeamMember, simpleBeamNodes.ToArray(), simpleBeamLoadCases.ToArray(), simpleBeamLoadCombinations.ToArray(), simpleBeamSupports.ToArray());
+
+                simpleBeams.Add(beam);
+            }
+            return simpleBeams;
+        }
 
         public static List<CNSupport> GetFrameCNSupports(this CModel_PFD_01_GR model)
         {
@@ -110,6 +142,43 @@ namespace PFD
             frameSupports.Add(support);
 
             return frameSupports;
+        }
+
+        public static List<CNSupport> GetSimpleBeamCNSupports(this CModel_PFD_01_GR model)
+        {
+            List<CNSupport> simpleBeamSupports = new List<CNSupport>();
+
+            // Vyrobime podporu v 2D (rovina XY, rotacia okolo Z) z podpory v 3D (rovina XZ,rotacia okolo Y)
+
+            bool[] bRestrain1 = new bool[6];
+            bRestrain1[(int)BaseClasses.ENSupportType.eNST_Ux] = true;
+            bRestrain1[(int)BaseClasses.ENSupportType.eNST_Uy] = true;
+            bRestrain1[(int)BaseClasses.ENSupportType.eNST_Uz] = true;
+            bRestrain1[(int)BaseClasses.ENSupportType.eNST_Rx] = true;
+            bRestrain1[(int)BaseClasses.ENSupportType.eNST_Ry] = false;
+            bRestrain1[(int)BaseClasses.ENSupportType.eNST_Rz] = false;
+
+            bool[] bRestrain2 = new bool[6];
+            bRestrain2[(int)BaseClasses.ENSupportType.eNST_Ux] = false;
+            bRestrain2[(int)BaseClasses.ENSupportType.eNST_Uy] = true;
+            bRestrain2[(int)BaseClasses.ENSupportType.eNST_Uz] = true;
+            bRestrain2[(int)BaseClasses.ENSupportType.eNST_Rx] = true;
+            bRestrain2[(int)BaseClasses.ENSupportType.eNST_Ry] = false;
+            bRestrain2[(int)BaseClasses.ENSupportType.eNST_Rz] = false;
+
+            CNSupport support1 = new CNSupport((int)ENDOF.e3DEnv, 1, null, bRestrain1, 0);
+            CNSupport support2 = new CNSupport((int)ENDOF.e3DEnv, 2, null, bRestrain2, 0);
+
+            support1.m_iNodeCollection = new int[1];
+            support1.m_iNodeCollection[0] = 1; // Start Node
+
+            support2.m_iNodeCollection = new int[1]; // End Node
+            support2.m_iNodeCollection[0] = 2;
+
+            simpleBeamSupports.Add(support1);
+            simpleBeamSupports.Add(support2);
+
+            return simpleBeamSupports;
         }
 
         public static List<CLoadCase> GetLoadCasesForMembers(List<CMember> members, CLoadCase[] allLoadCases)

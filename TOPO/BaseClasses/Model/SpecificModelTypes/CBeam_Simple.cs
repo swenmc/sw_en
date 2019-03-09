@@ -10,15 +10,15 @@ namespace BaseClasses
 {
     public class CBeam_Simple : CModel
     {
-        public CBeam_Simple(CMember[] members, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
+        public CBeam_Simple(CMember member, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
         {
-            m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
-            m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
+            m_eSLN = ESLN.e3DD_1D; // 1D members in 3D model
+            m_eNDOF = (int)ENDOF.e3DEnv; // DOF in 3D
             m_eGCS = EGCS.eGCSLeftHanded; // Global coordinate system
 
             // RAM DEFINOVANY V XZ
             m_arrNodes = nodes;
-            m_arrMembers = members;
+            m_arrMembers = new CMember[1] { member };
             m_arrLoadCases = loadCases;
             m_arrLoadCombs = loadCombinations;
             m_arrNSupports = supports;
