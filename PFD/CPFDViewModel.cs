@@ -983,8 +983,7 @@ namespace PFD
             {
                 if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
-                    if((!DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER)) ||
-                    (m.EMemberType != EMemberType_FS.eMC && m.EMemberType != EMemberType_FS.eMR && m.EMemberType != EMemberType_FS.eEC && m.EMemberType != EMemberType_FS.eER))
+                    if(!DeterminateCombinationResultsByFEMSolver)
                     {
                         for (int i = 0; i < iNumberOfDesignSections; i++)
                             fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
