@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace BaseClasses
 {
-    public class CFrame : CModel
+    public class CBeam_Simple : CModel
     {
-        public LoadCombinationsInternalForces LoadCombInternalForcesResults { get; set; }
-        
-        public CFrame(CMember[] members, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
+        public CBeam_Simple(CMember[] members, CNode[] nodes, CLoadCase[] loadCases, CLoadCombination[] loadCombinations, CNSupport[] supports)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
@@ -35,7 +33,7 @@ namespace BaseClasses
         public void SetMaterialAndCrossSection()
         {
             if (m_arrMembers == null) return;
-            if (m_arrMembers.Length < 2) return;
+            if (m_arrMembers.Length < 1) return;
             // Materials
             // Materials List - Materials Array - Fill Data of Materials Array
             m_arrMat = new CMat[1];
@@ -44,12 +42,9 @@ namespace BaseClasses
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
             // Cross-section
-            m_arrCrSc = new CCrSc[2];
+            m_arrCrSc = new CCrSc[1];
             m_arrCrSc[0] = m_arrMembers[0].CrScStart;
             m_arrCrSc[0].m_Mat = m_arrMembers[0].CrScStart.m_Mat; // Set CrSc Material
-
-            m_arrCrSc[1] = m_arrMembers[1].CrScStart;
-            m_arrCrSc[1].m_Mat = m_arrMembers[1].CrScStart.m_Mat; // Set CrSc Material
         }
     }
 }

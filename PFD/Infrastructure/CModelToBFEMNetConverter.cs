@@ -8,7 +8,7 @@ namespace PFD
     public class CModelToBFEMNetConverter
     {
 
-        public Model Convert(CFrame topomodel, bool bCalculateLoadCasesOnly)
+        public Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly)
         {
             // Dokumentacia a priklady
             // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
@@ -223,8 +223,19 @@ namespace PFD
                     Load BFEMLoad = GetBFEMLoad(topomodel.m_arrLoadCases[i].MemberLoadsList[j], loadcases[i]);
                     if (BFEMLoad != null)
                     {
-                        // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
-                        int iMemberIndex_FM = topomodel.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
+                        int iMemberIndex_FM = -1;
+
+                        if (topomodel is CBeam_Simple) // Simple beam model
+                        {
+                            iMemberIndex_FM = 0;
+                        }
+                        else if (topomodel is CFrame) // Frame model
+                        {
+                            CFrame frame = (CFrame)topomodel;
+
+                            // Zatazenie odkazuje na globalne ID pruta, ale tu sa zmeni na ID elementu v BFENet (0-3)
+                            iMemberIndex_FM = frame.GetMemberIndexInFrame(topomodel.m_arrLoadCases[i].MemberLoadsList[j].Member);
+                        }
 
                         if (iMemberIndex_FM < 0 || iMemberIndex_FM > elementCollection.Count - 1) // Validation
                         {

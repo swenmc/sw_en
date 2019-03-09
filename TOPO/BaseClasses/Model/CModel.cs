@@ -86,6 +86,8 @@ namespace BaseClasses
         //Grouped Members
         Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
 
+        public LoadCombinationsInternalForces LoadCombInternalForcesResults { get; set; }
+
         //Visuals
         public ScreenSpaceLines3D AxisX;
         public ScreenSpaceLines3D AxisY;
