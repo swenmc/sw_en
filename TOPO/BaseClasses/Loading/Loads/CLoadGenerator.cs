@@ -9,6 +9,13 @@ using System.Windows.Shapes;
 
 namespace BaseClasses
 {
+    public struct MemberLoadParameters
+    {
+        public ELoadDirection eMemberLoadDirection;
+        public float fSurfaceLoadValueFactor;
+        public float fMemberLoadValueSign;
+    }
+
     public static class CLoadGenerator
     {
         static bool bDebugging = false; // Console output
@@ -28,6 +35,11 @@ namespace BaseClasses
                         {
                             if (m.EMemberType == mtypedata.memberType) // Prut je rovnakeho typu ako je niektory z typov prutov zo skupiny typov ktoru plocha zatazuje
                             {
+                                if(m.EMemberType == EMemberType_FS.eEP)
+                                {
+
+                                }
+
                                 if (csload is CSLoad_FreeUniformGroup)
                                 {
                                     Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)csload).CreateTransformCoordGroupOfLoadGroup();
@@ -108,11 +120,51 @@ namespace BaseClasses
             Vector3D vLoadDirectioninGCS = GetTransformedVector(l.LoadDirectionVector, loadTransformGroupLCS_to_GCS);
             Vector3D vloadDirectioninLCS = ((Transform3D)(memberTransformGroupLCS_to_GCS.Inverse)).Transform(vLoadDirectioninGCS);
 
-            ELoadDirection eMemberLoadDirection;
-            float fMemberLoadValueSign;
+            // Ak nie su vsetky osi pruta kolme na osi plochy, moze nastat pripad ze je potrebne vygenerovat viac zatazeni
+            // (tj. zatazenie z plochy je potrebne rozlozit do viacerych smerov na prute, vznike teda viacero objektov member load)
+            // Zistime ktore zlozky su ine nez 0 a ma sa pre ne generovat zatazenie
 
-            // Nastavime znamienko a smer generovaneho zatazenia na prute
-            l.GetLoadDirectionAndValueSign(vloadDirectioninLCS, out fMemberLoadValueSign, out eMemberLoadDirection);
+            List<MemberLoadParameters> listMemberLoadParams = new List<MemberLoadParameters>();
+
+            if(!MathF.d_equal(Math.Abs(vloadDirectioninLCS.X),0, 0.001))
+            {
+                MemberLoadParameters parameters_LCS_X = new MemberLoadParameters();
+
+                parameters_LCS_X.fSurfaceLoadValueFactor = (float)vloadDirectioninLCS.X;
+                parameters_LCS_X.eMemberLoadDirection = ELoadDirection.eLD_X;
+                parameters_LCS_X.fMemberLoadValueSign = vloadDirectioninLCS.X < 0.0 ? -1 : 1;
+
+                listMemberLoadParams.Add(parameters_LCS_X);
+            }
+
+            if (!MathF.d_equal(Math.Abs(vloadDirectioninLCS.Y),0, 0.001))
+            {
+                MemberLoadParameters parameters_LCS_Y = new MemberLoadParameters();
+
+                parameters_LCS_Y.fSurfaceLoadValueFactor = (float)vloadDirectioninLCS.Y;
+                parameters_LCS_Y.eMemberLoadDirection = ELoadDirection.eLD_Y;
+                parameters_LCS_Y.fMemberLoadValueSign = vloadDirectioninLCS.Y < 0.0 ? -1 : 1;
+
+                listMemberLoadParams.Add(parameters_LCS_Y);
+            }
+
+            if (!MathF.d_equal(Math.Abs(vloadDirectioninLCS.Z),0, 0.001))
+            {
+                MemberLoadParameters parameters_LCS_Z = new MemberLoadParameters();
+
+                parameters_LCS_Z.fSurfaceLoadValueFactor = (float)vloadDirectioninLCS.Z;
+                parameters_LCS_Z.eMemberLoadDirection = ELoadDirection.eLD_Z;
+                parameters_LCS_Z.fMemberLoadValueSign = vloadDirectioninLCS.Z < 0.0 ? -1 : 1;
+
+                listMemberLoadParams.Add(parameters_LCS_Z);
+            }
+
+            // Validation
+            if(listMemberLoadParams.Count == 0) // Nepodarilo sa vygenerovat ziadne zatazenie pruta
+            {
+                throw new Exception("Error. Member load can't be generated.");
+            }
+
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -219,25 +271,28 @@ namespace BaseClasses
                 dIntersectionLengthInMember_yz_axis = intersection.Width; // Tributary width
             }
 
-            if (intersection == Rect.Empty)
+            foreach (MemberLoadParameters loadparam in listMemberLoadParams)
             {
-                return;
-            }
-            else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
-            {
-                float fq = fMemberLoadValueSign * Math.Abs(l.fValue) * (float)dIntersectionLengthInMember_yz_axis; // Load Value
-                lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
-                iLoadID += 1;
-            }
-            else
-            {
-                //nie som si isty,ci to je spravne
-                float fq = (float)(fMemberLoadValueSign * Math.Abs(l.fValue) * dIntersectionLengthInMember_yz_axis); // Load Value
-                float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
-                float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
+                if (intersection == Rect.Empty)
+                {
+                    return;
+                }
+                else if (MathF.d_equal(dIntersectionLengthInMember_x_axis, m.FLength)) // Intersection in x direction of member is same as member length - generate uniform load per whole member length
+                {
+                    float fq = loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * (float)dIntersectionLengthInMember_yz_axis; // Load Value
+                    lc.MemberLoadsList.Add(new CMLoad_21(iLoadID, fq, m, EMLoadTypeDistr.eMLT_QUF_W_21, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
+                    iLoadID += 1;
+                }
+                else
+                {
+                    //nie som si isty,ci to je spravne
+                    float fq = (float)(loadparam.fMemberLoadValueSign * Math.Abs(l.fValue * loadparam.fSurfaceLoadValueFactor) * dIntersectionLengthInMember_yz_axis); // Load Value
+                    float faA = (float)dMemberLoadStartCoordinate_x_axis; // Load start point on member (absolute coordinate x)
+                    float fs = (float)dIntersectionLengthInMember_x_axis; // Load segment length on member (absolute coordinate x)
 
-                lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, eMemberLoadDirection, true, 0));
-                iLoadID += 1;
+                    lc.MemberLoadsList.Add(new CMLoad_24(iLoadID, fq, faA, fs, m, EMLoadTypeDistr.eMLT_QUF_PG_24, ELoadType.eLT_F, ELoadCoordSystem.eLCS, loadparam.eMemberLoadDirection, true, 0));
+                    iLoadID += 1;
+                }
             }
         }
 
