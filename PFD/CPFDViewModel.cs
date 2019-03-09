@@ -1069,13 +1069,16 @@ namespace PFD
                                     // beamSimpleModels
 
                                     // podobne ako to robime pre frames
-
+                                    
                                     // a pridat k MemberInternalForcesInLoadCases a MemberDeflectionsInLoadCases
-
-
-
-
-
+                                    foreach (CBeam_Simple beam in beamSimpleModels)
+                                    {
+                                        sBIF_x = beam.LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
+                                        //sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
+                                        sBDeflections_x = beam.LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
+                                        if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                        if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                                    }
                                 }
                                 else
                                 {
