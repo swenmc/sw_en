@@ -188,6 +188,11 @@ namespace BaseClasses
 
         public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)
         {
+            if(m.ID==5)
+            {
+
+            }
+
             jStart = null;
             jEnd = null;
             foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
@@ -198,8 +203,8 @@ namespace BaseClasses
                 {
                     if (secMem.ID == m.ID)
                     {
-                        if (secMem.NodeStart == cj.m_Node) jStart = cj;
-                        if (secMem.NodeEnd == cj.m_Node) jEnd = cj;
+                        if (secMem.NodeStart.ID == cj.m_Node.ID) jStart = cj; // Zatial je lepsie porovnavat len ID a nie cele objekty Node, pretoze pri vytvarani dielcich modelov sa objekty Node modifikuju
+                        if (secMem.NodeEnd.ID == cj.m_Node.ID) jEnd = cj;
                     }
                 }
             }
@@ -212,15 +217,17 @@ namespace BaseClasses
 
                 if (cj.m_MainMember != null && cj.m_MainMember.ID == m.ID)
                 {
-                    if (cj.m_MainMember.NodeStart == cj.m_Node) jStart = cj;
-                    if (cj.m_MainMember.NodeEnd == cj.m_Node) jEnd = cj;
+                    if (cj.m_MainMember.NodeStart.ID == cj.m_Node.ID) jStart = cj; // Zatial je lepsie porovnavat len ID a nie cele objekty Node, pretoze pri vytvarani dielcich modelov sa objekty Node modifikuju
+                    if (cj.m_MainMember.NodeEnd.ID == cj.m_Node.ID) jEnd = cj;
                 }
             }
 
-            // To Ondrej
-            // Tu vyskoci vynimka lebo sem teraz asi lezu aj pruty z modelu samostatnych ramov
-            // cj.m_MainMember.NodeStart == cj.m_Node objekty maju rovnake ID = 1, ale tomu v hlavnom modeli som naplnil aj Name a cj.m_MainMember.NodeStart ho vyplnene nema, takze je to iny node
-            if (jStart == null || jEnd == null) throw new Exception("Start or end connection joint not found.");
+            // Validation - start or end joint wasn't found.
+            if (jStart == null || jEnd == null)
+                throw new Exception("Start or end connection joint not found.\n" +
+                    "Member ID: " + m.ID + "\n"+
+                    "Member Start Node ID: " + m.NodeStart.ID +"\n" +
+                    "Member End Node ID: " + m.NodeEnd.ID);
         }
 
         public void GetModelMemberStartConnectionJoint(CMember m, out CConnectionJointTypes jStart)
