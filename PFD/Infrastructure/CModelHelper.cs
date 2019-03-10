@@ -291,6 +291,21 @@ namespace PFD
             return -1; //not found
         }
 
+        //podla ID pruta treba identifikovat do ktoreho zaznamu Simple Beam patri
+        public static int GetSimpleBeamIndexForMember(CMember m, List<CBeam_Simple> simpleBeams)
+        {
+            // Validate argument
+            if (m == null || simpleBeams == null)
+                return -1;
+
+            for (int i = 0; i < simpleBeams.Count; i++)
+            {
+                if (Array.Exists(simpleBeams[i].m_arrMembers, mem => mem.ID == m.ID)) return i;
+            }
+
+            return -1; //not found
+        }
+
         //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
         public static int GetMemberIndexInFrame(this CFrame frame, CMember m)
         {

@@ -981,7 +981,8 @@ namespace PFD
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in Model.m_arrMembers)
             {
-                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
+                if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     if(!DeterminateCombinationResultsByFEMSolver)
                     {
@@ -1052,8 +1053,7 @@ namespace PFD
 
                                 if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
                                 {
-                                    //sBDeflections_x = (deflectionsframes[iFrameIndex][iLoadCaseIndex][iMemberIndex]).ToArray();
-                                    sBDeflections_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
+                                      sBDeflections_x = frameModels[iFrameIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
                                 }
 
                                 if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
@@ -1065,20 +1065,47 @@ namespace PFD
 
                                 if (bUseBFENetCalculation)
                                 {
-                                    // TU potrebujeme nacitat vysledky z 
-                                    // beamSimpleModels
+                                    // BEFENet - calculate load cases only
 
-                                    // podobne ako to robime pre frames
-                                    
-                                    // a pridat k MemberInternalForcesInLoadCases a MemberDeflectionsInLoadCases
-                                    foreach (CBeam_Simple beam in beamSimpleModels)
+                                    // Set indices to search in results
+                                    int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
+
+                                    // Calculate Internal forces just for Load Cases that are included in ULS
+                                    if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
                                     {
-                                        sBIF_x = beam.LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
-                                        //sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
-                                        sBDeflections_x = beam.LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
-                                        if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
-                                        if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
+                                        sBucklingLengthFactors.fBeta_x_FB_fl_ex = 1.0f;
+                                        sBucklingLengthFactors.fBeta_y_FB_fl_ey = 1.0f;
+                                        sBucklingLengthFactors.fBeta_z_TB_TFB_l_ez = 1.0f;
+                                        sBucklingLengthFactors.fBeta_LTB_fl_LTB = 1.0f;
+
+                                        if (m.LTBSegmentGroup != null) // Temporary
+                                            sBucklingLengthFactors = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
+
+                                        if (MUseCRSCGeometricalAxes)
+                                        {
+                                            sMomentValuesforCb.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yy;
+                                            sMomentValuesforCb.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yy;
+                                            sMomentValuesforCb.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yy;
+                                        }
+                                        else
+                                        {
+                                            sMomentValuesforCb.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[2].fM_yu;
+                                            sMomentValuesforCb.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[5].fM_yu;
+                                            sMomentValuesforCb.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces[7].fM_yu;
+                                        }
+
+                                        sMomentValuesforCb.fM_max = MathF.Max(sMomentValuesforCb.fM_14, sMomentValuesforCb.fM_24, sMomentValuesforCb.fM_34); // TODO - urcit z priebehu sil na danom prute
+
+                                        sBIF_x = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].InternalForces.ToArray();
                                     }
+
+                                    if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eSLSOnly)
+                                    {
+                                        sBDeflections_x = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lc.ID][m.ID].Deflections.ToArray();
+                                    }
+
+                                    if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
+                                    if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
                                 }
                                 else
                                 {
@@ -1109,9 +1136,6 @@ namespace PFD
 
                                     if (sBIF_x != null) MemberInternalForcesInLoadCases.Add(new CMemberInternalForcesInLoadCases(m, lc, sBIF_x, sMomentValuesforCb));
                                     if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
-
-                                    //m.MMomentValuesforCb.Add(sMomentValuesforCb);
-                                    //m.MBIF_x.Add(sBIF_x);
                                 }
                             }
                         }
@@ -1131,7 +1155,8 @@ namespace PFD
 
             foreach (CMember m in Model.m_arrMembers)
             {
-                if (m.BIsDSelectedForIFCalculation) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
+                // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
+                if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
                     for (int i = 0; i < iNumberOfDesignSections; i++)
                         fx_positions[i] = ((float)i / (float)iNumberOfSegments) * m.FLength; // Int must be converted to the float to get decimal numbers
@@ -1207,6 +1232,70 @@ namespace PFD
                                 sMomentValuesforCb_design.fM_max *= fInternalForceSignFactor;
 
                                 for(int i = 0; i < sBIF_x_design.Length; i++)
+                                {
+                                    sBIF_x_design[i].fT *= fInternalForceSignFactor;
+
+                                    if (MUseCRSCGeometricalAxes)
+                                    {
+                                        sBIF_x_design[i].fM_yy *= fInternalForceSignFactor;
+                                        sBIF_x_design[i].fM_zz *= fInternalForceSignFactor;
+                                    }
+                                    else
+                                    {
+                                        sBIF_x_design[i].fM_yu *= fInternalForceSignFactor;
+                                        sBIF_x_design[i].fM_zv *= fInternalForceSignFactor;
+                                    }
+                                }
+                            }
+                            else if(DeterminateCombinationResultsByFEMSolver) // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
+                            {
+                                // Nastavit vysledky pre prut simple beam modelu
+
+                                sBucklingLengthFactors_design.fBeta_x_FB_fl_ex = 1.0f;
+
+                                sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 1.0f;
+                                sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
+                                sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
+
+                                // TODO - faktory vzpernej dlzky mozu byt ine pre kazdy segment pruta a kazdy load case alebo load combination
+                                // TODO - vymysliet system ako s tym pracovat a priradzovat, je potrebne pouzit pri posudeni v mieste x na prute
+
+                                // Podobne aj hodnoty M14,M24,M34 a Mmax sa maju brat z hodnot na segmente, nie na celom prute
+
+                                if (m.LTBSegmentGroup != null) // Temporary
+                                    sBucklingLengthFactors_design = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
+
+                                int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
+
+                                // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
+                                // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
+
+                                if (MUseCRSCGeometricalAxes)
+                                {
+                                    sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yy;
+                                    sMomentValuesforCb_design.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yy;
+                                    sMomentValuesforCb_design.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yy;
+                                }
+                                else
+                                {
+                                    sMomentValuesforCb_design.fM_14 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yu;
+                                    sMomentValuesforCb_design.fM_24 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yu;
+                                    sMomentValuesforCb_design.fM_34 = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yu;
+                                }
+                                sMomentValuesforCb_design.fM_max = MathF.Max(sMomentValuesforCb_design.fM_14, sMomentValuesforCb_design.fM_24, sMomentValuesforCb_design.fM_34); // TODO - urcit z priebehu sil na danom prute
+
+                                sBIF_x_design = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces.ToArray();
+
+                                // BFENet ma vracia vysledky pre ohybove momenty s opacnym znamienkom ako je nasa znamienkova dohoda
+                                // Preto hodnoty momentov prenasobime
+                                float fInternalForceSignFactor = -1; // TODO 191 - TO Ondrej Vnutorne sily z BFENet maju opacne znamienko, takze ich potrebujeme zmenit, alebo musime zaviest ine vykreslovanie pre momenty a ine pre sily
+
+                                sMomentValuesforCb_design.fM_14 *= fInternalForceSignFactor;
+                                sMomentValuesforCb_design.fM_24 *= fInternalForceSignFactor;
+                                sMomentValuesforCb_design.fM_34 *= fInternalForceSignFactor;
+                                sMomentValuesforCb_design.fM_max *= fInternalForceSignFactor;
+
+                                for (int i = 0; i < sBIF_x_design.Length; i++)
                                 {
                                     sBIF_x_design[i].fT *= fInternalForceSignFactor;
 
@@ -1376,21 +1465,20 @@ namespace PFD
                                 if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER))
                                 {
                                     int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
-                                    int iLoadCombinationIndex = lcomb.ID - 1; // nastavit index podla ID combinacie
-                                    int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
-
-                                    //sBDeflection_x_design = (deflectionsframes[iFrameIndex][iLoadCombinationIndex][iMemberIndex]).ToArray();
                                     sBDeflection_x_design = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
-
-                                    memberDesignModel.SetDesignDeflections_PFD(UseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
-                                    MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
+                                }
+                                else if (DeterminateCombinationResultsByFEMSolver)  // Single Beam Members - vysledky pocitane v BFENet pre Load Combinations
+                                {
+                                    int iSimpleBeamIndex = CModelHelper.GetSimpleBeamIndexForMember(m, beamSimpleModels);  //podla ID pruta treba identifikovat do ktoreho simple beam modelu patri
+                                    sBDeflection_x_design = beamSimpleModels[iSimpleBeamIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].Deflections.ToArray();
                                 }
                                 else // Single Member or Frame Member (only LC calculated) - vysledky pocitane pre load cases
                                 {
                                     CMemberResultsManager.SetMemberDeflectionsInLoadCombination(m, lcomb, MemberDeflectionsInLoadCases, iNumberOfDesignSections, out sBDeflection_x_design);
-                                    memberDesignModel.SetDesignDeflections_PFD(UseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
-                                    MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
                                 }
+
+                                memberDesignModel.SetDesignDeflections_PFD(UseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBDeflection_x_design, out sDDeflection_x);
+                                MemberDesignResults_SLS.Add(new CMemberLoadCombinationRatio_SLS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sDDeflection_x[memberDesignModel.fMaximumDesignRatioLocationID]));
 
                                 // 22.2.2019 - Ulozime priehyby v kombinacii - pre zobrazenie v Internal forces
                                 if (sBDeflection_x_design != null) MemberDeflectionsInLoadCombinations.Add(new CMemberDeflectionsInLoadCombinations(m, lcomb, sBDeflection_x_design));
