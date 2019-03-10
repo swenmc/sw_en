@@ -599,7 +599,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnPurlinsAndGirts = value;
-                if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false;
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnPurlinsAndGirts");
             }
         }
@@ -614,7 +614,7 @@ namespace PFD
             set
             {
                 MShowLoadsOnFrameMembers = value;
-                if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false;
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnPurlinsAndGirts = false; // Umoznit zobrazit aj single members a frames spolocne
                 NotifyPropertyChanged("ShowLoadsOnFrameMembers");
             }
         }
@@ -936,7 +936,7 @@ namespace PFD
                 #region Merge Member Load Lists
                 if (ShowLoadsOnPurlinsAndGirts && ShowLoadsOnFrameMembers)
                 {
-                    if (memberLoadsOnFrames != memberLoadsOnPurlinsAndGirts)
+                    if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsAndGirts.Count)
                     {
                         throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
                     }

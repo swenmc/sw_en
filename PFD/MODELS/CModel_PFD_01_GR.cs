@@ -1199,7 +1199,7 @@ namespace PFD
                 #region Merge Member Load Lists
                 if (bGenerateLoadsOnPurlinsAndGirts && bGenerateLoadsOnFrameMembers)
                 {
-                    if (memberLoadsOnFrames != memberLoadsOnPurlinsAndGirts)
+                    if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsAndGirts.Count)
                     {
                         throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
                     }
