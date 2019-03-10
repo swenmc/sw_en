@@ -19,6 +19,7 @@ namespace PFD
 {
     public class CPFDViewModel : INotifyPropertyChanged
     {
+        private bool debugging = true;
         private readonly BackgroundWorker _worker = new BackgroundWorker();
 
         public MainWindow PFDMainWindow;
@@ -898,7 +899,7 @@ namespace PFD
         private void Calculate()
         {
             DateTime start = DateTime.Now;
-
+            if (debugging) System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
@@ -913,6 +914,7 @@ namespace PFD
             // Validate model before calculation (compare IDs)
             CModelHelper.ValidateModel(model);
 
+            if (debugging) System.Diagnostics.Trace.WriteLine("After validation: " + (DateTime.Now - start).TotalMilliseconds);
             // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
             //RunFEMSOlver();
 
@@ -921,17 +923,21 @@ namespace PFD
 
             if (!ShowLoadsOnFrameMembers || !ShowLoadsOnPurlinsAndGirts)
             {
+                //Toto tu je blbost, pretoze sa to aj tak zrube z nejakeho dovodu
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
+                if (debugging) System.Diagnostics.Trace.WriteLine("After CMemberLoadGenerator: " + (DateTime.Now - start).TotalMilliseconds);
 
                 List<List<CMLoad>> memberLoadsOnFrames = new List<List<CMLoad>>();
 
                 if (!ShowLoadsOnFrameMembers)
                    memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
+                if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGenerateMemberLoadsOnFrames: " + (DateTime.Now - start).TotalMilliseconds);
 
                 List<List<CMLoad>> memberLoadsOnPurlinsAndGirts = new List<List<CMLoad>>();
 
                 if (!ShowLoadsOnPurlinsAndGirts)
                    memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+                if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGeneratedMemberLoads: " + (DateTime.Now - start).TotalMilliseconds);
 
                 #region Merge Member Load Lists
                 if (ShowLoadsOnPurlinsAndGirts && ShowLoadsOnFrameMembers)
@@ -943,6 +949,8 @@ namespace PFD
 
                     List<List<CMLoad>> memberLoadsAll = new List<List<CMLoad>>();
 
+
+                    //nerozumiem co sa tu deje.ako mozes prechadzat tie kolekcie podla memberLoadsOnFrames
                     // Merge lists
                     for (int i = 0; i < memberLoadsOnFrames.Count; i++)
                     {
@@ -958,6 +966,7 @@ namespace PFD
                     // Assign merged list of member loads to the load cases
                     loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsAll);
                 }
+                if (debugging) System.Diagnostics.Trace.WriteLine("After AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
                 #endregion
             }
 
@@ -972,6 +981,7 @@ namespace PFD
                 Model bfemNetModel = converter.Convert(frame, !DeterminateCombinationResultsByFEMSolver);
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
             }
+            if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
             // Calculation of simple beam model
             beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
@@ -983,6 +993,7 @@ namespace PFD
                 // Convert model and calculate results
                 Model bfemNetModel = converter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);
             }
+            if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1011,7 +1022,7 @@ namespace PFD
             MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
             MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
 
-            System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
+            if(debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
 
             double step = 100.0 / (Model.m_arrMembers.Length * 2.0);
             double progressValue = 0;
