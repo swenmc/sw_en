@@ -478,6 +478,8 @@ namespace PFD
 
             System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
+            vm.GenerateMemberLoadsIfNotGenerated();
+
             vm.Run();
 
             // TODO - implementovat vypocet

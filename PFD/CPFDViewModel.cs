@@ -896,31 +896,13 @@ namespace PFD
             Calculate();
         }
 
-        private void Calculate()
+        public void GenerateMemberLoadsIfNotGenerated()
         {
-            DateTime start = DateTime.Now;
-            if (debugging) System.Diagnostics.Trace.WriteLine("Beginning: " + (DateTime.Now - start).TotalMilliseconds);
-            const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
-            const int iNumberOfSegments = iNumberOfDesignSections - 1;
-
-            float[] fx_positions = new float[iNumberOfDesignSections];
-            designBucklingLengthFactors sBucklingLengthFactors = new designBucklingLengthFactors();
-            designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
-            basicInternalForces[] sBIF_x = null;
-            basicDeflections[] sBDeflections_x = null;
-
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
-
-            // Validate model before calculation (compare IDs)
-            CModelHelper.ValidateModel(model);
-
-            if (debugging) System.Diagnostics.Trace.WriteLine("After validation: " + (DateTime.Now - start).TotalMilliseconds);
-            // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
-            //RunFEMSOlver();
-
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Generate loads if they are not generated
-
+            DateTime start = DateTime.Now;
+            if (debugging) System.Diagnostics.Trace.WriteLine("GenerateMemberLoadsIfNotGenerated: " + (DateTime.Now - start).TotalMilliseconds);
             if (!ShowLoadsOnFrameMembers || !ShowLoadsOnPurlinsAndGirts)
             {
                 //Toto tu je blbost, pretoze sa to aj tak zrube z nejakeho dovodu
@@ -930,13 +912,13 @@ namespace PFD
                 List<List<CMLoad>> memberLoadsOnFrames = new List<List<CMLoad>>();
 
                 if (!ShowLoadsOnFrameMembers)
-                   memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
+                    memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
                 if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGenerateMemberLoadsOnFrames: " + (DateTime.Now - start).TotalMilliseconds);
 
                 List<List<CMLoad>> memberLoadsOnPurlinsAndGirts = new List<List<CMLoad>>();
 
                 if (!ShowLoadsOnPurlinsAndGirts)
-                   memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+                    memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGeneratedMemberLoads: " + (DateTime.Now - start).TotalMilliseconds);
 
                 #region Merge Member Load Lists
@@ -969,6 +951,32 @@ namespace PFD
                 if (debugging) System.Diagnostics.Trace.WriteLine("After AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
                 #endregion
             }
+            if (debugging) System.Diagnostics.Trace.WriteLine("END OF GenerateMemberLoadsIfNotGenerated: " + (DateTime.Now - start).TotalMilliseconds);
+        }
+
+        private void Calculate()
+        {
+            DateTime start = DateTime.Now;
+            if (debugging) System.Diagnostics.Trace.WriteLine("STARTINg CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
+            const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
+            const int iNumberOfSegments = iNumberOfDesignSections - 1;
+
+            float[] fx_positions = new float[iNumberOfDesignSections];
+            designBucklingLengthFactors sBucklingLengthFactors = new designBucklingLengthFactors();
+            designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
+            basicInternalForces[] sBIF_x = null;
+            basicDeflections[] sBDeflections_x = null;
+
+            CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
+
+            // Validate model before calculation (compare IDs)
+            CModelHelper.ValidateModel(model);
+
+            if (debugging) System.Diagnostics.Trace.WriteLine("After validation: " + (DateTime.Now - start).TotalMilliseconds);
+            // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
+            //RunFEMSOlver();
+
+            
 
             // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
