@@ -88,6 +88,12 @@ namespace M_AS4600
             ft_1_plate = (float)plate.Ft;
             ft_2_crscmainMember = (float)crsc_mainMember.t_min;
 
+            // Validate thickness of elements
+            if (ft_1_plate < 0.0001f || ft_2_crscmainMember < 0.0001f)
+            {
+                throw new Exception("Invalid component thickness. Check thickness cross-section or plate.");
+            }
+
             ff_yk_1_plate = plate.m_Mat.Get_f_yk_by_thickness((float)ft_1_plate);
             ff_uk_1_plate = plate.m_Mat.Get_f_uk_by_thickness((float)ft_1_plate);
 
@@ -314,7 +320,6 @@ namespace M_AS4600
             // 5.4.3.2 Pull-out and pull-over (pull-through)
 
             // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member (to asi zanedbame)
-
             float fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
             float fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.5f, fN_t_5432_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5432_MainMember);
