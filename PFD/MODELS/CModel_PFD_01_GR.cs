@@ -1154,12 +1154,31 @@ namespace PFD
             #region Member Loads
             if (bGenerateLoadsOnMembers)
             {
+                CMemberLoadGenerator loadGenerator =
+                new CMemberLoadGenerator(iFrameNo,
+                fL1_frame,
+                fL_tot,
+                fSlopeFactor,
+                m_arrCrSc[(int)EMemberGroupNames.eGirtWall],
+                m_arrCrSc[(int)EMemberGroupNames.ePurlin],
+                fDist_Girt,
+                fDist_Purlin,
+                m_arrCrSc[(int)EMemberGroupNames.eMainColumn],
+                m_arrCrSc[(int)EMemberGroupNames.eRafter],
+                m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
+                m_arrCrSc[(int)EMemberGroupNames.eRafter_EF],
+                m_arrLoadCases,
+                m_arrMembers,
+                generalLoad,
+                snow,
+                wind);
+
                 #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
-                
+                // Purlins, eave purlins, girts, ....
                 if (bGenerateLoadsOnPurlinsAndGirts)
                 {
-                    // Generate member loads
-                    CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, m_arrMembers);
+                    // Generate single member loads
+                    loadGenerator.GenerateMemberLoads(m_arrLoadCases, m_arrMembers);
                 }
 
                 #endregion
@@ -1168,25 +1187,6 @@ namespace PFD
                 // Frame Member Loads
                 if (bGenerateLoadsOnFrameMembers)
                 {
-                    CMemberLoadGenerator loadGenerator =
-                        new CMemberLoadGenerator(iFrameNo,
-                        fL1_frame,
-                        fL_tot,
-                        fSlopeFactor,
-                        m_arrCrSc[(int)EMemberGroupNames.eGirtWall],
-                        m_arrCrSc[(int)EMemberGroupNames.ePurlin],
-                        fDist_Girt,
-                        fDist_Purlin,
-                        m_arrCrSc[(int)EMemberGroupNames.eMainColumn],
-                        m_arrCrSc[(int)EMemberGroupNames.eRafter],
-                        m_arrCrSc[(int)EMemberGroupNames.eMainColumn_EF],
-                        m_arrCrSc[(int)EMemberGroupNames.eRafter_EF],
-                        m_arrLoadCases,
-                        m_arrMembers,
-                        generalLoad,
-                        snow,
-                        wind);
-
                     loadGenerator.GenerateLoadsOnFrames();
                 }
                 #endregion

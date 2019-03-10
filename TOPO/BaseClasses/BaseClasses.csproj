@@ -109,7 +109,6 @@
     <Compile Include="Results\CMemberLoadCombinationRatio_ULS.cs" />
     <Compile Include="Results\CMemberDeflectionsInLoadCases.cs" />
     <Compile Include="Results\CMemberInternalForcesInLoadCases.cs" />
-    <Compile Include="Loading\Loads\CLoadGenerator.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniform.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_Free.cs" />
     <Compile Include="Loading\Loads\Surface\CSLoad_FreeUniformGroup.cs" />

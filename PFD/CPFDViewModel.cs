@@ -917,19 +917,18 @@ namespace PFD
             //RunFEMSOlver();
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            if (!ShowLoadsOnMembers) // Generate loads if they are not generated
+            // Generate loads if they are not generated
+
+            // TODO Ondrej - triedy CMemberLoadGenerator a CLoadGenerator by sme asi mali zlucit do jednej CMemberLoadGenerator
+            if (!ShowLoadsOnFrameMembers || !ShowLoadsOnPurlinsAndGirts)
             {
-                // TODO Ondrej - triedy CMemberLoadGenerator a CLoadGenerator by sme asi mali zlucit do jednej CMemberLoadGenerator
+                CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
+
                 if (!ShowLoadsOnFrameMembers)
-                {
-                    CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
-                    loadGenerator.GenerateLoadsOnFrames();
-                }
+                loadGenerator.GenerateLoadsOnFrames();
 
                 if (!ShowLoadsOnPurlinsAndGirts)
-                {
-                    CLoadGenerator.GenerateMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
-                }
+                loadGenerator.GenerateMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
             }
 
             // Calculation of frame model

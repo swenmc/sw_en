@@ -117,7 +117,10 @@ namespace Examples
             else
             {
                 // Member loads generated from surface load
-                CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, m_arrMembers); // Test
+
+                // Je to zakomentovane, lebo generator je v projekte PFD
+                // Chcel som ho dat do BaseClasses ale mam problem s cyklickymi referenciami na EC1
+               //CLoadGenerator.GenerateMemberLoads(m_arrLoadCases, m_arrMembers); // Test
             }
         }
     }
