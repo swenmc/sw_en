@@ -918,23 +918,25 @@ namespace PFD
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Generate loads if they are not generated
+            bool bGenerateMemberLoads_Frames = true;
+            bool bGenerateMemberLoads_GirtsPurlins = true;
 
-            if (!ShowLoadsOnFrameMembers || !ShowLoadsOnPurlinsAndGirts)
+            if (bGenerateMemberLoads_Frames || bGenerateMemberLoads_GirtsPurlins)
             {
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
 
                 List<List<CMLoad>> memberLoadsOnFrames = new List<List<CMLoad>>();
 
-                if (!ShowLoadsOnFrameMembers)
+                if (bGenerateMemberLoads_Frames)
                    memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
 
                 List<List<CMLoad>> memberLoadsOnPurlinsAndGirts = new List<List<CMLoad>>();
 
-                if (!ShowLoadsOnPurlinsAndGirts)
+                if (bGenerateMemberLoads_GirtsPurlins)
                    memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
 
                 #region Merge Member Load Lists
-                if (ShowLoadsOnPurlinsAndGirts && ShowLoadsOnFrameMembers)
+                if (bGenerateMemberLoads_GirtsPurlins && bGenerateMemberLoads_Frames)
                 {
                     if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsAndGirts.Count)
                     {
