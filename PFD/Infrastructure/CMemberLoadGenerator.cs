@@ -340,6 +340,9 @@ namespace PFD
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Front_Y_Plus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eWL_Wu_Cpe_max_Front_Y_Plus];
             m_arrLoadCases[(int)ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eWL_Wu_Cpe_max_Rear_Y_Minus];
 
+            m_arrLoadCases[(int)ELCName.eEQ_Eu_Left_X_Plus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eEQ_Eu_Left_X_Plus];  // TODO - Empty
+            m_arrLoadCases[(int)ELCName.eEQ_Eu_Front_Y_Plus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eEQ_Eu_Front_Y_Plus];  // TODO - Empty
+
             // SLS
             m_arrLoadCases[(int)ELCName.eSL_Ss_Full].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eSL_Ss_Full];
             m_arrLoadCases[(int)ELCName.eSL_Ss_Left].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eSL_Ss_Left];
@@ -360,6 +363,9 @@ namespace PFD
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Right_X_Minus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eWL_Ws_Cpe_max_Right_X_Minus];
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Front_Y_Plus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eWL_Ws_Cpe_max_Front_Y_Plus];
             m_arrLoadCases[(int)ELCName.eWL_Ws_Cpe_max_Rear_Y_Minus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eWL_Ws_Cpe_max_Rear_Y_Minus];
+
+            m_arrLoadCases[(int)ELCName.eEQ_Es_Left_X_Plus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eEQ_Es_Left_X_Plus];  // TODO - Empty
+            m_arrLoadCases[(int)ELCName.eEQ_Es_Front_Y_Plus].MemberLoadsList = listOfMemberLoadLists[(int)ELCName.eEQ_Es_Front_Y_Plus];  // TODO - Empty
         }
 
         public void GenerateLoadsOnFrame(
