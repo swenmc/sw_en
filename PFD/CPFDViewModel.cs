@@ -916,15 +916,23 @@ namespace PFD
             // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
             //RunFEMSOlver();
 
-            ////////////////////////////////////////////////////////////////////////
-            // Calculation of frame model
-
-            if (!ShowLoadsOnMembers || !ShowLoadsOnFrameMembers) // Generate loads if they are not generated
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (!ShowLoadsOnMembers) // Generate loads if they are not generated
             {
-                CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
-                loadGenerator.GenerateLoadsOnFrames();
+                // TODO Ondrej - triedy CMemberLoadGenerator a CLoadGenerator by sme asi mali zlucit do jednej CMemberLoadGenerator
+                if (!ShowLoadsOnFrameMembers)
+                {
+                    CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
+                    loadGenerator.GenerateLoadsOnFrames();
+                }
+
+                if (!ShowLoadsOnPurlinsAndGirts)
+                {
+                    CLoadGenerator.GenerateMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+                }
             }
 
+            // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
 
             foreach (CFrame frame in frameModels)
@@ -936,6 +944,7 @@ namespace PFD
                 //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
             }
 
+            // Calculation of simple beam model
             beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
 
             foreach (CBeam_Simple beam in beamSimpleModels)
@@ -946,7 +955,8 @@ namespace PFD
                 Model bfemNetModel = converter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);
             }
 
-            // Calculation of simple beam model
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             float fMaximumDesignRatioWholeStructure = 0;
             float fMaximumDesignRatioMainColumn = 0;
             float fMaximumDesignRatioMainRafter = 0;
