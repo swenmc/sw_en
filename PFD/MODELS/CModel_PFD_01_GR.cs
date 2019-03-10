@@ -1154,8 +1154,6 @@ namespace PFD
             #region Member Loads
             if (bGenerateLoadsOnMembers)
             {
-                List<List<CMLoad>> memberLoadsAll = new List<List<CMLoad>>();
-
                 CMemberLoadGenerator loadGenerator =
                 new CMemberLoadGenerator(iFrameNo,
                 fL1_frame,
@@ -1177,21 +1175,21 @@ namespace PFD
 
                 #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
                 // Purlins, eave purlins, girts, ....
-                List<List<CMLoad>> memberLoadsOnPurlinsAndGirts = new List<List<CMLoad>>();
+                LoadCasesMemberLoads memberLoadsOnPurlinsAndGirts = new LoadCasesMemberLoads();
                 if (bGenerateLoadsOnPurlinsAndGirts)
                 {
                     // Generate single member loads
-                  memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
+                  memberLoadsOnPurlinsAndGirts = loadGenerator.GetGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
                   loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnPurlinsAndGirts);
                 }
                 #endregion
 
                 #region Frame Member Loads (main and edge columns and rafters)
                 // Frame Member Loads
-                List<List<CMLoad>> memberLoadsOnFrames = new List<List<CMLoad>>();
+                LoadCasesMemberLoads memberLoadsOnFrames = new LoadCasesMemberLoads();
                 if (bGenerateLoadsOnFrameMembers)
                 {
-                   memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
+                   memberLoadsOnFrames = loadGenerator.GetGenerateMemberLoadsOnFrames();
                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
                 }
                 #endregion
@@ -1205,19 +1203,9 @@ namespace PFD
                     }
 
                     // Merge lists
-                    for (int i = 0; i < memberLoadsOnFrames.Count; i++)
-                    {
-                        // Merge Member Load Lists
-                        List<CMLoad> listOfMloadsInLoadCases = new List<CMLoad>(memberLoadsOnFrames[i].Count + memberLoadsOnPurlinsAndGirts[i].Count);
-                        memberLoadsOnFrames[i].ForEach(p => listOfMloadsInLoadCases.Add(p));
-                        memberLoadsOnPurlinsAndGirts[i].ForEach(p => listOfMloadsInLoadCases.Add(p));
-
-                        // Add list to the output (list of lists for all load cases)
-                        memberLoadsAll.Add(listOfMloadsInLoadCases); // TODO tymto prepisem zoznamy aj ked uz bolo nieco vygenerovane
-                    }
-
+                    memberLoadsOnFrames.Merge(memberLoadsOnPurlinsAndGirts); //Merge both to first LoadCasesMemberLoads
                     // Assign merged list of member loads to the load cases
-                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsAll);
+                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
                 }
                 #endregion
             }

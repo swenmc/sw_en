@@ -312,11 +312,11 @@
     //----------------------------------------------------------------------------
     public enum ELCName
     {
-        eDL_G,                                  // "Dead load G"
-        eIL_Q,                                  // "Imposed load Q"
+        eDL_G = 0,                                  // "Dead load G"
+        eIL_Q = 1,                                  // "Imposed load Q"
     
-        eSL_Su_Full,                            // "Snow load Su - full"
-        eSL_Su_Left,                            // "Snow load Su - left"
+        eSL_Su_Full = 2,                            // "Snow load Su - full"
+        eSL_Su_Left = 3,                            // "Snow load Su - left"
         eSL_Su_Right,                           // "Snow load Su - right"
         eWL_Wu_Cpi_min_Left_X_Plus,             // "Wind load Wu - Cpi,min - Left - X+"
         eWL_Wu_Cpi_min_Right_X_Minus,           // "Wind load Wu - Cpi,min - Right - X-"

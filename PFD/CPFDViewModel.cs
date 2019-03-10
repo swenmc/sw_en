@@ -909,16 +909,16 @@ namespace PFD
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After CMemberLoadGenerator: " + (DateTime.Now - start).TotalMilliseconds);
 
-                List<List<CMLoad>> memberLoadsOnFrames = new List<List<CMLoad>>();
+                LoadCasesMemberLoads memberLoadsOnFrames = new LoadCasesMemberLoads();
 
                 if (!ShowLoadsOnFrameMembers)
-                    memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
+                    memberLoadsOnFrames = loadGenerator.GetGenerateMemberLoadsOnFrames();
                 if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGenerateMemberLoadsOnFrames: " + (DateTime.Now - start).TotalMilliseconds);
 
-                List<List<CMLoad>> memberLoadsOnPurlinsAndGirts = new List<List<CMLoad>>();
+                LoadCasesMemberLoads memberLoadsOnPurlinsAndGirts = new LoadCasesMemberLoads();
 
                 if (!ShowLoadsOnPurlinsAndGirts)
-                    memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+                    memberLoadsOnPurlinsAndGirts = loadGenerator.GetGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGeneratedMemberLoads: " + (DateTime.Now - start).TotalMilliseconds);
 
                 #region Merge Member Load Lists
@@ -929,24 +929,10 @@ namespace PFD
                         throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
                     }
 
-                    List<List<CMLoad>> memberLoadsAll = new List<List<CMLoad>>();
-
-
-                    //nerozumiem co sa tu deje.ako mozes prechadzat tie kolekcie podla memberLoadsOnFrames
                     // Merge lists
-                    for (int i = 0; i < memberLoadsOnFrames.Count; i++)
-                    {
-                        // Merge Member Load Lists
-                        List<CMLoad> listOfMloadsInLoadCases = new List<CMLoad>(memberLoadsOnFrames[i].Count + memberLoadsOnPurlinsAndGirts[i].Count);
-                        memberLoadsOnFrames[i].ForEach(p => listOfMloadsInLoadCases.Add(p));
-                        memberLoadsOnPurlinsAndGirts[i].ForEach(p => listOfMloadsInLoadCases.Add(p));
-
-                        // Add list to the output (list of lists for all load cases)
-                        memberLoadsAll.Add(listOfMloadsInLoadCases); // TODO tymto prepisem zoznamy aj ked uz bolo nieco vygenerovane
-                    }
-
+                    memberLoadsOnFrames.Merge(memberLoadsOnPurlinsAndGirts); //Merge both to first LoadCasesMemberLoads
                     // Assign merged list of member loads to the load cases
-                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsAll);
+                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
                 }
                 if (debugging) System.Diagnostics.Trace.WriteLine("After AssignMemberLoadListsToLoadCases: " + (DateTime.Now - start).TotalMilliseconds);
                 #endregion
