@@ -919,16 +919,46 @@ namespace PFD
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Generate loads if they are not generated
 
-            // TODO Ondrej - triedy CMemberLoadGenerator a CLoadGenerator by sme asi mali zlucit do jednej CMemberLoadGenerator
             if (!ShowLoadsOnFrameMembers || !ShowLoadsOnPurlinsAndGirts)
             {
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
 
+                List<List<CMLoad>> memberLoadsOnFrames = new List<List<CMLoad>>();
+
                 if (!ShowLoadsOnFrameMembers)
-                loadGenerator.GenerateLoadsOnFrames();
+                   memberLoadsOnFrames = loadGenerator.GetListOfGenerateMemberLoadsOnFrames();
+
+                List<List<CMLoad>> memberLoadsOnPurlinsAndGirts = new List<List<CMLoad>>();
 
                 if (!ShowLoadsOnPurlinsAndGirts)
-                loadGenerator.GenerateMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+                   memberLoadsOnPurlinsAndGirts = loadGenerator.GetListOfGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+
+                #region Merge Member Load Lists
+                if (ShowLoadsOnPurlinsAndGirts && ShowLoadsOnFrameMembers)
+                {
+                    if (memberLoadsOnFrames != memberLoadsOnPurlinsAndGirts)
+                    {
+                        throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
+                    }
+
+                    List<List<CMLoad>> memberLoadsAll = new List<List<CMLoad>>();
+
+                    // Merge lists
+                    for (int i = 0; i < memberLoadsOnFrames.Count; i++)
+                    {
+                        // Merge Member Load Lists
+                        List<CMLoad> listOfMloadsInLoadCases = new List<CMLoad>(memberLoadsOnFrames[i].Count + memberLoadsOnPurlinsAndGirts[i].Count);
+                        memberLoadsOnFrames[i].ForEach(p => listOfMloadsInLoadCases.Add(p));
+                        memberLoadsOnPurlinsAndGirts[i].ForEach(p => listOfMloadsInLoadCases.Add(p));
+
+                        // Add list to the output (list of lists for all load cases)
+                        memberLoadsAll.Add(listOfMloadsInLoadCases); // TODO tymto prepisem zoznamy aj ked uz bolo nieco vygenerovane
+                    }
+
+                    // Assign merged list of member loads to the load cases
+                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsAll);
+                }
+                #endregion
             }
 
             // Calculation of frame model
