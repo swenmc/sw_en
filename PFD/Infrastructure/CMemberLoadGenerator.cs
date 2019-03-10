@@ -167,6 +167,9 @@ namespace PFD
             List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Front = new List<CMLoad>();
             List<CMLoad> memberLoadExternalPressure_ULS_Cpemax_Rear = new List<CMLoad>();
 
+            List<CMLoad> memberLoad_ULS_EQ_X_Plus_Left = new List<CMLoad>(); // TODO - Empty
+            List<CMLoad> memberLoad_ULS_EQ_Y_Plus_Front = new List<CMLoad>(); // TODO - Empty
+
             List<CMLoad> memberMaxLoadSnowAll_SLS = new List<CMLoad>();
             List<CMLoad> memberMaxLoadSnowLeft_SLS = new List<CMLoad>();
             List<CMLoad> memberMaxLoadSnowRight_SLS = new List<CMLoad>();
@@ -186,6 +189,9 @@ namespace PFD
             List<CMLoad> memberLoadExternalPressure_SLS_Cpemax_Right = new List<CMLoad>();
             List<CMLoad> memberLoadExternalPressure_SLS_Cpemax_Front = new List<CMLoad>();
             List<CMLoad> memberLoadExternalPressure_SLS_Cpemax_Rear = new List<CMLoad>();
+
+            List<CMLoad> memberLoad_SLS_EQ_X_Plus_Left = new List<CMLoad>(); // TODO - Empty
+            List<CMLoad> memberLoad_SLS_EQ_Y_Plus_Front = new List<CMLoad>(); // TODO - Empty
 
             for (int i = 0; i < iFrameNo; i++)
             {
@@ -277,6 +283,9 @@ namespace PFD
             listOfMemberLoadLists.Add(memberLoadExternalPressure_ULS_Cpemax_Front);
             listOfMemberLoadLists.Add(memberLoadExternalPressure_ULS_Cpemax_Rear);
 
+            listOfMemberLoadLists.Add(memberLoad_ULS_EQ_X_Plus_Left); // TODO - Empty
+            listOfMemberLoadLists.Add(memberLoad_ULS_EQ_Y_Plus_Front); // TODO - Empty
+
             listOfMemberLoadLists.Add(memberMaxLoadSnowAll_SLS);
             listOfMemberLoadLists.Add(memberMaxLoadSnowLeft_SLS);
             listOfMemberLoadLists.Add(memberMaxLoadSnowRight_SLS);
@@ -296,6 +305,9 @@ namespace PFD
             listOfMemberLoadLists.Add(memberLoadExternalPressure_SLS_Cpemax_Right);
             listOfMemberLoadLists.Add(memberLoadExternalPressure_SLS_Cpemax_Front);
             listOfMemberLoadLists.Add(memberLoadExternalPressure_SLS_Cpemax_Rear);
+
+            listOfMemberLoadLists.Add(memberLoad_SLS_EQ_X_Plus_Left); // TODO - Empty
+            listOfMemberLoadLists.Add(memberLoad_SLS_EQ_Y_Plus_Front); // TODO - Empty
 
             return listOfMemberLoadLists;
         }
