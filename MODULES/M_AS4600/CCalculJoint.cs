@@ -257,11 +257,12 @@ namespace M_AS4600
             // Kazdy sa pocita trochu inak a ma ine vystupne parametre (detaily), tych detailov moze byt 30,40,50,... ??? float hodnot pre jeden spoj
             // Vyrobil som si 4 struktury do ktorych chcem tieto detaily priradit a zobrazit v UC_JointDesign podla typu spoja
             // Povodne som si myslel ze kazdy spoj bude mat tuto strukturu resp. objekt s detailami
-            // ale pride mi to zbytocne vela dat len kvoli tomu aby sa to vypisalo, navyse ak by sme to brali podrobne ak pre kazdy spoj by to mala byt nie jedna struktura alebo List struktur
+            // ale pride mi to zbytocne vela dat len kvoli tomu aby sa to vypisalo, navyse ak by sme to brali podrobne ak pre kazdy spoj by to mala byt nie jedna struktura ale List struktur
             // pre vsetky load combinations ktore boli pocitane
 
-            // Poradis mi nejaky postup, ako to co najekonomickejsie spravit a dostat konkretne z tejto funkcie 
+            // Poradis mi nejaky postup, ako to co najekonomickejsie spravit a dostat konkretne z tejto funkcie strukturu
             // out sJointDesignDetails_ApexOrKneeJoint sOutput do UC_JointDesign, resp. do private static void SetResultsDetailsFor_ULS(CCalculJoint calc)
+            // Podobne aj dalsie strutury pre z tych dalsich funkcii
             // Najlepsie by bolo keby sa tieto detaily len na vyziadanie zo spoja ziskali (ina struktura pre iny typ spoja) a zobrazili s tym ze by sa neukladali
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
