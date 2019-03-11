@@ -262,8 +262,8 @@ namespace M_AS4600
 
             // Poradis mi nejaky postup, ako to co najekonomickejsie spravit a dostat konkretne z tejto funkcie strukturu
             // out sJointDesignDetails_ApexOrKneeJoint sOutput do UC_JointDesign, resp. do private static void SetResultsDetailsFor_ULS(CCalculJoint calc)
-            // Podobne aj dalsie strutury pre z tych dalsich funkcii
-            // Najlepsie by bolo keby sa tieto detaily len na vyziadanie zo spoja ziskali (ina struktura pre iny typ spoja) a zobrazili s tym ze by sa neukladali
+            // Podobne aj dalsie strutury z tych dalsich funkcii
+            // Najlepsie by bolo keby sa tieto detaily ziskali len na vyziadanie zo spoja (ina struktura pre iny typ spoja) a zobrazili s tym ze by sa neukladali a nedrzali by sa ani v pamati
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // ja osobne by som asi tie struktury zmenil na Class
