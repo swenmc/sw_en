@@ -53,15 +53,26 @@ namespace PFD
         private bool MShowLoads;
         private bool MShowNodalLoads;
         private bool MShowLoadsOnMembers;
-        private bool MShowLoadsOnPurlinsAndGirts;
+        private bool MShowLoadsOnGirts;
+        private bool MShowLoadsOnPurlins;
+        private bool MShowLoadsOnColumns;
         private bool MShowLoadsOnFrameMembers;
         private bool MShowSurfaceLoads;
 
+        // Loads - generate options
+        private bool MGenerateNodalLoads;
+        private bool MGenerateLoadsOnGirts;
+        private bool MGenerateLoadsOnPurlins;
+        private bool MGenerateLoadsOnColumns;
+        private bool MGenerateLoadsOnFrameMembers;
+        private bool MGenerateSurfaceLoads;
+
+        // Labels and axes
         private bool MShowLoadsLabels;
         private bool MShowLoadsLabelsUnits;
 
         private bool MShowLocalMembersAxis;
-        private bool MShowSurfaceLoadsAxis;        
+        private bool MShowSurfaceLoadsAxis;
 
         // Member description options
         private bool MShowMemberDescription;
@@ -590,18 +601,48 @@ namespace PFD
             }
         }
 
-        public bool ShowLoadsOnPurlinsAndGirts
+        public bool ShowLoadsOnGirts
         {
             get
             {
-                return MShowLoadsOnPurlinsAndGirts;
+                return MShowLoadsOnGirts;
             }
 
             set
             {
-                MShowLoadsOnPurlinsAndGirts = value;
+                MShowLoadsOnGirts = value;
                 //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
-                NotifyPropertyChanged("ShowLoadsOnPurlinsAndGirts");
+                NotifyPropertyChanged("ShowLoadsOnGirts");
+            }
+        }
+
+        public bool ShowLoadsOnPurlins
+        {
+            get
+            {
+                return MShowLoadsOnPurlins;
+            }
+
+            set
+            {
+                MShowLoadsOnPurlins = value;
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnPurlins");
+            }
+        }
+
+        public bool ShowLoadsOnColumns
+        {
+            get
+            {
+                return MShowLoadsOnColumns;
+            }
+
+            set
+            {
+                MShowLoadsOnColumns = value;
+                //if (MShowLoadsOnPurlinsAndGirts && MShowLoadsOnFrameMembers) ShowLoadsOnFrameMembers = false; // Umoznit zobrazit aj single members a frames spolocne
+                NotifyPropertyChanged("ShowLoadsOnColumns");
             }
         }
 
@@ -801,6 +842,90 @@ namespace PFD
             }
         }
 
+        public bool GenerateNodalLoads
+        {
+            get
+            {
+                return MGenerateNodalLoads;
+            }
+
+            set
+            {
+                MGenerateNodalLoads = value;
+                NotifyPropertyChanged("GenerateNodalLoads");
+            }
+        }
+
+        public bool GenerateLoadsOnGirts
+        {
+            get
+            {
+                return MGenerateLoadsOnGirts;
+            }
+
+            set
+            {
+                MGenerateLoadsOnGirts = value;
+                NotifyPropertyChanged("GenerateLoadsOnGirts");
+            }
+        }
+
+        public bool GenerateLoadsOnPurlins
+        {
+            get
+            {
+                return MGenerateLoadsOnPurlins;
+            }
+
+            set
+            {
+                MGenerateLoadsOnPurlins = value;
+                NotifyPropertyChanged(" GenerateLoadsOnPurlins");
+            }
+        }
+
+        public bool GenerateLoadsOnColumns
+        {
+            get
+            {
+                return MGenerateLoadsOnColumns;
+            }
+
+            set
+            {
+                MGenerateLoadsOnColumns = value;
+                NotifyPropertyChanged(" GenerateLoadsOnColumns");
+            }
+        }
+
+        public bool GenerateLoadsOnFrameMembers
+        {
+            get
+            {
+                return MGenerateLoadsOnFrameMembers;
+            }
+
+            set
+            {
+                MGenerateLoadsOnFrameMembers = value;
+                NotifyPropertyChanged("ShowLoadsOnFrameMembers");
+            }
+        }
+
+        public bool GenerateSurfaceLoads
+        {
+            get
+            {
+                return MGenerateSurfaceLoads;
+            }
+
+            set
+            {
+                MGenerateSurfaceLoads = value;
+                NotifyPropertyChanged(" GenerateSurfaceLoads");
+            }
+        }
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -817,15 +942,25 @@ namespace PFD
 
             ShowLoads = true;
             ShowLoadsOnMembers = true;
-            ShowLoadsOnPurlinsAndGirts = true;
-            ShowLoadsOnFrameMembers = false;
+            ShowLoadsOnGirts = true;
+            ShowLoadsOnPurlins = true;
+            ShowLoadsOnColumns = true;
+            ShowLoadsOnFrameMembers = true;
             ShowNodalLoads = false;
+
             ShowSurfaceLoads = true;
             ShowLoadsLabels = false;
             ShowLoadsLabelsUnits = false;
             ShowLocalMembersAxis = false;
             ShowSurfaceLoadsAxis = true;
             DisplayIn3DRatio = 0.003f;
+
+            GenerateNodalLoads = true;
+            GenerateLoadsOnGirts = true;
+            GenerateLoadsOnPurlins = true;
+            GenerateLoadsOnColumns = true;
+            GenerateLoadsOnFrameMembers = true;
+            GenerateSurfaceLoads = true;
 
             //nastavi sa default model type a zaroven sa nastavia vsetky property ViewModelu (samozrejme sa updatuje aj View) 
             //vid setter metoda pre ModelIndex
@@ -855,7 +990,12 @@ namespace PFD
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
 
-            bool generateSurfaceLoads = MShowSurfaceLoads || MShowSurfaceLoadsAxis || MShowLoadsOnPurlinsAndGirts || MShowLoadsOnMembers || MShowLoadsOnFrameMembers;
+            GenerateSurfaceLoads =
+                MShowSurfaceLoadsAxis ||
+                MGenerateLoadsOnGirts ||
+                MGenerateLoadsOnPurlins ||
+                MGenerateLoadsOnColumns ||
+                MGenerateLoadsOnFrameMembers;
 
             // Create 3D model of structure including loading
             MModel = new CModel_PFD_01_GR(
@@ -879,11 +1019,12 @@ namespace PFD
                     Wind,
                     Snow,
                     Eq,
-                    MShowNodalLoads,
-                    MShowLoadsOnMembers,
-                    MShowLoadsOnPurlinsAndGirts,
-                    MShowLoadsOnFrameMembers,
-                    generateSurfaceLoads);
+                    MGenerateNodalLoads,
+                    MGenerateLoadsOnGirts,
+                    MGenerateLoadsOnPurlins,
+                    MGenerateLoadsOnColumns,
+                    MGenerateLoadsOnFrameMembers,
+                    MGenerateSurfaceLoads);
         }
 
         public void Run()
@@ -903,7 +1044,10 @@ namespace PFD
             // Generate loads if they are not generated
             DateTime start = DateTime.Now;
             if (debugging) System.Diagnostics.Trace.WriteLine("GenerateMemberLoadsIfNotGenerated: " + (DateTime.Now - start).TotalMilliseconds);
-            if (!ShowLoadsOnFrameMembers || !ShowLoadsOnPurlinsAndGirts)
+            if (!GenerateLoadsOnFrameMembers ||
+                !GenerateLoadsOnGirts ||
+                !GenerateLoadsOnPurlins ||
+                !GenerateLoadsOnColumns)
             {
                 //Toto tu je blbost, pretoze sa to aj tak zrube z nejakeho dovodu
                 CMemberLoadGenerator loadGenerator = new CMemberLoadGenerator(model, GeneralLoad, Snow, Wind);
@@ -911,26 +1055,28 @@ namespace PFD
 
                 LoadCasesMemberLoads memberLoadsOnFrames = new LoadCasesMemberLoads();
 
-                if (!ShowLoadsOnFrameMembers)
+                if (!GenerateLoadsOnFrameMembers)
                     memberLoadsOnFrames = loadGenerator.GetGenerateMemberLoadsOnFrames();
                 if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGenerateMemberLoadsOnFrames: " + (DateTime.Now - start).TotalMilliseconds);
 
-                LoadCasesMemberLoads memberLoadsOnPurlinsAndGirts = new LoadCasesMemberLoads();
+                LoadCasesMemberLoads memberLoadsOnGirtsPurlinsColumns = new LoadCasesMemberLoads();
 
-                if (!ShowLoadsOnPurlinsAndGirts)
-                    memberLoadsOnPurlinsAndGirts = loadGenerator.GetGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
+                if (!GenerateLoadsOnGirts || !GenerateLoadsOnPurlins || !GenerateLoadsOnColumns)
+                    memberLoadsOnGirtsPurlinsColumns = loadGenerator.GetGeneratedMemberLoads(model.m_arrLoadCases, model.m_arrMembers);
                 if (debugging) System.Diagnostics.Trace.WriteLine("After GetListOfGeneratedMemberLoads: " + (DateTime.Now - start).TotalMilliseconds);
 
                 #region Merge Member Load Lists
-                if (ShowLoadsOnPurlinsAndGirts && ShowLoadsOnFrameMembers)
+                if ((GenerateLoadsOnGirts ||
+                    GenerateLoadsOnPurlins ||
+                    GenerateLoadsOnColumns) && GenerateLoadsOnFrameMembers)
                 {
-                    if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsAndGirts.Count)
+                    if (memberLoadsOnFrames.Count != memberLoadsOnGirtsPurlinsColumns.Count)
                     {
                         throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
                     }
 
                     // Merge lists
-                    memberLoadsOnFrames.Merge(memberLoadsOnPurlinsAndGirts); //Merge both to first LoadCasesMemberLoads
+                    memberLoadsOnFrames.Merge(memberLoadsOnGirtsPurlinsColumns); // Merge both to first LoadCasesMemberLoads
                     // Assign merged list of member loads to the load cases
                     loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
                 }
@@ -961,8 +1107,6 @@ namespace PFD
             if (debugging) System.Diagnostics.Trace.WriteLine("After validation: " + (DateTime.Now - start).TotalMilliseconds);
             // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
             //RunFEMSOlver();
-
-            
 
             // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames

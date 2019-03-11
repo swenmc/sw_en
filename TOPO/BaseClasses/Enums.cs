@@ -588,6 +588,10 @@
 
         public bool bDisplayNodalLoads;
         public bool bDisplayMemberLoads;
+        public bool bDisplayMemberLoads_Girts;
+        public bool bDisplayMemberLoads_Purlins;
+        public bool bDisplayMemberLoads_Columns;
+        public bool bDisplayMemberLoads_Frames;
         public bool bDisplaySurfaceLoads;
 
         public float DisplayIn3DRatio;

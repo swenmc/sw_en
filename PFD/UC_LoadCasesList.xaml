@@ -8,7 +8,7 @@
         d:DesignHeight="1270" d:DesignWidth="600">
     <Grid Margin="0,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DataGrid Name ="Datagrid_LoadCases" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0"
@@ -24,27 +24,26 @@
                                   IsChecked="{Binding Path=ShowNodalLoads}">Nodal Loads</CheckBox>
                     <CheckBox Name ="chbDisplayMemberLoads" Margin="25 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnMembers}">Member Loads</CheckBox>
-                    <CheckBox Name ="chbDisplayLoadsOnPurlinsAndGirts" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                  IsChecked="{Binding Path=ShowLoadsOnPurlinsAndGirts}">Generated on purlins and girts</CheckBox>
+                    <CheckBox Name ="chbDisplayLoadsOnGirts" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnGirts}">Generated on girts</CheckBox>
+                    <CheckBox Name ="chbDisplayLoadsOnPurlins" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnPurlins}">Generated on purlins</CheckBox>
+                    <CheckBox Name ="chbDisplayLoadsOnColumns" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  IsChecked="{Binding Path=ShowLoadsOnColumns}">Generated on columns</CheckBox>
                     <CheckBox Name ="chbDisplayLoadsOnFrames" Margin="45 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowLoadsOnFrameMembers}" >Generated on frames</CheckBox>
                     <CheckBox Name ="chbDisplaySurfaceLoads" Margin="25 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                   IsChecked="{Binding Path=ShowSurfaceLoads}">Surface Loads</CheckBox>
-                    <TextBlock>Display In 3D Ratio:</TextBlock>
-                    <Slider x:Name="sldDisplayIn3DRatio" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.0002" Maximum="0.005" Value="{Binding Path=DisplayIn3DRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.0002" LargeChange="0" TickFrequency="0.0002"/>
+                    <TextBlock Margin="5 5 0 0" Text="Scale load size in graphics:"/>
+                    <Slider x:Name="sldDisplayIn3DRatio" Margin="5 5 0 0" Orientation="Horizontal" IsMoveToPointEnabled="True" Minimum="0.0002" Maximum="0.005" Value="{Binding Path=DisplayIn3DRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}" IsSnapToTickEnabled="True" SmallChange="0.0002" LargeChange="0" TickFrequency="0.0002"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <CheckBox Name ="chbDisplayLoadsLabels" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,25,0,0"
                                   IsChecked="{Binding Path=ShowLoadsLabels}">Display Loads Labels</CheckBox>
                     <CheckBox Name ="chbDisplayLoadsLabelsUnits" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,5,0,0"
                                   IsChecked="{Binding Path=ShowLoadsLabelsUnits}">Display Loads Labels Units</CheckBox>
-
                 </StackPanel>
-
-                
             </StackPanel>
-            
         </ScrollViewer>
-        
     </Grid>
 </UserControl>

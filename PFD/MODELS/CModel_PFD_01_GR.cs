@@ -74,8 +74,9 @@ namespace PFD
                 CCalcul_1170_3 snow,
                 CCalcul_1170_5 eq,
                 bool bGenerateNodalLoads,
-                bool bGenerateLoadsOnMembers,
-                bool bGenerateLoadsOnPurlinsAndGirts,
+                bool bGenerateLoadsOnGirts,
+                bool bGenerateLoadsOnPurlins,
+                bool bGenerateLoadsOnColumns,
                 bool bGenerateLoadsOnFrameMembers,
                 bool bGenerateSurfaceLoads
             )
@@ -1153,7 +1154,7 @@ namespace PFD
             #endregion
 
             #region Member Loads
-            if (bGenerateLoadsOnMembers)
+            if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns || bGenerateLoadsOnFrameMembers)
             {
                 CMemberLoadGenerator loadGenerator =
                 new CMemberLoadGenerator(iFrameNo,
@@ -1176,12 +1177,12 @@ namespace PFD
 
                 #region Secondary Member Loads (girts, purlins, wind posts, door trimmers)
                 // Purlins, eave purlins, girts, ....
-                LoadCasesMemberLoads memberLoadsOnPurlinsAndGirts = new LoadCasesMemberLoads();
-                if (bGenerateLoadsOnPurlinsAndGirts)
+                LoadCasesMemberLoads memberLoadsOnPurlinsGirtsColumns = new LoadCasesMemberLoads();
+                // Generate single member loads
+                if (bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns)
                 {
-                    // Generate single member loads
-                  memberLoadsOnPurlinsAndGirts = loadGenerator.GetGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
-                  loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnPurlinsAndGirts);
+                    memberLoadsOnPurlinsGirtsColumns = loadGenerator.GetGeneratedMemberLoads(m_arrLoadCases, m_arrMembers);
+                    loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnPurlinsGirtsColumns);
                 }
                 #endregion
 
@@ -1196,15 +1197,15 @@ namespace PFD
                 #endregion
 
                 #region Merge Member Load Lists
-                if (bGenerateLoadsOnPurlinsAndGirts && bGenerateLoadsOnFrameMembers)
+                if ((bGenerateLoadsOnGirts || bGenerateLoadsOnPurlins || bGenerateLoadsOnColumns) && bGenerateLoadsOnFrameMembers)
                 {
-                    if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsAndGirts.Count)
+                    if (memberLoadsOnFrames.Count != memberLoadsOnPurlinsGirtsColumns.Count)
                     {
                         throw new Exception("Not all member load list in all load cases were generated for frames and single members.");
                     }
 
                     // Merge lists
-                    memberLoadsOnFrames.Merge(memberLoadsOnPurlinsAndGirts); //Merge both to first LoadCasesMemberLoads
+                    memberLoadsOnFrames.Merge(memberLoadsOnPurlinsGirtsColumns); //Merge both to first LoadCasesMemberLoads
                     // Assign merged list of member loads to the load cases
                     loadGenerator.AssignMemberLoadListsToLoadCases(memberLoadsOnFrames);
                 }

@@ -661,8 +661,11 @@ namespace PFD
             sDisplayOptions.bDisplayLoads = vm.ShowLoads;
             sDisplayOptions.bDisplayNodalLoads = vm.ShowNodalLoads;
             sDisplayOptions.bDisplayMemberLoads = vm.ShowLoadsOnMembers;
+            sDisplayOptions.bDisplayMemberLoads_Girts = vm.ShowLoadsOnGirts;
+            sDisplayOptions.bDisplayMemberLoads_Purlins = vm.ShowLoadsOnPurlins;
+            sDisplayOptions.bDisplayMemberLoads_Columns = vm.ShowLoadsOnColumns;
+            sDisplayOptions.bDisplayMemberLoads_Frames = vm.ShowLoadsOnFrameMembers;
             sDisplayOptions.bDisplaySurfaceLoads = vm.ShowSurfaceLoads;
-            
 
             sDisplayOptions.bDisplayLoadsLabels = vm.ShowLoadsLabels;
             sDisplayOptions.bDisplayLoadsLabelsUnits = vm.ShowLoadsLabelsUnits;
@@ -686,7 +689,12 @@ namespace PFD
 
             CalculateLoadingValues();
 
-            bool generateSurfaceLoads = vm.ShowSurfaceLoads || vm.ShowSurfaceLoadsAxis || vm.ShowLoadsOnPurlinsAndGirts;
+            bool generateSurfaceLoads = vm.ShowSurfaceLoadsAxis ||
+                vm.GenerateSurfaceLoads ||
+                vm.GenerateLoadsOnGirts ||
+                vm.GenerateLoadsOnPurlins ||
+                vm.GenerateLoadsOnColumns;
+
             // TODO - nove parametre pre nastavenie hodnot zatazenia
             vm.Model = new CModel_PFD_01_GR(
                 sGeometryInputData,
@@ -709,10 +717,11 @@ namespace PFD
                 wind,
                 snow,
                 eq,
-                vm.ShowNodalLoads,
-                vm.ShowLoadsOnMembers,
-                vm.ShowLoadsOnPurlinsAndGirts,
-                vm.ShowLoadsOnFrameMembers,
+                vm.GenerateNodalLoads,
+                vm.GenerateLoadsOnGirts,
+                vm.GenerateLoadsOnPurlins,
+                vm.GenerateLoadsOnColumns,
+                vm.GenerateLoadsOnFrameMembers,
                 generateSurfaceLoads
                 );
 
@@ -1651,16 +1660,6 @@ namespace PFD
                 l_24.Member = m;
                 //loadCase.MemberLoadsList.Add(l_24);
             }
-        }
-
-        private void chbDisplayMemberLoads_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void chbDisplayMemberLoads_UnChecked(object sender, RoutedEventArgs e)
-        {
-
         }
 
         public void ShowBFEMNetModel(Model model)

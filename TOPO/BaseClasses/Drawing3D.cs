@@ -472,15 +472,25 @@ namespace BaseClasses
                     {
                         if (selectedLoadCase.MemberLoadsList[i] != null && selectedLoadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            Model3DGroup model_gr = new Model3DGroup();
-                            model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.DisplayIn3DRatio);
-                            // Transform modelgroup from LCS to GCS
-                            model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member, selectedLoadCase.MemberLoadsList[i].ELoadCS == ELoadCoordSystem.eLCS);
+                            if ((sDisplayOptions.bDisplayMemberLoads_Girts && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eG) ||
+                               (sDisplayOptions.bDisplayMemberLoads_Purlins && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eP) ||
+                               (sDisplayOptions.bDisplayMemberLoads_Columns && selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eC) ||
+                               (sDisplayOptions.bDisplayMemberLoads_Frames &&
+                               (selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMC ||
+                               selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMR ||
+                               selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eEC ||
+                               selectedLoadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eER)
+                               ))
+                            {
+                                Model3DGroup model_gr = new Model3DGroup();
+                                model_gr = selectedLoadCase.MemberLoadsList[i].CreateM_3D_G_Load(sDisplayOptions.bDisplaySolidModel, sDisplayOptions.DisplayIn3DRatio);
+                                // Transform modelgroup from LCS to GCS
+                                model_gr = selectedLoadCase.MemberLoadsList[i].Transform3D_OnMemberEntity_fromLCStoGCS(model_gr, selectedLoadCase.MemberLoadsList[i].Member, selectedLoadCase.MemberLoadsList[i].ELoadCS == ELoadCoordSystem.eLCS);
 
-                            model3D_group.Children.Add(model_gr); // Add member load to the model group
+                                model3D_group.Children.Add(model_gr); // Add member load to the model group
 
-                            // Set load for all assigned member
-
+                                // Set member load for all assigned members
+                            }
                         }
                     }
                 }
@@ -1620,7 +1630,6 @@ namespace BaseClasses
 
             return transPoints;
         }
-
 
         public static void DrawSurfaceLoadsAxis(CLoadCase loadCase, Viewport3D viewPort)
         {
