@@ -880,7 +880,7 @@ namespace PFD
                 if (Member_Input.Content == null) Member_Input.Content = new UC_ComponentList();
                 UC_ComponentList component = Member_Input.Content as UC_ComponentList;
                 CComponentListVM compList = (CComponentListVM)component.DataContext;
-                if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.Model, compList, vm.JointDesignResults_ULS);
+                if (Joint_Design.Content == null) Joint_Design.Content = new UC_JointDesign(vm.UseCRSCGeometricalAxes, vm.Model, compList, vm.JointDesignResults_ULS);
                 else
                 {
                     UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;

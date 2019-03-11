@@ -19,14 +19,17 @@ namespace M_BASE
         public int fDesignRatioLocationID_End = 0;
         public float fDesignRatio_End = 0;
 
+        public bool BUseCRSCGeometricalAxes;
+
         public CJointDesign(bool bDebugging_temp = false)
         {
             bDebugging = bDebugging_temp;
         }
 
         // PFD
-        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, CModel model, CMember member, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces[] sDIF_x)
+        public void SetDesignForcesAndJointDesign_PFD(int iNumberOfDesignSections, bool bUseCRSCGeometricalAxes, CModel model, CMember member, basicInternalForces[] sBIF_x, out CConnectionJointTypes jointStart, out CConnectionJointTypes jointEnd, out designInternalForces[] sDIF_x)
         {
+            BUseCRSCGeometricalAxes = bUseCRSCGeometricalAxes;
             int iNumberOfJointSections = 2; // Start and end of member - design internal forces
             model.GetModelMemberStartEndConnectionJoints(member, out jointStart, out jointEnd);
 
@@ -54,7 +57,7 @@ namespace M_BASE
 
                     if (j == 0) // Start Joint Design
                     {
-                        obj_CalcDesign = new CCalculJoint(bDebugging, jointStart, sDIF_x[j]);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointStart, sDIF_x[j]);
 
                         fDesignRatioLocationID_Start = j;
                         fDesignRatio_Start = obj_CalcDesign.fEta_max;
@@ -63,7 +66,7 @@ namespace M_BASE
                     }
                     else // End Joint Design
                     {
-                        obj_CalcDesign = new CCalculJoint(bDebugging, jointEnd, sDIF_x[j]);
+                        obj_CalcDesign = new CCalculJoint(bDebugging, bUseCRSCGeometricalAxes, jointEnd, sDIF_x[j]);
 
                         fDesignRatioLocationID_End = j;
                         fDesignRatio_End = obj_CalcDesign.fEta_max;

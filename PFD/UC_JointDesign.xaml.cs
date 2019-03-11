@@ -24,14 +24,15 @@ namespace PFD
     /// </summary>
     public partial class UC_JointDesign : UserControl
     {
+        bool BUseCRSCGeometricalAxes;
         CModel_PFD Model;
-
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
-        public UC_JointDesign(CModel_PFD model, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
+        public UC_JointDesign(bool bUseCRSCGeometricalAxes_temp, CModel_PFD model, CComponentListVM compList, List<CJointLoadCombinationRatio_ULS> designResults_ULS)
         {
             InitializeComponent();
 
+            BUseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             DesignResults_ULS = designResults_ULS;
             Model = model;
 
@@ -100,8 +101,8 @@ namespace PFD
                     if (resStart == null) continue;
                     if (resEnd == null) continue;
                     
-                    CCalculJoint cJointStart = new CCalculJoint(false, cjStart, resStart.DesignInternalForces);
-                    CCalculJoint cJointEnd = new CCalculJoint(false, cjEnd, resEnd.DesignInternalForces);
+                    CCalculJoint cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces);
 
                     if (cJointStart.fEta_max > fMaximumDesignRatio)
                     {

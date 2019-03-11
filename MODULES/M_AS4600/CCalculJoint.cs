@@ -9,6 +9,41 @@ using M_NZS3101;
 
 namespace M_AS4600
 {
+    public struct sJointDesignDetails_GeneralJoint
+    {
+        public int i;
+
+
+    }
+
+    public struct sJointDesignDetails_ApexOrKneeJoint
+    {
+
+
+
+    }
+
+    public struct sJointDesignDetails_GirtOrPurlinJoint
+    {
+
+
+
+    }
+
+    public struct sJointDesignDetails_FrontOrBackColumnToMainRafterJoint
+    {
+
+
+
+    }
+
+    public struct sJointDesignDetails_BaseJoint
+    {
+
+
+
+    }
+
     public class CCalculJoint
     {
         AS_4600 eq = new AS_4600(); // TODO Ondrej - toto by sa asi malo prerobit na staticke triedy, je to nejaka kniznica metod s rovnicami a tabulkovymi hodnotami
@@ -16,6 +51,7 @@ namespace M_AS4600
 
         public CConnectionJointTypes joint;
         public designInternalForces sDIF;
+        public designInternalForces_AS4600 sDIF_AS4600;
         bool bIsDebugging;
 
         CScrew screw;
@@ -38,7 +74,7 @@ namespace M_AS4600
 
         public float fEta_max = 0;
 
-        public CCalculJoint(bool bIsDebugging_temp, CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        public CCalculJoint(bool bIsDebugging_temp, bool bUseCRSCGeometricalAxes, CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
         {
             if (joint_temp == null)
             {
@@ -49,10 +85,31 @@ namespace M_AS4600
             joint = joint_temp;
             sDIF = sDIF_temp;
 
-            CalculateDesignRatio(bIsDebugging, joint, sDIF);
+            // Set design internal forces according AS 4600 symbols of axes
+            sDIF_AS4600.fN = sDIF_temp.fN;
+            sDIF_AS4600.fN_c = sDIF_temp.fN_c;
+            sDIF_AS4600.fN_t = sDIF_temp.fN_t;
+            sDIF_AS4600.fT = sDIF_temp.fT;
+
+            if (bUseCRSCGeometricalAxes)
+            {
+                sDIF_AS4600.fV_xu_xx = sDIF_temp.fV_yy;
+                sDIF_AS4600.fV_yv_yy = sDIF_temp.fV_zz;
+                sDIF_AS4600.fM_xu_xx = sDIF_temp.fM_yy;
+                sDIF_AS4600.fM_yv_yy = sDIF_temp.fM_zz;
+            }
+            else
+            {
+                sDIF_AS4600.fV_xu_xx = sDIF_temp.fV_yu;
+                sDIF_AS4600.fV_yv_yy = sDIF_temp.fV_zv;
+                sDIF_AS4600.fM_xu_xx = sDIF_temp.fM_yu;
+                sDIF_AS4600.fM_yv_yy = sDIF_temp.fM_zv;
+            }
+
+            CalculateDesignRatio(bIsDebugging, joint, sDIF_AS4600);
         }
 
-        public void CalculateDesignRatio(bool bIsDebugging, CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        public void CalculateDesignRatio(bool bIsDebugging, CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_AS400)
         {
             // 1.6.3 Design capacity Rd
             // (i) For members      Φ = 0.80
@@ -126,21 +183,33 @@ namespace M_AS4600
             // Other Columns  CConnectionJoint_TB01, plates serie B
 
             if (joint_temp is CConnectionJoint_A001 || joint_temp is CConnectionJoint_B001)
-                CalculateDesignRatioApexOrKneeJoint(joint_temp, sDIF_temp); // Apex or Knee Joint
+            {
+                sJointDesignDetails_ApexOrKneeJoint sDesignDetails;
+                CalculateDesignRatioApexOrKneeJoint(joint_temp, sDIF_AS4600, out sDesignDetails); // Apex or Knee Joint
+            }
             else if (joint_temp.m_SecondaryMembers != null)
             {
-                if(joint_temp is CConnectionJoint_T001 || joint_temp is CConnectionJoint_T002 || joint_temp is CConnectionJoint_T003)
-                    CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp); // purlin, girt or eave purlin
-                else if(joint_temp is CConnectionJoint_S001) // Front / back column connection to the main rafter
-                    CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_temp);
+                if (joint_temp is CConnectionJoint_T001 || joint_temp is CConnectionJoint_T002 || joint_temp is CConnectionJoint_T003)
+                {
+                    sJointDesignDetails_GirtOrPurlinJoint sDesignDetails;
+                    CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_AS4600, out sDesignDetails); // purlin, girt or eave purlin
+                }
+                else if (joint_temp is CConnectionJoint_S001) // Front / back column connection to the main rafter
+                {
+                    sJointDesignDetails_FrontOrBackColumnToMainRafterJoint sDesignDetails;
+                    CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_AS4600, out sDesignDetails);
+                }
                 else
                 {
                     // Exception - not defined type
                     throw new Exception("Joint type design is not implemented!");
                 }
             }
-            else if(joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01)
-                CalculateDesignRatioBaseJoint(joint_temp, sDIF_temp); // Base plates (main column or front/back column connection to the foundation)
+            else if (joint_temp is CConnectionJoint_TA01 || joint_temp is CConnectionJoint_TB01)
+            {
+                sJointDesignDetails_BaseJoint sDesignDetails;
+                CalculateDesignRatioBaseJoint(joint_temp, sDIF_AS4600, out sDesignDetails); // Base plates (main column or front/back column connection to the foundation)
+            }
             else
             {
                 // Exception - not defined type
@@ -148,15 +217,15 @@ namespace M_AS4600
             }
         }
 
-        public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, out sJointDesignDetails_ApexOrKneeJoint sDesignDetailsOutput)
         {
             // Bending Joint apex, knee joint
 
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
 
             float fN_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fN;
-            float fM_xu_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_yu;
-            float fV_yv_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_zv;
+            float fM_xu_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_xu_xx;
+            float fV_yv_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_yv_yy;
 
             // Plate design
 
@@ -185,8 +254,8 @@ namespace M_AS4600
 
             int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
 
-            float fEta_MainMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_MainMember);
-            float fEta_SecondaryMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_SecondaryMember);
+            float fEta_MainMember = sDIF_temp.fV_yv_yy / (iNumberOfScrewsInShear * fVb_MainMember);
+            float fEta_SecondaryMember = sDIF_temp.fV_yv_yy / (iNumberOfScrewsInShear * fVb_SecondaryMember);
 
             float fMb_MainMember_oneside_plastic = 0;
             float fMb_SecondaryMember_oneside_plastic = 0;
@@ -310,7 +379,7 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_SecondaryMember);
         }
 
-        public void CalculateDesignRatioGirtOrPurlinJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        public void CalculateDesignRatioGirtOrPurlinJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, out sJointDesignDetails_GirtOrPurlinJoint sDesignDetailsOutput)
         {
             bool bDisplayWarningForContitions5434and5435 = false;
             // Purlins, girts .....
@@ -351,8 +420,8 @@ namespace M_AS4600
 
             float fV_asterix_b_for5434_MainMember = 0;
 
-            if (sDIF_temp.fV_yu != 0 || sDIF_temp.fV_zv != 0)
-                fV_asterix_b_for5434_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+            if (sDIF_temp.fV_xu_xx != 0 || sDIF_temp.fV_yv_yy != 0)
+                fV_asterix_b_for5434_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_xu_xx / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_yv_yy / iNumberOfScrewsInTension));
 
             float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
             fEta_max = MathF.Max(fEta_max, fEta_5434_MainMember);
@@ -376,8 +445,8 @@ namespace M_AS4600
 
             float fV_asterix_b_for5435_MainMember = 0;
 
-            if (sDIF_temp.fV_yu != 0 || sDIF_temp.fV_zv != 0)
-                fV_asterix_b_for5435_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yu / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInTension));
+            if (sDIF_temp.fV_xu_xx != 0 || sDIF_temp.fV_yv_yy != 0)
+                fV_asterix_b_for5435_MainMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_xu_xx / iNumberOfScrewsInTension) + MathF.Pow2(sDIF_temp.fV_yv_yy / iNumberOfScrewsInTension));
 
             float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, sDIF_temp.fN_t / iNumberOfScrewsInTension, 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_5435_MainMember);
@@ -386,7 +455,7 @@ namespace M_AS4600
             float fe_Plate = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu
 
             // Distance to an end of the connected part is parallel to the line of the applied force
-            float fV_asterix_fv_plate = Math.Abs(sDIF_temp.fV_zv / iNumberOfScrewsInTension);
+            float fV_asterix_fv_plate = Math.Abs(sDIF_temp.fV_yv_yy / iNumberOfScrewsInTension);
             float fV_fv_Plate = eq.Eq_5425_2__(ft_1_plate, fe_Plate, ff_uk_1_plate);
             float fEta_V_fv_5425_Plate = eq.Eq_5425_1__(fV_asterix_fv_plate, fV_fv_Plate, ff_uk_1_plate, ff_yk_1_plate);
             fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425_Plate);
@@ -415,7 +484,7 @@ namespace M_AS4600
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
 
             float fN_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fN;
-            float fV_yv_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_zv;
+            float fV_yv_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_yv_yy;
 
             // Plate tension design
             float fA_n_plate = plate.fA_n;
@@ -435,8 +504,8 @@ namespace M_AS4600
             // Shear
             float fV_asterix_b_SecondaryMember = 0;
 
-            if (sDIF_temp.fV_yu != 0 || sDIF_temp.fV_zv != 0 || sDIF_temp.fN != 0)
-                fV_asterix_b_SecondaryMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_zv / iNumberOfScrewsInConnectionOfSecondaryMember) + MathF.Pow2(sDIF_temp.fN / iNumberOfScrewsInConnectionOfSecondaryMember));
+            if (sDIF_temp.fV_xu_xx != 0 || sDIF_temp.fV_yv_yy != 0 || sDIF_temp.fN != 0)
+                fV_asterix_b_SecondaryMember = MathF.Sqrt(MathF.Pow2(sDIF_temp.fV_yv_yy / iNumberOfScrewsInConnectionOfSecondaryMember) + MathF.Pow2(sDIF_temp.fN / iNumberOfScrewsInConnectionOfSecondaryMember));
 
             float fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_SecondaryMember);
             float fEta_Vb_5424_SecondaryMember = eq.Eq_5424_1__(fV_asterix_b_SecondaryMember, 0.5f, fVb_SecondaryMember);
@@ -450,7 +519,7 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_V_fv_5425_SecondaryMember);
         }
 
-        public void CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        public void CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, out sJointDesignDetails_FrontOrBackColumnToMainRafterJoint sDesignDetailsOutput)
         {
             // TODO - refactoring s CalculateDesignRatioGirtOrPurlinJoint
             bool bDisplayWarningForContitions5434and5435 = false;
@@ -459,7 +528,7 @@ namespace M_AS4600
             CConCom_Plate_N plateN = (CConCom_Plate_N)joint_temp.m_arrPlates[0];
 
             // Tension force in plate (metal strip)
-            float fDIF_N_plate = Math.Abs(sDIF_temp.fV_zv) / (float)Math.Sin(plateN.Alpha1_rad);
+            float fDIF_N_plate = Math.Abs(sDIF_temp.fV_yv_yy) / (float)Math.Sin(plateN.Alpha1_rad);
             float fDIF_V_connection_one_side = fDIF_N_plate * (float)Math.Cos(plateN.Alpha1_rad);
 
             // 5.4.3 Screwed connections in tension
@@ -468,7 +537,7 @@ namespace M_AS4600
             // K vytiahnutiu alebo pretlaceniu moze dost v pripojeni k main member alebo pri posobeni sily Vx(Vy) na secondary member (to asi zanedbame)
 
             float fN_t_5432_MainMember = eq.Get_Nt_5432(screw.Type, ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, screw.D_h_headdiameter, screw.T_w_washerthickness, screw.D_w_washerdiameter, ff_uk_1_plate, ff_uk_2_MainMember);
-            float fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fV_zv / iNumberOfScrewsInTension, 0.5f, fN_t_5432_MainMember);
+            float fEta_N_t_5432_MainMember = eq.Eq_5432_1__(sDIF_temp.fV_yv_yy / iNumberOfScrewsInTension, 0.5f, fN_t_5432_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5432_MainMember);
 
             // 5.4.3.4 Screwed connections subject to combined shear and pull-over
@@ -497,7 +566,7 @@ namespace M_AS4600
                 fN_ov_for5434_plate *= 0.5f; // Use 50% of resistance value in case of eccentrically loaded connection
 
             float fV_asterix_b_for5434_MainMember = fDIF_V_connection_one_side / (iNumberOfScrewsInTension / 2);
-            float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, Math.Abs(sDIF_temp.fV_zv) / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
+            float fEta_5434_MainMember = eq.Eq_5434____(fV_asterix_b_for5434_MainMember, Math.Abs(sDIF_temp.fV_yv_yy) / iNumberOfScrewsInTension, 0.65f, fV_b_for5434_MainMember, fN_ov_for5434_plate);
             fEta_max = MathF.Max(fEta_max, fEta_5434_MainMember);
 
             // 5.4.3.5 Screwed connections subject to combined shear and pull-out
@@ -518,7 +587,7 @@ namespace M_AS4600
             float fN_ou_for5435_MainMember = eq.Eq_5432_2__(ft_2_crscmainMember, screw.Diameter_thread, ff_uk_2_MainMember); // 5.4.3.2(a) Eq. 5.4.3.2(2) - Nou
 
             float fV_asterix_b_for5435_MainMember = fDIF_V_connection_one_side / (iNumberOfScrewsInTension / 2);
-            float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, Math.Abs(sDIF_temp.fV_zv), 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
+            float fEta_5435_MainMember = eq.Eq_5435____(fV_asterix_b_for5435_MainMember, Math.Abs(sDIF_temp.fV_yv_yy), 0.6f, fV_b_for5435_MainMember, fN_ou_for5435_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_5435_MainMember);
 
             // 5.4.2.5 Connection shear as limited by end distance
@@ -541,13 +610,13 @@ namespace M_AS4600
             // The tensile capacity of the screw shall be determined by testing in accordance with Section 8.
 
             float fN_t_nom_screw_5433 = screw.AxialTensileStrength_nominal; // N
-            float fEta_N_t_screw_5433 = (Math.Abs(sDIF_temp.fV_zv) / (iNumberOfScrewsInTension / 2)) / (0.5f * fN_t_nom_screw_5433);
+            float fEta_N_t_screw_5433 = (Math.Abs(sDIF_temp.fV_yv_yy) / (iNumberOfScrewsInTension / 2)) / (0.5f * fN_t_nom_screw_5433);
             fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
 
             // 5.4.3.6 Screws subject to combined shear and tension
             // A screw required to resist simultaneously a design shear force and a design tensile where V screw and N screw shall be determined by testing in accordance with Section 8.
 
-            float fEta_V_N_t_screw_5436 = eq.Eq_5436____(Math.Max(fV_asterix_b_for5435_MainMember, fV_asterix_fv_plate), Math.Abs(sDIF_temp.fV_zv) / (iNumberOfScrewsInTension / 2), 0.5f, fV_w_nom_screw_5426, fN_t_nom_screw_5433);
+            float fEta_V_N_t_screw_5436 = eq.Eq_5436____(Math.Max(fV_asterix_b_for5435_MainMember, fV_asterix_fv_plate), Math.Abs(sDIF_temp.fV_yv_yy) / (iNumberOfScrewsInTension / 2), 0.5f, fV_w_nom_screw_5426, fN_t_nom_screw_5433);
             fEta_max = MathF.Max(fEta_max, fEta_V_N_t_screw_5436);
 
             // Plate design
@@ -558,7 +627,7 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_plate);
         }
 
-        public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces sDIF_temp)
+        public void CalculateDesignRatioBaseJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, out sJointDesignDetails_BaseJoint sDesignDetailsOutput)
         {
             // Okopirovane z CalculateDesignRatioApexOrKneeJoint
             // TODO - refaktorovat
@@ -566,8 +635,8 @@ namespace M_AS4600
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
 
             float fN = 1f / iNumberOfPlatesInJoint * sDIF_temp.fN;
-            float fM_xu = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_yu;
-            float fV_yv = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_zv;
+            float fM_xu = 1f / iNumberOfPlatesInJoint * sDIF_temp.fM_xu_xx;
+            float fV_yv = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_yv_yy;
 
             // Plate design
 
@@ -595,7 +664,7 @@ namespace M_AS4600
 
             int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
 
-            float fEta_MainMember = sDIF.fV_zv / (iNumberOfScrewsInShear * fVb_MainMember);
+            float fEta_MainMember = sDIF_temp.fV_yv_yy / (iNumberOfScrewsInShear * fVb_MainMember);
 
             float fMb_MainMember_oneside_plastic = 0;
 
@@ -638,8 +707,8 @@ namespace M_AS4600
             }
 
             float fN_oneside = sDIF_temp.fN / 2f;
-            float fM_xu_oneside = sDIF_temp.fM_yu / 2f; // Divided by Number of sides
-            float fV_yv_oneside = sDIF_temp.fV_zv / 2f;
+            float fM_xu_oneside = sDIF_temp.fM_xu_xx / 2f; // Divided by Number of sides
+            float fV_yv_oneside = sDIF_temp.fV_yv_yy / 2f;
 
             // Plastic resistance (Design Ratio)
             float fEta_Mb_MainMember_oneside_plastic = Math.Abs(fM_xu_oneside) / fMb_MainMember_oneside_plastic;
@@ -720,8 +789,8 @@ namespace M_AS4600
             float fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
             float fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
 
-            float fV_asterix_x_joint = Math.Abs(sDIF_temp.fV_yy);
-            float fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_zz);
+            float fV_asterix_x_joint = Math.Abs(sDIF_temp.fV_xu_xx);
+            float fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_yv_yy);
             float fV_asterix_res_joint = 0f;
 
             if(!MathF.d_equal(fV_asterix_x_joint,0) || !MathF.d_equal(fV_asterix_y_joint, 0))

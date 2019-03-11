@@ -1387,7 +1387,7 @@ namespace PFD
 
                                 CConnectionJointTypes jointStart;
                                 CConnectionJointTypes jointEnd;
-                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sJointDIF_x);
+                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, UseCRSCGeometricalAxes, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sJointDIF_x);
 
                                 // Validation - Main member of joint must be defined
                                 if (jointStart.m_MainMember == null)

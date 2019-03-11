@@ -20,6 +20,9 @@ namespace PFD
         float fDist_Purlin;
         float fDist_Girt;
         float fDist_FrontGirts;
+        float fDist_BackGirts;
+        float fDist_FrontColumns;
+        float fDist_BackColumns;
         float fSlopeFactor;
         private CLoadCase[] m_arrLoadCases;
         CCalcul_1170_1 generalLoad;
@@ -70,9 +73,19 @@ namespace PFD
         public List<CSLoad_Free> surfaceWindLoad_SLS_MinusY_Cpemax;
         #endregion
 
-        public CSurfaceLoadGenerator(float H1_frame, float H2_frame, float W_frame, float L_tot, float RoofPitch_rad, 
-            float Dist_Purlin, float Dist_Girt, float Dist_FrontGirts, float SlopeFactor, CLoadCase[] arrLoadCases,
-            CCalcul_1170_1 calc_generalLoad, CCalcul_1170_2 calc_wind, CCalcul_1170_3 calc_snow)
+        public CSurfaceLoadGenerator(float H1_frame, float H2_frame,
+            float W_frame, float L_tot, float RoofPitch_rad, 
+            float Dist_Purlin,
+            float Dist_Girt,
+            float Dist_FrontGirts,
+            float Dist_BackGirts,
+            float Dist_FrontColumns,
+            float Dist_BackColumns,
+            float SlopeFactor,
+            CLoadCase[] arrLoadCases,
+            CCalcul_1170_1 calc_generalLoad,
+            CCalcul_1170_2 calc_wind,
+            CCalcul_1170_3 calc_snow)
         {
             fH1_frame = H1_frame;
             fH2_frame = H2_frame;
@@ -82,6 +95,9 @@ namespace PFD
             fDist_Purlin = Dist_Purlin;
             fDist_Girt = Dist_Girt;
             fDist_FrontGirts = Dist_FrontGirts;
+            fDist_BackGirts = Dist_BackGirts;
+            fDist_FrontColumns = Dist_FrontColumns;
+            fDist_BackColumns = Dist_BackColumns;
             fSlopeFactor = SlopeFactor;
             m_arrLoadCases = arrLoadCases;
             wind = calc_wind;
@@ -130,8 +146,10 @@ namespace PFD
             listOfLoadedMemberTypeDataWallLeftRight.Add(new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eEP, 0.5f * fDist_Girt));
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallFront = new List<FreeSurfaceLoadsMemberTypeData>(1);
             listOfLoadedMemberTypeDataWallFront.Add(new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eG, fDist_FrontGirts));
+            listOfLoadedMemberTypeDataWallFront.Add(new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eC, fDist_FrontColumns));
             List<FreeSurfaceLoadsMemberTypeData> listOfLoadedMemberTypeDataWallBack = new List<FreeSurfaceLoadsMemberTypeData>(1);
-            listOfLoadedMemberTypeDataWallBack.Add(new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eG, fDist_FrontGirts));
+            listOfLoadedMemberTypeDataWallBack.Add(new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eG, fDist_BackGirts));
+            listOfLoadedMemberTypeDataWallBack.Add(new FreeSurfaceLoadsMemberTypeData(EMemberType_FS.eG, fDist_BackColumns));
 
             // Hodnota zatazenia v smere kladnej osi je kladna, hodnota zatazenia v smere zapornej osi je zaporna
             // Permanent load

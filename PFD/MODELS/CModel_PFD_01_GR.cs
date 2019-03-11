@@ -1132,7 +1132,8 @@ namespace PFD
             if (bGenerateSurfaceLoads)
             {
                 CSurfaceLoadGenerator surfaceLoadGenerator = new CSurfaceLoadGenerator(fH1_frame, fH2_frame, fW_frame, fL_tot, fRoofPitch_rad,
-                    fDist_Purlin, fDist_Girt, fDist_FrontGirts, fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
+                    fDist_Purlin, fDist_Girt, fDist_FrontGirts, fDist_BackGirts, fDist_FrontColumns, fDist_BackColumns,
+                    fSlopeFactor, m_arrLoadCases, generalLoad, wind, snow);
                 surfaceLoadGenerator.GenerateSurfaceLoads();
             }
 

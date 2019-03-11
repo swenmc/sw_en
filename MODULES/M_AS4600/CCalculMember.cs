@@ -73,28 +73,28 @@ namespace M_AS4600
         eD3c_StiffFlanges  // Webs restrained at the top and bottom edges by flanges
     };
 
+    public struct designInternalForces_AS4600
+    {
+        public float fN;
+        public float fN_c;
+        public float fN_t;
+        public float fV_xu_xx; // Univerzalne hodnoty nezavisle na systeme geometrical alebo principal axes of cross-section
+        public float fV_yv_yy;
+        //public float fV_xu;
+        //public float fV_yv;
+        //public float fV_xx;
+        //public float fV_yy;
+        public float fT;
+        public float fM_xu_xx;
+        public float fM_yv_yy;
+        //public float fM_xu;
+        //public float fM_yv;
+        //public float fM_xx;
+        //public float fM_yy;
+    }
+
     public class CCalculMember
     {
-        public struct designInternalForces_AS4600
-        {
-            public float fN;
-            public float fN_c;
-            public float fN_t;
-            public float fV_xu_xx; // Univerzalne hodnoty nezavisle na systeme geometrical alebo principal axes of cross-section
-            public float fV_yv_yy;
-            //public float fV_xu;
-            //public float fV_yv;
-            //public float fV_xx;
-            //public float fV_yy;
-            public float fT;
-            public float fM_xu_xx;
-            public float fM_yv_yy;
-            //public float fM_xu;
-            //public float fM_yv;
-            //public float fM_xx;
-            //public float fM_yy;
-        }
-
         designInternalForces_AS4600 sDIF;
 
         CCrSc_TW cs; // Thin-walled cross-section
