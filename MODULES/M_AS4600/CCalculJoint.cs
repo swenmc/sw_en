@@ -78,7 +78,7 @@ namespace M_AS4600
     {
         AS_4600 eq = new AS_4600(); // TODO Ondrej - toto by sa asi malo prerobit na staticke triedy, je to nejaka kniznica metod s rovnicami a tabulkovymi hodnotami
         NZS_3101 eq_concrete = new NZS_3101(); // TODO Ondrej - toto by sa asi malo prerobit na staticke triedy, je to nejaka kniznica metod s rovnicami a tabulkovymi hodnotami
-
+        
         public CConnectionJointTypes joint;
         public designInternalForces sDIF;
         public designInternalForces_AS4600 sDIF_AS4600;
@@ -266,6 +266,13 @@ namespace M_AS4600
             // Najlepsie by bolo keby sa tieto detaily len na vyziadanie zo spoja ziskali (ina struktura pre iny typ spoja) a zobrazili s tym ze by sa neukladali
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // ja osobne by som asi tie struktury zmenil na Class
+            //vytvoril by som v CCalculJoint jednu public property Results, ktora by bola najprv null a ak by sa nieco vypocitalo, tak by sa nastavila hodnota property 
+            //na objekt typu sJointDesignDetails_ApexOrKneeJoint / sJointDesignDetails_GirtOrPurlinJoint / sJointDesignDetails_FrontOrBackColumnToMainRafterJoint
+            //potom by som v triede DataGridHelper v metode SetResultsDetailsFor_ULS pozrel na parameter [CCalculJoint calc] a jeho property Results no a tam uz by boli vysledky
+
+            // 2. moznost je asi tuna do metody CalculateDesignRatio rovno pridat parameter DatagridView a hned volat nejaku metodu ktora bude vediet nasekat vysledky z 
+            //    sJointDesignDetails_ApexOrKneeJoint/sJointDesignDetails_GirtOrPurlinJoint... do datagridu vid DataGridHelper.cs
 
             sOutput = new sJointDesignDetails_ApexOrKneeJoint();
 
