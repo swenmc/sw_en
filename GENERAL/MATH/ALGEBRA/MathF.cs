@@ -265,7 +265,7 @@ namespace MATH
                 return x;
             }
             else
-                return 1f; // Exception
+                return -1f; // Exception
         }
 
         #endregion

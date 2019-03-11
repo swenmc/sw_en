@@ -11,15 +11,45 @@ namespace M_AS4600
 {
     public struct sJointDesignDetails_GeneralJoint
     {
-        public int i;
-
-
     }
 
     public struct sJointDesignDetails_ApexOrKneeJoint
     {
+        public float fPhi_Plate;
+        public float fA_n_plate;
+        public float fN_t_plate;
+        public float fEta_N_t_5423_plate;
+        public float fA_vn_yv_plate;
+        public float fV_y_yv_plate;
+        public float fEta_V_yv_3341_plate;
+        public float fM_xu_resitance_plate;
+        public float fEta_Mb_plate;
 
+        // Shear in connection
+        public float fPhi_shear_screw;
+        public float fVb_MainMember;
+        public float fVb_SecondaryMember;
+        public int iNumberOfScrewsInShear;
+        public float fEta_MainMember;
+        public float fEta_SecondaryMember;
 
+        // Plastic Design
+        public float fMb_MainMember_oneside_plastic;
+        public float fMb_SecondaryMember_oneside_plastic;
+        public float fEta_Mb_MainMember_oneside_plastic;
+        public float fEta_Mb_SecondaryMember_oneside_plastic;
+
+        // Elastic Design
+        public float fV_asterix_b_max_screw_Mxu;
+        public float fV_asterix_b_max_screw_Vyv;
+        public float fV_asterix_b_max_screw_N;
+        public float fV_asterix_b_max_screw;
+
+        public float fEta_Vb_5424_MainMember;
+        public float fEta_Vb_5424_SecondaryMember;
+
+        // 5.4.2.5
+        // TODO - doplnit dalsie parametre
 
     }
 
@@ -217,8 +247,27 @@ namespace M_AS4600
             }
         }
 
-        public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, out sJointDesignDetails_ApexOrKneeJoint sDesignDetailsOutput)
+        public void CalculateDesignRatioApexOrKneeJoint(CConnectionJointTypes joint_temp, designInternalForces_AS4600 sDIF_temp, out sJointDesignDetails_ApexOrKneeJoint sOutput)
         {
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // To Ondrej - 11.3.2019
+            // Mam tu zatial par typov spojov ktorym odpovedaju vypoctove funkcie (vid riadok 215)
+            // CalculateDesignRatioApexOrKneeJoint, CalculateDesignRatioGirtOrPurlinJoint, CalculateDesignRatioFrontOrBackColumnToMainRafterJoint, CalculateDesignRatioBaseJoint
+            // Kazdy sa pocita trochu inak a ma ine vystupne parametre (detaily), tych detailov moze byt 30,40,50,... ??? float hodnot pre jeden spoj
+            // Vyrobil som si 4 struktury do ktorych chcem tieto detaily priradit a zobrazit v UC_JointDesign podla typu spoja
+            // Povodne som si myslel ze kazdy spoj bude mat tuto strukturu resp. objekt s detailami
+            // ale pride mi to zbytocne vela dat len kvoli tomu aby sa to vypisalo, navyse ak by sme to brali podrobne ak pre kazdy spoj by to mala byt nie jedna struktura alebo List struktur
+            // pre vsetky load combinations ktore boli pocitane
+
+            // Poradis mi nejaky postup, ako to co najekonomickejsie spravit a dostat konkretne z tejto funkcie 
+            // out sJointDesignDetails_ApexOrKneeJoint sOutput do UC_JointDesign, resp. do private static void SetResultsDetailsFor_ULS(CCalculJoint calc)
+            // Najlepsie by bolo keby sa tieto detaily len na vyziadanie zo spoja ziskali (ina struktura pre iny typ spoja) a zobrazili s tym ze by sa neukladali
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            sOutput = new sJointDesignDetails_ApexOrKneeJoint();
+
             // Bending Joint apex, knee joint
 
             int iNumberOfPlatesInJoint = joint.m_arrPlates.Length;
@@ -228,37 +277,40 @@ namespace M_AS4600
             float fV_yv_oneside = 1f / iNumberOfPlatesInJoint * sDIF_temp.fV_yv_yy;
 
             // Plate design
+            sOutput.fPhi_Plate = 0.65f; // TODO - overit ci je to spravne
 
             // Plate tension design
-            float fA_n_plate = plate.fA_n;
-            float fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, fA_n_plate, ff_uk_1_plate);
-            float fEta_N_t_5423_plate = eq.Eq_5423_1__(fN_oneside, 0.65f, fN_t_plate);
-            fEta_max = MathF.Max(fEta_max, fEta_N_t_5423_plate);
+            sOutput.fA_n_plate = plate.fA_n;
+            sOutput.fN_t_plate = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, sOutput.fA_n_plate, ff_uk_1_plate);
+            sOutput.fEta_N_t_5423_plate = eq.Eq_5423_1__(Math.Abs(fN_oneside), sOutput.fPhi_Plate, sOutput.fN_t_plate);
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_N_t_5423_plate);
 
             // Plate shear resistance
-            float fA_vn_yv_plate = plate.fA_vn_zv;
-            float fV_y_yv_plate = eq.Eq_723_5___(fA_vn_yv_plate, ff_yk_1_plate);
-            float fEta_V_yv_3341_plate = eq.Eq_3341____(fV_yv_oneside, 0.65f, fV_y_yv_plate);
-            fEta_max = MathF.Max(fEta_max, fEta_V_yv_3341_plate);
+            sOutput.fA_vn_yv_plate = plate.fA_vn_zv;
+            sOutput.fV_y_yv_plate = eq.Eq_723_5___(sOutput.fA_vn_yv_plate, ff_yk_1_plate);
+            sOutput.fEta_V_yv_3341_plate = eq.Eq_3341____(fV_yv_oneside, sOutput.fPhi_Plate, sOutput.fV_y_yv_plate);
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_V_yv_3341_plate);
 
             // Plate bending resistance
-            float fM_xu_resitance_plate = eq.Eq_7222_4__(joint.m_arrPlates[0].fW_el_yu, ff_yk_1_plate);
-            float fEta_Mb_plate, fDesignReistance_M_plate;
-            eq.Eq_723_10__(Math.Abs(fM_xu_oneside), 0.65f, fM_xu_resitance_plate, out fDesignReistance_M_plate, out fEta_Mb_plate);
-            fEta_max = MathF.Max(fEta_max, fEta_Mb_plate);
+            sOutput.fM_xu_resitance_plate = eq.Eq_7222_4__(joint.m_arrPlates[0].fW_el_yu, ff_yk_1_plate);
+            float fDesignResistance_M_plate;
+            eq.Eq_723_10__(Math.Abs(fM_xu_oneside), sOutput.fPhi_Plate, sOutput.fM_xu_resitance_plate, out fDesignResistance_M_plate, out sOutput.fEta_Mb_plate);
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_Mb_plate);
 
             // Connection -shear force design
             // Shear in connection
-            float fVb_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
-            float fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_SecondaryMember);
+            sOutput.fPhi_shear_screw = 0.5f;
+            sOutput.fVb_MainMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscmainMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_MainMember);
+            sOutput.fVb_SecondaryMember = eq.Get_Vb_5424(ft_1_plate, ft_2_crscsecMember, screw.Diameter_thread, ff_uk_1_plate, ff_uk_2_SecondaryMember);
 
-            int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
+            sOutput.iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
 
-            float fEta_MainMember = sDIF_temp.fV_yv_yy / (iNumberOfScrewsInShear * fVb_MainMember);
-            float fEta_SecondaryMember = sDIF_temp.fV_yv_yy / (iNumberOfScrewsInShear * fVb_SecondaryMember);
+            sOutput.fEta_MainMember = sDIF_temp.fV_yv_yy / (sOutput.iNumberOfScrewsInShear * sOutput.fVb_MainMember);
+            sOutput.fEta_SecondaryMember = sDIF_temp.fV_yv_yy / (sOutput.iNumberOfScrewsInShear * sOutput.fVb_SecondaryMember);
 
-            float fMb_MainMember_oneside_plastic = 0;
-            float fMb_SecondaryMember_oneside_plastic = 0;
+            // Bending and shear and normal force interaction - shear design of screws
+            sOutput.fMb_MainMember_oneside_plastic = 0;
+            sOutput.fMb_SecondaryMember_oneside_plastic = 0;
 
             float fSumri2tormax = 0; // F_max = Mxu / (Σ ri^2 / r_max)
 
@@ -293,30 +345,43 @@ namespace M_AS4600
             // Bending - Calculate shear strength of plate connection - main member
             for (int i = 0; i < fHolesCentersRadiiInOneGroup.Length; i++)
             {
-                fMb_MainMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * fVb_MainMember;
-                fMb_SecondaryMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * fVb_SecondaryMember;
+                sOutput.fMb_MainMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * sOutput.fVb_MainMember;
+                sOutput.fMb_SecondaryMember_oneside_plastic += fHolesCentersRadiiInOneGroup[i] * sOutput.fVb_SecondaryMember;
 
                 fSumri2tormax += MathF.Pow2(fHolesCentersRadiiInOneGroup[i]) / fr_max;
             }
 
             // Plastic resistance (Design Ratio)
-            float fEta_Mb_MainMember_oneside_plastic = Math.Abs(fM_xu_oneside) / fMb_MainMember_oneside_plastic;
-            fEta_max = MathF.Max(fEta_max, fEta_Mb_MainMember_oneside_plastic);
-            float fEta_Mb_SecondaryMember_oneside_plastic = Math.Abs(fM_xu_oneside) / fMb_SecondaryMember_oneside_plastic;
-            fEta_max = MathF.Max(fEta_max, fEta_Mb_SecondaryMember_oneside_plastic);
+            sOutput.fEta_Mb_MainMember_oneside_plastic = Math.Abs(fM_xu_oneside) / sOutput.fMb_MainMember_oneside_plastic;
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_Mb_MainMember_oneside_plastic);
+            sOutput.fEta_Mb_SecondaryMember_oneside_plastic = Math.Abs(fM_xu_oneside) / sOutput.fMb_SecondaryMember_oneside_plastic;
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_Mb_SecondaryMember_oneside_plastic);
 
             // Elastic resistance
-            float fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
-            float fV_asterix_b_max_screw_Vyv = Math.Abs(fV_yv_oneside) / fHolesCentersRadiiInOneGroup.Length;
-            float fV_asterix_b_max_screw_N = Math.Abs(fN_oneside) / fHolesCentersRadiiInOneGroup.Length;
+            sOutput.fV_asterix_b_max_screw_Mxu = Math.Abs(fM_xu_oneside) / fSumri2tormax;
+            sOutput.fV_asterix_b_max_screw_Vyv = Math.Abs(fV_yv_oneside) / fHolesCentersRadiiInOneGroup.Length;
+            sOutput.fV_asterix_b_max_screw_N = Math.Abs(fN_oneside) / fHolesCentersRadiiInOneGroup.Length;
 
-            float fV_asterix_b_max_screw = 0;
+            sOutput.fV_asterix_b_max_screw = 0;
 
-            if (fV_asterix_b_max_screw_Mxu != 0 || fV_asterix_b_max_screw_Vyv != 0 || fV_asterix_b_max_screw_N != 0)
-                fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
+            if (sOutput.fV_asterix_b_max_screw_Mxu != 0 && sOutput.fV_asterix_b_max_screw_Vyv != 0 && sOutput.fV_asterix_b_max_screw_N != 0)
+                sOutput.fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(sOutput.fV_asterix_b_max_screw_Mxu) + MathF.Pow2(sOutput.fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(sOutput.fV_asterix_b_max_screw_N));
+            else if ((sOutput.fV_asterix_b_max_screw_Mxu != 0 || sOutput.fV_asterix_b_max_screw_Vyv != 0) && sOutput.fV_asterix_b_max_screw_N == 0)
+                sOutput.fV_asterix_b_max_screw = MathF.Sqrt(MathF.Pow2(sOutput.fV_asterix_b_max_screw_Mxu) + MathF.Pow2(sOutput.fV_asterix_b_max_screw_Vyv));
+            else if ((sOutput.fV_asterix_b_max_screw_Mxu != 0 || sOutput.fV_asterix_b_max_screw_N != 0) && sOutput.fV_asterix_b_max_screw_Vyv == 0)
+                sOutput.fV_asterix_b_max_screw = MathF.Sqrt(MathF.Pow2(sOutput.fV_asterix_b_max_screw_Mxu) + MathF.Pow2(sOutput.fV_asterix_b_max_screw_N));
+            else if ((sOutput.fV_asterix_b_max_screw_Vyv != 0 || sOutput.fV_asterix_b_max_screw_N != 0) && sOutput.fV_asterix_b_max_screw_Mxu == 0)
+                sOutput.fV_asterix_b_max_screw = MathF.Sqrt(MathF.Pow2(sOutput.fV_asterix_b_max_screw_Vyv) + MathF.Pow2(sOutput.fV_asterix_b_max_screw_N));
+            else
+                sOutput.fV_asterix_b_max_screw = sOutput.fV_asterix_b_max_screw_Mxu + sOutput.fV_asterix_b_max_screw_Vyv + sOutput.fV_asterix_b_max_screw_N; // Vsetky alebo len jedna zlozka je nenulova, mozeme pouzit sumu
 
-            float fEta_Vb_5424 = eq.Eq_5424_1__(fV_asterix_b_max_screw, 0.5f, fVb_MainMember);
-            fEta_max = MathF.Max(fEta_max, fEta_Vb_5424);
+            sOutput.fEta_Vb_5424_MainMember = eq.Eq_5424_1__(sOutput.fV_asterix_b_max_screw, sOutput.fPhi_shear_screw, sOutput.fVb_MainMember);
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_Vb_5424_MainMember);
+
+            sOutput.fEta_Vb_5424_SecondaryMember = eq.Eq_5424_1__(sOutput.fV_asterix_b_max_screw, sOutput.fPhi_shear_screw, sOutput.fVb_SecondaryMember);
+            fEta_max = MathF.Max(fEta_max, sOutput.fEta_Vb_5424_SecondaryMember);
+
+            float fEta_Vb_5424 = Math.Max(sOutput.fEta_Vb_5424_MainMember, sOutput.fEta_Vb_5424_SecondaryMember);
 
             // 5.4.2.5 Connection shear as limited by end distance
             float fe = 0.03f; // TODO - temporary - urcit min vzdialenost skrutky od okraja plechu alebo prierezu
@@ -329,8 +394,8 @@ namespace M_AS4600
 
             float fV_asterix_fv = 0;
 
-            if (fV_asterix_b_max_screw_Vyv != 0 || fV_asterix_b_max_screw_N != 0)
-                fV_asterix_fv = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Vyv) + MathF.Pow2(fV_asterix_b_max_screw_N));
+            if (sOutput.fV_asterix_b_max_screw_Vyv != 0 || sOutput.fV_asterix_b_max_screw_N != 0)
+                fV_asterix_fv = MathF.Sqrt(MathF.Pow2(sOutput.fV_asterix_b_max_screw_Vyv) + MathF.Pow2(sOutput.fV_asterix_b_max_screw_N));
 
             float fEta_V_fv_5425_MainMember = eq.Eq_5425_1__(fV_asterix_fv, fV_fv_MainMember, ff_uk_2_MainMember, ff_yk_2_MainMember);
             float fEta_V_fv_5425_SecondaryMember = eq.Eq_5425_1__(fV_asterix_fv, fV_fv_SecondaryMember, ff_uk_2_SecondaryMember, ff_yk_2_SecondaryMember);
@@ -343,7 +408,7 @@ namespace M_AS4600
             // The design shear capacity φVw of the screw shall be determined by testing in accordance with Section 8.
 
             float fV_w_nom_screw_5426 = screw.ShearStrength_nominal; // N
-            float fEta_V_w_5426 = Math.Max(fV_asterix_b_max_screw, fV_asterix_fv) / (0.5f * fV_w_nom_screw_5426);
+            float fEta_V_w_5426 = Math.Max(sOutput.fV_asterix_b_max_screw, fV_asterix_fv) / (0.5f * fV_w_nom_screw_5426);
             fEta_max = MathF.Max(fEta_max, fEta_V_w_5426);
 
             // Validation - negative design ratio
@@ -721,8 +786,16 @@ namespace M_AS4600
 
             float fV_asterix_b_max_screw = 0;
 
-            if (fV_asterix_b_max_screw_Mxu != 0 || fV_asterix_b_max_screw_Vyv  != 0 || fV_asterix_b_max_screw_N != 0)
+            if (fV_asterix_b_max_screw_Mxu != 0 && fV_asterix_b_max_screw_Vyv != 0 && fV_asterix_b_max_screw_N != 0)
                 fV_asterix_b_max_screw = MathF.Sqrt(MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv)) + MathF.Pow2(fV_asterix_b_max_screw_N));
+            else if ((fV_asterix_b_max_screw_Mxu != 0 || fV_asterix_b_max_screw_Vyv != 0) && fV_asterix_b_max_screw_N == 0)
+                fV_asterix_b_max_screw = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_Vyv));
+            else if ((fV_asterix_b_max_screw_Mxu != 0 || fV_asterix_b_max_screw_N != 0) && fV_asterix_b_max_screw_Vyv == 0)
+                fV_asterix_b_max_screw = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Mxu) + MathF.Pow2(fV_asterix_b_max_screw_N));
+            else if ((fV_asterix_b_max_screw_Vyv != 0 || fV_asterix_b_max_screw_N != 0) && fV_asterix_b_max_screw_Mxu == 0)
+                fV_asterix_b_max_screw = MathF.Sqrt(MathF.Pow2(fV_asterix_b_max_screw_Vyv) + MathF.Pow2(fV_asterix_b_max_screw_N));
+            else
+                fV_asterix_b_max_screw = fV_asterix_b_max_screw_Mxu + fV_asterix_b_max_screw_Vyv + fV_asterix_b_max_screw_N; // Vsetky alebo len jedna zlozka je nenulova, mozeme pouzit sumu
 
             float fEta_Vb_5424 = eq.Eq_5424_1__(fV_asterix_b_max_screw, 0.5f, fVb_MainMember);
             fEta_max = MathF.Max(fEta_max, fEta_Vb_5424);
