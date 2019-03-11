@@ -23,18 +23,18 @@ namespace M_AS4600
         CCrSc_TW crsc_mainMember;
         CCrSc_TW crsc_secMember;
 
-        float ft_1_plate;
-        float ft_2_crscmainMember;
-        float ft_2_crscsecMember;
+        public float ft_1_plate;
+        public float ft_2_crscmainMember;
+        public float ft_2_crscsecMember;
 
-        float ff_yk_1_plate;
-        float ff_uk_1_plate;
+        public float ff_yk_1_plate;
+        public float ff_uk_1_plate;
 
-        float ff_yk_2_MainMember;
-        float ff_uk_2_MainMember;
+        public float ff_yk_2_MainMember;
+        public float ff_uk_2_MainMember;
 
-        float ff_yk_2_SecondaryMember;
-        float ff_uk_2_SecondaryMember;
+        public float ff_yk_2_SecondaryMember;
+        public float ff_uk_2_SecondaryMember;
 
         public float fEta_max = 0;
 
@@ -130,7 +130,7 @@ namespace M_AS4600
             else if (joint_temp.m_SecondaryMembers != null)
             {
                 if(joint_temp is CConnectionJoint_T001 || joint_temp is CConnectionJoint_T002 || joint_temp is CConnectionJoint_T003)
-                CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp); // purlin, girt or eave purlin
+                    CalculateDesignRatioGirtOrPurlinJoint(joint_temp, sDIF_temp); // purlin, girt or eave purlin
                 else if(joint_temp is CConnectionJoint_S001) // Front / back column connection to the main rafter
                     CalculateDesignRatioFrontOrBackColumnToMainRafterJoint(joint_temp, sDIF_temp);
                 else

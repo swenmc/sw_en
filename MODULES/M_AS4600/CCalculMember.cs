@@ -804,9 +804,9 @@ namespace M_AS4600
             fM_b_xu = MathF.Min(fM_be_xu, MathF.Min(fM_bl_xu, fM_bd_xu)); // Design resistance value 7.2.2
         }
 
-        List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
-        List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
-        List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
+        List<string> listPhysicalQuantity_Symbols = new List<string>(4);          // premenne zobrazene v tabulke
+        List<string> listPhysicalQuantity_Values = new List<string>(4);        // hodnoty danych premennych
+        List<string> listPhysicalQuantity_Units = new List<string>(4);       // jednotky danych premennych
 
         public void DisplayDesignResultsInGridView(ELSType eCombinationType, DataGrid dataGrid)
         {
@@ -841,24 +841,24 @@ namespace M_AS4600
             // Add Table to Dataset
             ds.Tables.Add(table);
 
-            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
+            for (int i = 0; i < listPhysicalQuantity_Symbols.Count; i++)
             {
                 DataRow row = table.NewRow();
                 try
                 {
-                    row["Symbol"] = zoznamMenuNazvy[i];
-                    row["Value"] = zoznamMenuHodnoty[i];
-                    row["Unit"] = zoznamMenuJednotky[i];
+                    row["Symbol"] = listPhysicalQuantity_Symbols[i];
+                    row["Value"] = listPhysicalQuantity_Values[i];
+                    row["Unit"] = listPhysicalQuantity_Units[i];
                     i++;
-                    if (i >= zoznamMenuNazvy.Count) break;
-                    row["Symbol1"] = zoznamMenuNazvy[i];
-                    row["Value1"] = zoznamMenuHodnoty[i];
-                    row["Unit1"] = zoznamMenuJednotky[i];
+                    if (i >= listPhysicalQuantity_Symbols.Count) break;
+                    row["Symbol1"] = listPhysicalQuantity_Symbols[i];
+                    row["Value1"] = listPhysicalQuantity_Values[i];
+                    row["Unit1"] = listPhysicalQuantity_Units[i];
                     i++;
-                    if (i >= zoznamMenuNazvy.Count) break;
-                    row["Symbol2"] = zoznamMenuNazvy[i];
-                    row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];
+                    if (i >= listPhysicalQuantity_Symbols.Count) break;
+                    row["Symbol2"] = listPhysicalQuantity_Symbols[i];
+                    row["Value2"] = listPhysicalQuantity_Values[i];
+                    row["Unit2"] = listPhysicalQuantity_Units[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
@@ -915,9 +915,9 @@ namespace M_AS4600
         private void DeleteLists()
         {
             // Deleting lists for updating actual values
-            zoznamMenuNazvy.Clear();
-            zoznamMenuHodnoty.Clear();
-            zoznamMenuJednotky.Clear();
+            listPhysicalQuantity_Symbols.Clear();
+            listPhysicalQuantity_Values.Clear();
+            listPhysicalQuantity_Units.Clear();
         }
 
         private void SetResultsDetailsFor_ULS(CCalculMember obj_CalcDesign)
@@ -934,268 +934,268 @@ namespace M_AS4600
             // Tension
             if (obj_CalcDesign.fEta_Nt > 0)
             {
-                zoznamMenuNazvy.Add("φ t");
-                zoznamMenuHodnoty.Add(obj_CalcDesign.fPhi_t.ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("φ t");
+                listPhysicalQuantity_Values.Add(obj_CalcDesign.fPhi_t.ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("N t,min");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_t_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
+                listPhysicalQuantity_Symbols.Add("N t,min");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_t_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[N]");
 
-                zoznamMenuNazvy.Add("η Nt");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_Nt, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η Nt");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_Nt, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
             }
 
             // Compression
             // Global Buckling
             if (obj_CalcDesign.fEta_721_N > 0 || obj_CalcDesign.fEta_722_M_xu > 0)
             {
-                zoznamMenuNazvy.Add("f ox");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_ox * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
+                listPhysicalQuantity_Symbols.Add("f ox");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_ox * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Pa]");
 
-                zoznamMenuNazvy.Add("f oy");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
+                listPhysicalQuantity_Symbols.Add("f oy");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Pa]");
 
-                zoznamMenuNazvy.Add("f oz");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oz * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
+                listPhysicalQuantity_Symbols.Add("f oz");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oz * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Pa]");
 
                 if (obj_CalcDesign.fEta_721_N > 0)
                 {
-                    zoznamMenuNazvy.Add("f oc");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oc * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[Pa]");
+                    listPhysicalQuantity_Symbols.Add("f oc");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oc * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[Pa]");
 
-                    zoznamMenuNazvy.Add("λ c");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_c, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("λ c");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.flambda_c, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
 
-                    zoznamMenuNazvy.Add("N y");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_y * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N y");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_y * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
-                    zoznamMenuNazvy.Add("N oc");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_oc * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N oc");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_oc * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
-                    zoznamMenuNazvy.Add("N ce");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_ce * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N ce");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_ce * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
                     // Local Buckling
-                    zoznamMenuNazvy.Add("f ol");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[Pa]");
+                    listPhysicalQuantity_Symbols.Add("f ol");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[Pa]");
 
-                    zoznamMenuNazvy.Add("λ l");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_l, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("λ l");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.flambda_l, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
 
-                    zoznamMenuNazvy.Add("N ol");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_ol * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N ol");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_ol * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
-                    zoznamMenuNazvy.Add("N cl");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_cl * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N cl");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_cl * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
                     // Distorsial Buckling
-                    zoznamMenuNazvy.Add("f od");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_od * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[Pa]");
+                    listPhysicalQuantity_Symbols.Add("f od");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_od * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[Pa]");
 
-                    zoznamMenuNazvy.Add("λ d");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.flambda_d, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("λ d");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.flambda_d, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
 
-                    zoznamMenuNazvy.Add("N od");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_od * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N od");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_od * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
-                    zoznamMenuNazvy.Add("N cd");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_cd * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N cd");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_cd * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
-                    zoznamMenuNazvy.Add("N c,min");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fN_c_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[N]");
+                    listPhysicalQuantity_Symbols.Add("N c,min");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_c_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[N]");
 
-                    zoznamMenuNazvy.Add("φ c");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_c, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("φ c");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_c, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
 
-                    zoznamMenuNazvy.Add("η Nc");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_721_N, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("η Nc");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_721_N, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
                 }
             }
 
             // Bending
 
-            zoznamMenuNazvy.Add("M p,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_p_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
+            listPhysicalQuantity_Symbols.Add("M p,x");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_p_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[Nm]");
 
-            zoznamMenuNazvy.Add("M y,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_y_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
+            listPhysicalQuantity_Symbols.Add("M y,x");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_y_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[Nm]");
 
-            zoznamMenuNazvy.Add("M p,y");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_p_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
+            listPhysicalQuantity_Symbols.Add("M p,y");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_p_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[Nm]");
 
-            zoznamMenuNazvy.Add("M y,y");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_y_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
+            listPhysicalQuantity_Symbols.Add("M y,y");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_y_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[Nm]");
 
             if (obj_CalcDesign.fEta_722_M_xu > 0)
             {
                 // Bending about x/u axis
-                zoznamMenuNazvy.Add("C b");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fC_b, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("C b");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fC_b, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("M o,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_o_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M o,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_o_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
-                zoznamMenuNazvy.Add("M be,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_be_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M be,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_be_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
                 // Local Buckling
-                zoznamMenuNazvy.Add("f ol,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_ol_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
+                listPhysicalQuantity_Symbols.Add("f ol,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_ol_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Pa]");
 
-                zoznamMenuNazvy.Add("M ol,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_ol_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M ol,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_ol_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
-                zoznamMenuNazvy.Add("λ l,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_l_xu, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("λ l,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_l_xu, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("M bl,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_bl_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M bl,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_bl_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
                 // Distrosial buckling
-                zoznamMenuNazvy.Add("f od,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.ff_od_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Pa]");
+                listPhysicalQuantity_Symbols.Add("f od,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_od_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Pa]");
 
-                zoznamMenuNazvy.Add("M od,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_od_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M od,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_od_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
-                zoznamMenuNazvy.Add("λ d,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_d_xu, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("λ d,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_d_xu, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("M bd,x");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_bd_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M bd,x");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_bd_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
-                zoznamMenuNazvy.Add("φ b");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_b, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("φ b");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_b, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_722_M_xu, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_722_M_xu, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
             }
 
             // Shear
             if (obj_CalcDesign.fEta_723_9_xu_yv > 0)
             {
-                zoznamMenuNazvy.Add("V y,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_y_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
+                listPhysicalQuantity_Symbols.Add("V y,y");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_y_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[N]");
 
-                zoznamMenuNazvy.Add("V v,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_v_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
+                listPhysicalQuantity_Symbols.Add("V v,y");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_v_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[N]");
 
-                zoznamMenuNazvy.Add("V cr,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fV_cr_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[N]");
+                listPhysicalQuantity_Symbols.Add("V cr,y");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_cr_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[N]");
 
-                zoznamMenuNazvy.Add("λ v,y");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fLambda_v_yv, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("λ v,y");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_v_yv, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("φ v");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fPhi_v, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("φ v");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_v, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_9_xu_yv, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_9_xu_yv, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_11_V_yv, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_11_V_yv, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
                 if (obj_CalcDesign.fEta_723_10_xu > 0)
                 {
-                    zoznamMenuNazvy.Add("η");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_10_xu, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("η");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_10_xu, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
                 }
 
                 if (obj_CalcDesign.fEta_723_12_xu_yv_10 > 0)
                 {
-                    zoznamMenuNazvy.Add("η");
-                    zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces).ToString());
-                    zoznamMenuJednotky.Add("[-]");
+                    listPhysicalQuantity_Symbols.Add("η");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add("[-]");
                 }
             }
 
             // Interation of internal forces
-            zoznamMenuNazvy.Add("M s,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
+            listPhysicalQuantity_Symbols.Add("M s,x");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_s_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[Nm]");
 
-            zoznamMenuNazvy.Add("M b,x");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_b_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[Nm]");
+            listPhysicalQuantity_Symbols.Add("M b,x");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_b_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[Nm]");
 
             // Compression and bending
             if (obj_CalcDesign.fEta_721_N > 0 && obj_CalcDesign.fEta_724 > 0)
             {
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_724, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_724, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
             }
 
             // Tension and bending
             if (obj_CalcDesign.fEta_Nt > 0 && obj_CalcDesign.fEta_725_1 > 0)
             {
-                zoznamMenuNazvy.Add("M s,x,f");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_xu_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M s,x,f");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_s_xu_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
-                zoznamMenuNazvy.Add("M s,y,f");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fM_s_yv_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[Nm]");
+                listPhysicalQuantity_Symbols.Add("M s,y,f");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_s_yv_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[Nm]");
 
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_725_1, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_725_1, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
 
-                zoznamMenuNazvy.Add("η");
-                zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_725_2, iNumberOfDecimalPlaces).ToString());
-                zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_725_2, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add("[-]");
             }
 
             // Maximum design ratio
-            zoznamMenuNazvy.Add("η max");
-            zoznamMenuHodnoty.Add(Math.Round(obj_CalcDesign.fEta_max, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("η max");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_max, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add("[-]");
         }
 
         private void SetResultsDetailsFor_SLS(CCalculMember obj_CalcDesign)
@@ -1205,26 +1205,26 @@ namespace M_AS4600
             // Deflection
             // δ
 
-            zoznamMenuNazvy.Add("δ lim");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fLimitDeflection.ToString());
-            zoznamMenuJednotky.Add("[mm]");
+            listPhysicalQuantity_Symbols.Add("δ lim");
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.fLimitDeflection.ToString());
+            listPhysicalQuantity_Units.Add("[mm]");
 
             // Design ratio
-            zoznamMenuNazvy.Add("η x/u");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_yu.ToString());
-            zoznamMenuJednotky.Add("[mm]");
+            listPhysicalQuantity_Symbols.Add("η x/u");
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_yu.ToString());
+            listPhysicalQuantity_Units.Add("[mm]");
 
-            zoznamMenuNazvy.Add("η y/v");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zv.ToString());
-            zoznamMenuJednotky.Add("[mm]");
+            listPhysicalQuantity_Symbols.Add("η y/v");
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_zv.ToString());
+            listPhysicalQuantity_Units.Add("[mm]");
 
-            zoznamMenuNazvy.Add("η x");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_yy.ToString());
-            zoznamMenuJednotky.Add("[mm]");
+            listPhysicalQuantity_Symbols.Add("η x");
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_yy.ToString());
+            listPhysicalQuantity_Units.Add("[mm]");
 
-            zoznamMenuNazvy.Add("η y");
-            zoznamMenuHodnoty.Add(obj_CalcDesign.fEta_defl_zz.ToString());
-            zoznamMenuJednotky.Add("[mm]");
+            listPhysicalQuantity_Symbols.Add("η y");
+            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_zz.ToString());
+            listPhysicalQuantity_Units.Add("[mm]");
         }
 
     }

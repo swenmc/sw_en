@@ -15,9 +15,9 @@ namespace PFD
 {
     public static class DataGridHelper
     {
-        static List<string> zoznamMenuNazvy = new List<string>(4);          // premenne zobrazene v tabulke
-        static List<string> zoznamMenuHodnoty = new List<string>(4);        // hodnoty danych premennych
-        static List<string> zoznamMenuJednotky = new List<string>(4);       // jednotky danych premennych
+        static List<string> listPhysicalQuantity_Symbols = new List<string>(4);          // premenne zobrazene v tabulke
+        static List<string> listPhysicalQuantity_Values = new List<string>(4);        // hodnoty danych premennych
+        static List<string> listPhysicalQuantity_Units = new List<string>(4);       // jednotky danych premennych
         public static void DisplayDesignResultsInGridView(this CCalculJoint calcul, DataGrid dataGrid)
         {
             DeleteLists();
@@ -48,24 +48,24 @@ namespace PFD
             // Add Table to Dataset
             ds.Tables.Add(table);
 
-            for (int i = 0; i < zoznamMenuNazvy.Count; i++)
+            for (int i = 0; i < listPhysicalQuantity_Symbols.Count; i++)
             {
                 DataRow row = table.NewRow();
                 try
                 {
-                    row["Symbol"] = zoznamMenuNazvy[i];
-                    row["Value"] = zoznamMenuHodnoty[i];
-                    row["Unit"] = zoznamMenuJednotky[i];
+                    row["Symbol"] = listPhysicalQuantity_Symbols[i];
+                    row["Value"] = listPhysicalQuantity_Values[i];
+                    row["Unit"] = listPhysicalQuantity_Units[i];
                     i++;
-                    if (i >= zoznamMenuNazvy.Count) break;
-                    row["Symbol1"] = zoznamMenuNazvy[i];
-                    row["Value1"] = zoznamMenuHodnoty[i];
-                    row["Unit1"] = zoznamMenuJednotky[i];
+                    if (i >= listPhysicalQuantity_Symbols.Count) break;
+                    row["Symbol1"] = listPhysicalQuantity_Symbols[i];
+                    row["Value1"] = listPhysicalQuantity_Values[i];
+                    row["Unit1"] = listPhysicalQuantity_Units[i];
                     i++;
-                    if (i >= zoznamMenuNazvy.Count) break;
-                    row["Symbol2"] = zoznamMenuNazvy[i];
-                    row["Value2"] = zoznamMenuHodnoty[i];
-                    row["Unit2"] = zoznamMenuJednotky[i];
+                    if (i >= listPhysicalQuantity_Symbols.Count) break;
+                    row["Symbol2"] = listPhysicalQuantity_Symbols[i];
+                    row["Value2"] = listPhysicalQuantity_Values[i];
+                    row["Unit2"] = listPhysicalQuantity_Units[i];
                 }
                 catch (ArgumentOutOfRangeException) { }
                 table.Rows.Add(row);
@@ -121,9 +121,9 @@ namespace PFD
         private static void DeleteLists()
         {
             // Deleting lists for updating actual values
-            zoznamMenuNazvy.Clear();
-            zoznamMenuHodnoty.Clear();
-            zoznamMenuJednotky.Clear();
+            listPhysicalQuantity_Symbols.Clear();
+            listPhysicalQuantity_Values.Clear();
+            listPhysicalQuantity_Units.Clear();
         }
 
         private static void SetResultsDetailsFor_ULS(CCalculJoint calc)
@@ -132,70 +132,92 @@ namespace PFD
             float fUnitFactor_Moment = 0.001f;    // from Nm to kNm
             float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
 
+            float fUnitFactor_Thickness = 1000f; // m to mm
+
             int iNumberOfDecimalPlaces = 3;
 
+            string sUnit_Force = "[kN]";
+            string sUnit_Moment = "[kNm]";
+            string sUnit_Stress = "[MPa]";
+
+            string sUnit_Thickness = "[mm]";
+
+            string sUnit_DesignRatio = "[-]";
 
             // Display results in datagrid
-            zoznamMenuNazvy.Add("fEta_max");
-            zoznamMenuHodnoty.Add(calc.fEta_max.ToString());
-            zoznamMenuJednotky.Add("[-]");
 
-            zoznamMenuNazvy.Add("fM_yu");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fM_yu * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            // Internal forces in joint
+            listPhysicalQuantity_Symbols.Add("N");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fN * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Force);
 
-            zoznamMenuNazvy.Add("fM_yy");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fM_yy, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("Vx");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fV_yu * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Force);
 
-            zoznamMenuNazvy.Add("fM_zv");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fM_zv, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("Vy");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fV_zv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Force);
 
-            zoznamMenuNazvy.Add("fM_zz");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fM_zz, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            //listPhysicalQuantity_Symbols.Add("T");
+            //listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fT * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            //listPhysicalQuantity_Units.Add(sUnit_Moment);
 
-            zoznamMenuNazvy.Add("fN");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fN, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("Mx");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fM_yu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
-            zoznamMenuNazvy.Add("fN_c");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fN_c, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("My");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fM_zv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
-            zoznamMenuNazvy.Add("fN_t");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fN_t, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            // Component properties
+            listPhysicalQuantity_Symbols.Add("t1");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.ft_1_plate * fUnitFactor_Thickness, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Thickness);
 
-            zoznamMenuNazvy.Add("fT");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fT, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("fy.1");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.ff_yk_1_plate * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Stress);
 
-            zoznamMenuNazvy.Add("fV_yu");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fV_yu, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("fu.1");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.ff_uk_1_plate * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Stress);
 
-            zoznamMenuNazvy.Add("fV_yy");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fV_yy, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            if (calc.ft_2_crscmainMember > 0.0001f)
+            {
+                listPhysicalQuantity_Symbols.Add("t2.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(calc.ft_2_crscmainMember * fUnitFactor_Thickness, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Thickness);
 
-            zoznamMenuNazvy.Add("fV_zv");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fV_zv, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+                listPhysicalQuantity_Symbols.Add("fy.2.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(calc.ff_yk_2_MainMember * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
 
-            zoznamMenuNazvy.Add("fV_zz");
-            zoznamMenuHodnoty.Add(Math.Round(calc.sDIF.fV_zz, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
-            
+                listPhysicalQuantity_Symbols.Add("fu.2.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(calc.ff_uk_2_MainMember * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+            }
+
+            if (calc.ft_2_crscsecMember > 0.0001f)
+            {
+                listPhysicalQuantity_Symbols.Add("t2.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(calc.ft_2_crscsecMember * fUnitFactor_Thickness, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Thickness);
+
+                listPhysicalQuantity_Symbols.Add("fy.2.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(calc.ff_yk_2_SecondaryMember * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("fu.2.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(calc.ff_uk_2_SecondaryMember * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+            }
 
             // Maximum design ratio
-            zoznamMenuNazvy.Add("η max");
-            zoznamMenuHodnoty.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString());
-            zoznamMenuJednotky.Add("[-]");
+            listPhysicalQuantity_Symbols.Add("η max");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
         }
-
-        
-
     }
 }

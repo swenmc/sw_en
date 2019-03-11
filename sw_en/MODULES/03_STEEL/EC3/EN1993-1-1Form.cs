@@ -25,9 +25,9 @@ namespace CENEX
     {
         List<bool> data_menu = new List<bool>(10);
         List<string> zoznamNazvyPremennych = new List<string>(20);   //premenne do databazy
-        List<string> zoznamMenuNazvy = new List<string>(20);          //premenne zobrazene v tabulke
-        List<string> zoznamMenuHodnoty = new List<string>(20);        //hodnoty danych premennych
-        List<string> zoznamMenuJednotky = new List<string>(20);        //jednotky danych premennych
+        List<string> listPhysicalQuantity_Symbols = new List<string>(20);          //premenne zobrazene v tabulke
+        List<string> listPhysicalQuantity_Values = new List<string>(20);        //hodnoty danych premennych
+        List<string> listPhysicalQuantity_Units = new List<string>(20);        //jednotky danych premennych
 
         List<string> zoznamNazvyPremeSTEEL = new List<string>(20);        //premenne do databazy STEEL
         List<string> zoznamMenuNazvySTEEL = new List<string>(20);          //premenne zobrazene v tabulke
@@ -179,9 +179,9 @@ namespace CENEX
         private void deleteLists()
         {
             zoznamNazvyPremennych.Clear();
-            zoznamMenuNazvy.Clear();
-            zoznamMenuJednotky.Clear();
-            zoznamMenuHodnoty.Clear();
+            listPhysicalQuantity_Symbols.Clear();
+            listPhysicalQuantity_Units.Clear();
+            listPhysicalQuantity_Values.Clear();
             zoznamMenuHodnotySTEEL.Clear();
             zoznamMenuNazvySTEEL.Clear();
             zoznamMenuJednotkySTEEL.Clear();
@@ -234,8 +234,8 @@ namespace CENEX
                     if (chLInfo.ZoznamZasktPrem[i])
                     {
                         zoznamNazvyPremennych.Add(chLInfo.ZoznamPremennych[i]); //premenne do databazy
-                        zoznamMenuNazvy.Add(chLInfo.ZoznamZobrazPremennych[i]); //premenne zobrazene v tabulke
-                        zoznamMenuJednotky.Add(chLInfo.ZoznamJednotiek[i]);
+                        listPhysicalQuantity_Symbols.Add(chLInfo.ZoznamZobrazPremennych[i]); //premenne zobrazene v tabulke
+                        listPhysicalQuantity_Units.Add(chLInfo.ZoznamJednotiek[i]);
                         //MessageBox.Show(chLInfo.ZoznamPremennych[i] + "\n" + chLInfo.ZoznamZobrazPremennych[i] + "\n"
                         //    + chLInfo.ZoznamJednotiek[i]);
                     }
@@ -245,7 +245,7 @@ namespace CENEX
                 {
                     if (chLInfo.ZoznamZasktPrem[i])
                     {
-                        zoznamMenuNazvy.Add(chLInfo.ZoznamPremennych[i]);  //premenne zadavane pouzivatelom
+                        listPhysicalQuantity_Symbols.Add(chLInfo.ZoznamPremennych[i]);  //premenne zadavane pouzivatelom
                         zoznamNazvyPremennych.Add(chLInfo.ZoznamPremennych[i]);
                         //MessageBox.Show(chLInfo.ZoznamPremennych[i]);
                     }
@@ -282,52 +282,52 @@ namespace CENEX
                             #region Table - user-data cells basic loading - database "user" column
 
                             // Internal forces in section
-                            case "N": sql += "user"; unit = "kN"; zoznamMenuJednotky.Add(unit); break;
-                            case "Vy": sql += "user"; unit = "kN"; zoznamMenuJednotky.Add(unit); break;
-                            case "Vz": sql += "user"; unit = "kN"; zoznamMenuJednotky.Add(unit); break;
-                            case "Mx": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
-                            case "My": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
-                            case "Mz": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
+                            case "N": sql += "user"; unit = "kN"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Vy": sql += "user"; unit = "kN"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Vz": sql += "user"; unit = "kN"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Mx": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "My": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Mz": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // End bending moments
-                            case "My.a": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
-                            case "My.b": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
-                            case "Mz.a": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
-                            case "Mz.b": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
+                            case "My.a": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "My.b": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Mz.a": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Mz.b": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // Midspan bending moments
-                            case "My.s": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
-                            case "Mz.s": sql += "user"; unit = "kNm"; zoznamMenuJednotky.Add(unit); break;
+                            case "My.s": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Mz.s": sql += "user"; unit = "kNm"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // Annex A - Table A.2 input data
-                            case "My.Ed.x": sql += "user"; unit = "[kNm]"; zoznamMenuJednotky.Add(unit); break;
-                            case "Mz.Ed.x": sql += "user"; unit = "[kNm]"; zoznamMenuJednotky.Add(unit); break;
-                            case "Deflection.y.x": sql += "user"; unit = "[mm]"; zoznamMenuJednotky.Add(unit); break;
-                            case "Deflection.z.x": sql += "user"; unit = "[mm]"; zoznamMenuJednotky.Add(unit); break;
+                            case "My.Ed.x": sql += "user"; unit = "[kNm]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Mz.Ed.x": sql += "user"; unit = "[kNm]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Deflection.y.x": sql += "user"; unit = "[mm]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "Deflection.z.x": sql += "user"; unit = "[mm]"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // Lateral buckling Mcr variables
-                            case "C1y": sql += "user"; unit = "[-]"; zoznamMenuJednotky.Add(unit); break;
-                            case "C2y": sql += "user"; unit = "[-]"; zoznamMenuJednotky.Add(unit); break;
-                            case "C3y": sql += "user"; unit = "[-]"; zoznamMenuJednotky.Add(unit); break;
-                            case "kz_LT": sql += "user"; unit = "[-]"; zoznamMenuJednotky.Add(unit); break;
-                            case "kw_LT": sql += "user"; unit = "[-]"; zoznamMenuJednotky.Add(unit); break;
+                            case "C1y": sql += "user"; unit = "[-]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "C2y": sql += "user"; unit = "[-]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "C3y": sql += "user"; unit = "[-]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "kz_LT": sql += "user"; unit = "[-]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "kw_LT": sql += "user"; unit = "[-]"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // Beam properties - lenght
-                            case "L_teor": sql += "user"; unit = "mm"; zoznamMenuJednotky.Add(unit); break;
-                            case "L_y_buck": sql += "user"; unit = "mm"; zoznamMenuJednotky.Add(unit); break;
-                            case "L_z_buck": sql += "user"; unit = "mm"; zoznamMenuJednotky.Add(unit); break;
-                            case "L_y_LT": sql += "user"; unit = "mm"; zoznamMenuJednotky.Add(unit); break;
-                            case "L_z_LT": sql += "user"; unit = "mm"; zoznamMenuJednotky.Add(unit); break;
-                            case "L_T": sql += "user"; unit = "mm"; zoznamMenuJednotky.Add(unit); break;
+                            case "L_teor": sql += "user"; unit = "mm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "L_y_buck": sql += "user"; unit = "mm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "L_z_buck": sql += "user"; unit = "mm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "L_y_LT": sql += "user"; unit = "mm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "L_z_LT": sql += "user"; unit = "mm"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "L_T": sql += "user"; unit = "mm"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // Cross-section data
 
-                            case "Anet": sql += "user"; unit = "mm2"; zoznamMenuJednotky.Add(unit); break;
+                            case "Anet": sql += "user"; unit = "mm2"; listPhysicalQuantity_Units.Add(unit); break;
 
                             // Variables - Torsion NAD CZE
-                            case "MEd.T": sql += "user"; unit = "[kNm]"; zoznamMenuJednotky.Add(unit); break;
-                            case "VEd.T": sql += "user"; unit = "[kN]"; zoznamMenuJednotky.Add(unit); break;
-                            case "e.T": sql += "user"; unit = "[mm]"; zoznamMenuJednotky.Add(unit); break;
+                            case "MEd.T": sql += "user"; unit = "[kNm]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "VEd.T": sql += "user"; unit = "[kN]"; listPhysicalQuantity_Units.Add(unit); break;
+                            case "e.T": sql += "user"; unit = "[mm]"; listPhysicalQuantity_Units.Add(unit); break;
 
                             #endregion
 
@@ -339,7 +339,7 @@ namespace CENEX
                         dat_reader.Read();
                         try
                         {
-                            zoznamMenuHodnoty.Add(dat_reader.GetValue(0).ToString());//zapise sa hodnota do zoznamu
+                            listPhysicalQuantity_Values.Add(dat_reader.GetValue(0).ToString());//zapise sa hodnota do zoznamu
                         }
                         catch (InvalidOperationException) { }
 
@@ -382,23 +382,23 @@ namespace CENEX
                     table.Rows.Add(row);   //adding of new row with values to the table
                 }
 
-                for (int i = 0; i < zoznamMenuNazvy.Count; i++)
+                for (int i = 0; i < listPhysicalQuantity_Symbols.Count; i++)
                 {
                     DataRow row = table.NewRow();
 
                     try
                     {
-                        row["Premenna"] = zoznamMenuNazvy[i];
-                        row["Hodnota"] = zoznamMenuHodnoty[i];
-                        row["Jednotka"] = zoznamMenuJednotky[i];
+                        row["Premenna"] = listPhysicalQuantity_Symbols[i];
+                        row["Hodnota"] = listPhysicalQuantity_Values[i];
+                        row["Jednotka"] = listPhysicalQuantity_Units[i];
                         i++;
-                        row["Premenna1"] = zoznamMenuNazvy[i];
-                        row["Hodnota1"] = zoznamMenuHodnoty[i];
-                        row["Jednotka1"] = zoznamMenuJednotky[i];
+                        row["Premenna1"] = listPhysicalQuantity_Symbols[i];
+                        row["Hodnota1"] = listPhysicalQuantity_Values[i];
+                        row["Jednotka1"] = listPhysicalQuantity_Units[i];
                         i++;
-                        row["Premenna2"] = zoznamMenuNazvy[i];
-                        row["Hodnota2"] = zoznamMenuHodnoty[i];
-                        row["Jednotka2"] = zoznamMenuJednotky[i];
+                        row["Premenna2"] = listPhysicalQuantity_Symbols[i];
+                        row["Hodnota2"] = listPhysicalQuantity_Values[i];
+                        row["Jednotka2"] = listPhysicalQuantity_Units[i];
                     }
                     catch (ArgumentOutOfRangeException) { }
                     table.Rows.Add(row);
@@ -584,77 +584,77 @@ namespace CENEX
 
                         // Cross-section class
                         case "Class.w":
-                            this.zoznamMenuNazvy.Add("Class.w");
-                            this.zoznamMenuHodnoty.Add(en.Class_w.ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Class.w");
+                            this.listPhysicalQuantity_Values.Add(en.Class_w.ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Class.f":
-                            this.zoznamMenuNazvy.Add("Class.f");
-                            this.zoznamMenuHodnoty.Add(en.Class_f.ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Class.f");
+                            this.listPhysicalQuantity_Values.Add(en.Class_f.ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Class":
-                            this.zoznamMenuNazvy.Add("Class");
-                            this.zoznamMenuHodnoty.Add(en.Classall.ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Class");
+                            this.listPhysicalQuantity_Values.Add(en.Classall.ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
 
                         // Class 4 cross-section data
 
                         case "Aeff":
-                            this.zoznamMenuNazvy.Add("Aeff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Aeff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm2]");
+                            this.listPhysicalQuantity_Symbols.Add("Aeff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Aeff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm2]");
                             break;
                         case "Ay.v.eff":
-                            this.zoznamMenuNazvy.Add("Ay.v.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ay_v_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm2]");
+                            this.listPhysicalQuantity_Symbols.Add("Ay.v.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ay_v_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm2]");
                             break;
                         case "Az.v.eff":
-                            this.zoznamMenuNazvy.Add("Az.v.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Az_v_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm2]");
+                            this.listPhysicalQuantity_Symbols.Add("Az.v.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Az_v_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm2]");
                             break;
                         case "Wy.eff":
-                            this.zoznamMenuNazvy.Add("Wy.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Wy_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm3]");
+                            this.listPhysicalQuantity_Symbols.Add("Wy.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Wy_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm3]");
                             break;
                         case "Wz.eff":
-                            this.zoznamMenuNazvy.Add("Wz.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Wz_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm3]");
+                            this.listPhysicalQuantity_Symbols.Add("Wz.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Wz_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm3]");
                             break;
                         case "Wy.eff.min":
-                            this.zoznamMenuNazvy.Add("Wy.eff.min");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Wy_eff_min, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm3]");
+                            this.listPhysicalQuantity_Symbols.Add("Wy.eff.min");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Wy_eff_min, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm3]");
                             break;
                         case "Wz.eff.min":
-                            this.zoznamMenuNazvy.Add("Wz.eff.min");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Wz_eff_min, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm3]");
+                            this.listPhysicalQuantity_Symbols.Add("Wz.eff.min");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Wz_eff_min, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm3]");
                             break;
                         case "Iy.eff":
-                            this.zoznamMenuNazvy.Add("Iy.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Iy_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm4]");
+                            this.listPhysicalQuantity_Symbols.Add("Iy.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Iy_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm4]");
                             break;
                         case "Iz.eff":
-                            this.zoznamMenuNazvy.Add("Iz.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Iz_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm4]");
+                            this.listPhysicalQuantity_Symbols.Add("Iz.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Iz_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm4]");
                             break;
                         case "iy.eff":
-                            this.zoznamMenuNazvy.Add("iy.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Iy_r_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm]");
+                            this.listPhysicalQuantity_Symbols.Add("iy.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Iy_r_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm]");
                             break;
                         case "iz.eff":
-                            this.zoznamMenuNazvy.Add("iz.eff");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Iz_r_eff, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[mm]");
+                            this.listPhysicalQuantity_Symbols.Add("iz.eff");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Iz_r_eff, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[mm]");
                             break;
 
 
@@ -663,217 +663,217 @@ namespace CENEX
 
 
                         case "Npl.Rd":
-                            this.zoznamMenuNazvy.Add("Npl.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Npl_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Npl.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Npl_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nu.Rd":
-                            this.zoznamMenuNazvy.Add("Nu.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Nu_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nu.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Nu_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nnet.Rd":
-                            this.zoznamMenuNazvy.Add("Nnet.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Nnet_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nnet.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Nnet_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nt.Rd":
-                            this.zoznamMenuNazvy.Add("Nt.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Nt_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nt.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Nt_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Ny.cr":
-                            this.zoznamMenuNazvy.Add("Ny.cr");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ny_cr / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Ny.cr");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ny_cr / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nz.cr":
-                            this.zoznamMenuNazvy.Add("Nz.cr");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Nz_cr / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nz.cr");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Nz_cr / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nc.Rd":
-                            this.zoznamMenuNazvy.Add("Nc.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Nc_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nc.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Nc_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Ncr.TF":
-                            this.zoznamMenuNazvy.Add("Ncr.TF");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.N_cr_TF / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Ncr.TF");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.N_cr_TF / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Ncr.T":
-                            this.zoznamMenuNazvy.Add("Ncr.T");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.N_cr_T / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Ncr.T");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.N_cr_T / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Ny.b.Rd":
-                            this.zoznamMenuNazvy.Add("Ny.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ny_b_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Ny.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ny_b_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nz.b.Rd":
-                            this.zoznamMenuNazvy.Add("Nz.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Nz_b_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nz.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Nz_b_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "NT.b.Rd":
-                            this.zoznamMenuNazvy.Add("NT.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.NT_b_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("NT.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.NT_b_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Nb.Rd":
-                            this.zoznamMenuNazvy.Add("Nb.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.N_b_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Nb.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.N_b_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Vy.c.Rd":
-                            this.zoznamMenuNazvy.Add("Vy.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Vy_c_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Vy.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Vy_c_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "Vz.c.Rd":
-                            this.zoznamMenuNazvy.Add("Vz.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Vz_c_Rd / 1000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kN]");
+                            this.listPhysicalQuantity_Symbols.Add("Vz.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Vz_c_Rd / 1000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kN]");
                             break;
                         case "My.c.Rd":
-                            this.zoznamMenuNazvy.Add("My.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_c_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("My.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_c_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "Mz.c.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Mz_c_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Mz_c_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "My.el.Rd":
-                            this.zoznamMenuNazvy.Add("My.el.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_el_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("My.el.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_el_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "Mz.el.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.el.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_c_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.el.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_c_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "My.pl.Rd":
-                            this.zoznamMenuNazvy.Add("My.pl.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_pl_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("My.pl.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_pl_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "Mz.pl.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.pl.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Mz_pl_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.pl.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Mz_pl_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "My.V.el.Rd":
-                            this.zoznamMenuNazvy.Add("My.V.el.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_V_el_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("My.V.el.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_V_el_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "Mz.V.el.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.V.el.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Mz_V_el_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.V.el.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Mz_V_el_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "My.V.pl.Rd":
-                            this.zoznamMenuNazvy.Add("My.V.pl.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_V_pl_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("My.V.pl.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_V_pl_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "Mz.V.pl.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.V.pl.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Mz_V_pl_Rd / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.V.pl.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Mz_V_pl_Rd / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "My.Rk":
-                            this.zoznamMenuNazvy.Add("My.Rk");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.My_Rk / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("My.Rk");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.My_Rk / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
                         case "Mz.Rk":
-                            this.zoznamMenuNazvy.Add("Mz.Rk");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Mz_Rk / 1000000, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[kNm]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.Rk");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Mz_Rk / 1000000, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[kNm]");
                             break;
 
                         // Check ratios
 
                         case "NEd/Nt.Rd":
-                            this.zoznamMenuNazvy.Add("NEd/Nt.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_65, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("NEd/Nt.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_65, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "NEd/Nc.Rd":
-                            this.zoznamMenuNazvy.Add("NEd/Nc.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_69, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("NEd/Nc.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_69, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Vy.Ed/Vy.c.Rd":
-                            this.zoznamMenuNazvy.Add("Vy.Ed/Vy.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_617y, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Vy.Ed/Vy.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_617y, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Vz.Ed/Vz.c.Rd":
-                            this.zoznamMenuNazvy.Add("Vz.Ed/Vz.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_617z, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Vz.Ed/Vz.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_617z, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "My.Ed/My.c.Rd":
-                            this.zoznamMenuNazvy.Add("My.Ed/My.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_612y, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("My.Ed/My.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_612y, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Mz.Ed/Mz.c.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.Ed/Mz.c.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_612z, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.Ed/Mz.c.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_612z, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "My.Ed/My.V.Rd":
-                            this.zoznamMenuNazvy.Add("My.Ed/My.V.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_612y_MV, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("My.Ed/My.V.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_612y_MV, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Mz.Ed/Mz.V.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.Ed/Mz.V.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_612z_MV, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.Ed/Mz.V.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_612z_MV, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Tx.Ed/TRd":
-                            this.zoznamMenuNazvy.Add("Tx.Ed/TRd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_623, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Tx.Ed/TRd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_623, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "σx.Ed/fyd":
-                            this.zoznamMenuNazvy.Add("σx.Ed/fyd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_629_max_d, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("σx.Ed/fyd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_629_max_d, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "NEd/Nb.Rd":
-                            this.zoznamMenuNazvy.Add("NEd/Nb.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_646, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("NEd/Nb.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_646, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "My.Ed/My.b.Rd":
-                            this.zoznamMenuNazvy.Add("My.Ed/My.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_654y, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("My.Ed/My.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_654y, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Mz.Ed/Mz.b.Rd":
-                            this.zoznamMenuNazvy.Add("Mz.Ed/Mz.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_654z, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Mz.Ed/Mz.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_654z, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "NEd/Ny.b.Rd":
-                            this.zoznamMenuNazvy.Add("NEd/Ny.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_661N, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("NEd/Ny.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_661N, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "NEd/Nz.b.Rd":
-                            this.zoznamMenuNazvy.Add("NEd/Nz.b.Rd");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_662N, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("NEd/Nz.b.Rd");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_662N, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
 
 
@@ -882,33 +882,33 @@ namespace CENEX
                         /* 
                         
                          case "My.Ed/My.b.Rd":
-                             this.zoznamMenuNazvy.Add("My.Ed/My.b.Rd");
-                             this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_661My, 2).ToString());
-                             this.zoznamMenuJednotky.Add("[-]");
+                             this.listPhysicalQuantity_Symbols.Add("My.Ed/My.b.Rd");
+                             this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_661My, 2).ToString());
+                             this.listPhysicalQuantity_Units.Add("[-]");
                              break;
                          case "Mz.Ed/Mz.Rd":
-                             this.zoznamMenuNazvy.Add("Mz.Ed/Mz.Rd");
-                             this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_661Mz, 2).ToString());
-                             this.zoznamMenuJednotky.Add("[-]");
+                             this.listPhysicalQuantity_Symbols.Add("Mz.Ed/Mz.Rd");
+                             this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_661Mz, 2).ToString());
+                             this.listPhysicalQuantity_Units.Add("[-]");
                              break;
                          */
 
 
                         case "Nc.kyyMy.kyzMz":
-                            this.zoznamMenuNazvy.Add("Nc.kyyMy.kyzMz");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_661, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Nc.kyyMy.kyzMz");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_661, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
                         case "Nc.kzyMy.kzzMz":
-                            this.zoznamMenuNazvy.Add("Nc.kzyMy.kzzMz");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_662, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Nc.kzyMy.kzzMz");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_662, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
 
                         case "Maximum ratio":
-                            this.zoznamMenuNazvy.Add("Maximum ratio");
-                            this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_maxtot, 2).ToString());
-                            this.zoznamMenuJednotky.Add("[-]");
+                            this.listPhysicalQuantity_Symbols.Add("Maximum ratio");
+                            this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_maxtot, 2).ToString());
+                            this.listPhysicalQuantity_Units.Add("[-]");
                             break;
 
 
@@ -922,47 +922,47 @@ namespace CENEX
 
 
 
-                    //this.zoznamMenuNazvy.Add("N+My T");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_631y, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("N+My T");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_631y, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
-                    //this.zoznamMenuNazvy.Add("N+Mz T");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_631z, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("N+Mz T");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_631z, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
-                    //this.zoznamMenuNazvy.Add("σx Ed/fyd");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_642, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("σx Ed/fyd");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_642, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
-                    //this.zoznamMenuNazvy.Add("σx Ed/fyd");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_643, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("σx Ed/fyd");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_643, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
-                    //this.zoznamMenuNazvy.Add("NMyMz");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_644, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
-
-
-                    //this.zoznamMenuNazvy.Add("NEd/Nb.Rd");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_646, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
-
-                    //this.zoznamMenuNazvy.Add("My.Ed/My.b.Rd");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_654y, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
-
-                    //this.zoznamMenuNazvy.Add("Mz.Ed/Mz.b.Rd");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_654z, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("NMyMz");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_644, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
 
-                    //this.zoznamMenuNazvy.Add("N+My+Mz 1 C");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_661, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("NEd/Nb.Rd");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_646, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
-                    //this.zoznamMenuNazvy.Add("N+My+Mz 2 C");
-                    //this.zoznamMenuHodnoty.Add(Math.Round(en.Ratio_662, 2).ToString());
-                    //this.zoznamMenuJednotky.Add("[-]");
+                    //this.listPhysicalQuantity_Symbols.Add("My.Ed/My.b.Rd");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_654y, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
+
+                    //this.listPhysicalQuantity_Symbols.Add("Mz.Ed/Mz.b.Rd");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_654z, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
+
+
+                    //this.listPhysicalQuantity_Symbols.Add("N+My+Mz 1 C");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_661, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
+
+                    //this.listPhysicalQuantity_Symbols.Add("N+My+Mz 2 C");
+                    //this.listPhysicalQuantity_Values.Add(Math.Round(en.Ratio_662, 2).ToString());
+                    //this.listPhysicalQuantity_Units.Add("[-]");
 
                         #endregion
 
@@ -974,9 +974,9 @@ namespace CENEX
         private void button1_Click(object sender, EventArgs e)
         {
             // Original
-            this.zoznamMenuNazvy.Clear();
-            this.zoznamMenuHodnoty.Clear();
-            this.zoznamMenuJednotky.Clear();
+            this.listPhysicalQuantity_Symbols.Clear();
+            this.listPhysicalQuantity_Values.Clear();
+            this.listPhysicalQuantity_Units.Clear();
             this.naplnZoznamy();
 
 
@@ -990,9 +990,9 @@ namespace CENEX
 
 
             //pridanie producera1
-            // zoznamMenuNazvy.Add("producer");
-            // zoznamMenuHodnoty.Add(en.Csproducer1);
-            // zoznamMenuJednotky.Add("-");
+            // listPhysicalQuantity_Symbols.Add("producer");
+            // listPhysicalQuantity_Values.Add(en.Csproducer1);
+            // listPhysicalQuantity_Units.Add("-");
 
             //test ci boli zadane vsetky hodnoty v polickach oznacenych zltou farbou
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
