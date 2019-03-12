@@ -1212,7 +1212,7 @@ namespace BaseClasses
         }
 
         // Draw Text in 3D
-        public static Model3DGroup CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions displayOptions)
+        public static Model3DGroup CreateLabels3DForLoadCase(CModel model, CLoadCase loadCase, DisplayOptions sDisplayOptions)
         {
             Model3DGroup gr = new Model3DGroup();
 
@@ -1227,33 +1227,45 @@ namespace BaseClasses
             if (loadCase != null)
             {
 
-                if (loadCase.NodeLoadsList != null) // Some nodal loads exist
+                if (loadCase.NodeLoadsList != null && sDisplayOptions.bDisplayNodalLoads) // Some nodal loads exist and are displayed
                 {
                     // Model Groups of Nodal Loads
                     for (int i = 0; i < loadCase.NodeLoadsList.Count; i++)
                     {
                         if (loadCase.NodeLoadsList[i] != null && loadCase.NodeLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            ModelVisual3D textlabel = DrawNodalLoadLabel3D(loadCase.NodeLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);
+                            ModelVisual3D textlabel = DrawNodalLoadLabel3D(loadCase.NodeLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, sDisplayOptions);
                             if (textlabel != null) gr.Children.Add(textlabel.Content);
                         }
                     }
                 }
 
-                if (loadCase.MemberLoadsList != null) // Some member loads exist
+                if (loadCase.MemberLoadsList != null && sDisplayOptions.bDisplayMemberLoads) // Some member loads exist and are displayed
                 {
                     // Model Groups of Member Loads
                     for (int i = 0; i < loadCase.MemberLoadsList.Count; i++)
                     {
                         if (loadCase.MemberLoadsList[i] != null && loadCase.MemberLoadsList[i].BIsDisplayed == true) // Load object is valid (not empty) and should be displayed
                         {
-                            ModelVisual3D textlabel = DrawMemberLoadLabel3D(loadCase.MemberLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, displayOptions);
-                            if (textlabel != null) gr.Children.Add(textlabel.Content);
+                            // Label zobrazujeme len pre zatazenia ktore su zobrazene
+                            if ((sDisplayOptions.bDisplayMemberLoads_Girts && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eG) ||
+                               (sDisplayOptions.bDisplayMemberLoads_Purlins && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eP) ||
+                               (sDisplayOptions.bDisplayMemberLoads_Columns && loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eC) ||
+                               (sDisplayOptions.bDisplayMemberLoads_Frames &&
+                               (loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMC ||
+                               loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eMR ||
+                               loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eEC ||
+                               loadCase.MemberLoadsList[i].Member.EMemberType == EMemberType_FS.eER)
+                               ))
+                            {
+                                ModelVisual3D textlabel = DrawMemberLoadLabel3D(loadCase.MemberLoadsList[i], fTextBlockVerticalSize, fTextBlockHorizontalSizeFactor, fTextBlockVerticalSizeFactor, sDisplayOptions);
+                                if (textlabel != null) gr.Children.Add(textlabel.Content);
+                            }
                         }
                     }
                 }
 
-                if (loadCase.SurfaceLoadsList != null) // Some surface loads exist
+                if (loadCase.SurfaceLoadsList != null && sDisplayOptions.bDisplaySurfaceLoads) // Some surface loads exist and are displayed
                 {
                     // Model Groups of Surface Loads
                     for (int i = 0; i < loadCase.SurfaceLoadsList.Count; i++)
@@ -1265,13 +1277,13 @@ namespace BaseClasses
                                 Transform3DGroup loadGroupTransform = ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).CreateTransformCoordGroupOfLoadGroup();
                                 foreach (CSLoad_FreeUniform l in ((CSLoad_FreeUniformGroup)loadCase.SurfaceLoadsList[i]).LoadList)
                                 {
-                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, displayOptions, loadGroupTransform, ref gr);
+                                    DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, sDisplayOptions, loadGroupTransform, ref gr);
                                 }
                             }
                             else if (loadCase.SurfaceLoadsList[i] is CSLoad_FreeUniform)
                             {
                                 CSLoad_FreeUniform l = (CSLoad_FreeUniform)loadCase.SurfaceLoadsList[i];
-                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, displayOptions, null, ref gr);
+                                DrawSurfaceLoadLabel3D(l, fTextBlockVerticalSize, fTextBlockVerticalSizeFactor, fTextBlockHorizontalSizeFactor, sDisplayOptions, null, ref gr);
                             }
                             else throw new Exception("Load type not known.");
                         }
