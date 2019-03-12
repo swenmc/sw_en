@@ -104,16 +104,22 @@ namespace PFD
                     CCalculJoint cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces);
                     CCalculJoint cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces);
 
-                    if (cJointStart.fEta_max > fMaximumDesignRatio)
+                    // Find member in the group of members with maximum start or end joint design ratio
+                    if (cJointStart.fEta_max > fMaximumDesignRatio || cJointEnd.fEta_max > fMaximumDesignRatio)
                     {
-                        fMaximumDesignRatio = cJointStart.fEta_max;
+                        // Set new maximum design ratio
+                        if (cJointStart.fEta_max > fMaximumDesignRatio)
+                            fMaximumDesignRatio = cJointStart.fEta_max;
+                        else
+                            fMaximumDesignRatio = cJointEnd.fEta_max;
+
+                        // Set start joint and end joint design details
+                        // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination
+
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
                         cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
-                    }
 
-                    if (cJointEnd.fEta_max > fMaximumDesignRatio)
-                    {
                         fMaximumDesignRatio = cJointEnd.fEta_max;
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
                         cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces, true);
