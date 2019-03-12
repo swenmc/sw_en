@@ -426,7 +426,7 @@ namespace M_AS4600
         }
         public float Eq_7213_2__(float fN_ol, float fN_ce)
         {
-            return (1f - 0.15f * MathF.Pow4(fN_ol / fN_ce)) * MathF.Pow4(fN_ol / fN_ce) * fN_ce; // Eq. (7.2.1.3(2)) // fN_cl
+            return (float)((1f - 0.15f * Math.Pow(fN_ol / fN_ce, 0.4f)) * Math.Pow(fN_ol / fN_ce, 0.4f) * fN_ce); // Eq. (7.2.1.3(2)) // fN_cl
         }
         public float Eq_7213____(float flambda_l, float fN_ol, float fN_ce)
         {

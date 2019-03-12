@@ -926,25 +926,66 @@ namespace M_AS4600
             float fUnitFactor_Moment = 0.001f;    // from Nm to kNm
             float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
 
-            int iNumberOfDecimalPlaces = 3;
+            float fUnitFactor_ComponentDimension = 1000f; // m to mm
+            float fUnitFactor_CrSc_Area = 1000000f; // m^2 to mm^2
 
+            int iNumberOfDecimalPlaces = 3;
+            int iNumberOfDecimalPlaces_Factor = 3;
+            int iNumberOfDecimalPlaces_DesignRatio = 3;
+
+            string sUnit_Force = "[kN]";
+            string sUnit_Moment = "[kNm]";
+            string sUnit_Stress = "[MPa]";
+
+            string sUnit_ComponentDimension = "[mm]";
+            string sUnit_CrSc_Area = "[mm²]";
+
+            string sUnit_Factor = "[-]";
+            string sUnit_DesignRatio = "[-]";
 
             // Display results in datagrid
+            // Design Internal Forces
+
+            // Internal forces in joint
+            listPhysicalQuantity_Symbols.Add("N");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDIF.fN * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Force);
+
+            listPhysicalQuantity_Symbols.Add("Vx");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDIF.fV_xu_xx * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Force);
+
+            listPhysicalQuantity_Symbols.Add("Vy");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDIF.fV_yv_yy * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Force);
+
+            //listPhysicalQuantity_Symbols.Add("T");
+            //listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fT * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            //listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+            listPhysicalQuantity_Symbols.Add("Mx");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDIF.fM_xu_xx * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+            listPhysicalQuantity_Symbols.Add("My");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.sDIF.fM_yv_yy * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
+
             // AS 4600 output variables
             // Tension
             if (obj_CalcDesign.fEta_Nt > 0)
             {
-                listPhysicalQuantity_Symbols.Add("φ t");
+                listPhysicalQuantity_Symbols.Add("Φ t");
                 listPhysicalQuantity_Values.Add(obj_CalcDesign.fPhi_t.ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("N t,min");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_t_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[N]");
+                listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Nt");
-                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_Nt, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_Nt, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
 
             // Compression
@@ -953,83 +994,83 @@ namespace M_AS4600
             {
                 listPhysicalQuantity_Symbols.Add("f ox");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_ox * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Pa]");
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                 listPhysicalQuantity_Symbols.Add("f oy");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Pa]");
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                 listPhysicalQuantity_Symbols.Add("f oz");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oz * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Pa]");
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                 if (obj_CalcDesign.fEta_721_N > 0)
                 {
                     listPhysicalQuantity_Symbols.Add("f oc");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oc * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[Pa]");
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                     listPhysicalQuantity_Symbols.Add("λ c");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.flambda_c, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                     listPhysicalQuantity_Symbols.Add("N y");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_y * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     listPhysicalQuantity_Symbols.Add("N oc");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_oc * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     listPhysicalQuantity_Symbols.Add("N ce");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_ce * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     // Local Buckling
                     listPhysicalQuantity_Symbols.Add("f ol");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_oy * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[Pa]");
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                     listPhysicalQuantity_Symbols.Add("λ l");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.flambda_l, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                     listPhysicalQuantity_Symbols.Add("N ol");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_ol * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     listPhysicalQuantity_Symbols.Add("N cl");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_cl * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     // Distorsial Buckling
                     listPhysicalQuantity_Symbols.Add("f od");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_od * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[Pa]");
+                    listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                     listPhysicalQuantity_Symbols.Add("λ d");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.flambda_d, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                     listPhysicalQuantity_Symbols.Add("N od");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_od * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     listPhysicalQuantity_Symbols.Add("N cd");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_cd * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     listPhysicalQuantity_Symbols.Add("N c,min");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fN_c_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[N]");
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
 
-                    listPhysicalQuantity_Symbols.Add("φ c");
+                    listPhysicalQuantity_Symbols.Add("Φ c");
                     listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_c, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                     listPhysicalQuantity_Symbols.Add("η Nc");
-                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_721_N, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_721_N, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
             }
 
@@ -1037,76 +1078,76 @@ namespace M_AS4600
 
             listPhysicalQuantity_Symbols.Add("M p,x");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_p_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[Nm]");
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             listPhysicalQuantity_Symbols.Add("M y,x");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_y_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[Nm]");
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             listPhysicalQuantity_Symbols.Add("M p,y");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_p_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[Nm]");
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             listPhysicalQuantity_Symbols.Add("M y,y");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_y_yv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[Nm]");
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             if (obj_CalcDesign.fEta_722_M_xu > 0)
             {
                 // Bending about x/u axis
                 listPhysicalQuantity_Symbols.Add("C b");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fC_b, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("M o,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_o_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("M be,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_be_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 // Local Buckling
                 listPhysicalQuantity_Symbols.Add("f ol,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_ol_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Pa]");
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                 listPhysicalQuantity_Symbols.Add("M ol,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_ol_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("λ l,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_l_xu, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("M bl,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_bl_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 // Distrosial buckling
                 listPhysicalQuantity_Symbols.Add("f od,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.ff_od_bend * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Pa]");
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                 listPhysicalQuantity_Symbols.Add("M od,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_od_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("λ d,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_d_xu, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("M bd,x");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_bd_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
-                listPhysicalQuantity_Symbols.Add("φ b");
+                listPhysicalQuantity_Symbols.Add("Φ b");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_b, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_722_M_xu, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_722_M_xu, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
 
             // Shear
@@ -1114,62 +1155,62 @@ namespace M_AS4600
             {
                 listPhysicalQuantity_Symbols.Add("V y,y");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_y_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[N]");
+                listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("V v,y");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_v_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[N]");
+                listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("V cr,y");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fV_cr_yv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[N]");
+                listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("λ v,y");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLambda_v_yv, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
-                listPhysicalQuantity_Symbols.Add("φ v");
+                listPhysicalQuantity_Symbols.Add("Φ v");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fPhi_v, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("η");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_9_xu_yv, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_11_V_yv, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_11_V_yv, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 if (obj_CalcDesign.fEta_723_10_xu > 0)
                 {
                     listPhysicalQuantity_Symbols.Add("η");
-                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_10_xu, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_10_xu, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
 
                 if (obj_CalcDesign.fEta_723_12_xu_yv_10 > 0)
                 {
                     listPhysicalQuantity_Symbols.Add("η");
-                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add("[-]");
+                    listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_723_12_xu_yv_10, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
             }
 
             // Interation of internal forces
             listPhysicalQuantity_Symbols.Add("M s,x");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_s_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[Nm]");
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             listPhysicalQuantity_Symbols.Add("M b,x");
             listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_b_xu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[Nm]");
+            listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             // Compression and bending
             if (obj_CalcDesign.fEta_721_N > 0 && obj_CalcDesign.fEta_724 > 0)
             {
                 listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_724, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_724, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
 
             // Tension and bending
@@ -1177,55 +1218,67 @@ namespace M_AS4600
             {
                 listPhysicalQuantity_Symbols.Add("M s,x,f");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_s_xu_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("M s,y,f");
                 listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fM_s_yv_f * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[Nm]");
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_725_1, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_725_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_725_2, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add("[-]");
+                listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_725_2, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
 
             // Maximum design ratio
             listPhysicalQuantity_Symbols.Add("η max");
-            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_max, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add("[-]");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_max, iNumberOfDecimalPlaces_DesignRatio).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
         }
 
         private void SetResultsDetailsFor_SLS(CCalculMember obj_CalcDesign)
         {
+            float fUnitFactor_Deflection = 1000f; // m to mm
+
+            int iNumberOfDecimalPlaces = 3;
+            int iNumberOfDecimalPlaces_Factor = 3;
+            int iNumberOfDecimalPlaces_DesignRatio = 3;
+
+            int iNumberOfDecimalPlaces_Deflection = 3;
+
+            string sUnit_Deflection = "[mm]";
+
+            string sUnit_Factor = "[-]";
+            string sUnit_DesignRatio = "[-]";
+
             // Display results in datagrid
 
             // Deflection
             // δ
 
             listPhysicalQuantity_Symbols.Add("δ lim");
-            listPhysicalQuantity_Values.Add(obj_CalcDesign.fLimitDeflection.ToString());
-            listPhysicalQuantity_Units.Add("[mm]");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fLimitDeflection * fUnitFactor_Deflection, iNumberOfDecimalPlaces_Deflection).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_Deflection);
 
             // Design ratio
             listPhysicalQuantity_Symbols.Add("η x/u");
-            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_yu.ToString());
-            listPhysicalQuantity_Units.Add("[mm]");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_yu, iNumberOfDecimalPlaces_DesignRatio).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
             listPhysicalQuantity_Symbols.Add("η y/v");
-            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_zv.ToString());
-            listPhysicalQuantity_Units.Add("[mm]");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_zv, iNumberOfDecimalPlaces_DesignRatio).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
             listPhysicalQuantity_Symbols.Add("η x");
-            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_yy.ToString());
-            listPhysicalQuantity_Units.Add("[mm]");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_yy, iNumberOfDecimalPlaces_DesignRatio).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
             listPhysicalQuantity_Symbols.Add("η y");
-            listPhysicalQuantity_Values.Add(obj_CalcDesign.fEta_defl_zz.ToString());
-            listPhysicalQuantity_Units.Add("[mm]");
+            listPhysicalQuantity_Values.Add(Math.Round(obj_CalcDesign.fEta_defl_zz, iNumberOfDecimalPlaces_DesignRatio).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
         }
-
     }
 }
