@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace PFD
 {
-    public class CModelToBFEMNetConverter
+    public static class CModelToBFEMNetConverter
     {
 
-        public Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly)
+        public static Model Convert(CModel topomodel, bool bCalculateLoadCasesOnly)
         {
             // Dokumentacia a priklady
             // https://bfenet.readthedocs.io/en/latest/example/loadcasecomb/index.html
@@ -273,7 +273,7 @@ namespace PFD
             return model;
         }
 
-        private LoadType GetBFEMLoadType(ELCType LoadCaseType)
+        private static LoadType GetBFEMLoadType(ELCType LoadCaseType)
         {
             LoadType loadtype = LoadType.Other;
             if (LoadCaseType == ELCType.ePermanentLoad)
@@ -290,7 +290,7 @@ namespace PFD
             return loadtype;
         }
 
-        private Load GetBFEMLoad(CMLoad memberLoad, LoadCase loadCase)
+        private static Load GetBFEMLoad(CMLoad memberLoad, LoadCase loadCase)
         {
             // BFEMNet ma tri typy - concentrated, uniform, trapezoidal load, dopracoval som partial uniform load
             var lu = new UniformLoad1D();

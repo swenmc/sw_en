@@ -14,6 +14,7 @@ using M_BASE;
 using M_EC1.AS_NZS;
 using BriefFiniteElementNet.CodeProjectExamples;
 using BriefFiniteElementNet;
+using PFD.Infrastructure;
 
 namespace PFD
 {
@@ -1110,27 +1111,32 @@ namespace PFD
 
             // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
-
-            foreach (CFrame frame in frameModels)
-            {
-                // Convert SW_EN model to BFENet model
-                CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
-                // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(frame, !DeterminateCombinationResultsByFEMSolver);
-                //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
-            }
+            if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
+            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver);
+            //foreach (CFrame frame in frameModels)
+            //{
+            //    // Convert SW_EN model to BFENet model
+            //    //CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
+            //    // Convert model and calculate results
+            //    Model bfemNetModel = CModelToBFEMNetConverter.Convert(frame, !DeterminateCombinationResultsByFEMSolver);
+            //    //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
+            //}
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
             // Calculation of simple beam model
             beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
+            if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel();: " + (DateTime.Now - start).TotalMilliseconds);
 
-            foreach (CBeam_Simple beam in beamSimpleModels)
-            {
-                // Convert SW_EN model to BFENet model
-                CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
-                // Convert model and calculate results
-                Model bfemNetModel = converter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);
-            }
+            CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver);
+
+            //foreach (CBeam_Simple beam in beamSimpleModels)
+            //{
+            //    // Convert SW_EN model to BFENet model
+            //    //CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
+            //    // Convert model and calculate results
+            //    Model bfemNetModel = CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);                
+            //    //Model bfemNetModel = Task.Factory.StartNew(() => CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver)).Result;
+            //}
             if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
