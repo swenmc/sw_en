@@ -16,6 +16,13 @@ namespace BaseClasses
         public bool bIsJointDefinedinGCS;
         public Model3DGroup Visual_ConnectionJoint;
 
+        private CJointDesignDetails m_DesignDetails;
+        public CJointDesignDetails DesignDetails
+        {
+            get { return m_DesignDetails; }
+            set { m_DesignDetails = value; }
+        }
+
         public CConnectionJointTypes() { }
 
         public CConnectionJointTypes(int iNumberOfAssignedNodes, int arrPlatesSize, int arrConnectorsSize, int arrWeldsSize)

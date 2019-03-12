@@ -147,13 +147,13 @@ namespace BaseClasses
             fMass = GetMassIgnoringHoles();
 
             fA_g = Get_A_rect(2 * Ft, m_fhY);
-            int iNumberOfScrewsInSection = 20; // TODO, temporary - zavisi na rozmiestneni skrutiek
+            int iNumberOfScrewsInSection = 6; // Jedna strana plechu TODO, temporary - zavisi na rozmiestneni skrutiek
 
             fA_n = fA_g;
 
             if (screwArrangement != null)
             {
-                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread;
+                fA_n -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
             }
 
             fA_v_zv = Get_A_rect(2 * Ft, m_fhY);
@@ -162,10 +162,10 @@ namespace BaseClasses
 
             if (screwArrangement != null)
             {
-                fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread;
+                fA_v_zv -= iNumberOfScrewsInSection * screwArrangement.referenceScrew.Diameter_thread * 2 * Ft;
             }
 
-            fI_yu = 2 * Get_I_yu_rect(Ft, m_fhY);  // Moment of inertia of plate
+            fI_yu = 2 * Get_I_yu_rect(Ft, m_fhY); // Moment of inertia of plate
             fW_el_yu = Get_W_el_yu(fI_yu, m_fhY); // Elastic section modulus
 
             ScrewArrangement = screwArrangement;

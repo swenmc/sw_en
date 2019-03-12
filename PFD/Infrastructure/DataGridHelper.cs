@@ -151,6 +151,580 @@ namespace PFD
 
             // Display results in datagrid
 
+            // Knee and Apex Joint
+            if (calc.joint is CConnectionJoint_A001 || calc.joint is CConnectionJoint_B001)
+            {
+                CJointDesignDetails_ApexOrKnee det = (CJointDesignDetails_ApexOrKnee)calc.joint.DesignDetails;
+
+                if (calc.joint is CConnectionJoint_A001)
+                    listPhysicalQuantity_Symbols.Add("Apex connection");
+                else
+                    listPhysicalQuantity_Symbols.Add("Knee connection");
+                listPhysicalQuantity_Values.Add("");
+                listPhysicalQuantity_Units.Add("");
+
+                DisplayBasicValues(calc);
+
+                listPhysicalQuantity_Symbols.Add("Φplate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_Plate, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("An.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Nt.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nt.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("Av.y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Vy.y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vy.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("M.b.x.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fM_xu_resitance_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("η Mx.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Mb_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Shear in connection
+                listPhysicalQuantity_Symbols.Add("Φv.screw");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_shear_screw, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Vb.screw.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fVb_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vb.screw.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fVb_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Number of screws in shear");
+                listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInShear.ToString());
+                listPhysicalQuantity_Units.Add("");
+
+                listPhysicalQuantity_Symbols.Add("η screw.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η screw.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Plastic Design
+                listPhysicalQuantity_Symbols.Add("M.b.x.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fMb_MainMember_oneside_plastic * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("M.b.x.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fMb_SecondaryMember_oneside_plastic * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("η Mb.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Mb_MainMember_oneside_plastic, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Mb.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Mb_SecondaryMember_oneside_plastic, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Elastic Design
+                listPhysicalQuantity_Symbols.Add("V*b.screw.Mx");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw_Mxu * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*b.screw.Vy");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw_Vyv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*b.screw.N");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw_N * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*b.screw.res");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vb.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Vb_5424_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vb.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Vb_5424_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vb.min");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Vb_5424, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 5.4.2.5 Connection shear as limited by end distance
+                listPhysicalQuantity_Symbols.Add("e");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("Vfv.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vfv.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vfv.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*fv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_fv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 5.4.2.6 Screws in shear
+                listPhysicalQuantity_Symbols.Add("Vw.screw");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_w_nom_screw_5426 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vw");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_w_5426, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 5.4.2.3 Tension in the connected part
+                listPhysicalQuantity_Symbols.Add("Φsection");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_CrSc, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("An.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_MainMember * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Nt.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_section_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nt.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("An.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_SecondaryMember * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Nt.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_section_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nt.m2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+            }
+            else if (calc.joint.m_SecondaryMembers != null)
+            {
+                // Purlins, girts, ...
+                if (calc.joint is CConnectionJoint_T001 || calc.joint is CConnectionJoint_T002 || calc.joint is CConnectionJoint_T003)
+                {
+                    DisplayBasicValues(calc);
+
+                    CJointDesignDetails_GirtOrPurlin det = (CJointDesignDetails_GirtOrPurlin)calc.joint.DesignDetails;
+
+                    // 5.4.3 Screwed connections in tension
+                    // 5.4.3.2 Pull-out and pull-over (pull-through)
+
+                    listPhysicalQuantity_Symbols.Add("Number of screws in tension");
+                    listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInTension.ToString());
+                    listPhysicalQuantity_Units.Add("");
+
+                    listPhysicalQuantity_Symbols.Add("Φn.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_N_screw, iNumberOfDecimalPlaces_Factor).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Nt.screw.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_5432_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Nt.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5432_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Pripoj plechu k hlavnemu prutu
+                    // Tension and shear
+                    listPhysicalQuantity_Symbols.Add("Φv.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_shear_Vb_Nov, iNumberOfDecimalPlaces_Factor).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("C.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fC_for5434_MainMember, iNumberOfDecimalPlaces_Factor).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.screw.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_for5434_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("dw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fd_w_for5434_plate * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("Nov.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_ov_for5434_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("V*b.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_for5434_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5434_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_for5435_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Nou.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_ou_for5435_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("V*b.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_for5435_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw.m1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5435_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 5.4.2.5 Connection shear as limited by end distance
+                    listPhysicalQuantity_Symbols.Add("e");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_Plate * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("V*fv.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_fv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Vfv.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 5.4.2.6 Screws in shear
+                    listPhysicalQuantity_Symbols.Add("Vw.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_w_nom_screw_5426 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_w_5426, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // 5.4.3.3 Screws in tension
+                    listPhysicalQuantity_Symbols.Add("Φn.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_N_t_screw, iNumberOfDecimalPlaces_Factor).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Nt.screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_nom_screw_5433 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_screw_5433, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("η screw");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_N_t_screw_5436, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Plate design
+                    listPhysicalQuantity_Symbols.Add("Φplate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_plate, iNumberOfDecimalPlaces_Factor).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("An.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                    listPhysicalQuantity_Symbols.Add("Nt.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Nt.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("Avn.y.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                    listPhysicalQuantity_Symbols.Add("Vy.y.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vy.plate");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    // Pripoj plechu sekundarneho pruta
+                    listPhysicalQuantity_Symbols.Add("Number of screws in connection m2");
+                    listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInConnectionOfSecondaryMember.ToString());
+                    listPhysicalQuantity_Units.Add("");
+
+                    listPhysicalQuantity_Symbols.Add("V*b.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Vb.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fVb_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vb.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Vb_5424_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                    listPhysicalQuantity_Symbols.Add("e.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fe_SecondaryMember * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("V*fv.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_fv_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("Vfv.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Vfv.m2");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+                }
+                else if (calc.joint is CConnectionJoint_S001) // Front / back column connection to the main rafter
+                {
+                    listPhysicalQuantity_Symbols.Add("Connection to the rafter");
+                    listPhysicalQuantity_Values.Add("");
+                    listPhysicalQuantity_Units.Add("");
+
+                    DisplayBasicValues(calc);
+                }
+                else
+                {
+                    // Exception - not defined type
+                    throw new Exception("Joint type design is not implemented!");
+                }
+            }
+            else if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01)
+            {
+                CJointDesignDetails_BaseJoint det = (CJointDesignDetails_BaseJoint)calc.joint.DesignDetails;
+
+                listPhysicalQuantity_Symbols.Add("Footing Base");
+                listPhysicalQuantity_Values.Add("");
+                listPhysicalQuantity_Units.Add("");
+
+                DisplayBasicValues(calc);
+
+                listPhysicalQuantity_Symbols.Add("Φplate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_plate, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("An.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Nt.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nt.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("Av.y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Vy.y.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vy.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("M.b.x.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fM_xu_resistance_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("η Mx.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Mb_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Shear in connection
+                listPhysicalQuantity_Symbols.Add("Φv.screw");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_shear_screw, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Vb.screw.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fVb_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Number of screws in shear");
+                listPhysicalQuantity_Values.Add(det.iNumberOfScrewsInShear.ToString());
+                listPhysicalQuantity_Units.Add("");
+
+                listPhysicalQuantity_Symbols.Add("η screw.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Plastic Design
+                listPhysicalQuantity_Symbols.Add("M.b.x.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fMb_MainMember_oneside_plastic * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Moment);
+
+                listPhysicalQuantity_Symbols.Add("η Mb.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Mb_MainMember_oneside_plastic, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Elastic Design
+                listPhysicalQuantity_Symbols.Add("V*b.screw.Mx");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw_Mxu * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*b.screw.Vy");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw_Vyv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*b.screw.N");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw_N * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*b.screw.res");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_b_max_screw * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vb.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_Vb_5424_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 5.4.2.5 Connection shear as limited by end distance
+                listPhysicalQuantity_Symbols.Add("e");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("Vfv.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vfv.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*fv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_fv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_fv_5425, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 5.4.2.6 Screws in shear
+                listPhysicalQuantity_Symbols.Add("Vw.screw");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_w_nom_screw_5426 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vw");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_V_w_5426, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 5.4.2.3 Tension in the connected part
+                listPhysicalQuantity_Symbols.Add("Φsection");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_CrSc, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("An.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_MainMember * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+
+                listPhysicalQuantity_Symbols.Add("Nt.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_section_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nt.m1");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+            }
+            else
+            {
+                // Exception - not defined type
+                throw new Exception("Joint type design is not implemented!");
+            }
+
+            // Maximum design ratio
+            listPhysicalQuantity_Symbols.Add("η max");
+            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+        }
+
+        private static void DisplayBasicValues(CCalculJoint calc)
+        {
+            // TODO - refaktorovat nastavenie jednotiek pre zobrazenie
+
+            float fUnitFactor_Force = 0.001f;     // from N to kN
+            float fUnitFactor_Moment = 0.001f;    // from Nm to kNm
+            float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
+
+            float fUnitFactor_ComponentDimension = 1000f; // m to mm
+            float fUnitFactor_CrSc_Area = 1000000f; // m^2 to mm^2
+
+            int iNumberOfDecimalPlaces = 3;
+            int iNumberOfDecimalPlaces_Factor = 3;
+            int iNumberOfDecimalPlaces_DesignRatio = 3;
+
+            string sUnit_Force = "[kN]";
+            string sUnit_Moment = "[kNm]";
+            string sUnit_Stress = "[MPa]";
+
+            string sUnit_ComponentDimension = "[mm]";
+            string sUnit_CrSc_Area = "[mm²]";
+
+            string sUnit_Factor = "[-]";
+            string sUnit_DesignRatio = "[-]";
+
             // Internal forces in joint
             listPhysicalQuantity_Symbols.Add("N");
             listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fN * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -217,407 +791,6 @@ namespace PFD
                 listPhysicalQuantity_Symbols.Add("fu.2.m2");
                 listPhysicalQuantity_Values.Add(Math.Round(calc.ff_uk_2_SecondaryMember * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Stress);
-            }
-
-            // Maximum design ratio
-            listPhysicalQuantity_Symbols.Add("η max");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.fEta_max, iNumberOfDecimalPlaces).ToString());
-            listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-            // Knee and Apex Joint
-            if (calc.joint is CConnectionJoint_A001 || calc.joint is CConnectionJoint_B001)
-            {
-                float fPhi_Plate = 0;
-                float fA_n_plate = 0;
-                float fN_t_plate = 0;
-                float fEta_N_t_5423_plate = 0;
-                float fA_vn_yv_plate = 0;
-                float fV_y_yv_plate = 0;
-                float fEta_V_yv_3341_plate = 0;
-                float fM_xu_resitance_plate = 0;
-                float fEta_Mb_plate = 0;
-
-                // Shear in connection
-                float fPhi_shear_screw = 0;
-                float fVb_MainMember = 0;
-                float fVb_SecondaryMember = 0;
-                int iNumberOfScrewsInShear = 0;
-                float fEta_MainMember = 0;
-                float fEta_SecondaryMember = 0;
-
-                // Plastic Design
-                float fMb_MainMember_oneside_plastic = 0;
-                float fMb_SecondaryMember_oneside_plastic = 0;
-                float fEta_Mb_MainMember_oneside_plastic = 0;
-                float fEta_Mb_SecondaryMember_oneside_plastic = 0;
-
-                // Elastic Design
-                float fV_asterix_b_max_screw_Mxu = 0;
-                float fV_asterix_b_max_screw_Vyv = 0;
-                float fV_asterix_b_max_screw_N = 0;
-                float fV_asterix_b_max_screw = 0;
-
-                float fEta_Vb_5424_MainMember = 0;
-                float fEta_Vb_5424_SecondaryMember = 0;
-
-                listPhysicalQuantity_Symbols.Add("Φplate");
-                listPhysicalQuantity_Values.Add(Math.Round(fPhi_Plate, iNumberOfDecimalPlaces_Factor).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("An.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
-
-                listPhysicalQuantity_Symbols.Add("Nt.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Nt.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_N_t_5423_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("Av.y.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
-
-                listPhysicalQuantity_Symbols.Add("Vy.y.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vy.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("M.b.x.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fM_xu_resitance_plate * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Moment);
-
-                listPhysicalQuantity_Symbols.Add("η Mx.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_Mb_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Shear in connection
-                listPhysicalQuantity_Symbols.Add("Φv.screw");
-                listPhysicalQuantity_Values.Add(Math.Round(fPhi_shear_screw, iNumberOfDecimalPlaces_Factor).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                listPhysicalQuantity_Symbols.Add("Vb.screw.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(fVb_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Vb.screw.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(fVb_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("Number of screws in shear");
-                listPhysicalQuantity_Values.Add(iNumberOfScrewsInShear.ToString());
-                listPhysicalQuantity_Units.Add("");
-
-                listPhysicalQuantity_Symbols.Add("η screw.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("η screw.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Plastic Design
-                listPhysicalQuantity_Symbols.Add("M.b.x.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(fMb_MainMember_oneside_plastic * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Moment);
-
-                listPhysicalQuantity_Symbols.Add("M.b.x.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(fMb_SecondaryMember_oneside_plastic * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Moment);
-
-                listPhysicalQuantity_Symbols.Add("η Mb.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_Mb_MainMember_oneside_plastic, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("η Mb.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_Mb_SecondaryMember_oneside_plastic, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                // Elastic Design
-                listPhysicalQuantity_Symbols.Add("V*b.screw.Mx");
-                listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_max_screw_Mxu * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("V*b.screw.Vy");
-                listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_max_screw_Vyv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("V*b.screw.N");
-                listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_max_screw_N * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("V*b.screw.res");
-                listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_max_screw * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                listPhysicalQuantity_Symbols.Add("η Vb.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_Vb_5424_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                listPhysicalQuantity_Symbols.Add("η Vb.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(fEta_Vb_5424_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-            }
-            else if (calc.joint.m_SecondaryMembers != null)
-            {
-                // Purlins, girts, ...
-                if (calc.joint is CConnectionJoint_T001 || calc.joint is CConnectionJoint_T002 || calc.joint is CConnectionJoint_T003)
-                {
-                    // 5.4.3 Screwed connections in tension
-                    // 5.4.3.2 Pull-out and pull-over (pull-through)
-                    int iNumberOfScrewsInTension = 0;
-                    float fPhi_N_screw = 0;
-                    float fN_t_5432_MainMember = 0;
-                    float fEta_N_t_5432_MainMember = 0;
-
-                    // Pripoj plechu k hlavnemu prutu
-                    // Tension and shear
-                    float fPhi_shear_Vb_Nov = 0;
-                    float fC_for5434_MainMember = 0;
-                    float fV_b_for5434_MainMember = 0;
-                    float fd_w_for5434_plate = 0;
-                    float fN_ov_for5434_plate = 0;
-                    float fV_asterix_b_for5434_MainMember = 0;
-                    float fEta_5434_MainMember = 0;
-
-                    float fV_b_for5435_MainMember = 0;
-                    float fN_ou_for5435_MainMember = 0;
-                    float fV_asterix_b_for5435_MainMember = 0;
-                    float fEta_5435_MainMember = 0;
-
-                    // 5.4.2.5 Connection shear as limited by end distance
-                    float fe_Plate = 0;
-                    float fV_asterix_fv_plate = 0;
-                    float fV_fv_Plate = 0;
-                    float fEta_V_fv_5425_Plate = 0;
-
-                    // 5.4.2.6 Screws in shear
-                    float fV_w_nom_screw_5426 = 0;
-                    float fEta_V_w_5426 = 0;
-
-                    // 5.4.3.3 Screws in tension
-                    float fPhi_N_t_screw = 0;
-                    float fN_t_nom_screw_5433 = 0;
-                    float fEta_N_t_screw_5433 = 0;
-
-                    // 5.4.3.6 Screws subject to combined shear and tension
-                    float fEta_V_N_t_screw_5436 = 0;
-
-                    // Plate design
-                    float fPhi_plate = 0;
-                    float fA_n_plate = 0;
-                    float fN_t_plate = 0;
-                    float fEta_N_t_5423_plate = 0;
-
-                    float fA_vn_yv_plate = 0;
-                    float fV_y_yv_plate = 0;
-                    float fEta_V_yv_3341_plate = 0;
-
-                    // Pripoj plechu sekundarneho pruta
-                    int iNumberOfScrewsInConnectionOfSecondaryMember = 0;
-
-                    float fV_asterix_b_SecondaryMember = 0;
-                    float fVb_SecondaryMember = 0;
-                    float fEta_Vb_5424_SecondaryMember = 0;
-
-                    float fe_SecondaryMember = 0;
-                    float fV_asterix_fv_SecondaryMember = 0;
-                    float fV_fv_SecondaryMember = 0;
-                    float fEta_V_fv_5425_SecondaryMember = 0;
-
-                    // 5.4.3 Screwed connections in tension
-                    // 5.4.3.2 Pull-out and pull-over (pull-through)
-
-                    listPhysicalQuantity_Symbols.Add("Number of screws in tension");
-                    listPhysicalQuantity_Values.Add(iNumberOfScrewsInTension.ToString());
-                    listPhysicalQuantity_Units.Add("");
-
-                    listPhysicalQuantity_Symbols.Add("Φn.screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fPhi_N_screw, iNumberOfDecimalPlaces_Factor).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                    listPhysicalQuantity_Symbols.Add("Nt.screw.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fN_t_5432_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η Nt.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_N_t_5432_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    // Pripoj plechu k hlavnemu prutu
-                    // Tension and shear
-                    listPhysicalQuantity_Symbols.Add("Φv.screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fPhi_shear_Vb_Nov, iNumberOfDecimalPlaces_Factor).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                    listPhysicalQuantity_Symbols.Add("C.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fC_for5434_MainMember, iNumberOfDecimalPlaces_Factor).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                    listPhysicalQuantity_Symbols.Add("Vb.screw.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_b_for5434_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("dw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fd_w_for5434_plate * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                    listPhysicalQuantity_Symbols.Add("Nov.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fN_ov_for5434_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("V*b.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_for5434_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η screw.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_5434_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    listPhysicalQuantity_Symbols.Add("Vb.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_b_for5435_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("Nou.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fN_ou_for5435_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("V*b.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_for5435_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η screw.m1");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_5435_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    // 5.4.2.5 Connection shear as limited by end distance
-                    listPhysicalQuantity_Symbols.Add("e");
-                    listPhysicalQuantity_Values.Add(Math.Round(fe_Plate * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                    listPhysicalQuantity_Symbols.Add("V*fv.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_fv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("Vfv.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_fv_Plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η screw.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_V_fv_5425_Plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    // 5.4.2.6 Screws in shear
-                    listPhysicalQuantity_Symbols.Add("Vw.screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_w_nom_screw_5426 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_V_w_5426, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    // 5.4.3.3 Screws in tension
-                    listPhysicalQuantity_Symbols.Add("Φn.screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fPhi_N_t_screw, iNumberOfDecimalPlaces_Factor).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                    listPhysicalQuantity_Symbols.Add("Nt.screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fN_t_nom_screw_5433 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_N_t_screw_5433, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    listPhysicalQuantity_Symbols.Add("η screw");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_V_N_t_screw_5436, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    // Plate design
-                    listPhysicalQuantity_Symbols.Add("Φplate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fPhi_plate, iNumberOfDecimalPlaces_Factor).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Factor);
-
-                    listPhysicalQuantity_Symbols.Add("An.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
-
-                    listPhysicalQuantity_Symbols.Add("Nt.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η Nt.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_N_t_5423_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    listPhysicalQuantity_Symbols.Add("Avn.y.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
-
-                    listPhysicalQuantity_Symbols.Add("Vy.y.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η Vy.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_V_yv_3341_plate, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    // Pripoj plechu sekundarneho pruta
-                    listPhysicalQuantity_Symbols.Add("Number of screws in connection m2");
-                    listPhysicalQuantity_Values.Add(iNumberOfScrewsInConnectionOfSecondaryMember.ToString());
-                    listPhysicalQuantity_Units.Add("");
-
-                    listPhysicalQuantity_Symbols.Add("V*b.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_b_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("Vb.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fVb_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η Vb.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_Vb_5424_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-
-                    listPhysicalQuantity_Symbols.Add("e.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fe_SecondaryMember * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
-
-                    listPhysicalQuantity_Symbols.Add("V*fv.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_asterix_fv_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("Vfv.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fV_fv_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_Force);
-
-                    listPhysicalQuantity_Symbols.Add("η Vfv.m2");
-                    listPhysicalQuantity_Values.Add(Math.Round(fEta_V_fv_5425_SecondaryMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
-                }
-                else if (calc.joint is CConnectionJoint_S001) // Front / back column connection to the main rafter
-                {
-                    //sJointDesignDetails_FrontOrBackColumnToMainRafterJoint sDesignDetails;
-                }
-                else
-                {
-                    // Exception - not defined type
-                    throw new Exception("Joint type design is not implemented!");
-                }
-            }
-            else if (calc.joint is CConnectionJoint_TA01 || calc.joint is CConnectionJoint_TB01)
-            {
-                //sJointDesignDetails_BaseJoint sDesignDetails;
-            }
-            else
-            {
-                // Exception - not defined type
-                throw new Exception("Joint type design is not implemented!");
             }
         }
     }

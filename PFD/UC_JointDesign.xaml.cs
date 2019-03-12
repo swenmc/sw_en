@@ -100,19 +100,23 @@ namespace PFD
                     CJointLoadCombinationRatio_ULS resEnd = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombinationID && i.Joint == cjEnd);
                     if (resStart == null) continue;
                     if (resEnd == null) continue;
-                    
+
                     CCalculJoint cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces);
                     CCalculJoint cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces);
 
                     if (cJointStart.fEta_max > fMaximumDesignRatio)
                     {
                         fMaximumDesignRatio = cJointStart.fEta_max;
+                        // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
+                        cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
                     }
 
                     if (cJointEnd.fEta_max > fMaximumDesignRatio)
                     {
                         fMaximumDesignRatio = cJointEnd.fEta_max;
+                        // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
+                        cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;
                     }
                 }

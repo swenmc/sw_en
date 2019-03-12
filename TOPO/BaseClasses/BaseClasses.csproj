@@ -97,6 +97,11 @@
     <Compile Include="Model\ConnectionComponents\ConnectorArrangement\CAnchorArrangement _Rectangular.cs" />
     <Compile Include="Model\CSegment_LTB.cs" />
     <Compile Include="Model\SpecificModelTypes\CBeam_Simple.cs" />
+    <Compile Include="Results\JointDesignDetails\CJointDesignDetails_FrontOrBackColumnToMainRafterJoint.cs" />
+    <Compile Include="Results\JointDesignDetails\CJointDesignDetails_BaseJoint.cs" />
+    <Compile Include="Results\JointDesignDetails\CJointDesignDetails_GirtOrPurlin.cs" />
+    <Compile Include="Results\JointDesignDetails\CJointDesignDetails_ApexOrKnee.cs" />
+    <Compile Include="Results\JointDesignDetails\CJointDesignDetails.cs" />
     <Compile Include="Results\CMemberDeflectionsInLoadCombinations.cs" />
     <Compile Include="Results\CMemberInternalForcesInLoadCombinations.cs" />
     <Compile Include="Results\CMemberLoadCombinationRatio_SLS.cs" />
