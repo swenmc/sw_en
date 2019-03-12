@@ -899,15 +899,15 @@ namespace PFD
 
             // Internal forces in joint
             listPhysicalQuantity_Symbols.Add("N");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fN * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fN * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Force);
 
             listPhysicalQuantity_Symbols.Add("Vx");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fV_yu * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fV_xu_xx * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Force);
 
             listPhysicalQuantity_Symbols.Add("Vy");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fV_zv * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fV_yv_yy * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Force);
 
             //listPhysicalQuantity_Symbols.Add("T");
@@ -915,11 +915,11 @@ namespace PFD
             //listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             listPhysicalQuantity_Symbols.Add("Mx");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fM_yu * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fM_xu_xx * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             listPhysicalQuantity_Symbols.Add("My");
-            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF.fM_zv * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
+            listPhysicalQuantity_Values.Add(Math.Round(calc.sDIF_AS4600.fM_yv_yy * fUnitFactor_Moment, iNumberOfDecimalPlaces).ToString());
             listPhysicalQuantity_Units.Add(sUnit_Moment);
 
             // Component properties

@@ -188,11 +188,6 @@ namespace BaseClasses
 
         public void GetModelMemberStartEndConnectionJoints(CMember m, out CConnectionJointTypes jStart, out CConnectionJointTypes jEnd)
         {
-            if(m.ID==5)
-            {
-
-            }
-
             jStart = null;
             jEnd = null;
             foreach (CConnectionJointTypes cj in m_arrConnectionJoints)
