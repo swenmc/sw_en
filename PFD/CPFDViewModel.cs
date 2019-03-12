@@ -1532,12 +1532,14 @@ namespace PFD
                                 }
 
                                 // Joint Design
-                                designInternalForces[] sJointDIF_x;
                                 CJointDesign jointDesignModel = new CJointDesign();
 
+                                designInternalForces sjointStartDIF_x;
+                                designInternalForces sjointEndDIF_x;
                                 CConnectionJointTypes jointStart;
                                 CConnectionJointTypes jointEnd;
-                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, UseCRSCGeometricalAxes, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sJointDIF_x);
+
+                                jointDesignModel.SetDesignForcesAndJointDesign_PFD(iNumberOfDesignSections, UseCRSCGeometricalAxes, Model, m, sBIF_x_design, out jointStart, out jointEnd, out sjointStartDIF_x, out sjointEndDIF_x);
 
                                 // Validation - Main member of joint must be defined
                                 if (jointStart.m_MainMember == null)
@@ -1546,10 +1548,10 @@ namespace PFD
                                     throw new ArgumentNullException("Error" + "Joint No: " + jointEnd.ID + " Main member is not defined.");
 
                                 // Start Joint
-                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointStart, lcomb, jointDesignModel.fDesignRatio_Start, sJointDIF_x[jointDesignModel.fDesignRatioLocationID_Start]));
+                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointStart, lcomb, jointDesignModel.fDesignRatio_Start, sjointStartDIF_x));
 
                                 // End Joint
-                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sJointDIF_x[jointDesignModel.fDesignRatioLocationID_End]));
+                                JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sjointEndDIF_x));
 
                                 // Output (for debugging - member results)
                                 bool bDebugging = false; // Testovacie ucely
