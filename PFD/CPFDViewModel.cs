@@ -1134,7 +1134,7 @@ namespace PFD
             //    // Convert SW_EN model to BFENet model
             //    //CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
             //    // Convert model and calculate results
-            //    Model bfemNetModel = CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);                
+            //    Model bfemNetModel = CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);
             //    //Model bfemNetModel = Task.Factory.StartNew(() => CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver)).Result;
             //}
             if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);

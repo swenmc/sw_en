@@ -13,7 +13,7 @@ namespace PFD.Infrastructure
         public static void RunBeamsCalculations(List<CBeam_Simple> beamSimpleModels, bool DeterminateCombinationResultsByFEMSolver)
         {
             List<WaitHandle> waitHandles = new List<WaitHandle>();
-            int maxWaitHandleCount = 16;  //maximum is 64
+            int maxWaitHandleCount = 8;  //maximum is 64 // MC: zatial najlepsie sa u mna javi 8 cores a 8 waithandlecount => 19 sekund
 
             List<CBeamCalculations> recs = new List<CBeamCalculations>();
             List<IAsyncResult> results = new List<IAsyncResult>();
