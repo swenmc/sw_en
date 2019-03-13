@@ -120,7 +120,6 @@ namespace PFD
                         cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
-                        fMaximumDesignRatio = cJointEnd.fEta_max;
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
                         cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;

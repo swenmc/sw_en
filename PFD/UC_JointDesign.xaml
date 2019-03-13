@@ -6,7 +6,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        d:DesignHeight="1270" d:DesignWidth="600">
+        d:DesignHeight="1200" d:DesignWidth="600">
     <UserControl.Resources>
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">200</System:Double>
@@ -24,9 +24,9 @@
             <RowDefinition Height="40"/>
 
             <RowDefinition Height="40"/>
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="480"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="480"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
