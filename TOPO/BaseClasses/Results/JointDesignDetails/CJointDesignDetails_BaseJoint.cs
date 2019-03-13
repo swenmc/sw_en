@@ -105,6 +105,30 @@ namespace BaseClasses
         public float ff_y_anchor;
         public float ff_u_anchor;
 
+        // AS / NZS 4600:2018 - 5.3 Bolted connections
+        public float fPhi_v_532;
+        public float fV_f_532;
+        public float fDesignRatio_532_1;
+
+        public float fPhi_v_534;
+        public float fAlpha_5342;
+        public float fC_5342;
+        public float fV_b_5342;
+        public float fDesignRatio_5342;
+
+        public float fV_b_5343;
+        public float fDesignRatio_5343;
+
+        public float fPhi_535;
+        public float fV_fv_5351_2_anchor;
+        public float fDesignRatio_5351_2;
+
+        public float fN_ft_5352_1;
+        public float fDesignRatio_5352_1;
+
+        public float fDesignRatio_5353;
+
+
 
         public CJointDesignDetails_BaseJoint()
         {

@@ -862,39 +862,42 @@ namespace M_AS4600
             // AS / NZS 4600:2018 - 5.3 Bolted connections
             // Base plate design
             // 5.3.2 Tearout
-            float fV_f_532 = eq.Eq_532_2___(ft_1_plate, designDetails.fe_y_AnchorToPlateEdge, ff_uk_1_plate);
-            float fDesignRatio_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, 0.7f, fV_f_532);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_532_1);
+            designDetails.fPhi_v_532 = 0.7f;
+            designDetails.fV_f_532 = eq.Eq_532_2___(ft_1_plate, designDetails.fe_y_AnchorToPlateEdge, ff_uk_1_plate);
+            designDetails.fDesignRatio_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_v_532, designDetails.fV_f_532);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_532_1);
 
             // 5.3.4.2 Bearing capacity without considering bolt hole deformation
-            float fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
-            float fC_5342 = eq.Get_Factor_C_Table_5342_B(designDetails.fd_f, ft_1_plate);
-            float fV_b_5342 = eq.Eq_5342____(fAlpha_5342, fC_5342, designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
-            float fDesignRatio_5342 = designDetails.fV_asterix_anchor / (0.6f * fV_b_5342);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_5342);
+            designDetails.fPhi_v_534 = 0.6f;
+            designDetails.fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
+            designDetails.fC_5342 = eq.Get_Factor_C_Table_5342_B(designDetails.fd_f, ft_1_plate);
+            designDetails.fV_b_5342 = eq.Eq_5342____(designDetails.fAlpha_5342, designDetails.fC_5342, designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
+            designDetails.fDesignRatio_5342 = designDetails.fV_asterix_anchor / (designDetails.fPhi_v_534 * designDetails.fV_b_5342);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5342);
 
             // 5.3.4.3 Bearing capacity at a bolt hole deformation of 6 mm
-            float fV_b_5343 = eq.Eq_5343____(designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
-            float fDesignRatio_5343 = designDetails.fV_asterix_anchor / (0.6f * fV_b_5343);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_5343);
+            designDetails.fV_b_5343 = eq.Eq_5343____(designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
+            designDetails.fDesignRatio_5343 = designDetails.fV_asterix_anchor / (designDetails.fPhi_v_534 * designDetails.fV_b_5343);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5343);
 
             // Bolt design / Anchor design
             // 5.3.5.1 Bolt in shear
+            designDetails.fPhi_535 = 0.8f;
             int iNumberOfShearPlanesOfBolt_core = 1; // Jednostrizny spoj - strih jardom skrutky
-            float fV_fv_5351_2_anchor = eq.Eq_5351_2__(designDetails.ff_u_anchor, iNumberOfShearPlanesOfBolt_core, designDetails.fA_c, 0, designDetails.fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
-            float fDesignRatio_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_5351_2);
+            designDetails.fV_fv_5351_2_anchor = eq.Eq_5351_2__(designDetails.ff_u_anchor, iNumberOfShearPlanesOfBolt_core, designDetails.fA_c, 0, designDetails.fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
+            designDetails.fDesignRatio_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5351_2);
 
             // 5.3.5.2 Bolt in tension
-            float fN_ft_5352_1 = eq.Eq_5352_2__(designDetails.fA_c, designDetails.ff_u_anchor);
-            float fDesignRatio_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_5352_1);
+            designDetails.fN_ft_5352_1 = eq.Eq_5352_2__(designDetails.fA_c, designDetails.ff_u_anchor);
+            designDetails.fDesignRatio_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_535, designDetails.fN_ft_5352_1);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5352_1);
 
             // 5.3.5.3 Bolt subject to combined shear and tension
             float fPortion_V_5353;
             float fPortion_N_5353;
-            float fDesignRatio_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_5353);
+            designDetails.fDesignRatio_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, designDetails.fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5353);
 
             float fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
 

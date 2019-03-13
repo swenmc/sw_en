@@ -893,10 +893,6 @@ namespace PFD
                 listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
                 listPhysicalQuantity_Units.Add("");
 
-                listPhysicalQuantity_Symbols.Add("No anchors");
-                listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
-                listPhysicalQuantity_Units.Add("");
-
                 listPhysicalQuantity_Symbols.Add("No anchors.t");
                 listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
                 listPhysicalQuantity_Units.Add("");
@@ -990,13 +986,69 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Stress);
 
                 // AS / NZS 4600:2018 - 5.3 Bolted connections
+                listPhysicalQuantity_Symbols.Add("Φv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_532, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
+                listPhysicalQuantity_Symbols.Add("Vf");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_f_532 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
 
+                listPhysicalQuantity_Symbols.Add("η Vf");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_532_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
+                listPhysicalQuantity_Symbols.Add("Φv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_v_534, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
+                listPhysicalQuantity_Symbols.Add("α");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fAlpha_5342, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
+                listPhysicalQuantity_Symbols.Add("C");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fC_5342, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
 
+                listPhysicalQuantity_Symbols.Add("Vb");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_5342 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
 
+                listPhysicalQuantity_Symbols.Add("η Vb");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5342, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("Vb");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_5343 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vb");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5343, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("Φ");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPhi_535, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Vfv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_fv_5351_2_anchor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vfv");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5351_2, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("Nft");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_ft_5352_1 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Nft");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5352_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("η");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5353, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
             else
             {
