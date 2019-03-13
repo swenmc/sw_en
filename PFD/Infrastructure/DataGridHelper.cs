@@ -521,6 +521,7 @@ namespace PFD
 
             float fUnitFactor_ComponentDimension = 1000f; // m to mm
             float fUnitFactor_ComponentArea = 1000000f; // m^2 to mm^2
+            float fUnitFactor_ComponentVolume = 1000000000f; // m^3 to mm^3
 
             float fUnitFactor_Density = 1f; // kg/m^3 to kg/m^3
 
@@ -535,6 +536,7 @@ namespace PFD
 
             string sUnit_ComponentDimension = "[mm]";
             string sUnit_ComponentArea = "[mm²]";
+            string sUnit_ComponentVolume = "[mm³]";
 
             string sUnit_Factor = "[-]";
             string sUnit_DesignRatio = "[-]";
@@ -1793,7 +1795,80 @@ namespace PFD
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
+                // 17.5.6.6 Interaction of tension and shear – simplified procedures
+                // Group of anchors
 
+                // 17.5.6.6(Eq. 17–5)
+                listPhysicalQuantity_Symbols.Add("η 17566.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17566_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Footings
+                listPhysicalQuantity_Symbols.Add("γF.u");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fGamma_F_uplift, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("γF.b");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fGamma_F_uplift, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("cn.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fc_nominal_soil_bearing_capacity * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                // Footing pad
+                listPhysicalQuantity_Symbols.Add("A footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_footing * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("V footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_footing * fUnitFactor_ComponentVolume, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentVolume);
+
+                listPhysicalQuantity_Symbols.Add("G footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fG_footing * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Tributary floor
+                listPhysicalQuantity_Symbols.Add("G floor");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fG_tributary_floor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Additional material above the footing
+                listPhysicalQuantity_Symbols.Add("G additional");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fG_additional_material * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Uplift
+                listPhysicalQuantity_Symbols.Add("Gd.u");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fG_design_uplift * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Bearing
+                listPhysicalQuantity_Symbols.Add("Gd.b");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fG_design_bearing * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Design ratio - uplift and bearing force
+                listPhysicalQuantity_Symbols.Add("η Gd.u");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_footing_uplift, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("Nd.b.tot");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_design_bearing_total * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("pb");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPressure_bearing * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("Φs.b");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fSafetyFactor, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("η Nd.b.tot");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_footing_bearing, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
             else
             {

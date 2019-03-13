@@ -250,6 +250,41 @@ namespace BaseClasses
         // Lower design strength in shear
         public float fV_d_design_min;
 
+        // 17.5.6.6 Interaction of tension and shear – simplified procedures
+        // Group of anchors
+
+        // 17.5.6.6(Eq. 17–5)
+        public float fDesignRatio_17566_group;
+
+        // Footings
+        public float fGamma_F_uplift;
+        public float fGamma_F_bearing;
+        public float fc_nominal_soil_bearing_capacity;
+
+        // Footing pad
+        public float fA_footing;
+        public float fV_footing;
+        public float fG_footing;
+
+        // Tributary floor volume
+        public float fG_tributary_floor;
+
+        // Addiional material above the footing
+        public float fG_additional_material;
+
+        // Uplift
+        public float fG_design_uplift;
+
+        // Bearing
+        public float fG_design_bearing;
+
+        // Design ratio - uplift and bearing force
+        public float fDesignRatio_footing_uplift;
+
+        public float fN_design_bearing_total;
+        public float fPressure_bearing;
+        public float fSafetyFactor;
+        public float fDesignRatio_footing_bearing;
 
         public CJointDesignDetails_BaseJoint()
         {

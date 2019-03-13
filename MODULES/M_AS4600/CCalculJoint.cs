@@ -1026,7 +1026,7 @@ namespace M_AS4600
             }
 
             // Lower characteristic strength in tension
-            float fN_n_nominal_min = MathF.Min(
+            designDetails.fN_n_nominal_min = MathF.Min(
                 designDetails.fN_s_176_group,                                       // 17.5.7.1
                 designDetails.fN_cb_177_group,                                      // 17.5.7.2
                 designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,    // 17.5.7.2
@@ -1034,7 +1034,7 @@ namespace M_AS4600
                 designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single);  // 17.5.7.4
 
             // Lower design strength in tension
-            float fN_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
+            designDetails.fN_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
                 designDetails.fPhi_anchor_tension_173 * designDetails.fN_s_176_group,                                         // 17.5.7.1
                 designDetails.fPhi_concrete_tension_174a * designDetails.fN_cb_177_group,                                     // 17.5.7.2
                 designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,   // 17.5.7.2
@@ -1144,8 +1144,8 @@ namespace M_AS4600
             // Group of anchors
 
             // 17.5.6.6(Eq. 17–5)
-            float fDesignRatio_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17566_group);
+            designDetails.fDesignRatio_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17566_group);
 
             // C17.5.6.6 (Figure C17.1)
             bool bUseC17566Equation = true;
@@ -1153,64 +1153,65 @@ namespace M_AS4600
 
             if (bUseC17566Equation)
             {
-                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
+                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
                 fEta_max = MathF.Max(fEta_max, fDesignRatio_C17566_group);
             }
 
             // Footings
-            float fGamma_F_uplift = 0.9f; // Load Factor -uplift
-            float fGamma_F_bearing = 1.2f; // Load Factor - bearing
+            designDetails.fGamma_F_uplift = 0.9f; // Load Factor -uplift
+            designDetails.fGamma_F_bearing = 1.2f; // Load Factor - bearing
 
             //float fN_asterix_joint_uplif =
             //float fN_asterix_joint_bearing 
 
-            float fc_nominal_soil_bearing_capacity = 58000f; // Pa - soil bearing capacity - TODO - user defined
+            designDetails.fc_nominal_soil_bearing_capacity = 58000f; // Pa - soil bearing capacity - TODO - user defined
 
             // Footing pad
-            float fA_footing = designDetails.fFootingDimension_x * designDetails.fFootingDimension_y; // Area of footing pad
-            float fV_footing = fA_footing * designDetails.fFootingHeight;  // Volume of footing pad
+            designDetails.fA_footing = designDetails.fFootingDimension_x * designDetails.fFootingDimension_y; // Area of footing pad
+            designDetails.fV_footing = designDetails.fA_footing * designDetails.fFootingHeight;  // Volume of footing pad
             float fRho_c_footing = 2300f; // Density of dry concrete - foundations
-            float fG_footing = fV_footing * fRho_c_footing; // Self-weight [N] - footing pad
+            designDetails.fG_footing = designDetails.fV_footing * fRho_c_footing; // Self-weight [N] - footing pad
 
             // Tributary floor volume
             float ft_floor = 0.125f; // TODO - user-defined
             float fa_tributary_floor = 0.6f; // TODO - tributary dimension;
             float fLength_x_tributary_floor = designDetails.fFootingDimension_x + 2 * fa_tributary_floor; // TODO - zistit ci je stlp v rohu, ak ano uvazovat len jednu stranu
             float fLength_y_tributary_floor = designDetails.fFootingDimension_y + fa_tributary_floor; // Okraj - uvazujem sa len jedna strana patky
-            float fA_tributary_floor = fLength_x_tributary_floor * fLength_y_tributary_floor - fA_footing;
+            float fA_tributary_floor = fLength_x_tributary_floor * fLength_y_tributary_floor - designDetails.fA_footing;
             float fV_tributary_floor = fA_tributary_floor * ft_floor;
             float fRho_c_floor = 2200f; // Density of dry concrete - concrete floor
-            float fG_tributary_floor = fV_tributary_floor * fRho_c_floor; // Self-weight [N] - tributary concrete floor
+            designDetails.fG_tributary_floor = fV_tributary_floor * fRho_c_floor; // Self-weight [N] - tributary concrete floor
 
-            // Addiional material above the footing
+            // Additional material above the footing
             float ft_additional_material = 0.3f; // User-defined
             float fRho_additional_material = 2200f; // Can be concrete or soil
-            float fVolume_additional_material = fA_footing * ft_additional_material;
-            float fG_additional_material = fVolume_additional_material * fRho_additional_material; // Self-weight [N]
+            float fVolume_additional_material = designDetails.fA_footing * ft_additional_material;
+            designDetails.fG_additional_material = fVolume_additional_material * fRho_additional_material; // Self-weight [N]
 
             // Uplift
-            float fG_design_footing_uplift = fGamma_F_uplift * fG_footing;
-            float fG_design_tributary_floor_uplift = fGamma_F_uplift * fG_design_footing_uplift;
-            float fG_design_additional_material_uplift = fGamma_F_uplift * fG_additional_material;
-            float fG_design_uplift = fG_design_footing_uplift + fG_design_tributary_floor_uplift + fG_design_additional_material_uplift;
+            float fG_design_footing_uplift = designDetails.fGamma_F_uplift * designDetails.fG_footing;
+            float fG_design_tributary_floor_uplift = designDetails.fGamma_F_uplift * fG_design_footing_uplift;
+            float fG_design_additional_material_uplift = designDetails.fGamma_F_uplift * designDetails.fG_additional_material;
+            designDetails.fG_design_uplift = fG_design_footing_uplift + fG_design_tributary_floor_uplift + fG_design_additional_material_uplift;
 
-            float fG_design_footing_bearing = fGamma_F_bearing * fG_footing;
-            float fG_design_additional_material_bearing = fGamma_F_bearing * fG_additional_material;
-            float fG_design_bearing = fG_design_footing_bearing + fG_design_additional_material_bearing;
+            // Bearing
+            float fG_design_footing_bearing = designDetails.fGamma_F_bearing * designDetails.fG_footing;
+            float fG_design_additional_material_bearing = designDetails.fGamma_F_bearing * designDetails.fG_additional_material;
+            designDetails.fG_design_bearing = fG_design_footing_bearing + fG_design_additional_material_bearing;
 
             // Design ratio - uplift and bearing force
-            float fDesignRatio_footing_uplift = designDetails.fN_asterix_joint_uplif / fG_design_uplift;
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_footing_uplift);
+            designDetails.fDesignRatio_footing_uplift = designDetails.fN_asterix_joint_uplif / designDetails.fG_design_uplift;
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_footing_uplift);
 
-            float fN_design_bearing_total = Math.Abs(designDetails.fN_asterix_joint_bearing) + fG_design_bearing;
-            float fPressure_bearing = fN_design_bearing_total / fA_footing;
-            float fSafetyFactor = 0.5f; // TODO - zistit aky je faktor
-            float fDesignRatio_footing_bearing = fPressure_bearing / (fSafetyFactor * fc_nominal_soil_bearing_capacity);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_footing_bearing);
+            designDetails.fN_design_bearing_total = Math.Abs(designDetails.fN_asterix_joint_bearing) + designDetails.fG_design_bearing;
+            designDetails.fPressure_bearing = designDetails.fN_design_bearing_total / designDetails.fA_footing;
+            designDetails.fSafetyFactor = 0.5f; // TODO - zistit aky je faktor
+            designDetails.fDesignRatio_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_footing_bearing);
 
             // Bending - design of reinforcement
             // Reinforcement bars in x direction (parallel to the wall)
-            float fq_linear_xDirection = Math.Abs(fN_design_bearing_total) / designDetails.fFootingDimension_x;
+            float fq_linear_xDirection = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fFootingDimension_x;
             float fM_asterix_footingdesign_xDirection = fq_linear_xDirection * MathF.Pow2(designDetails.fFootingDimension_x) / 8f; // ??? jednoducho podpoprety nosnik ???
 
             float fd_reinforcement_xDirection = 0.016f; // TODO - user defined
