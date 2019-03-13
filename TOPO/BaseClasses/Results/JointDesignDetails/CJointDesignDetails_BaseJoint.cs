@@ -322,6 +322,33 @@ namespace BaseClasses
         public float fPhi_v_foundations;
         public float fDesignRatio_shear_V_footing;
 
+        // Punching shear
+        public float fcriticalPerimeter_b0;
+
+        // Ratio of the long side to the short side of the concentrated load
+        public float fBeta_c;
+        public float fAlpha_s;
+        public float fd_average;
+        public float fk_ds;
+
+        // Nominal shear stress resisted by the concrete
+        public float fv_c_126;
+        public float fv_c_127;
+        public float fv_c_128;
+        public float fv_c_12732;
+        public float fV_c_12731;
+
+        // 12.7.4 Shear reinforcement consisting of bars or wires or stirrups
+        public float fV_s_xDirection;
+        public float fV_s_yDirection;
+
+        // 12.7.3.1 Nominal shear strength for punching shear
+        public float fV_n_12731_xDirection;
+        public float fDesignRatio_punching_12731_xDirection;
+
+        public float fV_n_12731_yDirection;
+        public float fDesignRatio_punching_12731_yDirection;
+
         public CJointDesignDetails_BaseJoint()
         {
 

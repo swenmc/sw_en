@@ -1286,27 +1286,27 @@ namespace M_AS4600
             float fcriticalPerimeterDimension_x = 2f * Math.Min(designDetails.fd_effective_xDirection, designDetails.fe_x_BasePlateToFootingEdge) + fReactionArea_dimension_x;
             float fcriticalPerimeterDimension_y = 2f * Math.Min(fd_effective_yDirection, designDetails.fe_y_BasePlateToFootingEdge) + fReactionArea_dimension_y; // TODO - Zohladnit ak je stlp blizsie k okraju nez fd
 
-            float fcriticalPerimeter_b0 = 2 * fcriticalPerimeterDimension_x + 2 * fcriticalPerimeterDimension_y;
+            designDetails.fcriticalPerimeter_b0 = 2 * fcriticalPerimeterDimension_x + 2 * fcriticalPerimeterDimension_y;
 
             // Ratio of the long side to the short side of the concentrated load
-            float fBeta_c = Math.Max(fReactionArea_dimension_x, fReactionArea_dimension_y) / Math.Min(fReactionArea_dimension_x, fReactionArea_dimension_y); // 12.7
-            float fAlpha_s = 15; // 20 for interior columns, 15 for edge columns, 10 for corner columns TODO - zapracovat identifikaciu stlpa
-            float fd_average = (designDetails.fd_effective_xDirection + fd_effective_yDirection) / 2f;
-            float fk_ds = eq_concrete.Get_k_ds_12732(fd_average);
+            designDetails.fBeta_c = Math.Max(fReactionArea_dimension_x, fReactionArea_dimension_y) / Math.Min(fReactionArea_dimension_x, fReactionArea_dimension_y); // 12.7
+            designDetails.fAlpha_s = 15; // 20 for interior columns, 15 for edge columns, 10 for corner columns TODO - zapracovat identifikaciu stlpa
+            designDetails.fd_average = (designDetails.fd_effective_xDirection + fd_effective_yDirection) / 2f;
+            designDetails.fk_ds = eq_concrete.Get_k_ds_12732(designDetails.fd_average);
 
             // Nominal shear stress resisted by the concrete
-            float fv_c_126 = eq_concrete.Eq_12_6____(fk_ds, fBeta_c, designDetails.ff_apostrophe_c);
-            float fv_c_127 = eq_concrete.Eq_12_7____(fk_ds, fAlpha_s, fd_average, fcriticalPerimeter_b0, designDetails.ff_apostrophe_c);
-            float fv_c_128 = eq_concrete.Eq_12_8____(fk_ds, designDetails.ff_apostrophe_c);
+            designDetails.fv_c_126 = eq_concrete.Eq_12_6____(designDetails.fk_ds, designDetails.fBeta_c, designDetails.ff_apostrophe_c);
+            designDetails.fv_c_127 = eq_concrete.Eq_12_7____(designDetails.fk_ds, designDetails.fAlpha_s, designDetails.fd_average, designDetails.fcriticalPerimeter_b0, designDetails.ff_apostrophe_c);
+            designDetails.fv_c_128 = eq_concrete.Eq_12_8____(designDetails.fk_ds, designDetails.ff_apostrophe_c);
 
-            float fv_c_12732 = MathF.Min(fv_c_126, fv_c_127, fv_c_128);
+            designDetails.fv_c_12732 = MathF.Min(designDetails.fv_c_126, designDetails.fv_c_127, designDetails.fv_c_128);
 
             // 12.7.3.4 Maximum nominal shear stress
             float fv_c_max = 0.5f * MathF.Sqrt(designDetails.ff_apostrophe_c);
-            if (fv_c_12732 > fv_c_max)
-                fv_c_12732 = fv_c_max;
+            if (designDetails.fv_c_12732 > fv_c_max)
+                designDetails.fv_c_12732 = fv_c_max;
 
-            float fV_c_12731 = eq_concrete.Get_V_c_12731(fv_c_12732, fcriticalPerimeter_b0, fd_average);
+            designDetails.fV_c_12731 = eq_concrete.Get_V_c_12731(designDetails.fv_c_12732, designDetails.fcriticalPerimeter_b0, designDetails.fd_average);
 
             // 12.7.4 Shear reinforcement consisting of bars or wires or stirrups
             float fReinforcementArea_A_v_xDirection = 2 * designDetails.fA_s_tot_Xdirection * fcriticalPerimeterDimension_y / designDetails.fFootingDimension_y; // TODO ?? horna aj spodna vyztuz ak su rovnake
@@ -1314,17 +1314,17 @@ namespace M_AS4600
 
             float ff_yv = fReinforcementStrength_fy;
 
-            float fV_s_xDirection = fReinforcementArea_A_v_xDirection * ff_yv * designDetails.fd_effective_xDirection / designDetails.fSpacing_yDirection;
-            float fV_s_yDirection = fReinforcementArea_A_v_yDirection * ff_yv * fd_effective_yDirection / fSpacing_xDirection;
+            designDetails.fV_s_xDirection = fReinforcementArea_A_v_xDirection * ff_yv * designDetails.fd_effective_xDirection / designDetails.fSpacing_yDirection;
+            designDetails.fV_s_yDirection = fReinforcementArea_A_v_yDirection * ff_yv * fd_effective_yDirection / fSpacing_xDirection;
 
             // 12.7.3.1 Nominal shear strength for punching shear
-            float fV_n_12731_xDirection = eq_concrete.Eq_12_4____(fV_s_xDirection, fV_c_12731);
-            float fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, fV_n_12731_xDirection);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_punching_12731_xDirection);
+            designDetails.fV_n_12731_xDirection = eq_concrete.Eq_12_4____(designDetails.fV_s_xDirection, designDetails.fV_c_12731);
+            designDetails.fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, designDetails.fV_n_12731_xDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_punching_12731_xDirection);
 
-            float fV_n_12731_yDirection = eq_concrete.Eq_12_4____(fV_s_yDirection, fV_c_12731);
-            float fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, fV_n_12731_yDirection);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_punching_12731_yDirection);
+            designDetails.fV_n_12731_yDirection = eq_concrete.Eq_12_4____(designDetails.fV_s_yDirection, designDetails.fV_c_12731);
+            designDetails.fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, designDetails.fV_n_12731_yDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_punching_12731_yDirection);
 
             // Store details
             if (bSaveDetails)
