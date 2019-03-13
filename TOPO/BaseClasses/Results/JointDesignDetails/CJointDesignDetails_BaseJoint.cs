@@ -60,6 +60,52 @@ namespace BaseClasses
         public float fN_t_section_MainMember;
         public float fEta_N_t_5423_MainMember;
 
+
+
+
+        // Anchors
+        public float fN_asterix_joint_uplif;
+        public float fN_asterix_joint_bearing;
+
+        public float fV_asterix_x_joint;
+        public float fV_asterix_y_joint;
+        public float fV_asterix_res_joint;
+
+        public int iNumberAnchors;
+        public int iNumberAnchors_t;
+        public int iNumberAnchors_v;
+
+        public float fN_asterix_anchor_uplif;
+        public float fV_asterix_anchor;
+        public float fplateWidth_x;
+        public float fplateWidth_y;
+
+        public float fFootingDimension_x;
+        public float fFootingDimension_y;
+        public float fFootingHeight;
+
+        public float fe_x_AnchorToPlateEdge;
+        public float fe_y_AnchorToPlateEdge;
+
+        public float fe_x_BasePlateToFootingEdge;
+        public float fe_y_BasePlateToFootingEdge;
+
+        public float fu_x_Washer;
+        public float fu_y_Washer;
+
+        public float ff_apostrophe_c;
+        public float fRho_c;
+
+        public float fd_s;
+        public float fd_f;
+
+        public float fA_c;
+        public float fA_o;
+
+        public float ff_y_anchor;
+        public float ff_u_anchor;
+
+
         public CJointDesignDetails_BaseJoint()
         {
 

@@ -44,9 +44,9 @@
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Design Details - Member Start Joint" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <DataGrid Grid.Row="5" Grid.Column="0" Name ="Results_JointAtMemberStart_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Grid.ColumnSpan="3" Margin="5,0"/>
         <TextBlock Grid.Row="6" Grid.Column="0" Text="Design Details - Member End Joint" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
         <DataGrid Grid.Row="7" Grid.Column="0" Name ="Results_JointAtMemberEnd_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" 
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" CanUserSortColumns="False" Grid.ColumnSpan="3" Margin="5,0"/>
     </Grid>
 </UserControl>

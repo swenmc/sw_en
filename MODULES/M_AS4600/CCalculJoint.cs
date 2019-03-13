@@ -800,20 +800,20 @@ namespace M_AS4600
 
 
             // Anchors
-            float fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
-            float fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
+            designDetails.fN_asterix_joint_uplif = Math.Max(sDIF_temp.fN, 0); // Tension in column - positive
+            designDetails.fN_asterix_joint_bearing = Math.Min(sDIF_temp.fN, 0); // Compression in column - negative
 
-            float fV_asterix_x_joint = Math.Abs(sDIF_temp.fV_xu_xx);
-            float fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_yv_yy);
-            float fV_asterix_res_joint = 0f;
+            designDetails.fV_asterix_x_joint = Math.Abs(sDIF_temp.fV_xu_xx);
+            designDetails.fV_asterix_y_joint = Math.Abs(sDIF_temp.fV_yv_yy);
+            designDetails.fV_asterix_res_joint = 0f;
 
-            if(!MathF.d_equal(fV_asterix_x_joint,0) || !MathF.d_equal(fV_asterix_y_joint, 0))
-                fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(fV_asterix_x_joint) + MathF.Pow2(fV_asterix_y_joint));
+            if(!MathF.d_equal(designDetails.fV_asterix_x_joint,0) || !MathF.d_equal(designDetails.fV_asterix_y_joint, 0))
+                designDetails.fV_asterix_res_joint = MathF.Sqrt(MathF.Pow2(designDetails.fV_asterix_x_joint) + MathF.Pow2(designDetails.fV_asterix_y_joint));
 
             //int iNumberAnchors = plate.AnchorArrangement.Anchors.Length;
-            int iNumberAnchors = plate.AnchorArrangement.IHolesNumber;
-            int iNumberAnchors_t = iNumberAnchors; // Total number of anchors active in tension - all anchors active as default
-            int iNumberAnchors_v = iNumberAnchors; // Total number of anchors active in shear - all anchors active as default
+            designDetails.iNumberAnchors = plate.AnchorArrangement.IHolesNumber;
+            designDetails.iNumberAnchors_t = designDetails.iNumberAnchors; // Total number of anchors active in tension - all anchors active as default
+            designDetails.iNumberAnchors_v = designDetails.iNumberAnchors; // Total number of anchors active in shear - all anchors active as default
 
             CAnchorArrangement_BB_BG anchorArrangement;
 
@@ -827,73 +827,73 @@ namespace M_AS4600
             int iNumberAnchors_x = anchorArrangement.NumberOfAnchorsInYDirection;
             int iNumberAnchors_y = anchorArrangement.NumberOfAnchorsInZDirection;
 
-            float fN_asterix_anchor_uplif = fN_asterix_joint_uplif / iNumberAnchors_t; // Design axial force per anchor
-            float fV_asterix_anchor = fV_asterix_res_joint / iNumberAnchors_v; // Design shear force per anchor
+            designDetails.fN_asterix_anchor_uplif = designDetails.fN_asterix_joint_uplif / designDetails.iNumberAnchors_t; // Design axial force per anchor
+            designDetails.fV_asterix_anchor = designDetails.fV_asterix_res_joint / designDetails.iNumberAnchors_v; // Design shear force per anchor
 
-            float fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
-            float fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
+            designDetails.fplateWidth_x = (float)joint.m_MainMember.CrScStart.b; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
+            designDetails.fplateWidth_y = (float)joint.m_MainMember.CrScStart.h; // TODO - zapracovat priamo nacitanie parametrov plate type BA - BG
 
-            float fFootingDimension_x = 1.1f; // TODO - napojit na velkost zakladu
-            float fFootingDimension_y = 1.1f; // TODO - napojit na velkost zakladu
-            float fFootingHeight = 0.4f; // TODO - napojit na velkost zakladu
+            designDetails.fFootingDimension_x = 1.1f; // TODO - napojit na velkost zakladu
+            designDetails.fFootingDimension_y = 1.1f; // TODO - napojit na velkost zakladu
+            designDetails.fFootingHeight = 0.4f; // TODO - napojit na velkost zakladu
 
-            float fe_x_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
-            float fe_y_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
+            designDetails.fe_x_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
+            designDetails.fe_y_AnchorToPlateEdge = 0.05f; // TODO - Distance between anchor and plate edge
 
-            float fe_x_BasePlateToFootingEdge = 0.5f * (fFootingDimension_x - fplateWidth_x); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
-            float fe_y_BasePlateToFootingEdge = 0.5f * (fFootingDimension_y - fplateWidth_y); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
+            designDetails.fe_x_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_x - designDetails.fplateWidth_x); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
+            designDetails.fe_y_BasePlateToFootingEdge = 0.5f * (designDetails.fFootingDimension_y - designDetails.fplateWidth_y); // TODO - Distance between base plate and footing edge - zapracovat excentricitu
 
-            float fu_x_Washer = 0.08f;
-            float fu_y_Washer = 0.08f;
+            designDetails.fu_x_Washer = 0.08f;
+            designDetails.fu_y_Washer = 0.08f;
 
-            float ff_apostrophe_c = 25e+6f; // Characteristic compressive (cylinder) concrete strength
-            float fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
+            designDetails.ff_apostrophe_c = 25e+6f; // Characteristic compressive (cylinder) concrete strength
+            designDetails.fRho_c = 2300f; // Density of concrete - TODO - nacitat z materialu zakladov
 
             // Anchors (bolts)
-            float fd_s = plate.AnchorArrangement.referenceAnchor.Diameter_thread;
-            float fd_f = plate.AnchorArrangement.referenceAnchor.Diameter_shank;
+            designDetails.fd_s = plate.AnchorArrangement.referenceAnchor.Diameter_thread;
+            designDetails.fd_f = plate.AnchorArrangement.referenceAnchor.Diameter_shank;
 
-            float fA_c = plate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
-            float fA_o = plate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
+            designDetails.fA_c = plate.AnchorArrangement.referenceAnchor.Area_c_thread; // Core / thread area
+            designDetails.fA_o = plate.AnchorArrangement.referenceAnchor.Area_o_shank; // Shank area
 
-            float ff_y_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_yk_by_thickness(fd_f);
-            float ff_u_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_uk_by_thickness(fd_f);
+            designDetails.ff_y_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_yk_by_thickness(designDetails.fd_f);
+            designDetails.ff_u_anchor = plate.AnchorArrangement.referenceAnchor.m_Mat.Get_f_uk_by_thickness(designDetails.fd_f);
 
             // AS / NZS 4600:2018 - 5.3 Bolted connections
             // Base plate design
             // 5.3.2 Tearout
-            float fV_f_532 = eq.Eq_532_2___(ft_1_plate, fe_y_AnchorToPlateEdge, ff_uk_1_plate);
-            float fDesignRatio_532_1 = eq.Eq_5351_1__(fV_asterix_anchor, 0.7f, fV_f_532);
+            float fV_f_532 = eq.Eq_532_2___(ft_1_plate, designDetails.fe_y_AnchorToPlateEdge, ff_uk_1_plate);
+            float fDesignRatio_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, 0.7f, fV_f_532);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_532_1);
 
             // 5.3.4.2 Bearing capacity without considering bolt hole deformation
             float fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
-            float fC_5342 = eq.Get_Factor_C_Table_5342_B(fd_f, ft_1_plate);
-            float fV_b_5342 = eq.Eq_5342____(fAlpha_5342, fC_5342, fd_f, ft_1_plate, ff_uk_1_plate);
-            float fDesignRatio_5342 = fV_asterix_anchor / (0.6f * fV_b_5342);
+            float fC_5342 = eq.Get_Factor_C_Table_5342_B(designDetails.fd_f, ft_1_plate);
+            float fV_b_5342 = eq.Eq_5342____(fAlpha_5342, fC_5342, designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
+            float fDesignRatio_5342 = designDetails.fV_asterix_anchor / (0.6f * fV_b_5342);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_5342);
 
             // 5.3.4.3 Bearing capacity at a bolt hole deformation of 6 mm
-            float fV_b_5343 = eq.Eq_5343____(fd_f, ft_1_plate, ff_uk_1_plate);
-            float fDesignRatio_5343 = fV_asterix_anchor / (0.6f * fV_b_5343);
+            float fV_b_5343 = eq.Eq_5343____(designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
+            float fDesignRatio_5343 = designDetails.fV_asterix_anchor / (0.6f * fV_b_5343);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_5343);
 
             // Bolt design / Anchor design
             // 5.3.5.1 Bolt in shear
             int iNumberOfShearPlanesOfBolt_core = 1; // Jednostrizny spoj - strih jardom skrutky
-            float fV_fv_5351_2_anchor = eq.Eq_5351_2__(ff_u_anchor, iNumberOfShearPlanesOfBolt_core, fA_c, 0, fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
-            float fDesignRatio_5351_2 = eq.Eq_5351_1__(fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor);
+            float fV_fv_5351_2_anchor = eq.Eq_5351_2__(designDetails.ff_u_anchor, iNumberOfShearPlanesOfBolt_core, designDetails.fA_c, 0, designDetails.fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
+            float fDesignRatio_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_5351_2);
 
             // 5.3.5.2 Bolt in tension
-            float fN_ft_5352_1 = eq.Eq_5352_2__(fA_c, ff_u_anchor);
-            float fDesignRatio_5352_1 = eq.Eq_5352_1__(fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1);
+            float fN_ft_5352_1 = eq.Eq_5352_2__(designDetails.fA_c, designDetails.ff_u_anchor);
+            float fDesignRatio_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_5352_1);
 
             // 5.3.5.3 Bolt subject to combined shear and tension
             float fPortion_V_5353;
             float fPortion_N_5353;
-            float fDesignRatio_5353 = eq.Eq_5353____(fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor, fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
+            float fDesignRatio_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, 0.8f, fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_5353);
 
             float fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
@@ -910,9 +910,9 @@ namespace M_AS4600
 
             // 17.5.7.1  Steel strength of anchor in tension
             // Group of anchors
-            float fA_se = fA_c; // Effective cross-sectional area of an anchor
-            float fN_s_176_group = eq_concrete.Eq_17_6____(iNumberAnchors_t, fA_se, ff_u_anchor);
-            float fDesignRatio_17571_group = eq_concrete.Eq_17_1____(fN_asterix_joint_uplif, fPhi_anchor_tension_173, fN_s_176_group);
+            float fA_se = designDetails.fA_c; // Effective cross-sectional area of an anchor
+            float fN_s_176_group = eq_concrete.Eq_17_6____(designDetails.iNumberAnchors_t, fA_se, designDetails.ff_u_anchor);
+            float fDesignRatio_17571_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, fPhi_anchor_tension_173, fN_s_176_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17571_group);
 
             // 17.5.7.2  Strength of concrete breakout of anchor
@@ -921,7 +921,7 @@ namespace M_AS4600
             // Figure C17.4 – Definition of dimension e´n for group anchors
             float fe_apostrophe_n = 0f;                           // the distance between the resultant tension load on a group of anchors in tension and the centroid of the group of anchors loaded in tension(always taken as positive)
             float fConcreteCover = 0.07f;
-            float fh_ef = fFootingHeight - fConcreteCover;        // effective anchor embedment depth
+            float fh_ef = designDetails.fFootingHeight - fConcreteCover;        // effective anchor embedment depth
             float fs_2_x = 0f;                                    // centre-to-centre spacing of the anchors
             float fs_1_y = 0.23f;                                 // centre-to-centre spacing of the anchors
             float fs_min = Math.Min(fs_2_x, fs_1_y);
@@ -929,12 +929,10 @@ namespace M_AS4600
             float fc_1_y = 0.55f;
             float fc_min = Math.Min(fc_2_x, fc_1_y);
             float fk = 10f; // for cast-in anchors
-            float fLambda_53 = eq_concrete.Eq_5_3_____(fRho_c);
+            float fLambda_53 = eq_concrete.Eq_5_3_____(designDetails.fRho_c);
 
-            fe_x_AnchorToPlateEdge = 0.5f * (fplateWidth_x - (iNumberAnchors_x - 1) * fs_2_x);
-            fe_y_AnchorToPlateEdge = 0.5f * (fplateWidth_y - (iNumberAnchors_y - 1) * fs_1_y);
-
-
+            designDetails.fe_x_AnchorToPlateEdge = 0.5f * (designDetails.fplateWidth_x - (iNumberAnchors_x - 1) * fs_2_x);
+            designDetails.fe_y_AnchorToPlateEdge = 0.5f * (designDetails.fplateWidth_y - (iNumberAnchors_y - 1) * fs_1_y);
 
             float fPsi_1_group = eq_concrete.Eq_17_8____(fe_apostrophe_n, fh_ef);
             float fPsi_2 = eq_concrete.Get_Psi_2__(fc_min, fh_ef);
@@ -946,10 +944,10 @@ namespace M_AS4600
 
             float fAn_Length_x_group = Math.Min(fc_2_x, 1.5f * fh_ef) + 1.5f * fh_ef + ((iNumberAnchors_x - 1) * fs_2_x);
             float fAn_Length_y_group = Math.Min(fc_1_y, 1.5f * fh_ef) + 1.5f * fh_ef + ((iNumberAnchors_y - 1) * fs_1_y);
-            float fA_n_group = Math.Min(fAn_Length_x_group * fAn_Length_y_group, iNumberAnchors_t * fA_no_group);
+            float fA_n_group = Math.Min(fAn_Length_x_group * fAn_Length_y_group, designDetails.iNumberAnchors_t * fA_no_group);
 
-            float fN_b_179_group = eq_concrete.Eq_17_9____(fk, fLambda_53, Math.Min(ff_apostrophe_c, 70e+6f), fh_ef);
-            float fN_b_179a_group = eq_concrete.Eq_17_9a___(fLambda_53, ff_apostrophe_c, fh_ef);
+            float fN_b_179_group = eq_concrete.Eq_17_9____(fk, fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), fh_ef);
+            float fN_b_179a_group = eq_concrete.Eq_17_9a___(fLambda_53, designDetails.ff_apostrophe_c, fh_ef);
 
             if(0.280f <= fh_ef && fh_ef <= 0.635f && fN_b_179_group > fN_b_179a_group)
             {
@@ -958,7 +956,7 @@ namespace M_AS4600
 
             float fN_cb_177_group = eq_concrete.Eq_17_7____(fPsi_1_group, fPsi_2, fPsi_3, fA_n_group, fA_no_group, fN_b_179_group);
 
-            float fDesignRatio_17572_group = eq_concrete.Eq_17_1____(fN_asterix_joint_uplif, fPhi_concrete_tension_174a, fN_cb_177_group);
+            float fDesignRatio_17572_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, fPhi_concrete_tension_174a, fN_cb_177_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17572_group);
 
             // Single anchor - edge
@@ -968,8 +966,8 @@ namespace M_AS4600
             float fAn_Length_y_single = Math.Min(fc_1_y, 1.5f * fh_ef) + 1.5f * fh_ef;
             float fA_n_single = Math.Min(fAn_Length_x_single * fAn_Length_y_single, fA_no_single);
 
-            float fN_b_179_single = eq_concrete.Eq_17_9____(fk, fLambda_53, Math.Min(ff_apostrophe_c, 70e+6f), fh_ef);
-            float fN_b_179a_single = eq_concrete.Eq_17_9a___(fLambda_53, ff_apostrophe_c, fh_ef);
+            float fN_b_179_single = eq_concrete.Eq_17_9____(fk, fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), fh_ef);
+            float fN_b_179a_single = eq_concrete.Eq_17_9a___(fLambda_53, designDetails.ff_apostrophe_c, fh_ef);
 
             if (0.280f <= fh_ef && fh_ef <= 0.635f && fN_b_179_single > fN_b_179a_single)
             {
@@ -978,7 +976,7 @@ namespace M_AS4600
 
             float fN_cb_177_single = eq_concrete.Eq_17_7____(fPsi_1_single, fPsi_2, fPsi_3, fA_n_single, fA_no_single, fN_b_179_single);
 
-            float fDesignRatio_17572_single = eq_concrete.Eq_17_1____(fN_asterix_anchor_uplif, fPhi_concrete_tension_174a, fN_cb_177_single);
+            float fDesignRatio_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, fPhi_concrete_tension_174a, fN_cb_177_single);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17572_single);
 
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
@@ -987,16 +985,16 @@ namespace M_AS4600
             float fm_x = 0.06f;
             float fm_y = 0.06f;
             float fA_brg = fm_x * fm_y; // bearing area of the head of stud or anchor
-            float fN_p_1711_single = eq_concrete.Eq_17_11___(ff_apostrophe_c, fA_brg);
+            float fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, fA_brg);
 
             // Modification factor for pullout strength
             // Ψ4 = 1.0 for concrete cracked at service load levels but with the extent of cracking controlled by reinforcement distributed in accordance with 2.4.4.4 and 2.4.4.5
             // Ψ4 = 1.4 for concrete with no cracking at service load levels
             float fPsi_4 = 1.0f;
             float fN_pn_1710_single = eq_concrete.Eq_17_10___(fPsi_4, fN_p_1711_single);
-            float fN_pn_1710_group = iNumberAnchors_t * fN_pn_1710_single;
+            float fN_pn_1710_group = designDetails.iNumberAnchors_t * fN_pn_1710_single;
 
-            float fDesignRatio_17573_group = eq_concrete.Eq_17_1____(fN_asterix_joint_uplif, fPhi_anchor_tension_173, fN_pn_1710_group);
+            float fDesignRatio_17573_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, fPhi_anchor_tension_173, fN_pn_1710_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17573_group);
 
             // The side face blowout strength of a headed anchor with deep embedment close to an edge
@@ -1009,7 +1007,7 @@ namespace M_AS4600
                 // Single anchor - edge
                 float fc_1_17574 = fc_1_y;
 
-                if (fN_asterix_anchor_uplif > 0) // Tension in anchor
+                if (designDetails.fN_asterix_anchor_uplif > 0) // Tension in anchor
                     fc_1_17574 = fc_min;
 
                 // Anchors subject to shear are located in narrow sections of limited thickness
@@ -1020,9 +1018,9 @@ namespace M_AS4600
 
                 float fk_1 = eq_concrete.Get_k_1____(fc_1_17574, fc_2_x);
 
-                fN_sb_1713_single = eq_concrete.Eq_17_13___(fk_1, fc_1_17574, fLambda_53, fA_brg, ff_apostrophe_c);
+                fN_sb_1713_single = eq_concrete.Eq_17_13___(fk_1, fc_1_17574, fLambda_53, fA_brg, designDetails.ff_apostrophe_c);
 
-                fDesignRatio_17574_single = eq_concrete.Eq_17_1____(fN_asterix_anchor_uplif, fPhi_concrete_tension_174a, fN_sb_1713_single);
+                fDesignRatio_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, fPhi_concrete_tension_174a, fN_sb_1713_single);
                 fEta_max = MathF.Max(fEta_max, fDesignRatio_17574_single);
             }
 
@@ -1030,17 +1028,17 @@ namespace M_AS4600
             float fN_n_nominal_min = MathF.Min(
                 fN_s_176_group,                         // 17.5.7.1
                 fN_cb_177_group,                        // 17.5.7.2
-                iNumberAnchors_t * fN_cb_177_single,    // 17.5.7.2
+                designDetails.iNumberAnchors_t * fN_cb_177_single,    // 17.5.7.2
                 fN_pn_1710_group,                       // 17.5.7.3
-                iNumberAnchors_t * fN_sb_1713_single);  // 17.5.7.4
+                designDetails.iNumberAnchors_t * fN_sb_1713_single);  // 17.5.7.4
 
             // Lower design strength in tension
             float fN_d_design_min = fElasticityFactor_1764 * MathF.Min(
                 fPhi_anchor_tension_173 * fN_s_176_group,                           // 17.5.7.1
                 fPhi_concrete_tension_174a * fN_cb_177_group,                       // 17.5.7.2
-                fPhi_concrete_tension_174a * iNumberAnchors_t * fN_cb_177_single,   // 17.5.7.2
+                fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * fN_cb_177_single,   // 17.5.7.2
                 fPhi_anchor_tension_173 * fN_pn_1710_group,                         // 17.5.7.3
-                fPhi_concrete_tension_174a * iNumberAnchors_t * fN_sb_1713_single); // 17.5.7.4
+                fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * fN_sb_1713_single); // 17.5.7.4
 
             // 17.5.8 Lower characteristic strength of anchor in shear
 
@@ -1048,11 +1046,11 @@ namespace M_AS4600
             // Group of anchors
 
             // TODO - rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
-            float fV_s_1714_group = eq_concrete.Eq_17_14___(iNumberAnchors_v, fA_se, ff_u_anchor, ff_y_anchor);
-            float fV_s_1715_group = eq_concrete.Eq_17_15___(iNumberAnchors_v, fA_se, ff_u_anchor, ff_y_anchor);
+            float fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+            float fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
 
             float fV_s_17581_group = Math.Min(fV_s_1714_group, fV_s_1715_group);
-            float fDesignRatio_17581_group = eq_concrete.Eq_17_2____(fV_asterix_res_joint, fPhi_anchor_shear_174, fV_s_17581_group);
+            float fDesignRatio_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, fPhi_anchor_shear_174, fV_s_17581_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17573_group);
 
             // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
@@ -1070,32 +1068,32 @@ namespace M_AS4600
 
             float fA_vo = 2 * (1.5f * fc_1_y) * (1.5f * fc_1_y); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
             float fAv_Length_x_group = 1.5f * fc_1_y + Math.Min(1.5f * fc_1_y, fc_2_x) + (iNumberAnchors_x - 1) * fs_2_x;
-            float fAv_Depth_h = Math.Min(1.5f * fc_1_y, fFootingHeight);
+            float fAv_Depth_h = Math.Min(1.5f * fc_1_y, designDetails.fFootingHeight);
             float fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
-            float fd_o = fd_f;
+            float fd_o = designDetails.fd_f;
 
             float fk_2 = 0.6f;
             float fl = Math.Min(fh_ef, 8f * fd_o); // load-bearing length of anchors for shear, equal to hef for anchors with constant stiffness over the full length of the embedded section but less than 8do.Shall be taken as 0.8 times the effective embedment depth for hooked metal plates.
 
-            if (iNumberAnchors != 1 && fs_min != 0 && fs_min < 0.065f)
+            if (designDetails.iNumberAnchors != 1 && fs_min != 0 && fs_min < 0.065f)
                 throw new Exception("Distance between anchors s is smaller than 65 mm.");
 
-            float fV_b_1717a = eq_concrete.Eq_17_17a__(fk_2, fl, fd_o, fLambda_53, ff_apostrophe_c, fc_1_y);
-            float fV_b_1717b = eq_concrete.Eq_17_17b__(fLambda_53, ff_apostrophe_c, fc_1_y);
+            float fV_b_1717a = eq_concrete.Eq_17_17a__(fk_2, fl, fd_o, fLambda_53, designDetails.ff_apostrophe_c, fc_1_y);
+            float fV_b_1717b = eq_concrete.Eq_17_17b__(fLambda_53, designDetails.ff_apostrophe_c, fc_1_y);
             float fV_b_1717 = Math.Min(fV_b_1717a, fV_b_1717b);
             float fV_cb_1716_group = eq_concrete.Eq_17_16___(fA_v_group, fA_vo, fPsi_5_group, fPsi_6, fPsi_7, fV_b_1717);
 
-            float fDesignRatio_17582_group = eq_concrete.Eq_17_2____(fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1716_group);
+            float fDesignRatio_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1716_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17582_group);
 
             // Single of anchor - edge
 
             float fPsi_5_single = 1.0f;
-            float fAv_Length_x_signle = (1.5f * fc_1_y + Math.Min(1.5f * fc_1_y, 0.5f * fFootingDimension_x));
+            float fAv_Length_x_signle = (1.5f * fc_1_y + Math.Min(1.5f * fc_1_y, 0.5f * designDetails.fFootingDimension_x));
             float fA_v_single = fAv_Length_x_signle * fAv_Depth_h;
             float fV_cb_1716_single = eq_concrete.Eq_17_16___(fA_v_single, fA_vo, fPsi_5_single, fPsi_6, fPsi_7, fV_b_1717);
 
-            float fDesignRatio_17582_single = eq_concrete.Eq_17_2____(fV_asterix_anchor, fPhi_concrete_shear_174b, fV_cb_1716_single);
+            float fDesignRatio_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, fPhi_concrete_shear_174b, fV_cb_1716_single);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17582_single);
 
             // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
@@ -1104,13 +1102,13 @@ namespace M_AS4600
 
             float fV_cb_1721_group = eq_concrete.Eq_17_21___(fA_v_group, fA_vo, fPsi_5_group, fPsi_7, fV_b_1717);
 
-            float fDesignRatio_17583_group = eq_concrete.Eq_17_2____(fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1721_group);
+            float fDesignRatio_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1721_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17583_group);
 
             // Single anchor - edge
             float fV_cb_1721_single = eq_concrete.Eq_17_21___(fA_v_single, fA_vo, fPsi_5_single, fPsi_7, fV_b_1717);
 
-            float fDesignRatio_17583_single = eq_concrete.Eq_17_2____(fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1721_single);
+            float fDesignRatio_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, fPhi_concrete_shear_174b, fV_cb_1721_single);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17583_single);
 
             // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
@@ -1120,32 +1118,32 @@ namespace M_AS4600
             float fk_cp_17584 = eq_concrete.Get_k_cp___(fh_ef);
             float fV_cp_1722_group = eq_concrete.Eq_17_22___(fk_cp_17584, fN_cb_17584_group);
 
-            float fDesignRatio_17584_single = eq_concrete.Eq_17_2____(fV_asterix_anchor, fPhi_concrete_shear_174b, fV_cp_1722_group);
+            float fDesignRatio_17584_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, fPhi_concrete_shear_174b, fV_cp_1722_group);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17584_single);
 
             // Lower characteristic strength in shear
             float fV_n_nominal_min = MathF.Min(
                 fV_s_17581_group,                       // 17.5.8.1
                 fV_cb_1716_group,                       // 17.5.8.2
-                iNumberAnchors_v * fV_cb_1716_single,   // 17.5.8.2
+                designDetails.iNumberAnchors_v * fV_cb_1716_single,   // 17.5.8.2
                 fV_cb_1721_group,                       // 17.5.8.3
-                iNumberAnchors_v * fV_cb_1721_single,   // 17.5.8.3
+                designDetails.iNumberAnchors_v * fV_cb_1721_single,   // 17.5.8.3
                 fV_cp_1722_group);                      // 17.5.8.4
 
             // Lower design strength in shear
             float fV_d_design_min = fElasticityFactor_1764 * MathF.Min(
                 fPhi_anchor_shear_174 * fV_s_17581_group,                            // 17.5.8.1
                 fPhi_concrete_shear_174b * fV_cb_1716_group,                         // 17.5.8.2
-                fPhi_concrete_shear_174b * iNumberAnchors_v * fV_cb_1716_single,     // 17.5.8.2
+                fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * fV_cb_1716_single,     // 17.5.8.2
                 fPhi_concrete_shear_174b * fV_cb_1721_group,                         // 17.5.8.3
-                fPhi_concrete_shear_174b * iNumberAnchors_v * fV_cb_1721_single,     // 17.5.8.3
+                fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * fV_cb_1721_single,     // 17.5.8.3
                 fPhi_concrete_shear_174b * fV_cp_1722_group);                        // 17.5.8.4
 
             // 17.5.6.6 Interaction of tension and shear – simplified procedures
             // Group of anchors
 
             // 17.5.6.6(Eq. 17–5)
-            float fDesignRatio_17566_group = eq_concrete.Eq_17566___(fN_asterix_joint_uplif, fN_d_design_min, fV_asterix_res_joint, fV_d_design_min);
+            float fDesignRatio_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, fV_d_design_min);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17566_group);
 
             // C17.5.6.6 (Figure C17.1)
@@ -1154,7 +1152,7 @@ namespace M_AS4600
 
             if (bUseC17566Equation)
             {
-                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(fN_asterix_joint_uplif, fN_d_design_min, fV_asterix_res_joint, fV_d_design_min);
+                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, fV_d_design_min);
                 fEta_max = MathF.Max(fEta_max, fDesignRatio_C17566_group);
             }
 
@@ -1168,16 +1166,16 @@ namespace M_AS4600
             float fc_nominal_soil_bearing_capacity = 58000f; // Pa - soil bearing capacity - TODO - user defined
 
             // Footing pad
-            float fA_footing = fFootingDimension_x * fFootingDimension_y; // Area of footing pad
-            float fV_footing = fA_footing * fFootingHeight;  // Volume of footing pad
+            float fA_footing = designDetails.fFootingDimension_x * designDetails.fFootingDimension_y; // Area of footing pad
+            float fV_footing = fA_footing * designDetails.fFootingHeight;  // Volume of footing pad
             float fRho_c_footing = 2300f; // Density of dry concrete - foundations
             float fG_footing = fV_footing * fRho_c_footing; // Self-weight [N] - footing pad
 
             // Tributary floor volume
             float ft_floor = 0.125f; // TODO - user-defined
             float fa_tributary_floor = 0.6f; // TODO - tributary dimension;
-            float fLength_x_tributary_floor = fFootingDimension_x + 2 * fa_tributary_floor; // TODO - zistit ci je stlp v rohu, ak ano uvazovat len jednu stranu
-            float fLength_y_tributary_floor = fFootingDimension_y + fa_tributary_floor; // Okraj - uvazujem sa len jedna strana patky
+            float fLength_x_tributary_floor = designDetails.fFootingDimension_x + 2 * fa_tributary_floor; // TODO - zistit ci je stlp v rohu, ak ano uvazovat len jednu stranu
+            float fLength_y_tributary_floor = designDetails.fFootingDimension_y + fa_tributary_floor; // Okraj - uvazujem sa len jedna strana patky
             float fA_tributary_floor = fLength_x_tributary_floor * fLength_y_tributary_floor - fA_footing;
             float fV_tributary_floor = fA_tributary_floor * ft_floor;
             float fRho_c_floor = 2200f; // Density of dry concrete - concrete floor
@@ -1200,10 +1198,10 @@ namespace M_AS4600
             float fG_design_bearing = fG_design_footing_bearing + fG_design_additional_material_bearing;
 
             // Design ratio - uplift and bearing force
-            float fDesignRatio_footing_uplift = fN_asterix_joint_uplif / fG_design_uplift;
+            float fDesignRatio_footing_uplift = designDetails.fN_asterix_joint_uplif / fG_design_uplift;
             fEta_max = MathF.Max(fEta_max, fDesignRatio_footing_uplift);
 
-            float fN_design_bearing_total = Math.Abs(fN_asterix_joint_bearing) + fG_design_bearing;
+            float fN_design_bearing_total = Math.Abs(designDetails.fN_asterix_joint_bearing) + fG_design_bearing;
             float fPressure_bearing = fN_design_bearing_total / fA_footing;
             float fSafetyFactor = 0.5f; // TODO - zistit aky je faktor
             float fDesignRatio_footing_bearing = fPressure_bearing / (fSafetyFactor * fc_nominal_soil_bearing_capacity);
@@ -1211,8 +1209,8 @@ namespace M_AS4600
 
             // Bending - design of reinforcement
             // Reinforcement bars in x direction (parallel to the wall)
-            float fq_linear_xDirection = Math.Abs(fN_design_bearing_total) / fFootingDimension_x;
-            float fM_asterix_footingdesign_xDirection = fq_linear_xDirection * MathF.Pow2(fFootingDimension_x) / 8f; // ??? jednoducho podpoprety nosnik ???
+            float fq_linear_xDirection = Math.Abs(fN_design_bearing_total) / designDetails.fFootingDimension_x;
+            float fM_asterix_footingdesign_xDirection = fq_linear_xDirection * MathF.Pow2(designDetails.fFootingDimension_x) / 8f; // ??? jednoducho podpoprety nosnik ???
 
             float fd_reinforcement_xDirection = 0.016f; // TODO - user defined
             float fd_reinforcement_yDirection = 0.016f; // TODO - user defined (default above the reinforcement in x-direction)
@@ -1225,8 +1223,8 @@ namespace M_AS4600
             float fA_s_tot_Ydirection = iNumberOfBarsInYDirection * fA_s1_Ydirection;
 
             float fConcreteCover_reinforcement_side = 0.075f;
-            float fSpacing_xDirection = (fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection - 1);
-            float fSpacing_yDirection = (fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_xDirection) / (iNumberOfBarsInXDirection - 1);
+            float fSpacing_xDirection = (designDetails.fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection - 1);
+            float fSpacing_yDirection = (designDetails.fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_xDirection) / (iNumberOfBarsInXDirection - 1);
 
             string sReinforcingSteelGrade_Name = "500E";
             float fReinforcementStrength_fy = 500e+6f; // TODO - user defined
@@ -1236,11 +1234,11 @@ namespace M_AS4600
 
             float fConcreteCover_reinforcement_xDirection = 0.075f;
 
-            float fd_effective_xDirection = fFootingHeight - fConcreteCover_reinforcement_xDirection - 0.5f * fd_reinforcement_xDirection;
-            float fd_effective_yDirection = fFootingHeight - fConcreteCover_reinforcement_xDirection - fd_reinforcement_xDirection - 0.5f * fd_reinforcement_yDirection;
-            float fx_u_xDirection = (fA_s1_Xdirection * fReinforcementStrength_fy) / (fAlpha_c * ff_apostrophe_c * fFootingDimension_y);
+            float fd_effective_xDirection = designDetails.fFootingHeight - fConcreteCover_reinforcement_xDirection - 0.5f * fd_reinforcement_xDirection;
+            float fd_effective_yDirection = designDetails.fFootingHeight - fConcreteCover_reinforcement_xDirection - fd_reinforcement_xDirection - 0.5f * fd_reinforcement_yDirection;
+            float fx_u_xDirection = (fA_s1_Xdirection * fReinforcementStrength_fy) / (fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y);
             float fM_b_Reincorcement_xDirection = fA_s_tot_Xdirection * fReinforcementStrength_fy * (fd_effective_xDirection - (fx_u_xDirection / 2f));
-            float fM_b_Concrete_xDirection = fAlpha_c * ff_apostrophe_c * fFootingDimension_y * fx_u_xDirection * (fd_effective_xDirection - (fx_u_xDirection / 2f));
+            float fM_b_Concrete_xDirection = fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y * fx_u_xDirection * (fd_effective_xDirection - (fx_u_xDirection / 2f));
             float fM_b_footing_xDirection = Math.Min(fM_b_Reincorcement_xDirection, fM_b_Concrete_xDirection); // Note: Values should be identical.
 
             float fDesignRatio_bending_M_footing = fM_asterix_footingdesign_xDirection / (fPhi_b_foundations * fM_b_footing_xDirection);
@@ -1257,21 +1255,21 @@ namespace M_AS4600
             // | 50        | 0.0059       | 0.0035       |
 
             // Minimum longitudinal reinforcement ratio
-            float fp_ratio_xDirection = 2 * fA_s_tot_Xdirection / (fFootingDimension_y * fFootingHeight); // Same reinforcement at the bottom and top surface
-            float fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(ff_apostrophe_c, fReinforcementStrength_fy);
+            float fp_ratio_xDirection = 2 * fA_s_tot_Xdirection / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Same reinforcement at the bottom and top surface
+            float fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(designDetails.ff_apostrophe_c, fReinforcementStrength_fy);
 
             float fDesignRatio_MinimumReinforcement_xDirection = fp_ratio_limit_minimum_xDirection / fp_ratio_xDirection;
             fEta_max = MathF.Max(fEta_max, fDesignRatio_MinimumReinforcement_xDirection);
 
             //  Shear
-            float fV_asterix_footingdesign_shear = fq_linear_xDirection * fFootingDimension_x / 2f; // ??? jednoducho podpoprety nosnik ???
-            float fA_cv_xDirection = fd_effective_xDirection * fFootingDimension_y;
+            float fV_asterix_footingdesign_shear = fq_linear_xDirection * designDetails.fFootingDimension_x / 2f; // ??? jednoducho podpoprety nosnik ???
+            float fA_cv_xDirection = fd_effective_xDirection * designDetails.fFootingDimension_y;
 
             // pw - proportion of flexural tension reinforcement within one-quarter of the effective depth of the member closest to the extreme tension reinforcement to the shear area, Acv
             float fp_w_xDirection = fA_s_tot_Xdirection / fA_cv_xDirection;
             float fk_a = eq_concrete.Get_k_a_93934(0.02f); // TODO - user defined
             float fk_d = eq_concrete.Get_k_d_93934(); // TODO - dopracovat
-            float fv_b_xDirection = eq_concrete.Get_v_b_93934(fp_w_xDirection, ff_apostrophe_c);
+            float fv_b_xDirection = eq_concrete.Get_v_b_93934(fp_w_xDirection, designDetails.ff_apostrophe_c);
             float fv_c_xDirection = eq_concrete.Eq_9_5_____(fk_d, fk_a, fv_b_xDirection);
             float fV_c_xDirection = eq_concrete.Eq_9_4_____(fv_c_xDirection, fA_cv_xDirection);
             float fPhi_v_foundations = 0.85f;
@@ -1280,11 +1278,11 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, fDesignRatio_shear_V_footing);
 
             // Punching shear
-            float fReactionArea_dimension_x = fplateWidth_x;
-            float fReactionArea_dimension_y = fplateWidth_y;
+            float fReactionArea_dimension_x = designDetails.fplateWidth_x;
+            float fReactionArea_dimension_y = designDetails.fplateWidth_y;
 
-            float fcriticalPerimeterDimension_x = 2f * Math.Min(fd_effective_xDirection, fe_x_BasePlateToFootingEdge) + fReactionArea_dimension_x;
-            float fcriticalPerimeterDimension_y = 2f * Math.Min(fd_effective_yDirection, fe_y_BasePlateToFootingEdge) + fReactionArea_dimension_y; // TODO - Zohladnit ak je stlp blizsie k okraju nez fd
+            float fcriticalPerimeterDimension_x = 2f * Math.Min(fd_effective_xDirection, designDetails.fe_x_BasePlateToFootingEdge) + fReactionArea_dimension_x;
+            float fcriticalPerimeterDimension_y = 2f * Math.Min(fd_effective_yDirection, designDetails.fe_y_BasePlateToFootingEdge) + fReactionArea_dimension_y; // TODO - Zohladnit ak je stlp blizsie k okraju nez fd
 
             float fcriticalPerimeter_b0 = 2 * fcriticalPerimeterDimension_x + 2 * fcriticalPerimeterDimension_y;
 
@@ -1295,22 +1293,22 @@ namespace M_AS4600
             float fk_ds = eq_concrete.Get_k_ds_12732(fd_average);
 
             // Nominal shear stress resisted by the concrete
-            float fv_c_126 = eq_concrete.Eq_12_6____(fk_ds, fBeta_c, ff_apostrophe_c);
-            float fv_c_127 = eq_concrete.Eq_12_7____(fk_ds, fAlpha_s, fd_average, fcriticalPerimeter_b0, ff_apostrophe_c);
-            float fv_c_128 = eq_concrete.Eq_12_8____(fk_ds, ff_apostrophe_c);
+            float fv_c_126 = eq_concrete.Eq_12_6____(fk_ds, fBeta_c, designDetails.ff_apostrophe_c);
+            float fv_c_127 = eq_concrete.Eq_12_7____(fk_ds, fAlpha_s, fd_average, fcriticalPerimeter_b0, designDetails.ff_apostrophe_c);
+            float fv_c_128 = eq_concrete.Eq_12_8____(fk_ds, designDetails.ff_apostrophe_c);
 
             float fv_c_12732 = MathF.Min(fv_c_126, fv_c_127, fv_c_128);
 
             // 12.7.3.4 Maximum nominal shear stress
-            float fv_c_max = 0.5f * MathF.Sqrt(ff_apostrophe_c);
+            float fv_c_max = 0.5f * MathF.Sqrt(designDetails.ff_apostrophe_c);
             if (fv_c_12732 > fv_c_max)
                 fv_c_12732 = fv_c_max;
 
             float fV_c_12731 = eq_concrete.Get_V_c_12731(fv_c_12732, fcriticalPerimeter_b0, fd_average);
 
             // 12.7.4 Shear reinforcement consisting of bars or wires or stirrups
-            float fReinforcementArea_A_v_xDirection = 2 * fA_s_tot_Xdirection * fcriticalPerimeterDimension_y / fFootingDimension_y; // TODO ?? horna aj spodna vyztuz ak su rovnake
-            float fReinforcementArea_A_v_yDirection = 2 * fA_s_tot_Ydirection * fcriticalPerimeterDimension_x / fFootingDimension_x;
+            float fReinforcementArea_A_v_xDirection = 2 * fA_s_tot_Xdirection * fcriticalPerimeterDimension_y / designDetails.fFootingDimension_y; // TODO ?? horna aj spodna vyztuz ak su rovnake
+            float fReinforcementArea_A_v_yDirection = 2 * fA_s_tot_Ydirection * fcriticalPerimeterDimension_x / designDetails.fFootingDimension_x;
 
             float ff_yv = fReinforcementStrength_fy;
 
@@ -1319,11 +1317,11 @@ namespace M_AS4600
 
             // 12.7.3.1 Nominal shear strength for punching shear
             float fV_n_12731_xDirection = eq_concrete.Eq_12_4____(fV_s_xDirection, fV_c_12731);
-            float fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(fN_asterix_joint_bearing), fPhi_v_foundations, fV_n_12731_xDirection);
+            float fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), fPhi_v_foundations, fV_n_12731_xDirection);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_punching_12731_xDirection);
 
             float fV_n_12731_yDirection = eq_concrete.Eq_12_4____(fV_s_yDirection, fV_c_12731);
-            float fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(fN_asterix_joint_bearing), fPhi_v_foundations, fV_n_12731_yDirection);
+            float fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), fPhi_v_foundations, fV_n_12731_yDirection);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_punching_12731_yDirection);
 
             // Store details

@@ -133,7 +133,9 @@ namespace PFD
             float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
 
             float fUnitFactor_ComponentDimension = 1000f; // m to mm
-            float fUnitFactor_CrSc_Area = 1000000f; // m^2 to mm^2
+            float fUnitFactor_ComponentArea = 1000000f; // m^2 to mm^2
+
+            float fUnitFactor_Density = 1f; // kg/m^3 to kg/m^3
 
             int iNumberOfDecimalPlaces = 3;
             int iNumberOfDecimalPlaces_Factor = 3;
@@ -142,9 +144,10 @@ namespace PFD
             string sUnit_Force = "[kN]";
             string sUnit_Moment = "[kNm]";
             string sUnit_Stress = "[MPa]";
+            string sUnit_Density = "[kg/m³]";
 
             string sUnit_ComponentDimension = "[mm]";
-            string sUnit_CrSc_Area = "[mm²]";
+            string sUnit_ComponentArea = "[mm²]";
 
             string sUnit_Factor = "[-]";
             string sUnit_DesignRatio = "[-]";
@@ -170,8 +173,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("An.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Nt.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -182,8 +185,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Av.y.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Vy.y.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -324,8 +327,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("An.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_MainMember * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_MainMember * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Nt.m1");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_section_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -336,8 +339,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("An.m2");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_SecondaryMember * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_SecondaryMember * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Nt.m2");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_section_SecondaryMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -470,8 +473,8 @@ namespace PFD
                     listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                     listPhysicalQuantity_Symbols.Add("An.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                     listPhysicalQuantity_Symbols.Add("Nt.plate");
                     listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -482,8 +485,8 @@ namespace PFD
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                     listPhysicalQuantity_Symbols.Add("Avn.y.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                     listPhysicalQuantity_Symbols.Add("Vy.y.plate");
                     listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -650,8 +653,8 @@ namespace PFD
                     listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                     listPhysicalQuantity_Symbols.Add("An.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                     listPhysicalQuantity_Symbols.Add("Nt.plate");
                     listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -662,8 +665,8 @@ namespace PFD
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                     listPhysicalQuantity_Symbols.Add("Avn.y.plate");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                    listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                     listPhysicalQuantity_Symbols.Add("Vy.y.plate");
                     listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -727,8 +730,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("An.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Nt.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -739,8 +742,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Av.y.plate");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vn_yv_plate * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Vy.y.plate");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fV_y_yv_plate * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -849,8 +852,8 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("An.m1");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_MainMember * fUnitFactor_CrSc_Area, iNumberOfDecimalPlaces).ToString());
-                listPhysicalQuantity_Units.Add(sUnit_CrSc_Area);
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_MainMember * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
 
                 listPhysicalQuantity_Symbols.Add("Nt.m1");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fN_t_section_MainMember * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
@@ -859,6 +862,141 @@ namespace PFD
                 listPhysicalQuantity_Symbols.Add("η Nt.m1");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fEta_N_t_5423_MainMember, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+
+
+
+
+
+                // Anchors
+                listPhysicalQuantity_Symbols.Add("N*joint.up");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_joint_uplif * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("N*joint.brg");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_joint_bearing * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*x.joint");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_x_joint * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*y.joint");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_y_joint * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*joint");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_res_joint * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("No anchors");
+                listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
+                listPhysicalQuantity_Units.Add("");
+
+                listPhysicalQuantity_Symbols.Add("No anchors");
+                listPhysicalQuantity_Values.Add(det.iNumberAnchors.ToString());
+                listPhysicalQuantity_Units.Add("");
+
+                listPhysicalQuantity_Symbols.Add("No anchors.t");
+                listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
+                listPhysicalQuantity_Units.Add("");
+
+                listPhysicalQuantity_Symbols.Add("No anchors.v");
+                listPhysicalQuantity_Values.Add(det.iNumberAnchors_t.ToString());
+                listPhysicalQuantity_Units.Add("");
+
+                listPhysicalQuantity_Symbols.Add("N*anchor.up");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_asterix_anchor_uplif * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("V*anchor");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_asterix_anchor * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("wx.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fplateWidth_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("wy.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fplateWidth_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("bx.footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fFootingDimension_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("by.footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fFootingDimension_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("hfooting");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fFootingHeight * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ex.a.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_AnchorToPlateEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ey.a.plate");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_AnchorToPlateEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ex.p.footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_x_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ey.p.footing");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_y_BasePlateToFootingEdge * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("bx.washer");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fu_x_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("by.washer");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fu_y_Washer * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("f'c");
+                listPhysicalQuantity_Values.Add(Math.Round(det.ff_apostrophe_c * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("ρc");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fRho_c * fUnitFactor_Density, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Density);
+
+                listPhysicalQuantity_Symbols.Add("ds"); // thread
+                listPhysicalQuantity_Values.Add(Math.Round(det.fd_s * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("df"); // shank
+                listPhysicalQuantity_Values.Add(Math.Round(det.fd_f * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("Ac");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_c * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Ao");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_o * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("fy.b");
+                listPhysicalQuantity_Values.Add(Math.Round(det.ff_y_anchor * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                listPhysicalQuantity_Symbols.Add("fu.b");
+                listPhysicalQuantity_Values.Add(Math.Round(det.ff_u_anchor * fUnitFactor_Stress, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Stress);
+
+                // AS / NZS 4600:2018 - 5.3 Bolted connections
+
+
+
+
+
+
+
             }
             else
             {
@@ -881,7 +1019,7 @@ namespace PFD
             float fUnitFactor_Stress = 0.000001f; // from Pa to MPa
 
             float fUnitFactor_ComponentDimension = 1000f; // m to mm
-            float fUnitFactor_CrSc_Area = 1000000f; // m^2 to mm^2
+            float fUnitFactor_ComponentArea = 1000000f; // m^2 to mm^2
 
             int iNumberOfDecimalPlaces = 3;
             int iNumberOfDecimalPlaces_Factor = 3;
@@ -892,7 +1030,7 @@ namespace PFD
             string sUnit_Stress = "[MPa]";
 
             string sUnit_ComponentDimension = "[mm]";
-            string sUnit_CrSc_Area = "[mm²]";
+            string sUnit_ComponentArea = "[mm²]";
 
             string sUnit_Factor = "[-]";
             string sUnit_DesignRatio = "[-]";
