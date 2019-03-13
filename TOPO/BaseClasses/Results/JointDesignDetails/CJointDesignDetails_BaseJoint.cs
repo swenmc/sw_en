@@ -128,7 +128,40 @@ namespace BaseClasses
 
         public float fDesignRatio_5353;
 
+        // NZS 3101.1 - 2006
+        public float fElasticityFactor_1764;
+        public float fPhi_anchor_tension_173;
+        public float fPhi_anchor_shear_174;
 
+        public float fPhi_concrete_tension_174a;
+        public float fPhi_concrete_shear_174b;
+
+        // 17.5.7.1  Steel strength of anchor in tension
+        public float fA_se;
+        public float fN_s_176_group;
+        public float fDesignRatio_17571_group;
+
+        // 17.5.7.2  Strength of concrete breakout of anchor
+        public float fe_apostrophe_n;
+        public float fConcreteCover;
+        public float fh_ef;
+        public float fs_2_x;
+        public float fs_1_y;
+        public float fs_min;
+        public float fc_2_x;
+        public float fc_1_y;
+        public float fc_min;
+        public float fk;
+        public float fLambda_53;
+        public float fPsi_1_group;
+        public float fPsi_2;
+        public float fPsi_3;
+        public float fA_no_group;
+        public float fA_n_group;
+        public float fN_b_179_group;
+        public float fN_b_179a_group;
+        public float fN_cb_177_group;
+        public float fDesignRatio_17572_group;
 
         public CJointDesignDetails_BaseJoint()
         {
