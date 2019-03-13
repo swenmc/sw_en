@@ -250,6 +250,104 @@ namespace BaseClasses
         // Lower design strength in shear
         public float fV_d_design_min;
 
+        // 17.5.6.6 Interaction of tension and shear – simplified procedures
+        // Group of anchors
+
+        // 17.5.6.6(Eq. 17–5)
+        public float fDesignRatio_17566_group;
+
+        // Footings
+        public float fGamma_F_uplift;
+        public float fGamma_F_bearing;
+        public float fc_nominal_soil_bearing_capacity;
+
+        // Footing pad
+        public float fA_footing;
+        public float fV_footing;
+        public float fG_footing;
+
+        // Tributary floor volume
+        public float fG_tributary_floor;
+
+        // Addiional material above the footing
+        public float fG_additional_material;
+
+        // Uplift
+        public float fG_design_uplift;
+
+        // Bearing
+        public float fG_design_bearing;
+
+        // Design ratio - uplift and bearing force
+        public float fDesignRatio_footing_uplift;
+
+        public float fN_design_bearing_total;
+        public float fPressure_bearing;
+        public float fSafetyFactor;
+        public float fDesignRatio_footing_bearing;
+
+        // Bending - design of reinforcement
+        // Reinforcement bars in x direction (parallel to the wall)
+        public float fq_linear_xDirection;
+        public float fM_asterix_footingdesign_xDirection;
+
+        public float fd_reinforcement_xDirection;
+        public float fA_s1_Xdirection;
+        public int iNumberOfBarsInXDirection;
+        public float fA_s_tot_Xdirection;
+        public float fSpacing_yDirection;
+
+        public float fAlpha_c;
+        public float fPhi_b_foundations;
+        public float fConcreteCover_reinforcement_xDirection;
+        public float fd_effective_xDirection;
+        public float fx_u_xDirection;
+        public float fM_b_footing_xDirection;
+        public float fDesignRatio_bending_M_footing;
+
+        // Minimum longitudinal reinforcement ratio
+        public float fp_ratio_xDirection;
+        public float fp_ratio_limit_minimum_xDirection;
+        public float fDesignRatio_MinimumReinforcement_xDirection;
+
+        //  Shear
+        public float fV_asterix_footingdesign_shear;
+        public float fA_cv_xDirection;
+        public float fp_w_xDirection;
+        public float fk_a;
+        public float fk_d;
+        public float fv_b_xDirection;
+        public float fv_c_xDirection;
+        public float fV_c_xDirection;
+        public float fPhi_v_foundations;
+        public float fDesignRatio_shear_V_footing;
+
+        // Punching shear
+        public float fcriticalPerimeter_b0;
+
+        // Ratio of the long side to the short side of the concentrated load
+        public float fBeta_c;
+        public float fAlpha_s;
+        public float fd_average;
+        public float fk_ds;
+
+        // Nominal shear stress resisted by the concrete
+        public float fv_c_126;
+        public float fv_c_127;
+        public float fv_c_128;
+        public float fv_c_12732;
+        public float fV_c_12731;
+
+        // 12.7.4 Shear reinforcement consisting of bars or wires or stirrups
+        public float fV_s_xDirection;
+        public float fV_s_yDirection;
+
+        // 12.7.3.1 Nominal shear strength for punching shear
+        public float fV_n_12731_xDirection;
+        public float fDesignRatio_punching_12731_xDirection;
+
+        public float fV_n_12731_yDirection;
+        public float fDesignRatio_punching_12731_yDirection;
 
         public CJointDesignDetails_BaseJoint()
         {
