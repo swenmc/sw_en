@@ -11,7 +11,7 @@
         <System:Double x:Key="theTextBoxWidth">90</System:Double>
         <System:Double x:Key="theTextBoxWidthLarge">200</System:Double>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"/>
             <ColumnDefinition Width="200"/>
@@ -21,7 +21,10 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="1080"/>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1000"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Limit State:" HorizontalAlignment="Left" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Top" />
@@ -37,6 +40,7 @@
         <ComboBox Grid.Row="2" Grid.Column="1" Name ="Combobox_ComponentType" HorizontalAlignment="Left" Width="{StaticResource theTextBoxWidthLarge}"
                          VerticalAlignment="Top" ItemsSource="{Binding Path=ComponentList}" DisplayMemberPath="ComponentName" SelectedIndex="{Binding Path=ComponentTypeIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"/>
 
-        <DataGrid Grid.Row="3" Grid.Column="0" Name ="Results_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Design Details - Member" HorizontalAlignment="Left" Margin="5,0,0,5" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+        <DataGrid Grid.Row="5" Grid.Column="0" Name ="Results_GridView" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Grid.ColumnSpan="3" Margin="5,0"/>
     </Grid>
 </UserControl>

@@ -163,6 +163,94 @@ namespace BaseClasses
         public float fN_cb_177_group;
         public float fDesignRatio_17572_group;
 
+        // Single anchor - edge
+        public float fPsi_1_single;
+        public float fA_no_single;
+        public float fA_n_single;
+        public float fN_b_179_single;
+        public float fN_b_179a_single;
+        public float fN_cb_177_single;
+        public float fDesignRatio_17572_single;
+
+        // 17.5.7.3  Lower characteristic tension pullout strength of anchor
+        // Group of anchors
+
+        public float fm_x;
+        public float fm_y;
+        public float fA_brg;
+        public float fN_p_1711_single;
+        public float fPsi_4;
+        public float fN_pn_1710_single;
+        public float fN_pn_1710_group;
+        public float fDesignRatio_17573_group;
+
+        // 17.5.7.4 Lower characteristic concrete side face blowout strength
+        // Single anchor - edge
+
+        public float fc_1_17574;
+        public float fk_1;
+        public float fN_sb_1713_single;
+        public float fDesignRatio_17574_single;
+
+        // Lower characteristic strength in tension
+        public float fN_n_nominal_min;
+
+        // Lower design strength in tension
+        public float fN_d_design_min;
+
+        // 17.5.8 Lower characteristic strength of anchor in shear
+
+        // 17.5.8.1 Lower characteristic shear strength of steel of anchor
+        // Group of anchors
+        public float fV_s_1714_group;
+        public float fV_s_1715_group;
+        public float fV_s_17581_group;
+        public float fDesignRatio_17581_group;
+        public float fe_apostrophe_v;
+        public float fPsi_5_group;
+        public float fPsi_6;
+        public float fPsi_7;
+        public float fA_vo;
+        public float fA_v_group;
+        public float fd_o;
+        public float fk_2;
+        public float fl;
+        public float fV_b_1717a;
+        public float fV_b_1717b;
+        public float fV_b_1717;
+        public float fV_cb_1716_group;
+        public float fDesignRatio_17582_group;
+
+        // Single of anchor - edge
+        public float fPsi_5_single;
+        public float fA_v_single;
+        public float fV_cb_1716_single;
+        public float fDesignRatio_17582_single;
+
+        // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
+ 
+        // Group of anchors
+        public float fV_cb_1721_group;
+        public float fDesignRatio_17583_group;
+
+        // Single anchor - edge
+        public float fV_cb_1721_single;
+        public float fDesignRatio_17583_single;
+
+        // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
+        // Group of anchors
+        public float fN_cb_17584_group;
+        public float fk_cp_17584;
+        public float fV_cp_1722_group;
+        public float fDesignRatio_17584_group;
+
+        // Lower characteristic strength in shear
+        public float fV_n_nominal_min;
+
+        // Lower design strength in shear
+        public float fV_d_design_min;
+
+
         public CJointDesignDetails_BaseJoint()
         {
 

@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:d3="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"             
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         d:DesignHeight="1270" d:DesignWidth="600">
@@ -13,7 +13,7 @@
         <System:Double x:Key="theTextBoxWidthLarge">200</System:Double>
         <local:VisibilityToCheckedConverter x:Key="VisibilityToCheckedConverter"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="5,10,5,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"/>
             <ColumnDefinition Width="200"/>
@@ -76,6 +76,5 @@
         <Button Width="100" Height="20" Grid.Row="0" Grid.Column="3" Cursor="Arrow" Name="GraphButton" Click="GraphButton_Click">
             Show Graph
         </Button>
-
     </Grid>
 </UserControl>

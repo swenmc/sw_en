@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         d:DesignHeight="1270" d:DesignWidth="600">
-    <Grid Margin="0,0,0,0">
+    <Grid Margin="5,10,5,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="*"/>

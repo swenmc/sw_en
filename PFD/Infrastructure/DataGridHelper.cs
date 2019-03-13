@@ -1460,6 +1460,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 // 17.5.7.1  Steel strength of anchor in tension
+                // Group of anchors
                 listPhysicalQuantity_Symbols.Add("Ase");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fA_se * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
@@ -1473,6 +1474,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // 17.5.7.2  Strength of concrete breakout of anchor
+                // Group of anchors
 
                 listPhysicalQuantity_Symbols.Add("e'n");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fe_apostrophe_n * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
@@ -1553,6 +1555,245 @@ namespace PFD
                 listPhysicalQuantity_Symbols.Add("η Ncb.g");
                 listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17572_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Single anchor - edge
+                listPhysicalQuantity_Symbols.Add("ψ1.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_1_single, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Ano.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_no_single * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("An.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_n_single * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Nb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Nb.s(a)");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_b_179a_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Ncb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_177_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Ncb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17572_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 17.5.7.3  Lower characteristic tension pullout strength of anchor
+                // Group of anchors
+
+                listPhysicalQuantity_Symbols.Add("mx");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fm_x * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("my");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fm_y * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("Abrg");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_brg * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Np.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_p_1711_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("ψ4");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_4, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Npn.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_pn_1710_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Npn.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_pn_1710_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Npn.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17573_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                if (det.fc_min < 0.4f * det.fh_ef)
+                {
+                    // 17.5.7.4 Lower characteristic concrete side face blowout strength
+                    // Single anchor - edge
+
+                    listPhysicalQuantity_Symbols.Add("c1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fc_1_17574 * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                    listPhysicalQuantity_Symbols.Add("k1");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fk_1, iNumberOfDecimalPlaces_Factor).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                    listPhysicalQuantity_Symbols.Add("Nsb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fN_sb_1713_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                    listPhysicalQuantity_Symbols.Add("η Nsb.s");
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17574_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+                }
+
+                // Lower characteristic strength in tension
+                listPhysicalQuantity_Symbols.Add("Nn.g.min");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_n_nominal_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Lower design strength in tension
+                listPhysicalQuantity_Symbols.Add("Φ·Nn.g.min");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // 17.5.8 Lower characteristic strength of anchor in shear
+
+                // 17.5.8.1 Lower characteristic shear strength of steel of anchor
+                // Group of anchors
+                listPhysicalQuantity_Symbols.Add("Vs.g1714");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1714_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vs.g1715");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_1715_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vs.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_s_17581_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vs.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17581_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                listPhysicalQuantity_Symbols.Add("e'v");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fe_apostrophe_v * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("ψ5.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_5_group, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("ψ6");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_6, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("ψ7");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_7, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Avo");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_vo * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Av");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_v_group * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("do");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fd_o * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("k2");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fk_2, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("l");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fl * fUnitFactor_ComponentDimension, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentDimension);
+
+                listPhysicalQuantity_Symbols.Add("Vb.1717a");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717a * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vb.1717b");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717b * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vb.1717");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_b_1717 * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("Vcb.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1716_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vcb.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17582_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Single of anchor - edge
+                listPhysicalQuantity_Symbols.Add("ψ5.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fPsi_5_single, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Av.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fA_v_single * fUnitFactor_ComponentArea, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_ComponentArea);
+
+                listPhysicalQuantity_Symbols.Add("Vcb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1716_single * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vcb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17582_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
+
+                // Group of anchors
+                listPhysicalQuantity_Symbols.Add("Vcb.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1721_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vcb.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17583_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Single anchor - edge
+                listPhysicalQuantity_Symbols.Add("Vcb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cb_1721_single* fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vcb.s");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17583_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
+                // Group of anchors
+                listPhysicalQuantity_Symbols.Add("Ncb.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fN_cb_17584_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("kcp");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fk_cp_17584, iNumberOfDecimalPlaces_Factor).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Factor);
+
+                listPhysicalQuantity_Symbols.Add("Vcp.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_cp_1722_group * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                listPhysicalQuantity_Symbols.Add("η Vcp.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17584_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
+
+                // Lower characteristic strength in shear
+                listPhysicalQuantity_Symbols.Add("Vn.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_n_nominal_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+                // Lower design strength in shear
+                listPhysicalQuantity_Symbols.Add("Φ·Vn.g");
+                listPhysicalQuantity_Values.Add(Math.Round(det.fV_d_design_min * fUnitFactor_Force, iNumberOfDecimalPlaces).ToString());
+                listPhysicalQuantity_Units.Add(sUnit_Force);
+
+
             }
             else
             {

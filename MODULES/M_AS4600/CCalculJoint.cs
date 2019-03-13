@@ -3,8 +3,6 @@ using System.Windows.Forms;
 using BaseClasses;
 using MATH;
 using CRSC;
-using System.Collections.Generic;
-using System.Data;
 using M_NZS3101;
 
 namespace M_AS4600
@@ -963,85 +961,85 @@ namespace M_AS4600
             fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17572_group);
 
             // Single anchor - edge
-            float fPsi_1_single = 1.0f;
-            float fA_no_single = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
+            designDetails.fPsi_1_single = 1.0f;
+            designDetails.fA_no_single = (2f * 1.5f * designDetails.fh_ef) * (2f * 1.5f * designDetails.fh_ef);
             float fAn_Length_x_single = Math.Min(designDetails.fc_2_x, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
             float fAn_Length_y_single = Math.Min(designDetails.fc_1_y, 1.5f * designDetails.fh_ef) + 1.5f * designDetails.fh_ef;
-            float fA_n_single = Math.Min(fAn_Length_x_single * fAn_Length_y_single, fA_no_single);
+            designDetails.fA_n_single = Math.Min(fAn_Length_x_single * fAn_Length_y_single, designDetails.fA_no_single);
 
-            float fN_b_179_single = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
-            float fN_b_179a_single = eq_concrete.Eq_17_9a___(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fh_ef);
+            designDetails.fN_b_179_single = eq_concrete.Eq_17_9____(designDetails.fk, designDetails.fLambda_53, Math.Min(designDetails.ff_apostrophe_c, 70e+6f), designDetails.fh_ef);
+            designDetails.fN_b_179a_single = eq_concrete.Eq_17_9a___(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fh_ef);
 
-            if (0.280f <= designDetails.fh_ef && designDetails.fh_ef <= 0.635f && fN_b_179_single > fN_b_179a_single)
+            if (0.280f <= designDetails.fh_ef && designDetails.fh_ef <= 0.635f && designDetails.fN_b_179_single > designDetails.fN_b_179a_single)
             {
-                fN_b_179_single = fN_b_179a_single;
+                designDetails.fN_b_179_single = designDetails.fN_b_179a_single;
             }
 
-            float fN_cb_177_single = eq_concrete.Eq_17_7____(fPsi_1_single, designDetails.fPsi_2, designDetails.fPsi_3, fA_n_single, fA_no_single, fN_b_179_single);
+            designDetails.fN_cb_177_single = eq_concrete.Eq_17_7____(designDetails.fPsi_1_single, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_single, designDetails.fA_no_single, designDetails.fN_b_179_single);
 
-            float fDesignRatio_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, fN_cb_177_single);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17572_single);
+            designDetails.fDesignRatio_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_single);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17572_single);
 
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
             // Group of anchors
 
-            float fm_x = 0.06f;
-            float fm_y = 0.06f;
-            float fA_brg = fm_x * fm_y; // bearing area of the head of stud or anchor
-            float fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, fA_brg);
+            designDetails.fm_x = 0.06f;
+            designDetails.fm_y = 0.06f;
+            designDetails.fA_brg = designDetails.fm_x * designDetails.fm_y; // bearing area of the head of stud or anchor
+            designDetails.fN_p_1711_single = eq_concrete.Eq_17_11___(designDetails.ff_apostrophe_c, designDetails.fA_brg);
 
             // Modification factor for pullout strength
             // Ψ4 = 1.0 for concrete cracked at service load levels but with the extent of cracking controlled by reinforcement distributed in accordance with 2.4.4.4 and 2.4.4.5
             // Ψ4 = 1.4 for concrete with no cracking at service load levels
-            float fPsi_4 = 1.0f;
-            float fN_pn_1710_single = eq_concrete.Eq_17_10___(fPsi_4, fN_p_1711_single);
-            float fN_pn_1710_group = designDetails.iNumberAnchors_t * fN_pn_1710_single;
+            designDetails.fPsi_4 = 1.0f;
+            designDetails.fN_pn_1710_single = eq_concrete.Eq_17_10___(designDetails.fPsi_4, designDetails.fN_p_1711_single);
+            designDetails.fN_pn_1710_group = designDetails.iNumberAnchors_t * designDetails.fN_pn_1710_single;
 
-            float fDesignRatio_17573_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_anchor_tension_173, fN_pn_1710_group);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17573_group);
+            designDetails.fDesignRatio_17573_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_anchor_tension_173, designDetails.fN_pn_1710_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17573_group);
 
             // The side face blowout strength of a headed anchor with deep embedment close to an edge
-            float fN_sb_1713_single = float.PositiveInfinity;
-            float fDesignRatio_17574_single = 0;
+            designDetails.fN_sb_1713_single = float.PositiveInfinity;
+            designDetails.fDesignRatio_17574_single = 0;
 
             if (designDetails.fc_min < 0.4f * designDetails.fh_ef)
             {
                 // 17.5.7.4 Lower characteristic concrete side face blowout strength
                 // Single anchor - edge
-                float fc_1_17574 = designDetails.fc_1_y;
+                designDetails.fc_1_17574 = designDetails.fc_1_y;
 
                 if (designDetails.fN_asterix_anchor_uplif > 0) // Tension in anchor
-                    fc_1_17574 = designDetails.fc_min;
+                    designDetails.fc_1_17574 = designDetails.fc_min;
 
                 // Anchors subject to shear are located in narrow sections of limited thickness
                 float fc_1_limit = MathF.Max(designDetails.fc_2_x / 1.5f, designDetails.fh_ef / 1.5f, designDetails.fs_min / 3f);
 
-                if (fc_1_17574 > fc_1_limit)
-                    fc_1_17574 = fc_1_limit;
+                if (designDetails.fc_1_17574 > fc_1_limit)
+                    designDetails.fc_1_17574 = fc_1_limit;
 
-                float fk_1 = eq_concrete.Get_k_1____(fc_1_17574, designDetails.fc_2_x);
+                designDetails.fk_1 = eq_concrete.Get_k_1____(designDetails.fc_1_17574, designDetails.fc_2_x);
 
-                fN_sb_1713_single = eq_concrete.Eq_17_13___(fk_1, fc_1_17574, designDetails.fLambda_53, fA_brg, designDetails.ff_apostrophe_c);
+                designDetails.fN_sb_1713_single = eq_concrete.Eq_17_13___(designDetails.fk_1, designDetails.fc_1_17574, designDetails.fLambda_53, designDetails.fA_brg, designDetails.ff_apostrophe_c);
 
-                fDesignRatio_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, fN_sb_1713_single);
-                fEta_max = MathF.Max(fEta_max, fDesignRatio_17574_single);
+                designDetails.fDesignRatio_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_sb_1713_single);
+                fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17574_single);
             }
 
             // Lower characteristic strength in tension
             float fN_n_nominal_min = MathF.Min(
-                designDetails.fN_s_176_group,                         // 17.5.7.1
-                designDetails.fN_cb_177_group,                        // 17.5.7.2
-                designDetails.iNumberAnchors_t * fN_cb_177_single,    // 17.5.7.2
-                fN_pn_1710_group,                       // 17.5.7.3
-                designDetails.iNumberAnchors_t * fN_sb_1713_single);  // 17.5.7.4
+                designDetails.fN_s_176_group,                                       // 17.5.7.1
+                designDetails.fN_cb_177_group,                                      // 17.5.7.2
+                designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,    // 17.5.7.2
+                designDetails.fN_pn_1710_group,                                     // 17.5.7.3
+                designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single);  // 17.5.7.4
 
             // Lower design strength in tension
             float fN_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
-                designDetails.fPhi_anchor_tension_173 * designDetails.fN_s_176_group,                           // 17.5.7.1
-                designDetails.fPhi_concrete_tension_174a * designDetails.fN_cb_177_group,                       // 17.5.7.2
-                designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * fN_cb_177_single,   // 17.5.7.2
-                designDetails.fPhi_anchor_tension_173 * fN_pn_1710_group,                         // 17.5.7.3
-                designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * fN_sb_1713_single); // 17.5.7.4
+                designDetails.fPhi_anchor_tension_173 * designDetails.fN_s_176_group,                                         // 17.5.7.1
+                designDetails.fPhi_concrete_tension_174a * designDetails.fN_cb_177_group,                                     // 17.5.7.2
+                designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_cb_177_single,   // 17.5.7.2
+                designDetails.fPhi_anchor_tension_173 * designDetails.fN_pn_1710_group,                                       // 17.5.7.3
+                designDetails.fPhi_concrete_tension_174a * designDetails.iNumberAnchors_t * designDetails.fN_sb_1713_single); // 17.5.7.4
 
             // 17.5.8 Lower characteristic strength of anchor in shear
 
@@ -1049,104 +1047,104 @@ namespace M_AS4600
             // Group of anchors
 
             // TODO - rozlisovat typ kotvy - rovnica 17-14 alebo 17-15
-            float fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
-            float fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+            designDetails.fV_s_1714_group = eq_concrete.Eq_17_14___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
+            designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
 
-            float fV_s_17581_group = Math.Min(fV_s_1714_group, fV_s_1715_group);
-            float fDesignRatio_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, fV_s_17581_group);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17573_group);
+            designDetails.fV_s_17581_group = Math.Min(designDetails.fV_s_1714_group, designDetails.fV_s_1715_group);
+            designDetails.fDesignRatio_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, designDetails.fV_s_17581_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17573_group);
 
             // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
             // Group of anchors
 
-            float fe_apostrophe_v = 0;
-            float fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y, fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
-            float fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y, designDetails.fc_2_x);
+            designDetails.fe_apostrophe_v = 0;
+            designDetails.fPsi_5_group = eq_concrete.Eq_17_18___(designDetails.fc_1_y, designDetails.fe_apostrophe_v, designDetails.fs_2_x); // s - perpendicular to shear force - Figure C17.7 – Definition of dimensions e´
+            designDetails.fPsi_6 = eq_concrete.Get_Psi_6__(designDetails.fc_1_y, designDetails.fc_2_x);
 
             // Ψ7 = modification factor for cracked concrete, given by:
             // Ψ7 = 1.0 for anchors in cracked concrete with no supplementary reinforcement or with smaller than 12 mm diameter reinforcing bar as supplementary reinforcement
             // Ψ7 = 1.2 for anchors in cracked concrete with a 12 mm diameter reinforcing bar or greater as supplementary reinforcement
             // Ψ7 = 1.4 for concrete that is not cracked at service load levels.
-            float fPsi_7 = 1.0f;
+            designDetails.fPsi_7 = 1.0f;
 
-            float fA_vo = 2 * (1.5f * designDetails.fc_1_y) * (1.5f * designDetails.fc_1_y); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
+            designDetails.fA_vo = 2 * (1.5f * designDetails.fc_1_y) * (1.5f * designDetails.fc_1_y); // projected concrete failure area of an anchor in shear, when not limited by corner influences, spacing, or member thickness
             float fAv_Length_x_group = 1.5f * designDetails.fc_1_y + Math.Min(1.5f * designDetails.fc_1_y, designDetails.fc_2_x) + (iNumberAnchors_x - 1) * designDetails.fs_2_x;
             float fAv_Depth_h = Math.Min(1.5f * designDetails.fc_1_y, designDetails.fFootingHeight);
-            float fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
-            float fd_o = designDetails.fd_f;
+            designDetails.fA_v_group = fAv_Length_x_group * fAv_Depth_h; // projected concrete failure area of an anchor or group of anchors in shear
+            designDetails.fd_o = designDetails.fd_f;
 
-            float fk_2 = 0.6f;
-            float fl = Math.Min(designDetails.fh_ef, 8f * fd_o); // load-bearing length of anchors for shear, equal to hef for anchors with constant stiffness over the full length of the embedded section but less than 8do.Shall be taken as 0.8 times the effective embedment depth for hooked metal plates.
+            designDetails.fk_2 = 0.6f;
+            designDetails.fl = Math.Min(designDetails.fh_ef, 8f * designDetails.fd_o); // load-bearing length of anchors for shear, equal to hef for anchors with constant stiffness over the full length of the embedded section but less than 8do.Shall be taken as 0.8 times the effective embedment depth for hooked metal plates.
 
             if (designDetails.iNumberAnchors != 1 && designDetails.fs_min != 0 && designDetails.fs_min < 0.065f)
                 throw new Exception("Distance between anchors s is smaller than 65 mm.");
 
-            float fV_b_1717a = eq_concrete.Eq_17_17a__(fk_2, fl, fd_o, designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y);
-            float fV_b_1717b = eq_concrete.Eq_17_17b__(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y);
-            float fV_b_1717 = Math.Min(fV_b_1717a, fV_b_1717b);
-            float fV_cb_1716_group = eq_concrete.Eq_17_16___(fA_v_group, fA_vo, fPsi_5_group, fPsi_6, fPsi_7, fV_b_1717);
+            designDetails.fV_b_1717a = eq_concrete.Eq_17_17a__(designDetails.fk_2, designDetails.fl, designDetails.fd_o, designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y);
+            designDetails.fV_b_1717b = eq_concrete.Eq_17_17b__(designDetails.fLambda_53, designDetails.ff_apostrophe_c, designDetails.fc_1_y);
+            designDetails.fV_b_1717 = Math.Min(designDetails.fV_b_1717a, designDetails.fV_b_1717b);
+            designDetails.fV_cb_1716_group = eq_concrete.Eq_17_16___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            float fDesignRatio_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, fV_cb_1716_group);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17582_group);
+            designDetails.fDesignRatio_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17582_group);
 
             // Single of anchor - edge
 
-            float fPsi_5_single = 1.0f;
+            designDetails.fPsi_5_single = 1.0f;
             float fAv_Length_x_signle = (1.5f * designDetails.fc_1_y + Math.Min(1.5f * designDetails.fc_1_y, 0.5f * designDetails.fFootingDimension_x));
-            float fA_v_single = fAv_Length_x_signle * fAv_Depth_h;
-            float fV_cb_1716_single = eq_concrete.Eq_17_16___(fA_v_single, fA_vo, fPsi_5_single, fPsi_6, fPsi_7, fV_b_1717);
+            designDetails.fA_v_single = fAv_Length_x_signle * fAv_Depth_h;
+            designDetails.fV_cb_1716_single = eq_concrete.Eq_17_16___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            float fDesignRatio_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, fV_cb_1716_single);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17582_single);
+            designDetails.fDesignRatio_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_single);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17582_single);
 
             // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
             // Group of anchors
             // TODO - zohladnit len paralelnu smykovu silu Vx ???
 
-            float fV_cb_1721_group = eq_concrete.Eq_17_21___(fA_v_group, fA_vo, fPsi_5_group, fPsi_7, fV_b_1717);
+            designDetails.fV_cb_1721_group = eq_concrete.Eq_17_21___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            float fDesignRatio_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, fV_cb_1721_group);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17583_group);
+            designDetails.fDesignRatio_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17583_group);
 
             // Single anchor - edge
-            float fV_cb_1721_single = eq_concrete.Eq_17_21___(fA_v_single, fA_vo, fPsi_5_single, fPsi_7, fV_b_1717);
+            designDetails.fV_cb_1721_single = eq_concrete.Eq_17_21___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            float fDesignRatio_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, fV_cb_1721_single);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17583_single);
+            designDetails.fDesignRatio_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17583_single);
 
             // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
             // Group of anchors
 
-            float fN_cb_17584_group = Math.Min(fN_pn_1710_group, designDetails.fN_cb_177_group); // ??? Zohladnit aj N_pn ???
-            float fk_cp_17584 = eq_concrete.Get_k_cp___(designDetails.fh_ef);
-            float fV_cp_1722_group = eq_concrete.Eq_17_22___(fk_cp_17584, fN_cb_17584_group);
+            designDetails.fN_cb_17584_group = Math.Min(designDetails.fN_pn_1710_group, designDetails.fN_cb_177_group); // ??? Zohladnit aj N_pn ???
+            designDetails.fk_cp_17584 = eq_concrete.Get_k_cp___(designDetails.fh_ef);
+            designDetails.fV_cp_1722_group = eq_concrete.Eq_17_22___(designDetails.fk_cp_17584, designDetails.fN_cb_17584_group);
 
-            float fDesignRatio_17584_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, fV_cp_1722_group);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_17584_single);
+            designDetails.fDesignRatio_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17584_group);
 
             // Lower characteristic strength in shear
-            float fV_n_nominal_min = MathF.Min(
-                fV_s_17581_group,                       // 17.5.8.1
-                fV_cb_1716_group,                       // 17.5.8.2
-                designDetails.iNumberAnchors_v * fV_cb_1716_single,   // 17.5.8.2
-                fV_cb_1721_group,                       // 17.5.8.3
-                designDetails.iNumberAnchors_v * fV_cb_1721_single,   // 17.5.8.3
-                fV_cp_1722_group);                      // 17.5.8.4
+            designDetails.fV_n_nominal_min = MathF.Min(
+                designDetails.fV_s_17581_group,                                     // 17.5.8.1
+                designDetails.fV_cb_1716_group,                                     // 17.5.8.2
+                designDetails.iNumberAnchors_v * designDetails.fV_cb_1716_single,   // 17.5.8.2
+                designDetails.fV_cb_1721_group,                                     // 17.5.8.3
+                designDetails.iNumberAnchors_v * designDetails.fV_cb_1721_single,   // 17.5.8.3
+                designDetails.fV_cp_1722_group);                                    // 17.5.8.4
 
             // Lower design strength in shear
-            float fV_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
-                designDetails.fPhi_anchor_shear_174 * fV_s_17581_group,                            // 17.5.8.1
-                designDetails.fPhi_concrete_shear_174b * fV_cb_1716_group,                         // 17.5.8.2
-                designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * fV_cb_1716_single,     // 17.5.8.2
-                designDetails.fPhi_concrete_shear_174b * fV_cb_1721_group,                         // 17.5.8.3
-                designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * fV_cb_1721_single,     // 17.5.8.3
-                designDetails.fPhi_concrete_shear_174b * fV_cp_1722_group);                        // 17.5.8.4
+            designDetails.fV_d_design_min = designDetails.fElasticityFactor_1764 * MathF.Min(
+                designDetails.fPhi_anchor_shear_174 * designDetails.fV_s_17581_group,                                          // 17.5.8.1
+                designDetails.fPhi_concrete_shear_174b * designDetails.fV_cb_1716_group,                                       // 17.5.8.2
+                designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * designDetails.fV_cb_1716_single,     // 17.5.8.2
+                designDetails.fPhi_concrete_shear_174b * designDetails.fV_cb_1721_group,                                       // 17.5.8.3
+                designDetails.fPhi_concrete_shear_174b * designDetails.iNumberAnchors_v * designDetails.fV_cb_1721_single,     // 17.5.8.3
+                designDetails.fPhi_concrete_shear_174b * designDetails.fV_cp_1722_group);                                      // 17.5.8.4
 
             // 17.5.6.6 Interaction of tension and shear – simplified procedures
             // Group of anchors
 
             // 17.5.6.6(Eq. 17–5)
-            float fDesignRatio_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, fV_d_design_min);
+            float fDesignRatio_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_17566_group);
 
             // C17.5.6.6 (Figure C17.1)
@@ -1155,7 +1153,7 @@ namespace M_AS4600
 
             if (bUseC17566Equation)
             {
-                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, fV_d_design_min);
+                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
                 fEta_max = MathF.Max(fEta_max, fDesignRatio_C17566_group);
             }
 
