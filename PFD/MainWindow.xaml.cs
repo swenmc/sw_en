@@ -479,8 +479,12 @@ namespace PFD
             System.Diagnostics.Trace.WriteLine("After loading from DB : " + (DateTime.Now - start).TotalMilliseconds);
 
             vm.GenerateMemberLoadsIfNotGenerated();
-
+                        
+            Solver solver = new Solver();
+            vm.SolverWindow = solver;
+            
             vm.Run();
+            solver.ShowDialog();
 
             // TODO - implementovat vypocet
         }

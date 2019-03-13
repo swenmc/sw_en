@@ -24,6 +24,7 @@ namespace PFD
         private readonly BackgroundWorker _worker = new BackgroundWorker();
 
         public MainWindow PFDMainWindow;
+        public Solver SolverWindow;
         //-------------------------------------------------------------------------------------------------------------
         public event PropertyChangedEventHandler PropertyChanged;
         public bool IsSetFromCode = false;
@@ -1089,6 +1090,10 @@ namespace PFD
 
         private void Calculate()
         {
+            SolverWindow.SetInputData();
+            SolverWindow.Progress = 1;
+            SolverWindow.UpdateProgress();            
+
             DateTime start = DateTime.Now;
             if (debugging) System.Diagnostics.Trace.WriteLine("STARTINg CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
@@ -1102,17 +1107,24 @@ namespace PFD
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
 
+            SolverWindow.SetCountsLabels(model.m_arrNodes.Length, model.m_arrMembers.Length, model.m_arrConnectionJoints.Count, model.m_arrLoadCombs.Length);
+            SolverWindow.SetMemberDesignLoadCaseProgress(0, model.m_arrMembers.Length);
+            SolverWindow.SetMemberDesignLoadCombinationProgress(0, model.m_arrMembers.Length);
+
             // Validate model before calculation (compare IDs)
             CModelHelper.ValidateModel(model);
+            SolverWindow.Progress = 2;
+            SolverWindow.UpdateProgress();
 
             if (debugging) System.Diagnostics.Trace.WriteLine("After validation: " + (DateTime.Now - start).TotalMilliseconds);
             // Tu by sa mal napojit 3D FEM vypocet v pripade ze budeme pocitat vsetko v 3D
             //RunFEMSOlver();
 
+            SolverWindow.SetFrames();
             // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver);
+            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
             //foreach (CFrame frame in frameModels)
             //{
             //    // Convert SW_EN model to BFENet model
@@ -1123,11 +1135,12 @@ namespace PFD
             //}
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
+            SolverWindow.SetBeams();
             // Calculation of simple beam model
             beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
             if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel();: " + (DateTime.Now - start).TotalMilliseconds);
 
-            CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver);
+            CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
 
             //foreach (CBeam_Simple beam in beamSimpleModels)
             //{
@@ -1168,13 +1181,17 @@ namespace PFD
 
             if(debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
 
-            double step = 100.0 / (Model.m_arrMembers.Length * 2.0);
-            double progressValue = 0;
-            PFDMainWindow.UpdateProgressBarValue(progressValue, "");
+            double step = (100.0 - SolverWindow.Progress) / (Model.m_arrMembers.Length * 2.0);
+            //double progressValue = 0;
+            //PFDMainWindow.UpdateProgressBarValue(progressValue, "");
 
+            int count = 0;
+            SolverWindow.SetMemberDesignLoadCase();
             // Calculate Internal Forces For Load Cases
             foreach (CMember m in Model.m_arrMembers)
             {
+                SolverWindow.SetMemberDesignLoadCaseProgress(++count, Model.m_arrMembers.Length);
+
                 // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
                 if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
@@ -1335,8 +1352,10 @@ namespace PFD
                         }
                     }
                 }
-                progressValue += step;
-                PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Internal Forces. MemberID: " + m.ID);
+                SolverWindow.Progress += step;
+                SolverWindow.UpdateProgress();
+                //progressValue += step;
+                //PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Internal Forces. MemberID: " + m.ID);
             }
 
             // Design of members
@@ -1347,8 +1366,11 @@ namespace PFD
 
             JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
 
+            SolverWindow.SetMemberDesignLoadCombination();
+            count = 0;
             foreach (CMember m in Model.m_arrMembers)
-            {
+            {                
+                SolverWindow.SetMemberDesignLoadCombinationProgress(++count, Model.m_arrMembers.Length);
                 // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
                 if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
                 {
@@ -1696,12 +1718,18 @@ namespace PFD
                         }
                     }
                 }
-                progressValue += step;
-                PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Member Design. MemberID: " + m.ID);
+                //progressValue += step;
+                //PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Member Design. MemberID: " + m.ID);
+                SolverWindow.Progress += step;
+                SolverWindow.UpdateProgress();
             }
 
-            progressValue = 100;
-            PFDMainWindow.UpdateProgressBarValue(progressValue, "Done.");
+            //progressValue = 100;
+            //PFDMainWindow.UpdateProgressBarValue(progressValue, "Done.");
+            SolverWindow.Progress += step;
+            SolverWindow.UpdateProgress();
+            SolverWindow.SetSumaryFinished();
+
             //Member_Design.IsEnabled = true;
             //Internal_Forces.IsEnabled = true;
             System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);

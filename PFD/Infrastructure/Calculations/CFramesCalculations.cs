@@ -10,10 +10,14 @@ namespace PFD.Infrastructure
 {
     public static class CFramesCalculations
     {
-        public static void RunFramesCalculations(List<CFrame> framesModels, bool DeterminateCombinationResultsByFEMSolver)
+        public static void RunFramesCalculations(List<CFrame> framesModels, bool DeterminateCombinationResultsByFEMSolver, Solver solverWindow)
         {
+            int count = 0;            
+            solverWindow.SetFramesProgress(count, framesModels.Count);
+            double step = 10.0 / framesModels.Count;
+
             List<WaitHandle> waitHandles = new List<WaitHandle>();
-            int maxWaitHandleCount = 16;  //maximum is 64
+            int maxWaitHandleCount = 64;  //maximum is 64
 
             List<CFrameCalculations> recs = new List<CFrameCalculations>();
             List<IAsyncResult> results = new List<IAsyncResult>();
@@ -35,14 +39,35 @@ namespace PFD.Infrastructure
                     recs[index].EndFrameCalculations(results[index]);
                     recs.RemoveAt(index);
                     results.RemoveAt(index);
+                    count++;
+                    solverWindow.SetFramesProgress(count, framesModels.Count);
+                    solverWindow.Progress += step;
+                    solverWindow.UpdateProgress();
                 }
             }
 
-            if (waitHandles.Count > 0) WaitHandle.WaitAll(waitHandles.ToArray());
-            for (var i = 0; i < recs.Count; i++)
+            //if (waitHandles.Count > 0) WaitHandle.WaitAll(waitHandles.ToArray());
+            //for (var i = 0; i < recs.Count; i++)
+            //{
+            //    recs[i].EndFrameCalculations(results[i]);
+            //    count++;
+            //    solverWindow.SetFramesProgress(count, framesModels.Count);
+            //    solverWindow.Progress += step;
+            //    solverWindow.UpdateProgress();
+            //}
+            while (waitHandles.Count > 0)
             {
-                recs[i].EndFrameCalculations(results[i]);
+                int index = WaitHandle.WaitAny(waitHandles.ToArray());
+                waitHandles.RemoveAt(index);
+                recs[index].EndFrameCalculations(results[index]);
+                recs.RemoveAt(index);
+                results.RemoveAt(index);
+                count++;
+                solverWindow.SetFramesProgress(count, framesModels.Count);
+                solverWindow.Progress += step;
+                solverWindow.UpdateProgress();
             }
+
             waitHandles.Clear();
             recs.Clear();
             results.Clear();
