@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using BaseClasses;
 using M_AS4600;
-using CRSC;
-using FEM_CALC_BASE;
-using M_BASE;
 
 namespace PFD
 {
@@ -27,10 +13,10 @@ namespace PFD
     /// </summary>
     public partial class UC_MemberDesign : UserControl
     {
+        public bool UseCRSCGeometricalAxes;
         CModel_PFD Model;
         public List<CMemberLoadCombinationRatio_ULS> DesignResults_ULS;
         public List<CMemberLoadCombinationRatio_SLS> DesignResults_SLS;
-        public bool UseCRSCGeometricalAxes;
 
         public UC_MemberDesign(bool bUseCRSCGeometricalAxes, CModel_PFD model, CComponentListVM compList, List<CMemberLoadCombinationRatio_ULS> designResults_ULS, List<CMemberLoadCombinationRatio_SLS> designResults_SLS)
         {
@@ -89,7 +75,6 @@ namespace PFD
 
                 if (cGoverningMemberResults != null)
                     cGoverningMemberResults.DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView);
-                    //DisplayDesignResultsInGridView(ELSType.eLS_ULS, Results_GridView, cGoverningMemberResults);
                 else
                 {
                     // Error - object is null, results are not available, object shouldn't be in the list or there must be valid results (or reasonable invalid design ratio)
@@ -116,12 +101,12 @@ namespace PFD
                 {
                     CMemberLoadCombinationRatio_SLS res = DesignResults.FirstOrDefault(i => i.Member.ID == m.ID && i.LoadCombination.ID == loadCombID);
                     if (res == null) continue;
-                    CCalculMember c = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m);
+                    CCalculMember calcul = new CCalculMember(false, bUseCRSCGeometricalAxes, res.DesignDeflections, m);
 
-                    if (c.fEta_max > fMaximumDesignRatio)
+                    if (calcul.fEta_max > fMaximumDesignRatio)
                     {
-                        fMaximumDesignRatio = c.fEta_max;
-                        cGoverningMemberResults = c;
+                        fMaximumDesignRatio = calcul.fEta_max;
+                        cGoverningMemberResults = calcul;
                     }
                 }
 
@@ -135,7 +120,5 @@ namespace PFD
                 }
             }
         }
-
-        
     }
 }

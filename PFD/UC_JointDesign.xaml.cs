@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using BaseClasses;
 using M_AS4600;
-using CRSC;
 
 namespace PFD
 {
@@ -24,7 +13,7 @@ namespace PFD
     /// </summary>
     public partial class UC_JointDesign : UserControl
     {
-        bool BUseCRSCGeometricalAxes;
+        bool UseCRSCGeometricalAxes;
         CModel_PFD Model;
         public List<CJointLoadCombinationRatio_ULS> DesignResults_ULS;
 
@@ -32,7 +21,7 @@ namespace PFD
         {
             InitializeComponent();
 
-            BUseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
+            UseCRSCGeometricalAxes = bUseCRSCGeometricalAxes_temp;
             DesignResults_ULS = designResults_ULS;
             Model = model;
 
@@ -86,7 +75,7 @@ namespace PFD
         {
             cGoverningMemberStartJointResults = null;
             cGoverningMemberEndJointResults = null;
-            
+
             if (DesignResults != null) // In case that results set is not empty calculate design details and display particular design results in datagrid
             {
                 float fMaximumDesignRatio = 0;
@@ -101,8 +90,8 @@ namespace PFD
                     if (resStart == null) continue;
                     if (resEnd == null) continue;
 
-                    CCalculJoint cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces);
-                    CCalculJoint cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces);
+                    CCalculJoint cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces);
+                    CCalculJoint cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces);
 
                     // Find member in the group of members with maximum start or end joint design ratio
                     if (cJointStart.fEta_max > fMaximumDesignRatio || cJointEnd.fEta_max > fMaximumDesignRatio)
@@ -117,11 +106,11 @@ namespace PFD
                         // One joint is joint with maximum design ratio, the other joint is corresponding joint for selected member and load combination
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointStart = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces, true);
+                        cJointStart = new CCalculJoint(false, UseCRSCGeometricalAxes, cjStart, resStart.DesignInternalForces, true);
                         cGoverningMemberStartJointResults = cJointStart;
 
                         // Prepocitat spoj a dopocitat detaily - To Ondrej, asi to nie je velmi efektivne ale nema zmysel ukladat to pri kazdom, len pre ten ktory bude zobrazeny
-                        cJointEnd = new CCalculJoint(false, BUseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces, true);
+                        cJointEnd = new CCalculJoint(false, UseCRSCGeometricalAxes, cjEnd, resEnd.DesignInternalForces, true);
                         cGoverningMemberEndJointResults = cJointEnd;
                     }
                 }
