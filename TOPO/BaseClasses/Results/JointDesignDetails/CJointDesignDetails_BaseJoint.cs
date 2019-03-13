@@ -286,6 +286,42 @@ namespace BaseClasses
         public float fSafetyFactor;
         public float fDesignRatio_footing_bearing;
 
+        // Bending - design of reinforcement
+        // Reinforcement bars in x direction (parallel to the wall)
+        public float fq_linear_xDirection;
+        public float fM_asterix_footingdesign_xDirection;
+
+        public float fd_reinforcement_xDirection;
+        public float fA_s1_Xdirection;
+        public int iNumberOfBarsInXDirection;
+        public float fA_s_tot_Xdirection;
+        public float fSpacing_yDirection;
+
+        public float fAlpha_c;
+        public float fPhi_b_foundations;
+        public float fConcreteCover_reinforcement_xDirection;
+        public float fd_effective_xDirection;
+        public float fx_u_xDirection;
+        public float fM_b_footing_xDirection;
+        public float fDesignRatio_bending_M_footing;
+
+        // Minimum longitudinal reinforcement ratio
+        public float fp_ratio_xDirection;
+        public float fp_ratio_limit_minimum_xDirection;
+        public float fDesignRatio_MinimumReinforcement_xDirection;
+
+        //  Shear
+        public float fV_asterix_footingdesign_shear;
+        public float fA_cv_xDirection;
+        public float fp_w_xDirection;
+        public float fk_a;
+        public float fk_d;
+        public float fv_b_xDirection;
+        public float fv_c_xDirection;
+        public float fV_c_xDirection;
+        public float fPhi_v_foundations;
+        public float fDesignRatio_shear_V_footing;
+
         public CJointDesignDetails_BaseJoint()
         {
 

@@ -1211,40 +1211,40 @@ namespace M_AS4600
 
             // Bending - design of reinforcement
             // Reinforcement bars in x direction (parallel to the wall)
-            float fq_linear_xDirection = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fFootingDimension_x;
-            float fM_asterix_footingdesign_xDirection = fq_linear_xDirection * MathF.Pow2(designDetails.fFootingDimension_x) / 8f; // ??? jednoducho podpoprety nosnik ???
+            designDetails.fq_linear_xDirection = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fFootingDimension_x;
+            designDetails.fM_asterix_footingdesign_xDirection = designDetails.fq_linear_xDirection * MathF.Pow2(designDetails.fFootingDimension_x) / 8f; // ??? jednoducho podpoprety nosnik ???
 
-            float fd_reinforcement_xDirection = 0.016f; // TODO - user defined
+            designDetails.fd_reinforcement_xDirection = 0.016f; // TODO - user defined
             float fd_reinforcement_yDirection = 0.016f; // TODO - user defined (default above the reinforcement in x-direction)
-            float fA_s1_Xdirection = MathF.fPI * MathF.Pow2(fd_reinforcement_xDirection) / 4f; // Reinforcement bar cross-sectional area
+            designDetails.fA_s1_Xdirection = MathF.fPI * MathF.Pow2(designDetails.fd_reinforcement_xDirection) / 4f; // Reinforcement bar cross-sectional area
             float fA_s1_Ydirection = MathF.fPI * MathF.Pow2(fd_reinforcement_yDirection) / 4f; // Reinforcement bar cross-sectional area
-            int iNumberOfBarsInXDirection = 11; // TODO - user defined
+            designDetails.iNumberOfBarsInXDirection = 11; // TODO - user defined
             int iNumberOfBarsInYDirection = 11; // TODO - user defined
 
-            float fA_s_tot_Xdirection = iNumberOfBarsInXDirection * fA_s1_Xdirection;
+            designDetails.fA_s_tot_Xdirection = designDetails.iNumberOfBarsInXDirection * designDetails.fA_s1_Xdirection;
             float fA_s_tot_Ydirection = iNumberOfBarsInYDirection * fA_s1_Ydirection;
 
             float fConcreteCover_reinforcement_side = 0.075f;
             float fSpacing_xDirection = (designDetails.fFootingDimension_x - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_yDirection) / (iNumberOfBarsInYDirection - 1);
-            float fSpacing_yDirection = (designDetails.fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - fd_reinforcement_xDirection) / (iNumberOfBarsInXDirection - 1);
+            designDetails.fSpacing_yDirection = (designDetails.fFootingDimension_y - 2 * fConcreteCover_reinforcement_side - designDetails.fd_reinforcement_xDirection) / (designDetails.iNumberOfBarsInXDirection - 1);
 
             string sReinforcingSteelGrade_Name = "500E";
             float fReinforcementStrength_fy = 500e+6f; // TODO - user defined
 
-            float fAlpha_c = 0.85f;
-            float fPhi_b_foundations = 0.85f;
+            designDetails.fAlpha_c = 0.85f;
+            designDetails.fPhi_b_foundations = 0.85f;
 
-            float fConcreteCover_reinforcement_xDirection = 0.075f;
+            designDetails.fConcreteCover_reinforcement_xDirection = 0.075f;
 
-            float fd_effective_xDirection = designDetails.fFootingHeight - fConcreteCover_reinforcement_xDirection - 0.5f * fd_reinforcement_xDirection;
-            float fd_effective_yDirection = designDetails.fFootingHeight - fConcreteCover_reinforcement_xDirection - fd_reinforcement_xDirection - 0.5f * fd_reinforcement_yDirection;
-            float fx_u_xDirection = (fA_s1_Xdirection * fReinforcementStrength_fy) / (fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y);
-            float fM_b_Reincorcement_xDirection = fA_s_tot_Xdirection * fReinforcementStrength_fy * (fd_effective_xDirection - (fx_u_xDirection / 2f));
-            float fM_b_Concrete_xDirection = fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y * fx_u_xDirection * (fd_effective_xDirection - (fx_u_xDirection / 2f));
-            float fM_b_footing_xDirection = Math.Min(fM_b_Reincorcement_xDirection, fM_b_Concrete_xDirection); // Note: Values should be identical.
+            designDetails.fd_effective_xDirection = designDetails.fFootingHeight - designDetails.fConcreteCover_reinforcement_xDirection - 0.5f * designDetails.fd_reinforcement_xDirection;
+            float fd_effective_yDirection = designDetails.fFootingHeight - designDetails.fConcreteCover_reinforcement_xDirection - designDetails.fd_reinforcement_xDirection - 0.5f * fd_reinforcement_yDirection;
+            designDetails.fx_u_xDirection = (designDetails.fA_s1_Xdirection * fReinforcementStrength_fy) / (designDetails.fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y);
+            float fM_b_Reincorcement_xDirection = designDetails.fA_s_tot_Xdirection * fReinforcementStrength_fy * (designDetails.fd_effective_xDirection - (designDetails.fx_u_xDirection / 2f));
+            float fM_b_Concrete_xDirection = designDetails.fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y * designDetails.fx_u_xDirection * (designDetails.fd_effective_xDirection - (designDetails.fx_u_xDirection / 2f));
+            designDetails.fM_b_footing_xDirection = Math.Min(fM_b_Reincorcement_xDirection, fM_b_Concrete_xDirection); // Note: Values should be identical.
 
-            float fDesignRatio_bending_M_footing = fM_asterix_footingdesign_xDirection / (fPhi_b_foundations * fM_b_footing_xDirection);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_bending_M_footing);
+            designDetails.fDesignRatio_bending_M_footing = designDetails.fM_asterix_footingdesign_xDirection / (designDetails.fPhi_b_foundations * designDetails.fM_b_footing_xDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_bending_M_footing);
 
             // TODO - zapracovat Winklerov nosnik na pruznom podlozi je jednotlive patky, suvisly zakladovy pas zatazeny viacerymi stlpmi
 
@@ -1257,33 +1257,33 @@ namespace M_AS4600
             // | 50        | 0.0059       | 0.0035       |
 
             // Minimum longitudinal reinforcement ratio
-            float fp_ratio_xDirection = 2 * fA_s_tot_Xdirection / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Same reinforcement at the bottom and top surface
-            float fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(designDetails.ff_apostrophe_c, fReinforcementStrength_fy);
+            designDetails.fp_ratio_xDirection = 2 * designDetails.fA_s_tot_Xdirection / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Same reinforcement at the bottom and top surface
+            designDetails.fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(designDetails.ff_apostrophe_c, fReinforcementStrength_fy);
 
-            float fDesignRatio_MinimumReinforcement_xDirection = fp_ratio_limit_minimum_xDirection / fp_ratio_xDirection;
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_MinimumReinforcement_xDirection);
+            designDetails.fDesignRatio_MinimumReinforcement_xDirection = designDetails.fp_ratio_limit_minimum_xDirection / designDetails.fp_ratio_xDirection;
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_MinimumReinforcement_xDirection);
 
             //  Shear
-            float fV_asterix_footingdesign_shear = fq_linear_xDirection * designDetails.fFootingDimension_x / 2f; // ??? jednoducho podpoprety nosnik ???
-            float fA_cv_xDirection = fd_effective_xDirection * designDetails.fFootingDimension_y;
+            designDetails.fV_asterix_footingdesign_shear = designDetails.fq_linear_xDirection * designDetails.fFootingDimension_x / 2f; // ??? jednoducho podpoprety nosnik ???
+            designDetails.fA_cv_xDirection = designDetails.fd_effective_xDirection * designDetails.fFootingDimension_y;
 
             // pw - proportion of flexural tension reinforcement within one-quarter of the effective depth of the member closest to the extreme tension reinforcement to the shear area, Acv
-            float fp_w_xDirection = fA_s_tot_Xdirection / fA_cv_xDirection;
-            float fk_a = eq_concrete.Get_k_a_93934(0.02f); // TODO - user defined
-            float fk_d = eq_concrete.Get_k_d_93934(); // TODO - dopracovat
-            float fv_b_xDirection = eq_concrete.Get_v_b_93934(fp_w_xDirection, designDetails.ff_apostrophe_c);
-            float fv_c_xDirection = eq_concrete.Eq_9_5_____(fk_d, fk_a, fv_b_xDirection);
-            float fV_c_xDirection = eq_concrete.Eq_9_4_____(fv_c_xDirection, fA_cv_xDirection);
-            float fPhi_v_foundations = 0.85f;
+            designDetails.fp_w_xDirection = designDetails.fA_s_tot_Xdirection / designDetails.fA_cv_xDirection;
+            designDetails.fk_a = eq_concrete.Get_k_a_93934(0.02f); // TODO - user defined
+            designDetails.fk_d = eq_concrete.Get_k_d_93934(); // TODO - dopracovat
+            designDetails.fv_b_xDirection = eq_concrete.Get_v_b_93934(designDetails.fp_w_xDirection, designDetails.ff_apostrophe_c);
+            designDetails.fv_c_xDirection = eq_concrete.Eq_9_5_____(designDetails.fk_d, designDetails.fk_a, designDetails.fv_b_xDirection);
+            designDetails.fV_c_xDirection = eq_concrete.Eq_9_4_____(designDetails.fv_c_xDirection, designDetails.fA_cv_xDirection);
+            designDetails.fPhi_v_foundations = 0.85f;
 
-            float fDesignRatio_shear_V_footing = fV_asterix_footingdesign_shear / (fPhi_v_foundations * fV_c_xDirection);
-            fEta_max = MathF.Max(fEta_max, fDesignRatio_shear_V_footing);
+            designDetails.fDesignRatio_shear_V_footing = designDetails.fV_asterix_footingdesign_shear / (designDetails.fPhi_v_foundations * designDetails.fV_c_xDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_shear_V_footing);
 
             // Punching shear
             float fReactionArea_dimension_x = designDetails.fplateWidth_x;
             float fReactionArea_dimension_y = designDetails.fplateWidth_y;
 
-            float fcriticalPerimeterDimension_x = 2f * Math.Min(fd_effective_xDirection, designDetails.fe_x_BasePlateToFootingEdge) + fReactionArea_dimension_x;
+            float fcriticalPerimeterDimension_x = 2f * Math.Min(designDetails.fd_effective_xDirection, designDetails.fe_x_BasePlateToFootingEdge) + fReactionArea_dimension_x;
             float fcriticalPerimeterDimension_y = 2f * Math.Min(fd_effective_yDirection, designDetails.fe_y_BasePlateToFootingEdge) + fReactionArea_dimension_y; // TODO - Zohladnit ak je stlp blizsie k okraju nez fd
 
             float fcriticalPerimeter_b0 = 2 * fcriticalPerimeterDimension_x + 2 * fcriticalPerimeterDimension_y;
@@ -1291,7 +1291,7 @@ namespace M_AS4600
             // Ratio of the long side to the short side of the concentrated load
             float fBeta_c = Math.Max(fReactionArea_dimension_x, fReactionArea_dimension_y) / Math.Min(fReactionArea_dimension_x, fReactionArea_dimension_y); // 12.7
             float fAlpha_s = 15; // 20 for interior columns, 15 for edge columns, 10 for corner columns TODO - zapracovat identifikaciu stlpa
-            float fd_average = (fd_effective_xDirection + fd_effective_yDirection) / 2f;
+            float fd_average = (designDetails.fd_effective_xDirection + fd_effective_yDirection) / 2f;
             float fk_ds = eq_concrete.Get_k_ds_12732(fd_average);
 
             // Nominal shear stress resisted by the concrete
@@ -1309,21 +1309,21 @@ namespace M_AS4600
             float fV_c_12731 = eq_concrete.Get_V_c_12731(fv_c_12732, fcriticalPerimeter_b0, fd_average);
 
             // 12.7.4 Shear reinforcement consisting of bars or wires or stirrups
-            float fReinforcementArea_A_v_xDirection = 2 * fA_s_tot_Xdirection * fcriticalPerimeterDimension_y / designDetails.fFootingDimension_y; // TODO ?? horna aj spodna vyztuz ak su rovnake
+            float fReinforcementArea_A_v_xDirection = 2 * designDetails.fA_s_tot_Xdirection * fcriticalPerimeterDimension_y / designDetails.fFootingDimension_y; // TODO ?? horna aj spodna vyztuz ak su rovnake
             float fReinforcementArea_A_v_yDirection = 2 * fA_s_tot_Ydirection * fcriticalPerimeterDimension_x / designDetails.fFootingDimension_x;
 
             float ff_yv = fReinforcementStrength_fy;
 
-            float fV_s_xDirection = fReinforcementArea_A_v_xDirection * ff_yv * fd_effective_xDirection / fSpacing_yDirection;
+            float fV_s_xDirection = fReinforcementArea_A_v_xDirection * ff_yv * designDetails.fd_effective_xDirection / designDetails.fSpacing_yDirection;
             float fV_s_yDirection = fReinforcementArea_A_v_yDirection * ff_yv * fd_effective_yDirection / fSpacing_xDirection;
 
             // 12.7.3.1 Nominal shear strength for punching shear
             float fV_n_12731_xDirection = eq_concrete.Eq_12_4____(fV_s_xDirection, fV_c_12731);
-            float fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), fPhi_v_foundations, fV_n_12731_xDirection);
+            float fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, fV_n_12731_xDirection);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_punching_12731_xDirection);
 
             float fV_n_12731_yDirection = eq_concrete.Eq_12_4____(fV_s_yDirection, fV_c_12731);
-            float fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), fPhi_v_foundations, fV_n_12731_yDirection);
+            float fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, fV_n_12731_yDirection);
             fEta_max = MathF.Max(fEta_max, fDesignRatio_punching_12731_yDirection);
 
             // Store details
