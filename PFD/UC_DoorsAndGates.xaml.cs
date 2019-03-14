@@ -27,6 +27,7 @@ namespace PFD
 
         List<string> listBuildingSide = new List<string>();
         List<int> listBayNumber = new List<int>();
+        List<string> listDoorType = new List<string>(); // Dva typy (zaviest enum)
         List<float> listDoorHeight = new List<float>();
         List<float> listDoorWidth = new List<float>();
         List<float> listDoorCoordinateXinBlock = new List<float>();
@@ -49,6 +50,11 @@ namespace PFD
             listBayNumber.Add(3);
             listBayNumber.Add(1);
 
+            listDoorType.Add("Personnel Door");
+            listDoorType.Add("Personnel Door");
+            listDoorType.Add("Roller Door");
+            listDoorType.Add("Roller Door");
+
             listDoorHeight.Add(2.1f);
             listDoorHeight.Add(2.2f);
             listDoorHeight.Add(2.4f);
@@ -70,6 +76,7 @@ namespace PFD
             // Create Table Rows
             table.Columns.Add("BuildingSide", typeof(String));
             table.Columns.Add("BayNumber", typeof(Int32));
+            table.Columns.Add("DoorType", typeof(String));
             table.Columns.Add("DoorHeight", typeof(Decimal));
             table.Columns.Add("DoorWidth", typeof(Decimal));
             table.Columns.Add("DoorPosition", typeof(Decimal));
@@ -77,6 +84,7 @@ namespace PFD
             // Set Column Caption
             table.Columns["BuildingSide"].Caption = "BuildingSide";
             table.Columns["BayNumber"].Caption = "BayNumber";
+            table.Columns["DoorType"].Caption = "DoorType";
             table.Columns["DoorHeight"].Caption = "DoorHeight";
             table.Columns["DoorWidth"].Caption = "DoorWidth";
             table.Columns["DoorPosition"].Caption = "DoorPosition";
@@ -94,6 +102,7 @@ namespace PFD
                 {
                     row["BuildingSide"] = listBuildingSide[i];
                     row["BayNumber"] = listBayNumber[i];
+                    row["DoorType"] = listDoorType[i];
                     row["DoorHeight"] = listDoorHeight[i];
                     row["DoorWidth"] = listDoorWidth[i];
                     row["DoorPosition"] = listDoorCoordinateXinBlock[i];
@@ -139,6 +148,7 @@ namespace PFD
         {
             listBuildingSide.Clear();
             listBayNumber.Clear();
+            listDoorType.Clear();
             listDoorHeight.Clear();
             listDoorWidth.Clear();
             listDoorCoordinateXinBlock.Clear();

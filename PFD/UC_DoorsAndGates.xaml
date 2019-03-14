@@ -5,6 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Height="115" Width="250">
+        Height="115" Width="300">
     <DataGrid Name ="Datagrid_DoorsAndGates" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="false"/>
 </UserControl>

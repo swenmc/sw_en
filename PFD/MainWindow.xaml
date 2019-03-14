@@ -252,7 +252,7 @@
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
-                        <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="395" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
+                        <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
                         <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>
                     </Grid>
                 </ScrollViewer>

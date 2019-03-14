@@ -155,9 +155,10 @@ namespace PFD
                     DoorBlocksToInsertProperties.Add(insertOpeningDoors_temp);
 
                     dp_temp = new DoorProperties();
-                    dp_temp.fDoorsHeight = float.Parse(row.ItemArray[2].ToString());
-                    dp_temp.fDoorsWidth = float.Parse(row.ItemArray[3].ToString());
-                    dp_temp.fDoorCoordinateXinBlock = float.Parse(row.ItemArray[4].ToString());
+                    dp_temp.sDoorType = (string)row.ItemArray[2];
+                    dp_temp.fDoorsHeight = float.Parse(row.ItemArray[3].ToString());
+                    dp_temp.fDoorsWidth = float.Parse(row.ItemArray[4].ToString());
+                    dp_temp.fDoorCoordinateXinBlock = float.Parse(row.ItemArray[5].ToString());
 
                     DoorBlocksProperties.Add(dp_temp);
                 }

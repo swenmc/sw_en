@@ -717,6 +717,7 @@
 
     public struct DoorProperties
     {
+        public string sDoorType;
         public float fDoorsHeight;
         public float fDoorsWidth;
         public float fDoorCoordinateXinBlock;
