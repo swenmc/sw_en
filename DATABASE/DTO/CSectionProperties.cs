@@ -45,6 +45,21 @@ namespace DATABASE.DTO
         public string fod_b;
         public string fol_c;
         public string fod_c;
+        public string A_stiff;
+        public string n_stiff;
+        public string y_stiff;
+        public string b_1_flat_portion;
+        public string b_tot;
+        public string b_tot_length;
+        public string A_f1;
+        public string A_vy;
+        public string fvy_red_factor;
+        public string d_1_flat_portion;
+        public string d_tot;
+        public string d_tot_length;
+        public string A_w1;
+        public string A_vz;
+        public string fvz_red_factor;
 
         public CSectionProperties() { }
     }

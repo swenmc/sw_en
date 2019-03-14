@@ -36,8 +36,22 @@ namespace DATABASE.DTO
         public double fod_b;
         public double fol_c;
         public double fod_c;
+        public double A_stiff;
+        public int n_stiff;
+        public double y_stiff;
+        public double b_1_flat_portion;
+        public double b_tot;
+        public double b_tot_length;
+        public double A_f1;
+        public double A_vy;
+        public double fvy_red_factor;
+        public double d_1_flat_portion;
+        public double d_tot;
+        public double d_tot_length;
+        public double A_w1;
+        public double A_vz;
+        public double fvz_red_factor;
 
         public CrScProperties(){}
-
     }
 }

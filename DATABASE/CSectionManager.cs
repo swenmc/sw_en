@@ -57,6 +57,22 @@ namespace DATABASE
                         properties.Compression_curve_1 = reader["Compression_curve_1"].ToString();
                         properties.Compression_curve_2 = reader["Compression_curve_2"].ToString();
                         properties.Compression_curve_3 = reader["Compression_curve_3"].ToString();
+                        properties.A_stiff = reader["A_stiff"].ToString();
+                        properties.n_stiff = reader["n_stiff"].ToString();
+                        properties.y_stiff = reader["y_stiff"].ToString();
+                        properties.b_1_flat_portion = reader["b_1_flat_portion"].ToString();
+                        properties.b_tot = reader["b_tot"].ToString();
+                        properties.b_tot_length = reader["b_tot_length"].ToString();
+                        properties.A_f1 = reader["A_f1"].ToString();
+                        properties.A_vy = reader["A_vy"].ToString();
+                        properties.fvy_red_factor = reader["fvy_red_factor"].ToString();
+                        properties.d_1_flat_portion = reader["d_1_flat_portion"].ToString();
+                        properties.d_tot = reader["d_tot"].ToString();
+                        properties.d_tot_length = reader["d_tot_length"].ToString();
+                        properties.A_w1 = reader["A_w1"].ToString();
+                        properties.A_vz = reader["A_vz"].ToString();
+                        properties.fvz_red_factor = reader["fvz_red_factor"].ToString();
+
                         items.Add(properties);
                     }
                 }
@@ -144,6 +160,21 @@ namespace DATABASE
             properties.fod_b = reader["fod_b"].ToString();
             properties.fol_c = reader["fol_c"].ToString();
             properties.fod_c = reader["fod_c"].ToString();
+            properties.A_stiff = reader["A_stiff"].ToString();
+            properties.n_stiff = reader["n_stiff"].ToString();
+            properties.y_stiff = reader["y_stiff"].ToString();
+            properties.b_1_flat_portion = reader["b_1_flat_portion"].ToString();
+            properties.b_tot = reader["b_tot"].ToString();
+            properties.b_tot_length = reader["b_tot_length"].ToString();
+            properties.A_f1 = reader["A_f1"].ToString();
+            properties.A_vy = reader["A_vy"].ToString();
+            properties.fvy_red_factor = reader["fvy_red_factor"].ToString();
+            properties.d_1_flat_portion = reader["d_1_flat_portion"].ToString();
+            properties.d_tot = reader["d_tot"].ToString();
+            properties.d_tot_length = reader["d_tot_length"].ToString();
+            properties.A_w1 = reader["A_w1"].ToString();
+            properties.A_vz = reader["A_vz"].ToString();
+            properties.fvz_red_factor = reader["fvz_red_factor"].ToString();
 
             return properties;
         }
@@ -203,6 +234,23 @@ namespace DATABASE
                         crsc.fod_b = reader["fod_b"].ToString() == "" ? double.NaN : double.Parse(reader["fod_b"].ToString(), nfi);
                         crsc.fol_c = reader["fol_c"].ToString() == "" ? double.NaN : double.Parse(reader["fol_c"].ToString(), nfi);
                         crsc.fod_c = reader["fod_c"].ToString() == "" ? double.NaN : double.Parse(reader["fod_c"].ToString(), nfi);
+
+                        crsc.A_stiff = reader["A_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["A_stiff"].ToString(), nfi);
+                        crsc.n_stiff = reader["n_stiff"].ToString() == "" ? 0 : int.Parse(reader["n_stiff"].ToString(), nfi);
+                        crsc.y_stiff = reader["y_stiff"].ToString() == "" ? double.NaN : double.Parse(reader["y_stiff"].ToString(), nfi);
+
+                        crsc.b_1_flat_portion = double.Parse(reader["b_1_flat_portion"].ToString(), nfi);
+                        crsc.b_tot = double.Parse(reader["b_tot"].ToString(), nfi);
+                        crsc.b_tot_length = double.Parse(reader["b_tot_length"].ToString(), nfi);
+                        crsc.A_f1 = double.Parse(reader["A_f1"].ToString(), nfi);
+                        crsc.A_vy = double.Parse(reader["A_vy"].ToString(), nfi);
+                        crsc.fvy_red_factor = double.Parse(reader["fvy_red_factor"].ToString(), nfi);
+                        crsc.d_1_flat_portion = double.Parse(reader["d_1_flat_portion"].ToString(), nfi);
+                        crsc.d_tot = double.Parse(reader["d_tot"].ToString(), nfi);
+                        crsc.d_tot_length = double.Parse(reader["d_tot_length"].ToString(), nfi);
+                        crsc.A_w1 = double.Parse(reader["A_w1"].ToString(), nfi);
+                        crsc.A_vz =double.Parse(reader["A_vz"].ToString(), nfi);
+                        crsc.fvz_red_factor = double.Parse(reader["fvz_red_factor"].ToString(), nfi);
                     }
                 }
             }
@@ -261,6 +309,21 @@ namespace DATABASE
             list.Add(properties.fod_b);
             list.Add(properties.fol_c);
             list.Add(properties.fod_c);
+            list.Add(properties.A_stiff);
+            list.Add(properties.n_stiff);
+            list.Add(properties.y_stiff);
+            list.Add(properties.b_1_flat_portion);
+            list.Add(properties.b_tot);
+            list.Add(properties.b_tot_length);
+            list.Add(properties.A_f1);
+            list.Add(properties.A_vy);
+            list.Add(properties.fvy_red_factor);
+            list.Add(properties.d_1_flat_portion);
+            list.Add(properties.d_tot);
+            list.Add(properties.d_tot_length);
+            list.Add(properties.A_w1);
+            list.Add(properties.A_vz );
+            list.Add(properties.fvz_red_factor);
 
             return list;
         }
