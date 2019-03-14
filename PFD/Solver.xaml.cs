@@ -35,7 +35,7 @@ namespace PFD
         //{
         //    Dispatcher.Invoke(() =>
         //    {
-        //        SolverProgressBar.Value = progressValue;                
+        //        SolverProgressBar.Value = progressValue;
         //    });
         //}
         public void UpdateProgress()
@@ -46,13 +46,14 @@ namespace PFD
             });
         }
 
-        public void SetCountsLabels(int nodesCount, int membersCount, int jointsCount, int loadCombCount)
+        public void SetCountsLabels(int nodesCount, int membersCount, int jointsCount, int loadCasesCount, int loadCombCount)
         {
             Dispatcher.Invoke(() =>
             {
                 LabelNodesCount.Text = nodesCount.ToString();
                 LabelMembersCount.Text = membersCount.ToString();
                 LabelJointsCount.Text = jointsCount.ToString();
+                LabelLoadCasesCount.Text = loadCasesCount.ToString();
                 LabelLoadCombCount.Text = loadCombCount.ToString();
             });
         }
@@ -62,7 +63,7 @@ namespace PFD
             Dispatcher.Invoke(() =>
             {
                 LabelInputData.Text = "Input Data Processed";
-                LabelInputData.FontWeight = FontWeights.Bold;                
+                SetActiveRowFormat(LabelInputData);
             });
         }
         
@@ -70,23 +71,28 @@ namespace PFD
         {
             Dispatcher.Invoke(() =>
             {
-                LabelFrames.FontWeight = FontWeights.Bold;                
+                SetInActiveRowFormat(LabelInputData);
+                SetActiveRowFormat(LabelFrames, LabelFramesCounting);
             });
         }
+
         public void SetFramesProgress(int actual, int total)
         {
             Dispatcher.Invoke(() =>
             {
-                LabelFramesCounting.Text = $"Frame: {actual}/{total}";                
+                LabelFramesCounting.Text = $"Frame: {actual}/{total}";
             });
         }
+
         public void SetBeams()
         {
             Dispatcher.Invoke(() =>
             {
-                LabelBeams.FontWeight = FontWeights.Bold;                
+                SetInActiveRowFormat(LabelFrames, LabelFramesCounting);
+                SetActiveRowFormat(LabelBeams, LabelBeamsCounting);
             });
         }
+
         public void SetBeamsProgress(int actual, int total)
         {
             Dispatcher.Invoke(() =>
@@ -99,23 +105,28 @@ namespace PFD
         {
             Dispatcher.Invoke(() =>
             {
-                LabelMemberDesignLoadCase.FontWeight = FontWeights.Bold;
+                SetInActiveRowFormat(LabelBeams, LabelBeamsCounting);
+                SetActiveRowFormat(LabelDeterminateDesignInternalForces, LabelDeterminateDesignInternalForcesProgress);
             });
         }
+
         public void SetMemberDesignLoadCaseProgress(int actual, int total)
         {
             Dispatcher.Invoke(() =>
             {
-                LabelMemberDesignLoadCaseProgress.Text = $"Member: {actual}/{total}";
+                LabelDeterminateDesignInternalForcesProgress.Text = $"Member: {actual}/{total}";
             });
         }
+
         public void SetMemberDesignLoadCombination()
         {
             Dispatcher.Invoke(() =>
             {
-                LabelMemberDesignLoadCombination.FontWeight = FontWeights.Bold;
+                SetInActiveRowFormat(LabelDeterminateDesignInternalForces, LabelDeterminateDesignInternalForcesProgress);
+                SetActiveRowFormat(LabelMemberDesignLoadCombination, LabelMemberDesignLoadCombinationProgress);
             });
         }
+
         public void SetMemberDesignLoadCombinationProgress(int actual, int total)
         {
             Dispatcher.Invoke(() =>
@@ -128,13 +139,39 @@ namespace PFD
         {
             Dispatcher.Invoke(() =>
             {
-                LabelSummaryState.Text = "Finished.";
-                LabelSummaryState.Foreground = Brushes.Green;
-                LabelSummaryState.FontWeight = FontWeights.Bold;
+                SetInActiveRowFormat(LabelMemberDesignLoadCombination, LabelMemberDesignLoadCombinationProgress);
+
+                LabelSummaryState.Text = "Calculation successful.";
+                LabelSummaryState.Foreground = Brushes.Black;
+                //LabelSummaryState.FontWeight = FontWeights.Bold;
             });
         }
-        
 
+        private void SetActiveRowFormat(TextBlock label1, TextBlock label2 = null)
+        {
+            Color rgbColor = new Color();
+            rgbColor = Color.FromRgb(23, 102, 156);
 
+            label1.FontWeight = FontWeights.Bold;
+            label1.Foreground = new SolidColorBrush(rgbColor);
+
+            if (label2 != null)
+            {
+                label2.FontWeight = FontWeights.Bold;
+                label2.Foreground = new SolidColorBrush(rgbColor);
+            }
+        }
+
+        private void SetInActiveRowFormat(TextBlock label1, TextBlock label2 = null)
+        {
+            label1.FontWeight = FontWeights.Normal;
+            label1.Foreground = new SolidColorBrush(Colors.Black);
+
+            if (label2 != null)
+            {
+                label2.FontWeight = FontWeights.Normal;
+                label2.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
     }
 }

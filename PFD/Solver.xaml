@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Solver" Height="450" Width="600">
+        Title="Solver" Height="450" Width="700">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1.5*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2.2*" />
+            <ColumnDefinition Width="1.2*" />
+            <ColumnDefinition Width="1.8*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
@@ -26,36 +26,36 @@
             <RowDefinition Height="*" />
 
         </Grid.RowDefinitions>
-        <Image Source="Resources/solver.png" Margin="0,0,10,0" Grid.Column="0" Grid.Row="0" Grid.RowSpan="9" Stretch="Fill"></Image>
-        <DockPanel Margin="0,0,10,0" Grid.Row="0" Grid.Column ="1" Grid.ColumnSpan="4">
-            <ProgressBar Name="SolverProgressBar" Minimum="0" Maximum="100" Value="0" IsIndeterminate="False" HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Center"  Grid.ColumnSpan="2"/>
+        <Image Source="Resources/solver.png" Margin="0,2,10,0" Grid.Column="0" Grid.Row="0" Grid.RowSpan="9" Stretch="Fill"></Image>
+        <DockPanel Margin="0,2,10,0" Grid.Row="0" Grid.Column ="1" Grid.ColumnSpan="4">
+            <ProgressBar Name="SolverProgressBar" Minimum="0" Maximum="100" Value="0" IsIndeterminate="False" HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Top"  Grid.ColumnSpan="2" Foreground="#FF022332"/>
         </DockPanel>
-        
-        <TextBlock Text= "Linear Analysis" Grid.Row="1" Grid.Column ="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14"/>
+
+        <TextBlock Text= "Linear Analysis" Grid.Row="2" Grid.Column ="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
         <TextBlock Name="LabelInputData" Text= "Processing Input Data" Grid.Row="3" Grid.Column ="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelFrames" Text= "Internal Forces Frames" Grid.Row="4" Grid.Column ="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelFrames" Text= "Internal Forces in Frames" Grid.Row="4" Grid.Column ="1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
         <TextBlock Name="LabelFramesCounting" Text= "Frame: 0/0" Grid.Row="4" Grid.Column ="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelBeams" Text= "Internal Forces Beams" Grid.Row="5" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelBeams" Text= "Internal Forces in Beams" Grid.Row="5" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
         <TextBlock Name="LabelBeamsCounting" Text= "Beam: 0/0" Grid.Row="5" Grid.Column ="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelMemberDesignLoadCase" Text= "Member Design Load Cases" Grid.Row="6" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelMemberDesignLoadCaseProgress" Text= "Member: 0/0" Grid.Row="6" Grid.Column ="2"   Margin="0,0,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" />
-        <TextBlock Name="LabelMemberDesignLoadCombination" Text= "Member Design Load Combinations" Grid.Row="7" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelDeterminateDesignInternalForces" Text= "Design Internal Forces" Grid.Row="6" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelDeterminateDesignInternalForcesProgress" Text= "Member: 0/0" Grid.Row="6" Grid.Column ="2"   Margin="0,0,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <TextBlock Name="LabelMemberDesignLoadCombination" Text= "Design" Grid.Row="7" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
         <TextBlock Name="LabelMemberDesignLoadCombinationProgress" Text= "Member: 0/0" Grid.Row="7" Grid.Column ="2"   Margin="0,0,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" />
-        <TextBlock Name="LabelJointDesing" Text= "Joint Design" Grid.Row="8" Grid.Column ="1" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelJointDesignProgress" Text= "Joint: 0/0" Grid.Row="8" Grid.Column ="2" Margin="0,0,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" />
 
-        <TextBlock Text= "Summary:" Grid.Row="1" Grid.Column ="3" Grid.ColumnSpan="1" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" VerticalAlignment="Top"  FontSize="14"/>
-        <TextBlock Name="LabelSummaryState" Text= "Running..." Grid.Row="1" Grid.Column ="4" Grid.ColumnSpan="1" HorizontalAlignment="Left" Foreground="Gray" FontWeight="Normal" TextWrapping="Wrap" VerticalAlignment="Top"  FontSize="14" />
+        <TextBlock Text= "Summary" Grid.Row="2" Grid.Column ="3" Grid.ColumnSpan="1" HorizontalAlignment="Left" TextWrapping="Wrap" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock Name="LabelSummaryState" Text= "Caclulation in progress." Grid.Row="1" Grid.Column ="3" Margin="130,0,0,0" HorizontalAlignment="Left" Foreground="Gray" FontWeight="Normal" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="130"/>
 
         <TextBlock Text= "Number of Nodes" Grid.Row="3" Grid.Column ="3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelNodesCount"  Text= "0" Grid.Row="3" Grid.Column ="4" HorizontalAlignment="Center" FontWeight="Bold"  TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelNodesCount"  Text= "0" Grid.Row="3" Grid.Column ="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" />
         <TextBlock Text= "Number of Members" Grid.Row="4" Grid.Column ="3" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelMembersCount" Text= "0" Grid.Row="4" Grid.Column ="4" HorizontalAlignment="Center" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelMembersCount" Text= "0" Grid.Row="4" Grid.Column ="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" />
         <TextBlock Text= "Number of Joints" Grid.Row="5" Grid.Column ="3" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Name="LabelJointsCount" Text= "0" Grid.Row="5" Grid.Column ="4" HorizontalAlignment="Center" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" />
-        <TextBlock Text= "Number of Load Case Combinations" Grid.Row="6" Grid.Column ="3" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top" />
-        <TextBlock Name="LabelLoadCombCount" Text= "0" Grid.Row="6" Grid.Column ="4" HorizontalAlignment="Center" FontWeight="Bold" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Name="LabelJointsCount" Text= "0" Grid.Row="5" Grid.Column ="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Text= "Number of Load Cases" Grid.Row="6" Grid.Column ="3" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top" />
+        <TextBlock Name="LabelLoadCasesCount" Text= "0" Grid.Row="6" Grid.Column ="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock Text= "Number of Load Combinations" Grid.Row="7" Grid.Column ="3" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top" />
+        <TextBlock Name="LabelLoadCombCount" Text= "0" Grid.Row="7" Grid.Column ="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" />
 
         <Button Grid.Row="8" Grid.Column ="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Name="BtnOK" Content ="OK" Height="20" Width="70" Margin="0 0 10 10" Click="BtnOK_Click"/>
     </Grid>

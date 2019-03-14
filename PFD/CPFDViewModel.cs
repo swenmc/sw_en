@@ -1092,7 +1092,7 @@ namespace PFD
         {
             SolverWindow.SetInputData();
             SolverWindow.Progress = 1;
-            SolverWindow.UpdateProgress();            
+            SolverWindow.UpdateProgress();
 
             DateTime start = DateTime.Now;
             if (debugging) System.Diagnostics.Trace.WriteLine("STARTINg CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
@@ -1107,7 +1107,7 @@ namespace PFD
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
 
-            SolverWindow.SetCountsLabels(model.m_arrNodes.Length, model.m_arrMembers.Length, model.m_arrConnectionJoints.Count, model.m_arrLoadCombs.Length);
+            SolverWindow.SetCountsLabels(model.m_arrNodes.Length, model.m_arrMembers.Length, model.m_arrConnectionJoints.Count, model.m_arrLoadCases.Length, model.m_arrLoadCombs.Length);
             SolverWindow.SetMemberDesignLoadCaseProgress(0, model.m_arrMembers.Length);
             SolverWindow.SetMemberDesignLoadCombinationProgress(0, model.m_arrMembers.Length);
 
@@ -1369,7 +1369,7 @@ namespace PFD
             SolverWindow.SetMemberDesignLoadCombination();
             count = 0;
             foreach (CMember m in Model.m_arrMembers)
-            {                
+            {
                 SolverWindow.SetMemberDesignLoadCombinationProgress(++count, Model.m_arrMembers.Length);
                 // TODO m.BIsDisplayed treba z podmienky zmazat ale najprv musime zariadit aby mali vsetky pruty nastavene spravne tieto bool hodnoty
                 if (m.BIsDSelectedForIFCalculation && m.BIsDisplayed) // Only structural members (not auxiliary members or members with deactivated calculation of internal forces)
