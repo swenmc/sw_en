@@ -155,11 +155,13 @@ namespace PFD
             rgbColor = Color.FromRgb(23, 102, 156);
 
             label1.FontWeight = FontWeights.Bold;
+            label1.FontSize = 12.5;
             label1.Foreground = new SolidColorBrush(rgbColor);
 
             if (label2 != null)
             {
                 label2.FontWeight = FontWeights.Bold;
+                label2.FontSize = 12.5;
                 label2.Foreground = new SolidColorBrush(rgbColor);
             }
         }
@@ -167,11 +169,13 @@ namespace PFD
         private void SetInActiveRowFormat(TextBlock label1, TextBlock label2 = null)
         {
             label1.FontWeight = FontWeights.Normal;
+            label1.FontSize = 12;
             label1.Foreground = new SolidColorBrush(Colors.Black);
 
             if (label2 != null)
             {
                 label2.FontWeight = FontWeights.Normal;
+                label2.FontSize = 12;
                 label2.Foreground = new SolidColorBrush(Colors.Black);
             }
         }

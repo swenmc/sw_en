@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
-        Title="Solver" Height="450" Width="700">
+        Title="Solver" Height="450" Width="700"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        BorderBrush="White"
+        BorderThickness="5"
+        AllowsTransparency="True"
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90" />
