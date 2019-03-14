@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace PFD
 {
@@ -20,10 +13,14 @@ namespace PFD
     public partial class Solver : Window
     {
         public double Progress = 0;
+        Stopwatch stopWatch = new Stopwatch();
+        DispatcherTimer dispatcherTimer = new DispatcherTimer();
+
         public Solver()
         {
             InitializeComponent();
             Progress = 0;
+            DisplayCalculationTime();
         }
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
@@ -145,6 +142,11 @@ namespace PFD
                 LabelSummaryState.Foreground = Brushes.Black;
                 //LabelSummaryState.FontWeight = FontWeights.Bold;
 
+                if (stopWatch.IsRunning)
+                {
+                    stopWatch.Stop();
+                }
+
                 BtnOK.IsEnabled = true;
             });
         }
@@ -177,6 +179,26 @@ namespace PFD
                 label2.FontWeight = FontWeights.Normal;
                 label2.FontSize = 12;
                 label2.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+        public void DisplayCalculationTime()
+        {
+            dispatcherTimer.Tick += new EventHandler(dt_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+
+            stopWatch.Start();
+            dispatcherTimer.Start();
+        }
+
+        void dt_Tick(object sender, EventArgs e)
+        {
+            if (stopWatch.IsRunning)
+            {
+                TimeSpan ts = stopWatch.Elapsed;
+                string currentTime = String.Format("{0:00}:{1:00}:{2:00}",
+                ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                LabelTimer.Text = currentTime;
             }
         }
     }
