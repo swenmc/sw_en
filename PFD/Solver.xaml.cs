@@ -185,7 +185,7 @@ namespace PFD
         public void DisplayCalculationTime()
         {
             dispatcherTimer.Tick += new EventHandler(dt_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);
 
             stopWatch.Start();
             dispatcherTimer.Start();
