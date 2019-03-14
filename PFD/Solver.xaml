@@ -57,6 +57,6 @@
         <TextBlock Text= "Number of Load Combinations" Grid.Row="7" Grid.Column ="3" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top" />
         <TextBlock Name="LabelLoadCombCount" Text= "0" Grid.Row="7" Grid.Column ="4" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" />
 
-        <Button Grid.Row="8" Grid.Column ="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Name="BtnOK" Content ="OK" Height="20" Width="70" Margin="0 0 10 10" Click="BtnOK_Click"/>
+        <Button Grid.Row="8" Grid.Column ="3" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Name="BtnOK" Content ="OK" Height="20" Width="70" Margin="0 0 10 10" IsEnabled="False" Click="BtnOK_Click"/>
     </Grid>
 </Window>

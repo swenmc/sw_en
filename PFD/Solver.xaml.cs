@@ -144,6 +144,8 @@ namespace PFD
                 LabelSummaryState.Text = "Calculation successful.";
                 LabelSummaryState.Foreground = Brushes.Black;
                 //LabelSummaryState.FontWeight = FontWeights.Bold;
+
+                BtnOK.IsEnabled = true;
             });
         }
 
