@@ -217,8 +217,8 @@ namespace M_AS4600
 
             designDetails.iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
 
-            designDetails.fEta_MainMember = sDIF_temp.fV_yv_yy / (designDetails.iNumberOfScrewsInShear * designDetails.fVb_MainMember);
-            designDetails.fEta_SecondaryMember = sDIF_temp.fV_yv_yy / (designDetails.iNumberOfScrewsInShear * designDetails.fVb_SecondaryMember);
+            designDetails.fEta_MainMember = Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInShear * designDetails.fVb_MainMember);
+            designDetails.fEta_SecondaryMember = Math.Abs(sDIF_temp.fV_yv_yy) / (designDetails.iNumberOfScrewsInShear * designDetails.fVb_SecondaryMember);
 
             // Bending and shear and normal force interaction - shear design of screws
             designDetails.fMb_MainMember_oneside_plastic = 0;
@@ -323,19 +323,6 @@ namespace M_AS4600
             designDetails.fEta_V_w_5426 = Math.Max(designDetails.fV_asterix_b_max_screw, designDetails.fV_asterix_fv) / (0.5f * designDetails.fV_w_nom_screw_5426);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
 
-            // Validation - negative design ratio
-            if (designDetails.fEta_Vb_5424 < 0 ||
-                designDetails.fEta_V_fv_5425 < 0)
-            {
-                throw new Exception("Design ratio is invalid!");
-            }
-
-            // Validation - inifinity design ratio
-            if (fEta_max > 9e+10)
-            {
-                throw new Exception("Design ratio is invalid!");
-            }
-
             int iNumberOfDecimalPlaces = 3;
             if (bIsDebugging)
                 MessageBox.Show("Calculation finished.\n"
@@ -355,6 +342,33 @@ namespace M_AS4600
             designDetails.fN_t_section_SecondaryMember = eq.Eq_5423_2__(screw.Diameter_thread, plate.S_f_min, designDetails.fA_n_SecondaryMember, ff_uk_2_SecondaryMember);
             designDetails.fEta_N_t_5423_SecondaryMember = eq.Eq_5423_1__(sDIF_temp.fN_t, designDetails.fPhi_CrSc, designDetails.fN_t_section_SecondaryMember);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_SecondaryMember);
+
+            // Validation - negative design ratio
+            if (designDetails.fEta_N_t_5423_plate < 0 ||
+                designDetails.fEta_V_yv_3341_plate < 0 ||
+                designDetails.fEta_Mb_plate < 0 ||
+                designDetails.fEta_MainMember < 0 ||
+                designDetails.fEta_SecondaryMember < 0 ||
+                designDetails.fEta_Mb_MainMember_oneside_plastic < 0 ||
+                designDetails.fEta_Mb_SecondaryMember_oneside_plastic < 0 ||
+                designDetails.fEta_Vb_5424_MainMember < 0 ||
+                designDetails.fEta_Vb_5424_SecondaryMember < 0 ||
+                designDetails.fEta_V_fv_5425_MainMember < 0 ||
+                designDetails.fEta_V_fv_5425_SecondaryMember < 0 ||
+                designDetails.fEta_V_fv_5425_Plate < 0 ||
+                designDetails.fEta_V_fv_5425 < 0 ||
+                designDetails.fEta_V_w_5426 < 0 ||
+                designDetails.fEta_N_t_5423_MainMember < 0 ||
+                designDetails.fEta_N_t_5423_SecondaryMember < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - infinity design ratio
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
 
             // Store details
             if (bSaveDetails)
@@ -505,6 +519,28 @@ namespace M_AS4600
             designDetails.fEta_V_fv_5425_SecondaryMember = eq.Eq_5425_1__(designDetails.fV_asterix_fv_SecondaryMember, designDetails.fV_fv_SecondaryMember, ff_uk_2_SecondaryMember, ff_yk_2_SecondaryMember);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_fv_5425_SecondaryMember);
 
+            // Validation - negative design ratio
+            if (designDetails.fEta_N_t_5432_MainMember < 0 ||
+                designDetails.fEta_5434_MainMember < 0 ||
+                designDetails.fEta_5435_MainMember < 0 ||
+                designDetails.fEta_V_fv_5425_Plate < 0 ||
+                designDetails.fEta_V_w_5426 < 0 ||
+                designDetails.fEta_N_t_screw_5433 < 0 ||
+                designDetails.fEta_V_N_t_screw_5436 < 0 ||
+                designDetails.fEta_N_t_5423_plate < 0 ||
+                designDetails.fEta_V_yv_3341_plate < 0 ||
+                designDetails.fEta_Vb_5424_SecondaryMember < 0 ||
+                designDetails.fEta_V_fv_5425_SecondaryMember < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - infinity design ratio
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
             // Store details
             if (bSaveDetails)
                 joint_temp.DesignDetails = designDetails;
@@ -622,6 +658,28 @@ namespace M_AS4600
             designDetails.fEta_N_t_5423_plate = eq.Eq_5423_1__(fDIF_N_plate, designDetails.fPhi_plate, designDetails.fN_t_plate);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_N_t_5423_plate);
 
+            // Validation - negative design ratio
+            if (designDetails.fEta_N_t_5432_MainMember < 0 ||
+                designDetails.fEta_5434_MainMember < 0 ||
+                designDetails.fEta_5435_MainMember < 0 ||
+                designDetails.fEta_V_fv_5425_Plate < 0 ||
+                designDetails.fEta_V_w_5426 < 0 ||
+                designDetails.fEta_N_t_screw_5433 < 0 ||
+                designDetails.fEta_V_N_t_screw_5436 < 0 ||
+                designDetails.fEta_N_t_5423_plate < 0 ||
+                designDetails.fEta_V_yv_3341_plate < 0 ||
+                designDetails.fEta_Vb_5424_SecondaryMember < 0 ||
+                designDetails.fEta_V_fv_5425_SecondaryMember < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - infinity design ratio
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
             // Store details
             if (bSaveDetails)
                 joint_temp.DesignDetails = designDetails;
@@ -667,7 +725,7 @@ namespace M_AS4600
 
             int iNumberOfScrewsInShear = joint_temp.m_arrPlates[0].ScrewArrangement.Screws.Length; // Temporary
 
-            designDetails.fEta_MainMember = sDIF_temp.fV_yv_yy / (iNumberOfScrewsInShear * designDetails.fVb_MainMember);
+            designDetails.fEta_MainMember = Math.Abs(sDIF_temp.fV_yv_yy) / (iNumberOfScrewsInShear * designDetails.fVb_MainMember);
 
             designDetails.fMb_MainMember_oneside_plastic = 0;
 
@@ -763,19 +821,6 @@ namespace M_AS4600
             designDetails.fEta_V_w_5426 = Math.Max(designDetails.fV_asterix_b_max_screw, designDetails.fV_asterix_fv) / (0.5f * designDetails.fV_w_nom_screw_5426);
             fEta_max = MathF.Max(fEta_max, designDetails.fEta_V_w_5426);
 
-            // Validation - negative design ratio
-            if (designDetails.fEta_Vb_5424_MainMember < 0 ||
-                designDetails.fEta_V_fv_5425 < 0)
-            {
-                throw new Exception("Design ratio is invalid!");
-            }
-
-            // Validation - inifinity design ratio
-            if (fEta_max > 9e+10)
-            {
-                throw new Exception("Design ratio is invalid!");
-            }
-
             int iNumberOfDecimalPlaces = 3;
             if (bIsDebugging)
                 MessageBox.Show("Calculation finished.\n"
@@ -862,40 +907,40 @@ namespace M_AS4600
             // 5.3.2 Tearout
             designDetails.fPhi_v_532 = 0.7f;
             designDetails.fV_f_532 = eq.Eq_532_2___(ft_1_plate, designDetails.fe_y_AnchorToPlateEdge, ff_uk_1_plate);
-            designDetails.fDesignRatio_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_v_532, designDetails.fV_f_532);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_532_1);
+            designDetails.fEta_532_1 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_v_532, designDetails.fV_f_532);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_532_1);
 
             // 5.3.4.2 Bearing capacity without considering bolt hole deformation
             designDetails.fPhi_v_534 = 0.6f;
             designDetails.fAlpha_5342 = eq.Get_Alpha_Table_5342_A(ETypesOfBearingConnection.eType3);
             designDetails.fC_5342 = eq.Get_Factor_C_Table_5342_B(designDetails.fd_f, ft_1_plate);
             designDetails.fV_b_5342 = eq.Eq_5342____(designDetails.fAlpha_5342, designDetails.fC_5342, designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
-            designDetails.fDesignRatio_5342 = designDetails.fV_asterix_anchor / (designDetails.fPhi_v_534 * designDetails.fV_b_5342);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5342);
+            designDetails.fEta_5342 = Math.Abs(designDetails.fV_asterix_anchor) / (designDetails.fPhi_v_534 * designDetails.fV_b_5342);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5342);
 
             // 5.3.4.3 Bearing capacity at a bolt hole deformation of 6 mm
             designDetails.fV_b_5343 = eq.Eq_5343____(designDetails.fd_f, ft_1_plate, ff_uk_1_plate);
-            designDetails.fDesignRatio_5343 = designDetails.fV_asterix_anchor / (designDetails.fPhi_v_534 * designDetails.fV_b_5343);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5343);
+            designDetails.fEta_5343 = Math.Abs(designDetails.fV_asterix_anchor) / (designDetails.fPhi_v_534 * designDetails.fV_b_5343);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5343);
 
             // Bolt design / Anchor design
             // 5.3.5.1 Bolt in shear
             designDetails.fPhi_535 = 0.8f;
             int iNumberOfShearPlanesOfBolt_core = 1; // Jednostrizny spoj - strih jardom skrutky
             designDetails.fV_fv_5351_2_anchor = eq.Eq_5351_2__(designDetails.ff_u_anchor, iNumberOfShearPlanesOfBolt_core, designDetails.fA_c, 0, designDetails.fA_o); // Uvazovane konzervativne jedna smykova plocha a zavit je aj v smykovej ploche
-            designDetails.fDesignRatio_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5351_2);
+            designDetails.fEta_5351_2 = eq.Eq_5351_1__(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5351_2);
 
             // 5.3.5.2 Bolt in tension
             designDetails.fN_ft_5352_1 = eq.Eq_5352_2__(designDetails.fA_c, designDetails.ff_u_anchor);
-            designDetails.fDesignRatio_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_535, designDetails.fN_ft_5352_1);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5352_1);
+            designDetails.fEta_5352_1 = eq.Eq_5352_1__(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_535, designDetails.fN_ft_5352_1);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5352_1);
 
             // 5.3.5.3 Bolt subject to combined shear and tension
             float fPortion_V_5353;
             float fPortion_N_5353;
-            designDetails.fDesignRatio_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, designDetails.fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_5353);
+            designDetails.fEta_5353 = eq.Eq_5353____(designDetails.fV_asterix_anchor, designDetails.fPhi_535, designDetails.fV_fv_5351_2_anchor, designDetails.fN_asterix_anchor_uplif, 0.8f, designDetails.fN_ft_5352_1, out fPortion_V_5353, out fPortion_N_5353);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_5353);
 
             // NZS 3101.1 - 2006
             designDetails.fElasticityFactor_1764 = 0.75f; // EQ load combination - 0.75, other 1.00
@@ -913,8 +958,8 @@ namespace M_AS4600
             // Group of anchors
             designDetails.fA_se = designDetails.fA_c; // Effective cross-sectional area of an anchor
             designDetails.fN_s_176_group = eq_concrete.Eq_17_6____(designDetails.iNumberAnchors_t, designDetails.fA_se, designDetails.ff_u_anchor);
-            designDetails.fDesignRatio_17571_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_anchor_tension_173, designDetails.fN_s_176_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17571_group);
+            designDetails.fEta_17571_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_anchor_tension_173, designDetails.fN_s_176_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17571_group);
 
             // 17.5.7.2  Strength of concrete breakout of anchor
             // Group of anchors
@@ -957,8 +1002,8 @@ namespace M_AS4600
 
             designDetails.fN_cb_177_group = eq_concrete.Eq_17_7____(designDetails.fPsi_1_group, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_group, designDetails.fA_no_group, designDetails.fN_b_179_group);
 
-            designDetails.fDesignRatio_17572_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17572_group);
+            designDetails.fEta_17572_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17572_group);
 
             // Single anchor - edge
             designDetails.fPsi_1_single = 1.0f;
@@ -977,8 +1022,8 @@ namespace M_AS4600
 
             designDetails.fN_cb_177_single = eq_concrete.Eq_17_7____(designDetails.fPsi_1_single, designDetails.fPsi_2, designDetails.fPsi_3, designDetails.fA_n_single, designDetails.fA_no_single, designDetails.fN_b_179_single);
 
-            designDetails.fDesignRatio_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_single);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17572_single);
+            designDetails.fEta_17572_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_cb_177_single);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17572_single);
 
             // 17.5.7.3  Lower characteristic tension pullout strength of anchor
             // Group of anchors
@@ -995,12 +1040,12 @@ namespace M_AS4600
             designDetails.fN_pn_1710_single = eq_concrete.Eq_17_10___(designDetails.fPsi_4, designDetails.fN_p_1711_single);
             designDetails.fN_pn_1710_group = designDetails.iNumberAnchors_t * designDetails.fN_pn_1710_single;
 
-            designDetails.fDesignRatio_17573_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_anchor_tension_173, designDetails.fN_pn_1710_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17573_group);
+            designDetails.fEta_17573_group = eq_concrete.Eq_17_1____(designDetails.fN_asterix_joint_uplif, designDetails.fPhi_anchor_tension_173, designDetails.fN_pn_1710_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17573_group);
 
             // The side face blowout strength of a headed anchor with deep embedment close to an edge
             designDetails.fN_sb_1713_single = float.PositiveInfinity;
-            designDetails.fDesignRatio_17574_single = 0;
+            designDetails.fEta_17574_single = 0;
 
             if (designDetails.fc_min < 0.4f * designDetails.fh_ef)
             {
@@ -1021,8 +1066,8 @@ namespace M_AS4600
 
                 designDetails.fN_sb_1713_single = eq_concrete.Eq_17_13___(designDetails.fk_1, designDetails.fc_1_17574, designDetails.fLambda_53, designDetails.fA_brg, designDetails.ff_apostrophe_c);
 
-                designDetails.fDesignRatio_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_sb_1713_single);
-                fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17574_single);
+                designDetails.fEta_17574_single = eq_concrete.Eq_17_1____(designDetails.fN_asterix_anchor_uplif, designDetails.fPhi_concrete_tension_174a, designDetails.fN_sb_1713_single);
+                fEta_max = MathF.Max(fEta_max, designDetails.fEta_17574_single);
             }
 
             // Lower characteristic strength in tension
@@ -1051,8 +1096,8 @@ namespace M_AS4600
             designDetails.fV_s_1715_group = eq_concrete.Eq_17_15___(designDetails.iNumberAnchors_v, designDetails.fA_se, designDetails.ff_u_anchor, designDetails.ff_y_anchor);
 
             designDetails.fV_s_17581_group = Math.Min(designDetails.fV_s_1714_group, designDetails.fV_s_1715_group);
-            designDetails.fDesignRatio_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, designDetails.fV_s_17581_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17573_group);
+            designDetails.fEta_17581_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_anchor_shear_174, designDetails.fV_s_17581_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17573_group);
 
             // 17.5.8.2 Lower characteristic concrete breakout strength of the anchor in shear perpendicular to edge
             // Group of anchors
@@ -1084,8 +1129,8 @@ namespace M_AS4600
             designDetails.fV_b_1717 = Math.Min(designDetails.fV_b_1717a, designDetails.fV_b_1717b);
             designDetails.fV_cb_1716_group = eq_concrete.Eq_17_16___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            designDetails.fDesignRatio_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17582_group);
+            designDetails.fEta_17582_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17582_group);
 
             // Single of anchor - edge
 
@@ -1094,8 +1139,8 @@ namespace M_AS4600
             designDetails.fA_v_single = fAv_Length_x_signle * fAv_Depth_h;
             designDetails.fV_cb_1716_single = eq_concrete.Eq_17_16___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_6, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            designDetails.fDesignRatio_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_single);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17582_single);
+            designDetails.fEta_17582_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1716_single);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17582_single);
 
             // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
             // Group of anchors
@@ -1103,14 +1148,14 @@ namespace M_AS4600
 
             designDetails.fV_cb_1721_group = eq_concrete.Eq_17_21___(designDetails.fA_v_group, designDetails.fA_vo, designDetails.fPsi_5_group, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            designDetails.fDesignRatio_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17583_group);
+            designDetails.fEta_17583_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17583_group);
 
             // Single anchor - edge
             designDetails.fV_cb_1721_single = eq_concrete.Eq_17_21___(designDetails.fA_v_single, designDetails.fA_vo, designDetails.fPsi_5_single, designDetails.fPsi_7, designDetails.fV_b_1717);
 
-            designDetails.fDesignRatio_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17583_single);
+            designDetails.fEta_17583_single = eq_concrete.Eq_17_2____(designDetails.fV_asterix_res_joint, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cb_1721_single);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17583_single);
 
             // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
             // Group of anchors
@@ -1119,8 +1164,8 @@ namespace M_AS4600
             designDetails.fk_cp_17584 = eq_concrete.Get_k_cp___(designDetails.fh_ef);
             designDetails.fV_cp_1722_group = eq_concrete.Eq_17_22___(designDetails.fk_cp_17584, designDetails.fN_cb_17584_group);
 
-            designDetails.fDesignRatio_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17584_group);
+            designDetails.fEta_17584_group = eq_concrete.Eq_17_2____(designDetails.fV_asterix_anchor, designDetails.fPhi_concrete_shear_174b, designDetails.fV_cp_1722_group);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17584_group);
 
             // Lower characteristic strength in shear
             designDetails.fV_n_nominal_min = MathF.Min(
@@ -1144,17 +1189,17 @@ namespace M_AS4600
             // Group of anchors
 
             // 17.5.6.6(Eq. 17–5)
-            designDetails.fDesignRatio_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_17566_group);
+            designDetails.fEta_17566_group = eq_concrete.Eq_17566___(designDetails.fN_asterix_joint_uplif, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_17566_group);
 
             // C17.5.6.6 (Figure C17.1)
             bool bUseC17566Equation = true;
-            float fDesignRatio_C17566_group;
+            float fEta_C17566_group = 0;
 
             if (bUseC17566Equation)
             {
-                fDesignRatio_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
-                fEta_max = MathF.Max(fEta_max, fDesignRatio_C17566_group);
+                fEta_C17566_group = eq_concrete.Eq_C17566__(designDetails.fN_asterix_joint_uplif, designDetails.fN_d_design_min, designDetails.fV_asterix_res_joint, designDetails.fV_d_design_min);
+                fEta_max = MathF.Max(fEta_max, fEta_C17566_group);
             }
 
             // Footings
@@ -1200,14 +1245,14 @@ namespace M_AS4600
             designDetails.fG_design_bearing = fG_design_footing_bearing + fG_design_additional_material_bearing;
 
             // Design ratio - uplift and bearing force
-            designDetails.fDesignRatio_footing_uplift = designDetails.fN_asterix_joint_uplif / designDetails.fG_design_uplift;
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_footing_uplift);
+            designDetails.fEta_footing_uplift = Math.Abs(designDetails.fN_asterix_joint_uplif) / designDetails.fG_design_uplift;
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_footing_uplift);
 
             designDetails.fN_design_bearing_total = Math.Abs(designDetails.fN_asterix_joint_bearing) + designDetails.fG_design_bearing;
-            designDetails.fPressure_bearing = designDetails.fN_design_bearing_total / designDetails.fA_footing;
+            designDetails.fPressure_bearing = Math.Abs(designDetails.fN_design_bearing_total) / designDetails.fA_footing;
             designDetails.fSafetyFactor = 0.5f; // TODO - zistit aky je faktor
-            designDetails.fDesignRatio_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_footing_bearing);
+            designDetails.fEta_footing_bearing = designDetails.fPressure_bearing / (designDetails.fSafetyFactor * designDetails.fc_nominal_soil_bearing_capacity);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_footing_bearing);
 
             // Bending - design of reinforcement
             // Reinforcement bars in x direction (parallel to the wall)
@@ -1243,8 +1288,8 @@ namespace M_AS4600
             float fM_b_Concrete_xDirection = designDetails.fAlpha_c * designDetails.ff_apostrophe_c * designDetails.fFootingDimension_y * designDetails.fx_u_xDirection * (designDetails.fd_effective_xDirection - (designDetails.fx_u_xDirection / 2f));
             designDetails.fM_b_footing_xDirection = Math.Min(fM_b_Reincorcement_xDirection, fM_b_Concrete_xDirection); // Note: Values should be identical.
 
-            designDetails.fDesignRatio_bending_M_footing = designDetails.fM_asterix_footingdesign_xDirection / (designDetails.fPhi_b_foundations * designDetails.fM_b_footing_xDirection);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_bending_M_footing);
+            designDetails.fEta_bending_M_footing = Math.Abs(designDetails.fM_asterix_footingdesign_xDirection) / (designDetails.fPhi_b_foundations * designDetails.fM_b_footing_xDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_bending_M_footing);
 
             // TODO - zapracovat Winklerov nosnik na pruznom podlozi je jednotlive patky, suvisly zakladovy pas zatazeny viacerymi stlpmi
 
@@ -1260,8 +1305,8 @@ namespace M_AS4600
             designDetails.fp_ratio_xDirection = 2 * designDetails.fA_s_tot_Xdirection / (designDetails.fFootingDimension_y * designDetails.fFootingHeight); // Same reinforcement at the bottom and top surface
             designDetails.fp_ratio_limit_minimum_xDirection = eq_concrete.Eq_9_1_ratio(designDetails.ff_apostrophe_c, fReinforcementStrength_fy);
 
-            designDetails.fDesignRatio_MinimumReinforcement_xDirection = designDetails.fp_ratio_limit_minimum_xDirection / designDetails.fp_ratio_xDirection;
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_MinimumReinforcement_xDirection);
+            designDetails.fEta_MinimumReinforcement_xDirection = designDetails.fp_ratio_limit_minimum_xDirection / designDetails.fp_ratio_xDirection;
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_MinimumReinforcement_xDirection);
 
             //  Shear
             designDetails.fV_asterix_footingdesign_shear = designDetails.fq_linear_xDirection * designDetails.fFootingDimension_x / 2f; // ??? jednoducho podpoprety nosnik ???
@@ -1276,8 +1321,8 @@ namespace M_AS4600
             designDetails.fV_c_xDirection = eq_concrete.Eq_9_4_____(designDetails.fv_c_xDirection, designDetails.fA_cv_xDirection);
             designDetails.fPhi_v_foundations = 0.85f;
 
-            designDetails.fDesignRatio_shear_V_footing = designDetails.fV_asterix_footingdesign_shear / (designDetails.fPhi_v_foundations * designDetails.fV_c_xDirection);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_shear_V_footing);
+            designDetails.fEta_shear_V_footing = Math.Abs(designDetails.fV_asterix_footingdesign_shear) / (designDetails.fPhi_v_foundations * designDetails.fV_c_xDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_shear_V_footing);
 
             // Punching shear
             float fReactionArea_dimension_x = designDetails.fplateWidth_x;
@@ -1319,12 +1364,59 @@ namespace M_AS4600
 
             // 12.7.3.1 Nominal shear strength for punching shear
             designDetails.fV_n_12731_xDirection = eq_concrete.Eq_12_4____(designDetails.fV_s_xDirection, designDetails.fV_c_12731);
-            designDetails.fDesignRatio_punching_12731_xDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, designDetails.fV_n_12731_xDirection);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_punching_12731_xDirection);
+            designDetails.fEta_punching_12731_xDirection = eq_concrete.Eq_12_5____(designDetails.fN_asterix_joint_bearing, designDetails.fPhi_v_foundations, designDetails.fV_n_12731_xDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_punching_12731_xDirection);
 
             designDetails.fV_n_12731_yDirection = eq_concrete.Eq_12_4____(designDetails.fV_s_yDirection, designDetails.fV_c_12731);
-            designDetails.fDesignRatio_punching_12731_yDirection = eq_concrete.Eq_12_5____(Math.Abs(designDetails.fN_asterix_joint_bearing), designDetails.fPhi_v_foundations, designDetails.fV_n_12731_yDirection);
-            fEta_max = MathF.Max(fEta_max, designDetails.fDesignRatio_punching_12731_yDirection);
+            designDetails.fEta_punching_12731_yDirection = eq_concrete.Eq_12_5____(designDetails.fN_asterix_joint_bearing, designDetails.fPhi_v_foundations, designDetails.fV_n_12731_yDirection);
+            fEta_max = MathF.Max(fEta_max, designDetails.fEta_punching_12731_yDirection);
+
+            // Validation - negative design ratio
+            if (designDetails.fEta_N_t_5423_plate < 0 ||
+                designDetails.fEta_V_yv_3341_plate < 0 ||
+                designDetails.fEta_Mb_plate < 0 ||
+                designDetails.fEta_MainMember < 0 ||
+                designDetails.fEta_Mb_MainMember_oneside_plastic < 0 ||
+                designDetails.fEta_Vb_5424_MainMember < 0 ||
+                designDetails.fEta_V_fv_5425_MainMember < 0 ||
+                designDetails.fEta_V_fv_5425_Plate < 0 ||
+                designDetails.fEta_V_w_5426 < 0 ||
+                designDetails.fEta_N_t_5423_MainMember < 0 ||
+                designDetails.fEta_532_1 < 0 ||
+                designDetails.fEta_5342 < 0 ||
+                designDetails.fEta_5343 < 0 ||
+                designDetails.fEta_5351_2 < 0 ||
+                designDetails.fEta_5352_1 < 0 ||
+                designDetails.fEta_5353 < 0 ||
+                designDetails.fEta_17571_group < 0 ||
+                designDetails.fEta_17572_group < 0 ||
+                designDetails.fEta_17572_single < 0 ||
+                designDetails.fEta_17573_group < 0 ||
+                designDetails.fEta_17574_single < 0 ||
+                designDetails.fEta_17581_group < 0 ||
+                designDetails.fEta_17582_group < 0 ||
+                designDetails.fEta_17582_single < 0 ||
+                designDetails.fEta_17583_group < 0 ||
+                designDetails.fEta_17583_single < 0 ||
+                designDetails.fEta_17584_group < 0 ||
+                designDetails.fEta_17566_group < 0 ||
+                fEta_C17566_group < 0 ||
+                designDetails.fEta_footing_uplift < 0 ||
+                designDetails.fEta_footing_bearing < 0 ||
+                designDetails.fEta_bending_M_footing < 0 ||
+                designDetails.fEta_MinimumReinforcement_xDirection < 0 ||
+                designDetails.fEta_shear_V_footing < 0 ||
+                designDetails.fEta_punching_12731_xDirection < 0 ||
+                designDetails.fEta_punching_12731_yDirection < 0)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
+
+            // Validation - infinity design ratio
+            if (fEta_max > 9e+10)
+            {
+                throw new Exception("Design ratio is invalid!");
+            }
 
             // Store details
             if (bSaveDetails)

@@ -9,12 +9,12 @@ namespace M_AS4600
     {
         public float Eq_3341____(float fV_asterix, float fPhi_v, float fV_v)
         {
-            return fV_asterix / (fPhi_v * fV_v); // Eq. (3.3.4.1) // fV_v design ratio
+            return Math.Abs(fV_asterix) / (fPhi_v * fV_v); // Eq. (3.3.4.1) // fV_v design ratio
         }
         // 5.3 BOLTED CONNECTIONS
         public float Eq_532_1___(float fV_asterix_f, float fPhi, float fV_f)
         {
-            return fV_asterix_f / (fPhi * fV_f); // Eq. (5.3.2(1)) // fV_f design ratio
+            return Math.Abs(fV_asterix_f) / (fPhi * fV_f); // Eq. (5.3.2(1)) // fV_f design ratio
         }
         public float Eq_532_2___(float ft, float fe, float ff_u)
         {
@@ -29,7 +29,7 @@ namespace M_AS4600
         }
         public float Eq_533_1___(float fN_asterix_f, float fPhi, float fN_f)
         {
-            return fN_asterix_f / (fPhi * fN_f); // Eq. (5.3.3(1)) // fN_f design ratio
+            return Math.Abs(fN_asterix_f) / (fPhi * fN_f); // Eq. (5.3.3(1)) // fN_f design ratio
         }
         public float Eq_533_2___(float fd_f, float fs_f, float fA_n, float ff_u)
         {
@@ -87,7 +87,7 @@ namespace M_AS4600
         }
         public float Eq_5351_1__(float fV_asterix_fv, float fPhi, float fV_fv)
         {
-            return fV_asterix_fv / (fPhi * fV_fv); // Eq. (5.3.5.1(1)) // fV_fv design ratio
+            return Math.Abs(fV_asterix_fv) / (fPhi * fV_fv); // Eq. (5.3.5.1(1)) // fV_fv design ratio
         }
         public float Eq_5351_2__(float ff_uf, int in_n, float fA_c, int in_x, float fA_o)
         {
@@ -95,7 +95,7 @@ namespace M_AS4600
         }
         public float Eq_5352_1__(float fN_asterix_ft, float fPhi, float fN_ft)
         {
-            return fN_asterix_ft / (fPhi * fN_ft); // Eq. (5.3.5.2(1)) // fN_ft design ratio
+            return Math.Abs(fN_asterix_ft) / (fPhi * fN_ft); // Eq. (5.3.5.2(1)) // fN_ft design ratio
         }
         public float Eq_5352_2__(float fA_s, float ff_uf)
         {
@@ -103,8 +103,8 @@ namespace M_AS4600
         }
         public float Eq_5353____(float fV_asterix_fv, float fPhi_V, float fV_fv, float fN_asterix_ft, float fPhi_N, float fN_ft, out float fPortion_V, out float fPortion_N)
         {
-            fPortion_V = MathF.Pow2(fV_asterix_fv / (fPhi_V * fV_fv));
-            fPortion_N = MathF.Pow2(fN_asterix_ft / (fPhi_N * fN_ft));
+            fPortion_V = MathF.Pow2(Math.Abs(fV_asterix_fv) / (fPhi_V * fV_fv));
+            fPortion_N = MathF.Pow2(Math.Abs(fN_asterix_ft) / (fPhi_N * fN_ft));
 
             return fPortion_V + fPortion_N; // Eq. (5.3.5.3) // fDesignRatio
         }
@@ -112,7 +112,7 @@ namespace M_AS4600
         // 5.4 SCREWED CONNECTIONS
         public float Eq_5423_1__(float fN_asterix_t, float fPhi, float fN_t)
         {
-            return fN_asterix_t / (fPhi * fN_t); // Eq. (5.4.2.3(1)) // fN_t design ratio
+            return Math.Abs(fN_asterix_t) / (fPhi * fN_t); // Eq. (5.4.2.3(1)) // fN_t design ratio
         }
         public float Eq_5423_2__(float fd_f, float fs_f, float fA_n, float ff_u)
         {
@@ -124,7 +124,7 @@ namespace M_AS4600
         }
         public float Eq_5424_1__(float fV_asterix_b, float fPhi, float fV_b)
         {
-            return fV_asterix_b / (fPhi * fV_b); // Eq. (5.4.2.4(1)) // fV_b design ratio
+            return Math.Abs(fV_asterix_b) / (fPhi * fV_b); // Eq. (5.4.2.4(1)) // fV_b design ratio
         }
         public float Eq_5424_2__(float ft_2, float fd_f, float ff_u2)
         {
@@ -203,7 +203,7 @@ namespace M_AS4600
 
         public float Eq_5425_1__(float fV_asterix_fv, float fPhi, float fV_fv)
         {
-            return fV_asterix_fv / (fPhi * fV_fv); // Eq. (5.4.2.5(1)) // fV_fv design ratio
+            return Math.Abs(fV_asterix_fv) / (fPhi * fV_fv); // Eq. (5.4.2.5(1)) // fV_fv design ratio
         }
         public float Eq_5425_1__(float fV_asterix_fv, float fV_fv, float ff_u, float ff_y)
         {
@@ -222,7 +222,7 @@ namespace M_AS4600
         }
         public float Eq_5432_1__(float fN_asterix_t, float fPhi, float fN_t)
         {
-            return fN_asterix_t / (fPhi * fN_t); // Eq. (5.4.3.2(1)) // fN_t design ratio
+            return Math.Abs(fN_asterix_t) / (fPhi * fN_t); // Eq. (5.4.3.2(1)) // fN_t design ratio
         }
         public float Eq_5432_2__(float ft_2, float fd_f, float ff_u2)
         {
@@ -305,8 +305,8 @@ namespace M_AS4600
         }
         public float Eq_5434____(float fV_asterix_b, float fN_asterix_t, float fPhi, float fV_b, float fN_ov)
         {
-            float fPortion_V = fV_asterix_b / (fPhi * fV_b);
-            float fPortion_N = fN_asterix_t / (fPhi * fN_ov);
+            float fPortion_V = Math.Abs(fV_asterix_b) / (fPhi * fV_b);
+            float fPortion_N = Math.Abs(fN_asterix_t) / (fPhi * fN_ov);
             return (fPortion_V + 0.71f * fPortion_V) / 1.1f; // Eq. (5.4.3.4) // fDesignRatio
         }
         public bool Conditions_5434_FulFilled(float ft_1, float ft_2, float ft_w, float fd_w, int iGauge, float ff_u1)
@@ -331,8 +331,8 @@ namespace M_AS4600
         }
         public float Eq_5435____(float fV_asterix_b, float fN_asterix_t, float fPhi, float fV_b, float fN_ou)
         {
-            float fPortion_V = fV_asterix_b / (fPhi * fV_b);
-            float fPortion_N = fN_asterix_t / (fPhi * fN_ou);
+            float fPortion_V = Math.Abs(fV_asterix_b) / (fPhi * fV_b);
+            float fPortion_N = Math.Abs(fN_asterix_t) / (fPhi * fN_ou);
             return (fPortion_V + fPortion_V) / 1.15f; // Eq. (5.4.3.5) // fDesignRatio
         }
         public bool Conditions_5435_FulFilled(float ft_2, int iGauge, float ff_y2, float ff_u2)
@@ -354,13 +354,13 @@ namespace M_AS4600
         }
         public float Eq_5436____(float fV_asterix, float fN_asterix_t, float fPhi, float fV_screw, float fN_screw)
         {
-            float fPortion_V = fV_asterix / (fPhi * fV_screw);
-            float fPortion_N = fN_asterix_t / (fPhi * fN_screw);
+            float fPortion_V = Math.Abs(fV_asterix) / (fPhi * fV_screw);
+            float fPortion_N = Math.Abs(fN_asterix_t) / (fPhi * fN_screw);
             return (fPortion_V + fPortion_V) / 1.3f; // Eq. (5.4.3.6) // fDesignRatio
         }
         public float Eq_571_1___(float fV_asterix_n, float fPhi, float fV_n)
         {
-            return fV_asterix_n / (fPhi * fV_n); // Eq. (5.7.1(1)) // fV_n design ratio
+            return Math.Abs(fV_asterix_n) / (fPhi * fV_n); // Eq. (5.7.1(1)) // fV_n design ratio
         }
         public float Eq_571_2___(float  ff_u, float fA_wn)
         {
@@ -372,7 +372,7 @@ namespace M_AS4600
         }
         public float Eq_573_1___(float fS_asterix, float fPhi, float fR_n)
         {
-            return fS_asterix / (fPhi * fR_n); // Eq. (5.7.3(1)) // fDesignRatio
+            return Math.Abs(fS_asterix) / (fPhi * fR_n); // Eq. (5.7.3(1)) // fDesignRatio
         }
         public float Eq_573_2___(float ff_y, float fA_av, float ff_u, float fA_nt, float fd_f, float fs_f)
         {

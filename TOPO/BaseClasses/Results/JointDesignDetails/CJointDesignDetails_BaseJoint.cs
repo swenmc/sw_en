@@ -108,25 +108,25 @@ namespace BaseClasses
         // AS / NZS 4600:2018 - 5.3 Bolted connections
         public float fPhi_v_532;
         public float fV_f_532;
-        public float fDesignRatio_532_1;
+        public float fEta_532_1;
 
         public float fPhi_v_534;
         public float fAlpha_5342;
         public float fC_5342;
         public float fV_b_5342;
-        public float fDesignRatio_5342;
+        public float fEta_5342;
 
         public float fV_b_5343;
-        public float fDesignRatio_5343;
+        public float fEta_5343;
 
         public float fPhi_535;
         public float fV_fv_5351_2_anchor;
-        public float fDesignRatio_5351_2;
+        public float fEta_5351_2;
 
         public float fN_ft_5352_1;
-        public float fDesignRatio_5352_1;
+        public float fEta_5352_1;
 
-        public float fDesignRatio_5353;
+        public float fEta_5353;
 
         // NZS 3101.1 - 2006
         public float fElasticityFactor_1764;
@@ -139,7 +139,7 @@ namespace BaseClasses
         // 17.5.7.1  Steel strength of anchor in tension
         public float fA_se;
         public float fN_s_176_group;
-        public float fDesignRatio_17571_group;
+        public float fEta_17571_group;
 
         // 17.5.7.2  Strength of concrete breakout of anchor
         public float fe_apostrophe_n;
@@ -161,7 +161,7 @@ namespace BaseClasses
         public float fN_b_179_group;
         public float fN_b_179a_group;
         public float fN_cb_177_group;
-        public float fDesignRatio_17572_group;
+        public float fEta_17572_group;
 
         // Single anchor - edge
         public float fPsi_1_single;
@@ -170,7 +170,7 @@ namespace BaseClasses
         public float fN_b_179_single;
         public float fN_b_179a_single;
         public float fN_cb_177_single;
-        public float fDesignRatio_17572_single;
+        public float fEta_17572_single;
 
         // 17.5.7.3  Lower characteristic tension pullout strength of anchor
         // Group of anchors
@@ -182,7 +182,7 @@ namespace BaseClasses
         public float fPsi_4;
         public float fN_pn_1710_single;
         public float fN_pn_1710_group;
-        public float fDesignRatio_17573_group;
+        public float fEta_17573_group;
 
         // 17.5.7.4 Lower characteristic concrete side face blowout strength
         // Single anchor - edge
@@ -190,7 +190,7 @@ namespace BaseClasses
         public float fc_1_17574;
         public float fk_1;
         public float fN_sb_1713_single;
-        public float fDesignRatio_17574_single;
+        public float fEta_17574_single;
 
         // Lower characteristic strength in tension
         public float fN_n_nominal_min;
@@ -205,7 +205,7 @@ namespace BaseClasses
         public float fV_s_1714_group;
         public float fV_s_1715_group;
         public float fV_s_17581_group;
-        public float fDesignRatio_17581_group;
+        public float fEta_17581_group;
         public float fe_apostrophe_v;
         public float fPsi_5_group;
         public float fPsi_6;
@@ -219,30 +219,30 @@ namespace BaseClasses
         public float fV_b_1717b;
         public float fV_b_1717;
         public float fV_cb_1716_group;
-        public float fDesignRatio_17582_group;
+        public float fEta_17582_group;
 
         // Single of anchor - edge
         public float fPsi_5_single;
         public float fA_v_single;
         public float fV_cb_1716_single;
-        public float fDesignRatio_17582_single;
+        public float fEta_17582_single;
 
         // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
  
         // Group of anchors
         public float fV_cb_1721_group;
-        public float fDesignRatio_17583_group;
+        public float fEta_17583_group;
 
         // Single anchor - edge
         public float fV_cb_1721_single;
-        public float fDesignRatio_17583_single;
+        public float fEta_17583_single;
 
         // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
         // Group of anchors
         public float fN_cb_17584_group;
         public float fk_cp_17584;
         public float fV_cp_1722_group;
-        public float fDesignRatio_17584_group;
+        public float fEta_17584_group;
 
         // Lower characteristic strength in shear
         public float fV_n_nominal_min;
@@ -254,7 +254,7 @@ namespace BaseClasses
         // Group of anchors
 
         // 17.5.6.6(Eq. 17–5)
-        public float fDesignRatio_17566_group;
+        public float fEta_17566_group;
 
         // Footings
         public float fGamma_F_uplift;
@@ -279,12 +279,12 @@ namespace BaseClasses
         public float fG_design_bearing;
 
         // Design ratio - uplift and bearing force
-        public float fDesignRatio_footing_uplift;
+        public float fEta_footing_uplift;
 
         public float fN_design_bearing_total;
         public float fPressure_bearing;
         public float fSafetyFactor;
-        public float fDesignRatio_footing_bearing;
+        public float fEta_footing_bearing;
 
         // Bending - design of reinforcement
         // Reinforcement bars in x direction (parallel to the wall)
@@ -303,12 +303,12 @@ namespace BaseClasses
         public float fd_effective_xDirection;
         public float fx_u_xDirection;
         public float fM_b_footing_xDirection;
-        public float fDesignRatio_bending_M_footing;
+        public float fEta_bending_M_footing;
 
         // Minimum longitudinal reinforcement ratio
         public float fp_ratio_xDirection;
         public float fp_ratio_limit_minimum_xDirection;
-        public float fDesignRatio_MinimumReinforcement_xDirection;
+        public float fEta_MinimumReinforcement_xDirection;
 
         //  Shear
         public float fV_asterix_footingdesign_shear;
@@ -320,7 +320,7 @@ namespace BaseClasses
         public float fv_c_xDirection;
         public float fV_c_xDirection;
         public float fPhi_v_foundations;
-        public float fDesignRatio_shear_V_footing;
+        public float fEta_shear_V_footing;
 
         // Punching shear
         public float fcriticalPerimeter_b0;
@@ -344,10 +344,10 @@ namespace BaseClasses
 
         // 12.7.3.1 Nominal shear strength for punching shear
         public float fV_n_12731_xDirection;
-        public float fDesignRatio_punching_12731_xDirection;
+        public float fEta_punching_12731_xDirection;
 
         public float fV_n_12731_yDirection;
-        public float fDesignRatio_punching_12731_yDirection;
+        public float fEta_punching_12731_yDirection;
 
         public CJointDesignDetails_BaseJoint()
         {

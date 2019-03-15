@@ -455,12 +455,12 @@ namespace M_AS4600
                 fV_v_yv = eq.Eq_7233____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
             }
 
-            // MC: Reduction considering shear buckling and local buckling bewteen web stiffeners
+            // MC 15/03/2019: Reduction considering shear buckling and local buckling bewteen web stiffeners
             if (0 < cs.fvz_red_factor && cs.fvz_red_factor < 1)
             {
                 float fV_y_yv_red = eq.Eq_723_5___red(fV_y_yv, (float)cs.fvz_red_factor);
                 if (fV_v_yv > fV_y_yv_red)
-                    fV_y_yv = fV_y_yv_red;
+                    fV_v_yv = fV_y_yv_red;
             }
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
@@ -540,7 +540,7 @@ namespace M_AS4600
                 throw new Exception("Design ratio is invalid!");
             }
 
-            // Validation - inifiniti design ratio
+            // Validation - infinity design ratio
             if (fEta_max > 9e+10)
             {
                 throw new Exception("Design ratio is invalid!");

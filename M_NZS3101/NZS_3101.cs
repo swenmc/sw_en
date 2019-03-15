@@ -74,7 +74,7 @@ namespace M_NZS3101
         }
         public float Eq_12_5____(float fV_asterix, float fPhi, float fV_n)
         {
-            return fV_asterix / (fPhi * fV_n); // Eq. (12-5) // fV Design ratio
+            return Math.Abs(fV_asterix) / (fPhi * fV_n); // Eq. (12-5) // fV Design ratio
         }
         public float Eq_12_6____(float fk_ds, float fBeta_c, float ff_apostrophe_c)
         {
@@ -119,21 +119,21 @@ namespace M_NZS3101
         }
         public float Eq_17566___(float fN_asterix, float fPhi_N, float fN_n, float fV_asterix, float fPhi_V, float fV_n)
         {
-            if (fV_asterix <= 0.2f * fPhi_V * fV_n)
-                return fN_asterix / (fPhi_N * fN_n); // 17.5.6.6 (a)
-            else if (fN_asterix <= 0.2f * fPhi_N * fN_n)
-                return fV_asterix / (fPhi_V * fV_n); // 17.5.6.6 (b)
+            if (Math.Abs(fV_asterix) <= 0.2f * fPhi_V * fV_n)
+                return Math.Abs(fN_asterix) / (fPhi_N * fN_n); // 17.5.6.6 (a)
+            else if (Math.Abs(fN_asterix) <= 0.2f * fPhi_N * fN_n)
+                return Math.Abs(fV_asterix) / (fPhi_V * fV_n); // 17.5.6.6 (b)
             else
-                return (fN_asterix / (fPhi_N * fN_n) + fV_asterix / (fPhi_V * fV_n)) / 1.2f; // 17.5.6.6 (c) Eq. (17-5)
+                return (Math.Abs(fN_asterix) / (fPhi_N * fN_n) + Math.Abs(fV_asterix) / (fPhi_V * fV_n)) / 1.2f; // 17.5.6.6 (c) Eq. (17-5)
         }
         public float Eq_17566___(float fN_asterix, float fPhi_fN_n, float fV_asterix, float fPhi_fV_n)
         {
-            if (fV_asterix <= 0.2f * fPhi_fV_n)
-                return fN_asterix / fPhi_fN_n; // 17.5.6.6 (a)
-            else if (fN_asterix <= 0.2f * fPhi_fN_n)
-                return fV_asterix / fPhi_fV_n; // 17.5.6.6 (b)
+            if (Math.Abs(fV_asterix) <= 0.2f * fPhi_fV_n)
+                return Math.Abs(fN_asterix) / fPhi_fN_n; // 17.5.6.6 (a)
+            else if (Math.Abs(fN_asterix) <= 0.2f * fPhi_fN_n)
+                return Math.Abs(fV_asterix) / fPhi_fV_n; // 17.5.6.6 (b)
             else
-                return (fN_asterix / fPhi_fN_n + fV_asterix / fPhi_fV_n) / 1.2f; // 17.5.6.6 (c) Eq. (17-5)
+                return (Math.Abs(fN_asterix) / fPhi_fN_n + Math.Abs(fV_asterix) / fPhi_fV_n) / 1.2f; // 17.5.6.6 (c) Eq. (17-5)
         }
         public float Eq_17_6____(int iNumber, float fA_se, float ff_ut)
         {
@@ -247,7 +247,7 @@ namespace M_NZS3101
         public float Eq_C17566__(float fN_asterix, float fPhi_fN_n, float fV_asterix, float fPhi_fV_n)
         {
             // Figure C17.1 – Shear and tensile load interaction equation
-            return (float)(Math.Pow(fN_asterix / fPhi_fN_n , 5f / 3f) + Math.Pow(fV_asterix / fPhi_fV_n, 5f / 3f));
+            return (float)(Math.Pow(Math.Abs(fN_asterix) / fPhi_fN_n , 5f / 3f) + Math.Pow(Math.Abs(fV_asterix) / fPhi_fV_n, 5f / 3f));
         }
     }
 }

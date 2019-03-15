@@ -1395,7 +1395,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vf");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_532_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_532_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Φv");
@@ -1415,7 +1415,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vb");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5342, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5342, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Vb");
@@ -1423,7 +1423,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vb");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5343, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5343, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Φ");
@@ -1435,7 +1435,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vfv");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5351_2, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5351_2, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Nft");
@@ -1443,11 +1443,11 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Nft");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5352_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5352_1, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("η");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_5353, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_5353, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // NZS 3101.1 - 2006
@@ -1483,7 +1483,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Ns.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17571_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17571_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // 17.5.7.2  Strength of concrete breakout of anchor
@@ -1566,7 +1566,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Ncb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17572_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17572_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Single anchor - edge
@@ -1595,7 +1595,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Ncb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17572_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17572_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // 17.5.7.3  Lower characteristic tension pullout strength of anchor
@@ -1630,7 +1630,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Npn.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17573_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17573_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 if (det.fc_min < 0.4f * det.fh_ef)
@@ -1651,7 +1651,7 @@ namespace PFD
                     listPhysicalQuantity_Units.Add(sUnit_Force);
 
                     listPhysicalQuantity_Symbols.Add("η Nsb.s");
-                    listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17574_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                    listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17574_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
                     listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
                 }
 
@@ -1682,7 +1682,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vs.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17581_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17581_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("e'v");
@@ -1738,7 +1738,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vcb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17582_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17582_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Single of anchor - edge
@@ -1755,7 +1755,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vcb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17582_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17582_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // 17.5.8.3 Lower characteristic concrete breakout strength of the anchor in shear parallel to edge
@@ -1766,7 +1766,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vcb.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17583_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17583_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Single anchor - edge
@@ -1775,7 +1775,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vcb.s");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17583_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17583_single, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // 17.5.8.4 Lower characteristic concrete pry-out of the anchor in shear
@@ -1793,7 +1793,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vcp.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17584_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17584_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Lower characteristic strength in shear
@@ -1811,7 +1811,7 @@ namespace PFD
 
                 // 17.5.6.6(Eq. 17–5)
                 listPhysicalQuantity_Symbols.Add("η 17566.g");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_17566_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_17566_group, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Footings
@@ -1862,7 +1862,7 @@ namespace PFD
 
                 // Design ratio - uplift and bearing force
                 listPhysicalQuantity_Symbols.Add("η Gd.u");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_footing_uplift, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_footing_uplift, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("Nd.b.tot");
@@ -1878,7 +1878,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("η Nd.b.tot");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_footing_bearing, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_footing_bearing, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Bending - design of reinforcement
@@ -1936,7 +1936,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Moment);
 
                 listPhysicalQuantity_Symbols.Add("η Mb.x");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_bending_M_footing, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_bending_M_footing, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Minimum longitudinal reinforcement ratio
@@ -1949,7 +1949,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("η p.x");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_MinimumReinforcement_xDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_MinimumReinforcement_xDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 //  Shear
@@ -1990,7 +1990,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Factor);
 
                 listPhysicalQuantity_Symbols.Add("η Vc.yz");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_shear_V_footing, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_shear_V_footing, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 // Punching shear
@@ -2051,7 +2051,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vn.yz");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_punching_12731_xDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_punching_12731_xDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
 
                 listPhysicalQuantity_Symbols.Add("V n.xz");
@@ -2059,7 +2059,7 @@ namespace PFD
                 listPhysicalQuantity_Units.Add(sUnit_Force);
 
                 listPhysicalQuantity_Symbols.Add("η Vn.xz");
-                listPhysicalQuantity_Values.Add(Math.Round(det.fDesignRatio_punching_12731_yDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
+                listPhysicalQuantity_Values.Add(Math.Round(det.fEta_punching_12731_yDirection, iNumberOfDecimalPlaces_DesignRatio).ToString());
                 listPhysicalQuantity_Units.Add(sUnit_DesignRatio);
             }
             else
