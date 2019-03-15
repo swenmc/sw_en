@@ -657,7 +657,7 @@ namespace PFD
             sDisplayOptions.bDistinguishedColor = chbDisplayDistinguishedColorMember.IsChecked == true;
             sDisplayOptions.bTransparentMemberModel = chbDisplayTransparentModelMember.IsChecked == true;
 
-            sDisplayOptions.bDisplayGlobalAxis = chbDisplayGlobalAxis.IsChecked == true;
+            sDisplayOptions.bDisplayGlobalAxis = vm.ShowGlobalAxis;
             sDisplayOptions.bDisplayLocalMembersAxis = vm.ShowLocalMembersAxis;
             sDisplayOptions.bDisplaySurfaceLoadAxis = vm.ShowSurfaceLoadsAxis;
 
@@ -1124,23 +1124,7 @@ namespace PFD
                 UpdateAll();
             }
         }
-
-        //private void chbDisplayMemberDescription_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-        //    {
-        //        UpdateAll();
-        //    }
-        //}
-
-        //private void chbDisplayMemberDescription_Unchecked(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-        //    {
-        //        UpdateAll();
-        //    }
-        //}
-
+        
         private void chbDisplayMembersCenterLines_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
@@ -1255,75 +1239,7 @@ namespace PFD
                 UpdateAll();
             }
         }
-
-        private void chbDisplayGlobalAxis_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisX);
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisY);
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.Add(vm.Model.AxisZ);
-
-
-                //neviem refreshnut viewport
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Focus();
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.UpdateLayout();
-                //((Page3Dmodel)Frame1.Content)._trackport.SetupScene();
-                //Frame1.UpdateLayout();
-                UpdateAll();
-            }
-        }
-        private void chbDisplayGlobalAxis_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-            {
-                //int index = 0;
-                //foreach (Visual3D visual in ((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children)
-                //{
-                //    if (visual is ScreenSpaceLines3D)
-                //    {
-                //        if (((ScreenSpaceLines3D)visual).Name != null && ((ScreenSpaceLines3D)visual).Name.Equals("AxisX")) break;
-                //    }
-
-                //    index++;
-                //}
-                //// TODO - Ondrej - tu to spadne pre zmene nastavenia checkboxu pre zobrazenie globalnych os
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-                //((Page3Dmodel)Frame1.Content)._trackport.ViewPort.Children.RemoveAt(index);
-
-                UpdateAll();
-            }
-        }
-
-        //private void chbDisplayLoads_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-        //    {
-        //        UpdateAll();
-        //    }
-        //}
-        //private void chbDisplayLoads_UnChecked(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is CheckBox && ((CheckBox)sender).IsInitialized)
-        //    {
-        //        UpdateAll();
-        //    }
-        //}
-
-        //private void Combobox_LoadCase_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    UpdateAll();
-        //}
-
-        //private void WindSpeedChart_Click(object sender, RoutedEventArgs e)
-        //{
-        //    CalculateWindLoad();
-
-        //    WindSpeedChart wind_chart = new WindSpeedChart(wind);
-        //    wind_chart.Show();
-        //}
-
+        
         public void UpdateProgressBarValue(double progressValue, string labelText)
         {
             Dispatcher.Invoke(() =>

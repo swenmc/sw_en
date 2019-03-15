@@ -72,7 +72,7 @@ namespace PFD
         // Labels and axes
         private bool MShowLoadsLabels;
         private bool MShowLoadsLabelsUnits;
-
+        private bool MShowGlobalAxis;
         private bool MShowLocalMembersAxis;
         private bool MShowSurfaceLoadsAxis;
 
@@ -817,6 +817,12 @@ namespace PFD
             }
         }
 
+
+        public bool ShowGlobalAxis
+        {
+            get { return MShowGlobalAxis; }
+            set { MShowGlobalAxis = value; NotifyPropertyChanged("ShowGlobalAxis"); }
+        }
         public bool ShowLocalMembersAxis
         {
             get
@@ -928,6 +934,8 @@ namespace PFD
             }
         }
 
+        
+
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
@@ -942,19 +950,19 @@ namespace PFD
             ShowMemberID = true;
             ShowMemberRealLength = true;
 
-            ShowLoads = true;
-            ShowLoadsOnMembers = true;
+            ShowLoads = false;
+            ShowLoadsOnMembers = false;
             ShowLoadsOnGirts = true;
             ShowLoadsOnPurlins = true;
             ShowLoadsOnColumns = true;
             ShowLoadsOnFrameMembers = true;
             ShowNodalLoads = false;
-
-            ShowSurfaceLoads = true;
+            ShowSurfaceLoads = false;
             ShowLoadsLabels = false;
             ShowLoadsLabelsUnits = false;
+            ShowGlobalAxis = true;
             ShowLocalMembersAxis = false;
-            ShowSurfaceLoadsAxis = true;
+            ShowSurfaceLoadsAxis = false;
             DisplayIn3DRatio = 0.003f;
 
             GenerateNodalLoads = true;

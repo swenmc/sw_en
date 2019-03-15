@@ -241,7 +241,7 @@
                         <CheckBox Name="chbDisplayDistinguishedColorMember" Grid.Row="15" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayDistinguishedColorMember_Checked">Distinguished Color Members</CheckBox>
                         <CheckBox Name="chbDisplayTransparentModelMember" Grid.Row="16" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="False" Unchecked="chbDisplayDistinguishedColorMember_Unchecked" Checked="chbDisplayTransparentModelMember_Checked">Transparent Members</CheckBox>
 
-                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="True" Unchecked="chbDisplayGlobalAxis_Unchecked" Checked="chbDisplayGlobalAxis_Checked" >Display Global Axis</CheckBox>
+                        <CheckBox Name="chbDisplayGlobalAxis" Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowGlobalAxis}">Display Global Axis</CheckBox>
                         <CheckBox Name="chbDisplayLocalMemberAxis" Grid.Row="18" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowLocalMembersAxis}" >Display Local Member Axis</CheckBox>
                         <CheckBox Name="chbDisplaySurfaceLoadsAxis" Grid.Row="19" Grid.Column="4" Grid.ColumnSpan="1" IsChecked="{Binding Path=ShowSurfaceLoadsAxis}" >Display Surface Loads Axis</CheckBox>
 
