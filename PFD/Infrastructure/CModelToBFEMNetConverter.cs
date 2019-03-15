@@ -269,7 +269,7 @@ namespace PFD
 
             // Vytvori zoznamy zoznamov struktur vysledkov pre kazdu kombinaciu, kazdy prut, kazde x miesto na prute
             topomodel.LoadCombInternalForcesResults = BFEMNetModelHelper.GetResultsList(model, loadcombinations);
-            
+            topomodel.BFEMNetModel = model;
             return model;
         }
 

@@ -87,10 +87,7 @@ namespace PFD.Infrastructure
             SolverWindow.Progress = 100;
             SolverWindow.UpdateProgress();
             SolverWindow.SetSumaryFinished();
-
-            //Member_Design.IsEnabled = true;
-            //Internal_Forces.IsEnabled = true;
-
+            
             // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
             // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
             // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
@@ -137,10 +134,6 @@ namespace PFD.Infrastructure
                                 // Set indices to search in results
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
                                 
-                                //nepouziva sa
-                                //int iLoadCaseIndex = lc.ID - 1; // nastavit index podla ID load casu
-                                //int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
-
                                 // Calculate Internal forces just for Load Cases that are included in ULS
                                 if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
                                 {
@@ -195,7 +188,6 @@ namespace PFD.Infrastructure
                             }
                             else // Single member
                             {
-                                //Mato? ja tu ziadne vypocty nevidim
                                 bool bUseBFENetCalculation = true;
 
                                 if (bUseBFENetCalculation)
@@ -273,7 +265,7 @@ namespace PFD.Infrastructure
                                     if (sBDeflections_x != null) MemberDeflectionsInLoadCases.Add(new CMemberDeflectionsInLoadCases(m, lc, sBDeflections_x));
                                 }
                             }
-                        }
+                        }//end foreach load case
                     }
                 }
                 SolverWindow.Progress += step;
@@ -310,8 +302,6 @@ namespace PFD.Infrastructure
                             designMomentValuesForCb sMomentValuesforCb_design;
                             basicInternalForces[] sBIF_x_design;
 
-                            // TODO 201 - Pripravit vysledky na jednotlivych prutoch povodneho 3D modelu pre pruty ramov aj ostatne pruty ktore su samostatne
-                            // Todo je dost skareda vec, asi by sa Example3 v BFENet malo prerobit len na vypocet load cases tu s tym pracovat uz podobne pre pruty ramu a jednotlive samostatne pruty ako su purlins a girts
                             // Chcelo by to ten Example3 upravit a zobecnit tak aby sa z neho dali tahat rozne vysledky, podobne ako sa to da zo samotnej kniznice BFENet
 
                             // Frame member - vysledky pocitane pre load combinations
@@ -339,15 +329,15 @@ namespace PFD.Infrastructure
                                     sBucklingLengthFactors_design = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
 
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
-
-                                //toto sa viditelne nepouziva
-                                //int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
-
+                                
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
 
                                 if (MUseCRSCGeometricalAxes)
                                 {
+                                    //takto nejako
+                                    //BriefFiniteElementNet.Force f = ((BriefFiniteElementNet.FrameElement2Node)(frameModels[iFrameIndex].BFEMNetModel.Elements[0])).GetInternalForceAt(0.25 * m.FLength)
+                                    
                                     sMomentValuesforCb_design.fM_14 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[2].fM_yy;
                                     sMomentValuesforCb_design.fM_24 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[5].fM_yy;
                                     sMomentValuesforCb_design.fM_34 = frameModels[iFrameIndex].LoadCombInternalForcesResults[lcomb.ID][m.ID].InternalForces[7].fM_yy;

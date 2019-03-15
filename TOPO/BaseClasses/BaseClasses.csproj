@@ -244,6 +244,10 @@
       <Project>{84ec019c-bd16-4774-91d4-e50cfb2e62e3}</Project>
       <Name>DATABASE</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FEM\BriefFiniteElementNet\BriefFiniteElementNet.csproj">
+      <Project>{7CDA20D4-9BC8-4BC3-9F22-CB86CD4DC3E1}</Project>
+      <Name>BriefFiniteElementNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GENERAL\MATH\MATH.csproj">
       <Project>{0e2adcc8-209e-4fcc-9ac2-d0c7eea8ac26}</Project>
       <Name>MATH</Name>

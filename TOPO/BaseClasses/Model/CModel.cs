@@ -1,5 +1,6 @@
 ﻿using _3DTools;
 using BaseClasses.GraphObj;
+using BriefFiniteElementNet;
 using CRSC;
 using MATERIAL;
 using System;
@@ -87,6 +88,9 @@ namespace BaseClasses
         Dictionary<Tuple<float, string, string>, List<CMember>> GroupedMembers;
 
         public LoadCombinationsInternalForces LoadCombInternalForcesResults { get; set; }
+
+        [NonSerialized]
+        public Model BFEMNetModel;
 
         //Visuals
         public ScreenSpaceLines3D AxisX;
