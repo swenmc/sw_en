@@ -982,6 +982,8 @@ namespace PFD
             _worker.WorkerSupportsCancellation = true;
         }
 
+
+        //tato metoda sa pouzila iba raz...podla mna je zbytocna a staci volat UpdateAll()
         public void CreateModel()
         {
             BuildingGeometryDataInput sBuildingGeometryData;
@@ -1000,7 +1002,7 @@ namespace PFD
             sBuildingGeometryData.fEaveHeight = WallHeight;
             sBuildingGeometryData.fRidgeHeight = fh2;
 
-            GenerateSurfaceLoads =
+            MGenerateSurfaceLoads =
                 MShowSurfaceLoadsAxis ||
                 MGenerateLoadsOnGirts ||
                 MGenerateLoadsOnPurlins ||
@@ -1103,7 +1105,7 @@ namespace PFD
             SolverWindow.UpdateProgress();
 
             DateTime start = DateTime.Now;
-            if (debugging) System.Diagnostics.Trace.WriteLine("STARTINg CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
+            if (debugging) System.Diagnostics.Trace.WriteLine("STARTING CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
             const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
             const int iNumberOfSegments = iNumberOfDesignSections - 1;
 
@@ -1121,6 +1123,7 @@ namespace PFD
 
             // Validate model before calculation (compare IDs)
             CModelHelper.ValidateModel(model);
+
             SolverWindow.Progress = 2;
             SolverWindow.UpdateProgress();
 
@@ -1132,36 +1135,17 @@ namespace PFD
             // Calculation of frame model
             frameModels = model.GetFramesFromModel(); // Create models of particular frames
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels = model.GetFramesFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
-            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
-            //foreach (CFrame frame in frameModels)
-            //{
-            //    // Convert SW_EN model to BFENet model
-            //    //CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
-            //    // Convert model and calculate results
-            //    Model bfemNetModel = CModelToBFEMNetConverter.Convert(frame, !DeterminateCombinationResultsByFEMSolver);
-            //    //PFDMainWindow.ShowBFEMNetModel(bfemNetModel); // Zobrazovat len na vyziadanie
-            //}
+            CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);            
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
             SolverWindow.SetBeams();
             // Calculation of simple beam model
             beamSimpleModels = model.GetMembersFromModel(); // Create models of particular beams
-            if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel();: " + (DateTime.Now - start).TotalMilliseconds);
-
-            CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
-
-            //foreach (CBeam_Simple beam in beamSimpleModels)
-            //{
-            //    // Convert SW_EN model to BFENet model
-            //    //CModelToBFEMNetConverter converter = new CModelToBFEMNetConverter();
-            //    // Convert model and calculate results
-            //    Model bfemNetModel = CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver);
-            //    //Model bfemNetModel = Task.Factory.StartNew(() => CModelToBFEMNetConverter.Convert(beam, !DeterminateCombinationResultsByFEMSolver)).Result;
-            //}
+            if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels = model.GetMembersFromModel(); " + (DateTime.Now - start).TotalMilliseconds);
+            CBeamsCalculations.RunBeamsCalculations(beamSimpleModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);            
             if (debugging) System.Diagnostics.Trace.WriteLine("After beamSimpleModels: " + (DateTime.Now - start).TotalMilliseconds);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
             float fMaximumDesignRatioWholeStructure = 0;
             float fMaximumDesignRatioMainColumn = 0;
             float fMaximumDesignRatioMainRafter = 0;
@@ -1361,14 +1345,11 @@ namespace PFD
                     }
                 }
                 SolverWindow.Progress += step;
-                SolverWindow.UpdateProgress();
-                //progressValue += step;
-                //PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Internal Forces. MemberID: " + m.ID);
+                SolverWindow.UpdateProgress();                
             }
 
             // Design of members
-            // Calculate Internal Forces For Load Cases
-
+            // Calculate Internal Forces For Load Combinations
             MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
             MemberDesignResults_SLS = new List<CMemberLoadCombinationRatio_SLS>();
 

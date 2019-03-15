@@ -91,24 +91,6 @@ namespace PFD
         public WindLoadDataInput sWindInputData;
         public SeisLoadDataInput sSeisInputData;
         
-        //int selected_Model_Index;
-        //float fb; // 3 - 100 m
-        //float fL; // 3 - 150 m
-        //float fh; // 2 -  30 m (h1)
-        //float fL1;
-        //int iFrNo; // 2 - 30
-        //float fRoofPitch_radians; // (zadavane v stupnoch - limity stupne 3 - 35 deg)
-        //float fh2;
-        //float fdist_girt; // 0.5 - 5 m
-        //float fdist_purlin; // 0.5 - 5 m
-        //float fdist_frontcolumn; // 1 - 10 m
-        //float fdist_girt_bottom; // 1 - 10 m
-
-        //List<CMemberInternalForcesInLoadCases> listMemberInternalForces;
-        //List<CMemberDeflectionsInLoadCases> listMemberDeflections;
-        //List<CMemberLoadCombinationRatio_ULS> MemberDesignResults_ULS;
-        //List<CMemberLoadCombinationRatio_SLS> MemberDesignResults_SLS;
-
         // TODO Ondrej pouzit na zobrazovanie jednotlivych zaloziek (tabitems) aktivitu tlacitok a podobne podla toho ci existuju vysledky pre vnutorne sily, posudenie prutov, posudenie spojov
         bool bInternalForcesResultsExists = false;
         bool bMemberDesignResultsExists = false;
@@ -216,7 +198,7 @@ namespace PFD
             vm.Eq = eq;
             vm.Loadinput = loadinput;
 
-            vm.CreateModel();
+            //vm.CreateModel();
 
             FillComboboxTrapezoidalSheetingThickness(Combobox_RoofCladding.Items[vm.RoofCladdingIndex].ToString(), Combobox_RoofCladdingThickness);
             FillComboboxTrapezoidalSheetingThickness(Combobox_WallCladding.Items[vm.WallCladdingIndex].ToString(), Combobox_WallCladdingThickness);
@@ -240,14 +222,16 @@ namespace PFD
                 //Internal_Forces.Visibility = Visibility.Visible;
             }
 
-            // Update display options
-            UpdateDisplayOptions();
+            //// Update display options
+            //UpdateDisplayOptions();
 
-            // Create 3D window
-            Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[0]);
+            //// Create 3D window
+            //Page3Dmodel page1 = new Page3Dmodel(vm.Model, sDisplayOptions, vm.Model.m_arrLoadCases[0]);
 
-            // Display model in 3D preview frame
-            Frame1.Content = page1;
+            //// Display model in 3D preview frame
+            //Frame1.Content = page1;
+
+            UpdateAll();
 
             vm.Model.GroupModelMembers();
         }
