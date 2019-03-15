@@ -201,5 +201,13 @@ namespace PFD
                 LabelTimer.Text = currentTime;
             }
         }
+
+        public void ShowMessageBox(string text)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show(text);
+            });
+        }
     }
 }

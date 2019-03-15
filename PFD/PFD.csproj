@@ -153,6 +153,7 @@
     <Compile Include="Infrastructure\Calculations\CFrameCalculations.cs" />
     <Compile Include="Infrastructure\Calculations\CBeamCalculations.cs" />
     <Compile Include="Infrastructure\Calculations\CBeamsCalculations.cs" />
+    <Compile Include="Infrastructure\Calculations\CMemberDesignCalculations.cs" />
     <Compile Include="Infrastructure\CLoadCaseGenerator.cs" />
     <Compile Include="Infrastructure\CMemberLoadGenerator.cs" />
     <Compile Include="Infrastructure\BFEMNetModelHelper.cs" />
