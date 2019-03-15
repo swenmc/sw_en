@@ -264,28 +264,30 @@ namespace CRSC
             return sum;
         }
         // Shear Area Y
-        //(sum of all parts paralel to y-Axis and)
+        //(sum of all parts paralel to y-Axis and within specified angle)
         public double A_vy_method(int count)
         {
+            // TODO - osetrit pripad ked je to jeden element alebo viacero elementov v priamke - jedna smykova plocha moze vyjst 0!
             double sum = 0;
             for (int i = 1; i < count; i++)
             {
-                sum += dAi_method(i);
+                if(MathF.d_equal(z_suradnice[i], z_suradnice[i - 1])) // Same z-coordinate // TODO zohladnit uhol < 45 stupnov
+                     sum += dAi_method(i);
             }
-            double d_A_vy = sum / 2;
-            return d_A_vy;
+            return sum;
         }
         // Shear Area Z
-        //(sum of all parts paralel to z-Axis and)
+        //(sum of all parts paralel to z-Axis and within specified angle)
         public double A_vz_method(int count)
         {
+            // TODO - osetrit pripad ked je to jeden element alebo viacero elementov v priamke - jedna smykova plocha moze vyjst 0!
             double sum = 0;
             for (int i = 1; i < count; i++)
             {
-                sum += dAi_method(i);
+                if (MathF.d_equal(y_suradnice[i], y_suradnice[i - 1])) // Same y-coordinate // TODO zohladnit uhol < 45 stupnov
+                    sum += dAi_method(i);
             }
-            double d_A_vz = sum / 2;
-            return d_A_vz;
+            return sum;
         }
         //(J.7) and (J.9) method
         public void Sy0_Sz0_method(int count)

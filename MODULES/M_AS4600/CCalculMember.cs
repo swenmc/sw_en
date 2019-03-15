@@ -140,7 +140,8 @@ namespace M_AS4600
 
         float fh, fb, ft, ft_w, ft_f;
         float fd_l;
-        float fd_1;
+        float d_1_flat_portion;
+        float d_tot;
         float fa;
         float fb_f;
 
@@ -205,8 +206,7 @@ namespace M_AS4600
         public float fLambda_d_xu;
 
         public float fM_b_yv;
-        
-        float fk;
+
         public float fV_v_yv;
         public float fV_y_yv;
         public float fV_cr_yv;
@@ -327,14 +327,9 @@ namespace M_AS4600
             fx_o = (float)cs.D_y_s;
             fy_o = (float)cs.D_z_s;
 
-            // TODO - doplnit vypocet polomerov zotrvacnosti do prierezov // Doriesit jednoznacnost indexov
-            cs.i_y_rg = Math.Sqrt(cs.I_y / cs.A_g);
-            cs.i_z_rg = Math.Sqrt(cs.I_z / cs.A_g);
-
             fr_x = (float)cs.i_y_rg;
             fr_y = (float)cs.i_z_rg;
 
-            //float fr_o1 = cs.i_yz_rg;
             fr_o1 = eq.Eq_D111_6__(fr_x, fr_y, fx_o, fy_o);
 
             ff_ox = eq.Eq_D111_3__(fE, fl_ex, fr_x);
@@ -367,7 +362,7 @@ namespace M_AS4600
                 // 7.2.1.3 Local buckling
                 // 7.2.1.3.1 Compression members without holes
 
-                fk = 4.0f; //see kst
+                //float fk = 4.0f; //see kst
 
                 //ff_ol = eq.Eq_D131____(fk, fE, fNu, ft, fb); // Nacitavat z vlastnosti prierezu
                 fN_ol = eq.Eq_7213_4__(fA_g, ff_ol);
@@ -427,8 +422,7 @@ namespace M_AS4600
             float fk_v_yv;
 
             TransStiff_D3 eTrStiff = TransStiff_D3.eD3c_StiffFlanges; // Todo
-            float fd_1_straightToTotal = 0.35f; // TODO - urcit pri prierezoch pomer medzi nevystuzenou castou stojiny a celkovou vyskou
-            float fd_1_straight = fd_1_straightToTotal * fd_1;
+            float fd_1_straight = d_1_flat_portion; // ???? ako straight part beriem nadlhsiu rovnu cast stojiny medzi vystuhami
 
             switch (eTrStiff)
             {
@@ -459,6 +453,14 @@ namespace M_AS4600
             {
                 // 7.2.3.3 Beams with transverse web stiffeners
                 fV_v_yv = eq.Eq_7233____(fV_y_yv, fV_cr_yv, fLambda_v_yv);
+            }
+
+            // MC: Reduction considering shear buckling and local buckling bewteen web stiffeners
+            if (0 < cs.fvz_red_factor && cs.fvz_red_factor < 1)
+            {
+                float fV_y_yv_red = eq.Eq_723_5___red(fV_y_yv, (float)cs.fvz_red_factor);
+                if (fV_v_yv > fV_y_yv_red)
+                    fV_y_yv = fV_y_yv_red;
             }
 
             if (eTrStiff == TransStiff_D3.eD3b_HasTrStiff)
@@ -632,7 +634,8 @@ namespace M_AS4600
 
             fI_yc = 54564f;
             fd_l = 0.005f; // Overall stiffener dimension (or overall depth of lip) Figure 2.4.2(a) Clause 2.4 / TABLE 2.4.2 / D1.2.1.2 Simple lipped channels in compression
-            fd_1 = fh - 2 * ft; // Web Depth Web-flange juncture // Todo // depth of the flat portion of a web
+            d_1_flat_portion = (float)cs.d_1_flat_portion; // Web Depth Web-flange juncture // Todo // depth of the flat portion of a web
+            d_tot = (float)cs.d_tot; // Depth of web
 
             fl_member = fL_temp;
             fl_ex = sBucklingLengthFactors.fBeta_x_FB_fl_ex * fl_member; // Flexural buckling - major axis (Nc)

@@ -94,6 +94,24 @@ namespace CRSC
         public double dfol_c;
         public double dfod_c;
 
+        public double _A_stiff;
+        public int _n_stiff;
+        public double _y_stiff;
+
+        public double _b_1_flat_portion;
+        public double _b_tot;
+        public double _b_tot_length;
+        public double _A_f1;
+        //public double A_vy;
+        public double _fvy_red_factor;
+
+        public double _d_1_flat_portion;
+        public double _d_tot;
+        public double _d_tot_length;
+        public double _A_w1;
+        //public double A_vz;
+        public double _fvz_red_factor;
+
         public ObservableCollection<string> Series = new ObservableCollection<string>()
         {
                 "Box-10075",
@@ -260,6 +278,84 @@ namespace CRSC
             set { dfod_c = value; }
         }
 
+        public double A_stiff
+        {
+            get { return _A_stiff; }
+            set { _A_stiff = value; }
+        }
+
+        public int n_stiff
+        {
+            get { return _n_stiff; }
+            set { _n_stiff = value; }
+        }
+
+        public double y_stiff
+        {
+            get { return _y_stiff; }
+            set { _y_stiff = value; }
+        }
+
+        public double b_1_flat_portion
+        {
+            get { return _b_1_flat_portion; }
+            set { _b_1_flat_portion = value; }
+        }
+
+        public double b_tot
+        {
+            get { return _b_tot; }
+            set { _b_tot = value; }
+        }
+
+        public double b_tot_length
+        {
+            get { return _b_tot_length; }
+            set { _b_tot_length = value; }
+        }
+
+        public double A_f1
+        {
+            get { return _A_f1; }
+            set { _A_f1 = value; }
+        }
+
+        public double fvy_red_factor
+        {
+            get { return _fvy_red_factor; }
+            set { _fvy_red_factor = value; }
+        }
+
+        public double d_1_flat_portion
+        {
+            get { return _d_1_flat_portion; }
+            set { _d_1_flat_portion = value; }
+        }
+
+        public double d_tot
+        {
+            get { return _d_tot; }
+            set { _d_tot = value; }
+        }
+
+        public double d_tot_length
+        {
+            get { return _d_tot_length; }
+            set { _d_tot_length = value; }
+        }
+
+        public double A_w1
+        {
+            get { return _A_w1; }
+            set { _A_w1 = value; }
+        }
+
+        public double fvz_red_factor
+        {
+            get { return _fvz_red_factor; }
+            set { _fvz_red_factor = value; }
+        }
+
         // end of cross-section variables definition
         #endregion
 
@@ -316,6 +412,22 @@ namespace CRSC
             this.fod_b = dto.fod_b;
             this.fol_c = dto.fol_c;
             this.fod_c = dto.fod_c;
+
+            this.A_stiff = dto.A_stiff;
+            this.n_stiff = dto.n_stiff;
+            this.y_stiff = dto.y_stiff;
+            this.b_1_flat_portion = dto.b_1_flat_portion;
+            this.b_tot = dto.b_tot;
+            this.b_tot_length = dto.b_tot_length;
+            this.A_f1 = dto.A_f1;
+            this.A_vy = dto.A_vy;
+            this.fvy_red_factor = dto.fvy_red_factor;
+            this.d_1_flat_portion = dto.d_1_flat_portion;
+            this.d_tot = dto.d_tot;
+            this.d_tot_length = dto.d_tot_length;
+            this.A_w1 = dto.A_w1;
+            this.A_vz = dto.A_vz;
+            this.fvz_red_factor = dto.fvz_red_factor;
     }
 
         // Calculate properties

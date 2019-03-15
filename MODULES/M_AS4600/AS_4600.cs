@@ -620,6 +620,10 @@ namespace M_AS4600
         {
             return 0.6f * fA_w * ff_y; // Eq. (7.2.3(5)) // fV_y
         }
+        public float Eq_723_5___red(float fV_y, float fReductionFactor_fv_red_factor)
+        {
+            return fReductionFactor_fv_red_factor * fV_y;
+        }
         public float Eq_723_6___(float fh, float ft)
         {
             return fh * ft; // Eq. (7.2.3(6)) // fA_w

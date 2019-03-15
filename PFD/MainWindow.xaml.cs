@@ -608,20 +608,18 @@ namespace PFD
                 63020s2
                 */
 
-                //ak sa load presunie do konstruktora pre CrsC tak toto je mozno uz navyse
+                // Ak sa funkcia LoadCrossSectionProperties presunie do konstruktora pre CrSc tak toto je mozno uz navyse
                 CrScProperties dto = CSectionManager.LoadCrossSectionProperties_meters(crsc.NameDatabase);
                 crsc.SetParams(dto);
 
                 // Docasne hodnoty
-                crsc.A_vy = crsc.h * crsc.t_min; // TODO - len priblizne Temp
-                crsc.A_vz = crsc.b * crsc.t_min; // Temp
-                crsc.W_y_pl = 1.1 * crsc.W_y_el;
-                crsc.W_z_pl = 1.1 * crsc.W_z_el;
+                crsc.W_y_pl = 1.001 * crsc.W_y_el;
+                crsc.W_z_pl = 1.001 * crsc.W_z_el;
 
-                // TODO - doplnit vypocet
-                crsc.i_y_rg = 0.102f;
-                crsc.i_z_rg = 0.052f;
-                crsc.i_yz_rg = 0.102f;
+                // TODO - doplnit vypocet polomerov zotrvacnosti do prierezov // Doriesit jednoznacnost indexov
+                crsc.i_y_rg = Math.Sqrt(crsc.I_y / crsc.A_g);
+                crsc.i_z_rg = Math.Sqrt(crsc.I_z / crsc.A_g);
+                crsc.i_yz_rg = Math.Sqrt(crsc.I_yz / crsc.A_g);
             }
         }
 
