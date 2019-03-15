@@ -12,6 +12,11 @@ namespace PFD.Infrastructure
 {
     public class CMemberDesignCalculations
     {
+        const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
+        const int iNumberOfSegments = iNumberOfDesignSections - 1;
+
+        float[] fx_positions;
+        double step;
         private Solver SolverWindow;
         private CModel_PFD_01_GR Model;
         private bool MUseCRSCGeometricalAxes;
@@ -29,6 +34,26 @@ namespace PFD.Infrastructure
 
         private List<CFrame> frameModels;
         private List<CBeam_Simple> beamSimpleModels;
+        
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////
+        float fMaximumDesignRatioWholeStructure = 0;
+        float fMaximumDesignRatioMainColumn = 0;
+        float fMaximumDesignRatioMainRafter = 0;
+        float fMaximumDesignRatioEndColumn = 0;
+        float fMaximumDesignRatioEndRafter = 0;
+        float fMaximumDesignRatioGirts = 0;
+        float fMaximumDesignRatioPurlins = 0;
+        float fMaximumDesignRatioColumns = 0;
+
+        CMember MaximumDesignRatioWholeStructureMember = new CMember();
+        CMember MaximumDesignRatioMainColumn = new CMember();
+        CMember MaximumDesignRatioMainRafter = new CMember();
+        CMember MaximumDesignRatioEndColumn = new CMember();
+        CMember MaximumDesignRatioEndRafter = new CMember();
+        CMember MaximumDesignRatioGirt = new CMember();
+        CMember MaximumDesignRatioPurlin = new CMember();
+        CMember MaximumDesignRatioColumn = new CMember();
+
 
         public CMemberDesignCalculations(Solver solverWindow, CModel_PFD_01_GR model, bool useCRSCGeometricalAxes, bool determinateCombinationResultsByFEMSolver, List<CFrame> FrameModels, List<CBeam_Simple> BeamSimpleModels)
         {
@@ -38,52 +63,48 @@ namespace PFD.Infrastructure
             DeterminateCombinationResultsByFEMSolver = determinateCombinationResultsByFEMSolver;
             beamSimpleModels = BeamSimpleModels;
             frameModels = FrameModels;
+
+            fx_positions = new float[iNumberOfDesignSections];
+            step = (100.0 - SolverWindow.Progress) / (Model.m_arrMembers.Length * 2.0);
+
+            MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
+            MemberDeflectionsInLoadCases = new List<CMemberDeflectionsInLoadCases>();
+
+            MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
+            MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
         }
 
         
 
         public void CalculateAll()
         {
-            const int iNumberOfDesignSections = 11; // 11 rezov, 10 segmentov
-            const int iNumberOfSegments = iNumberOfDesignSections - 1;
+            //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
+            
+            CalculateMemberDesignLoadCase();
 
-            float[] fx_positions = new float[iNumberOfDesignSections];
-            designBucklingLengthFactors sBucklingLengthFactors = new designBucklingLengthFactors();
+            CalculateMemberDesignLoadCombination();
+
+            SolverWindow.Progress = 100;
+            SolverWindow.UpdateProgress();
+            SolverWindow.SetSumaryFinished();
+
+            //Member_Design.IsEnabled = true;
+            //Internal_Forces.IsEnabled = true;
+
+            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
+            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
+            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
+
+            ShowResultsInMessageBox();
+        }
+
+        public void CalculateMemberDesignLoadCase()
+        {
             designMomentValuesForCb sMomentValuesforCb = new designMomentValuesForCb();
             basicInternalForces[] sBIF_x = null;
             basicDeflections[] sBDeflections_x = null;
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////
-            float fMaximumDesignRatioWholeStructure = 0;
-            float fMaximumDesignRatioMainColumn = 0;
-            float fMaximumDesignRatioMainRafter = 0;
-            float fMaximumDesignRatioEndColumn = 0;
-            float fMaximumDesignRatioEndRafter = 0;
-            float fMaximumDesignRatioGirts = 0;
-            float fMaximumDesignRatioPurlins = 0;
-            float fMaximumDesignRatioColumns = 0;
-
-            CMember MaximumDesignRatioWholeStructureMember = new CMember();
-            CMember MaximumDesignRatioMainColumn = new CMember();
-            CMember MaximumDesignRatioMainRafter = new CMember();
-            CMember MaximumDesignRatioEndColumn = new CMember();
-            CMember MaximumDesignRatioEndRafter = new CMember();
-            CMember MaximumDesignRatioGirt = new CMember();
-            CMember MaximumDesignRatioPurlin = new CMember();
-            CMember MaximumDesignRatioColumn = new CMember();
-
+            designBucklingLengthFactors sBucklingLengthFactors = new designBucklingLengthFactors();
             SimpleBeamCalculation calcModel = new SimpleBeamCalculation();
-            MemberInternalForcesInLoadCases = new List<CMemberInternalForcesInLoadCases>();
-            MemberDeflectionsInLoadCases = new List<CMemberDeflectionsInLoadCases>();
-
-            MemberInternalForcesInLoadCombinations = new List<CMemberInternalForcesInLoadCombinations>();
-            MemberDeflectionsInLoadCombinations = new List<CMemberDeflectionsInLoadCombinations>();
-
-            //if (debugging) System.Diagnostics.Trace.WriteLine("before calculations: " + (DateTime.Now - start).TotalMilliseconds);
-
-            double step = (100.0 - SolverWindow.Progress) / (Model.m_arrMembers.Length * 2.0);
-            //double progressValue = 0;
-            //PFDMainWindow.UpdateProgressBarValue(progressValue, "");
 
             int count = 0;
             SolverWindow.SetMemberDesignLoadCase();
@@ -115,8 +136,10 @@ namespace PFD.Infrastructure
 
                                 // Set indices to search in results
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
-                                int iLoadCaseIndex = lc.ID - 1; // nastavit index podla ID load casu
-                                int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+                                
+                                //nepouziva sa
+                                //int iLoadCaseIndex = lc.ID - 1; // nastavit index podla ID load casu
+                                //int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
                                 // Calculate Internal forces just for Load Cases that are included in ULS
                                 if (lc.MType_LS == ELCGTypeForLimitState.eUniversal || lc.MType_LS == ELCGTypeForLimitState.eULSOnly)
@@ -172,6 +195,7 @@ namespace PFD.Infrastructure
                             }
                             else // Single member
                             {
+                                //Mato? ja tu ziadne vypocty nevidim
                                 bool bUseBFENetCalculation = true;
 
                                 if (bUseBFENetCalculation)
@@ -256,6 +280,9 @@ namespace PFD.Infrastructure
                 SolverWindow.UpdateProgress();
             }
 
+        }
+        public void CalculateMemberDesignLoadCombination()
+        {
             // Design of members
             // Calculate Internal Forces For Load Combinations
             MemberDesignResults_ULS = new List<CMemberLoadCombinationRatio_ULS>();
@@ -264,7 +291,7 @@ namespace PFD.Infrastructure
             JointDesignResults_ULS = new List<CJointLoadCombinationRatio_ULS>();
 
             SolverWindow.SetMemberDesignLoadCombination();
-            count = 0;
+            int count = 0;
             foreach (CMember m in Model.m_arrMembers)
             {
                 SolverWindow.SetMemberDesignLoadCombinationProgress(++count, Model.m_arrMembers.Length);
@@ -291,9 +318,7 @@ namespace PFD.Infrastructure
                             if (DeterminateCombinationResultsByFEMSolver && (m.EMemberType == EMemberType_FS.eMC || m.EMemberType == EMemberType_FS.eMR || m.EMemberType == EMemberType_FS.eEC || m.EMemberType == EMemberType_FS.eER))
                             {
                                 // Nastavit vysledky pre prut ramu
-
                                 sBucklingLengthFactors_design.fBeta_x_FB_fl_ex = 1.0f;
-
                                 sBucklingLengthFactors_design.fBeta_y_FB_fl_ey = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_z_TB_TFB_l_ez = 1.0f;
                                 sBucklingLengthFactors_design.fBeta_LTB_fl_LTB = 1.0f;
@@ -314,7 +339,9 @@ namespace PFD.Infrastructure
                                     sBucklingLengthFactors_design = m.LTBSegmentGroup[0].BucklingLengthFactors[0];
 
                                 int iFrameIndex = CModelHelper.GetFrameIndexForMember(m, frameModels);  //podla ID pruta treba identifikovat do ktoreho ramu patri
-                                int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
+
+                                //toto sa viditelne nepouziva
+                                //int iMemberIndex = frameModels[iFrameIndex].GetMemberIndexInFrame(m); //podla ID pruta a indexu ramu treba identifikovat do ktoreho ramu prut z globalneho modelu patri a ktory prut v rame mu odpoveda
 
                                 // TODO - hodnoty by sme mali ukladat presne vo stvrtinach, alebo umoznit ich dopocet - tj dostat sa k modelu BFENet a pouzit priamo funkciu
                                 // pre nacianie vnutornych sil z objektu BFENet FrameElement2Node GetInternalForcesAt vid Example3 a funkcia GetResultsList
@@ -441,8 +468,10 @@ namespace PFD.Infrastructure
                                 CMemberDesign memberDesignModel = new CMemberDesign();
                                 // TODO - sBucklingLengthFactors_design  a sMomentValuesforCb_design nemaju byt priradene prutu ale segmentu pruta pre kazdy load case / load combination
                                 memberDesignModel.SetDesignForcesAndMemberDesign_PFD(MUseCRSCGeometricalAxes, iNumberOfDesignSections, m, sBIF_x_design, sBucklingLengthFactors_design, sMomentValuesforCb_design, out sMemberDIF_x);
-                                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors, sMomentValuesforCb_design));
-
+                                //Mato tu mas sBucklingLengthFactors podla mna si asi chcel pouzit sBucklingLengthFactors_design???
+                                //15.3.2019 zmenil som sBucklingLengthFactors na sBucklingLengthFactors_design
+                                MemberDesignResults_ULS.Add(new CMemberLoadCombinationRatio_ULS(m, lcomb, memberDesignModel.fMaximumDesignRatio, sMemberDIF_x[memberDesignModel.fMaximumDesignRatioLocationID], sBucklingLengthFactors_design, sMomentValuesforCb_design)); 
+                                
                                 // Set maximum design ratio of whole structure
                                 if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioWholeStructure)
                                 {
@@ -471,7 +500,7 @@ namespace PFD.Infrastructure
 
                                 // End Joint
                                 JointDesignResults_ULS.Add(new CJointLoadCombinationRatio_ULS(m, jointEnd, lcomb, jointDesignModel.fDesignRatio_End, sjointEndDIF_x));
-
+                                
                                 // Output (for debugging - member results)
                                 bool bDebugging = false; // Testovacie ucely
                                 if (bDebugging)
@@ -491,77 +520,8 @@ namespace PFD.Infrastructure
                                                       "Joint ID: " + jointEnd.ID + "\t | " +
                                                       "Load Combination ID: " + lcomb.ID + "\t | " +
                                                       "Design Ratio: " + Math.Round(jointDesignModel.fDesignRatio_End, 3).ToString() + "\n");
-
-                                // Output - set maximum design ratio by component Type
-                                switch (m.EMemberType)
-                                {
-                                    case EMemberType_FS.eMC: // Main Column
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainColumn)
-                                            {
-                                                fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioMainColumn = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FS.eMR: // Main Rafter
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainRafter)
-                                            {
-                                                fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioMainRafter = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FS.eEC: // End Column
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndColumn)
-                                            {
-                                                fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioEndColumn = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FS.eER: // End Rafter
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndRafter)
-                                            {
-                                                fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioEndRafter = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FS.eG: // Girt
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
-                                            {
-                                                fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioGirt = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FS.eP: // Purlin
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
-                                            {
-                                                fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioPurlin = m;
-                                            }
-                                            break;
-                                        }
-                                    case EMemberType_FS.eC: // Column
-                                        {
-                                            if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
-                                            {
-                                                fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
-                                                MaximumDesignRatioColumn = m;
-                                            }
-                                            break;
-                                        }
-                                    default:
-                                        // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
-                                        break;
-                                }
+                                
+                                SetMaximumDesignRatioByComponentType(m, memberDesignModel);
                             }
                         }
                         else // SLS
@@ -614,27 +574,89 @@ namespace PFD.Infrastructure
                             }
                         }
                     }
-                }
-                //progressValue += step;
-                //PFDMainWindow.UpdateProgressBarValue(progressValue, "Calculating Member Design. MemberID: " + m.ID);
+                }                
                 SolverWindow.Progress += step;
                 SolverWindow.UpdateProgress();
             }
+        }
 
-            //progressValue = 100;
-            //PFDMainWindow.UpdateProgressBarValue(progressValue, "Done.");
-            SolverWindow.Progress += step;
-            SolverWindow.UpdateProgress();
-            SolverWindow.SetSumaryFinished();
+        private void SetMaximumDesignRatioByComponentType(CMember m, CMemberDesign memberDesignModel)
+        {
+            // Output - set maximum design ratio by component Type
+            switch (m.EMemberType)
+            {
+                case EMemberType_FS.eMC: // Main Column
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainColumn)
+                        {
+                            fMaximumDesignRatioMainColumn = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioMainColumn = m;
+                        }
+                        break;
+                    }
+                case EMemberType_FS.eMR: // Main Rafter
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioMainRafter)
+                        {
+                            fMaximumDesignRatioMainRafter = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioMainRafter = m;
+                        }
+                        break;
+                    }
+                case EMemberType_FS.eEC: // End Column
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndColumn)
+                        {
+                            fMaximumDesignRatioEndColumn = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioEndColumn = m;
+                        }
+                        break;
+                    }
+                case EMemberType_FS.eER: // End Rafter
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioEndRafter)
+                        {
+                            fMaximumDesignRatioEndRafter = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioEndRafter = m;
+                        }
+                        break;
+                    }
+                case EMemberType_FS.eG: // Girt
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioGirts)
+                        {
+                            fMaximumDesignRatioGirts = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioGirt = m;
+                        }
+                        break;
+                    }
+                case EMemberType_FS.eP: // Purlin
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioPurlins)
+                        {
+                            fMaximumDesignRatioPurlins = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioPurlin = m;
+                        }
+                        break;
+                    }
+                case EMemberType_FS.eC: // Column
+                    {
+                        if (memberDesignModel.fMaximumDesignRatio > fMaximumDesignRatioColumns)
+                        {
+                            fMaximumDesignRatioColumns = memberDesignModel.fMaximumDesignRatio;
+                            MaximumDesignRatioColumn = m;
+                        }
+                        break;
+                    }
+                default:
+                    // TODO - modifikovat podla potrieb pre ukladanie - doplnit vsetky typy
+                    break;
+            }
+        }
 
-            //Member_Design.IsEnabled = true;
-            //Internal_Forces.IsEnabled = true;
 
-            
-            // TODO Ondrej, zostavovat modely a pocitat vn. sily by malo stacit len pre load cases
-            // Pre Load Combinations by sme mali len poprenasobovat hodnoty z load cases faktormi a spocitat ich hodnoty ako jednoduchy sucet, nemusi sa vytvarat nahradny vypoctovy model
-            // Potom by mal prebehnut cyklus pre design (vsetky pruty a vsetky load combination, ale uz len pre memberDesignModel s hodnotami vn sil v rezoch)
-
+        private void ShowResultsInMessageBox()
+        {
             string txt = "Calculation Results \n" +
                     "Maximum design ratio \n" +
                     "Member ID: " + MaximumDesignRatioWholeStructureMember.ID.ToString() + "\t Design Ratio η: " + Math.Round(fMaximumDesignRatioWholeStructure, 3).ToString() + "\n\n\n" +
@@ -655,15 +677,5 @@ namespace PFD.Infrastructure
 
             SolverWindow.ShowMessageBox(txt);
         }
-
-        public void CalculateMemberDesignLoadCase()
-        {
-
-        }
-        public void CalculateMemberDesignLoadCombination()
-        {
-
-        }
-
     }
 }
