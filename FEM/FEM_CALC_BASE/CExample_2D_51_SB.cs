@@ -11,16 +11,14 @@ namespace FEM_CALC_BASE
 {
     public class CExample_2D_51_SB : CExample
     {
-        float fq;
         float fL;
-        ELoadDirection eLoadDir;
         float fI;
         float fE;
 
         // Docasne riesenie
         // TODO 51 - nahradny model pruta zatazeneho spojitym zatazenim pre vypocet vn. sil pre lokalny smer y alebo z
         // TODO - Ondrej , upravit vsetko tak aby sem vstupoval priamo objekt pruta, limit state, load case, load
-        public CExample_2D_51_SB(CMember member, ELoadDirection eLoadDirection_temp, float fq_temp)
+        public CExample_2D_51_SB(CMember member, CMLoad load)
         {
             m_eSLN = ESLN.e2DD_1D; // 1D members in 2D model
             m_eNDOF = (int)ENDOF.e2DEnv; // DOF in 2D
@@ -36,8 +34,6 @@ namespace FEM_CALC_BASE
             m_arrLoadCombs = new CLoadCombination[1];
 
             fL = member.FLength;
-            fq = fq_temp;
-            eLoadDir = eLoadDirection_temp;
 
             // Cross-sections
             // CrSc List - CrSc Array - Fill Data of Cross-sections Array
@@ -48,9 +44,9 @@ namespace FEM_CALC_BASE
             // Materials List - Materials Array - Fill Data of Materials Array
             m_arrMat[0] = m_arrCrSc[0].m_Mat;
 
-            if (eLoadDir == ELoadDirection.eLD_Y)
+            if (load.ELoadDir == ELoadDirection.eLD_Y)
                 fI = (float)m_arrCrSc[0].I_z;
-            else if (eLoadDir == ELoadDirection.eLD_Z)
+            else if (load.ELoadDir == ELoadDirection.eLD_Z)
                 fI = (float)m_arrCrSc[0].I_y;
             else
                 fI = 0;
@@ -108,12 +104,41 @@ namespace FEM_CALC_BASE
 
             // Member loads
             // Load 1 - MemberIDs: 1
-            CMLoad_21 MLoad_q1 = new CMLoad_21(fq);
-            MLoad_q1.ID = 1;
-            MLoad_q1.MLoadTypeDistr = EMLoadTypeDistr.eMLT_QUF_W_21;
-            MLoad_q1.MLoadType = ELoadType.eLT_F;
-            MLoad_q1.ELoadCS = ELoadCoordSystem.eLCS; // Load in LCS
-            MLoad_q1.ELoadDir = eLoadDir; // Load direction
+            CMLoad MLoad_q1 = null;
+
+            if (load is CMLoad_21)
+            {
+                // Nastavujem do kopie, aby som neprepisal priradenie originalu
+                CMLoad_21 load_uniform = new CMLoad_21();
+                load_uniform.ID = 1;
+                load_uniform.Fq = ((CMLoad_21)load).Fq;
+                load_uniform.MLoadTypeDistr = load.MLoadTypeDistr;
+                load_uniform.ELoadType_FMTS = load.ELoadType_FMTS;
+                load_uniform.ELoadCS = load.ELoadCS;
+                load_uniform.ELoadDir = load.ELoadDir;
+                MLoad_q1 = load_uniform;
+            }
+            else if (load is CMLoad_24)
+            {
+                // Nastavujem do kopie, aby som neprepisal priradenie originalu
+                CMLoad_24 load_partial = new CMLoad_24();
+                load_partial.ID = 1;
+                load_partial.FaA = ((CMLoad_24)load).FaA;
+                load_partial.Fa = ((CMLoad_24)load).Fa;
+                load_partial.Fs = ((CMLoad_24)load).Fs;
+                load_partial.Fq = ((CMLoad_24)load).Fq;
+                load_partial.MLoadTypeDistr = load.MLoadTypeDistr;
+                load_partial.ELoadType_FMTS = load.ELoadType_FMTS;
+                load_partial.ELoadCS = load.ELoadCS;
+                load_partial.ELoadDir = load.ELoadDir;
+                MLoad_q1 = load_partial;
+            }
+            else
+            {
+                // Not defined
+                throw new ArgumentNullException("Invalid load type.");
+            }
+
             MLoad_q1.IMemberCollection = new int[1];
             MLoad_q1.IMemberCollection[0] = 1;
             m_arrMLoads[0] = MLoad_q1;
@@ -136,36 +161,7 @@ namespace FEM_CALC_BASE
         public CExample_2D_51_SB(float fL_temp, float fq_temp)
         {
             fL = fL_temp;
-            fq = fq_temp;
+            //fq = fq_temp;
         }
-
-        public float GetSupportReactionValue_R()
-        {
-            return 0.5f * fq * fL;
-        }
-        public float GetV_max()
-        {
-            return GetSupportReactionValue_R();
-        }
-        public float GetM_max()
-        {
-            return 0.125f * fq * fL * fL;
-        }
-        public float GetV_x(float fx)
-        {
-            return fq * (0.5f * fL - fx);
-        }
-        public float GetM_x(float fx)
-        {
-            return 0.5f * fq * fx * (fL - fx);
-        }
-        public float GetDelta_max()
-        {
-            return (5f * fq * MathF.Pow4(fL)) / (384f * fE * fI);
-        }
-        public float GetDelta_x(float fx)
-        {
-            return ((fq * fx) / (24f * fE * fI)) * (MathF.Pow3(fL) - 2f * fL * MathF.Pow2(fx) + MathF.Pow3(fx));
-        } 
     }
 }

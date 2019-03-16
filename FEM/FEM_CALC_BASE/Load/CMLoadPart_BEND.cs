@@ -333,5 +333,45 @@ namespace FEM_CALC_BASE
             fMb = -Load.FF;
         }
         #endregion
+
+
+
+
+
+
+        // Simply supported beam
+        // Docasne, hodnoty reakcii zavisia od typu podopretia pruta - rozpracovane v projekte FEM_CALC
+        public override float Get_SSB_SupportReactionValue_RA_Start(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_SupportReactionValue_RB_End(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_V_max(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_M_max(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_V_x(float fx, float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_M_x(float fx, float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_Delta_max(float fL, float fE, float fI)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_Delta_x(float fx, float fL, float fE, float fI)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

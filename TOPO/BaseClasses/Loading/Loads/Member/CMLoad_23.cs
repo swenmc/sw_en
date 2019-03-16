@@ -1,4 +1,4 @@
-﻿using System.Windows.Media;
+﻿using System;
 using System.Windows.Media.Media3D;
 
 namespace BaseClasses
@@ -67,6 +67,41 @@ namespace BaseClasses
         public override Model3DGroup CreateM_3D_G_Load(bool bConsiderCrossSectionDimensions, float fDisplayin3D_ratio)
         {
             return CreateUniformLoadSequence(Fq, Fa, Fb, bConsiderCrossSectionDimensions, fDisplayin3D_ratio);
+        }
+
+        // Simply supported beam
+        // Docasne, hodnoty reakcii zavisia od typu podopretia pruta - rozpracovane v projkte FEM_CALC
+        public override float Get_SSB_SupportReactionValue_RA_Start(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_SupportReactionValue_RB_End(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_V_max(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_M_max(float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_V_x(float fx, float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_M_x(float fx, float fL)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_Delta_max(float fL, float fE, float fI)
+        {
+            throw new NotImplementedException();
+        }
+        public override float Get_SSB_Delta_x(float fx, float fL, float fE, float fI)
+        {
+            throw new NotImplementedException();
         }
     }
 }

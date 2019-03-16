@@ -159,5 +159,14 @@ namespace BaseClasses
 
             return model_gr; // Model group of whole member load in LCS
         }
+
+        abstract public float Get_SSB_SupportReactionValue_RA_Start(float fL);
+        abstract public float Get_SSB_SupportReactionValue_RB_End(float fL);
+        abstract public float Get_SSB_V_max(float fL);
+        abstract public float Get_SSB_M_max(float fL);
+        abstract public float Get_SSB_V_x(float fx, float fL);
+        abstract public float Get_SSB_M_x(float fx, float fL);
+        abstract public float Get_SSB_Delta_max(float fL, float fE, float fI);
+        abstract public float Get_SSB_Delta_x(float fx, float fL, float fE, float fI);
     }
 }
