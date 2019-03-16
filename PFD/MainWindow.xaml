@@ -254,22 +254,25 @@
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
                         <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
                         <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>
+
+                        <Button Name="btnDisplayDoorBlock" Content="D Block" Grid.Row="20" Grid.Column="5" Height="20" Click="btnDisplayDoorBlock_Click" Margin="90,55,30,55"/>
+                        <Button Name="btnDisplayWindowBlock" Content="W Block" Grid.Row="21" Grid.Column="5" Height="20" Margin="90,55,30,55" Click="btnDisplayWindowBlock_Click"/>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Name ="Member_Input">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Members" Foreground="Blue"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Members" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Joint_Input">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Joints" Foreground="Blue"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Joints" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Footing_Input">
                 <TabItem.Header>
@@ -279,67 +282,67 @@
                 </TabItem.Header>
             </TabItem>
             <TabItem Name ="Loads">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Loads" Foreground="Blue"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Loads" Foreground="Blue"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Load_Cases">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Load Cases" Foreground="Purple"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Load Cases" Foreground="Purple"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Load_Combinations">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Load Case Combinations" Foreground="Purple"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Load Case Combinations" Foreground="Purple"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Internal_Forces">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Internal Forces" Foreground="DarkCyan"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Internal Forces" Foreground="DarkCyan"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Member_Design">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Member Design" Foreground="DarkCyan"/>
-                </StackPanel>
-            </TabItem.Header>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Joint_Design">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Joint Design" Foreground="DarkCyan"/>
-                </StackPanel>
-            </TabItem.Header>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Footing_Design">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Footing Design" Foreground="DarkCyan"/>
-                </StackPanel>
-            </TabItem.Header>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Part_List">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Part List" Foreground="Green"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Part List" Foreground="Green"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
             <TabItem Name ="Quotation">
-            <TabItem.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Quotation" Foreground="Green"/>
-                </StackPanel>
-            </TabItem.Header>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Quotation" Foreground="Green"/>
+                    </StackPanel>
+                </TabItem.Header>
             </TabItem>
         </TabControl>
         <Frame Grid.Row="0" Grid.RowSpan="2" Name ="Frame1" Content="Portal Frame 3D Preview"
@@ -363,9 +366,9 @@
                 <!--Temporary-->
                 <Button Content="Wind Pressure" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="WindPressureButton_Click"/>
                 <Button Content="Purlin Designer" HorizontalAlignment="Left" Margin="0 0 10 0" Width="100" Click="PurlinDesignerButton_Click"/>
-                
+
             </StackPanel>
         </StackPanel>
-        
+
     </Grid>
 </Window>

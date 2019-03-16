@@ -1583,5 +1583,79 @@ namespace PFD
 
             });*/
         }
+
+        private void btnDisplayDoorBlock_Click(object sender, RoutedEventArgs e)
+        {
+            // Girt
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
+            CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+
+            CModel model = new CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 4.5f, 4f);
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseDiffuseMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, null);
+
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();
+
+            /*
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
+            list_trackports.Add(win._trackport);
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 001 Door in bay" + " - Window " + (Container.Children.Count + 1) });
+            win.Close();
+            */
+        }
+
+        private void btnDisplayWindowBlock_Click(object sender, RoutedEventArgs e)
+        {
+            // Girt
+            CCrSc_3_270XX_C crsc = new CCrSc_3_270XX_C(1, 0.27f, 0.07f, 0.00115f, Colors.Orange);
+            CMemberEccentricity eccentricity = new CMemberEccentricity(0, 0);
+            CMember refgirt = new CMember(0, new CNode(0, 0, 0, 0), new CNode(1, 1, 0, 0), crsc, 0);
+            refgirt.EccentricityStart = eccentricity;
+            refgirt.EccentricityEnd = eccentricity;
+            refgirt.DTheta_x = Math.PI / 2;
+
+            CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
+            CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
+
+            CModel model = new CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
+
+            DisplayOptions sDisplayOptions = new DisplayOptions();
+            sDisplayOptions.bUseDiffuseMaterial = true;
+            sDisplayOptions.bUseEmissiveMaterial = true;
+            sDisplayOptions.bUseLightAmbient = true;
+            sDisplayOptions.bDisplaySolidModel = true;
+            sDisplayOptions.bDisplayMembers = true;
+            sDisplayOptions.bDisplayJoints = true;
+
+            Page3Dmodel page1 = new Page3Dmodel(model, sDisplayOptions, null);
+
+            // Display model in 3D preview frame
+            Frame1.Content = page1;
+            Frame1.UpdateLayout();
+
+            /*
+            Window2 win = new Window2(model, sDisplayOptions, m_bDebugging);
+            list_trackports.Add(win._trackport);
+            Container.Children.Add(new MdiChild { Content = (UIElement)win.Content, Title = "Block 3D 002 Window in bay" + " - Window " + (Container.Children.Count + 1) });
+            win.Close();
+            */
+        }
     }
 }
