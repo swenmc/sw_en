@@ -10,7 +10,7 @@ namespace PFD.Infrastructure
 {
     public static class CBeamsCalculations
     {
-        public static void RunBeamsCalculations(List<CBeam_Simple> beamSimpleModels, bool DeterminateCombinationResultsByFEMSolver, Solver solverWindow)
+        public static void RunBeamsCalculations(List<CBeam_Simple> beamSimpleModels, bool bCalculateLoadCasesOnly, Solver solverWindow)
         {
             int count = 0;
             solverWindow.SetBeamsProgress(count, beamSimpleModels.Count);
@@ -28,7 +28,7 @@ namespace PFD.Infrastructure
             foreach (CBeam_Simple beam in beamSimpleModels)
             {
                 recalc = new CBeamCalculations(lockObject);
-                result = recalc.BeginBeamCalculations(beam, DeterminateCombinationResultsByFEMSolver, null, null);
+                result = recalc.BeginBeamCalculations(beam, bCalculateLoadCasesOnly, null, null);
                 waitHandles.Add(result.AsyncWaitHandle);
                 recs.Add(recalc);
                 results.Add(result);

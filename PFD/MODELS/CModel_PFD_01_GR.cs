@@ -1307,6 +1307,8 @@ namespace PFD
             #endregion
 
             AddMembersToMemberGroupsLists();
+
+            SetJointDefaultParameters();
         }
 
         public void CalcPurlinNodeCoord(float x_rel, out float x_global, out float z_global)
@@ -1772,17 +1774,41 @@ namespace PFD
             // Deactivate already generated members in the bay (space between frames) where is the block inserted
             for (int i = 0; i < iNumberofMembersToDeactivate; i++)
             {
+                // Deactivate Members
                 CMember m = m_arrMembers[iFirstMemberToDeactivate + i];
-                if(m != null) m.BIsDisplayed = false;
-                
+                if (m != null)
+                {
+                    m.BIsDisplayed = false;
+                    m.BIsGenerated = false;
+                    m.BIsDSelectedForIFCalculation = false;
+                    m.BIsDSelectedForDesign = false;
+                    m.BIsSelectedForMaterialList = false;
+                }
+
                 // Deactivate Member Joints
                 // TODO Ondrej - potrebujeme zistit, ktore spoje su pripojene na prut a deaktivovat ich, aby sa nevytvorili, asi by sme mali na tieto veci vyrobit nejaku mapu alebo dictionary
                 // Doplnene 16.3.2019 - potrebne otestovat, ci funguje
                 CConnectionJointTypes jStart;
                 CConnectionJointTypes jEnd;
                 GetModelMemberStartEndConnectionJoints(m, out jStart, out jEnd);
-                if (jStart != null) jStart.BIsDisplayed = false;
+
+                if (jStart != null)
+                {
+                    jStart.BIsDisplayed = false;
+                    jStart.BIsGenerated = false;
+                    jStart.BIsDSelectedForIFCalculation = false;
+                    jStart.BIsDSelectedForDesign = false;
+                    jStart.BIsSelectedForMaterialList = false;
+                }
+
                 if (jEnd != null) jEnd.BIsDisplayed = false;
+                {
+                    jEnd.BIsDisplayed = false;
+                    jEnd.BIsGenerated = false;
+                    jEnd.BIsDSelectedForIFCalculation = false;
+                    jEnd.BIsDSelectedForDesign = false;
+                    jEnd.BIsSelectedForMaterialList = false;
+                }
             }
 
             float fBlockRotationAboutZaxis_rad = 0;
@@ -1811,40 +1837,12 @@ namespace PFD
 
                 m_arrMembers[arraysizeoriginal + i] = block.m_arrMembers[i];
                 m_arrMembers[arraysizeoriginal + i].ID = arraysizeoriginal + i + 1;
-
-                // TODO - nizsie uvedeny kod zmaze priradenie pruta do zoznamu prutov v priereze (list prutov ktorym je prierez priradeny), 
-                // prut je totizto uz priradeny k prierezu kedze bol uz priradeny v bloku
-                // TODO - dvojite priradenie by sa malo vyriesit nejako elegantnejsie
-
-                // We need to remove assignment of member to the girt cross-section, it is already assigned
-
-                //19.8.2018
-                //Neviem ci je toto stale problem,kedze uz je metoda na ziskanie AssignedMembersList - takze komentujem...
-                /*CCrSc GirtCrossSection = block.ReferenceGirt.CrScStart;
-                if (GirtCrossSection.AssignedMembersList.Count > 0) // Check that list is not empty
-                {
-                    if (GirtCrossSection.Equals(m_arrMembers[arraysizeoriginal + i].CrScStart))
-                        GirtCrossSection.AssignedMembersList.RemoveAt(GirtCrossSection.AssignedMembersList.Count - 1);
-                }
-
-                // We need to remove assignment of member to the block cross-section, it is already assigned
-
-                if (m_arrCrSc.Length > 0 && m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.Count > 0) // Check that list is not empty
-                {
-                    if (m_arrCrSc[m_arrCrSc.Length - 1].Equals(m_arrMembers[arraysizeoriginal + i].CrScStart))
-                        m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.RemoveAt(m_arrCrSc[m_arrCrSc.Length - 1].AssignedMembersList.Count - 1);
-                }*/
             }
-
-            // TODO / BUG No 46 - odstranit spoje na deaktivovanych prutoch
 
             // Add block member connections to the main model connections
             foreach (CConnectionJointTypes joint in block.m_arrConnectionJoints)
                 m_arrConnectionJoints.Add(joint);
         }
-
-        
-
 
         // Load model component cross-sections
         public void SetCrossSectionsFromDatabase()
@@ -1852,12 +1850,6 @@ namespace PFD
             // Todo - Ondrej
             // Chcel som napojit obsah m_arrCrSc podla 
             // MDBModels tabulka KitsetGableRoofEnclosed alebo KitsetGableRoofEnclosedCrscID
-            // ale stroskotal som na tom, ze vsetko co sa tyka databaz by malo byt v projekte DATABASE a ked som to chcel presunut tak 
-            // mi v DATABASE napriklad chybal objekt combobox a aj dalsie referencie pretoze je to WINDOWS.FORMS a nie WPF
-            // Vysledok bol taky ze som to akurat dobabral
-            // Triedy CDatabaseComponents, CDatabaseModels a CDatabaseManager ako aj connectionStrings z app.config by asi mali byt v projekte DATABASE
-
-            // Komentar platil pred reorganizaciou projektov
             // Skusis mi aspon jeden prierez napojit prosim ?
             // pole m_arrCrSc by sa malo naplnit prierezmi podla mena prierezu (270115, 27095, 63020, ...) v databaze pre jednotlive typy members (purlin, girt, main column, ...)
             // kazdemu menu prierezu zodpoveda iny objekt z tried, ktore su v CRSC / CrSc_3 / FS
@@ -1875,7 +1867,7 @@ namespace PFD
             {
                 foreach (CMemberGroup group in listOfModelMemberGroups) // TODO - dalo by sa nahradit napriklad switchom ak pozname presne typy
                 {
-                    if (member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
+                    if (member.BIsGenerated && member.CrScStart.ID == group.CrossSection.ID) // In case that cross-section ID is same add member to the list
                     {
                         member.BIsDSelectedForIFCalculation = true; // TODO - mozno by sa malo nastavovat uz v konstruktore CMember
                         member.BIsDSelectedForDesign = true;
@@ -1895,6 +1887,20 @@ namespace PFD
             if (i != m_arrMembers.Length)
                 throw new Exception("Not all members were added.");
             */
+        }
+
+        // TODO - spravnejsie by bolo nastavovat defaultne parametre spoja uz pri vytvoreni
+        public void SetJointDefaultParameters()
+        {
+            foreach (CConnectionJointTypes joint in m_arrConnectionJoints)
+            {
+                if (joint.m_MainMember != null && joint.m_MainMember.BIsGenerated) // In case that joint main member is generated
+                {
+                    if (joint.m_MainMember.BIsDisplayed == true) joint.BIsDisplayed = true;
+                    if (joint.m_MainMember.BIsDSelectedForDesign == true) joint.BIsDSelectedForDesign = true;
+                    if (joint.m_MainMember.BIsSelectedForMaterialList == true) joint.BIsSelectedForMaterialList = true;
+                }
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PFD.Infrastructure
     {
         //-------------------------------------------------------------------------------------------------------------------------------
         BeamCalculationsAsyncStub stub = null;
-        public delegate void BeamCalculationsAsyncStub(CModel beam, bool DeterminateCombinationResultsByFEMSolver);
+        public delegate void BeamCalculationsAsyncStub(CModel beam, bool bCalculateLoadCasesOnly);
         private Object theLock;
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -21,17 +21,17 @@ namespace PFD.Infrastructure
         {
             theLock = lockObject;
         }
-        public void BeamCalculations(CModel beam, bool DeterminateCombinationResultsByFEMSolver)
+        public void BeamCalculations(CModel beam, bool bCalculateLoadCasesOnly)
         {
-            CModelToBFEMNetConverter.Convert(beam, DeterminateCombinationResultsByFEMSolver);
+            CModelToBFEMNetConverter.Convert(beam, bCalculateLoadCasesOnly);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
-        public IAsyncResult BeginBeamCalculations(CModel beam, bool DeterminateCombinationResultsByFEMSolver, AsyncCallback cb, object s)
+        public IAsyncResult BeginBeamCalculations(CModel beam, bool bCalculateLoadCasesOnly, AsyncCallback cb, object s)
         {
             stub = new BeamCalculationsAsyncStub(BeamCalculations);
             //using delegate for asynchronous implementation   
-            return stub.BeginInvoke(beam, DeterminateCombinationResultsByFEMSolver, cb, null);
+            return stub.BeginInvoke(beam, bCalculateLoadCasesOnly, cb, null);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------

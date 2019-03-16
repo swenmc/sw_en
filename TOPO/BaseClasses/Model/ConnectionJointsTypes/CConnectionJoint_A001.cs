@@ -33,6 +33,7 @@ namespace BaseClasses
             m_fh_2 = m_fh_1 + (float)Math.Tan(m_fSlope_rad) * 0.5f * m_fb;
             m_ft = ft;
 
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             Name = "Rafter Apex Joint";

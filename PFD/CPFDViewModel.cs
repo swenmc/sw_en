@@ -1152,7 +1152,6 @@ namespace PFD
 
             DateTime start = DateTime.Now;
             if (debugging) System.Diagnostics.Trace.WriteLine("STARTING CALCULATE: " + (DateTime.Now - start).TotalMilliseconds);
-            
 
             CModel_PFD_01_GR model = (CModel_PFD_01_GR)Model;
 
@@ -1177,7 +1176,7 @@ namespace PFD
             CFramesCalculations.RunFramesCalculations(frameModels, !DeterminateCombinationResultsByFEMSolver, SolverWindow);
             if (debugging) System.Diagnostics.Trace.WriteLine("After frameModels: " + (DateTime.Now - start).TotalMilliseconds);
 
-            if (UseFEMSolverCalculationForSimpleBeam)
+            if (DeterminateCombinationResultsByFEMSolver || UseFEMSolverCalculationForSimpleBeam)
             {
                 SolverWindow.SetBeams();
                 // Calculation of simple beam model
@@ -1192,7 +1191,7 @@ namespace PFD
             SetDesignMembersLists(memberDesignCalculations);
 
             System.Diagnostics.Trace.WriteLine("end of calculations: " + (DateTime.Now - start).TotalMilliseconds);
-                        
+
             PFDMainWindow.UpdateResults();
         }
 

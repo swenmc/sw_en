@@ -23,6 +23,7 @@ namespace BaseClasses
 
             m_ft = 0.003f;
 
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             float fPurlinVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 0 deg, if negative rotate 180 deg

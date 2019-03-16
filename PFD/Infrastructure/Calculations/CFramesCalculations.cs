@@ -10,9 +10,9 @@ namespace PFD.Infrastructure
 {
     public static class CFramesCalculations
     {
-        public static void RunFramesCalculations(List<CFrame> framesModels, bool DeterminateCombinationResultsByFEMSolver, Solver solverWindow)
+        public static void RunFramesCalculations(List<CFrame> framesModels, bool bCalculateLoadCasesOnly, Solver solverWindow)
         {
-            int count = 0;            
+            int count = 0;
             solverWindow.SetFramesProgress(count, framesModels.Count);
             double step = 10.0 / framesModels.Count;
 
@@ -28,7 +28,7 @@ namespace PFD.Infrastructure
             foreach (CFrame frame in framesModels)
             {
                 recalc = new CFrameCalculations(lockObject);
-                result = recalc.BeginFrameCalculations(frame, DeterminateCombinationResultsByFEMSolver, null, null);
+                result = recalc.BeginFrameCalculations(frame, bCalculateLoadCasesOnly, null, null);
                 waitHandles.Add(result.AsyncWaitHandle);
                 recs.Add(recalc);
                 results.Add(result);

@@ -107,6 +107,8 @@ namespace CRSC
             // WIREFRAME MODEL
             // Complex indices
             loadCrScWireFrameIndices();
+
+            FillCrScPropertiesByTableData();
         }
 
         public void CalcCrSc_Coord()

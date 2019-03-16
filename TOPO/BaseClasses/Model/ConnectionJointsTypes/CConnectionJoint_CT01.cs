@@ -25,6 +25,7 @@ namespace BaseClasses
             m_SecondaryMembers = new CMember[1];
             m_SecondaryMembers[0] = SecondaryConnectedMember_temp;
 
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             // Plate properties

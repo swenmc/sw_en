@@ -21,6 +21,7 @@ namespace BaseClasses
 
             m_ft = 0.003f;
 
+            BIsGenerated = true;
             BIsDisplayed = bIsDisplayed_temp;
 
             float fGirtVectorDirection = m_SecondaryMembers[0].NodeEnd.X - m_Node.X; // If positive rotate joint plates 180 deg, if negative rotate 0 deg

@@ -11,7 +11,7 @@ namespace PFD.Infrastructure
     {
         //-------------------------------------------------------------------------------------------------------------------------------
         FrameCalculationsAsyncStub stub = null;
-        public delegate void FrameCalculationsAsyncStub(CModel frame, bool DeterminateCombinationResultsByFEMSolver);
+        public delegate void FrameCalculationsAsyncStub(CModel frame, bool bCalculateLoadCasesOnly);
         private Object theLock;
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -22,20 +22,17 @@ namespace PFD.Infrastructure
             theLock = lockObject;
         }
 
-
-        public void FrameCalculations(CModel frame, bool DeterminateCombinationResultsByFEMSolver)
+        public void FrameCalculations(CModel frame, bool bCalculateLoadCasesOnly)
         {
-            CModelToBFEMNetConverter.Convert(frame, DeterminateCombinationResultsByFEMSolver);
+            CModelToBFEMNetConverter.Convert(frame, bCalculateLoadCasesOnly);
         }
 
-        
-
         //-------------------------------------------------------------------------------------------------------------------------------
-        public IAsyncResult BeginFrameCalculations(CModel frame, bool DeterminateCombinationResultsByFEMSolver, AsyncCallback cb, object s)
+        public IAsyncResult BeginFrameCalculations(CModel frame, bool bCalculateLoadCasesOnly, AsyncCallback cb, object s)
         {
             stub = new FrameCalculationsAsyncStub(FrameCalculations);
-            //using delegate for asynchronous implementation   
-            return stub.BeginInvoke(frame, DeterminateCombinationResultsByFEMSolver, cb, null);
+            //using delegate for asynchronous implementation
+            return stub.BeginInvoke(frame, bCalculateLoadCasesOnly, cb, null);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------
@@ -43,8 +40,5 @@ namespace PFD.Infrastructure
         {
             stub.EndInvoke(call);
         }
-
-
-
     }
 }

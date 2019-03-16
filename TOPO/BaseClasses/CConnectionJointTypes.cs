@@ -34,6 +34,11 @@ namespace BaseClasses
             m_arrWelds = arrWeldsSize != 0 ? new CWeld[arrWeldsSize] : null;
 
             m_Mat = new CMat();
+
+            // Joint is generated
+            BIsGenerated = true;
+            // Set as default property that joint should be displayed
+            BIsDisplayed = true;
         }
 
         public CConnectionJointTypes(CPlate[] arrPlatesTemp, CBolt[] arrBoltsTemp, CWeld[] arrWeldsTemp)
@@ -58,6 +63,11 @@ namespace BaseClasses
             {
                 m_arrWelds[i] = arrWeldsTemp[i];
             }
+
+            // Joint is generated
+            BIsGenerated = true;
+            // Set as default property that joint should be displayed
+            BIsDisplayed = true;
         }
     }
 }
