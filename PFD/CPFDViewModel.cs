@@ -15,6 +15,7 @@ using M_EC1.AS_NZS;
 using BriefFiniteElementNet.CodeProjectExamples;
 using BriefFiniteElementNet;
 using PFD.Infrastructure;
+using System.Collections.ObjectModel;
 
 namespace PFD
 {
@@ -91,6 +92,9 @@ namespace PFD
         // Use geometrical or principal axes of cross-section to define load direction etc.
         private bool MUseCRSCGeometricalAxes = true;
 
+        private ObservableCollection<DoorProperties> MDoorBlocksProperties;
+        private ObservableCollection<WindowProperties> MWindowBlocksProperties;
+
         private CModel_PFD MModel;
         //-------------------------------------------------------------------------------------------------------------
         //tieto treba spracovat nejako
@@ -99,10 +103,8 @@ namespace PFD
         public float fRoofPitch_radians;
         public float fMaterial_density = 7850f; // [kg /m^3] (malo by byt zadane v databaze materialov)
 
-        public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
-        public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
-        public List<DoorProperties> DoorBlocksProperties;
-        public List<WindowProperties> WindowBlocksProperties;
+        
+
         public CCalcul_1170_1 GeneralLoad;
         public CCalcul_1170_2 Wind;
         public CCalcul_1170_3 Snow;
@@ -944,20 +946,49 @@ namespace PFD
             set
             {
                 MGenerateSurfaceLoads = value;
-                NotifyPropertyChanged(" GenerateSurfaceLoads");
+                NotifyPropertyChanged("GenerateSurfaceLoads");
             }
         }
 
-        
+        public ObservableCollection<DoorProperties> DoorBlocksProperties
+        {
+            get
+            {
+                if (MDoorBlocksProperties == null) MDoorBlocksProperties = new ObservableCollection<DoorProperties>();
+                return MDoorBlocksProperties;
+            }
+
+            set
+            {
+                MDoorBlocksProperties = value;
+                NotifyPropertyChanged("MDoorBlocksProperties");
+            }
+        }
+
+        public ObservableCollection<WindowProperties> WindowBlocksProperties
+        {
+            get
+            {
+                if (MWindowBlocksProperties == null) MWindowBlocksProperties = new ObservableCollection<WindowProperties>();
+                return MWindowBlocksProperties;
+            }
+
+            set
+            {
+                MWindowBlocksProperties = value;
+                NotifyPropertyChanged("WindowBlocksProperties");
+            }
+        }
+
+
 
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
         //-------------------------------------------------------------------------------------------------------------
-        public CPFDViewModel(int modelIndex, List<PropertiesToInsertOpening> doorBlocksToInsertProperties, List<PropertiesToInsertOpening> windowBlocksToInsertProperties,
-            List<DoorProperties> doorBlocksProperties, List<WindowProperties> windowBlocksProperties)
+        public CPFDViewModel(int modelIndex, ObservableCollection<DoorProperties> doorBlocksProperties, ObservableCollection<WindowProperties> windowBlocksProperties)
         {
-            DoorBlocksProperties = doorBlocksProperties;
-            WindowBlocksToInsertProperties = windowBlocksToInsertProperties;
+            IsSetFromCode = true;
+
             DoorBlocksProperties = doorBlocksProperties;
             WindowBlocksProperties = windowBlocksProperties;
 
@@ -1039,9 +1070,7 @@ namespace PFD
                     ColumnDistance,
                     BottomGirtPosition,
                     FrontFrameRakeAngle,
-                    BackFrameRakeAngle,
-                    DoorBlocksToInsertProperties,
-                    WindowBlocksToInsertProperties,
+                    BackFrameRakeAngle,                    
                     DoorBlocksProperties,
                     WindowBlocksProperties,
                     GeneralLoad,

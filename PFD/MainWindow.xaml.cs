@@ -35,6 +35,8 @@ using Examples;
 using DATABASE.DTO;
 using BriefFiniteElementNet;
 using BriefFiniteElementNet.Controls;
+using PFD.Infrastructure;
+using System.Collections.ObjectModel;
 
 namespace PFD
 {
@@ -73,10 +75,10 @@ namespace PFD
 
         //public CModel_PFD model;
         public CDatabaseModels dmodels; // Todo nahradit databazov modelov
-        public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
-        public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
-        public List<DoorProperties> DoorBlocksProperties;
-        public List<WindowProperties> WindowBlocksProperties;
+        //public List<PropertiesToInsertOpening> DoorBlocksToInsertProperties;
+        //public List<PropertiesToInsertOpening> WindowBlocksToInsertProperties;
+        public ObservableCollection<DoorProperties> DoorBlocksProperties;
+        public ObservableCollection<WindowProperties> WindowBlocksProperties;
         public CPFDViewModel vm;
         public CPFDLoadInput loadinput;
         public CCalcul_1170_1 generalLoad;
@@ -117,70 +119,32 @@ namespace PFD
             Combobox_RoofCladdingColor.SelectedIndex = 8; // Default Permanent Green
             Combobox_WallCladdingColor.SelectedIndex = 8; // Default Permanent Green
 
-            DataTable dt;
+            
             // Prepare data for generating of door blocks
-            dt = ((DataView)UC_doors.Datagrid_DoorsAndGates.ItemsSource).ToTable();
-
-            DoorBlocksToInsertProperties = new List<PropertiesToInsertOpening>();
-            DoorBlocksProperties = new List<DoorProperties>();
-            // Fill list of door blocks
-            PropertiesToInsertOpening insertOpeningDoors_temp;
-            DoorProperties dp_temp;
-            foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
-            {
-                if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
-                {
-                    insertOpeningDoors_temp = new PropertiesToInsertOpening();
-                    insertOpeningDoors_temp.sBuildingSide = (string)row.ItemArray[0];
-                    insertOpeningDoors_temp.iBayNumber = (int)row.ItemArray[1];
-
-                    DoorBlocksToInsertProperties.Add(insertOpeningDoors_temp);
-
-                    dp_temp = new DoorProperties();
-                    dp_temp.sDoorType = (string)row.ItemArray[2];
-                    dp_temp.fDoorsHeight = float.Parse(row.ItemArray[3].ToString());
-                    dp_temp.fDoorsWidth = float.Parse(row.ItemArray[4].ToString());
-                    dp_temp.fDoorCoordinateXinBlock = float.Parse(row.ItemArray[5].ToString());
-
-                    DoorBlocksProperties.Add(dp_temp);
-                }
-            }
+            DoorBlocksProperties = CDoorsAndWindowsHelper.GetDefaultDoorProperties();
 
             // Prepare data for generating of window blocks
-            dt = ((DataView)UC_windows.Datagrid_Windows.ItemsSource).ToTable();
+            WindowBlocksProperties = CDoorsAndWindowsHelper.GetDefaultWindowsProperties();
 
-            WindowBlocksToInsertProperties = new List<PropertiesToInsertOpening>();
-            WindowBlocksProperties = new List<WindowProperties>();
-            // Fill list of window blocks
-            PropertiesToInsertOpening insertOpeningWindows_temp;
-            WindowProperties wp_temp;
-            foreach (DataRow row in dt.Rows) // Create block for each not empty row in datatable
-            {
-                if (row.ItemArray != null && (string)row.ItemArray[0] != "") // Check that row is not empty and data are valid
-                {
-                    insertOpeningWindows_temp = new PropertiesToInsertOpening();
-                    insertOpeningWindows_temp.sBuildingSide = (string)row.ItemArray[0];
-                    insertOpeningWindows_temp.iBayNumber = (int)row.ItemArray[1];
-
-                    WindowBlocksToInsertProperties.Add(insertOpeningWindows_temp);
-
-                    wp_temp = new WindowProperties();
-                    wp_temp.fWindowsHeight = float.Parse(row.ItemArray[2].ToString());
-                    wp_temp.fWindowsWidth = float.Parse(row.ItemArray[3].ToString());
-                    wp_temp.fWindowCoordinateXinBay = float.Parse(row.ItemArray[4].ToString());
-                    wp_temp.fWindowCoordinateZinBay = float.Parse(row.ItemArray[5].ToString());
-                    wp_temp.iNumberOfWindowColumns = int.Parse(row.ItemArray[6].ToString());
-
-                    WindowBlocksProperties.Add(wp_temp);
-                }
-            }
+            
 
             // Tu je nesktocne vela roboty, kym to bude nejako normalne vyzerat
             // Model Geometry
-            vm = new CPFDViewModel(1, DoorBlocksToInsertProperties, WindowBlocksToInsertProperties, DoorBlocksProperties, WindowBlocksProperties);
+            vm = new CPFDViewModel(1, DoorBlocksProperties, WindowBlocksProperties);
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
+
+            Datagrid_DoorsAndGates.ItemsSource = DoorBlocksProperties;
+
+            //Datagrid_DoorsAndGates.Columns.Add(DataGridColumn.Cre new DataGridColumn());
+
+            //Datagrid_DoorsAndGates.Columns[1].Header = "Name";
+            //Datagrid_DoorsAndGates.Columns[2].Header = "Type";
+            //Datagrid_DoorsAndGates.Columns[0].Width = 100;
+            //Datagrid_DoorsAndGates.Columns[1].Width = 100;
+            //Datagrid_DoorsAndGates.Columns[2].Width = 100;
+            
 
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
             Combobox_WallCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
@@ -695,9 +659,7 @@ namespace PFD
                 vm.ColumnDistance,
                 vm.BottomGirtPosition,
                 vm.FrontFrameRakeAngle,
-                vm.BackFrameRakeAngle,
-                DoorBlocksToInsertProperties,
-                WindowBlocksToInsertProperties,
+                vm.BackFrameRakeAngle,                
                 DoorBlocksProperties,
                 WindowBlocksProperties,
                 generalLoad,
@@ -1597,7 +1559,13 @@ namespace PFD
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
             CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
 
-            CModel model = new CBlock_3D_001_DoorInBay("Left", 2.1f, 0.9f, 0.6f, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 4.5f, 4f);
+            DoorProperties props = new DoorProperties();
+            props.sBuildingSide = "Left";
+            props.fDoorsHeight = 2.1f;
+            props.fDoorsWidth = 0.9f;
+            props.fDoorCoordinateXinBlock = 0.6f;
+            CModel model = new CBlock_3D_001_DoorInBay(props, 0.5f, 0.3f, 0.9f, refgirt, mColumn, 4.5f, 4f);
+
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseDiffuseMaterial = true;
@@ -1634,7 +1602,15 @@ namespace PFD
             CCrSc_3_63020_BOX crscColumn = new CCrSc_3_63020_BOX(2, 0.63f, 0.2f, 0.00195f, 0.00195f, Colors.Green);
             CMember mColumn = new CMember(0, new CNode(0, 0, 0, 0, 0), new CNode(1, 0, 0, 5, 0), crscColumn, 0);
 
-            CModel model = new CBlock_3D_002_WindowInBay("Left", 1.0f, 3.0f, 0.9f, 1.4f, 3, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
+            WindowProperties prop = new WindowProperties();
+            prop.sBuildingSide = "Left";
+            prop.fWindowsHeight = 1.0f;
+            prop.fWindowsWidth = 3.0f;
+            prop.fWindowCoordinateXinBay = 0.9f;
+            prop.fWindowCoordinateZinBay = 1.4f;
+            prop.iNumberOfWindowColumns = 3;
+
+            CModel model = new CBlock_3D_002_WindowInBay(prop, 0.5f, 0.3f, 0.8f, refgirt, mColumn, 6.0f, 2.8f);
 
             DisplayOptions sDisplayOptions = new DisplayOptions();
             sDisplayOptions.bUseDiffuseMaterial = true;

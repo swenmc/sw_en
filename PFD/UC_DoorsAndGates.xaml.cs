@@ -23,135 +23,137 @@ namespace PFD
     /// </summary>
     public partial class UC_DoorsAndGatesList : UserControl
     {
-        DataSet ds;
+        //DataSet ds;
 
-        List<string> listBuildingSide = new List<string>();
-        List<int> listBayNumber = new List<int>();
-        List<string> listDoorType = new List<string>(); // Dva typy (zaviest enum)
-        List<float> listDoorHeight = new List<float>();
-        List<float> listDoorWidth = new List<float>();
-        List<float> listDoorCoordinateXinBlock = new List<float>();
+        //List<string> listBuildingSide = new List<string>();
+        //List<int> listBayNumber = new List<int>();
+        //List<string> listDoorType = new List<string>(); // Dva typy (zaviest enum)
+        //List<float> listDoorHeight = new List<float>();
+        //List<float> listDoorWidth = new List<float>();
+        //List<float> listDoorCoordinateXinBlock = new List<float>();
 
-        public UC_DoorsAndGatesList()
+        public UC_DoorsAndGatesList(CPFDViewModel vm)
         {
             InitializeComponent();
 
-            // Clear all lists
-            DeleteAllLists();
+            Datagrid_DoorsAndGates.ItemsSource = vm.DoorBlocksProperties;
 
-            // For each component add one row
-            listBuildingSide.Add("Front");
-            listBuildingSide.Add("Back");
-            listBuildingSide.Add("Left");
-            listBuildingSide.Add("Right");
+            //// Clear all lists
+            //DeleteAllLists();
 
-            listBayNumber.Add(1);
-            listBayNumber.Add(1);
-            listBayNumber.Add(3);
-            listBayNumber.Add(1);
+            //// For each component add one row
+            //listBuildingSide.Add("Front");
+            //listBuildingSide.Add("Back");
+            //listBuildingSide.Add("Left");
+            //listBuildingSide.Add("Right");
 
-            listDoorType.Add("Personnel Door");
-            listDoorType.Add("Personnel Door");
-            listDoorType.Add("Roller Door");
-            listDoorType.Add("Roller Door");
+            //listBayNumber.Add(1);
+            //listBayNumber.Add(1);
+            //listBayNumber.Add(3);
+            //listBayNumber.Add(1);
 
-            listDoorHeight.Add(2.1f);
-            listDoorHeight.Add(2.2f);
-            listDoorHeight.Add(2.4f);
-            listDoorHeight.Add(2.6f);
+            //listDoorType.Add("Personnel Door");
+            //listDoorType.Add("Personnel Door");
+            //listDoorType.Add("Roller Door");
+            //listDoorType.Add("Roller Door");
 
-            listDoorWidth.Add(0.3f);
-            listDoorWidth.Add(0.7f);
-            listDoorWidth.Add(1.2f);
-            listDoorWidth.Add(2.0f);
+            //listDoorHeight.Add(2.1f);
+            //listDoorHeight.Add(2.2f);
+            //listDoorHeight.Add(2.4f);
+            //listDoorHeight.Add(2.6f);
 
-            listDoorCoordinateXinBlock.Add(0.6f);
-            listDoorCoordinateXinBlock.Add(0.6f);
-            listDoorCoordinateXinBlock.Add(1.2f);
-            listDoorCoordinateXinBlock.Add(0.6f);
+            //listDoorWidth.Add(0.3f);
+            //listDoorWidth.Add(0.7f);
+            //listDoorWidth.Add(1.2f);
+            //listDoorWidth.Add(2.0f);
 
-            // Create Table
-            DataTable table = new DataTable("Table");
+            //listDoorCoordinateXinBlock.Add(0.6f);
+            //listDoorCoordinateXinBlock.Add(0.6f);
+            //listDoorCoordinateXinBlock.Add(1.2f);
+            //listDoorCoordinateXinBlock.Add(0.6f);
 
-            // Create Table Rows
-            table.Columns.Add("BuildingSide", typeof(String));
-            table.Columns.Add("BayNumber", typeof(Int32));
-            table.Columns.Add("DoorType", typeof(String));
-            table.Columns.Add("DoorHeight", typeof(Decimal));
-            table.Columns.Add("DoorWidth", typeof(Decimal));
-            table.Columns.Add("DoorPosition", typeof(Decimal));
+            //// Create Table
+            //DataTable table = new DataTable("Table");
 
-            // Set Column Caption
-            table.Columns["BuildingSide"].Caption = "BuildingSide";
-            table.Columns["BayNumber"].Caption = "BayNumber";
-            table.Columns["DoorType"].Caption = "DoorType";
-            table.Columns["DoorHeight"].Caption = "DoorHeight";
-            table.Columns["DoorWidth"].Caption = "DoorWidth";
-            table.Columns["DoorPosition"].Caption = "DoorPosition";
+            //// Create Table Rows
+            //table.Columns.Add("BuildingSide", typeof(String));
+            //table.Columns.Add("BayNumber", typeof(Int32));
+            //table.Columns.Add("DoorType", typeof(String));
+            //table.Columns.Add("DoorHeight", typeof(Decimal));
+            //table.Columns.Add("DoorWidth", typeof(Decimal));
+            //table.Columns.Add("DoorPosition", typeof(Decimal));
 
-            // Create Datases
-            ds = new DataSet();
-            // Add Table to Dataset
-            ds.Tables.Add(table);
+            //// Set Column Caption
+            //table.Columns["BuildingSide"].Caption = "BuildingSide";
+            //table.Columns["BayNumber"].Caption = "BayNumber";
+            //table.Columns["DoorType"].Caption = "DoorType";
+            //table.Columns["DoorHeight"].Caption = "DoorHeight";
+            //table.Columns["DoorWidth"].Caption = "DoorWidth";
+            //table.Columns["DoorPosition"].Caption = "DoorPosition";
 
-            for (int i = 0; i < listBuildingSide.Count; i++)
-            {
-                DataRow row = table.NewRow();
+            //// Create Datases
+            //ds = new DataSet();
+            //// Add Table to Dataset
+            //ds.Tables.Add(table);
 
-                try
-                {
-                    row["BuildingSide"] = listBuildingSide[i];
-                    row["BayNumber"] = listBayNumber[i];
-                    row["DoorType"] = listDoorType[i];
-                    row["DoorHeight"] = listDoorHeight[i];
-                    row["DoorWidth"] = listDoorWidth[i];
-                    row["DoorPosition"] = listDoorCoordinateXinBlock[i];
-                }
-                catch (ArgumentOutOfRangeException) { }
-                table.Rows.Add(row);
-            }
+            //for (int i = 0; i < listBuildingSide.Count; i++)
+            //{
+            //    DataRow row = table.NewRow();
 
-            Datagrid_DoorsAndGates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
+            //    try
+            //    {
+            //        row["BuildingSide"] = listBuildingSide[i];
+            //        row["BayNumber"] = listBayNumber[i];
+            //        row["DoorType"] = listDoorType[i];
+            //        row["DoorHeight"] = listDoorHeight[i];
+            //        row["DoorWidth"] = listDoorWidth[i];
+            //        row["DoorPosition"] = listDoorCoordinateXinBlock[i];
+            //    }
+            //    catch (ArgumentOutOfRangeException) { }
+            //    table.Rows.Add(row);
+            //}
 
-            // Set Column Header
-            /*
-            Datagrid_Members.Columns[0].Header = "BuildingSide";
-            Datagrid_Members.Columns[1].Header = "BayNumber";
-            Datagrid_Members.Columns[2].Header = "DoorHeight";
-            Datagrid_Members.Columns[3].Header = "DoorWidth";
-            Datagrid_Members.Columns[4].Header = "DoorPosition";
-            */
+            //Datagrid_DoorsAndGates.ItemsSource = ds.Tables[0].AsDataView();  //draw the table to datagridview
 
-            // Set Column Width
-            /*
-            Datagrid_Members.Columns[0].Width = 100;
-            Datagrid_Members.Columns[1].Width = 100;
-            Datagrid_Members.Columns[2].Width = 100;
-            Datagrid_Members.Columns[3].Width = 100;
-            Datagrid_Members.Columns[4].Width = 100;
-            Datagrid_Members.Columns[5].Width = 100;
-            */
+            //// Set Column Header
+            ///*
+            //Datagrid_Members.Columns[0].Header = "BuildingSide";
+            //Datagrid_Members.Columns[1].Header = "BayNumber";
+            //Datagrid_Members.Columns[2].Header = "DoorHeight";
+            //Datagrid_Members.Columns[3].Header = "DoorWidth";
+            //Datagrid_Members.Columns[4].Header = "DoorPosition";
+            //*/
+
+            //// Set Column Width
+            ///*
+            //Datagrid_Members.Columns[0].Width = 100;
+            //Datagrid_Members.Columns[1].Width = 100;
+            //Datagrid_Members.Columns[2].Width = 100;
+            //Datagrid_Members.Columns[3].Width = 100;
+            //Datagrid_Members.Columns[4].Width = 100;
+            //Datagrid_Members.Columns[5].Width = 100;
+            //*/
         }
 
-        private void DeleteAllLists()
-        {
-            //Todo - asi sa to da jednoduchsie
-            DeleteLists();
+        //private void DeleteAllLists()
+        //{
+        //    //Todo - asi sa to da jednoduchsie
+        //    DeleteLists();
 
-            Datagrid_DoorsAndGates.ItemsSource = null;
-            Datagrid_DoorsAndGates.Items.Clear();
-            Datagrid_DoorsAndGates.Items.Refresh();
-        }
+        //    Datagrid_DoorsAndGates.ItemsSource = null;
+        //    Datagrid_DoorsAndGates.Items.Clear();
+        //    Datagrid_DoorsAndGates.Items.Refresh();
+        //}
 
-        // Deleting lists for updating actual values
-        private void DeleteLists()
-        {
-            listBuildingSide.Clear();
-            listBayNumber.Clear();
-            listDoorType.Clear();
-            listDoorHeight.Clear();
-            listDoorWidth.Clear();
-            listDoorCoordinateXinBlock.Clear();
-        }
+        //// Deleting lists for updating actual values
+        //private void DeleteLists()
+        //{
+        //    listBuildingSide.Clear();
+        //    listBayNumber.Clear();
+        //    listDoorType.Clear();
+        //    listDoorHeight.Clear();
+        //    listDoorWidth.Clear();
+        //    listDoorCoordinateXinBlock.Clear();
+        //}
     }
 }

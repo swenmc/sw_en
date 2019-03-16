@@ -709,14 +709,16 @@
         }
     }
 
-    public struct PropertiesToInsertOpening
-    {
-        public string sBuildingSide;
-        public int iBayNumber;
-    }
+    //public struct PropertiesToInsertOpening
+    //{
+    //    public string sBuildingSide;
+    //    public int iBayNumber;
+    //}
 
     public struct DoorProperties
     {
+        public string sBuildingSide;
+        public int iBayNumber;
         public string sDoorType;
         public float fDoorsHeight;
         public float fDoorsWidth;
@@ -725,6 +727,8 @@
 
     public struct WindowProperties
     {
+        public string sBuildingSide;
+        public int iBayNumber;
         public float fWindowsHeight;
         public float fWindowsWidth;
         public float fWindowCoordinateXinBay;

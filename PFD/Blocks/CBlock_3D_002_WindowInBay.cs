@@ -11,13 +11,8 @@ namespace PFD
     {
         public int iNumberOfGirtsUnderWindow;
 
-        public CBlock_3D_002_WindowInBay(
-            string sBuildingSide_temp,
-            float fWindowHeight,
-            float fWindowWidth,
-            float fWindowCoordinateXinBay,
-            float fWindowCoordinateZinBay,
-            int iNumberOfWindowColumns,
+        public CBlock_3D_002_WindowInBay(            
+            WindowProperties prop,
             float fLimitDistanceFromColumn,
             float fBottomGirtPosition,
             float fDist_Girt,
@@ -29,24 +24,24 @@ namespace PFD
             bool bIsFirstBayInFrontorBackSide = false,
             bool bIsLastBayInFrontorBackSide = false)
         {
-            BuildingSide = sBuildingSide_temp;
+            BuildingSide = prop.sBuildingSide;
             ReferenceGirt = referenceGirt_temp;
 
-            //iNumberOfWindowColumns = 2; // Minimum is 2
-            int iNumberOfHeaders = iNumberOfWindowColumns - 1;
-            int iNumberOfSills = iNumberOfWindowColumns - 1;
+            //prop.iNumberOfWindowColumns = 2; // Minimum is 2
+            int iNumberOfHeaders = prop.iNumberOfWindowColumns - 1;
+            int iNumberOfSills = prop.iNumberOfWindowColumns - 1;
 
             // TODO napojit premennu na hlavny model a pripadne dat moznost uzivatelovi nastavit hodnotu 0 - 30 mm
             float fCutOffOneSide = 0.005f; // Cut 5 mm from each side of member
 
             // Basic validation
-            if ((fWindowWidth + fWindowCoordinateXinBay) > fBayWidth)
+            if ((prop.fWindowsWidth + prop.fWindowCoordinateXinBay) > fBayWidth)
                 throw new Exception(); // Window is defined out of frame bay
 
-            if ((fWindowHeight + fWindowCoordinateZinBay) > fBayHeight)
+            if ((prop.fWindowsHeight + prop.fWindowCoordinateZinBay) > fBayHeight)
                 throw new Exception(); // Window is defined out of frame height
 
-            float fDistanceBetweenWindowColumns = fWindowWidth / (iNumberOfWindowColumns - 1);
+            float fDistanceBetweenWindowColumns = prop.fWindowsWidth / (prop.iNumberOfWindowColumns - 1);
 
             m_arrMat = new CMat[1];
             m_arrCrSc = new CCrSc[2];
@@ -63,29 +58,29 @@ namespace PFD
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Window frame
             m_arrCrSc[1].Name = "Box 10075";
 
-            iNumberOfGirtsUnderWindow = (int)((fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
+            iNumberOfGirtsUnderWindow = (int)((prop.fWindowCoordinateZinBay - fBottomGirtPosition) / fDist_Girt) + 1;
             float fCoordinateZOfGirtUnderWindow = (iNumberOfGirtsUnderWindow - 1) * fDist_Girt + fBottomGirtPosition;
 
-            if (fWindowCoordinateZinBay <= fBottomGirtPosition)
+            if (prop.fWindowCoordinateZinBay <= fBottomGirtPosition)
             {
                 iNumberOfGirtsUnderWindow = 0;
                 fCoordinateZOfGirtUnderWindow = 0f;
             }
 
-            INumberOfGirtsToDeactivate = (int)((fWindowHeight + fWindowCoordinateZinBay - fCoordinateZOfGirtUnderWindow) / fDist_Girt); // Number of intermediate girts to deactivate
+            INumberOfGirtsToDeactivate = (int)((prop.fWindowsHeight + prop.fWindowCoordinateZinBay - fCoordinateZOfGirtUnderWindow) / fDist_Girt); // Number of intermediate girts to deactivate
 
             bool bWindowToCloseToLeftColumn = false; // true - generate girts only on one side, false - generate girts on both sides of window
             bool bWindowToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of window
 
-            if (fWindowCoordinateXinBay < fLimitDistanceFromColumn)
+            if (prop.fWindowCoordinateXinBay < fLimitDistanceFromColumn)
                 bWindowToCloseToLeftColumn = true; // Window is to close to the left column
 
-            if((fBayWidth - (fWindowCoordinateXinBay + fWindowWidth)) < fLimitDistanceFromColumn)
+            if((fBayWidth - (prop.fWindowCoordinateXinBay + prop.fWindowsWidth)) < fLimitDistanceFromColumn)
                 bWindowToCloseToRightColumn = true; // Window is to close to the right column
 
             int iNumberOfGirtsSequences;
 
-            if (bWindowToCloseToLeftColumn && bWindowToCloseToRightColumn || fBottomGirtPosition > (fWindowCoordinateZinBay + fWindowHeight))
+            if (bWindowToCloseToLeftColumn && bWindowToCloseToRightColumn || fBottomGirtPosition > (prop.fWindowCoordinateZinBay + prop.fWindowsHeight))
                 iNumberOfGirtsSequences = 0;  // No girts (not generate girts, just window frame members)
             else if (bWindowToCloseToLeftColumn || bWindowToCloseToRightColumn)
                 iNumberOfGirtsSequences = 1; // Girts only on one side of window
@@ -94,26 +89,26 @@ namespace PFD
 
             int iNodesForGirts = INumberOfGirtsToDeactivate * iNumberOfGirtsSequences * 2;
             int iMembersGirts = INumberOfGirtsToDeactivate * iNumberOfGirtsSequences;
-            int iNodesForWindowColumns = iNumberOfWindowColumns * 2;
+            int iNodesForWindowColumns = prop.iNumberOfWindowColumns * 2;
             int iNodesForWindowHeaders = iNumberOfHeaders + 1;
             int iNodesForWindowSills = iNumberOfSills + 1;
 
             float fLimitOfHeaderOrSillAndGirtDistance = 0.1f;
 
-            if ((fBottomGirtPosition + (INumberOfGirtsToDeactivate + iNumberOfGirtsUnderWindow) * fDist_Girt) - (fWindowCoordinateZinBay + fWindowHeight) < fLimitOfHeaderOrSillAndGirtDistance)
+            if ((fBottomGirtPosition + (INumberOfGirtsToDeactivate + iNumberOfGirtsUnderWindow) * fDist_Girt) - (prop.fWindowCoordinateZinBay + prop.fWindowsHeight) < fLimitOfHeaderOrSillAndGirtDistance)
             {
                 iNumberOfHeaders = 0; // Not generate header - girt is close to the top edge of window
                 iNodesForWindowHeaders = 0;
             }
 
-            if (fWindowCoordinateZinBay - (fBottomGirtPosition + ((iNumberOfGirtsUnderWindow - 1) * fDist_Girt)) < fLimitOfHeaderOrSillAndGirtDistance)
+            if (prop.fWindowCoordinateZinBay - (fBottomGirtPosition + ((iNumberOfGirtsUnderWindow - 1) * fDist_Girt)) < fLimitOfHeaderOrSillAndGirtDistance)
             {
                 iNumberOfSills = 0; // Not generate sill - girt is close to the bottom edge of window
                 iNodesForWindowSills = 0;
             }
 
-            m_arrNodes = new CNode[iNodesForGirts + 2 * iNumberOfWindowColumns + iNodesForWindowHeaders + iNodesForWindowSills];
-            m_arrMembers = new CMember[iMembersGirts + iNumberOfWindowColumns + iNumberOfHeaders + iNumberOfSills];
+            m_arrNodes = new CNode[iNodesForGirts + 2 * prop.iNumberOfWindowColumns + iNodesForWindowHeaders + iNodesForWindowSills];
+            m_arrMembers = new CMember[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + iNumberOfSills];
 
             // Block Nodes Coordinates
             // Coordinates of girt nodes
@@ -122,12 +117,12 @@ namespace PFD
             {
                 int iNumberOfNodesOnOneSide = INumberOfGirtsToDeactivate * 2;
 
-                float fxcoordinate_start = i * (fWindowCoordinateXinBay + fWindowWidth);
-                float fxcoordinate_end = i == 0 ? fWindowCoordinateXinBay : fBayWidth;
+                float fxcoordinate_start = i * (prop.fWindowCoordinateXinBay + prop.fWindowsWidth);
+                float fxcoordinate_end = i == 0 ? prop.fWindowCoordinateXinBay : fBayWidth;
 
                 if (bWindowToCloseToLeftColumn) // Generate only second sequence of girt nodes
                 {
-                    fxcoordinate_start = fWindowCoordinateXinBay + fWindowWidth;
+                    fxcoordinate_start = prop.fWindowCoordinateXinBay + prop.fWindowsWidth;
                     fxcoordinate_end = fBayWidth;
                 }
 
@@ -142,22 +137,22 @@ namespace PFD
             }
 
             // Coordinates of window columns nodes
-            for (int i = 0; i < iNumberOfWindowColumns; i++) // (Column on the left side and the right side of window and also intermediate columns if necessary)
+            for (int i = 0; i < prop.iNumberOfWindowColumns; i++) // (Column on the left side and the right side of window and also intermediate columns if necessary)
             {
-                m_arrNodes[iNodesForGirts + i * 2] = new CNode(iNodesForGirts + i * 2 + 1, fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fCoordinateZOfGirtUnderWindow, 0);
-                m_arrNodes[iNodesForGirts + i * 2 + 1] = new CNode(iNodesForGirts + i * 2 + 1 + 1, fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fBottomGirtPosition + iNumberOfGirtsUnderWindow * fDist_Girt + INumberOfGirtsToDeactivate * fDist_Girt, 0);
+                m_arrNodes[iNodesForGirts + i * 2] = new CNode(iNodesForGirts + i * 2 + 1, prop.fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fCoordinateZOfGirtUnderWindow, 0);
+                m_arrNodes[iNodesForGirts + i * 2 + 1] = new CNode(iNodesForGirts + i * 2 + 1 + 1, prop.fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fBottomGirtPosition + iNumberOfGirtsUnderWindow * fDist_Girt + INumberOfGirtsToDeactivate * fDist_Girt, 0);
             }
 
             // Coordinates of window header nodes
             for (int i = 0; i < iNodesForWindowHeaders; i++) // (Headers between columns)
             {
-                m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i] = new CNode(iNodesForGirts + iNodesForWindowColumns + i + 1, fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fWindowCoordinateZinBay + fWindowHeight, 0);
+                m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i] = new CNode(iNodesForGirts + iNodesForWindowColumns + i + 1, prop.fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, prop.fWindowCoordinateZinBay + prop.fWindowsHeight, 0);
             }
 
             // Coordinates of window sill nodes
             for (int i = 0; i < iNodesForWindowSills; i++) // (Sills between columns)
             {
-                m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i] = new CNode(iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1, fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, fWindowCoordinateZinBay, 0);
+                m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i] = new CNode(iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1, prop.fWindowCoordinateXinBay + i * fDistanceBetweenWindowColumns, 0, prop.fWindowCoordinateZinBay, 0);
             }
 
             // Block Members
@@ -229,7 +224,7 @@ namespace PFD
             }
 
             // Window columns
-            for (int i = 0; i < iNumberOfWindowColumns; i++)
+            for (int i = 0; i < prop.iNumberOfWindowColumns; i++)
             {
                 m_arrMembers[iMembersGirts + i] = new CMember(iMembersGirts + i + 1, m_arrNodes[iNodesForGirts + i * 2], m_arrNodes[iNodesForGirts + i * 2 + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowColumnStart, feccentricityWindowColumnEnd, fWindowColumnStart, fWindowColumnEnd, fWindowColumnRotation, 0);
                 m_arrMembers[iMembersGirts + i].BIsDisplayed = true;
@@ -252,8 +247,8 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfHeaders; i++)
             {
-                m_arrMembers[iMembersGirts + iNumberOfWindowColumns + i] = new CMember(iMembersGirts + iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
-                m_arrMembers[iMembersGirts + iNumberOfWindowColumns + i].BIsDisplayed = true;
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + i + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowHeaderStart, feccentricityWindowHeaderEnd, fWindowHeaderStart, fWindowHeaderEnd, fWindowHeaderRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i].BIsDisplayed = true;
             }
 
             // Window (Sills)
@@ -273,8 +268,8 @@ namespace PFD
 
             for (int i = 0; i < iNumberOfSills; i++)
             {
-                m_arrMembers[iMembersGirts + iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
-                m_arrMembers[iMembersGirts + iNumberOfWindowColumns + iNumberOfHeaders + i].BIsDisplayed = true;
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i] = new CMember(iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i + 1, m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i], m_arrNodes[iNodesForGirts + iNodesForWindowColumns + iNodesForWindowHeaders + i + 1], m_arrCrSc[1], EMemberType_FS.eDF, feccentricityWindowSillStart, feccentricityWindowSillEnd, fWindowSillStart, fWindowSillEnd, fWindowSillRotation, 0);
+                m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i].BIsDisplayed = true;
             }
 
             // Connection Joints
@@ -292,7 +287,7 @@ namespace PFD
             }
 
             // Column Joints
-            for (int i = 0; i < iNumberOfWindowColumns; i++) // Each created column
+            for (int i = 0; i < prop.iNumberOfWindowColumns; i++) // Each created column
             {
                 CMember current_member = m_arrMembers[iMembersGirts + i];
                 // TODO - dopracovat moznosti kedy je stlpik okna pripojeny k eave purlin, main rafter a podobne (nemusi to byt vzdy girt)
@@ -306,7 +301,7 @@ namespace PFD
             // Window Header Joint
             for (int i = 0; i < iNumberOfHeaders; i++) // Each created header
             {
-                CMember current_member = m_arrMembers[iMembersGirts + iNumberOfWindowColumns + i];
+                CMember current_member = m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + i];
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }
@@ -314,7 +309,7 @@ namespace PFD
             // Window Sill Joint
             for (int i = 0; i < iNumberOfSills; i++) // Each created sill
             {
-                CMember current_member = m_arrMembers[iMembersGirts + iNumberOfWindowColumns + iNumberOfHeaders + i];
+                CMember current_member = m_arrMembers[iMembersGirts + prop.iNumberOfWindowColumns + iNumberOfHeaders + i];
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeStart, m_arrMembers[iMembersGirts + i], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
                 m_arrConnectionJoints.Add(new CConnectionJoint_T001("LJ", current_member.NodeEnd, m_arrMembers[iMembersGirts + i + 1], current_member, 0, EPlateNumberAndPositionInJoint.eTwoPlates, true, true));
             }

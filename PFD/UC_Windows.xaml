@@ -6,5 +6,5 @@
         xmlns:local="clr-namespace:PFD"
         mc:Ignorable="d"
         Height="115" Width="250">
-    <DataGrid Name ="Datagrid_Windows" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="false"/>
+    <DataGrid Name ="Datagrid_Windows" ItemsSource="{Binding Path=WindowBlocksProperties}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="false"/>
 </UserControl>

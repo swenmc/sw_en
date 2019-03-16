@@ -10,10 +10,7 @@ namespace PFD
     public class CBlock_3D_001_DoorInBay : CBlock
     {
         public CBlock_3D_001_DoorInBay(
-            string sBuildingSide_temp,
-            float fDoorHeight,
-            float fDoorWidth,
-            float fDoorCoordinateXinBlock,
+            DoorProperties prop,
             float fLimitDistanceFromColumn,
             float fBottomGirtPosition,
             float fDist_Girt,
@@ -25,7 +22,7 @@ namespace PFD
             bool bIsFirstBayInFrontorBackSide = false,
             bool bIsLastBayInFrontorBackSide = false)
         {
-            BuildingSide = sBuildingSide_temp;
+            BuildingSide = prop.sBuildingSide;
             ReferenceGirt = referenceGirt_temp;
 
             // TODO napojit premennu na hlavny model a pripadne dat moznost uzivatelovi nastavit hodnotu 0 - 30 mm
@@ -37,7 +34,7 @@ namespace PFD
             */
 
             // Basic validation
-            if ((fDoorWidth + fDoorCoordinateXinBlock) > fBayWidth)
+            if ((prop.fDoorsWidth + prop.fDoorCoordinateXinBlock) > fBayWidth)
                 throw new Exception(); // Door is defined out of frame bay
 
             m_arrMat = new CMat[1];
@@ -55,20 +52,20 @@ namespace PFD
             m_arrCrSc[1] = new CCrSc_3_10075_BOX(0, 0.1f, 0.1f, 0.00075f, Colors.Red); // Door frame
             m_arrCrSc[1].Name = "Box 10075";
 
-            INumberOfGirtsToDeactivate = (int)((fDoorHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
+            INumberOfGirtsToDeactivate = (int)((prop.fDoorsHeight - fBottomGirtPosition) / fDist_Girt) + 1; // Number of intermediate girts + Bottom Girt
 
             bool bDoorToCloseToLeftColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
             bool bDoorToCloseToRightColumn = false; // true - generate girts only on one side, false - generate girts on both sides of door
 
-            if (fDoorCoordinateXinBlock < fLimitDistanceFromColumn)
+            if (prop.fDoorCoordinateXinBlock < fLimitDistanceFromColumn)
                 bDoorToCloseToLeftColumn = true; // Door is to close to the left column
 
-            if((fBayWidth - (fDoorCoordinateXinBlock + fDoorWidth)) < fLimitDistanceFromColumn)
+            if((fBayWidth - (prop.fDoorCoordinateXinBlock + prop.fDoorsWidth)) < fLimitDistanceFromColumn)
                 bDoorToCloseToRightColumn = true; // Door is to close to the right column
 
             int iNumberOfGirtsSequences;
 
-            if (bDoorToCloseToLeftColumn && bDoorToCloseToRightColumn || fBottomGirtPosition > fDoorHeight)
+            if (bDoorToCloseToLeftColumn && bDoorToCloseToRightColumn || fBottomGirtPosition > prop.fDoorsHeight)
                 iNumberOfGirtsSequences = 0;  // No girts (not generate girts, just door frame members)
             else if (bDoorToCloseToLeftColumn || bDoorToCloseToRightColumn)
                 iNumberOfGirtsSequences = 1; // Girts only on one side of door
@@ -81,7 +78,7 @@ namespace PFD
             int iNumberOfLintels = 1;
 
             float fLimitOfLintelAndGirtDistance = 0.2f;
-            if ((fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt) - fDoorHeight < fLimitOfLintelAndGirtDistance)
+            if ((fBottomGirtPosition + INumberOfGirtsToDeactivate * fDist_Girt) - prop.fDoorsHeight < fLimitOfLintelAndGirtDistance)
                 iNumberOfLintels = 0; // Not generate lintel - girt is close to the top edge of door
 
             m_arrNodes = new CNode[iNodesForGirts + 2 * iNumberOfColumns + 2 * iNumberOfLintels];
@@ -94,12 +91,12 @@ namespace PFD
             {
                 int iNumberOfNodesOnOneSide = INumberOfGirtsToDeactivate * 2;
 
-                float fxcoordinate_start = i * (fDoorCoordinateXinBlock + fDoorWidth);
-                float fxcoordinate_end = i == 0 ? fDoorCoordinateXinBlock : fBayWidth;
+                float fxcoordinate_start = i * (prop.fDoorCoordinateXinBlock + prop.fDoorsWidth);
+                float fxcoordinate_end = i == 0 ? prop.fDoorCoordinateXinBlock : fBayWidth;
 
                 if (bDoorToCloseToLeftColumn) // Generate only second sequence of girt nodes
                 {
-                    fxcoordinate_start = fDoorCoordinateXinBlock + fDoorWidth;
+                    fxcoordinate_start = prop.fDoorCoordinateXinBlock + prop.fDoorsWidth;
                     fxcoordinate_end = fBayWidth;
                 }
 
@@ -123,15 +120,15 @@ namespace PFD
                 if (BuildingSide == "Left" || BuildingSide == "Right")
                     fz = Math.Min(fz, fWallHeight); // Top node z-coordinate must be less or equal to the side wall height
 
-                m_arrNodes[iNodesForGirts + i * iNumberOfColumns] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, 0, 0);
-                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + i * fDoorWidth, 0, fz, 0);
+                m_arrNodes[iNodesForGirts + i * iNumberOfColumns] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, 0, 0);
+                m_arrNodes[iNodesForGirts + i * iNumberOfColumns + 1] = new CNode(iNodesForGirts + i * iNumberOfColumns + 1 + 1, prop.fDoorCoordinateXinBlock + i * prop.fDoorsWidth, 0, fz, 0);
             }
 
             // Coordinates of door lintel nodes
             if (iNumberOfLintels > 0)
             {
-                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, fDoorCoordinateXinBlock, 0, fDoorHeight, 0);
-                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns + 1] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1 + 1, fDoorCoordinateXinBlock + fDoorWidth, 0, fDoorHeight, 0);
+                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1, prop.fDoorCoordinateXinBlock, 0, prop.fDoorsHeight, 0);
+                m_arrNodes[iNodesForGirts + 2 * iNumberOfColumns + 1] = new CNode(iNodesForGirts + 2 * iNumberOfColumns + 1 + 1, prop.fDoorCoordinateXinBlock + prop.fDoorsWidth, 0, prop.fDoorsHeight, 0);
             }
 
             // Block Members

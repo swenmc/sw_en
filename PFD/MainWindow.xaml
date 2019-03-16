@@ -252,7 +252,18 @@
                          VerticalAlignment="Top" SelectedIndex="{Binding Path=LoadCaseIndex, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" SelectionChanged="Combobox_LoadCase_SelectionChanged"/>-->
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
-                        <local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>
+
+                        <DataGrid Name ="Datagrid_DoorsAndGates" Grid.Row="20" HorizontalAlignment="Left" Height="120" IsReadOnly="false" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="BuildingSide" Binding="{Binding Path=sBuildingSide}"/>
+                                <DataGridTextColumn Header="BayNumber" Binding="{Binding Path=iBayNumber}"/>
+                                <DataGridTextColumn Header="DoorType" Binding="{Binding Path=sDoorType}"/>
+                                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding Path=fDoorsHeight}"/>
+                                <DataGridTextColumn Header="DoorsWidth" Binding="{Binding Path=fDoorsWidth}"/>
+                                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding Path=fDoorCoordinateXinBlock}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <!--<local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>-->
                         <local:UC_WindowsList x:Name ="UC_windows" Grid.Row="21" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="700" Margin="5,2,0,0" Grid.ColumnSpan="6"/>
 
                         <Button Name="btnDisplayDoorBlock" Content="D Block" Grid.Row="20" Grid.Column="5" Height="20" Click="btnDisplayDoorBlock_Click" Margin="90,55,30,55"/>
