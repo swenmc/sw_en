@@ -64,7 +64,8 @@ namespace PFD
             eFootingDesign = 10,
 
             ePartList = 11,
-            eQuoation = 12
+            eQuoation = 12,
+            eDoorsAndWindows = 13
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -134,16 +135,6 @@ namespace PFD
             vm.PropertyChanged += HandleViewModelPropertyChangedEvent;
             this.DataContext = vm;
             vm.PFDMainWindow = this;
-
-            Datagrid_DoorsAndGates.ItemsSource = DoorBlocksProperties;
-
-            //Datagrid_DoorsAndGates.Columns.Add(DataGridColumn.Cre new DataGridColumn());
-
-            //Datagrid_DoorsAndGates.Columns[1].Header = "Name";
-            //Datagrid_DoorsAndGates.Columns[2].Header = "Type";
-            //Datagrid_DoorsAndGates.Columns[0].Width = 100;
-            //Datagrid_DoorsAndGates.Columns[1].Width = 100;
-            //Datagrid_DoorsAndGates.Columns[2].Width = 100;
             
 
             Combobox_RoofCladding.SelectedIndex = 1; //toto len kvoli nasledujucej metode,ktora sa inak zrube
@@ -844,6 +835,10 @@ namespace PFD
                     UC_JointDesign uc_jointDesign = Joint_Design.Content as UC_JointDesign;
                     uc_jointDesign.DesignResults_ULS = vm.JointDesignResults_ULS;
                 }
+            }
+            else if (MainTabControl.SelectedIndex == (int)ETabNames.eDoorsAndWindows)
+            {
+                if (DoorsAndWindows.Content == null) DoorsAndWindows.Content = new UC_DoorsAndWindows(vm);                
             }
             else if (MainTabControl.SelectedIndex == (int)ETabNames.ePartList)
             {

@@ -253,14 +253,15 @@
 
                         <TextBlock Grid.Row="19" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Doors and Gates" VerticalAlignment="Top" Width="120" Margin="5,2,0,0" FontSize="16"/>
 
-                        <DataGrid Name ="Datagrid_DoorsAndGates" Grid.Row="20" HorizontalAlignment="Left" Height="120" IsReadOnly="false" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5">
+                        <DataGrid Name ="Datagrid_DoorsAndGates" ItemsSource="{Binding DoorBlocksProperties, Mode=TwoWay}" Grid.Row="20" 
+                                  HorizontalAlignment="Left" Height="120" IsReadOnly="false" AutoGenerateColumns="False" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="BuildingSide" Binding="{Binding Path=sBuildingSide}"/>
-                                <DataGridTextColumn Header="BayNumber" Binding="{Binding Path=iBayNumber}"/>
-                                <DataGridTextColumn Header="DoorType" Binding="{Binding Path=sDoorType}"/>
-                                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding Path=fDoorsHeight}"/>
-                                <DataGridTextColumn Header="DoorsWidth" Binding="{Binding Path=fDoorsWidth}"/>
-                                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding Path=fDoorCoordinateXinBlock}"/>
+                                <DataGridTextColumn Header="BuildingSide" Binding="{Binding sBuildingSide}"/>
+                                <DataGridTextColumn Header="BayNumber" Binding="{Binding iBayNumber}"/>
+                                <DataGridTextColumn Header="DoorType" Binding="{Binding sDoorType}"/>
+                                <DataGridTextColumn Header="DoorsHeight" Binding="{Binding fDoorsHeight}"/>
+                                <DataGridTextColumn Header="DoorsWidth" Binding="{Binding fDoorsWidth}"/>
+                                <DataGridTextColumn Header="DoorCoordinateXinBlock" Binding="{Binding fDoorCoordinateXinBlock}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <!--<local:UC_DoorsAndGatesList x:Name ="UC_doors" Grid.Row="20" HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="470" Margin="5,2,0,0" Grid.ColumnSpan="5"/>-->
@@ -360,6 +361,13 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Quotation" Foreground="Green"/>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem Name ="DoorsAndWindows">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Doors and Windows" Foreground="Green"/>
                     </StackPanel>
                 </TabItem.Header>
             </TabItem>

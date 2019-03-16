@@ -715,7 +715,7 @@
     //    public int iBayNumber;
     //}
 
-    public struct DoorProperties
+    public class DoorProperties
     {
         public string sBuildingSide;
         public int iBayNumber;
@@ -723,9 +723,11 @@
         public float fDoorsHeight;
         public float fDoorsWidth;
         public float fDoorCoordinateXinBlock;
+
+        public DoorProperties() { }
     }
 
-    public struct WindowProperties
+    public class WindowProperties
     {
         public string sBuildingSide;
         public int iBayNumber;

@@ -182,6 +182,9 @@
     <Compile Include="UC_FootingInput.xaml.cs">
       <DependentUpon>UC_FootingInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UC_DoorsAndWindows.xaml.cs">
+      <DependentUpon>UC_DoorsAndWindows.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CLoadCaseView.cs" />
     <Compile Include="ViewModels\FrameInternalForces_2DViewModel.cs" />
     <Compile Include="WaitWindow.xaml.cs">
@@ -273,6 +276,10 @@
     <Page Include="UC_FootingInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UC_DoorsAndWindows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WindTerrainCategories2.xaml">
       <Generator>MSBuild:Compile</Generator>
